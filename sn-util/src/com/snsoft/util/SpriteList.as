@@ -31,10 +31,15 @@
 		private var childSpaseY:Number = 0;
 
 		private var listType:String = "ROW";
+		
+		private var rpuvs:RelativePlace = null;
+		
+		private var rplist:RelativePlace = null;
 
 
 		public function createSpliteList(spriteWidth:Number,spriteHeight:Number,childList:Array,childSpaseX:Number,childSpaseY:Number,listType:String):void {
-
+			
+			
 			this.spriteWidth = spriteWidth;
 			this.spriteHeight = spriteHeight;
 			this.childList = childList;
@@ -42,11 +47,14 @@
 			this.childSpaseY = childSpaseY;
 			this.listType = listType;
 			var uvs:Sprite = createUnvisibleSprite(spriteWidth,spriteHeight,true);
+			uvs.name = "UVS";
 			this.addChild(uvs);
-			refeshList();
 			var stg:Stage = this.stage;
 			if (stg != null) {
+				rpuvs = new RelativePlace(this);
+				rpuvs.addSprite(uvs,"LEFT","TOP");
 				stg.addEventListener(Event.RESIZE,handlerStageResize);
+				refeshList();
 			}
 
 		}
@@ -63,36 +71,41 @@
 			var numX:Number = 0;
 			var numY:Number = 0;
 			try {
-				var spr:Sprite = this.getChildByName(SPRITE_LIST) as Sprite;
-				if (spr != null) {
-					this.removeChild(spr);
+				for (var j:int = 0; j<this.numChildren; j++) {
+					var sprite:Sprite = this.getChildAt(j) as Sprite;
+					if (sprite != null) {
+						var sname:String = sprite.name;
+						trace(sname.indexOf("CHILD_LIST"));
+						if (sname.indexOf("CHILD_LIST") >= 0) {
+							this.removeChildAt(j);
+						}
+					}
 				}
 			} catch (e:Error) {
 			}
-
-
-			var sprite:Sprite = new Sprite();
-			sprite.name = SPRITE_LIST;
-			this.addChild(sprite);
+			rplist = new RelativePlace(this);
+			var uvs:Sprite = this.getChildByName(RelativePlace.UNVISIBLE_SPRITE_NAME) as Sprite;
 			for (var i:int; i<childList.length; i++) {
 				var sp:Sprite = childList[i] as Sprite;
+				sp.name = "CHILD_LIST" + i;
 				sp.x = childSpaseX * numX;
 				sp.y = childSpaseY * numY;
+				rplist.addSprite(sp,"LEFT","TOP");
 				if (listType == ROW) {
 					numX++;
-					if (childSpaseX * (numX + 1) > spriteWidth) {
+					if (childSpaseX * (numX + 1) > uvs.width) {
 						numX = 0;
 						numY++;
 					}
 				}
 				if (listType == LIST) {
 					numY++;
-					if (childSpaseY * (numY + 1) > spriteHeight) {
+					if (childSpaseY * (numY + 1) > uvs.height) {
 						numY = 0;
 						numX++;
 					}
 				}
-				sprite.addChild(sp);
+				this.addChild(sp);
 			}
 		}
 
@@ -102,7 +115,7 @@
 			sprite.visible = visible;
 			var shape:Shape = new Shape();
 			var gra:Graphics = shape.graphics;
-			gra.beginFill(0x000000,1);
+			gra.beginFill(0x00ff00,1);
 			gra.drawRect(0,0,width,height);
 			gra.endFill();
 			sprite.addChild(shape);
