@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"
+	creationComplete="sub();">
+	<mx:Script>
+		<![CDATA[
+			
+			import com.snsoft.webservice.WebServices;			
+			
+			private var ws:WebServices = null;
+			
+			public function sub():void{
+				this.ta.text += "sub";
+				ws = new WebServices("http://127.0.0.1:7080/XfireSpring/services/IMathService?wsdl");
+				ws.addEventListener("wsIOError", wsIOErrorHandler);
+				ws.addEventListener("wsComplete", wsCompleteHandler);
+				ws.load("sub",345,34);
+				
+			}
+			private function wsIOErrorHandler(e:Event):void{
+				this.ta.text += "wsIOErrorHandler";
+				e.target.removeEventListener("wsIOError", wsIOErrorHandler);
+				e.target.removeEventListener("wsComplete", wsCompleteHandler);
+				 
+				//其他代码
+			}
+			private function wsCompleteHandler(e:Event):void{
+				this.ta.text += "wsCompleteHandler";
+				this.ta.text += e.target.data as String;
+			}
+
+		]]>
+	</mx:Script>
+	<mx:TextArea id="ta" x="187" y="172" width="293" height="193"/>
+</mx:Application>
