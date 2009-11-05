@@ -63,8 +63,21 @@
 					else if (displayObject is Sprite) {
 						var spr:Sprite = Sprite(displayObject);
 						var uvSprite:Sprite = spr.getChildByName(UNVISIBLE_SPRITE_NAME) as Sprite;
+						var ly:Number = 0;
+						var lx:Number = 0;
+						for(var i:int=0;i<spr.numChildren;i++){
+							var cspr:Sprite = spr.getChildAt(i) as Sprite;
+							if(cspr.x <lx){
+								lx = cspr.x;
+							}
+							if(cspr.y < ly){
+								ly = cspr.y;
+							}
+						}
 						if (uvSprite == null) {
 							uvSprite = this.createUnvisibleSprite(spr.width,spr.height,true);
+							uvSprite.x = lx;
+							uvSprite.y = ly;
 							uvSprite.name = UNVISIBLE_SPRITE_NAME;
 							spr.addChildAt(uvSprite,0);
 							spr.scaleX = 1;
