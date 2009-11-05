@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
+	<mx:Script>
+		<![CDATA[
+			
+			import com.snsoft.util.RelativePoint;
+	
+			import flash.display.Sprite;
+			
+			public function init():void{
+				
+				/**
+				 * 相对位置设定
+				 * 假定stage有几个MC，但这几个MC要和stage 的 左上，左下，右上，右下的位置相对不变
+				 * 则用下面这个类来控制管理
+				 * 
+				 */
+				
+				/**
+				 * 相对位置类（stage宽，stage高，场景stage对象);
+				 * 
+				 */
+				var rp:RelativePoint = new RelativePoint(550,400,this.stage);
+				/**
+				 * 把要控制相对位置的MC添加进去
+				 * 参数
+				 * (mc 要做保持相对位置的MC,
+				 * 相对类型 RelativePoint.[TOP_LEFT TOP_RIGHT BOTTOM_LEFT BOTTOM_RIGHT ],
+				 * x轴自动拉伸保持mc右边相对stage距离不变,
+				 * y轴自动拉伸保持mc下边相对stage距离不变,
+				 * mc添加时可能要调用的方法)
+				 */
+				rp.addMc(new Sprite(),RelativePoint.TOP_LEFT,true,true,null);
+				
+				/**
+				 * 设定好mc后要监听stage的事件
+				 */
+				rp.addStageResizeEventListener();
+			
+			}
+			
+		]]>
+	</mx:Script>
+</mx:Application>

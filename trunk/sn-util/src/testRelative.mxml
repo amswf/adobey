@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
+	<mx:Script>
+		<![CDATA[
+			import com.snsoft.util.RelativePlace;
+			public function init():void{
+				
+				var rp:RelativePlace = new RelativePlace(stage);
+				var mc:MovieClip = new MovieClip();
+				rp.addSprite(mc,RelativePlace.LEFT_RIGHT,RelativePlace.TOP_BOTTOM,20,20,20,20);
+				
+			}
+		]]>
+	</mx:Script>
+</mx:Application>
