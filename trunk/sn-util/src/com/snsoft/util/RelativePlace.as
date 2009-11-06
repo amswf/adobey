@@ -36,7 +36,7 @@
 
 		public static var UNVISIBLE_SPRITE_NAME:String = "UNVISIBLE_SPRITE_NAME";
 
-
+		private var childSpriteIsRelative:Boolean = false;
 
 		/**
 		 * 构造方法
@@ -52,7 +52,9 @@
 		public function addSprite(sprite:Sprite,relativeXType:String,relativeYType:String,leftSpase:Number = NaN,rightSpase:Number = NaN,topSpase:Number = NaN,bottomSpase:Number = NaN):void {
 			if (sprite != null) {
 				if (displayObject != null) {
-
+					if((relativeXType != null && relativeXType != "")||(relativeYType != null && relativeYType != "")){
+						childSpriteIsRelative = true;
+					}
 					var doWidth:Number = 0;
 					var doHeight:Number = 0;
 					if (displayObject is Stage) {

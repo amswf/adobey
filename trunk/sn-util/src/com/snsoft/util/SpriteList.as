@@ -47,7 +47,7 @@
 			this.childSpaseY = childSpaseY;
 			this.listType = listType;
 			var uvs:Sprite = createUnvisibleSprite(spriteWidth,spriteHeight,true);
-			uvs.name = "UVS";
+			uvs.name = RelativePlace.UNVISIBLE_SPRITE_NAME;
 			this.addChild(uvs);
 			var stg:Stage = this.stage;
 			if (stg != null) {
@@ -90,7 +90,7 @@
 				sp.name = "CHILD_LIST" + i;
 				sp.x = childSpaseX * numX;
 				sp.y = childSpaseY * numY;
-				rplist.addSprite(sp,"LEFT","TOP");
+				rplist.addSprite(sp,"","");
 				if (listType == ROW) {
 					numX++;
 					if (childSpaseX * (numX + 1) > uvs.width) {
