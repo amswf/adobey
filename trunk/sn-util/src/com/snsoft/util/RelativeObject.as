@@ -23,6 +23,8 @@ package com.snsoft.util
 		
 		private var spriteBaseHeight:Number = 0;
 		
+		private var childSpriteIsRelative:Boolean = false;
+		
 		public function RelativeObject()
 		{
 			
@@ -116,6 +118,16 @@ package com.snsoft.util
 		public function setSpriteBaseHeight(spriteBaseHeight:Number):void{
 			
 			this.spriteBaseHeight = spriteBaseHeight;
+		}
+		
+		public function getChildSpriteIsRelative():Boolean{
+			
+			return this.childSpriteIsRelative;
+		}
+		
+		public function setChildSpriteIsRelative(childSpriteIsRelative:Boolean):void{
+			
+			this.childSpriteIsRelative = childSpriteIsRelative;
 		}
 	}
 }
