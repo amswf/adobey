@@ -49,85 +49,91 @@
 
 		}
 
-		public function addSprite(sprite:Sprite,relativeXType:String,relativeYType:String,leftSpase:Number = NaN,rightSpase:Number = NaN,topSpase:Number = NaN,bottomSpase:Number = NaN):void {
+		public function addSprite(sprite:Sprite,relativeXType:String,relativeYType:String,baseWidth:Number = 0,baseHeight:Number = 0,leftSpase:Number = NaN,rightSpase:Number = NaN,topSpase:Number = NaN,bottomSpase:Number = NaN):void {
+
 			if (sprite != null) {
-				if (displayObject != null) {
-					if((relativeXType != null && relativeXType != "")||(relativeYType != null && relativeYType != "")){
-						childSpriteIsRelative = true;
-					}
-					var doWidth:Number = 0;
-					var doHeight:Number = 0;
-					if (displayObject is Stage) {
-						var stage:Stage = Stage(displayObject);
-						doWidth = stage.stageWidth;
-						doHeight = stage.stageHeight;
-					}
-					else if (displayObject is Sprite) {
-						var spr:Sprite = Sprite(displayObject);
-						var uvSprite:Sprite = spr.getChildByName(UNVISIBLE_SPRITE_NAME) as Sprite;
-						var ly:Number = 0;
-						var lx:Number = 0;
-						for(var i:int=0;i<spr.numChildren;i++){
-							var cspr:Sprite = spr.getChildAt(i) as Sprite;
-							if(cspr.x <lx){
-								lx = cspr.x;
-							}
-							if(cspr.y < ly){
-								ly = cspr.y;
-							}
-						}
-						if (uvSprite == null) {
-							uvSprite = this.createUnvisibleSprite(spr.width,spr.height,true);
-							uvSprite.x = lx;
-							uvSprite.y = ly;
-							uvSprite.name = UNVISIBLE_SPRITE_NAME;
-							spr.addChildAt(uvSprite,0);
-							spr.scaleX = 1;
-							spr.scaleY = 1;
-						}
-						if (spr != null) {
-							doWidth = spr.width;
-							doHeight = spr.height;
-						}
-					}
-					var ro:RelativeObject = new RelativeObject();
-					ro.setRelativeXType(relativeXType);
-					ro.setRelativeYType(relativeYType);
-					var stg:Stage = sprite.stage;
-					if (isNaN(leftSpase)) {
-						ro.setLeftSpase(sprite.x);
-					}
-					else {
-						ro.setLeftSpase(leftSpase);
-					}
-					if (isNaN(rightSpase)) {
-						ro.setRightSpase(doWidth - sprite.width - sprite.x);
-					}
-					else {
-						ro.setRightSpase(rightSpase);
-					}
-					if (isNaN(topSpase)) {
-						ro.setTopSpase(sprite.y);
-					}
-					else {
-						ro.setTopSpase(topSpase);
-					}
-					if (isNaN(rightSpase)) {
-						ro.setBottomSpase(doHeight - sprite.height - sprite.y);
-					}
-					else {
-						ro.setBottomSpase(bottomSpase);
-					}
-					ro.setSpriteBaseWidth(sprite.width);
-					ro.setSpriteBaseHeight(sprite.height);
-					ro.setSprite(sprite);
-					this.spriteArray.push(ro);
+
+				//父元件的宽高值
+				var doWidth:Number = 0;
+				var doHeight:Number = 0;
+
+				//父元件是场景时
+				if (displayObject is Stage) {
+					var stage:Stage = Stage(displayObject);
+					doWidth = stage.stageWidth;
+					doHeight = stage.stageHeight;
 				}
+				else if (displayObject is Sprite) {//父元件是Sprite时
+					var dobj:Sprite = displayObject as Sprite;
+					if (dobj != null) {
+						var uvs:Sprite = this.getUnvisibleSprite(dobj) as Sprite;
+						if (uvs != null) {
+							doWidth = uvs.width;
+							doHeight = uvs.height;
+						}
+					}
+				}
+
+				//添加的sprite的宽高
+				var spriteWidth:Number = sprite.width;
+				var spriteHeigh:Number = sprite.height;
+				
+				//sprite无缩放
+				sprite.scaleX = 1;
+				sprite.scaleY = 1;
+
+				//如果指定了sprite的宽高，则sprite自身宽高无效
+				if (baseWidth > 0) {
+					spriteWidth = baseWidth;
+				}
+				if (baseHeight > 0) {
+					spriteHeigh = baseHeight;
+				}
+
+				//子元件添加辅助用的不可见元件
+				this.addUnvisibleSprite(sprite,spriteWidth,spriteHeigh);
+				
+				//创建并设置相对位置对像
+				var ro:RelativeObject = new RelativeObject();
+				ro.setRelativeXType(relativeXType);
+				ro.setRelativeYType(relativeYType);
+				var stg:Stage = sprite.stage;
+				if (isNaN(leftSpase)) {
+					ro.setLeftSpase(sprite.x);
+				}
+				else {
+					ro.setLeftSpase(leftSpase);
+				}
+				if (isNaN(rightSpase)) {
+					ro.setRightSpase(doWidth - spriteWidth - sprite.x);
+				}
+				else {
+					ro.setRightSpase(rightSpase);
+				}
+				if (isNaN(topSpase)) {
+					ro.setTopSpase(sprite.y);
+				}
+				else {
+					ro.setTopSpase(topSpase);
+				}
+				if (isNaN(rightSpase)) {
+					ro.setBottomSpase(doHeight - spriteHeigh - sprite.y);
+				}
+				else {
+					ro.setBottomSpase(bottomSpase);
+				}
+				ro.setSpriteBaseWidth(spriteWidth);
+				ro.setSpriteBaseHeight(spriteHeigh);
+				ro.setSprite(sprite);
+
+				//把添加的sprite放入列表中
+				this.spriteArray.push(ro);
 			}
 		}
 
 		/**
 		 * DisplayObject改变宽高后的，设置元件的宽高及位置
+		 * 
 		 */
 		private function doDisplayObjectResize():void {
 			if (displayObject != null) {
@@ -138,6 +144,11 @@
 			}
 		}
 
+		/**
+		 * stage 重置大小后事件，调整相对位置 
+		 * @param e
+		 * 
+		 */
 		private function handlerResize(e:Event):void {
 
 			var doWidth:Number = 0;
@@ -148,65 +159,66 @@
 				doHeight = stage.stageHeight;
 			}
 			else if (displayObject is Sprite) {
-				var spr:Sprite = Sprite(displayObject);
-				var unspr:Sprite = spr.getChildByName(UNVISIBLE_SPRITE_NAME) as Sprite;
-				if (unspr != null) {
-					unspr.width = spr.width;
-					unspr.height = spr.height;
-					spr.scaleX = 1;
-					spr.scaleY = 1;
-					doWidth = unspr.width;
-					doHeight = unspr.height;
-				}
-				else{
-					doWidth = spr.width;
-					doHeight = spr.height;
+				var spr:Sprite = displayObject as Sprite;
+				if (spr != null) {
+					trace(doWidth);
+					var uvs:Sprite = this.getUnvisibleSprite(spr);
+					if (uvs != null) {
+						spr.scaleX = 1;
+						spr.scaleY = 1;
+						doWidth = uvs.width;
+						doHeight = uvs.height;
+					}
 				}
 			}
+			
 			if (spriteArray.length > 0 && doWidth > 0 && doHeight > 0) {
 				for (var i:int=0; i<spriteArray.length; i++) {
 					var ro:RelativeObject = spriteArray[i] as RelativeObject;
 					if (ro != null) {
 						var sprite:Sprite = ro.getSprite() as Sprite;
 						if (sprite != null) {
-							var rxt:String = ro.getRelativeXType() as String;
-							if (rxt != null && rxt != "") {
-								if (rxt.toUpperCase() == RelativePlace.LEFT) {
-									sprite.x = ro.getLeftSpase();
-								}
-								else if (rxt.toUpperCase() == RelativePlace.RIGHT) {
-									sprite.x = doWidth - ro.getRightSpase() - sprite.width;
-								}
-								else if (rxt.toUpperCase() == RelativePlace.LEFT_RIGHT) {
-									sprite.x = ro.getLeftSpase();
-									var w:Number = doWidth - ro.getLeftSpase() - ro.getRightSpase();
-									if (w < ro.getSpriteBaseWidth()) {
-										w = ro.getSpriteBaseWidth();
+							var suvs:Sprite = this.getUnvisibleSprite(sprite);
+							if (suvs != null) {
+								var rxt:String = ro.getRelativeXType() as String;
+								if (rxt != null && rxt != "") {
+									if (rxt.toUpperCase() == RelativePlace.LEFT) {
+										sprite.x = ro.getLeftSpase();
 									}
-									sprite.width = w;
-								}
-								else if (rxt.toUpperCase() == RelativePlace.CENTER) {
-									sprite.x = (doWidth - sprite.width ) / 2;
-								}
-							}
-							var ryt:String = ro.getRelativeYType() as String;
-							if (ryt != null && ryt != "") {
-								if (ryt.toUpperCase() == RelativePlace.TOP) {
-									sprite.y = ro.getTopSpase();
-								}
-								else if (ryt.toUpperCase() == RelativePlace.BOTTOM) {
-									sprite.y = doHeight - ro.getBottomSpase() - sprite.height;
-								}
-								else if (ryt.toUpperCase() == RelativePlace.TOP_BOTTOM) {
-									sprite.y = ro.getTopSpase();
-									var h:Number = doHeight - ro.getTopSpase() - ro.getBottomSpase();
-									if (h < ro.getSpriteBaseHeight()) {
-										h = ro.getSpriteBaseHeight();
+									else if (rxt.toUpperCase() == RelativePlace.RIGHT) {
+										sprite.x = doWidth - ro.getRightSpase() - suvs.width;
 									}
-									sprite.height = h;
+									else if (rxt.toUpperCase() == RelativePlace.LEFT_RIGHT) {
+										sprite.x = ro.getLeftSpase();
+										var w:Number = doWidth - ro.getLeftSpase() - ro.getRightSpase();
+										if (w < ro.getSpriteBaseWidth()) {
+											w = ro.getSpriteBaseWidth();
+										}
+										suvs.width = w;
+									}
+									else if (rxt.toUpperCase() == RelativePlace.CENTER) {
+										sprite.x = (doWidth - suvs.width ) / 2;
+									}
 								}
-								else if (ryt.toUpperCase() == RelativePlace.MIDDLE) {
-									sprite.y = (doHeight - sprite.height ) / 2;
+								var ryt:String = ro.getRelativeYType() as String;
+								if (ryt != null && ryt != "") {
+									if (ryt.toUpperCase() == RelativePlace.TOP) {
+										sprite.y = ro.getTopSpase();
+									}
+									else if (ryt.toUpperCase() == RelativePlace.BOTTOM) {
+										sprite.y = doHeight - ro.getBottomSpase() - suvs.height;
+									}
+									else if (ryt.toUpperCase() == RelativePlace.TOP_BOTTOM) {
+										sprite.y = ro.getTopSpase();
+										var h:Number = doHeight - ro.getTopSpase() - ro.getBottomSpase();
+										if (h < ro.getSpriteBaseHeight()) {
+											h = ro.getSpriteBaseHeight();
+										}
+										suvs.height = h;
+									}
+									else if (ryt.toUpperCase() == RelativePlace.MIDDLE) {
+										sprite.y = (doHeight - suvs.height ) / 2;
+									}
 								}
 							}
 						}
@@ -216,7 +228,54 @@
 		}
 
 
+		/**
+		 * 给元件添加一个辅助用的不可见元件用来确定sprite相对位置信息
+		 * @param sprite
+		 * 
+		 */
+		private function addUnvisibleSprite(sprite:Sprite,uvsWidth:Number = NaN,uvsHeight:Number =NaN):void {
+
+			var uvs:Sprite = sprite.getChildByName(UNVISIBLE_SPRITE_NAME) as Sprite;
+			if (uvs == null) {
+				if (isNaN(uvsWidth)) {
+					uvsWidth = sprite.width;
+				}
+				if (isNaN(uvsHeight)) {
+					uvsHeight = sprite.height;
+				}
+				uvs = createUnvisibleSprite(uvsWidth,uvsHeight,true);
+				uvs.name = UNVISIBLE_SPRITE_NAME;
+				sprite.addChildAt(uvs,0);
+			}
+		}
+
+		/**
+		 * 获得元件的辅助用的不可见元件用来确定sprite相对位置信息 
+		 * @param sprite
+		 * 
+		 */
+		public function getUnvisibleSprite(sprite:Sprite):Sprite {
+
+			var uvs:Sprite = null;
+			try {
+				uvs = sprite.getChildByName(UNVISIBLE_SPRITE_NAME) as Sprite;
+			} catch (e:Error) {
+			}
+			return uvs;
+		}
+
+
+
+		/**
+		 * 创建一个辅助用的不可见元件用来确定sprite相对位置信息
+		 * @param width
+		 * @param height
+		 * @param visible
+		 * @return 
+		 * 
+		 */
 		private function createUnvisibleSprite(width:Number,height:Number,visible:Boolean = true):Sprite {
+
 			var sprite:Sprite = new Sprite();
 			sprite.visible = visible;
 			var shape:Shape = new Shape();
