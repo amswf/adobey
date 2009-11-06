@@ -35,8 +35,9 @@
 		public static var MIDDLE:String = "MIDDLE";
 
 		public static var UNVISIBLE_SPRITE_NAME:String = "UNVISIBLE_SPRITE_NAME";
+		
+		private var childRelativeSpriteNum:int = 0;
 
-		private var childSpriteIsRelative:Boolean = false;
 
 		/**
 		 * 构造方法
@@ -52,7 +53,11 @@
 		public function addSprite(sprite:Sprite,relativeXType:String,relativeYType:String,baseWidth:Number = 0,baseHeight:Number = 0,leftSpase:Number = NaN,rightSpase:Number = NaN,topSpase:Number = NaN,bottomSpase:Number = NaN):void {
 
 			if (sprite != null) {
-
+				
+				//子相对位置元件个数 ？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？值怎么传？
+				childRelativeSpriteNum ++;
+				
+				
 				//父元件的宽高值
 				var doWidth:Number = 0;
 				var doHeight:Number = 0;
