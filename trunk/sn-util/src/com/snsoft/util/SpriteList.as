@@ -6,9 +6,12 @@
 	import flash.display.Stage;
 	import flash.events.Event;
 
+
 	/**
 	 * 在可变stage下保持MC相对位置及自动宽高
-	 */
+	 * @author Administrator
+	 * 
+	 */	
 	public class SpriteList extends Sprite {
 
 		private static var ROW:String = "ROW";
@@ -34,8 +37,17 @@
 		private var rplist:RelativePlace = null;
 
 
+		/**
+		 * 添加信息列表 
+		 * @param spriteWidth
+		 * @param spriteHeight
+		 * @param childList
+		 * @param childSpaseX
+		 * @param childSpaseY
+		 * @param listType
+		 * 
+		 */		
 		public function createSpliteList(spriteWidth:Number,spriteHeight:Number,childList:Array,childSpaseX:Number,childSpaseY:Number,listType:String):void {
-			
 			
 			this.spriteWidth = spriteWidth;
 			this.spriteHeight = spriteHeight;
@@ -51,9 +63,14 @@
 				stg.addEventListener(Event.ENTER_FRAME,handlerStageResize);
 				refeshList();
 			}
-
 		}
-
+		
+		
+		/**
+		 * 刷新列表显示事件响应
+		 * @param e
+		 * 
+		 */		
 		public function handlerStageResize(e:Event):void {
 			var stg:Stage = this.stage;
 			if (stg != null) {
@@ -61,7 +78,13 @@
 			}
 			refeshList();
 		}
-
+		
+		
+		/**
+		 * 刷新显示列表 
+		 * @return 
+		 * 
+		 */		
 		public function refeshList() {
 
 			var bWidth:Number = 0;
