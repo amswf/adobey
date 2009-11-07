@@ -40,7 +40,7 @@
 		
 		private var childRelativeSpriteNum:int = 0;
 
-		private static var IS_HIDE_UNVISIBLE_SPRITE:Boolean = false;
+		private static var IS_HIDE_UNVISIBLE_SPRITE:Boolean = true;
 		/**
 		 * 构造方法 
 		 * @param displayObject
@@ -115,7 +115,10 @@
 				}
 
 				//子元件添加辅助用的不可见元件
-				this.addUnvisibleSprite(sprite,spriteWidth,spriteHeigh);
+				var cuvmc:MovieClip = this.getUnvisibleSprite(sprite);
+				if(cuvmc == null){
+					this.addUnvisibleSprite(sprite,spriteWidth,spriteHeigh);
+				}
 				
 				//创建并设置相对位置对像
 				var ro:RelativeObject = new RelativeObject();
@@ -244,9 +247,11 @@
 										sprite.y = (doHeight - suvs.height ) / 2;
 									}
 								}
-								var hasCR:Boolean = this.getDisplayObjectHasChildRalative(sprite);
-								if(!hasCR){
-									this.setAllChildSpriteSize(sprite);
+								if ((rxt != null && rxt != "") ||(ryt != null && ryt != "") ) {
+									var hasCR:Boolean = this.getDisplayObjectHasChildRalative(sprite);
+									if(!hasCR){
+										this.setAllChildSpriteSize(sprite);
+									}
 								}
 							}
 						}
@@ -261,7 +266,7 @@
 		 * @param sprite
 		 * 
 		 */
-		private function addUnvisibleSprite(sprite:Sprite,uvsWidth:Number = NaN,uvsHeight:Number =NaN):void {
+		public function addUnvisibleSprite(sprite:Sprite,uvsWidth:Number = NaN,uvsHeight:Number =NaN):void {
 
 			var uvmc:MovieClip = sprite.getChildByName(UNVISIBLE_SPRITE_NAME) as MovieClip;
 			if (uvmc == null) {
@@ -302,7 +307,7 @@
 		public function getDisplayObjectHasChildRalative(sprite:Sprite):Boolean{
 			if(sprite != null){
 				var uvmc:MovieClip = this.getUnvisibleSprite(sprite);
-				return uvmc.hasChildRalative;
+				return Boolean(uvmc.hasChildRalative);
 			}
 			return false;
 		}
@@ -336,14 +341,14 @@
 			uvmc.visible = visible;
 			var shape:Shape = new Shape();
 			var gra:Graphics = shape.graphics;
-			gra.beginFill(0x000000,1);
+			gra.beginFill(0x000000,0.1);
 			gra.drawRect(0,0,width,height);
 			gra.endFill();
 			uvmc.addChild(shape);
 			return uvmc;
 		}
 		
-		private function setAllChildSpriteSize(sprite:Sprite,width:Number = NaN,height:Number = NaN):void{
+		public function setAllChildSpriteSize(sprite:Sprite,width:Number = NaN,height:Number = NaN):void{
 			
 			if(sprite != null){
 				var uvmc:MovieClip = this.getUnvisibleSprite(sprite);
