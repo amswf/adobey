@@ -1,6 +1,7 @@
 ﻿package com.snsoft.util{
 	import flash.display.DisplayObject;
 	import flash.display.Graphics;
+	import flash.display.MovieClip;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.display.Stage;
@@ -13,9 +14,10 @@
 	 * Shape相对于某个DisplayObject固定上下左右边距。
 	 */
 	public class RelativePlace {
-		//控制元件相对定位于某个DisplayObject
+		
+		//相对位置控制父结点DisplayObject
 		private var displayObject:DisplayObject = null;
-
+		
 		private var spriteArray:Array = new Array();
 
 		public static var TOP:String = "TOP";
@@ -38,10 +40,12 @@
 		
 		private var childRelativeSpriteNum:int = 0;
 
-
+		private static var IS_HIDE_UNVISIBLE_SPRITE:Boolean = false;
 		/**
-		 * 构造方法
-		 */
+		 * 构造方法 
+		 * @param displayObject
+		 * 
+		 */		
 		public function RelativePlace(displayObject:DisplayObject) {
 
 			this.displayObject = displayObject;
@@ -50,12 +54,25 @@
 
 		}
 
+		/**
+		 * 添加子相对位置Sprite 
+		 * 
+		 * @param sprite
+		 * @param relativeXType
+		 * @param relativeYType
+		 * @param baseWidth
+		 * @param baseHeight
+		 * @param leftSpase
+		 * @param rightSpase
+		 * @param topSpase
+		 * @param bottomSpase
+		 * 
+		 */		
 		public function addSprite(sprite:Sprite,relativeXType:String,relativeYType:String,baseWidth:Number = 0,baseHeight:Number = 0,leftSpase:Number = NaN,rightSpase:Number = NaN,topSpase:Number = NaN,bottomSpase:Number = NaN):void {
 
 			if (sprite != null) {
 				
-				//子相对位置元件个数 ？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？值怎么传？
-				childRelativeSpriteNum ++;
+				
 				
 				
 				//父元件的宽高值
@@ -71,10 +88,12 @@
 				else if (displayObject is Sprite) {//父元件是Sprite时
 					var dobj:Sprite = displayObject as Sprite;
 					if (dobj != null) {
-						var uvs:Sprite = this.getUnvisibleSprite(dobj) as Sprite;
-						if (uvs != null) {
-							doWidth = uvs.width;
-							doHeight = uvs.height;
+						var uvmc:MovieClip = this.getUnvisibleSprite(dobj) as MovieClip;
+						if (uvmc != null) {
+							childRelativeSpriteNum ++;
+							this.setDisplayObjectHasChildRalative(true);
+							doWidth = uvmc.width;
+							doHeight = uvmc.height;					
 						}
 					}
 				}
@@ -146,6 +165,7 @@
 				stage.align = StageAlign.TOP_LEFT;
 				stage.scaleMode = StageScaleMode.NO_SCALE;
 				stage.addEventListener(Event.RESIZE,handlerResize);
+				stage.addEventListener(Event.ENTER_FRAME,handlerResize);
 			}
 		}
 
@@ -166,7 +186,6 @@
 			else if (displayObject is Sprite) {
 				var spr:Sprite = displayObject as Sprite;
 				if (spr != null) {
-					trace(doWidth);
 					var uvs:Sprite = this.getUnvisibleSprite(spr);
 					if (uvs != null) {
 						spr.scaleX = 1;
@@ -225,6 +244,10 @@
 										sprite.y = (doHeight - suvs.height ) / 2;
 									}
 								}
+								var hasCR:Boolean = this.getDisplayObjectHasChildRalative(sprite);
+								if(!hasCR){
+									this.setAllChildSpriteSize(sprite);
+								}
 							}
 						}
 					}
@@ -240,18 +263,48 @@
 		 */
 		private function addUnvisibleSprite(sprite:Sprite,uvsWidth:Number = NaN,uvsHeight:Number =NaN):void {
 
-			var uvs:Sprite = sprite.getChildByName(UNVISIBLE_SPRITE_NAME) as Sprite;
-			if (uvs == null) {
+			var uvmc:MovieClip = sprite.getChildByName(UNVISIBLE_SPRITE_NAME) as MovieClip;
+			if (uvmc == null) {
 				if (isNaN(uvsWidth)) {
 					uvsWidth = sprite.width;
 				}
 				if (isNaN(uvsHeight)) {
 					uvsHeight = sprite.height;
 				}
-				uvs = createUnvisibleSprite(uvsWidth,uvsHeight,true);
-				uvs.name = UNVISIBLE_SPRITE_NAME;
-				sprite.addChildAt(uvs,0);
+				uvmc = createUnvisibleSprite(uvsWidth,uvsHeight,IS_HIDE_UNVISIBLE_SPRITE);
+				uvmc.name = UNVISIBLE_SPRITE_NAME;
+				sprite.addChildAt(uvmc,0);
 			}
+		}
+		
+		/**
+		 * 设置 DisplayObject 是否有子相对位置控制
+		 * 
+		 * @param has
+		 * @return 
+		 * 
+		 */		
+		public function setDisplayObjectHasChildRalative(has:Boolean):Boolean{
+			var dobj:Sprite = this.displayObject as Sprite;
+			if(dobj != null){
+				var uvmc:MovieClip = this.getUnvisibleSprite(dobj);
+				uvmc.hasChildRalative = has;
+				return true;
+			}
+			return false;
+		}
+		
+		/**
+		 * 获得 DisplayObject 是否有子相对位置控制 
+		 * @return 
+		 * 
+		 */		
+		public function getDisplayObjectHasChildRalative(sprite:Sprite):Boolean{
+			if(sprite != null){
+				var uvmc:MovieClip = this.getUnvisibleSprite(sprite);
+				return uvmc.hasChildRalative;
+			}
+			return false;
 		}
 
 		/**
@@ -259,17 +312,15 @@
 		 * @param sprite
 		 * 
 		 */
-		public function getUnvisibleSprite(sprite:Sprite):Sprite {
+		public function getUnvisibleSprite(sprite:Sprite):MovieClip {
 
-			var uvs:Sprite = null;
+			var uvmc:MovieClip = null;
 			try {
-				uvs = sprite.getChildByName(UNVISIBLE_SPRITE_NAME) as Sprite;
+				uvmc = sprite.getChildByName(UNVISIBLE_SPRITE_NAME) as MovieClip;
 			} catch (e:Error) {
 			}
-			return uvs;
+			return uvmc;
 		}
-
-
 
 		/**
 		 * 创建一个辅助用的不可见元件用来确定sprite相对位置信息
@@ -279,17 +330,40 @@
 		 * @return 
 		 * 
 		 */
-		private function createUnvisibleSprite(width:Number,height:Number,visible:Boolean = true):Sprite {
+		private function createUnvisibleSprite(width:Number,height:Number,visible:Boolean = true):MovieClip {
 
-			var sprite:Sprite = new Sprite();
-			sprite.visible = visible;
+			var uvmc:MovieClip = new MovieClip();
+			uvmc.visible = visible;
 			var shape:Shape = new Shape();
 			var gra:Graphics = shape.graphics;
 			gra.beginFill(0x000000,1);
 			gra.drawRect(0,0,width,height);
 			gra.endFill();
-			sprite.addChild(shape);
-			return sprite;
+			uvmc.addChild(shape);
+			return uvmc;
+		}
+		
+		private function setAllChildSpriteSize(sprite:Sprite,width:Number = NaN,height:Number = NaN):void{
+			
+			if(sprite != null){
+				var uvmc:MovieClip = this.getUnvisibleSprite(sprite);
+				if(uvmc != null){
+					
+					if(isNaN(width)){
+						width = uvmc.width;
+					}
+					if(isNaN(height)){
+						height = uvmc.height;
+					}
+					for(var i:int = 0;i<sprite.numChildren;i++){
+						var cs:DisplayObject = sprite.getChildAt(i) as DisplayObject;
+						if(cs != null){
+							cs.width = width;
+							cs.height = height;
+						}
+					}
+				}
+			}
 		}
 	}
 }
