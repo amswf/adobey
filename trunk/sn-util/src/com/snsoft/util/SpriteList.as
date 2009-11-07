@@ -1,12 +1,9 @@
 ﻿package com.snsoft.util{
-	import flash.display.Sprite;
-	import flash.display.DisplayObject;
 	import flash.display.Graphics;
+	import flash.display.MovieClip;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.display.Stage;
-	import flash.display.StageAlign;
-	import flash.display.StageScaleMode;
 	import flash.events.Event;
 
 	/**
@@ -46,14 +43,12 @@
 			this.childSpaseX = childSpaseX;
 			this.childSpaseY = childSpaseY;
 			this.listType = listType;
-			var uvs:Sprite = createUnvisibleSprite(spriteWidth,spriteHeight,true);
-			uvs.name = RelativePlace.UNVISIBLE_SPRITE_NAME;
-			this.addChild(uvs);
 			var stg:Stage = this.stage;
 			if (stg != null) {
-				rpuvs = new RelativePlace(this);
-				rpuvs.addSprite(uvs,"LEFT","TOP");
+				rplist = new RelativePlace(this);
+				rplist.addUnvisibleSprite(this,spriteWidth,spriteHeight);
 				stg.addEventListener(Event.RESIZE,handlerStageResize);
+				stg.addEventListener(Event.ENTER_FRAME,handlerStageResize);
 				refeshList();
 			}
 
@@ -65,8 +60,8 @@
 
 		public function refeshList() {
 
-			var mainX:Number = 0;
-			var mainY:Number = 0;
+			var bWidth:Number = 0;
+			var bHeight:Number = 0;
 
 			var numX:Number = 0;
 			var numY:Number = 0;
@@ -83,8 +78,16 @@
 				}
 			} catch (e:Error) {
 			}
-			rplist = new RelativePlace(this);
+			
 			var uvs:Sprite = this.getChildByName(RelativePlace.UNVISIBLE_SPRITE_NAME) as Sprite;
+			if(uvs != null){
+				bWidth = uvs.width;
+				bHeight = uvs.height;
+			}
+			else{
+				bWidth = spriteWidth;
+				bHeight = spriteHeight;
+			}
 			for (var i:int; i<childList.length; i++) {
 				var sp:Sprite = childList[i] as Sprite;
 				sp.name = "CHILD_LIST" + i;
@@ -93,14 +96,14 @@
 				rplist.addSprite(sp,"","");
 				if (listType == ROW) {
 					numX++;
-					if (childSpaseX * (numX + 1) > uvs.width) {
+					if (childSpaseX * (numX + 1) > bWidth) {
 						numX = 0;
 						numY++;
 					}
 				}
 				if (listType == LIST) {
 					numY++;
-					if (childSpaseY * (numY + 1) > uvs.height) {
+					if (childSpaseY * (numY + 1) > bHeight) {
 						numY = 0;
 						numX++;
 					}
@@ -108,18 +111,27 @@
 				this.addChild(sp);
 			}
 		}
+		
+		
+		/**
+		 * 创建一个辅助用的不可见元件用来确定sprite相对位置信息
+		 * @param width
+		 * @param height
+		 * @param visible
+		 * @return 
+		 * 
+		 */
+		private function createUnvisibleSprite(width:Number,height:Number,visible:Boolean = true):MovieClip {
 
-
-		private function createUnvisibleSprite(width:Number,height:Number,visible:Boolean = true):Sprite {
-			var sprite:Sprite = new Sprite();
-			sprite.visible = visible;
+			var uvmc:MovieClip = new MovieClip();
+			uvmc.visible = visible;
 			var shape:Shape = new Shape();
 			var gra:Graphics = shape.graphics;
-			gra.beginFill(0x00ff00,1);
+			gra.beginFill(0x000000,1);
 			gra.drawRect(0,0,width,height);
 			gra.endFill();
-			sprite.addChild(shape);
-			return sprite;
+			uvmc.addChild(shape);
+			return uvmc;
 		}
 	}
 }
