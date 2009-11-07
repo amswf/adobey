@@ -178,7 +178,11 @@
 		 * 
 		 */
 		private function handlerResize(e:Event):void {
-
+			var stg:Stage = displayObject.stage;
+			if (stg != null) {
+				stg.removeEventListener(Event.ENTER_FRAME,handlerResize)
+			}
+			
 			var doWidth:Number = 0;
 			var doHeight:Number = 0;
 			if (displayObject is Stage) {
