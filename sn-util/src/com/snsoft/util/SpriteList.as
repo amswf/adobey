@@ -55,6 +55,10 @@
 		}
 
 		public function handlerStageResize(e:Event):void {
+			var stg:Stage = this.stage;
+			if (stg != null) {
+				stg.removeEventListener(Event.ENTER_FRAME,handlerStageResize)
+			}
 			refeshList();
 		}
 
