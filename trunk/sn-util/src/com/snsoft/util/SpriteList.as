@@ -74,7 +74,6 @@
 					var sprite:Sprite = this.getChildAt(j) as Sprite;
 					if (sprite != null) {
 						var sname:String = sprite.name;
-						trace(sname.indexOf("CHILD_LIST"));
 						if (sname.indexOf("CHILD_LIST") >= 0) {
 							this.removeChildAt(j);
 						}
