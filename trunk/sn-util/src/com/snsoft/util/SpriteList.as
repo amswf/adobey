@@ -5,6 +5,8 @@
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.Event;
+	import flash.utils.Timer;
+	import flash.events.TimerEvent;
 
 
 	/**
@@ -61,7 +63,7 @@
 				rplist.addUnvisibleSprite(this,spriteWidth,spriteHeight);
 				stg.addEventListener(Event.RESIZE,handlerStageResize);
 				stg.addEventListener(Event.ENTER_FRAME,handlerStageResize);
-				refeshList();
+				//refeshList();
 			}
 		}
 		
@@ -77,8 +79,16 @@
 				stg.removeEventListener(Event.ENTER_FRAME,handlerStageResize)
 			}
 			refeshList();
+			//使用TIME 解决RESIZE事件不连续时出错
+			var timer:Timer = new Timer(20,1);
+			timer.start();
+			timer.addEventListener(TimerEvent.TIMER,handlerTimer);
 		}
 		
+		
+		private function handlerTimer(e:Event):void{
+			refeshList();
+		}
 		
 		/**
 		 * 刷新显示列表 
