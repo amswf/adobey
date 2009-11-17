@@ -40,7 +40,7 @@
 		
 		private var childRelativeSpriteNum:int = 0;
 
-		private static var IS_HIDE_UNVISIBLE_SPRITE:Boolean = true;
+		private static var IS_HIDE_UNVISIBLE_SPRITE:Boolean = false;
 		/**
 		 * 构造方法 
 		 * @param displayObject
@@ -282,7 +282,7 @@
 				}
 				uvmc = createUnvisibleSprite(uvsWidth,uvsHeight,IS_HIDE_UNVISIBLE_SPRITE);
 				uvmc.name = UNVISIBLE_SPRITE_NAME;
-				sprite.addChildAt(uvmc,0);
+				sprite.addChild(uvmc);
 			}
 		}
 		
