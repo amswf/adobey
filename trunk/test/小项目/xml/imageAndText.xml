@@ -1,0 +1,15 @@
+﻿<info>
+	<image>
+		<imageUrl>images/p1.jpg</imageUrl>
+		<text>你好</text>
+	</image>
+	<image>
+		<imageUrl>images/p2.jpg</imageUrl>
+		<text>哈哈</text>
+	</image>
+	<image>
+		<imageUrl>images/p3.jpg</imageUrl>
+		<text>不是吧？</text>
+	</image>
+	
+</info>

@@ -1,0 +1,3 @@
+This sample, FileUpload.fla, demonstrates how to let users select a file on their hard disk and upload it to a server. After the local image uploads, it appears in the SWF file.
+
+To upload an image click "Select image to upload" in the SWF file. And then, navigate to a file to upload. The file is uploaded to helpexamples.com to a PHP script which checks for file size restrictions and allowed file types (only allows images).

@@ -1,0 +1,69 @@
+﻿<xml>
+	<function>
+		<btnsX>50</btnsX>
+		<btnsY>30</btnsY>
+		<btnRow>6</btnRow>
+		<name>fun1</name>
+		<parameter>1</parameter>
+		<text>工程档案跟踪管理</text>
+		<image>1.png</image>
+		<secondXml></secondXml>
+		<url>http://www.baidu.com</url>
+		<x>0</x>
+		<y>0</y>
+	</function>
+	<function>
+		<name>fun1</name>
+		<parameter>1</parameter>
+		<text>工程档案跟踪管理</text>
+		<image>1.png</image>
+		<secondXml>second1.xml</secondXml>
+		<x>0</x>
+		<y>0</y>
+	</function>
+<function>
+		<name>fun1</name>
+		<parameter>1</parameter>
+		<text>工程档案跟踪管理</text>
+		<image>1.png</image>
+		<secondXml>second1.xml</secondXml>
+		<x>0</x>
+		<y>0</y>
+	</function>
+<function>
+		<name>fun1</name>
+		<parameter>1</parameter>
+		<text>工程档案跟踪管理</text>
+		<image>1.png</image>
+		<secondXml>second1.xml</secondXml>
+		<x>0</x>
+		<y>0</y>
+	</function>
+<function>
+		<name>fun1</name>
+		<parameter>1</parameter>
+		<text>工程档案跟踪管理</text>
+		<image>1.png</image>
+		<secondXml>second1.xml</secondXml>
+		<x>0</x>
+		<y>0</y>
+	</function>
+<function>
+		<name>fun1</name>
+		<parameter>1</parameter>
+		<text>工程档案跟踪管理</text>
+		<image>1.png</image>
+		<secondXml>second1.xml</secondXml>
+		<x>0</x>
+		<y>0</y>
+	</function>
+<function>
+		<name>fun1</name>
+		<parameter>1</parameter>
+		<text>工程档案跟踪管理</text>
+		<image>1.png</image>
+		<secondXml>second1.xml</secondXml>
+		<x>0</x>
+		<y>0</y>
+	</function>
+</xml>

@@ -1,0 +1,10 @@
+﻿<xml>
+	<record>
+		<thirdxmlname>xml/third_1_2.xml</thirdxmlname>
+		<text>链接1</text>
+	</record>
+	<record>
+		<thirdxmlname>xml/third_1_2.xml</thirdxmlname>
+		<text>链接2</text>
+	</record> 
+</xml>

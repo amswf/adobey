@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+	<record>
+		<alpha>1</alpha>
+		<text><![CDATA[第1张图片]]></text>
+		<url><![CDATA[http://www.baidu.cn]]></url>
+		<img><![CDATA[1.jpg]]></img>
+	</record>
+	<record>
+		<text>第2张图片</text>
+		<url>http://www.qq.com</url>
+		<img>2.jpg</img>
+	</record>
+	<record>
+		<text>第3张图片</text>
+		<url>http://www.gougou.com</url>
+		<img>3.jpg</img>
+	</record>
+	<record>
+		<text>第4张图片</text>
+		<url>http://www.google.com</url>
+		<img>4.jpg</img>
+	</record>
+	<record>
+		<text>第1张图片</text>
+		<url>http://www.baidu.cn</url>
+		<img>1.jpg</img>
+	</record>
+	<record>
+		<text>第2张图片</text>
+		<url>http://www.qq.com</url>
+		<img>2.jpg</img>
+	</record>
+	<record>
+		<text>第3张图片</text>
+		<url>http://www.gougou.com</url>
+		<img>3.jpg</img>
+	</record>
+	<record>
+		<text>第4张图片</text>
+		<url>http://www.google.com</url>
+		<img>4.jpg</img>
+	</record>
+</xml>
