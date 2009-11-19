@@ -1,0 +1,29 @@
+flvplayback.swf 影片报告
+
+
+
+帧 #    帧 字节    总共 字节    场景
+
+    
+    
+    
+
+      1          50862          50862    场景 1 (AS 3.0 类导出帧)
+
+场景                        形状 字节    文本 字节    ActionScript 字节
+
+    
+    
+    
+
+场景 1                               0             0                     0
+
+ActionScript 字节    位置
+
+    
+
+             50005    ActionScript 3.0 类
+
+
+
+

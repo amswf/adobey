@@ -1,0 +1,4 @@
+客户端应用 
+
+          Blazeds包括客户端和服务端应用。客户端应用是典型的Adobe flex或者AIR应用。Flex和AIR应用使用flex组件和blazeds服务通信，包括Remote Object、HTTPService、WebService、Produce和Consumer。其中的HTTPService、WebService、Produce和Consumer是Flex SDK中的。 
+        虽然典型的应用是使用Flex或者AIR发展开发客户端应用，你也可以使用Flex结合HTML/JavaScript。或者你也可以使用HTML和JavaScript通过Ajax客户端库来和Blazeds通信. 

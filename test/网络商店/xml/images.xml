@@ -1,0 +1,22 @@
+﻿<info>
+	<image>
+		<x>0</x>
+		<y>0</y>
+		<imageUrl>images/1.png</imageUrl>
+	</image>
+	<image>
+		<x>362</x>
+		<y>105</y>
+		<imageUrl>images/4.png</imageUrl>
+	</image>
+	<image>
+		<x>280</x>
+		<y>300</y>
+		<imageUrl>images/girl.png</imageUrl>
+	</image>
+	<image>
+		<x>340</x>
+		<y>290</y>
+		<imageUrl>images/boy.png</imageUrl>
+	</image>
+</info>

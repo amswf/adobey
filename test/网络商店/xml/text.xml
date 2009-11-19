@@ -1,0 +1,23 @@
+﻿<info>
+	<text>
+		<x>510</x>
+		<y>200</y>
+		<color>#000000</color>
+		<text>你好!</text>
+		<size>13</size>
+	</text>
+	<text>
+		<x>510</x>
+		<y>200</y>
+		<color>#000000</color>
+		<text>请问您需要什么!</text>
+		<size>13</size>
+	</text>
+	<text>
+		<x>510</x>
+		<y>200</y>
+		<color>#000000</color>
+		<text>不错不错!</text>
+		<size>13</size>
+	</text>
+</info>

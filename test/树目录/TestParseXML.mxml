@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"
+	creationComplete="testParseXML();">
+	<mx:Script>
+		<![CDATA[
+			import com.snsoft.xml.*;
+	
+			import flash.display.Sprite;
+			
+			import flash.events.Event;
+			
+			private var xlp:XMLLoadParse = null;
+		
+			public function testParseXML():void
+			{
+				xlp = new XMLLoadParse("main.xml");
+				xlp.addEventListener(Event.COMPLETE,completHandler);
+				xlp.parse();
+			}
+			
+			public function completHandler(me:Event):void{
+				trace("completHandler");
+				if(xlp != null){
+					var rs:RecordSet = xlp.getRecordSet();
+					if(rs != null){
+						trace("rs.length" + rs.size());
+						for(var i:int=0;i<rs.size();i++){ 
+							var rd:Record = rs.getBy(i);
+							for(var j:int=0;j<rd.size();j++){
+								this.tt.text = "name:"+rd.getNameById(j)+" value:" + rd.getValueById(j);
+								trace("name:"+rd.getNameById(j)+" value:" + rd.getValueById(j));
+							}
+						}
+					}
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:TextArea x="86.5" y="66" width="493" height="438" id="tt"/>
+</mx:Application>
