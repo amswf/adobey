@@ -1,0 +1,76 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh_cn" lang="zh_cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>fljs</title>
+<script language="javascript">AC_FL_RunContent = 0;</script>
+<script src="AC_RunActiveContent.js" language="javascript"></script>
+</head>
+<body bgcolor="#ffffff">
+<p>
+  <!--影片中使用的 URL-->
+  <!--影片中使用的文本-->
+  <!-- saved from url=(0013)about:internet -->
+  <script language="javascript">
+	if (AC_FL_RunContent == 0) {
+		alert("此页需要 AC_RunActiveContent.js");
+	} else {
+		AC_FL_RunContent(
+			'codebase', 'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0',
+			'width', '550',
+			'height', '400',
+			'src', 'fljs',
+			'quality', 'high',
+			'pluginspage', 'http://www.macromedia.com/go/getflashplayer',
+			'align', 'middle',
+			'play', 'true',
+			'loop', 'true',
+			'scale', 'showall',
+			'wmode', 'window',
+			'devicefont', 'false',
+			'id', 'fljs',
+			'bgcolor', '#ffffff',
+			'name', 'fljs',
+			'menu', 'true',
+			'allowFullScreen', 'false',
+			'allowScriptAccess','sameDomain',
+			'movie', 'fljs',
+			'salign', ''
+			); //end AC code
+	}
+</script>
+<script language="JavaScript">
+// callResult gets the value "busy signal"
+    
+function jsfl(){
+	var callResult = fljs.myFunction("myname");
+	alert(callResult);
+}
+</script>
+<script language="JavaScript">
+// 加上两个数字，然后将结果发送回 ActionScript
+function addNumbers(num1, num2)
+{
+  location.href="http://www.baidu.com";
+	return (num1 + num2);
+	
+}
+</script>
+
+
+  
+  <noscript>
+    <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="550" height="400" id="fljs" align="middle">
+      <param name="allowScriptAccess" value="sameDomain" />
+      <param name="allowFullScreen" value="false" />
+      <param name="movie" value="fljs.swf" />
+      <param name="quality" value="high" />
+      <param name="bgcolor" value="#ffffff" />	
+      <embed src="fljs.swf" quality="high" bgcolor="#ffffff" width="550" height="400" name="fljs" align="middle" allowScriptAccess="sameDomain" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />  
+  </object>
+  </noscript>
+</p>
+<p>
+  <input type="button" name="button" id="button" value="test" onClick="jsfl();">
+</p>
+</body>
+</html>
