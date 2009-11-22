@@ -72,9 +72,6 @@
 
 			if (sprite != null) {
 				
-				
-				
-				
 				//父元件的宽高值
 				var doWidth:Number = 0;
 				var doHeight:Number = 0;
@@ -85,16 +82,12 @@
 					doWidth = stage.stageWidth;
 					doHeight = stage.stageHeight;
 				}
-				else if (displayObject is Sprite) {//父元件是Sprite时
-					var dobj:Sprite = displayObject as Sprite;
+				else if (displayObject is MovieClip) {//父元件是Sprite时
+					var dobj:MovieClip = displayObject as MovieClip;
 					if (dobj != null) {
-						var uvmc:MovieClip = this.getUnvisibleSprite(dobj) as MovieClip;
-						if (uvmc != null) {
-							childRelativeSpriteNum ++;
-							this.setDisplayObjectHasChildRalative(true);
-							doWidth = uvmc.width;
-							doHeight = uvmc.height;					
-						}
+						doWidth = dobj.relativeWidth;
+						doHeight = dobj.relativeHeight;
+						dobj.hasChildRalative = true;
 					}
 				}
 
@@ -113,13 +106,14 @@
 				if (baseHeight > 0) {
 					spriteHeigh = baseHeight;
 				}
-
-				//子元件添加辅助用的不可见元件
-				var cuvmc:MovieClip = this.getUnvisibleSprite(sprite);
-				if(cuvmc == null){
-					this.addUnvisibleSprite(sprite,spriteWidth,spriteHeigh);
-				}
 				
+				if (sprite is MovieClip) {//父元件是Sprite时
+					var mc:MovieClip = sprite as MovieClip;
+					if (mc != null) {
+						mc.relativeWidth = spriteWidth;
+						mc.relativeHeight = spriteHeigh;
+					}
+				}				
 				//创建并设置相对位置对像
 				var ro:RelativeObject = new RelativeObject();
 				ro.setRelativeXType(relativeXType);
@@ -190,26 +184,24 @@
 				doWidth = stage.stageWidth;
 				doHeight = stage.stageHeight;
 			}
-			else if (displayObject is Sprite) {
-				var spr:Sprite = displayObject as Sprite;
-				if (spr != null) {
-					var uvs:Sprite = this.getUnvisibleSprite(spr);
-					if (uvs != null) {
-						spr.scaleX = 1;
-						spr.scaleY = 1;
-						doWidth = uvs.width;
-						doHeight = uvs.height;
-					}
+			else if (displayObject is MovieClip) {//父元件是Sprite时
+				var mc:MovieClip = displayObject as MovieClip;
+				if (mc != null) {
+					doWidth = mc.relativeWidth * mc.scaleX;
+					doHeight = mc.relativeHeight * mc.scaleY;
+					mc.scaleX = 1;
+					mc.scaleY = 1;
 				}
 			}
-			
+			trace(doWidth);
+			trace(doHeight);
 			if (spriteArray.length > 0 && doWidth > 0 && doHeight > 0) {
 				for (var i:int=0; i<spriteArray.length; i++) {
 					var ro:RelativeObject = spriteArray[i] as RelativeObject;
 					if (ro != null) {
 						var sprite:Sprite = ro.getSprite() as Sprite;
 						if (sprite != null) {
-							var suvs:Sprite = this.getUnvisibleSprite(sprite);
+							var suvs:MovieClip = sprite as MovieClip;
 							if (suvs != null) {
 								var rxt:String = ro.getRelativeXType() as String;
 								if (rxt != null && rxt != "") {
@@ -217,7 +209,7 @@
 										sprite.x = ro.getLeftSpase();
 									}
 									else if (rxt.toUpperCase() == RelativePlace.RIGHT) {
-										sprite.x = doWidth - ro.getRightSpase() - suvs.width;
+										sprite.x = doWidth - ro.getRightSpase() - suvs.relativeWidth;
 									}
 									else if (rxt.toUpperCase() == RelativePlace.LEFT_RIGHT) {
 										sprite.x = ro.getLeftSpase();
@@ -225,10 +217,10 @@
 										if (w < ro.getSpriteBaseWidth()) {
 											w = ro.getSpriteBaseWidth();
 										}
-										suvs.width = w;
+										suvs.relativeWidth = w;
 									}
 									else if (rxt.toUpperCase() == RelativePlace.CENTER) {
-										sprite.x = (doWidth - suvs.width ) / 2;
+										sprite.x = (doWidth - suvs.relativeWidth ) / 2;
 									}
 								}
 								var ryt:String = ro.getRelativeYType() as String;
@@ -237,7 +229,7 @@
 										sprite.y = ro.getTopSpase();
 									}
 									else if (ryt.toUpperCase() == RelativePlace.BOTTOM) {
-										sprite.y = doHeight - ro.getBottomSpase() - suvs.height;
+										sprite.y = doHeight - ro.getBottomSpase() - suvs.relativeHeight;
 									}
 									else if (ryt.toUpperCase() == RelativePlace.TOP_BOTTOM) {
 										sprite.y = ro.getTopSpase();
@@ -245,16 +237,19 @@
 										if (h < ro.getSpriteBaseHeight()) {
 											h = ro.getSpriteBaseHeight();
 										}
-										suvs.height = h;
+										suvs.relativeHeight = h;
 									}
 									else if (ryt.toUpperCase() == RelativePlace.MIDDLE) {
-										sprite.y = (doHeight - suvs.height ) / 2;
+										sprite.y = (doHeight - suvs.relativeHeight ) / 2;
 									}
 								}
 								if ((rxt != null && rxt != "") ||(ryt != null && ryt != "") ) {
-									var hasCR:Boolean = this.getDisplayObjectHasChildRalative(sprite);
-									if(!hasCR){
-										this.setAllChildSpriteSize(sprite);
+									var cmc:MovieClip = sprite as MovieClip;
+									if(cmc != null){
+										var hasCR:Boolean = cmc.hasChildRalative;
+										if(!hasCR){
+											this.setAllChildSpriteSize(sprite);
+										}
 									}
 								}
 							}
@@ -355,14 +350,14 @@
 		public function setAllChildSpriteSize(sprite:Sprite,width:Number = NaN,height:Number = NaN):void{
 			
 			if(sprite != null){
-				var uvmc:MovieClip = this.getUnvisibleSprite(sprite);
-				if(uvmc != null){
+				var mc:MovieClip = sprite as MovieClip;
+				if(mc != null){
 					
 					if(isNaN(width)){
-						width = uvmc.width;
+						width = mc.relativeWidth;
 					}
 					if(isNaN(height)){
-						height = uvmc.height;
+						height = mc.relativeHeight;
 					}
 					for(var i:int = 0;i<sprite.numChildren;i++){
 						var cs:DisplayObject = sprite.getChildAt(i) as DisplayObject;
