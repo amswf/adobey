@@ -286,11 +286,7 @@
 								if(sprite is MovieClip){
 									var hasCR:Boolean = mc.hasChildRalative;
 									if(!hasCR){
-										this.setAllChildSpriteSize(sprite);
-									}
-									else {
-										mc.width = mc.relativeWidth;
-										mc.height = mc.relativeHeight;
+										this.setAllChildSpriteSize(sprite,mc.relativeWidth,mc.relativeHeight);
 									}
 								}
 							} 
@@ -393,19 +389,30 @@
 			if(sprite != null){
 				var mc:MovieClip = sprite as MovieClip;
 				if(mc != null){
-					
 					if(isNaN(width)){
 						width = mc.relativeWidth;
 					}
 					if(isNaN(height)){
 						height = mc.relativeHeight;
 					}
+					var hasMC:Boolean = false;
 					for(var i:int = 0;i<sprite.numChildren;i++){
-						var cs:DisplayObject = sprite.getChildAt(i) as DisplayObject;
-						if(cs != null){
-							cs.width = width;
-							cs.height = height;
+						if( sprite.getChildAt(i) is MovieClip){
+							hasMC = true;
 						}
+					}
+					if(hasMC){
+						for(var j:int = 0;j<sprite.numChildren;j++){
+							var cs:DisplayObject = sprite.getChildAt(j) as DisplayObject;
+							if(cs != null){
+								cs.width = width;
+								cs.height = height;
+							}
+						}
+					}
+					else{
+						mc.width = width;
+						mc.height = height;
 					}
 				}
 			}
