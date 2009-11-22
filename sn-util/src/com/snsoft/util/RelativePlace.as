@@ -1,4 +1,7 @@
 ﻿package com.snsoft.util{
+	import fl.core.InvalidationType;
+	import fl.core.UIComponent;
+	
 	import flash.display.DisplayObject;
 	import flash.display.Graphics;
 	import flash.display.MovieClip;
@@ -82,12 +85,20 @@
 					doWidth = stage.stageWidth;
 					doHeight = stage.stageHeight;
 				}
-				else if (displayObject is MovieClip) {//父元件是Sprite时
+				else if (displayObject is MovieClip) {//父元件是MovieClip时
 					var dobj:MovieClip = displayObject as MovieClip;
 					if (dobj != null) {
 						doWidth = dobj.relativeWidth;
 						doHeight = dobj.relativeHeight;
 						dobj.hasChildRalative = true;
+					}
+				}
+				else if(displayObject is UIComponent){
+					var comp:UIComponent = displayObject as UIComponent;
+					if(comp != null){
+						comp.invalidate(InvalidationType.SIZE);
+						doWidth = comp.width;
+						doHeight = comp.height;
 					}
 				}
 
@@ -184,75 +195,105 @@
 				doWidth = stage.stageWidth;
 				doHeight = stage.stageHeight;
 			}
-			else if (displayObject is MovieClip) {//父元件是Sprite时
-				var mc:MovieClip = displayObject as MovieClip;
-				if (mc != null) {
-					doWidth = mc.relativeWidth * mc.scaleX;
-					doHeight = mc.relativeHeight * mc.scaleY;
-					mc.scaleX = 1;
-					mc.scaleY = 1;
+			else if (displayObject is MovieClip) {//父元件是MovieClip时
+				var domc:MovieClip = displayObject as MovieClip;
+				if (domc != null) {
+					doWidth = domc.relativeWidth * domc.scaleX;
+					doHeight = domc.relativeHeight * domc.scaleY;
+					domc.scaleX = 1;
+					domc.scaleY = 1;
 				}
 			}
-			trace(doWidth);
-			trace(doHeight);
+			else if(displayObject is UIComponent){
+				var docomp:UIComponent = displayObject as UIComponent;
+				if(docomp != null){
+					doWidth = docomp.width;
+					doHeight = docomp.height;
+				}
+			}
 			if (spriteArray.length > 0 && doWidth > 0 && doHeight > 0) {
 				for (var i:int=0; i<spriteArray.length; i++) {
 					var ro:RelativeObject = spriteArray[i] as RelativeObject;
 					if (ro != null) {
 						var sprite:Sprite = ro.getSprite() as Sprite;
 						if (sprite != null) {
-							var suvs:MovieClip = sprite as MovieClip;
-							if (suvs != null) {
-								var rxt:String = ro.getRelativeXType() as String;
-								if (rxt != null && rxt != "") {
-									if (rxt.toUpperCase() == RelativePlace.LEFT) {
-										sprite.x = ro.getLeftSpase();
+							var spriteWidth:Number = 0;
+							var spriteHeight:Number = 0;
+							var mc:MovieClip = null;
+							var comp:UIComponent = null;
+							if(sprite is MovieClip){
+								mc = sprite as MovieClip;
+								spriteWidth = mc.relativeWidth;
+								spriteHeight = mc.relativeHeight;
+							}
+							else if(sprite is UIComponent){
+								comp = sprite as UIComponent;
+								spriteWidth = comp.width;
+								spriteHeight = comp.height;
+							}
+							var rxt:String = ro.getRelativeXType() as String;
+							if (rxt != null && rxt != "") {
+								if (rxt.toUpperCase() == RelativePlace.LEFT) {
+									sprite.x = ro.getLeftSpase();
+								}
+								else if (rxt.toUpperCase() == RelativePlace.RIGHT) {
+									sprite.x = doWidth - ro.getRightSpase() - spriteWidth;
+								}
+								else if (rxt.toUpperCase() == RelativePlace.LEFT_RIGHT) {
+									sprite.x = ro.getLeftSpase();
+									var w:Number = doWidth - ro.getLeftSpase() - ro.getRightSpase();
+									if (w < ro.getSpriteBaseWidth()) {
+										w = ro.getSpriteBaseWidth();
 									}
-									else if (rxt.toUpperCase() == RelativePlace.RIGHT) {
-										sprite.x = doWidth - ro.getRightSpase() - suvs.relativeWidth;
+									if(sprite is MovieClip){
+										mc.relativeWidth = w;
 									}
-									else if (rxt.toUpperCase() == RelativePlace.LEFT_RIGHT) {
-										sprite.x = ro.getLeftSpase();
-										var w:Number = doWidth - ro.getLeftSpase() - ro.getRightSpase();
-										if (w < ro.getSpriteBaseWidth()) {
-											w = ro.getSpriteBaseWidth();
-										}
-										suvs.relativeWidth = w;
-									}
-									else if (rxt.toUpperCase() == RelativePlace.CENTER) {
-										sprite.x = (doWidth - suvs.relativeWidth ) / 2;
+									else if(sprite is UIComponent){
+										comp.width = w;
 									}
 								}
-								var ryt:String = ro.getRelativeYType() as String;
-								if (ryt != null && ryt != "") {
-									if (ryt.toUpperCase() == RelativePlace.TOP) {
-										sprite.y = ro.getTopSpase();
-									}
-									else if (ryt.toUpperCase() == RelativePlace.BOTTOM) {
-										sprite.y = doHeight - ro.getBottomSpase() - suvs.relativeHeight;
-									}
-									else if (ryt.toUpperCase() == RelativePlace.TOP_BOTTOM) {
-										sprite.y = ro.getTopSpase();
-										var h:Number = doHeight - ro.getTopSpase() - ro.getBottomSpase();
-										if (h < ro.getSpriteBaseHeight()) {
-											h = ro.getSpriteBaseHeight();
-										}
-										suvs.relativeHeight = h;
-									}
-									else if (ryt.toUpperCase() == RelativePlace.MIDDLE) {
-										sprite.y = (doHeight - suvs.relativeHeight ) / 2;
-									}
-								}
-								if ((rxt != null && rxt != "") ||(ryt != null && ryt != "") ) {
-									var cmc:MovieClip = sprite as MovieClip;
-									if(cmc != null){
-										var hasCR:Boolean = cmc.hasChildRalative;
-										if(!hasCR){
-											this.setAllChildSpriteSize(sprite);
-										}
-									}
+								else if (rxt.toUpperCase() == RelativePlace.CENTER) {
+									sprite.x = (doWidth - spriteWidth ) / 2;
 								}
 							}
+							var ryt:String = ro.getRelativeYType() as String;
+							if (ryt != null && ryt != "") {
+								if (ryt.toUpperCase() == RelativePlace.TOP) {
+									sprite.y = ro.getTopSpase();
+								}
+								else if (ryt.toUpperCase() == RelativePlace.BOTTOM) {
+									sprite.y = doHeight - ro.getBottomSpase() - spriteHeight;
+								}
+								else if (ryt.toUpperCase() == RelativePlace.TOP_BOTTOM) {
+									sprite.y = ro.getTopSpase();
+									var h:Number = doHeight - ro.getTopSpase() - ro.getBottomSpase();
+									if (h < ro.getSpriteBaseHeight()) {
+										h = ro.getSpriteBaseHeight();
+									}
+									
+									if(sprite is MovieClip){
+										mc.relativeHeight = h;
+									}
+									else if(sprite is UIComponent){
+										comp.height = h;
+									}
+								}
+								else if (ryt.toUpperCase() == RelativePlace.MIDDLE) {
+									sprite.y = (doHeight - spriteHeight ) / 2;
+								}
+							}
+							if ((rxt != null && rxt != "") ||(ryt != null && ryt != "") ) {
+								if(sprite is MovieClip){
+									var hasCR:Boolean = mc.hasChildRalative;
+									if(!hasCR){
+										this.setAllChildSpriteSize(sprite);
+									}
+									else {
+										mc.width = mc.relativeWidth;
+										mc.height = mc.relativeHeight;
+									}
+								}
+							} 
 						}
 					}
 				}

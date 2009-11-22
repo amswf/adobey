@@ -16,24 +16,6 @@
 	
 	/**
 	 * 
-	 * @author Administrator
-	 * 	var imageUrl:String = "2.png";
-		var loader:Loader = new Loader();
-		var req:URLRequest = new URLRequest(imageUrl);
-		loader.load(req);
-		loader.contentLoaderInfo.addEventListener(Event.COMPLETE,handler);
-		
-		function handler(e:Event):void{
-			var ldi:LoaderInfo = LoaderInfo(e.currentTarget);
-			if(ldi != null){
-				var bm:Bitmap = Bitmap(ldi.content);
-				var bmd:BitmapData = bm.bitmapData;
-				var bmc:Bitmap = new Bitmap(bmd.clone(),"auto",true);
-				bmc.width = 80;
-				bmc.height = 80;
-				this.addChild(bmc);
-			}
-		} 
 	 */	
 	public class WaterImageLoader extends UIComponent
 	{
