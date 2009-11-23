@@ -92,6 +92,8 @@
 			stage.stageHeight = wHeight;
 			
 			stage.displayState = StageDisplayState.FULL_SCREEN;
+			window.x = 0;
+			window.y = 0;
 			
 		}
 		

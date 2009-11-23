@@ -1,69 +1,29 @@
 ﻿<xml>
 	<function>
-		<btnsX>50</btnsX>
-		<btnsY>30</btnsY>
-		<btnRow>6</btnRow>
-		<name>fun1</name>
-		<parameter>1</parameter>
-		<text>工程档案跟踪管理</text>
-		<image>1.png</image>
-		<secondXml></secondXml>
-		<url>http://www.baidu.com</url>
-		<x>0</x>
-		<y>0</y>
+		<rooturl></rooturl>
+		<rootx>0</rootx>
+		<rooty>-300</rooty>
+		<childtext>工程档案跟踪管理</childtext>
+		<childurl>http://www.baidu.com</childurl>
 	</function>
 	<function>
-		<name>fun1</name>
-		<parameter>1</parameter>
-		<text>工程档案跟踪管理</text>
-		<image>1.png</image>
-		<secondXml>second1.xml</secondXml>
-		<x>0</x>
-		<y>0</y>
+		<childtext>工程档案跟踪管理</childtext>
+		<childurl>http://www.baidu.com</childurl>
 	</function>
-<function>
-		<name>fun1</name>
-		<parameter>1</parameter>
-		<text>工程档案跟踪管理</text>
-		<image>1.png</image>
-		<secondXml>second1.xml</secondXml>
-		<x>0</x>
-		<y>0</y>
+	<function>
+		<childtext>工程档案跟踪管理</childtext>
+		<childurl>http://www.baidu.com</childurl>
 	</function>
-<function>
-		<name>fun1</name>
-		<parameter>1</parameter>
-		<text>工程档案跟踪管理</text>
-		<image>1.png</image>
-		<secondXml>second1.xml</secondXml>
-		<x>0</x>
-		<y>0</y>
+	<function>
+		<childtext>工程档案跟踪管理</childtext>
+		<childurl>http://www.baidu.com</childurl>
 	</function>
-<function>
-		<name>fun1</name>
-		<parameter>1</parameter>
-		<text>工程档案跟踪管理</text>
-		<image>1.png</image>
-		<secondXml>second1.xml</secondXml>
-		<x>0</x>
-		<y>0</y>
+	<function>
+		<childtext>工程档案跟踪管理</childtext>
+		<childurl>http://www.baidu.com</childurl>
 	</function>
-<function>
-		<name>fun1</name>
-		<parameter>1</parameter>
-		<text>工程档案跟踪管理</text>
-		<image>1.png</image>
-		<secondXml>second1.xml</secondXml>
-		<x>0</x>
-		<y>0</y>
-	</function>
-<function>
-		<name>fun1</name>
-		<parameter>1</parameter>
-		<text>工程档案跟踪管理</text>
-		<image>1.png</image>
-		<secondXml>second1.xml</secondXml>
-		<x>0</x>
-		<y>0</y>
+	<function>
+		<childtext>工程档案跟踪管理</childtext>
+		<childurl>http://www.baidu.com</childurl>
 	</function>
 </xml>
