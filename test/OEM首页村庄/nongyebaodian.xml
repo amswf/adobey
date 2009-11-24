@@ -3,27 +3,19 @@
 		<rooturl></rooturl>
 		<rootx>-80</rootx>
 		<rooty>-230</rooty>
-		<childtext>工程档案跟踪管理</childtext>
+		<childtext>专家系统</childtext>
 		<childurl>http://www.baidu.com</childurl>
 	</function>
 	<function>
-		<childtext>工程档案跟踪管理</childtext>
+		<childtext>市场行情</childtext>
 		<childurl>http://www.baidu.com</childurl>
 	</function>
 	<function>
-		<childtext>工程档案跟踪管理</childtext>
+		<childtext>价格预测</childtext>
 		<childurl>http://www.baidu.com</childurl>
 	</function>
 	<function>
-		<childtext>工程档案跟踪管理</childtext>
-		<childurl>http://www.baidu.com</childurl>
-	</function>
-	<function>
-		<childtext>工程档案跟踪管理</childtext>
-		<childurl>http://www.baidu.com</childurl>
-	</function>
-	<function>
-		<childtext>工程档案跟踪管理</childtext>
+		<childtext>供求信息</childtext>
 		<childurl>http://www.baidu.com</childurl>
 	</function>
 </xml>
