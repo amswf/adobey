@@ -4,27 +4,15 @@
 		<rootx>-85</rootx>
 		<rooty>-230</rooty>
 		<listtype>false</listtype>
-		<childtext>工程档案跟踪管理</childtext>
+		<childtext>新　　闻</childtext>
 		<childurl>http://www.baidu.com</childurl>
 	</function>
 	<function>
-		<childtext>工程档案跟踪管理</childtext>
-		<childurl>http://www.baidu.com</childurl>
+		<childtext>政　　策</childtext>
+		<childurl>http://www.qq.com</childurl>
 	</function>
 	<function>
-		<childtext>工程档案跟踪管理</childtext>
-		<childurl>http://www.baidu.com</childurl>
-	</function>
-	<function>
-		<childtext>工程档案跟踪管理</childtext>
-		<childurl>http://www.baidu.com</childurl>
-	</function>
-	<function>
-		<childtext>工程档案跟踪管理</childtext>
-		<childurl>http://www.baidu.com</childurl>
-	</function>
-	<function>
-		<childtext>工程档案跟踪管理</childtext>
-		<childurl>http://www.baidu.com</childurl>
+		<childtext>生活百科</childtext>
+		<childurl>http://www.google.com</childurl>
 	</function>
 </xml>
