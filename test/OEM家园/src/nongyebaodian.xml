@@ -1,0 +1,21 @@
+﻿<xml>
+	<function>
+		<rooturl></rooturl>
+		<rootx>-80</rootx>
+		<rooty>-230</rooty>
+		<childtext>专家系统</childtext>
+		<childurl>http://www.baidu.com</childurl>
+	</function>
+	<function>
+		<childtext>市场行情</childtext>
+		<childurl>http://www.baidu.com</childurl>
+	</function>
+	<function>
+		<childtext>价格预测</childtext>
+		<childurl>http://www.baidu.com</childurl>
+	</function>
+	<function>
+		<childtext>供求信息</childtext>
+		<childurl>http://www.baidu.com</childurl>
+	</function>
+</xml>
