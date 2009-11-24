@@ -1,8 +1,9 @@
 ﻿<xml>
 	<function>
 		<rooturl></rooturl>
-		<rootx>0</rootx>
-		<rooty>-260</rooty>
+		<rootx>-95</rootx>
+		<rooty>30</rooty>
+		<listtype>true</listtype>
 		<childtext>工程档案跟踪管理</childtext>
 		<childurl>http://www.baidu.com</childurl>
 	</function>
