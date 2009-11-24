@@ -1,0 +1,29 @@
+﻿<xml>
+	<function>
+		<rooturl></rooturl>
+		<rootx>-80</rootx>
+		<rooty>-230</rooty>
+		<childtext>工程档案跟踪管理</childtext>
+		<childurl>http://www.baidu.com</childurl>
+	</function>
+	<function>
+		<childtext>工程档案跟踪管理</childtext>
+		<childurl>http://www.baidu.com</childurl>
+	</function>
+	<function>
+		<childtext>工程档案跟踪管理</childtext>
+		<childurl>http://www.baidu.com</childurl>
+	</function>
+	<function>
+		<childtext>工程档案跟踪管理</childtext>
+		<childurl>http://www.baidu.com</childurl>
+	</function>
+	<function>
+		<childtext>工程档案跟踪管理</childtext>
+		<childurl>http://www.baidu.com</childurl>
+	</function>
+	<function>
+		<childtext>工程档案跟踪管理</childtext>
+		<childurl>http://www.baidu.com</childurl>
+	</function>
+</xml>
