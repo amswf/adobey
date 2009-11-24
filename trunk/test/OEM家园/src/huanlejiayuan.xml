@@ -1,0 +1,30 @@
+﻿<xml>
+	<function>
+		<rooturl></rooturl>
+		<rootx>-95</rootx>
+		<rooty>30</rooty>
+		<listtype>true</listtype>
+		<childtext>经典小说</childtext>
+		<childurl>http://www.baidu.com</childurl>
+	</function>
+	<function>
+		<childtext>开心笑话</childtext>
+		<childurl>http://www.qq.com</childurl>
+	</function>
+	<function>
+		<childtext>地方曲艺</childtext>
+		<childurl>http://www.google.com</childurl>
+	</function>
+	<function>
+		<childtext>影视欣赏</childtext>
+		<childurl>http://www.baidu.com</childurl>
+	</function>
+	<function>
+		<childtext>实用查询</childtext>
+		<childurl>http://www.qq.com</childurl>
+	</function>
+	<function>
+		<childtext>益智游戏</childtext>
+		<childurl>http://www.google.com</childurl>
+	</function>
+</xml>
