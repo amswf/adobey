@@ -70,13 +70,17 @@
 						var childurl:String = rd.getValue("childurl");
 						urlArray.push(childurl);
 					}
-					var mc = this.mcMC;
+					var mc:MovieClip = this.mcMC;
 					if(mc != null){
 						mc.addEventListener(MouseEvent.CLICK,handlerMouseClick);
 						mc.addEventListener(MouseEvent.MOUSE_OVER,handlerMcMouseOver);
-						this.addEventListener(MouseEvent.MOUSE_OUT,handlerMcMouseOut);
-						sl.addEventListener(MouseEvent.MOUSE_OVER,handlerSelectListMouseOver);
 					}
+					var btnBak:MovieClip = this.btnBakMC;
+					if(btnBak != null){
+						btnBakMC.addEventListener(MouseEvent.MOUSE_OVER,handlerMcMouseOut);
+						btnBakMC.addEventListener(MouseEvent.MOUSE_MOVE,handlerMcMouseOut);
+					}
+					sl.addEventListener(MouseEvent.MOUSE_OVER,handlerSelectListMouseOver);
 					sl.visible = false;
 					sl.vTextArray = textArray;
 					sl.vUrlArray = urlArray;
