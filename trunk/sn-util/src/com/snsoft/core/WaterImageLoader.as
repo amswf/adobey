@@ -111,7 +111,6 @@
 				this.removeEventListener(Event.ENTER_FRAME,handlerEnterFrame);
 			}
 			catch(e:Error){
-				
 			}
 			
 			this.addChildAt(image,IMAGE_LAYER);
