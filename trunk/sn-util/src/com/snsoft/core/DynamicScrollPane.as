@@ -77,6 +77,9 @@ package com.snsoft.core
 		 */		
 		private var timerScroll:Timer = new Timer(12,0);
 		
+		
+		private var thisHeight:Number = 0;
+		
 		/**
 		 * 
 		 */		
@@ -183,6 +186,16 @@ package com.snsoft.core
 			}
 			if(this.scrollDragBtn != null){
 				this.scrollDragBtn.x = this.width;
+				if(this.scrollSprite != null){
+					var by:Number = this.scrollSprite.y * (this.scrollDragBtn.height - this.scrollMask.height) / (this.scrollSprite.height - this.scrollMask.height);
+					if (by <= this.scrollMask.y) {
+						by = this.scrollMask.y;
+					}
+					else if (by + this.scrollDragBtn.height >= this.scrollMask.height) {
+						by = this.scrollMask.height - this.scrollDragBtn.height;
+					}
+					this.scrollDragBtn.y = by; 
+				}
 			}
 			if(this.scrollDragBack != null){
 				this.scrollDragBack.x = this.width;
@@ -260,7 +273,6 @@ package com.snsoft.core
 		
 				timer.start();
 			}
-		
 		}
 		
 		
@@ -338,7 +350,18 @@ package com.snsoft.core
 			if (ary.length > 0 && this.scrollSprite != null) {
 				var ty:Number = ary[0];
 				ary.splice(0,1);
-				this.scrollSprite.y = ty * (this.scrollSprite.height - this.scrollMask.height) / (this.scrollDragBtn.height - this.scrollMask.height);
+				
+				var tty:Number = ty * (this.scrollSprite.height - this.scrollMask.height) / (this.scrollDragBtn.height - this.scrollMask.height);
+				if (tty >= this.scrollMask.y) {
+					//trace(">");
+					tty = this.scrollMask.y;
+				}
+				else if (tty + this.scrollSprite.height <= this.scrollMask.x + this.scrollMask.height) {
+					//trace("<");
+					tty = this.scrollMask.x + this.scrollMask.height - this.scrollSprite.height;
+				}
+				trace("handlerTimerScroll" + tty);
+				this.scrollSprite.y = tty;
 			}
 		}
 		
@@ -381,8 +404,6 @@ package com.snsoft.core
 		 */		
 		private function scrollText(type:int):Boolean {
 			var boo:Boolean = true;
-			trace(this.scrollSprite.x);
-			trace(this.scrollSprite.y);
 			if(this.scrollSprite != null){
 				var tty:Number = this.scrollSprite.y;
 				if (type > 0) {
@@ -403,9 +424,12 @@ package com.snsoft.core
 					tty = this.scrollMask.x + this.scrollMask.height - this.scrollSprite.height;
 					boo = false;
 				}
-				this.scrollSprite.y = tty;
-				if (this.scrollMask.height - this.scrollSprite.height < 0) {
-					this.scrollDragBtn.y = tty * (this.scrollMask.height - this.scrollDragBtn.height) / (this.scrollMask.height - this.scrollSprite.height);
+				if(boo){
+					trace("scrollText" + tty);
+					this.scrollSprite.y = tty;
+					if (this.scrollMask.height - this.scrollSprite.height < 0) {
+						this.scrollDragBtn.y = tty * (this.scrollMask.height - this.scrollDragBtn.height) / (this.scrollMask.height - this.scrollSprite.height);
+					}
 				}
 			}
 			return boo;
