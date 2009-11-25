@@ -9,41 +9,9 @@
 
   <description/>
 
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
   <!-- To localize the description, use the following format for the description element.<description><text xml:lang="en">English App description goes here</text><text xml:lang="fr">French App description goes here</text><text xml:lang="ja">Japanese App description goes here</text></description>-->
 
   <name>oem_home_air</name>
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
 
   <!-- To localize the name, use the following format for the name element.<name><text xml:lang="en">English App name goes here</text><text xml:lang="fr">French App name goes here</text><text xml:lang="ja">Japanese App name goes here</text></name>-->
 
@@ -54,28 +22,12 @@
     <systemChrome>none</systemChrome>
     <transparent>true</transparent>
     <visible>true</visible>
-    <maximizable>true</maximizable>
-    <minimizable>true</minimizable>
-    <resizable>true</resizable>
   </initialWindow>
 
-  <icon>
-    <image128x128>AppIconsForAIRPublish/AIRApp_128.png</image128x128>
-    <image48x48>AppIconsForAIRPublish/AIRApp_48.png</image48x48>
-    <image32x32>AppIconsForAIRPublish/AIRApp_32.png</image32x32>
-    <image16x16>AppIconsForAIRPublish/AIRApp_16.png</image16x16>
-  </icon>
+  <icon/>
 
   <customUpdateUI>false</customUpdateUI>
 
   <allowBrowserInvocation>false</allowBrowserInvocation>
-
-
-
-
-
-
-
-
 
 </application>
