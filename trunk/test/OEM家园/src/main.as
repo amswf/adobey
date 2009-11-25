@@ -63,20 +63,6 @@
 			
 			stg.displayState = StageDisplayState.NORMAL;
 
-			mytxt=new TextField;
-
-			mytxt.width=100;
-
-			mytxt.height=20;
-
-			mytxt.x=225;
-
-			mytxt.y=180;
-
-			mytxt.text="Hello AS3!";
-
-			addChild(mytxt);
-
 			close_btn.addEventListener(MouseEvent.CLICK,closethis);
 
 			mainBg.addEventListener(MouseEvent.MOUSE_DOWN,drag);
