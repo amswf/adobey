@@ -39,8 +39,6 @@
 		 */
 		private var _spriteSpaseY:Number = 0;
 		
-		
-		
 		/**
 		 * 构造方法 
 		 * 
@@ -120,8 +118,6 @@
 				var sp:Sprite = this.spriteArray[i] as Sprite;
 				sp.x = (this.spriteSpaseX) * numX;
 				sp.y = (this.spriteSpaseY) * numY;
-				trace(numX);
-				trace(numY);
 				if (listType == LIST_TYPE_ROW) {  //如果按行输出
 					numX++;
 					if (this.spriteSpaseX * (numX + 1) > this.width) {
@@ -129,7 +125,7 @@
 						numY++;
 					}
 				}
-				if (listType == LIST_TYPE_LIST) {  //如果按列输出
+				else if (listType == LIST_TYPE_LIST) {  //如果按列输出
 					numY++;
 					if (this.spriteSpaseY * (numY + 1) > this.height) {
 						numY = 0;
@@ -138,6 +134,12 @@
 				}
 				
 				this.addChild(sp);
+			}
+			if (listType == LIST_TYPE_ROW) {  //如果按行输出
+				this.height = this.spriteSpaseY * numY;
+			}
+			else if (listType == LIST_TYPE_LIST) {  //如果按行输出
+				this.width = this.spriteSpaseX * numX;
 			}
 		}
 		
