@@ -1,0 +1,18 @@
+﻿<xml>
+	<function>
+		<rooturl></rooturl>
+		<rootx>-85</rootx>
+		<rooty>-230</rooty>
+		<listtype>false</listtype>
+		<childtext>天气预报</childtext>
+		<childurl>http://www.baidu.com</childurl>
+	</function>
+	<function>
+		<childtext>万年历</childtext>
+		<childurl>http://www.qq.com</childurl>
+	</function>
+	<function>
+		<childtext>列车查询</childtext>
+		<childurl>http://www.google.com</childurl>
+	</function>
+</xml>
