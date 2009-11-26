@@ -170,7 +170,7 @@
 				values.randomNum = String(date.getTime());
 				requests.data = values;
 				requests.method = "GET";
-				navigateToURL(requests,"_blank");
+				navigateToURL(requests,"_self");
 			}
 			else {
 				if (sl != null) {
