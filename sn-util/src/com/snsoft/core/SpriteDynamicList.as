@@ -98,7 +98,7 @@
 		 * 
 		 */		
 		public function refeshList():void {
-
+			
 			var numX:Number = 0;
 			var numY:Number = 0;
 			
@@ -135,10 +135,18 @@
 				
 				this.addChild(sp);
 			}
+			
+			
 			if (listType == LIST_TYPE_ROW) {  //如果按行输出
+				if(numX > 0){
+					numY ++;
+				}
 				this.height = this.spriteSpaseY * numY;
 			}
 			else if (listType == LIST_TYPE_LIST) {  //如果按行输出
+				if(numY > 0){
+					numX ++;
+				}
 				this.width = this.spriteSpaseX * numX;
 			}
 		}

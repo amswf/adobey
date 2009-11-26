@@ -184,17 +184,34 @@ package com.snsoft.core
 				this.scrollDownBtn.x = this.width;
 				this.scrollDownBtn.y = this.height;
 			}
+			if(this.scrollSprite != null){
+				if (this.scrollSprite.y < this.scrollMask.y) {
+			  		if (this.scrollSprite.y + this.scrollSprite.height < this.scrollMask.y + this.scrollMask.height) {
+						var ssy:Number = this.scrollMask.y + this.scrollMask.height - this.scrollSprite.height;
+						if(ssy > 0){
+							ssy = 0;
+						}
+						this.scrollSprite.y = ssy;
+			  		}
+				}
+			}
 			if(this.scrollDragBtn != null){
 				this.scrollDragBtn.x = this.width;
 				if(this.scrollSprite != null){
-					var by:Number = this.scrollSprite.y * (this.scrollDragBtn.height - this.scrollMask.height) / (this.scrollSprite.height - this.scrollMask.height);
-					if (by <= this.scrollMask.y) {
-						by = this.scrollMask.y;
+					var by:Number = 0;
+					if(this.scrollSprite.height - this.scrollMask.height > 0){
+						by = this.scrollSprite.y * (this.scrollDragBtn.height - this.scrollMask.height) / (this.scrollSprite.height - this.scrollMask.height);
+						if (by <= this.scrollMask.y) {
+							by = this.scrollMask.y;
+						}
+						else if (by + this.scrollDragBtn.height >= this.scrollMask.height) {
+							by = this.scrollMask.height - this.scrollDragBtn.height;
+						}
 					}
-					else if (by + this.scrollDragBtn.height >= this.scrollMask.height) {
-						by = this.scrollMask.height - this.scrollDragBtn.height;
+					else {
+						by = 0; 
 					}
-					this.scrollDragBtn.y = by; 
+					this.scrollDragBtn.y = by;
 				}
 			}
 			if(this.scrollDragBack != null){
@@ -240,7 +257,6 @@ package com.snsoft.core
 		
 				timer.start();
 			}
-		
 		}
 		
 		/**
@@ -360,7 +376,6 @@ package com.snsoft.core
 					//trace("<");
 					tty = this.scrollMask.x + this.scrollMask.height - this.scrollSprite.height;
 				}
-				trace("handlerTimerScroll" + tty);
 				this.scrollSprite.y = tty;
 			}
 		}
@@ -425,7 +440,6 @@ package com.snsoft.core
 					boo = false;
 				}
 				if(boo){
-					trace("scrollText" + tty);
 					this.scrollSprite.y = tty;
 					if (this.scrollMask.height - this.scrollSprite.height < 0) {
 						this.scrollDragBtn.y = tty * (this.scrollMask.height - this.scrollDragBtn.height) / (this.scrollMask.height - this.scrollSprite.height);
