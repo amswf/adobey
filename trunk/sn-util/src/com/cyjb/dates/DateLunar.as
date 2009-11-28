@@ -22,7 +22,6 @@
  */
 package com.cyjb.dates {
 	import com.cyjb.utils.ErrorUtil;
-	import com.cyjb.dates.DateUtil;
 
 	//--------------------------------------
 	//  Class description
@@ -155,6 +154,29 @@ package com.cyjb.dates {
 		 * 1 - 30
 		 */
 		private var _date:uint;
+		//干
+		private var Gan:Array = new Array("甲","乙","丙","丁","戊","己","庚","辛","壬","癸");
+		
+		//支
+		private var Zhi:Array = new Array("子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥");
+		
+		//生肖
+		private var Animals:Array = new Array("鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪");
+		
+		//节气
+		private var SolarTerm:Array = new Array("小寒","大寒","立春","雨水","惊蛰","春分","清明","谷雨","立夏","小满","芒种","夏至","小暑","大暑","立秋","处暑","白露","秋分","寒露","霜降","立冬","小雪","大雪","冬至");
+		
+		//农历日个位
+		private var dayUnitCN:Array = new Array('日','一','二','三','四','五','六','七','八','九','十');
+		
+		//农历日十位
+		private var dayTensCN:Array = new Array('初','十','廿','卅','□');
+		
+		private var monthNameCN:Array = new Array("正月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月");
+		
+		//英文月简称
+		private var monthNameEN:Array = new Array("JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC");
+		
 		/**
 		 * 是否是闰月.
 		 * 
@@ -238,6 +260,7 @@ package com.cyjb.dates {
 		public function set time(value:uint):void {
 			calculateDate(value);
 		}
+		
 		/**
 		 * 获取或设置农历年份.
 		 * 
@@ -255,6 +278,19 @@ package com.cyjb.dates {
 			_year = value;
 			calculateLunar();
 		}
+		
+		/**
+		 * 获得中文月份 
+		 * @return 
+		 * 
+		 */		
+		public function get monthCN():String{
+			var il:String = "";
+			if(isLeap){
+				il = "闰";
+			}
+			return ( il + String(monthNameCN[month] ));
+		}
 		/**
 		 * 获取或设置农历月份.
 		 * 
@@ -271,6 +307,17 @@ package com.cyjb.dates {
 		public function set month(value:uint):void {
 			_month = value;
 			calculateLunar();
+		}
+		
+		/**
+		 * 获得中文日期 
+		 * @return 
+		 * 
+		 */		
+		public function get dateCN():String {
+			var tens:int = int(date / 10);
+			var unit:int = int(date % 10);
+			return dayTensCN[tens] + dayUnitCN[unit];
 		}
 		/**
 		 * 获取或设置农历日期.
@@ -308,6 +355,15 @@ package com.cyjb.dates {
 				calculateLunar();
 			}
 		}
+		
+		/**
+		 * 获取年份的干支中文名
+		 * @return 
+		 * 
+		 */		
+		public function get yearCyclicalCN():String{
+			return createCyclicalCN(yearCyclical);
+		}
 		/**
 		 * 获取年份的干支序号.
 		 * 
@@ -334,6 +390,10 @@ package com.cyjb.dates {
 			}
 			return index;
 		}
+		
+		public function get monthCyclicalCN():String{
+			return createCyclicalCN(monthCyclical);
+		}
 		/**
 		 * 获取月份干支序号.
 		 * 
@@ -357,6 +417,15 @@ package com.cyjb.dates {
 			}
 			return 0;
 		}
+		
+		/**
+		 * 获取日期干支中文名 
+		 * @return 
+		 * 
+		 */		
+		public function get dateCyclicalCN():String{
+			return createCyclicalCN(dateCyclical);
+		}
 		/**
 		 * 获取日期干支序号.
 		 * 
@@ -370,6 +439,15 @@ package com.cyjb.dates {
 				new Date(1900, 0, 1), DateUtil.DAY);
 			return (num + 10) % 60;
 		}
+		
+		/**
+		 *  获取时间干支中文名
+		 * @return 
+		 * 
+		 */		
+		public function get hourCyclicalCN():String{
+			return createCyclicalCN(hourCyclical);
+		}
 		/**
 		 * 获取时间干支序号.
 		 * 
@@ -380,6 +458,10 @@ package com.cyjb.dates {
 			var num:Number = DateUtil.elapsedTimes(_dateSolar, 
 				new Date(1900, 0, 1, 1), DateUtil.HOUR) / 2 + 1;
 			return num % 60;
+		}
+		
+		public function get animalCN():String {
+			return String(Animals[animal]);
 		}
 		/**
 		 * 获取属相的索引.
@@ -395,6 +477,13 @@ package com.cyjb.dates {
 			} else {
 				return getAnimal(_year);
 			}
+		}
+		
+		public function get solarTermCN():String {
+			if(solarTerm > 0){
+				return String(SolarTerm[solarTerm]);
+			}
+			return null;
 		}
 		/**
 		 * 获取当前日期的节气.
@@ -595,6 +684,20 @@ package com.cyjb.dates {
 			return (_year + " 年" + (isLeap?"闰 ":" ") + (month + 1) + " 月 "
 					 + date + " 日");
 		}
+		
+		/**
+		 * 根据数字计算得到干支中文名字 
+		 * @param i
+		 * @return 
+		 * 
+		 */		
+		private function createCyclicalCN(i:int):String{
+			trace(i);
+			var gan:int = int(yearCyclical % 10);
+			var zhi:int = int(yearCyclical % 12);
+			return (String(Gan[gan]) + String(Zhi[zhi])); 
+		}
+		
 		/**
 		 * 根据公历日期计算农历日期.
 		 */

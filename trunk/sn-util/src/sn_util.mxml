@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
+<mx:Application creationComplete="init();" xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
 	<mx:Script>
 		<![CDATA[
 			 import com.cyjb.dates.DateLunar;
 			 
 			 private function init():void{
 			 	var dl:DateLunar = new DateLunar();
-			 	dl.toString();
+			 	trace(dl.toString());
+			 	 
 			 }
 			 
 		]]>
