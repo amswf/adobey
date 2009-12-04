@@ -167,11 +167,15 @@ package com.cyjb.dates {
 		private var SolarTerm:Array = new Array("小寒","大寒","立春","雨水","惊蛰","春分","清明","谷雨","立夏","小满","芒种","夏至","小暑","大暑","立秋","处暑","白露","秋分","寒露","霜降","立冬","小雪","大雪","冬至");
 		
 		//农历日个位
-		private var dayUnitCN:Array = new Array('日','一','二','三','四','五','六','七','八','九','十');
+		private var dayUnitCN:Array = new Array('','一','二','三','四','五','六','七','八','九','十');
 		
 		//农历日十位
 		private var dayTensCN:Array = new Array('初','十','廿','卅','□');
 		
+		//农历日十位，个位为10时
+		private var dayTens2CN:Array = new Array('','初','二','三');
+		
+		//月
 		private var monthNameCN:Array = new Array("正月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月");
 		
 		//英文月简称
@@ -317,7 +321,14 @@ package com.cyjb.dates {
 		public function get dateCN():String {
 			var tens:int = int(date / 10);
 			var unit:int = int(date % 10);
-			return dayTensCN[tens] + dayUnitCN[unit];
+			//当为整数天时 初十,二十,三十时
+			if(unit == 0){
+				unit = 10;
+				return dayTens2CN[tens] + dayUnitCN[unit];
+			}
+			else {
+				return dayTensCN[tens] + dayUnitCN[unit];
+			}
 		}
 		/**
 		 * 获取或设置农历日期.
@@ -692,9 +703,8 @@ package com.cyjb.dates {
 		 * 
 		 */		
 		private function createCyclicalCN(i:int):String{
-			trace(i);
-			var gan:int = int(yearCyclical % 10);
-			var zhi:int = int(yearCyclical % 12);
+			var gan:int = int(i % 10);
+			var zhi:int = int(i % 12);
 			return (String(Gan[gan]) + String(Zhi[zhi])); 
 		}
 		
