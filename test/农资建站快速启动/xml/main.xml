@@ -5,9 +5,9 @@
 		<yspace>40</yspace>
 		<basex>100</basex>
 		<basey>100</basey>
-		<image>images/nongcunxinxihulianwang.png</image>
 		<width>80</width>
 		<height>80</height>
+		<image>images/nongcunxinxihulianwang.png</image>
 		<url>http://www.baidu.com</url>
 	</record>
 	<record>
@@ -24,11 +24,11 @@
 	</record>
 	<record>
 		<image>images/jincunxitong.png</image>
-		<url>http://www.baidu.com</url>
+		<exe>setup.exe</exe>
 	</record>
 	<record>
 		<image>images/nongmaotong.png</image>
-		<url>http://www.baidu.com</url>
+		<exe>setup.exe</exe>
 	</record>
 	 
 </xml>
