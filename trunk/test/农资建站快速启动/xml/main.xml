@@ -1,0 +1,34 @@
+<xml>
+	<record>
+		<listnum>3</listnum>
+		<xspace>20</xspace>
+		<yspace>40</yspace>
+		<basex>100</basex>
+		<basey>100</basey>
+		<image>images/nongcunxinxihulianwang.png</image>
+		<width>80</width>
+		<height>80</height>
+		<url>http://www.baidu.com</url>
+	</record>
+	<record>
+		<image>images/shipinpeixun.png</image>
+		<url>http://www.baidu.com</url>
+	</record>
+	<record>
+		<image>images/zhuangluosannongfuwuwang.png</image>
+		<url>http://www.baidu.com</url>
+	</record>
+	<record>
+		<image>images/zhongnongshangwuwang.png</image>
+		<url>http://www.baidu.com</url>
+	</record>
+	<record>
+		<image>images/jincunxitong.png</image>
+		<url>http://www.baidu.com</url>
+	</record>
+	<record>
+		<image>images/nongmaotong.png</image>
+		<url>http://www.baidu.com</url>
+	</record>
+	 
+</xml>
