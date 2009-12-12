@@ -90,13 +90,14 @@
 			this.addChild(this.currentPageDatesParentSprite);
 			this.addChild(this.weekTitleSprite);
 			this.createWeekTitle(weekTitleSprite);
-			this.currentPageDatesParentSprite.y = this.weekTitleSprite.height;
+			this.weekTitleSprite.y = 20;
+			this.currentPageDatesParentSprite.y = this.weekTitleSprite.height + this.weekTitleSprite.y;
 			this.createCurrentPageDatesSprite(this.currentPageDatesParentSprite); 
 			this.creatYearComboBox(this.yearComboBox);
 			this.addChild(this.yearComboBox);
 			this.creatMonthComboBox(this.monthComboBox);
 			this.addChild(this.monthComboBox);
-			this.monthComboBox.x = 200;
+			this.monthComboBox.x = this.yearComboBox.width + 20;
 		}
 		
 		private function creatMonthComboBox(comboBox:ComboBox):void{
@@ -160,6 +161,15 @@
 					}
 					weekMc.x = weekMc.width * i;             
 					sprite.addChild(weekMc);
+				}
+			}
+		}
+		
+		
+		private function removieSpriteAllChild(sprite:Sprite):void{
+			if(sprite != null){
+				for(var i:int = 0;i < sprite.numChildren;i ++){
+					sprite.removeChildAt(i);
 				}
 			}
 		}
