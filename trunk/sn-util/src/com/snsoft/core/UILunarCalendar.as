@@ -1,14 +1,18 @@
 ﻿package com.snsoft.core
 {
 	import com.cyjb.dates.DateLunar;
+	import com.snsoft.util.ShapeUtil;
 	
 	import fl.controls.ComboBox;
 	import fl.core.UIComponent;
 	import fl.events.ComponentEvent;
 	
 	import flash.display.MovieClip;
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.geom.Point;
 	import flash.text.TextField;
 	import flash.utils.getDefinitionByName;
 
@@ -40,14 +44,22 @@
 	 	//星期一 到 星期日 
 	 	private static var calendarWeekTitleSkinName:String = "CalendarWeekTitleSkin";
 	 	
+	 	//日期详细标签
+	 	private static var calendarDayMoreSkinName:String = "CalendarDayMoreSkin";
+	 	
 	 	//星期的中文名称列表
 	 	private var weekCnNames:Array = ["星期一","星期二","星期三","星期四","星期五","星期六","星期日"];
 	 	
 	 	//日期列表的父MC
 	 	private var currentPageDatesParentSprite:Sprite;
 	 	
+	 	//日期列表数组，用于事件响应数据传递
+	 	private var dayMcs:Array = new Array();
+	 	
 	 	//星期 标题 列表显示父MC
 	 	private var weekTitleSprite:Sprite;
+	 	
+	 	private var dayMoreBaseSprite:Sprite;
 	 	
 	 	//年选择下拉列表
 	 	private var yearComboBox:ComboBox = new ComboBox();
@@ -85,19 +97,30 @@
 			}
 			catch(e:Error){
 			}
-			this.currentPageDatesParentSprite = new Sprite();
+			
+			//标题 星期一 到 星期日
 			this.weekTitleSprite = new Sprite();
-			this.addChild(this.currentPageDatesParentSprite);
 			this.addChild(this.weekTitleSprite);
 			this.createWeekTitle(weekTitleSprite);
 			this.weekTitleSprite.y = 20;
+			
+			//当前月日历日期列表对象
+			this.currentPageDatesParentSprite = new Sprite();
+			this.addChild(this.currentPageDatesParentSprite);
 			this.currentPageDatesParentSprite.y = this.weekTitleSprite.height + this.weekTitleSprite.y;
 			this.createCurrentPageDatesSprite(this.currentPageDatesParentSprite); 
+			
+			//下拉菜单 年份
 			this.creatYearComboBox(this.yearComboBox);
 			this.addChild(this.yearComboBox);
+			
+			//下拉菜单 月份
 			this.creatMonthComboBox(this.monthComboBox);
 			this.addChild(this.monthComboBox);
 			this.monthComboBox.x = this.yearComboBox.width + 20;
+			
+			dayMoreBaseSprite = new Sprite();
+			this.addChild(dayMoreBaseSprite);
 		}
 		
 		private function creatMonthComboBox(comboBox:ComboBox):void{
@@ -131,6 +154,93 @@
 			obj.label = name;
 			obj.data = value;
 			return obj;
+		}
+		
+		private function createCalendarDayMore(dayMc:MovieClip,dl:DateLunar):MovieClip{
+			var main:MovieClip = new MovieClip();
+			var cdm:MovieClip;
+			try{
+				var MClass:Class = getDefinitionByName(UILunarCalendar.calendarDayMoreSkinName) as Class;
+				cdm = new MClass() as MovieClip;
+			}
+			catch(e:Error){
+				trace("动态加载找不到类：" +UILunarCalendar.calendarDayMoreSkinName);
+			}
+			if(cdm != null && dayMc != null && dl != null){
+				var cdmX:Number = this.currentPageDatesParentSprite.x + dayMc.x + dayMc.width;
+				var cdmY:Number = this.currentPageDatesParentSprite.y + dayMc.y + dayMc.height;
+				var leftView:Boolean = false;
+				var rightView:Boolean = false;
+				var topView:Boolean = false;
+				var bottomView:Boolean = false;
+				if(cdmX + cdm.width > this.currentPageDatesParentSprite.x + this.currentPageDatesParentSprite.width){
+					cdmX = this.currentPageDatesParentSprite.x + dayMc.x - cdm.width;
+					rightView = true;
+				}
+				else{
+					leftView = true;
+				}
+				if(cdmY + cdm.height > this.currentPageDatesParentSprite.y + this.currentPageDatesParentSprite.height){
+					cdmY = this.currentPageDatesParentSprite.y + dayMc.y - cdm.height;
+					bottomView = true;
+				}
+				else{
+					topView = true;
+				}
+				cdm.x = cdmX;
+				cdm.y = cdmY;
+				var su:ShapeUtil = new ShapeUtil();
+				var dmpX:Number = this.currentPageDatesParentSprite.x + dayMc.x + dayMc.width / 2;
+				var dmpY:Number = this.currentPageDatesParentSprite.y + dayMc.y+ dayMc.height / 2;
+				var dayMcPoint:Point = new Point(dmpX,dmpY);
+				var p1:Point = new Point(cdm.x,cdm.y);
+				var p2:Point = new Point(cdm.x + cdm.width,cdm.y);
+				var p3:Point = new Point(cdm.x + cdm.width,cdm.y + cdm.height);
+				var p4:Point = new Point(cdm.x,cdm.y + cdm.height);
+				var color:uint = 0x000000;
+				var alpha:Number = 0.05;
+				if(topView){
+					var shape1:Shape = su.drawShapeWithPoint(color,alpha,new Point(p1.x,p1.y),new Point(p2.x,p2.y),new Point(dayMcPoint.x,dayMcPoint.y));
+					main.addChild(shape1);
+				}
+				if(rightView){
+					var shape2:Shape = su.drawShapeWithPoint(color,alpha,new Point(p2.x,p2.y),new Point(p3.x,p3.y),new Point(dayMcPoint.x,dayMcPoint.y));
+					main.addChild(shape2);
+				}
+				if(bottomView){
+					var shape3:Shape = su.drawShapeWithPoint(color,alpha,new Point(p3.x,p3.y),new Point(p4.x,p4.y),new Point(dayMcPoint.x,dayMcPoint.y));
+					main.addChild(shape3);
+				}
+				if(leftView){
+					var shape4:Shape = su.drawShapeWithPoint(color,alpha,new Point(p4.x,p4.y),new Point(p1.x,p1.y),new Point(dayMcPoint.x,dayMcPoint.y));
+					main.addChild(shape4);
+				}
+				this.setValueTextFiled(cdm.animalCN,String(dl.animalCN));
+				this.setValueTextFiled(cdm.year,String(dl.dateSolar.fullYear));
+				this.setValueTextFiled(cdm.month,String(dl.dateSolar.month + 1));
+				this.setValueTextFiled(cdm.date,String(dl.dateSolar.date));
+				this.setValueTextFiled(cdm.day,String(dl.dayCN));
+				var solarTermCN:String = "";
+				if(dl.solarTermCN != null){
+					solarTermCN = dl.solarTermCN;
+				}
+				this.setValueTextFiled(cdm.solarTermCN,solarTermCN);
+				this.setValueTextFiled(cdm.monthCN,String(dl.monthCN));
+				this.setValueTextFiled(cdm.dateCN,String(dl.dateCN));
+				this.setValueTextFiled(cdm.yearCyclical,String(dl.yearCyclicalCN));
+				this.setValueTextFiled(cdm.monthCyclical,String(dl.monthCyclicalCN));
+				this.setValueTextFiled(cdm.dateCyclical,String(dl.dateCyclicalCN));
+				main.addChild(cdm);
+				return main;
+			}
+			return null;
+		}
+		
+		private function setValueTextFiled(obj:Object,str:String):void{
+			if(obj is TextField){
+				var tf:TextField = obj as TextField;
+				tf.text = str;
+			}
 		}
 		
 		/**
@@ -198,6 +308,8 @@
 						var cnDayText:TextField = dayMc.cnDayText as TextField;
 						var weekendDayText:TextField = dayMc.weekendDayText as TextField;
 						var weekendCnDayText:TextField = dayMc.weekendCnDayText as TextField;
+						var cdss:MovieClip = dayMc.cdss as MovieClip;
+						cdss.visible = false;
 						if(dayText != null && cnDayText != null && weekendDayText != null && weekendCnDayText != null){
 							var dayStr:String = String(dl.dateSolar.date);
 							var cnDayStr:String = String(dl.dateCN);
@@ -220,6 +332,10 @@
 							}
 							dayMc.x = (i % 7) * dayMc.width;
 							dayMc.y = int(i / 7) * dayMc.height;
+							dayMc.name = "dayMC" + i;
+							dayMcs[dayMc.name] = dl;
+							dayMc.addEventListener(MouseEvent.MOUSE_OVER,handlerDayMcMouseOver);
+							dayMc.addEventListener(MouseEvent.MOUSE_OUT,handlerDayMcMouseOut);
 							sprite.addChild(dayMc);
 						}
 						else{
@@ -233,6 +349,57 @@
 			}
 		}
 		
+		/**
+		 *  
+		 * @param e
+		 * 
+		 */		
+		private function handlerDayMcMouseOver(e:Event):void{
+			var dayMc:MovieClip = e.currentTarget as MovieClip;
+			
+			if(dayMc != null){
+				var cdss:MovieClip = dayMc.cdss as MovieClip;
+				if(cdss != null){
+					cdss.visible = true;
+				}
+				var name:String = dayMc.name;
+				var i:int = -1;
+				try{
+					i= int(name.substring(5,name.length));
+				}
+				catch(e:Error){
+					trace(e.getStackTrace());
+				}
+				if( i >= 0 ){
+					var dl:DateLunar = this.currentPageDateList[i] as DateLunar;
+					var mc:MovieClip = createCalendarDayMore(dayMc,dl);
+					if(this.dayMoreBaseSprite != null){
+						this.dayMoreBaseSprite.mouseEnabled = false;
+						this.dayMoreBaseSprite.buttonMode = false;
+						this.dayMoreBaseSprite.mouseChildren = false;
+						this.dayMoreBaseSprite.addChild(mc);
+					}
+				} 
+			}
+		}
+		
+		/**
+		 *  
+		 * @param e
+		 * 
+		 */		
+		private function handlerDayMcMouseOut(e:Event):void{
+			var dayMc:MovieClip = e.currentTarget as MovieClip;
+			if(dayMc != null){
+				var cdss:MovieClip = dayMc.cdss as MovieClip;
+				if(cdss != null){
+					cdss.visible = false;
+				}
+			}
+			if(this.dayMoreBaseSprite != null){
+				this.removieSpriteAllChild(this.dayMoreBaseSprite);
+			}
+		}
 		
 		/**
 		 * 通过给定的时间算出当前日历页面第一天，以周一做为每周第一天 
