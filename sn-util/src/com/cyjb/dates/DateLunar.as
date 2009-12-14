@@ -181,6 +181,8 @@ package com.cyjb.dates {
 		//英文月简称
 		private var monthNameEN:Array = new Array("JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC");
 		
+		//星期的中文名称列表
+	 	private var weekCnNames:Array = ["星期一","星期二","星期三","星期四","星期五","星期六","星期日"];
 		/**
 		 * 是否是闰月.
 		 * 
@@ -241,6 +243,7 @@ package com.cyjb.dates {
 				calculateDate();
 			}
 		}
+		
 		/**
 		 * 设置或获取对应的公历日期.
 		 * 
@@ -437,6 +440,7 @@ package com.cyjb.dates {
 		public function get dateCyclicalCN():String{
 			return createCyclicalCN(dateCyclical);
 		}
+		
 		/**
 		 * 获取日期干支序号.
 		 * 
@@ -450,6 +454,21 @@ package com.cyjb.dates {
 				new Date(1900, 0, 1), DateUtil.DAY);
 			return (num + 10) % 60;
 		}
+		
+		/**
+		 * 获取日期干支序号.
+		 * 
+		 * 干支序号的可能范围是 <code>0 - 59</code>, 0 是甲子, 59 是癸亥.
+		 * 
+		 * @see #date
+		 */
+		public function get dayCN():String {
+			var i:int = (this.dateSolar.day + 6) % 7;
+			return this.weekCnNames[i];
+		}
+		
+		
+		
 		
 		/**
 		 *  获取时间干支中文名
