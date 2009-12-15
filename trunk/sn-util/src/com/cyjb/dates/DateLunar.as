@@ -93,7 +93,7 @@ package com.cyjb.dates {
 		 * <p>如果该属性为 <code>true</code> ,则从节气开始分割干支记年与记月;否则从每年或
 		 * 每月的 1 日开始.</p>
 		 */
-		public static var sliceFromSolarTerm:Boolean = true;
+		public static var sliceFromSolarTerm:Boolean = false;
 		/**
 		 * 农历的日期数据.
 		 * 
