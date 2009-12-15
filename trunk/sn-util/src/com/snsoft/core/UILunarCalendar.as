@@ -123,6 +123,8 @@
 			
 			dayMoreBaseSprite = new Sprite();
 			this.addChild(dayMoreBaseSprite);
+			
+			
 		}
 		
 		private function handlerYearComboBoxChange(e:Event):void{
