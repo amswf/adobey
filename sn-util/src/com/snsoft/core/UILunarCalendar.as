@@ -112,15 +112,44 @@
 			
 			//下拉菜单 年份
 			this.creatYearComboBox(this.yearComboBox);
+			this.yearComboBox.addEventListener(Event.CHANGE,handlerYearComboBoxChange);
 			this.addChild(this.yearComboBox);
 			
 			//下拉菜单 月份
 			this.creatMonthComboBox(this.monthComboBox);
 			this.addChild(this.monthComboBox);
 			this.monthComboBox.x = this.yearComboBox.width + 20;
+			this.monthComboBox.addEventListener(Event.CHANGE,handlerMonthComboBoxChange);
 			
 			dayMoreBaseSprite = new Sprite();
 			this.addChild(dayMoreBaseSprite);
+		}
+		
+		private function handlerYearComboBoxChange(e:Event):void{
+			var cb:ComboBox = e.currentTarget as ComboBox;
+			if(cb != null){
+				var year:Number = Number(cb.value);
+				this.resetDate(year,NaN);
+			}
+		} 
+		
+		private function handlerMonthComboBoxChange(e:Event):void{
+			var cb:ComboBox = e.currentTarget as ComboBox;
+			if(cb != null){
+				var month:Number = Number(cb.value);
+				this.resetDate(NaN,month);
+			}
+		} 
+		
+		private function resetDate(year:Number,month:Number):void{
+			if(!isNaN(year)){
+				this.currentDate.fullYear = year;
+			}
+			if(!isNaN(month)){
+				this.currentDate.month = month;
+			}
+			this.removieSpriteAllChild(this.currentPageDatesParentSprite);
+			this.createCurrentPageDatesSprite(this.currentPageDatesParentSprite); 
 		}
 		
 		private function creatMonthComboBox(comboBox:ComboBox):void{
@@ -278,8 +307,8 @@
 		
 		private function removieSpriteAllChild(sprite:Sprite):void{
 			if(sprite != null){
-				for(var i:int = 0;i < sprite.numChildren;i ++){
-					sprite.removeChildAt(i);
+				while(sprite.numChildren > 0){
+					sprite.removeChildAt(0);
 				}
 			}
 		}
