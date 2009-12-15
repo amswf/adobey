@@ -510,7 +510,7 @@ package com.cyjb.dates {
 		}
 		
 		public function get solarTermCN():String {
-			if(solarTerm > 0){
+			if(solarTerm >= 0){
 				return String(SolarTerm[solarTerm]);
 			}
 			return null;
