@@ -256,7 +256,6 @@
 				this.setValueTextFiled(cdm.solarTermCN,solarTermCN);
 				this.setValueTextFiled(cdm.monthCN,String(dl.monthCN));
 				this.setValueTextFiled(cdm.dateCN,String(dl.dateCN));
-				trace(dl.yearCyclical);
 				this.setValueTextFiled(cdm.yearCyclical,String(dl.yearCyclicalCN));
 				this.setValueTextFiled(cdm.monthCyclical,String(dl.monthCyclicalCN));
 				this.setValueTextFiled(cdm.dateCyclical,String(dl.dateCyclicalCN));
