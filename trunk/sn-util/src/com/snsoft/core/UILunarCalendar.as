@@ -336,7 +336,10 @@
 
 		private function createMonthComboBox(cb:ComboBox):void {
 			if (cb != null) {
-				cb.rowCount = 10;
+				while(cb.length > 0){
+					cb.removeItemAt(0);
+				}
+				cb.rowCount = 12;
 				for (var i:int = 0; i< 12; i++) {
 					var obj:Object = creatComboBoxIterm(String(i + 1),String(i));
 					cb.addItem(obj);
@@ -350,6 +353,9 @@
 
 		private function createYearComboBox(cb:ComboBox):void {
 			if (cb != null) {
+				while(cb.length > 0){
+					cb.removeItemAt(0);
+				}
 				cb.rowCount = 10;
 				for (var i:int = 1901; i< 2101; i++) {
 					var obj:Object = creatComboBoxIterm(String(i),String(i));
