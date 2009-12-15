@@ -30,7 +30,7 @@
 	 	private static var PAGE_LIST_NUM:Number = 7;
 	 	
 	 	//行数
-	 	private static var PAGE_ROLL_NUM:Number = 5;
+	 	private static var PAGE_ROLL_NUM:Number = 6;
 	 	
 	 	//当前时间
 	 	private var currentDate:Date = new Date();
