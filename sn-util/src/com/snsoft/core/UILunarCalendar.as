@@ -15,6 +15,7 @@
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.text.TextField;
+	import flash.text.TextFormat;
 	import flash.utils.Timer;
 	import flash.utils.getDefinitionByName;
 
@@ -49,7 +50,7 @@
 		private static var weeksTitleMCamendY:Number = 20;
 		
 		//当前时间 X 坐标修正值
-		private static var timeMCamendX:Number = 190;
+		private static var timeMCamendX:Number = 200;
 		
 
 		//当前时间
@@ -214,20 +215,26 @@
 		
 		private function createYearMonthControlMC(ymcbMC:MovieClip):MovieClip{
 			if (ymcbMC != null) {
+				var tfm:TextFormat = new TextFormat();
+				tfm.size = 14;
+				
 				var yearComboBox:ComboBox = ymcbMC.yearComboBox;
 				if (yearComboBox != null) {
 					this.yearComboBox = yearComboBox;
 					this.createYearComboBox(yearComboBox);
+					//yearComboBox.setStyle("textFormat",tfm);
 					yearComboBox.addEventListener(Event.CHANGE,handlerYearComboBoxChange);
 				}
 				var monthComboBox:ComboBox = ymcbMC.monthComboBox;
 				if (monthComboBox != null) {
 					this.monthComboBox = monthComboBox;
 					this.createMonthComboBox(monthComboBox);
+					//monthComboBox.setStyle("textFormat",tfm);
 					monthComboBox.addEventListener(Event.CHANGE,handlerMonthComboBoxChange);
 				}
 				var todayButton:Button = ymcbMC.todayButton;
 				if(todayButton != null){
+					todayButton.setStyle("textFormat",tfm);
 					todayButton.addEventListener(MouseEvent.CLICK,handlerTodayButtonClick);
 				}
 				return ymcbMC;
