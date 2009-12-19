@@ -2,41 +2,9 @@
 <mx:Application creationComplete="init();" xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
 	<mx:Script>
 		<![CDATA[
-			import com.snsoft.core.UILunarCalendar;
-			 import com.cyjb.dates.DateLunar;
-			 
-			 private function init():void{
-			 	
-			 	var timer:Timer = new Timer(500,0);
-			 	timer.addEventListener(TimerEvent.TIMER,handlerTimeTextFieldRefeshTimerEvent);
-			 	timer.start();
-			 }
-			 private function handlerTimeTextFieldRefeshTimerEvent(e:Event):void{
-			 	var timer:Timer = e.currentTarget as Timer;
-			 	var splitStr:String = ":";
-			 	if(timer != null){
-			 		var n:int = timer.currentCount % 2;
-			 		if(n % 2 == 0){
-			 			splitStr = " ";
-			 		}
-			 	}
-			 	var date:Date = new Date();
-			 	var hours:String = formatTime(String(date.hours));
-			 	var minutes:String = formatTime(String(date.minutes));
-			 	var seconds:String = formatTime(String(date.seconds));
-			 	var str:String = hours + splitStr + minutes + splitStr + seconds;
-			 	trace(str);
-			 }
-			 
-			 private function formatTime(str:String):String{
-			 	if(str != null){
-			 		if(str.length < 2){
-			 			str = "0" + str;
-			 		}
-			 		return str;
-			 	}
-			 	return null;
-			 }
+			private function init():void{
+				
+			}
 		]]>
 	</mx:Script>
 </mx:Application>

@@ -27,9 +27,6 @@
 				var xmlLoader:URLLoader = new URLLoader();
 				xmlLoader.addEventListener(Event.COMPLETE, completeHandler);
 				xmlLoader.load(new URLRequest(xmlUrl));
-				
-				xmlLoader.addEventListener(Event.COMPLETE, completeHandler);
-				xmlLoader.load(new URLRequest(xmlUrl));
 			}
 		}
 		
