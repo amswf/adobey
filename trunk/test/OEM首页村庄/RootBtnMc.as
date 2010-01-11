@@ -105,7 +105,6 @@
 					sl.vUrlArray = urlArray;
 					sl.visibleNum = 4;
 					sl.listType = listType;
-					trace(listType);
 					this.addChild(sl);
 				}
 			}
@@ -118,9 +117,9 @@
 
 		private function handlerMcMouseOver(e:Event):void {
 			var pmc:MovieClip = this.parent as MovieClip;
-			pmc.numChildren
+			pmc.numChildren;
 			pmc.setChildIndex(this,pmc.numChildren -1);
-			 
+
 			try {
 				gotoAndStop(2);
 			} catch (e:Error) {
@@ -173,7 +172,7 @@
 				navigateToURL(requests,"_self");
 			}
 			else {
-				if (sl != null) {
+				if (sl != null && sl.vUrlArray != null && sl.vUrlArray.length > 1) {
 					sl.visible = true;
 				}
 			}
