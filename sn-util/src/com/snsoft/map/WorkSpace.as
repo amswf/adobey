@@ -1,8 +1,11 @@
 package com.snsoft.map
 {
+	import com.snsoft.map.util.MapUtil;
+	
 	import fl.core.UIComponent;
 	
 	import flash.display.MovieClip;
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -123,11 +126,15 @@ package com.snsoft.map
 		private function handlerMouseOverWorkSpace(e:Event):void{
 			 
 			Mouse.hide();
+			
+			var p:Point = this.createMousePoint(this);
+			
 			var ps:MovieClip = this.createSkinByName(PEN_TYPE_LINE);
 			ps.mouseEnabled = false;
 			ps.buttonMode = false;
 			ps.mouseChildren = false;
 			this.penSkin = ps;
+			this.setSpriteXY(ps,p);
 			this.refreshChild(this.penMC,this.penSkin);
 		}
 		
@@ -138,28 +145,54 @@ package com.snsoft.map
 		 */		
 		private function handerMouseClickWorkSpace(e:Event):void{
 			
+			//获得鼠标相对工作区域的坐标
+			var p:Point = this.createMousePoint(this);
+			
+			//创建要显示的点皮肤
+			var ps:MovieClip = this.createPointSkin(p);
+			
+			//把点皮肤显示出来
+			this.pointSkinsMC.addChild(ps);
+			
+			
+				
+			//画笔为开始状态时
 			if(this.penState == PEN_STATE_START){
-				this.startPoint = this.createMousePoint(this);
+				
+				//把当前的点列表放入点数组的数组，刷新数组列表
 				var cpa:Array = this.currentPointAry;
 				if(cpa != null && cpa.length >=2){
 					this.pointAryAry.push(cpa);
 				}
 				this.currentPointAry = new Array();
-				var sps:MovieClip =  this.createPointSkin(this.startPoint);
-				this.pointSkinsMC.addChild(sps);
+				
+				//设置画笔状态
 				this.penState = PEN_STATE_DOING;
 			}
 			else if(this.penState == PEN_STATE_DOING){
-				this.currentPointAry.push(this.startPoint);
-				var p:Point = this.createMousePoint(this);
-				this.currentPointAry.push(p);
-				
-				var eps:MovieClip = this.createPointSkin(p);
-				this.pointSkinsMC.addChild(eps);
-				this.startPoint = p;
+				var mu:MapUtil = new MapUtil();
+				var shape:Shape = mu.drawLine(this.startPoint,p,0x000000);
+				var line:MovieClip = new MovieClip();
+				line.addChild(shape);
+				this.linesMC.addChild(line);
+				trace("linesMC");
 			}
+			
+			//设置开始点
+			this.startPoint = p;
+			
+			//把初始点放入当前点数组中
+			this.currentPointAry.push(this.startPoint);
+			 
 		}
 		
+		
+		/**
+		 * 创建点皮肤 
+		 * @param point
+		 * @return 
+		 * 
+		 */		
 		private function createPointSkin(point:Point):MovieClip{
 			var pointSkin:MovieClip = this.createSkinByName(POINT_SKIN);
 			this.setSpriteXY(pointSkin,point);
