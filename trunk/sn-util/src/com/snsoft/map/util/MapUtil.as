@@ -109,7 +109,7 @@
 		 * @return 
 		 * 
 		 */
-		function drawLine(p1:Point,p2:Point,color:uint):Shape {
+		public function drawLine(p1:Point,p2:Point,color:uint):Shape {
 			var shape:Shape = new Shape();
 			var gra:Graphics = shape.graphics;
 			gra.lineStyle(1,color,1);
