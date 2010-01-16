@@ -101,30 +101,6 @@
 			return null;
 		}
 		
-		
-		/**
-		 * 判定点是否在线的左侧，在左侧说明不符合条件
-		 * @param p1
-		 * @param p2
-		 * @param q
-		 * @return 
-		 * 
-		 */
-		public function concludeIsLeft(p1:Point,p2:Point,q:Point):Boolean {
-			var radP1P2 = get2PointRad(p1,p2);
-			var radP1Q = get2PointRad(p1,q);
-			var lP1P2 = get2PointLength(p1,p2);
-			var lP1Q = get2PointLength(p1,q);
-			var radSub = radP1Q - radP1P2;
-			var lSub = lP1Q - lP1P2;
-			var lQP1P2 = lP1Q * Math.sin(radSub);
-			if ( -Math.PI / 2 < radSub && radSub < 0 && lSub < 0) {
-				return true;
-			}
-			return false;
-		}
-		
-		
 		/**
 		 * 画线 
 		 * @param p1
@@ -141,33 +117,5 @@
 			gra.lineTo(p2.x,p2.y);
 			return shape;
 		}
-		
-		/**
-		 * 获得两点所在直线与坐标系的夹角（弧度） 
-		 * @param p1
-		 * @param p2
-		 * @return 
-		 * 
-		 */
-		function get2PointRad(p1:Point,p2:Point):Number {
-			
-			var rad = Math.atan2(p2.y - p1.y,p2.x - p1.x);
-			return rad;
-		}
-		
-		/**
-		 * 获得两点间距离 
-		 * @param p1
-		 * @param p2
-		 * @return 
-		 * 
-		 */
-		function get2PointLength(p1:Point,p2:Point):Number {
-			
-			var l = Math.sqrt((p2.y - p1.y) * (p2.y - p1.y) + (p2.x - p1.x) * (p2.x - p1.x));
-			return l;
-		}
-		
-		
 	}
 }
