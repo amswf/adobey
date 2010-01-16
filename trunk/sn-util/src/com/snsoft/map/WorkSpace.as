@@ -1,5 +1,6 @@
-package com.snsoft.map
+﻿package com.snsoft.map
 {
+	import com.snsoft.map.util.HitTest;
 	import com.snsoft.map.util.MapUtil;
 	
 	import fl.core.UIComponent;
@@ -64,6 +65,9 @@ package com.snsoft.map
 		//所有点的数组的数组
 		private var pointAryAry:Array = new Array();
 		
+		private var hitTest:HitTest = null;
+		
+		
 		public function WorkSpace()
 		{
 			super();
@@ -75,6 +79,10 @@ package com.snsoft.map
 		 * 
 		 */		
 		private function init():void{
+			
+			
+			//体积碰撞检测类
+			this.hitTest = new HitTest(new Point(this.width,this.height),new Point(10,10));
 			
 			//初始化各功能显示的分层
 			
@@ -101,9 +109,13 @@ package com.snsoft.map
 			
 			this.penMC.mouseEnabled = false;
 			
-			//注册事件
+			//注册事件 MOUSE_OVER
 			this.addEventListener(MouseEvent.MOUSE_OVER,handlerMouseOverWorkSpace);
+			
+			//注册事件 CLICK
 			this.addEventListener(MouseEvent.CLICK,handerMouseClickWorkSpace);
+			
+			//注册事件 MOUSE_MOVE
 			this.addEventListener(MouseEvent.MOUSE_MOVE,handlerMouseMoveWorkSpase);
 			
 		}
@@ -116,6 +128,10 @@ package com.snsoft.map
 		private function handlerMouseMoveWorkSpase(e:Event):void{
 			var p:Point = this.createMousePoint(this);
 			this.setSpriteXY(this.penSkin,p);
+			var op:Point = this.hitTest.getPoint(p,new Point(4,4));
+			if(op != null){
+				trace(op);
+			}
 		}
 		
 		/**
@@ -154,8 +170,6 @@ package com.snsoft.map
 			//把点皮肤显示出来
 			this.pointSkinsMC.addChild(ps);
 			
-			
-				
 			//画笔为开始状态时
 			if(this.penState == PEN_STATE_START){
 				
@@ -175,14 +189,17 @@ package com.snsoft.map
 				var line:MovieClip = new MovieClip();
 				line.addChild(shape);
 				this.linesMC.addChild(line);
-				trace("linesMC");
 			}
+			
+			//碰撞检测
+			this.hitTest.addPoint(p);
 			
 			//设置开始点
 			this.startPoint = p;
 			
 			//把初始点放入当前点数组中
 			this.currentPointAry.push(this.startPoint);
+			this.hitTest.addPoint(p);
 			 
 		}
 		
@@ -243,7 +260,6 @@ package com.snsoft.map
 					mc.addChild(childMC[j]);
 				}
 			}
-			
 		}
 		
 		/**
