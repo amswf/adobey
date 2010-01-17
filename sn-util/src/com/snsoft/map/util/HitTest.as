@@ -98,9 +98,9 @@
 								var op:Point = pary[k] as Point;
 								if(op != null){
 									if(Math.abs(op.x -point.x) <= Math.abs(dvalue.x)){
-										 if(Math.abs(op.y -point.y) <= Math.abs(dvalue.y)){
-										 	return op;
-										 }
+										if(Math.abs(op.y -point.y) <= Math.abs(dvalue.y)){
+											return op;
+										}
 									}
 								}
 							}
