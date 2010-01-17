@@ -16,6 +16,12 @@
 
 	public class WorkSpace extends UIComponent
 	{
+		//碰撞检测的坐标差值域
+		private static var hitTestDValue:Point = new Point(5,5);
+		
+		//画笔类型遇到已存在点时，皮夫MC的类名。
+		private static var PEN_TYPE_LINE_POINT:String = "PenLinePointSkin";
+		
 		//画笔类型，皮夫MC的类名。
 		private static var PEN_TYPE_LINE:String = "PenLineSkin";
 		
@@ -30,7 +36,6 @@
 		
 		//画笔状态：正在画
 		private static var PEN_STATE_DOING:int = 1;
-		
 		
 		//画笔类型
 		private var penType:String = PEN_TYPE_LINE;
@@ -55,6 +60,8 @@
 		
 		//显示画的点
 		private var pointSkinsMC:MovieClip = new MovieClip();
+		
+		private var currentMousePoint:Point = new Point(0,0);
 		
 		//画操作时起始点
 		private var startPoint:Point = new Point(0,0);
@@ -103,6 +110,7 @@
 			
 			//操作友好显示
 			this.addChild(this.viewMC);
+			this.putMouseEnable(this.viewMC,false);
 			
 			//画笔
 			this.addChild(this.penMC);
@@ -128,11 +136,22 @@
 		private function handlerMouseMoveWorkSpase(e:Event):void{
 			var p:Point = this.createMousePoint(this);
 			this.setSpriteXY(this.penSkin,p);
-			var op:Point = this.hitTest.getPoint(p,new Point(4,4));
-			if(op != null){
-				trace(op);
+			
+			//获得碰撞点，和现有点非常接近时，就定位到它，形成闭合的点链。
+			var pht:Point = this.findHitPoint(p);
+			if(pht != null && !pht.equals(this.startPoint)){
+				p = pht;
+				refreshPenSkin(PEN_TYPE_LINE_POINT);
 			}
+			else{
+				refreshPenSkin(this.penType);
+			}
+			if(this.penState == PEN_STATE_DOING){
+				refreshViewMC(this.startPoint,p);
+			}
+			
 		}
+		
 		
 		/**
 		 * 鼠标事件 MouseOver
@@ -142,10 +161,17 @@
 		private function handlerMouseOverWorkSpace(e:Event):void{
 			 
 			Mouse.hide();
-			
+			refreshPenSkin(this.penType);
+		}
+		
+		/**
+		 * 刷新画笔图标 
+		 * @param penSkin
+		 * 
+		 */		
+		private function refreshPenSkin(penSkin:String):void{
 			var p:Point = this.createMousePoint(this);
-			
-			var ps:MovieClip = this.createSkinByName(PEN_TYPE_LINE);
+			var ps:MovieClip = this.createSkinByName(penSkin);
 			ps.mouseEnabled = false;
 			ps.buttonMode = false;
 			ps.mouseChildren = false;
@@ -153,6 +179,20 @@
 			this.setSpriteXY(ps,p);
 			this.refreshChild(this.penMC,this.penSkin);
 		}
+		
+		/**
+		 * 刷新友好提示 
+		 * @param penSkin
+		 * 
+		 */		
+		private function refreshViewMC(startPoint:Point,endPoint:Point):void{
+			var mu:MapUtil = new MapUtil();
+			var shape:Shape = mu.drawLine(startPoint,endPoint,0xff0000);
+			var mc:MovieClip = new MovieClip();
+			mc.addChild(shape);
+			this.refreshChild(this.viewMC,mc);
+		}
+		
 		
 		/**
 		 * 鼠标事件 MouseClick
@@ -163,6 +203,12 @@
 			
 			//获得鼠标相对工作区域的坐标
 			var p:Point = this.createMousePoint(this);
+			
+			//获得碰撞点，和现有点非常接近时，就定位到它，形成闭合的点链。
+			var pht:Point = this.findHitPoint(p);
+			if(pht != null && !pht.equals(this.startPoint)){
+				p = pht;
+			}
 			
 			//创建要显示的点皮肤
 			var ps:MovieClip = this.createPointSkin(p);
@@ -199,8 +245,28 @@
 			
 			//把初始点放入当前点数组中
 			this.currentPointAry.push(this.startPoint);
-			this.hitTest.addPoint(p);
 			 
+		}
+		
+		/**
+		 * 设置MC鼠标不可用 
+		 * @param mc
+		 * @param type
+		 * 
+		 */		
+		private function putMouseEnable(mc:Sprite,type:Boolean = false):void{
+			mc.mouseEnabled = type;
+			mc.mouseChildren = type;
+		}
+		
+		/**
+		 * 碰撞检测，如果找到碰撞物体，返回它的坐标。 
+		 * @return 
+		 * 
+		 */		
+		private function findHitPoint(p:Point):Point{
+			var op:Point = this.hitTest.findPoint(p,hitTestDValue);
+			return op;
 		}
 		
 		

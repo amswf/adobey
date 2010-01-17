@@ -80,7 +80,10 @@
 		 * @return 
 		 * 
 		 */		
-		public function getPoint(point:Point,dvalue:Point):Point{
+		public function findPoint(point:Point,dvalue:Point = null):Point{
+			if(dvalue == null){
+				dvalue = new Point(0,0);
+			}
 			if(point != null && dvalue != null){
 				var p:Point = this.getArrayIndex(point);
 				var ix:int = int(p.x);
