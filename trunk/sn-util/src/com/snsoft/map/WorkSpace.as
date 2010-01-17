@@ -381,36 +381,74 @@
 			return mc;
 		}
 		
+	
 		/**
 		 * 把一个hash按照hash里的两个点拆分成两个链
 		 * @param hary
-		 * @param p1
-		 * @param p2
+		 * @param chary
 		 * @return 
 		 * 
-		 */		
-		private function breakPointHashArray(hary:HashArray,p1:Point,p2:Point):Array{
-			
-			if(hary != null){
-				var haryAry:Array = new Array();
+		 */		 
+		private function breakPointHashArray(hary:HashArray,chary:HashArray):Array{
+			var haryAry:Array = new Array();
+			if(hary != null && chary != null){
+				
+				var ary:Array = hary.getArray();
+				var cary:Array = chary.getArray();
+				
+				var p1:Point = cary[0];
+				var p2:Point = cary[cary.length - 1];
+				
 				var pn1 = this.createPointHashName(p1);
 				var indexP1:int = hary.findIndex(pn1);
 				
 				var pn2 = this.createPointHashName(p2);
 				var indexP2:int = hary.findIndex(pn2);
 				
-				//闭合链时
+				
+				//闭合链时 isCloseArray需要修改算法，带柄的链。
+				if(this.isCloseArray(ary)){
 					//新链在闭合链里面
+					if(true){
 						//新链和闭合链交于一点时
-						//新链和闭合链交于两点时
+						if(indexP1 == indexP2){
+						}
+						else{//新链和闭合链交于两点时
+						}
+					}
 					//新链在闭合链外面
 						//新链和闭合链交于一点时
 						//新链和闭合链交于两点时
-				//非闭合链时
+				}
+				else{//非闭合链时
+					
 					//新链和闭合链交于一点时
 					//新链和闭合链交于两点时
-				
+				}
 			}
+		}
+		
+		
+		/**
+		 * 判断一个hash是否在另一个hash里面 
+		 * @param hary1
+		 * @param hary2
+		 * @return 
+		 * 
+		 */		
+		private function hashArrayInHashArray(hary1:HashArray,hary2:HashArray):Boolean{
+			if(hary1 != null && hary2 != null){
+				
+				var ary1:Array = hary1.getArray();
+				var ary2:Array = hary2.getArray();
+				
+				var mu:MapUtil = new MapUtil();
+
+				if( ary1 != null && ary2 != null){
+					return mu.checkShapeSurround(hary2,hary1);
+				}
+			}
+			return false;
 		}
 		
 		/**
