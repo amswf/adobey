@@ -56,9 +56,15 @@
 		private var domainAry:Array = new Array();
 
 		/**
-		 * 字体列表 
+		 * 字体文件列表 
 		 */
-		private var _fontNameAry:Array = new Array  ;
+		private var _fontNameAry:Array = new Array();
+		
+		
+		/**
+		 * 字体文件中第一个字体标识名称
+		 */		
+		private var fontEnNameAry:Array = new Array();
 
 		/**
 		 * 已经load完成的字体个数 
@@ -129,6 +135,10 @@
 			}
 		}
 		
+		public function findFontByName(name:String):String{
+			return this.fontEnNameAry[name] as String;
+		}
+		
 		/**
 		 * 注册字体 
 		 * 
@@ -142,11 +152,14 @@
 						var domain:ApplicationDomain = this.domainAry[i] as ApplicationDomain;
 						var fontLibrary:Class = domain.getDefinition(name) as Class;
 						Font.registerFont(fontLibrary);
+						var embeddedFonts:Array = Font.enumerateFonts(false);
+						var font:Font = embeddedFonts[embeddedFonts.length -1] as Font;
+						fontEnNameAry[name] = font.fontName;
 					} catch (error:Error) {
 						trace("找不到"+SWF_FONT_ROOT_PATH + name + SWF_EXT_NAME+"中的字体类:" + name);
 					}
 				}
-			}
+			}			
 			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
 
