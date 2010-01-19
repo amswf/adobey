@@ -13,17 +13,19 @@
 		private var y = 0;
 		private var boder:Number = 1;
 		private var fillColors:Array = [0xFFFFFF, 0x000000];
+		private var fillColors2:Array = [0xFFFFFF, 0x000000];
 
 		/**
 		 * 
 		 */
-		public function DrawPole (boder:Number,lineColor:uint,fillColors:Array,height:Number,width:Number,x:Number,y:Number) {
+		public function DrawPole (boder:Number,lineColor:uint,fillColors:Array,fillColors2:Array,height:Number,width:Number,x:Number,y:Number) {
 			this.lineColor = lineColor;
 			this.height = height;
 			this.width = width;
 			this.x = x;
 			this.y = y;
 			this.fillColors = fillColors;
+			this.fillColors2 = fillColors2;
 			this.boder = boder;
 		}
 		/**
@@ -46,8 +48,8 @@
 			shape.graphics.lineStyle(this.boder,0xffffff,1);
 			var fillType:String = GradientType.LINEAR;
 			var colors:Array = this.fillColors;
-			var alphas:Array = [100, 100];
-			var ratios:Array = [0x00, 0xFF];
+			var alphas:Array = [100,100, 100];
+			var ratios:Array = [0x00,127, 0xFF];
 			var matr:Matrix = new Matrix();
 			matr.createGradientBox (this.width+1, this.height, 0,x-1,this.y);
 			var spreadMethod:String = SpreadMethod.PAD;
@@ -61,8 +63,8 @@
 			shape.graphics.lineStyle(this.boder,this.lineColor,1);
 			var fillType:String = GradientType.LINEAR;
 			var colors:Array = this.fillColors;
-			var alphas:Array = [100, 100];
-			var ratios:Array = [0x00, 0xFF];
+			var alphas:Array = [100,100, 100];
+			var ratios:Array = [0x00,127, 0xFF];
 			var matr:Matrix = new Matrix();
 			matr.createGradientBox (this.width+1, this.height, 0,x-1,this.y);
 			var spreadMethod:String = SpreadMethod.PAD;
@@ -78,8 +80,8 @@
 			shape.graphics.lineStyle (this.boder,this.lineColor,1);
 			var fillType:String = GradientType.LINEAR;
 			var colors:Array = this.fillColors;
-			var alphas:Array = [100, 100];
-			var ratios:Array = [0x00, 0xFF];
+			var alphas:Array = [100,100, 100];
+			var ratios:Array = [0x00,127, 0xFF];
 			var matr:Matrix = new Matrix();
 			matr.createGradientBox (this.width, this.height, 0,x,this.y);
 			var spreadMethod:String = SpreadMethod.PAD;
@@ -93,15 +95,17 @@
 			var shape:Shape = new Shape();
 			shape.graphics.lineStyle (this.boder,this.lineColor,1);
 			var fillType:String = GradientType.LINEAR;
-			var colors:Array = [this.fillColors[1],this.fillColors[0]];
-			var alphas:Array = [100, 100];
-			var ratios:Array = [0x00, 0xFF];
+			var colors:Array = this.fillColors2;
+			var alphas:Array = [100,100,100];
+			var ratios:Array = [0,127,0xFF];
 			var matr:Matrix = new Matrix();
-			matr.createGradientBox (this.width, this.height, 0,x,this.y);
+			matr.createGradientBox (this.width, this.width*0.5, Math.PI / 2,0,0);
 			var spreadMethod:String = SpreadMethod.PAD;
-			shape.graphics.beginGradientFill (fillType, colors, alphas, ratios, matr, spreadMethod);
+			shape.graphics.beginGradientFill (fillType, colors, alphas, ratios, matr);
 			//shape.graphics.beginFill (this.bgColor,1);
-			shape.graphics.drawEllipse (x,y,this.width,this.width*0.5);
+			shape.graphics.drawEllipse (0,0,this.width,this.width*0.5);
+			shape.x = x;
+			shape.y = y;
 			shape.graphics.endFill ();
 			return shape;
 		}
