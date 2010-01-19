@@ -6,7 +6,6 @@
 	import flash.net.URLRequest;
 	import flash.system.ApplicationDomain;
 	import flash.text.Font;
-	import flash.utils.getQualifiedClassName;
 
 	/**
 	 *  例子：
@@ -65,7 +64,7 @@
 		/**
 		 * 字体文件中第一个字体标识名称
 		 */		
-		private var fontEnNameAry:Array = new Array();
+		private static var fontEnNameAry:Array = new Array();
 
 		/**
 		 * 已经load完成的字体个数 
@@ -95,22 +94,24 @@
 		 * 
 		 */
 		public function loadFontSwf():void {
+			
 			var ary:Array = this.fontNameAry;
 			if (ary != null) {
-			 	var i:int = this.loadCmpFontNum;
-				var name:String = ary[i] as String;
-				if (name != null && name.length > 0) {
-					//字体对应swf文件路径
-					var swfName:String = SWF_FONT_ROOT_PATH + name + SWF_EXT_NAME;
-					try {
-						var loader:Loader = new Loader();
-						var cli:LoaderInfo;
-						loader.contentLoaderInfo.addEventListener(Event.COMPLETE,handlerLoadFontSwfComplete);
-						loader.load(new URLRequest(swfName));
-					} catch (error:Error) {
-						trace("找不到字体swf文件:" + swfName);
-					}	
-				}
+				 	var i:int = this.loadCmpFontNum;
+					var name:String = ary[i] as String;
+					if (name != null && name.length > 0) {
+						//字体对应swf文件路径
+						var swfName:String = SWF_FONT_ROOT_PATH + name + SWF_EXT_NAME;
+						try {
+							var loader:Loader = new Loader();
+							var cli:LoaderInfo;
+							loader.contentLoaderInfo.addEventListener(Event.COMPLETE,handlerLoadFontSwfComplete);
+							loader.load(new URLRequest(swfName));
+						} catch (error:Error) {
+							trace("找不到字体swf文件:" + swfName);
+						}	
+					}
+				 
 			}
 		}
 		
@@ -121,6 +122,7 @@
 		 * 
 		 */		
 		function handlerLoadFontSwfComplete(event:Event):void {
+			
 			var info:LoaderInfo = event.currentTarget as LoaderInfo;
 			var domain:ApplicationDomain = info.applicationDomain;
 			this.domainAry.push(domain);
@@ -133,47 +135,31 @@
 			}
 		}
 		
-		/**
-		 * 通过字体类名得到字体的真实名称 
-		 * @param name
-		 * @return 
-		 * 
-		 */		
-		public function findFontByName(name:String):String{
-			return this.fontEnNameAry[name] as String;
+		public static function findFontByName(name:String):String{
+			return EmbedFonts.fontEnNameAry[name] as String;
 		}
 		
 		/**
-		 * 注册字体
+		 * 注册字体 
 		 * 
 		 */		
 		private function registerFont():void {
 			var ary:Array = this.fontNameAry;
-			if(ary != null){
-				for (var i:int =0; i<ary.length; i++) {
-					var name:String = ary[i] as String;
-					if (name != null && name.length > 0) {
-						try {
-							var domain:ApplicationDomain = this.domainAry[i] as ApplicationDomain;
-							var fontLibrary:Class = domain.getDefinition(name) as Class;
-							Font.registerFont(fontLibrary);
-						} catch (error:Error) {
-							trace("找不到"+SWF_FONT_ROOT_PATH + name + SWF_EXT_NAME+"中的字体类:" + name);
-						}
+			for (var i:int =0; i<ary.length; i++) {
+				var name:String = ary[i] as String;
+				if (name != null && name.length > 0) {
+					try {
+						var domain:ApplicationDomain = this.domainAry[i] as ApplicationDomain;
+						var fontLibrary:Class = domain.getDefinition(name) as Class;
+						Font.registerFont(fontLibrary);
+						var embeddedFonts:Array = Font.enumerateFonts(false);
+						var font:Font = embeddedFonts[embeddedFonts.length -1] as Font;
+						EmbedFonts.fontEnNameAry[name] = font.fontName;
+					} catch (error:Error) {
+						trace("找不到"+SWF_FONT_ROOT_PATH + name + SWF_EXT_NAME+"中的字体类:" + name);
 					}
-				}	
-			}
-			
-			//把字体类名称关联字体的真实名称
-			var fary:Array = Font.enumerateFonts(false);
-			for(var j:int = 0;j < fary.length;j ++){
-				var f:Font = fary[j] as Font;
-				var cname:String = getQualifiedClassName(f);
-				var fname:String = f.fontName;
-				if(cname != null && fname != null){
-					this.fontEnNameAry[cname] = fname;
 				}
-			}
+			}			
 			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
 
