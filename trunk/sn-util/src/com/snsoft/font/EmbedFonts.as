@@ -3,6 +3,7 @@
 	import flash.display.LoaderInfo;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.IOErrorEvent;
 	import flash.net.URLRequest;
 	import flash.system.ApplicationDomain;
 	import flash.text.Font;
@@ -10,29 +11,28 @@
 	/**
 	 *  例子：
 	   	import com.snsoft.font.EmbedFonts;
-
-		var ef:EmbedFonts = new EmbedFonts("SimHei","STXihei");
+		import com.snsoft.font.EmbedFontsEvent;
 		
+		var ef:EmbedFonts = new EmbedFonts("SimHei","STXihei","YouYuan","MicrosoftYaHei","asd");
 		ef.loadFontSwf();
-		
 		ef.addEventListener(Event.COMPLETE,handler);
-		
+		ef.addEventListener(EmbedFontsEvent.IO_ERROR,handlerIOError);
+		 
 		function handler(e:Event){
-			var _embeddedFonts:Array = new Array();
-			_embeddedFonts = Font.enumerateFonts(false);
-			trace(_embeddedFonts[0].fontName);
-			trace(_embeddedFonts[1].fontName);
-			trace(_embeddedFonts.length);
 			
-			var tf = new TextFormat("STXihei",12,0xFF0000);
+			var tf = new TextFormat(EmbedFonts.findFontByName("MicrosoftYaHei"),40,0x000000);
 			var tx:TextField=new TextField();
 			tx.embedFonts = true;
 			tx.antiAliasType = AntiAliasType.ADVANCED;
-			tx.gridFitType = GridFitType.SUBPIXEL;
+			tx.gridFitType = GridFitType.PIXEL;
 			tx.text = "你好";
 			tx.setTextFormat(tf);
 			addChild(tx);
-		} 
+		}
+		
+		function handlerIOError(e:EmbedFontsEvent):void{
+			trace("ioerror");
+		}
 	 */
 
 	/**
@@ -97,22 +97,31 @@
 			
 			var ary:Array = this.fontNameAry;
 			if (ary != null) {
-				 	var i:int = this.loadCmpFontNum;
-					var name:String = ary[i] as String;
-					if (name != null && name.length > 0) {
-						//字体对应swf文件路径
-						var swfName:String = SWF_FONT_ROOT_PATH + name + SWF_EXT_NAME;
-						try {
-							var loader:Loader = new Loader();
-							var cli:LoaderInfo;
-							loader.contentLoaderInfo.addEventListener(Event.COMPLETE,handlerLoadFontSwfComplete);
-							loader.load(new URLRequest(swfName));
-						} catch (error:Error) {
-							trace("找不到字体swf文件:" + swfName);
-						}	
-					}
-				 
+			 	var i:int = this.loadCmpFontNum;
+				var name:String = ary[i] as String;
+				if (name != null && name.length > 0) {
+					//字体对应swf文件路径
+					var swfName:String = SWF_FONT_ROOT_PATH + name + SWF_EXT_NAME;
+					try {
+						var loader:Loader = new Loader();
+						var cli:LoaderInfo;
+						loader.contentLoaderInfo.addEventListener(Event.COMPLETE,handlerLoadFontSwfComplete);
+						loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,handlerLoadFontSwfIoError);
+						loader.load(new URLRequest(swfName));
+					} catch (error:Error) {
+						trace("找不到字体swf文件:" + swfName);
+					}	
+				}
 			}
+		}
+		
+		/**
+		 * 读取字体文件出错 
+		 * @param e
+		 * 
+		 */		
+		function handlerLoadFontSwfIoError(e:Event):void{
+			this.dispatchEvent(new EmbedFontsEvent(EmbedFontsEvent.IO_ERROR));
 		}
 		
 		
@@ -163,7 +172,7 @@
 			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
 
-
+		
 
 		/**
 		 * get _fontNameAry
