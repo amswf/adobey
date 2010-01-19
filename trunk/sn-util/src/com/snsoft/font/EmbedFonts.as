@@ -138,6 +138,7 @@
 		 * 
 		 */		
 		function handlerLoadFontSwfComplete(event:Event):void {
+			trace("成功加载字体swf:" + currentLoadSwfName);
 			var info:LoaderInfo = event.currentTarget as LoaderInfo;
 			var domain:ApplicationDomain = info.applicationDomain;
 			this.domainAry.push(domain);
