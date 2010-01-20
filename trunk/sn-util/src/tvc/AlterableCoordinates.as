@@ -73,10 +73,7 @@
 		 lp:String
 		 ):void {
 
-			fontArray["黑体"] = "MicrosoftYaHei";
-			fontArray["华文细黑"] = "MicrosoftYaHei";
-			fontArray["幼圆"] = "MicrosoftYaHei";
-			fontArray["微软雅黑"] = "MicrosoftYaHei";
+			
 
 			this.X_CoordinateAxisLength = xcal;
 			this.Y_CoordinateAxisLength = ycal;
@@ -241,24 +238,35 @@
 
 			moviec.addChild(text_x);
 		}
+		
+		/**
+		 * 
+		 */
+		private static function setFontArray():void{
+			fontArray["黑体"] = "MicrosoftYaHei";
+			fontArray["华文细黑"] = "MicrosoftYaHei";
+			fontArray["幼圆"] = "MicrosoftYaHei";
+			fontArray["微软雅黑"] = "MicrosoftYaHei";
+		}
 
 		/**
 		 * 
 		 */
-		public static function setAntiAliasType(tfd:TextField,fontName:String):void {
-			//trace("setAntiAliasType");
+		public static function setAntiAliasType(tfd:TextField,ftName:String):void {
+			setFontArray();
+			trace("setAntiAliasType");
 			var t:TextField=tfd;
 			var tft:TextFormat=t.getTextFormat();
-			//trace(tft.font);
-			var fontEnName:String=fontName;
-			//trace(fontEnName);
+			trace(tft.font);
+			var fontEnName:String=ftName;
+			trace(fontEnName);
 			if (AlterableCoordinates.isInFont) {
 				if (fontEnName!=null) {
 					fontEnName=fontArray[fontEnName];
 					if (fontEnName!=null) {
 						fontEnName=EmbedFonts.findFontByName(fontEnName);
 						if (fontEnName!=null) {
-							//trace(fontEnName);
+							trace(fontEnName);
 							tft.font=fontEnName;
 							t.setTextFormat(tft);
 							t.antiAliasType=AntiAliasType.ADVANCED;
@@ -269,7 +277,7 @@
 				}
 			}
 			else {
-				tft.font=fontName;
+				tft.font=ftName;
 				t.setTextFormat(tft);
 			}
 		}
