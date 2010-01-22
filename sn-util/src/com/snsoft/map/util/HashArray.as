@@ -4,6 +4,7 @@
 	{
 		
 		private static var HASH_DEFAULT_VALUE = "-1";
+		
 		private var listAry:Array = new Array();
 		
 		private var hashAry:Array = new Array();
