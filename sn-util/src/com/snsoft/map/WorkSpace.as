@@ -10,10 +10,17 @@
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.geom.ColorTransform;
 	import flash.geom.Point;
+	import flash.geom.Transform;
 	import flash.ui.Mouse;
 	import flash.utils.getDefinitionByName;
 	
+	/**
+	 * 工作区 
+	 * @author Administrator
+	 * 
+	 */	
 	public class WorkSpace extends UIComponent {
 		//碰撞检测的坐标差值域
 		private static var hitTestDValue:Point = new Point(5,5);
@@ -26,6 +33,9 @@
 		
 		//点的显示MC
 		private static var POINT_SKIN:String = "PointSkin";
+		
+		//红点的显示MC
+		private static var POINT_RED_SKIN:String = "PointRedSkin";
 		
 		//背景MC
 		private static var BASE_BACK:String = "BaseBack";
@@ -178,8 +188,11 @@
 			//获得碰撞点，和现有点非常接近时，就定位到它。
 			var pht:Point = this.findHitPoint(p);
 			var sign = true;
-			if(this.startPoint != null && pht != null){
-				if(pht.equals(this.startPoint)){
+			if(pht != null){
+				var cpafp:Point = this.currentPointAry.findByIndex(0) as Point;
+				var phn:String = this.createPointHashName(pht);
+				var hp:Point = this.currentPointAry.find(phn) as Point;
+				if(cpafp != null && hp == null && !cpafp.equals(pht)){
 					sign = false;
 				}
 			}
@@ -189,28 +202,25 @@
 				}
 				
 				//创建要显示的点皮肤
-				var ps:MovieClip = this.createPointSkin(p);
+				var ps:MovieClip = this.createPointSkin(p,POINT_RED_SKIN);
 				
 				//把点皮肤显示出来
 				this.pointSkinsMC.addChild(ps);
 				
-				//画笔为开始状态时
-				if (this.penState == PEN_STATE_START) {
+				
+				if (this.penState == PEN_STATE_START) {//画笔为开始状态时
 					this.currentPointAry = new HashArray();
 					
 					//设置画笔状态
 					this.penState = PEN_STATE_DOING;
 				}
-				else if (this.penState == PEN_STATE_DOING) {
+				else if (this.penState == PEN_STATE_DOING) {//画笔结束时
 					var mu:MapUtil = new MapUtil();
 					var shape:Shape = mu.drawLine(this.startPoint,p,0xff0000);
 					var line:MovieClip = new MovieClip();
 					line.addChild(shape);
 					this.linesMC.addChild(line);
 				}
-				
-				
-				
 				
 				//添加点到碰撞检测中
 				this.hitTest.addPoint(p);
@@ -224,32 +234,58 @@
 				//闭合链
 				if(this.currentPointAry.length > 2){
 					//放入链的数组中
-					var fp:Point = this.findPointFormHashArrayByIndex(this.currentPointAry,0);
+					var fp:Point = this.currentPointAry.findByIndex(0) as Point;
 					if(fp != null && fp.equals(p)){
 						this.pointAryAry.push(this.currentPointAry);
 						this.penState = PEN_STATE_START;
 						this.startPoint = new Point(0,0);
 						tracePointAryAry();
+						changePointSkinAndLineSkinColor();
 					}
 					//
 				}
 			}
 		}
 		
-		private function findPointFormHashArrayByIndex(hashAry:HashArray,i:int):Point{
-			var cpa:HashArray = hashAry;
-			if (cpa != null && cpa.length >= 0) {
-				var ca:Array = cpa.getArray();
-				if(ca != null && 0 <= i && i < cpa.length){
-					var fp:Point =  ca[i] as Point;
-					if(fp != null){
-						return fp;
-					}
-				}
+		/**
+		 * 改变已画出的点的颜色 
+		 * @param color
+		 * 
+		 */		
+		private function changePointSkinAndLineSkinColor():void{
+			var lmc:MovieClip = this.linesMC;
+			var pmc:MovieClip = this.pointSkinsMC;
+			var pmcnc:int = pmc.numChildren;
+			for(var i:int =0;i<pmcnc;i++){
+				var mc:MovieClip = pmc.getChildAt(i) as MovieClip;
+				var nmc:MovieClip = this.createPointSkin(new Point(mc.x,mc.y),POINT_SKIN);
+				pmc.addChild(nmc);
 			}
-			return null;
+			
+			for(var i:int =0;i<pmcnc;i++){
+				pmc.removeChildAt(0);
+			}
+			for(var i:int =0;i<lmc.numChildren;i++){
+				var mc:MovieClip = lmc.getChildAt(i) as MovieClip;
+				this.setPointSkinColor(mc);
+				mc = nmc;
+			}
 		}
 		
+		private function setPointSkinColor(mc:MovieClip):void{
+			var trfm:Transform = mc.transform;
+			var ctrfm:ColorTransform = trfm.colorTransform;
+			ctrfm.alphaMultiplier = 1;
+			ctrfm.alphaOffset = 255;
+			ctrfm.blueMultiplier = 1;
+			ctrfm.blueOffset = -255;
+			ctrfm.greenMultiplier = 1;
+			ctrfm.greenOffset = -255;
+			ctrfm.redMultiplier = 1;
+			ctrfm.redOffset = -255;
+			trfm.colorTransform = ctrfm;
+			mc.transform = trfm;
+		}	
 		
 		/**
 		 * 把点放到hash表中 
@@ -337,8 +373,8 @@
 		 * @return 
 		 * 
 		 */
-		private function createPointSkin(point:Point):MovieClip {
-			var pointSkin:MovieClip = this.createSkinByName(POINT_SKIN);
+		private function createPointSkin(point:Point,skin:String):MovieClip {
+			var pointSkin:MovieClip = this.createSkinByName(skin);
 			this.setSpriteXY(pointSkin,point);
 			return pointSkin;
 		}
