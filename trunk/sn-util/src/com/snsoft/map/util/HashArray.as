@@ -59,6 +59,19 @@
 		}
 		
 		/**
+		 * 通过下标查找对象 
+		 * @param id
+		 * @return 
+		 * 
+		 */		
+		public function findByIndex(i:int):Object{
+			if(i>=0 && i<listAry.length){
+				return listAry[i];
+			}
+			return null;
+		}
+		
+		/**
 		 * 查找下标 
 		 * @param name
 		 * @return 
