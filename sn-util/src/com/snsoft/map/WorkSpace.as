@@ -241,6 +241,9 @@
 						this.startPoint = new Point(0,0);
 						tracePointAryAry();
 						changePointSkinAndLineSkinColor();
+						var mu:MapUtil = new MapUtil();
+						var mapArea:Shape = mu.drawFill(0xff0000,0x00ff00,this.currentPointAry.getArray());
+						this.mapsMC.addChild(mapArea);
 					}
 					//
 				}
