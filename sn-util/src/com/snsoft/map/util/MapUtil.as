@@ -117,5 +117,25 @@
 			gra.lineTo(p2.x,p2.y);
 			return shape;
 		}
+		
+		/**
+		 *  
+		 * @param mc
+		 * 
+		 */		
+		private function setPointSkinColor(mc:MovieClip,color:uint,alpha:Number):void{
+			var trfm:Transform = mc.transform;
+			var ctrfm:ColorTransform = trfm.colorTransform;
+			ctrfm.alphaMultiplier = 1;
+			ctrfm.alphaOffset = 255;
+			ctrfm.blueMultiplier = 1;
+			ctrfm.blueOffset = -255;
+			ctrfm.greenMultiplier = 1;
+			ctrfm.greenOffset = -255;
+			ctrfm.redMultiplier = 1;
+			ctrfm.redOffset = -255;
+			trfm.colorTransform = ctrfm;
+			mc.transform = trfm;
+		}	
 	}
 }
