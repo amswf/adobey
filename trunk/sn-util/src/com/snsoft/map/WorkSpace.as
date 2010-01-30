@@ -245,7 +245,6 @@
 						var mapArea:Shape = mu.drawFill(0xff0000,0x00ff00,this.currentPointAry.getArray());
 						this.mapsMC.addChild(mapArea);
 					}
-					//
 				}
 			}
 		}
@@ -275,6 +274,12 @@
 			}
 		}
 		
+		
+		/**
+		 * 设置mc的样式高级属性 
+		 * @param mc
+		 * 
+		 */		
 		private function setPointSkinColor(mc:MovieClip):void{
 			var trfm:Transform = mc.transform;
 			var ctrfm:ColorTransform = trfm.colorTransform;
@@ -595,6 +600,11 @@
 			return hary;
 		}
 		
+		
+		/**
+		 * 测试帮助 
+		 * 
+		 */		
 		private function tracePointAryAry():void{
 			for(var i:int =0;i<this.pointAryAry.length;i++){
 				var ha:HashArray = this.pointAryAry[i] as HashArray;
