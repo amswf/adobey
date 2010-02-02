@@ -21,12 +21,12 @@ package com.snsoft.map
 		/**
 		 * 点的颜色 
 		 */		
-		private var pointColor:uint;
+		private var _pointColor:uint;
 		
 		/**
 		 * 线的颜色 
 		 */		
-		private var lineColor:uint;
+		private var _lineColor:uint;
 		
 		//线的粗细		
 		private static var THICKNESS:uint = 0;
@@ -34,35 +34,70 @@ package com.snsoft.map
 		//画点的填充色
 		private static var POINT_FILL_COLOR:uint = 0xffffff;
 		
+		//画点半径
+		private static var POINT_R:uint = 2;
 		
-		public function MapLine() {
-			super();
-		}
 		
-		public function MapLine(startPoint:Point,endPoint:Point,pointColor:uint=0x000000,lineColor:uint=0x000000) {
+		public function MapLine(startPoint:Point=null,endPoint:Point=null,pointColor:uint=0x000000,lineColor:uint=0x000000) {
+			//初始化参数
+			this.startPoint = startPoint;
+			this.endPoint = endPoint;
+			this.pointColor = pointColor;
+			this.lineColor = lineColor;
+			
+			//基类方法
 			super();
 		}
 
-		public function refresh(){
+		/**
+		 * 刷新显示 
+		 * 
+		 */		
+
+		public function get lineColor():uint
+		{
+			return _lineColor;
+		}
+
+		public function set lineColor(value:uint):void
+		{
+			_lineColor = value;
+		}
+
+		public function get pointColor():uint
+		{
+			return _pointColor;
+		}
+
+		public function set pointColor(value:uint):void
+		{
+			_pointColor = value;
+		}
+
+		public function refresh():void{
 			this.deleteAllChildMC();
 			this.draw();
 		}
 		
 		/**
-		 * 
+		 * 画线和点
 		 * @return 
 		 * 
 		 */		
-		public function draw(){
+		private function draw():void{
 			var l:Sprite = this.drawLine(this.startPoint,this.endPoint,this.lineColor);
 			this.addChild(l);
-			var s:Sprite = this.drawPoint(this.startPoint,this.pointColor);
+			var s:Sprite = this.drawPoint(this.startPoint,POINT_R,this.pointColor);
 			this.addChild(s);
-			var e:Sprite = this.drawPoint(this.endPoint,this.pointColor);
+			var e:Sprite = this.drawPoint(this.endPoint,POINT_R,this.pointColor);
 			this.addChild(e);
 		}
 		
-		public function deleteAllChildMC(){
+		/**
+		 * 删除所有字MC 
+		 * 
+		 */		
+		private function deleteAllChildMC():void{
 			while(this.numChildren >0){
 				this.removeChildAt(0);
 			}
@@ -73,14 +108,14 @@ package com.snsoft.map
 		 * @return 
 		 * 
 		 */		
-		public function drawPoint(point:Point,r:uint,color:uint):Sprite{
+		private function drawPoint(point:Point,r:uint,color:uint):Sprite{
 			var sprite:Sprite = new Sprite();
 			var shape:Shape = new Shape();
 			sprite.addChild(shape);
 			var gra:Graphics = shape.graphics;
 			gra.lineStyle(THICKNESS,color);
 			gra.beginFill(POINT_FILL_COLOR,1);
-			gra.drawCircle(point.x - r,point.y -r,r);
+			gra.drawCircle(point.x - r/2,point.y -r/2,r);
 			gra.endFill();
 			return sprite;
 		}
@@ -90,7 +125,7 @@ package com.snsoft.map
 		 * @return 
 		 * 
 		 */		
-		public function drawLine(startPoint:Point,endPoint:Point,color:uint):Sprite{
+		private function drawLine(startPoint:Point,endPoint:Point,color:uint):Sprite{
 			var sprite:Sprite = new Sprite();
 			var shape:Shape = new Shape();
 			sprite.addChild(shape);
