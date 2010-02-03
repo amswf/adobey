@@ -1,10 +1,10 @@
 package com.snsoft.map
 {
-	import flash.display.MovieClip;
+	import fl.core.UIComponent;
 	
-	public class MapMovieClip extends MovieClip
+	public class MapComponent extends UIComponent
 	{
-		public function MapMovieClip()
+		public function MapComponent()
 		{
 			super();
 		}
@@ -28,7 +28,7 @@ package com.snsoft.map
 		 * 画图，需要重写此方法。 
 		 * 
 		 */		
-		protected function draw():void{
+		override protected function draw():void{
 			trace("MapMovieClip.draw");
 		}
 	}

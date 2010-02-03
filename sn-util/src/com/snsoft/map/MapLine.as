@@ -8,7 +8,7 @@ package com.snsoft.map
 	 * @author Administrator
 	 * 
 	 */	
-	public class MapLine extends MapMovieClip
+	public class MapLine extends MapComponent
 	{
 		/**
 		 * 开始点 
@@ -33,7 +33,7 @@ package com.snsoft.map
 		/**
 		 * 填充色 
 		 */		
-		private var pointFillColor:uint;
+		private var _pointFillColor:uint;
 		
 		public function MapLine(startPoint:Point=null,endPoint:Point=null,pointColor:uint=0x000000,lineColor:uint=0x000000,pointFillColor:uint = 0xffffff) {
 			//初始化参数
@@ -53,12 +53,14 @@ package com.snsoft.map
 		 * 
 		 */		
 		override protected function draw():void{
-			var l:Sprite = MapDraw.drawLine(this.startPoint,this.endPoint,0,this.lineColor);
-			this.addChild(l);
-			var s:Sprite = MapDraw.drawPoint(this.startPoint,0,2,this.pointColor,this.pointFillColor);
-			this.addChild(s);
-			var e:Sprite = MapDraw.drawPoint(this.endPoint,0,2,this.pointColor,this.pointFillColor);
-			this.addChild(e);
+			if(this.startPoint != null && this.endPoint != null){
+				var l:Sprite = MapDraw.drawLine(this.startPoint,this.endPoint,0,this.lineColor);
+				this.addChild(l);
+				var s:Sprite = MapDraw.drawPoint(this.startPoint,0,2,this.pointColor,this.pointFillColor);
+				this.addChild(s);
+				var e:Sprite = MapDraw.drawPoint(this.endPoint,0,2,this.pointColor,this.pointFillColor);
+				this.addChild(e);
+			}
 		}
 	
 		public function get lineColor():uint
@@ -120,6 +122,17 @@ package com.snsoft.map
 		{
 			_startPoint = value;
 		}
+
+		public function get pointFillColor():uint
+		{
+			return _pointFillColor;
+		}
+
+		public function set pointFillColor(value:uint):void
+		{
+			_pointFillColor = value;
+		}
+
 
 	}
 }

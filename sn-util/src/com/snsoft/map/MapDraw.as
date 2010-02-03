@@ -30,7 +30,7 @@ package com.snsoft.map
 			var gra:Graphics = shape.graphics;
 			gra.lineStyle(thikness,lineColor);
 			gra.beginFill(fillColor,1);
-			gra.drawCircle(point.x - r/2,point.y -r/2,r);
+			gra.drawCircle(point.x,point.y,r);
 			gra.endFill();
 			return sprite;
 		}

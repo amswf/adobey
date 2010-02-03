@@ -1,7 +1,10 @@
 ﻿package com.snsoft.map.util{
 	import flash.display.Graphics;
+	import flash.display.MovieClip;
 	import flash.display.Shape;
+	import flash.geom.ColorTransform;
 	import flash.geom.Point;
+	import flash.geom.Transform;
 	
 	/**
 	 * 生成地图工具类 
@@ -12,6 +15,17 @@
 		
 		public function MapUtil() {
 			
+		}
+		
+		/**
+		 * 获得一个点的哈希名字 key 
+		 * @param point
+		 * @return 
+		 * 
+		 */		
+		public static function createPointHashName(point:Point):String {
+			var str:String = String(point.x) + "|" + String(point.y);
+			return str;
 		}
 		
 		/**
@@ -28,11 +42,11 @@
 			
 			if (ipaa != null && ospa != null) {
 				
-				for (var i = 0; i<ipaa.length; i++) {
+				for (var i:int = 0; i<ipaa.length; i++) {
 					var ipa:Array = ipaa[i] as Array;
 					var hipa:Array = new Array();
 					if (ipa != null) {
-						for (var j=0; j<ipa.length; j++) {
+						for (var j:int=0; j<ipa.length; j++) {
 							var point:Point = ipa[j] as Point;
 							if (point != null) {
 								if (! this.concludeIsInShape(point,ospa)) {
@@ -54,7 +68,7 @@
 		 * 
 		 */
 		public function concludeIsInShape(q:Point,pointArray:Array):Boolean {
-			var sign = false;
+			var sign:Boolean = false;
 			if(pointArray != null && q != null){
 				var shape:Shape = this.drawFill(0x000000,0x000000,pointArray);
 				if(shape.hitTestPoint(q.x,q.y)){
@@ -85,7 +99,7 @@
 						
 						var pStart:Point = pointArray[0];
 						gra.moveTo(pStart.x,pStart.y);
-						for (var i=1; i<pointArray.length; i++) {
+						for (var i:int=1; i<pointArray.length; i++) {
 							var p:Point = pointArray[i];
 							gra.lineTo(p.x,p.y);
 						}
