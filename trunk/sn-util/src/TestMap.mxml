@@ -4,6 +4,8 @@
 			   xmlns:mx="library://ns.adobe.com/flex/halo" minWidth="1024" minHeight="768">
 	 <fx:Script>
 		 <![CDATA[
+			 import com.snsoft.map.Pen;
+			 
 			 
 			 private function init():void{
 				 import com.snsoft.map.MapLine;
@@ -11,6 +13,23 @@
 				 ml.refresh();
 				 ml.lineColor = 0x000000;
 				 ml.pointColor = 0x000000;
+				 
+				 
+				 import com.snsoft.map.MapArea;
+				 
+				 var paa:Array = new Array();
+				 
+				 var pa:Array = new Array();
+				 pa.push(new Point(30,30));
+				 pa.push(new Point(50,70));
+				 pa.push(new Point(60,70));
+				 pa.push(new Point(50,40));
+				 pa.push(new Point(30,30));
+				 
+				 paa.push(pa);
+				 
+				 var ma:MapArea = new MapArea(paa,0x000000,0xff0000);	
+				 var pen:Pen = new Pen();
 			 }
 		 ]]>
 	 </fx:Script>
