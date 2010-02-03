@@ -3,7 +3,7 @@
 	public class HashArray
 	{
 		
-		private static var HASH_DEFAULT_VALUE = "-1";
+		private static var HASH_DEFAULT_VALUE:String = "-1";
 		
 		private var listAry:Array = new Array();
 		
@@ -85,6 +85,7 @@
 			}
 			return -1;
 		}
+		
 		
 		/**
 		 * 返回hash的Array 

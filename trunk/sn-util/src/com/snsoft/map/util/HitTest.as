@@ -97,10 +97,8 @@
 							for(var k:int = 0;k<pary.length;k ++){
 								var op:Point = pary[k] as Point;
 								if(op != null){
-									if(Math.abs(op.x -point.x) <= Math.abs(dvalue.x)){
-										if(Math.abs(op.y -point.y) <= Math.abs(dvalue.y)){
-											return op;
-										}
+									if(this.isHit2Point(op,point,dvalue)){
+										return op;
 									}
 								}
 							}
@@ -110,7 +108,24 @@
 			}
 			return null;
 		}
-
+		
+		/**
+		 * 测试两个点是否碰撞 
+		 * @param p1 测试点
+		 * @param p2 测试点
+		 * @param dp 差值
+		 * @return Boolean
+		 * 
+		 */		
+		public function isHit2Point(p1:Point,p2:Point,dp:Point):Boolean{
+			if(Math.abs(p1.x -p2.x) <= Math.abs(dp.x)){
+				if(Math.abs(p1.y -p2.y) <= Math.abs(dp.y)){
+					return true;
+				}
+			}
+			return false;
+		}
+		
 		/**
 		 * 获得矩阵存放坐标
 		 * @param point

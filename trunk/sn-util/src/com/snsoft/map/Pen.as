@@ -10,31 +10,44 @@ package com.snsoft.map
 	 * @author Administrator
 	 * 
 	 */	
-	public class Pen extends MapMovieClip
+	public class Pen extends MapComponent
 	{
 		
+		
+		//闭合时皮肤
+		public static const PEN_LINE_CLOSE_SKIN:String = "PenLineCloseSkin";
+		
+		//不能画点时皮肤
+		public static const PEN_LINE_UNABLE_SKIN:String = "PenLineUnableSkin";
+		
 		//画笔遇到已存在点时，皮夫MC的类名。
-		private static var PEN_SKIN_LINE_POINT:String = "PenLinePointSkin";
+		public static const PEN_LINE_POINT_SKIN:String = "PenLinePointSkin";
 		
 		//画笔默认，皮夫MC的类名。
-		private static var PEN_SKIN_DEFAULT:String = "PenLineSkin";
+		public static const PEN_LINE_DEFAULT_SKIN:String = "PenLineDefaultSkin";
 		
 		//画笔状态：起始
-		private static var PEN_STATE_START:int = 0;
+		public static const PEN_STATE_START:int = 0;
 		
 		//画笔状态：正在画
-		private static var PEN_STATE_DOING:int = 1;
+		public static const PEN_STATE_DOING:int = 1;
 		
 		//画笔皮肤
-		private var _penSkin:String = PEN_SKIN_DEFAULT;
+		private var _penSkin:String = PEN_LINE_DEFAULT_SKIN;
 		
 		//画笔状态
 		private var _penState:int = PEN_STATE_START;
+		
+		//是否能画下一个点
+		private var _isCanDraw:Boolean = true;
 		
 		
 		public function Pen(penState:int = 0 ,penSkin:String = "PenLineSkin")
 		{
 			super();
+			this.mouseEnabled = false;
+			this.buttonMode = false;
+			this.mouseChildren = false;
 		}
 		
 		override protected function draw():void
@@ -61,6 +74,16 @@ package com.snsoft.map
 		public function set penState(value:int):void
 		{
 			_penState = value;
+		}
+
+		public function get isCanDraw():Boolean
+		{
+			return _isCanDraw;
+		}
+
+		public function set isCanDraw(value:Boolean):void
+		{
+			_isCanDraw = value;
 		}
 
 

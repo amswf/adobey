@@ -9,7 +9,7 @@ package com.snsoft.map
 	 * @author Administrator
 	 * 
 	 */	
-	public class MapArea extends MapMovieClip
+	public class MapArea extends MapComponent
 	{
 		
 		//线色
