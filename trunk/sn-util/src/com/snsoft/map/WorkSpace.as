@@ -138,16 +138,16 @@
 			var cpa:HashArray = this.currentPointAry;
 			
 			//画笔状态
-			if(this.pen.penState == Pen.PEN_STATE_START){
+			if(this.pen.penState == Pen.PEN_STATE_START){//画笔状态是开始画：起点未画，末点未画
 				this.pen.penState = Pen.PEN_STATE_DOING;
 			}
-			else if(this.pen.penState == Pen.PEN_STATE_DOING) {
+			else if(this.pen.penState == Pen.PEN_STATE_DOING) {//画笔状态是正在画：起点画完，末点未画
 				mousep = this.suggest.endPoint;
 			}
 			
 			//判断闭合
 			var isClose:Boolean = false;
-			if(cpa.length >=3){
+			if(cpa.length >=3){//最少3个点组成一个区块
 				var firstp:Point = cpa.findByIndex(0)as Point;
 				if(hitTest.isHit2Point(mousep,firstp,this.hitTestDValue)){
 					isClose = true;
@@ -163,14 +163,17 @@
 			
 			//提示
 			if(pen.isCanDraw){//画笔状态，如果能继续画
+				//把画线添加到线层
 				var ml:MapLine = new MapLine(this.suggest.startPoint,this.suggest.endPoint,VIEW_COLOR,VIEW_COLOR,VIEW_FILL_COLOR);
 				this.linesLayer.addChild(ml);
 				
-				var keyName:String = MapUtil.createPointHashName(mousep);
-				this.currentPointAry.put(keyName,mousep);
-				this.hitTest.addPoint(mousep);
+				var keyName:String = MapUtil.createPointHashName(mousep);//获得当前所画点的hash名称
+				this.currentPointAry.put(keyName,mousep);//把点添加到当前链中
+				this.hitTest.addPoint(mousep);//把点注册到碰撞检测
 				
 				if(isClose){//如果当前链已关闭
+					
+					//初始化提示 view 和  画笔 pen
 					this.pen.penState = Pen.PEN_STATE_START;
 					this.suggest.startPoint = null;
 					this.suggest.endPoint = null;
@@ -205,10 +208,13 @@
 		 * 
 		 */		
 		private function handlerMouseMoveWorkSpase(e:Event):void{
+			
+			//获得当前鼠标坐标，给画笔置位置
 			var mousep:Point = new Point(this.mouseX,this.mouseY);
 			this.pen.x = mousep.x;
 			this.pen.y = mousep.y;
 			
+			//获得碰撞点
 			var pht:Point = this.hitTest.findPoint(mousep,HIT_DVALUE_POINT);
 			var cpa:HashArray = this.currentPointAry;
 			
@@ -241,30 +247,30 @@
 				isHit = true;
 			}
 			
-			if(isClose) {
+			if(isClose) {//如果闭合链了
 				mousep = cpap;
 				pen.isCanDraw = true;
 				this.pen.penSkin = Pen.PEN_LINE_CLOSE_SKIN;
 				this.pen.refresh();
 			}
-			else if(isInCpa){
+			else if(isInCpa){//如果在当前链上，且不闭合
 				this.pen.isCanDraw = false;
 				this.pen.penSkin = Pen.PEN_LINE_UNABLE_SKIN;
 				this.pen.refresh();
 			}
-			else if (isHit) {
+			else if (isHit) {//如果碰撞了，但不在当前链上
 				mousep = pht;
 				pen.isCanDraw = true;
 				this.pen.penSkin = Pen.PEN_LINE_POINT_SKIN;
 				this.pen.refresh();
 			}
-			else {
+			else {//其它情况
 				pen.isCanDraw = true;
 				this.pen.penSkin = Pen.PEN_LINE_DEFAULT_SKIN;
 				this.pen.refresh();
 			}
 			
-			if(this.pen.penState == Pen.PEN_STATE_DOING){
+			if(this.pen.penState == Pen.PEN_STATE_DOING){//画笔状态是正在画：起点画完，末点未画
 				this.suggest.endPoint = mousep;
 				this.suggest.refresh();
 			}
