@@ -136,6 +136,7 @@
 		private function handerMouseClickWorkSpace(e:Event):void{
 			var mousep:Point = new Point(pen.x,pen.y);
 			var cpa:HashArray = this.currentPointAry;
+			
 			//画笔状态
 			if(this.pen.penState == Pen.PEN_STATE_START){
 				this.pen.penState = Pen.PEN_STATE_DOING;
@@ -144,11 +145,8 @@
 				mousep = this.suggest.endPoint;
 			}
 			
-			
-			
-			var isClose:Boolean = false;
-			
 			//判断闭合
+			var isClose:Boolean = false;
 			if(cpa.length >=3){
 				var firstp:Point = cpa.findByIndex(0)as Point;
 				if(hitTest.isHit2Point(mousep,firstp,this.hitTestDValue)){
@@ -156,7 +154,7 @@
 				}
 			}
 			
-			//判断是否碰撞
+			//判断是否与现有点碰撞
 			var isHit:Boolean = false;
 			var pht:Point = this.hitTest.findPoint(mousep,HIT_DVALUE_POINT);
 			if (pht != null) {
@@ -164,35 +162,36 @@
 			}
 			
 			//提示
-			if(pen.isCanDraw){
-				
+			if(pen.isCanDraw){//画笔状态，如果能继续画
 				var ml:MapLine = new MapLine(this.suggest.startPoint,this.suggest.endPoint,VIEW_COLOR,VIEW_COLOR,VIEW_FILL_COLOR);
 				this.linesLayer.addChild(ml);
 				
 				var keyName:String = MapUtil.createPointHashName(mousep);
 				this.currentPointAry.put(keyName,mousep);
 				this.hitTest.addPoint(mousep);
-				if(isClose){
+				
+				if(isClose){//如果当前链已关闭
 					this.pen.penState = Pen.PEN_STATE_START;
 					this.suggest.startPoint = null;
 					this.suggest.endPoint = null;
 					this.suggest.refresh();
 					
-					
+					//画区块
 					var paa:Array = new Array();
 					var pa:Array = cpa.getArray();
 					paa.push(pa);
-					
 					var ma:MapArea = new MapArea(paa,AREA_LINE_COLOR,AREA_FILL_COLOR);
 					ma.refresh();
 					this.mapsLayer.addChild(ma);
 					
+					//把当前链添加到链的数组中，并清空当前链
 					this.pointAryAry.push(cpa);
 					this.currentPointAry = new HashArray();
 					
+					//测试，最后删除本行
 					this.tracePointAryAry(this.pointAryAry);
 				}
-				else{
+				else{//如果当前链没有关闭
 					this.suggest.startPoint = mousep;
 					this.suggest.endPoint = mousep;
 					this.suggest.refresh();
