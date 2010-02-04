@@ -142,8 +142,6 @@
 			}
 			else if(this.pen.penState == Pen.PEN_STATE_DOING) {
 				mousep = this.suggest.endPoint;
-				var ml:MapLine = new MapLine(this.suggest.startPoint,this.suggest.endPoint,VIEW_COLOR,VIEW_COLOR,VIEW_FILL_COLOR);
-				this.linesLayer.addChild(ml);
 			}
 			
 			
@@ -161,14 +159,16 @@
 			//判断是否碰撞
 			var isHit:Boolean = false;
 			var pht:Point = this.hitTest.findPoint(mousep,HIT_DVALUE_POINT);
-			trace(mousep);
 			if (pht != null) {
-				trace("pht");
 				mousep = pht;
 			}
 			
 			//提示
 			if(pen.isCanDraw){
+				
+				var ml:MapLine = new MapLine(this.suggest.startPoint,this.suggest.endPoint,VIEW_COLOR,VIEW_COLOR,VIEW_FILL_COLOR);
+				this.linesLayer.addChild(ml);
+				
 				var keyName:String = MapUtil.createPointHashName(mousep);
 				this.currentPointAry.put(keyName,mousep);
 				this.hitTest.addPoint(mousep);
