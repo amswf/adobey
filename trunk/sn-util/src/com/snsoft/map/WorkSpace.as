@@ -62,6 +62,10 @@
 		
 		private static const LINE_FILL_COLOR:uint = 0xffffff;
 		
+		private static const AREA_LINE_COLOR:uint = 0x0000ff;
+		
+		private static const AREA_FILL_COLOR:uint = 0xffff00;
+		
 		private static const HIT_DVALUE_POINT:Point = new Point(4,4);
 		
 		/**
@@ -130,19 +134,23 @@
 		 * 
 		 */		
 		private function handerMouseClickWorkSpace(e:Event):void{
+			var mousep:Point = new Point(pen.x,pen.y);
+			
 			//点线
 			if(this.pen.penState == Pen.PEN_STATE_START){
 				this.pen.penState = Pen.PEN_STATE_DOING;
 			}
 			else if(this.pen.penState == Pen.PEN_STATE_DOING) {
+				mousep = this.suggest.endPoint;
 				var ml:MapLine = new MapLine(this.suggest.startPoint,this.suggest.endPoint,VIEW_COLOR,VIEW_COLOR,VIEW_FILL_COLOR);
 				this.linesLayer.addChild(ml);
 			}
 			
-			var mousep:Point = new Point(pen.x,pen.y);
 			
 			var cpa:HashArray = this.currentPointAry;
 			var isClose:Boolean = false;
+			
+			//判断闭合
 			if(cpa.length >=3){
 				var firstp:Point = cpa.findByIndex(0)as Point;
 				if(hitTest.isHit2Point(mousep,firstp,this.hitTestDValue)){
@@ -150,17 +158,38 @@
 				}
 			}
 			
+			//判断是否碰撞
+			var isHit:Boolean = false;
+			var pht:Point = this.hitTest.findPoint(mousep,HIT_DVALUE_POINT);
+			trace(mousep);
+			if (pht != null) {
+				trace("pht");
+				mousep = pht;
+			}
+			
 			//提示
 			if(pen.isCanDraw){
 				var keyName:String = MapUtil.createPointHashName(mousep);
 				this.currentPointAry.put(keyName,mousep);
+				this.hitTest.addPoint(mousep);
 				if(isClose){
 					this.pen.penState = Pen.PEN_STATE_START;
 					this.suggest.startPoint = null;
 					this.suggest.endPoint = null;
 					this.suggest.refresh();
+					
+					
+					var paa:Array = new Array();
+					var pa:Array = this.currentPointAry.getArray();
+					paa.push(pa);
+					
+					var ma:MapArea = new MapArea(paa,AREA_LINE_COLOR,AREA_FILL_COLOR);
+					ma.refresh();
+					this.mapsLayer.addChild(ma);
+					
 					this.pointAryAry.push(this.currentPointAry);
 					this.currentPointAry = new HashArray();
+					
 					this.tracePointAryAry(this.pointAryAry);
 				}
 				else{
@@ -197,8 +226,8 @@
 			
 			//判断点是否在当前链上，不包括开始点
 			var isInCpa:Boolean = false;
-			if(cpa.length >=3){
-				for(var i:int = 1;i<cpa.length;i++){ 
+			if(cpa.length >0){
+				for(var i:int = 0;i<cpa.length;i++){ 
 					var p:Point = cpa.findByIndex(i)as Point;
 					if(hitTest.isHit2Point(mousep,p,this.hitTestDValue)){
 						isInCpa = true;
