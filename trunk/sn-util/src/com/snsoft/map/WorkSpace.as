@@ -135,8 +135,8 @@
 		 */		
 		private function handerMouseClickWorkSpace(e:Event):void{
 			var mousep:Point = new Point(pen.x,pen.y);
-			
-			//点线
+			var cpa:HashArray = this.currentPointAry;
+			//画笔状态
 			if(this.pen.penState == Pen.PEN_STATE_START){
 				this.pen.penState = Pen.PEN_STATE_DOING;
 			}
@@ -145,7 +145,7 @@
 			}
 			
 			
-			var cpa:HashArray = this.currentPointAry;
+			
 			var isClose:Boolean = false;
 			
 			//判断闭合
@@ -180,14 +180,14 @@
 					
 					
 					var paa:Array = new Array();
-					var pa:Array = this.currentPointAry.getArray();
+					var pa:Array = cpa.getArray();
 					paa.push(pa);
 					
 					var ma:MapArea = new MapArea(paa,AREA_LINE_COLOR,AREA_FILL_COLOR);
 					ma.refresh();
 					this.mapsLayer.addChild(ma);
 					
-					this.pointAryAry.push(this.currentPointAry);
+					this.pointAryAry.push(cpa);
 					this.currentPointAry = new HashArray();
 					
 					this.tracePointAryAry(this.pointAryAry);
