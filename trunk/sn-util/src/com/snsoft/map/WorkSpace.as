@@ -287,6 +287,5 @@
 			this.addEventListener(MouseEvent.MOUSE_MOVE,handlerMouseMoveWorkSpase);
 			this.addEventListener(MouseEvent.MOUSE_OUT,handlerMouseOutWorkSpase);
 		}
-		
 	}
 }
