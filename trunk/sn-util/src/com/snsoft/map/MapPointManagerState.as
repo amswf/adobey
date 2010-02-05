@@ -5,16 +5,16 @@ package com.snsoft.map
 	public class MapPointManagerState
 	{
 		//闭合链
-		private static const IS_CLOSE:int = 3;
+		public static const IS_CLOSE:int = 3;
 		
 		//在当前链上
-		private static const IS_IN_CPA:int = 2;
+		public static const IS_IN_CPA:int = 2;
 		
 		//碰撞检测有
-		private static const IS_HIT:int = 1;
+		public static const IS_HIT:int = 1;
 		
 		//正常
-		private static const IS_NORMAL:int = 0;
+		public static const IS_NORMAL:int = 0;
 		
 		//点状态
 		private var _pointState:int = IS_NORMAL;

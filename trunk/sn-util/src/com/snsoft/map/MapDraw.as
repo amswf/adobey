@@ -78,6 +78,8 @@ package com.snsoft.map
 				}
 				
 				var sprite:Sprite = new Sprite();
+				var lineSprite:Sprite = new Sprite();
+				var pointSprite:Sprite = new Sprite();
 				for(var i:int =0;i<n;i++){
 					var si:int = i;
 					var ei:int = (i +1) % l;
@@ -85,9 +87,11 @@ package com.snsoft.map
 					var ep:Point = pointArray[ei] as Point;
 					var line:Sprite = MapDraw.drawLine(sp,ep,thikness,lineColor);
 					var point:Sprite = MapDraw.drawPoint(sp,thikness,r,lineColor,fillColor);
-					sprite.addChild(line);
-					sprite.addChild(point);
+					lineSprite.addChild(line);
+					pointSprite.addChild(point);
 				}
+				sprite.addChild(lineSprite);
+				sprite.addChild(pointSprite);
 				return sprite;
 			}
 			return null;

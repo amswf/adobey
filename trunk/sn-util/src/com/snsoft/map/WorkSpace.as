@@ -130,7 +130,7 @@
 			//画笔
 			Mouse.hide();
 			this.pen.visible = true;
-
+			
 		}
 		
 		/**
@@ -140,7 +140,6 @@
 		 */		
 		private function handerMouseClickWorkSpace(e:Event):void{
 			var mousep:Point = new Point(pen.x,pen.y);
-			var cpa:HashArray = this.currentPointAry;
 			
 			//画笔状态
 			if(this.pen.penState == Pen.PEN_STATE_START){//画笔状态是开始画：起点未画，末点未画
@@ -150,33 +149,20 @@
 				mousep = this.suggest.endPoint;
 			}
 			
-			//判断闭合
-			var isClose:Boolean = false;
-			if(cpa.length >=3){//最少3个点组成一个区块
-				var firstp:Point = cpa.findByIndex(0)as Point;
-				if(hitTest.isHit2Point(mousep,firstp,this.hitTestDValue)){
-					isClose = true;
-				}
-			}
+			var pstate:MapPointManagerState = this.manager.addPoint(mousep); 
+			var hitp:Point = pstate.hitPoint;
 			
-			//判断是否与现有点碰撞
-			var isHit:Boolean = false;
-			var pht:Point = this.hitTest.findPoint(mousep,HIT_DVALUE_POINT);
-			if (pht != null) {
-				mousep = pht;
-			}
-			
-			//提示
-			if(pen.isCanDraw){//画笔状态，如果能继续画
+			//如果当前要画的点是闭合、碰撞、正常状态
+			if(pstate.isState(MapPointManagerState.IS_CLOSE) 
+				|| pstate.isState(MapPointManagerState.IS_NORMAL) 
+				|| pstate.isState(MapPointManagerState.IS_HIT)){//画笔状态，如果能继续画
+				
 				//把画线添加到线层
 				var ml:MapLine = new MapLine(this.suggest.startPoint,this.suggest.endPoint,VIEW_COLOR,VIEW_COLOR,VIEW_FILL_COLOR);
 				this.linesLayer.addChild(ml);
 				
-				var keyName:String = MapUtil.createPointHashName(mousep);//获得当前所画点的hash名称
-				this.currentPointAry.put(keyName,mousep);//把点添加到当前链中
-				this.hitTest.addPoint(mousep);//把点注册到碰撞检测
-				
-				if(isClose){//如果当前链已关闭
+				//如果当前要画的点是闭合状态
+				if(pstate.isState(MapPointManagerState.IS_CLOSE)){//如果当前链已关闭
 					
 					//初始化提示 view 和  画笔 pen
 					this.pen.penState = Pen.PEN_STATE_START;
@@ -185,29 +171,24 @@
 					this.suggest.refresh();
 					
 					//画区块
+					var hpa:HashArray = this.manager.findLatestClosedPointArray();
 					var paa:Array = new Array();
-					var pa:Array = cpa.getArray();
+					var pa:Array = hpa.getArray();
 					paa.push(pa);
 					var ma:MapArea = new MapArea(paa,AREA_LINE_COLOR,AREA_FILL_COLOR);
 					ma.refresh();
 					this.mapsLayer.addChild(ma);
 					
-					//刷新闭合链的颜色
+					//删除画出的线
 					MapUtil.deleteAllChild(this.linesLayer);
-					
-					//把当前链添加到链的数组中，并清空当前链
-					this.pointAryAry.push(cpa);
-					this.currentPointAry = new HashArray();
-					
-					//测试，最后删除本行
-					this.tracePointAryAry(this.pointAryAry);
 				}
 				else{//如果当前链没有关闭
-					this.suggest.startPoint = mousep;
-					this.suggest.endPoint = mousep;
+					this.suggest.startPoint = hitp;
+					this.suggest.endPoint = hitp;
 					this.suggest.refresh();
 				}
 			}
+			
 		}
 		
 		/**
@@ -216,70 +197,31 @@
 		 * 
 		 */		
 		private function handlerMouseMoveWorkSpase(e:Event):void{
-			
 			//获得当前鼠标坐标，给画笔置位置
 			var mousep:Point = new Point(this.mouseX,this.mouseY);
 			this.pen.x = mousep.x;
 			this.pen.y = mousep.y;
 			
-			//获得碰撞点
-			var pht:Point = this.hitTest.findPoint(mousep,HIT_DVALUE_POINT);
-			var cpa:HashArray = this.currentPointAry;
+			//当前点状态
+			var pstate:MapPointManagerState = this.manager.hitTestPoint(mousep); 
+			var hitp:Point = pstate.hitPoint;//检测返回结果点
 			
-			//判断闭合
-			var cpap:Point = null;
-			var isClose:Boolean = false;
-			if(cpa.length >=3){
-				var firstp:Point = cpa.findByIndex(0)as Point;
-				if(hitTest.isHit2Point(mousep,firstp,this.hitTestDValue)){
-					isClose = true;
-					cpap = firstp;
-				}
-			}
-			
-			//判断点是否在当前链上，不包括开始点
-			var isInCpa:Boolean = false;
-			if(cpa.length >0){
-				for(var i:int = 0;i<cpa.length;i++){ 
-					var p:Point = cpa.findByIndex(i)as Point;
-					if(hitTest.isHit2Point(mousep,p,this.hitTestDValue)){
-						isInCpa = true;
-						break;
-					}
-				}
-			}
-			
-			//判断是否碰撞
-			var isHit:Boolean = false;
-			if (pht != null) {
-				isHit = true;
-			}
-			
-			if(isClose) {//如果闭合链了
-				mousep = cpap;
-				pen.isCanDraw = true;
+			if(pstate.isState(MapPointManagerState.IS_CLOSE)) {//如果闭合链了
 				this.pen.penSkin = Pen.PEN_LINE_CLOSE_SKIN;
-				this.pen.refresh();
 			}
-			else if(isInCpa){//如果在当前链上，且不闭合
-				this.pen.isCanDraw = false;
+			else if(pstate.isState(MapPointManagerState.IS_IN_CPA)){//如果在当前链上，且不闭合
 				this.pen.penSkin = Pen.PEN_LINE_UNABLE_SKIN;
-				this.pen.refresh();
 			}
-			else if (isHit) {//如果碰撞了，但不在当前链上
-				mousep = pht;
-				pen.isCanDraw = true;
+			else if (pstate.isState(MapPointManagerState.IS_HIT)) {//如果碰撞了，但不在当前链上
 				this.pen.penSkin = Pen.PEN_LINE_POINT_SKIN;
-				this.pen.refresh();
 			}
 			else {//其它情况
-				pen.isCanDraw = true;
 				this.pen.penSkin = Pen.PEN_LINE_DEFAULT_SKIN;
-				this.pen.refresh();
 			}
+			this.pen.refresh();
 			
 			if(this.pen.penState == Pen.PEN_STATE_DOING){//画笔状态是正在画：起点画完，末点未画
-				this.suggest.endPoint = mousep;
+				this.suggest.endPoint = hitp;
 				this.suggest.refresh();
 			}
 		}
@@ -292,19 +234,6 @@
 		private function handlerMouseOutWorkSpase(e:Event):void{
 			Mouse.show();
 			this.pen.visible = false;
-		}
-		
-		/**
-		 * 测试帮助 
-		 * 
-		 */		
-		private function tracePointAryAry(pointAryAry:Array):void{
-			for(var i:int =0;i<pointAryAry.length;i++){
-				var ha:HashArray = pointAryAry[i] as HashArray;
-				if(ha != null){
-					trace(ha.getArray());
-				}
-			}
-		}
+		}		 
 	}
 }

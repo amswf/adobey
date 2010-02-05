@@ -38,10 +38,6 @@ package com.snsoft.map
 		//画笔状态
 		private var _penState:int = PEN_STATE_START;
 		
-		//是否能画下一个点
-		private var _isCanDraw:Boolean = true;
-		
-		
 		public function Pen(penState:int = 0 ,penSkin:String = "PenLineSkin")
 		{
 			super();
@@ -75,17 +71,5 @@ package com.snsoft.map
 		{
 			_penState = value;
 		}
-
-		public function get isCanDraw():Boolean
-		{
-			return _isCanDraw;
-		}
-
-		public function set isCanDraw(value:Boolean):void
-		{
-			_isCanDraw = value;
-		}
-
-
 	}
 }
