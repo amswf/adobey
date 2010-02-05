@@ -68,6 +68,8 @@
 		
 		private static const AREA_FILL_COLOR:uint = 0xffff00;
 		
+		private static const AREA_FILL_MOUSE_OVER_COLOR:uint = 0x00ff00;
+		
 		private static const HIT_DVALUE_POINT:Point = new Point(4,4);
 		
 		/**
@@ -178,6 +180,7 @@
 					var ma:MapArea = new MapArea(paa,AREA_LINE_COLOR,AREA_FILL_COLOR);
 					ma.refresh();
 					this.mapsLayer.addChild(ma);
+					this.addMapAreaEvent(ma);
 					
 					//删除画出的线
 					MapUtil.deleteAllChild(this.linesLayer);
@@ -234,6 +237,56 @@
 		private function handlerMouseOutWorkSpase(e:Event):void{
 			Mouse.show();
 			this.pen.visible = false;
-		}		 
+		}
+		
+		/**
+		 * 
+		 * @param mapArea
+		 * 
+		 */		
+		private function addMapAreaEvent(mapArea:MapArea):void{
+			trace("addMapAreaEvent");
+			if(mapArea != null){
+				trace("addMapAreaEvent");
+				mapArea.addEventListener(MouseEvent.MOUSE_DOWN,handlerMapAreaMouseDown);
+				mapArea.addEventListener(MouseEvent.MOUSE_OVER,handlerMapAreaMouseOver);
+				mapArea.addEventListener(MouseEvent.MOUSE_OUT,handlerMapAreaMouseOut);
+			}
+		}
+		
+		
+		private function handlerMapAreaMouseDown(e:Event):void{
+			var ma:MapArea = e.currentTarget as MapArea;
+			if(ma != null){
+				this.mapsLayer.setChildIndex(ma,this.mapsLayer.numChildren - 1);
+			}
+		}
+		
+		private function handlerMapAreaMouseOver(e:Event):void{
+			trace("handlerMapAreaMouseOver");
+			this.removeEventListener(MouseEvent.MOUSE_OVER,handlerMouseOverWorkSpace);
+			this.removeEventListener(MouseEvent.CLICK,handerMouseClickWorkSpace);
+			this.removeEventListener(MouseEvent.MOUSE_MOVE,handlerMouseMoveWorkSpase);
+			this.removeEventListener(MouseEvent.MOUSE_OUT,handlerMouseOutWorkSpase);
+			var ma:MapArea = e.currentTarget as MapArea;
+			if(ma != null){
+				ma.fillColor = AREA_FILL_MOUSE_OVER_COLOR;
+				ma.refresh();
+			}
+		}
+		
+		private function handlerMapAreaMouseOut(e:Event):void{
+			trace("handlerMapAreaMouseOut");
+			var ma:MapArea = e.currentTarget as MapArea;
+			if(ma != null){
+				ma.fillColor = AREA_FILL_COLOR;
+				ma.refresh();
+			}
+			this.addEventListener(MouseEvent.MOUSE_OVER,handlerMouseOverWorkSpace);
+			this.addEventListener(MouseEvent.CLICK,handerMouseClickWorkSpace);
+			this.addEventListener(MouseEvent.MOUSE_MOVE,handlerMouseMoveWorkSpase);
+			this.addEventListener(MouseEvent.MOUSE_OUT,handlerMouseOutWorkSpase);
+		}
+		
 	}
 }
