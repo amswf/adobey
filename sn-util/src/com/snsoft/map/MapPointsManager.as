@@ -36,6 +36,18 @@
 			hitTest = new HitTest(workSizePoint,HIT_TEST_STEP_VALUE_POINT);
 		}
 		
+		public function findLatestClosedPointArray():HashArray{
+			var paa:HashArray = this.pointAryAry;
+			
+			if(paa.length > 0 ){
+				var lasti:int = paa.length -1;
+				var pa:HashArray = paa.findByIndex(lasti) as HashArray;
+				return pa;
+			}
+			return null;
+		}
+		
+		
 		/**
 		 * 测试点得到碰撞状态和碰撞点 
 		 * @param point
@@ -78,7 +90,7 @@
 			
 			var mpms:MapPointManagerState = new MapPointManagerState();
 			if(isClose) {//如果闭合链了
-				mpms.hitPoint = pht;
+				mpms.hitPoint = cpap;
 				mpms.pointState = IS_CLOSE;
 			}
 			else if(isInCpa){//如果在当前链上，且不闭合
@@ -86,7 +98,7 @@
 				mpms.pointState = IS_IN_CPA;
 			}
 			else if (isHit) {//如果碰撞了，但不在当前链上
-				mpms.hitPoint = point;
+				mpms.hitPoint = pht;
 				mpms.pointState = IS_HIT;
 			}
 			else {//其它情况
@@ -114,7 +126,7 @@
 				//什么都不做 
 			}
 			else if (mpms.isState(IS_HIT)) {//如果碰撞了，但不在当前链上
-				//什么都不做 
+				this.addPointToCpaAndHt(hp);
 			}
 			else {//其它情况
 				this.addPointToCpaAndHt(hp);
@@ -189,8 +201,9 @@
 		 */		
 		private function tracePointAryAry(pointAryAry:HashArray):void{
 			var ppa:Array = pointAryAry.getArray();
-			for(var i:int =0;i<pointAryAry.length;i++){
-				var ha:HashArray = pointAryAry[i] as HashArray;
+			trace(ppa.length);
+			for(var i:int =0;i<ppa.length;i++){
+				var ha:HashArray = ppa[i] as HashArray;
 				if(ha != null){
 					trace(ha.getArray());
 				}
