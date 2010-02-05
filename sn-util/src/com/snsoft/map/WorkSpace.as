@@ -291,7 +291,7 @@
 		private function handlerMouseOutWorkSpase(e:Event):void{
 			Mouse.show();
 			this.pen.visible = false;
-		}		
+		}
 		
 		/**
 		 * 测试帮助 
