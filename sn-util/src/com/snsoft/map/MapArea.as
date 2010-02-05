@@ -1,6 +1,7 @@
 package com.snsoft.map
 {
 	import flash.display.Shape;
+	import flash.display.Sprite;
 	
 	
 	
@@ -34,8 +35,19 @@ package com.snsoft.map
 		 * 
 		 */		
 		override protected function draw():void{
-			var shape:Shape = MapDraw.drawFill(this.pointArrayArray,this.lineColor,this.fillColor);
-			this.addChild(shape);
+			var paa:Array = this.pointArrayArray;
+			var fill:Shape = MapDraw.drawFill(paa,this.lineColor,this.fillColor);
+			this.addChild(fill);
+			
+			if(paa != null){
+				for(var i:int = 0;i<paa.length;i++){
+					var pa:Array = paa[i] as Array;
+					if(pa != null){
+						var foldLine:Sprite = MapDraw.drawCloseFoldLine(pa,this.lineColor,this.fillColor);
+						this.addChild(foldLine);
+					}
+				}
+			}
 		}
 		
 		/**

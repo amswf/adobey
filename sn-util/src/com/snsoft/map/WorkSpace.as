@@ -34,6 +34,9 @@
 		//操作提示层Layer
 		private var viewLayer:MovieClip = new MovieClip();
 		
+		//闭合线框层Layer**************************************************************************************************************************
+		private var closeFoldLinesLayer:MovieClip = new MovieClip();
+		
 		//地图分块层Layer
 		private var mapsLayer:MovieClip = new MovieClip();
 		
@@ -189,7 +192,7 @@
 					this.mapsLayer.addChild(ma);
 					
 					//刷新闭合链的颜色
-					refreshMapLineColor(this.linesLayer,cpa.length,AREA_LINE_COLOR,AREA_FILL_COLOR);
+					MapUtil.deleteAllChild(this.linesLayer);
 					
 					//把当前链添加到链的数组中，并清空当前链
 					this.pointAryAry.push(cpa);
@@ -288,30 +291,7 @@
 		private function handlerMouseOutWorkSpase(e:Event):void{
 			Mouse.show();
 			this.pen.visible = false;
-		}
-		
-		
-		/**
-		 *  
-		 * @param mcArray
-		 * @param lineColor
-		 * @param fillColor
-		 * 
-		 */		
-		private function refreshMapLineColor(sprite:Sprite,lastNum:uint,lineColor:uint,fillColor:uint):void{
-			if(sprite != null){
-				for(var i:int = sprite.numChildren -1;i > sprite.numChildren -1 -lastNum;i --){
-					var ml:MapLine = sprite.getChildAt(i) as MapLine;
-					if(ml != null){
-						ml.lineColor = lineColor;
-						ml.pointColor = lineColor;
-						ml.pointFillColor = fillColor;
-						ml.refresh();
-					}
-				}
-			}
-		}
-		
+		}		
 		
 		/**
 		 * 测试帮助 

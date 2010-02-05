@@ -56,6 +56,44 @@ package com.snsoft.map
 		}
 		
 		/**
+		 * 
+		 * 给闭合曲线填充。
+		 * @param lineColor 线色
+		 * @param fillColor 填充色
+		 * @param pointArrayArray 闭合点链（数组）。
+		 * @return 
+		 * 
+		 */		
+		public static function drawCloseFoldLine(pointArray:Array,lineColor:uint= 0x000000,fillColor:uint = 0xffffff,thikness:uint = 0,r:uint = 2):Sprite{
+			if(pointArray != null && pointArray.length > 0){
+				var l:int = pointArray.length;
+				var n:int = 0;
+				var lastp:Point = pointArray[l-1] as Point;
+				var firstp:Point = pointArray[0] as Point;
+				if(lastp != null && firstp != null && firstp.equals(lastp)){
+					n = l -1;
+				}
+				else {
+					n = l;
+				}
+				
+				var sprite:Sprite = new Sprite();
+				for(var i:int =0;i<n;i++){
+					var si:int = i;
+					var ei:int = (i +1) % l;
+					var sp:Point = pointArray[si] as Point;
+					var ep:Point = pointArray[ei] as Point;
+					var line:Sprite = MapDraw.drawLine(sp,ep,thikness,lineColor);
+					var point:Sprite = MapDraw.drawPoint(sp,thikness,r,lineColor,fillColor);
+					sprite.addChild(line);
+					sprite.addChild(point);
+				}
+				return sprite;
+			}
+			return null;
+		}
+		
+		/**
 		 * 给闭合曲线填充。
 		 * @param lineColor 线色
 		 * @param fillColor 填充色
