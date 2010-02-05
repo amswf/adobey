@@ -191,7 +191,6 @@
 					this.suggest.refresh();
 				}
 			}
-			
 		}
 		
 		/**
@@ -245,16 +244,18 @@
 		 * 
 		 */		
 		private function addMapAreaEvent(mapArea:MapArea):void{
-			trace("addMapAreaEvent");
 			if(mapArea != null){
-				trace("addMapAreaEvent");
 				mapArea.addEventListener(MouseEvent.MOUSE_DOWN,handlerMapAreaMouseDown);
 				mapArea.addEventListener(MouseEvent.MOUSE_OVER,handlerMapAreaMouseOver);
 				mapArea.addEventListener(MouseEvent.MOUSE_OUT,handlerMapAreaMouseOut);
 			}
 		}
 		
-		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
 		private function handlerMapAreaMouseDown(e:Event):void{
 			var ma:MapArea = e.currentTarget as MapArea;
 			if(ma != null){
@@ -262,8 +263,12 @@
 			}
 		}
 		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
 		private function handlerMapAreaMouseOver(e:Event):void{
-			trace("handlerMapAreaMouseOver");
 			this.removeEventListener(MouseEvent.MOUSE_OVER,handlerMouseOverWorkSpace);
 			this.removeEventListener(MouseEvent.CLICK,handerMouseClickWorkSpace);
 			this.removeEventListener(MouseEvent.MOUSE_MOVE,handlerMouseMoveWorkSpase);
@@ -275,8 +280,12 @@
 			}
 		}
 		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
 		private function handlerMapAreaMouseOut(e:Event):void{
-			trace("handlerMapAreaMouseOut");
 			var ma:MapArea = e.currentTarget as MapArea;
 			if(ma != null){
 				ma.fillColor = AREA_FILL_COLOR;
