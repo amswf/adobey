@@ -44,6 +44,9 @@ package com.snsoft.map
 					var pa:Array = paa[i] as Array;
 					if(pa != null){
 						var foldLine:Sprite = MapDraw.drawCloseFoldLine(pa,this.lineColor,this.fillColor);
+						foldLine.mouseEnabled = false;
+						foldLine.buttonMode = false;
+						foldLine.mouseChildren = false;
 						this.addChild(foldLine);
 					}
 				}
