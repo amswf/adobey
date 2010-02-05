@@ -37,11 +37,11 @@
 		}
 		
 		/**
-		 *  
+		 * 测试点得到碰撞状态和碰撞点 
 		 * @param point
 		 * 
 		 */		
-		public function addPoint(point:Point):int{
+		public function hitTestPoint(point:Point):MapPointManagerState{
 			
 			//获得碰撞点
 			var pht:Point = this.hitTest.findPoint(point,HIT_TEST_DVALUE_POINT);
@@ -76,23 +76,50 @@
 				isHit = true;
 			}
 			
+			var mpms:MapPointManagerState = new MapPointManagerState();
 			if(isClose) {//如果闭合链了
-				point = cpap;
-				this.addPointToCpaAndHt(point);
-				this.addCpaToPpa();
-				this.tracePointAryAry(this.pointAryAry);//////////////////////////////////////测试用，最后删除
-				return IS_CLOSE;
+				mpms.hitPoint = pht;
+				mpms.pointState = IS_CLOSE;
 			}
 			else if(isInCpa){//如果在当前链上，且不闭合
-				return IS_IN_CPA;
+				mpms.hitPoint = point;
+				mpms.pointState = IS_IN_CPA;
 			}
 			else if (isHit) {//如果碰撞了，但不在当前链上
-				return IS_HIT;
+				mpms.hitPoint = point;
+				mpms.pointState = IS_HIT;
 			}
 			else {//其它情况
-				this.addPointToCpaAndHt(point);
-				return IS_NORMAL;
+				mpms.hitPoint = point;
+				mpms.pointState = IS_NORMAL;
 			}
+			return mpms;
+		}
+		
+		/**
+		 * 检测当前所画的点，满足条件的添加到当前链中，并注册碰撞 
+		 * @param point
+		 * @return 
+		 * 
+		 */		
+		public function addPoint(point:Point):MapPointManagerState{
+			var mpms:MapPointManagerState = this.hitTestPoint(point);
+			var hp:Point = mpms.hitPoint;
+			if(mpms.isState(IS_CLOSE)) {//如果闭合链了
+				this.addPointToCpaAndHt(hp);
+				this.addCpaToPpa();
+				this.tracePointAryAry(this.pointAryAry);//////////////////////////////////////测试用，最后删除
+			}
+			else if(mpms.isState(IS_IN_CPA)){//如果在当前链上，且不闭合
+				//什么都不做 
+			}
+			else if (mpms.isState(IS_HIT)) {//如果碰撞了，但不在当前链上
+				//什么都不做 
+			}
+			else {//其它情况
+				this.addPointToCpaAndHt(hp);
+			} 
+			return mpms;
 		}
 		
 		/**
