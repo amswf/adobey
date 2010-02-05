@@ -2,6 +2,7 @@
 	import flash.display.Graphics;
 	import flash.display.MovieClip;
 	import flash.display.Shape;
+	import flash.display.Sprite;
 	import flash.geom.ColorTransform;
 	import flash.geom.Point;
 	import flash.geom.Transform;
@@ -19,13 +20,23 @@
 		
 		/**
 		 * 获得一个点的哈希名字 key 
-		 * @param point
+		 * @param point 点坐标
 		 * @return 
 		 * 
 		 */		
 		public static function createPointHashName(point:Point):String {
 			var str:String = String(point.x) + "|" + String(point.y);
 			return str;
+		}
+		
+		/**
+		 * 删除所有字MC 
+		 * 
+		 */		
+		public static function deleteAllChild(sprite:Sprite):void{
+			while(sprite.numChildren >0){
+				sprite.removeChildAt(0);
+			}
 		}
 		
 		/**
