@@ -87,6 +87,9 @@
 			//体积碰撞检测类
 			this.hitTest = new HitTest(new Point(this.width,this.height),new Point(10,10));
 			
+			//点管理器
+			this.manager = new MapPointsManager(new Point(this.width,this.height));
+			
 			//显示对象层
 			this.addChild(backLayer);//背影
 			this.addChild(mapsLayer);//区块
