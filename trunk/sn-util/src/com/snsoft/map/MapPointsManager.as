@@ -1,4 +1,4 @@
-package com.snsoft.map
+﻿package com.snsoft.map
 {
 	import com.snsoft.map.util.HashArray;
 	import com.snsoft.map.util.HitTest;
@@ -18,13 +18,22 @@ package com.snsoft.map
 		private var hitTest:HitTest = null;
 		
 		//碰撞检测的坐标差值域
-		private var hitTestDValue:Point = new Point(5,5);
+		private static const HIT_TEST_DVALUE_POINT:Point = new Point(5,5);
+		
+		//碰撞检测分块步进值
+		private static const HIT_TEST_STEP_VALUE_POINT:Point = new Point(10,10);
+		
+		private static const IS_CLOSE:int = 3;
+		
+		private static const IS_IN_CPA:int = 2;
+		
+		private static const IS_HIT:int = 1;
+		
+		private static const IS_NORMAL:int = 0;
 		
 		public function MapPointsManager(workSizePoint:Point)
 		{
-			if(hitTest != null){
-				hitTest = new HitTest(sizePoint:Point,stepPoint:Point);
-			}
+			hitTest = new HitTest(workSizePoint,HIT_TEST_STEP_VALUE_POINT);
 		}
 		
 		/**
@@ -32,9 +41,133 @@ package com.snsoft.map
 		 * @param point
 		 * 
 		 */		
-		public function addPoint(point:Point):void{
+		public function addPoint(point:Point):int{
 			
+			//获得碰撞点
+			var pht:Point = this.hitTest.findPoint(point,HIT_TEST_DVALUE_POINT);
+			var cpa:HashArray = this.currentPointAry;
+			
+			//判断闭合
+			var cpap:Point = null;
+			var isClose:Boolean = false;
+			if(cpa.length >=3){
+				var firstp:Point = cpa.findByIndex(0)as Point;
+				if(hitTest.isHit2Point(point,firstp,HIT_TEST_DVALUE_POINT)){
+					isClose = true;
+					cpap = firstp;
+				}
+			}
+			
+			//判断点是否在当前链上，不包括开始点
+			var isInCpa:Boolean = false;
+			if(cpa.length >0){
+				for(var i:int = 0;i<cpa.length;i++){ 
+					var p:Point = cpa.findByIndex(i)as Point;
+					if(hitTest.isHit2Point(point,p,HIT_TEST_DVALUE_POINT)){
+						isInCpa = true;
+						break;
+					}
+				}
+			}
+			
+			//判断是否碰撞
+			var isHit:Boolean = false;
+			if (pht != null) {
+				isHit = true;
+			}
+			
+			if(isClose) {//如果闭合链了
+				point = cpap;
+				this.addPointToCpaAndHt(point);
+				this.addCpaToPpa();
+				this.tracePointAryAry(this.pointAryAry);//////////////////////////////////////测试用，最后删除
+				return IS_CLOSE;
+			}
+			else if(isInCpa){//如果在当前链上，且不闭合
+				return IS_IN_CPA;
+			}
+			else if (isHit) {//如果碰撞了，但不在当前链上
+				return IS_HIT;
+			}
+			else {//其它情况
+				this.addPointToCpaAndHt(point);
+				return IS_NORMAL;
+			}
 		}
 		
+		/**
+		 * 把点添加到当前链中并且注册碰撞检测
+		 * @param point
+		 * 
+		 */		
+		private function addPointToCpaAndHt(point:Point):void{
+			//添加到当前链中
+			var name:String = this.createPointHashName(point);
+			this.currentPointAry.put(name,point);
+			//注册碰撞检测
+			this.hitTest.addPoint(point);
+		}
+		
+		/**
+		 * 把当前点链放到链组里面去,并且清空当前点链
+		 * 
+		 */		
+		private function addCpaToPpa():void{
+			var cpa:HashArray = this.currentPointAry;
+			var hn:String = this.creatHashArrayHashName(cpa);
+			this.pointAryAry.put(hn,cpa);
+			this.currentPointAry = new HashArray();
+		}
+		
+		/**
+		 * 链的哈希名字 key 
+		 * @param ha 点链(数组)
+		 * @return 哈希名字 key
+		 * 
+		 */		
+		private function creatHashArrayHashName(ha:HashArray):String{
+			var hn:String = null;
+			var ary:Array = ha.getArray();
+			if(ary != null){
+				for(var i:int =0;i<ary.length;i++){
+					var p:Point = ary[i] as Point;
+					if(p != null){
+						var pn:String = this.createPointHashName(p);
+						if(hn == null){
+							hn = pn;
+						}
+						else {
+							hn += "-" +pn;
+						}
+					}
+				}
+			}
+			return hn;
+		}
+		
+		/**
+		 * 获得一个点的哈希名字 key 
+		 * @param point 点坐标
+		 * @return 哈希名字 key
+		 * 
+		 */		
+		private function createPointHashName(point:Point):String {
+			var str:String = String(point.x) + "|" + String(point.y);
+			return str;
+		}
+		
+		/**
+		 * 测试帮助 
+		 * 
+		 */		
+		private function tracePointAryAry(pointAryAry:HashArray):void{
+			var ppa:Array = pointAryAry.getArray();
+			for(var i:int =0;i<pointAryAry.length;i++){
+				var ha:HashArray = pointAryAry[i] as HashArray;
+				if(ha != null){
+					trace(ha.getArray());
+				}
+			}
+		}
 	}
 }
