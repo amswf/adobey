@@ -6,7 +6,6 @@
 	import fl.core.UIComponent;
 	
 	import flash.display.MovieClip;
-	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
@@ -25,6 +24,8 @@
 		//碰撞检测类对象
 		private var hitTest:HitTest = null;
 		
+		private var manager:MapPointsManager = null;
+		
 		//画出的线所在的层Layer
 		private var linesLayer:MovieClip = new MovieClip();
 		
@@ -33,9 +34,6 @@
 		
 		//操作提示层Layer
 		private var viewLayer:MovieClip = new MovieClip();
-		
-		//闭合线框层Layer**************************************************************************************************************************
-		private var closeFoldLinesLayer:MovieClip = new MovieClip();
 		
 		//地图分块层Layer
 		private var mapsLayer:MovieClip = new MovieClip();
