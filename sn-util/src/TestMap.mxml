@@ -4,8 +4,7 @@
 			   xmlns:mx="library://ns.adobe.com/flex/halo" minWidth="1024" minHeight="768">
 	 <fx:Script>
 		 <![CDATA[
-			 import com.snsoft.map.Pen;
-			 import com.snsoft.map.WorkSpace;
+			 import com.snsoft.map.MapMain;
 			 
 			 
 			 private function init():void{
@@ -29,10 +28,7 @@
 				 
 				 paa.push(pa);
 				 
-				 var ma:MapArea = new MapArea(paa,0x000000,0xff0000);	
-				 var pen:Pen = new Pen();
-				 
-				 var ws:WorkSpace = new WorkSpace();
+				 var mm:MapMain = new MapMain();
 			 }
 		 ]]>
 	 </fx:Script>
