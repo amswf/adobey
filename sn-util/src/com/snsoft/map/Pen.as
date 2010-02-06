@@ -26,6 +26,9 @@ package com.snsoft.map
 		//画笔默认，皮夫MC的类名。
 		public static const PEN_LINE_DEFAULT_SKIN:String = "PenLineDefaultSkin";
 		
+		//选择工具默认皮肤。
+		public static const PEN_SELECT_DEFAULT_SKIN:String = "PenSelectDefaultSkin";
+		
 		//画笔状态：起始
 		public static const PEN_STATE_START:int = 0;
 		
