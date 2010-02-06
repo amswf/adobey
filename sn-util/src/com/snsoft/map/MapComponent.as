@@ -2,6 +2,8 @@ package com.snsoft.map
 {
 	import fl.core.UIComponent;
 	
+	import flash.utils.getQualifiedClassName;
+	
 	public class MapComponent extends UIComponent
 	{
 		public function MapComponent()
@@ -29,7 +31,8 @@ package com.snsoft.map
 		 * 
 		 */		
 		override protected function draw():void{
-			trace("MapMovieClip.draw");
+			
+			trace("MapMovieClip.draw:"+getQualifiedClassName(this));
 		}
 	}
 }
