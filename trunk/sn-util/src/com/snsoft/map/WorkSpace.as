@@ -53,6 +53,9 @@
 		//当前画线的点数组
 		private var currentPointAry:HashArray = new HashArray();
 		
+		//工具类型
+		private var _toolEventType:String = null;
+		
 		//所有点的数组的数组
 		private var pointAryAry:Array = new Array();
 		
@@ -76,8 +79,12 @@
 		 * 构造方法 
 		 * 
 		 */
-		public function WorkSpace() {
+		public function WorkSpace(sizePoint:Point) {
 			super();
+			if(sizePoint != null){
+				this.width = sizePoint.x;
+				this.height = sizePoint.y;
+			}
 			init();
 		}
 		
@@ -86,6 +93,7 @@
 		 * 
 		 */		
 		public function init():void{
+			
 			//体积碰撞检测类
 			this.hitTest = new HitTest(new Point(this.width,this.height),new Point(10,10));
 			
@@ -123,12 +131,20 @@
 			this.addEventListener(MouseEvent.MOUSE_OUT,handlerMouseOutWorkSpase);
 		}
 		
+		
+		
+		
+		
+		
 		/**
 		 * 事件 MOUSE_OVER
 		 * @param e
 		 * 
 		 */		
 		private function handlerMouseOverWorkSpace(e:Event):void{
+			if(this.toolEventType == null || this.toolEventType != ToolsBar.TOOL_TYPE_LINE){
+				return;
+			}
 			//画笔
 			Mouse.hide();
 			this.pen.visible = true;
@@ -141,6 +157,9 @@
 		 * 
 		 */		
 		private function handerMouseClickWorkSpace(e:Event):void{
+			if(this.toolEventType == null || this.toolEventType != ToolsBar.TOOL_TYPE_LINE){
+				return;
+			}
 			var mousep:Point = new Point(pen.x,pen.y);
 			
 			//画笔状态
@@ -199,6 +218,9 @@
 		 * 
 		 */		
 		private function handlerMouseMoveWorkSpase(e:Event):void{
+			if(this.toolEventType == null || this.toolEventType != ToolsBar.TOOL_TYPE_LINE){
+				return;
+			}
 			//获得当前鼠标坐标，给画笔置位置
 			var mousep:Point = new Point(this.mouseX,this.mouseY);
 			this.pen.x = mousep.x;
@@ -234,6 +256,9 @@
 		 * 
 		 */		
 		private function handlerMouseOutWorkSpase(e:Event):void{
+			if(this.toolEventType == null || this.toolEventType != ToolsBar.TOOL_TYPE_LINE){
+				return;
+			}
 			Mouse.show();
 			this.pen.visible = false;
 		}
@@ -257,6 +282,9 @@
 		 * 
 		 */		
 		private function handlerMapAreaMouseDown(e:Event):void{
+			if(this.toolEventType == null || this.toolEventType != ToolsBar.TOOL_TYPE_SELECT){
+				return;
+			}
 			var ma:MapArea = e.currentTarget as MapArea;
 			if(ma != null){
 				this.mapsLayer.setChildIndex(ma,this.mapsLayer.numChildren - 1);
@@ -269,6 +297,9 @@
 		 * 
 		 */		
 		private function handlerMapAreaMouseOver(e:Event):void{
+			if(this.toolEventType == null || this.toolEventType != ToolsBar.TOOL_TYPE_SELECT){
+				return;
+			}
 			this.removeEventListener(MouseEvent.MOUSE_OVER,handlerMouseOverWorkSpace);
 			this.removeEventListener(MouseEvent.CLICK,handerMouseClickWorkSpace);
 			this.removeEventListener(MouseEvent.MOUSE_MOVE,handlerMouseMoveWorkSpase);
@@ -286,6 +317,9 @@
 		 * 
 		 */		
 		private function handlerMapAreaMouseOut(e:Event):void{
+			if(this.toolEventType == null || this.toolEventType != ToolsBar.TOOL_TYPE_SELECT){
+				return;
+			}
 			var ma:MapArea = e.currentTarget as MapArea;
 			if(ma != null){
 				ma.fillColor = AREA_FILL_COLOR;
@@ -296,5 +330,17 @@
 			this.addEventListener(MouseEvent.MOUSE_MOVE,handlerMouseMoveWorkSpase);
 			this.addEventListener(MouseEvent.MOUSE_OUT,handlerMouseOutWorkSpase);
 		}
+
+		public function get toolEventType():String
+		{
+			return _toolEventType;
+		}
+
+		public function set toolEventType(value:String):void
+		{
+			_toolEventType = value;
+		}
+
+
 	}
 }
