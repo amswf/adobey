@@ -41,9 +41,13 @@ package com.snsoft.map
 		//画笔状态
 		private var _penState:int = PEN_STATE_START;
 		
-		public function Pen(penState:int = 0 ,penSkin:String = "PenLineSkin")
+		public function Pen(penState:int = 0 ,penSkin:String = null)
 		{
 			super();
+			this.penState = penState;
+			if(penSkin != null){
+				this.penSkin = penSkin;
+			}
 			this.mouseEnabled = false;
 			this.buttonMode = false;
 			this.mouseChildren = false;

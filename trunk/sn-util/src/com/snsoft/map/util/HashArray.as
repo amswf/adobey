@@ -1,5 +1,7 @@
 ﻿package com.snsoft.map.util
 {
+	import flash.geom.Point;
+
 	public class HashArray
 	{
 		
@@ -86,6 +88,15 @@
 			return -1;
 		}
 		
+		/**
+		 * 获得最后一个点 
+		 * @return 
+		 * 
+		 */		
+		public function findLast():Object{
+			return this.findByIndex(this.listAry.length -1);
+		}
+		
 		
 		/**
 		 * 返回hash的Array 
@@ -108,8 +119,10 @@
 		 */		
 		public function getInt(str:String):int{
 			try{
-				var i:int = int(str);
-				return i;
+				if( str != null){
+					var i:int = int(str);
+					return i;
+				}
 			}
 			catch(e:Error){
 				

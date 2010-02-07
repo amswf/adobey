@@ -1,5 +1,7 @@
 package com.snsoft.map
 {
+	import com.snsoft.map.util.HashArray;
+	
 	import flash.geom.Point;
 
 	public class MapPointManagerState
@@ -21,6 +23,9 @@ package com.snsoft.map
 		
 		//检测到的点
 		private var _hitPoint:Point = null;
+		
+		//满足条件时快速生成已画过的链
+		private var _fastPointArray:HashArray = null;
 		
 		public function MapPointManagerState(pointState:int=0,hitPoint:Point = null)
 		{
@@ -53,6 +58,16 @@ package com.snsoft.map
 		public function set hitPoint(value:Point):void
 		{
 			_hitPoint = value;
+		}
+
+		public function get fastPointArray():HashArray
+		{
+			return _fastPointArray;
+		}
+
+		public function set fastPointArray(value:HashArray):void
+		{
+			_fastPointArray = value;
 		}
 
 
