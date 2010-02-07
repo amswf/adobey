@@ -18,9 +18,6 @@
 	 */	
 	public class WorkSpace extends UIComponent {
 		
-		//碰撞检测的坐标差值域
-		private var hitTestDValue:Point = new Point(5,5);
-		
 		//碰撞检测类对象
 		private var hitTest:HitTest = null;
 		
@@ -34,6 +31,9 @@
 		
 		//操作提示层Layer
 		private var viewLayer:MovieClip = new MovieClip();
+		
+		//操作提示快速画线提示层Layer
+		private var fastViewLayer:MovieClip = new MovieClip();
 		
 		//地图分块层Layer
 		private var mapsLayer:MovieClip = new MovieClip();
@@ -49,9 +49,6 @@
 		
 		//提示
 		private var suggest:MapLine = new MapLine();
-		
-		//当前画线的点数组
-		private var currentPointAry:HashArray = new HashArray();
 		
 		//工具类型
 		private var _toolEventType:String = null;
@@ -73,7 +70,6 @@
 		
 		private static const AREA_FILL_MOUSE_OVER_COLOR:uint = 0x00ff00;
 		
-		private static const HIT_DVALUE_POINT:Point = new Point(4,4);
 		
 		/**
 		 * 构造方法 
@@ -105,6 +101,7 @@
 			this.addChild(mapsLayer);//区块
 			this.addChild(linesLayer);//点线
 			this.addChild(viewLayer);//提示
+			this.addChild(fastViewLayer);//快速画线
 			this.addChild(penLayer);//画笔
 			
 			//显示对象
@@ -156,30 +153,33 @@
 			if(this.toolEventType == null || this.toolEventType != ToolsBar.TOOL_TYPE_LINE){
 				return;
 			}
+			
+			//画笔坐标
 			var mousep:Point = new Point(pen.x,pen.y);
 			
 			//画笔状态
-			if(this.pen.penState == Pen.PEN_STATE_START){//画笔状态是开始画：起点未画，末点未画
+			if(this.pen.penState == Pen.PEN_STATE_START){ //画笔状态是开始画：起点未画，末点未画
 				this.pen.penState = Pen.PEN_STATE_DOING;
 			}
-			else if(this.pen.penState == Pen.PEN_STATE_DOING) {//画笔状态是正在画：起点画完，末点未画
+			else if(this.pen.penState == Pen.PEN_STATE_DOING) { //画笔状态是正在画：起点画完，末点未画
 				mousep = this.suggest.endPoint;
 			}
 			
+			//点管理器
 			var pstate:MapPointManagerState = this.manager.addPoint(mousep); 
 			var hitp:Point = pstate.hitPoint;
 			
 			//如果当前要画的点是闭合、碰撞、正常状态
 			if(pstate.isState(MapPointManagerState.IS_CLOSE) 
 				|| pstate.isState(MapPointManagerState.IS_NORMAL) 
-				|| pstate.isState(MapPointManagerState.IS_HIT)){//画笔状态，如果能继续画
+				|| pstate.isState(MapPointManagerState.IS_HIT)){ //画笔状态，如果能继续画
 				
 				//把画线添加到线层
 				var ml:MapLine = new MapLine(this.suggest.startPoint,this.suggest.endPoint,VIEW_COLOR,VIEW_COLOR,VIEW_FILL_COLOR);
 				this.linesLayer.addChild(ml);
 				
 				//如果当前要画的点是闭合状态
-				if(pstate.isState(MapPointManagerState.IS_CLOSE)){//如果当前链已关闭
+				if(pstate.isState(MapPointManagerState.IS_CLOSE)){ //如果当前链已关闭
 					
 					//初始化提示 view 和  画笔 pen
 					this.pen.penState = Pen.PEN_STATE_START;
@@ -232,6 +232,7 @@
 			//当前点状态
 			var pstate:MapPointManagerState = this.manager.hitTestPoint(mousep); 
 			var hitp:Point = pstate.hitPoint;//检测返回结果点
+			var cpa:HashArray = this.manager.currentPointAry;
 			
 			if(pstate.isState(MapPointManagerState.IS_CLOSE)) {//如果闭合链了
 				this.pen.penSkin = Pen.PEN_LINE_CLOSE_SKIN;
@@ -248,6 +249,20 @@
 			this.pen.refresh();
 			
 			if(this.pen.penState == Pen.PEN_STATE_DOING){//画笔状态是正在画：起点画完，末点未画
+				var fpa:HashArray = pstate.fastPointArray;
+				if(fpa != null && fpa.length > 0){
+					MapUtil.deleteAllChild(this.fastViewLayer);
+					var p1:Point = cpa.findLast() as Point;
+					for(var i:int =0;i<fpa.length;i++){
+						var p2:Point = fpa.findByIndex(i) as Point;
+						var ml:MapLine = new MapLine(p1,p2,VIEW_COLOR,VIEW_COLOR,VIEW_FILL_COLOR);
+						ml.refresh();
+						this.fastViewLayer.addChild(ml);
+						p1 = p2;
+					}
+					this.suggest.visible = false;
+				} 
+				this.suggest.visible = true;
 				this.suggest.endPoint = hitp;
 				this.suggest.refresh();
 			}
@@ -340,7 +355,5 @@
 		{
 			_toolEventType = value;
 		}
-
-
 	}
 }
