@@ -143,13 +143,13 @@
 					}
 				}
 				if(!isFast){
-					var htpn:String = this.createPointHashName(htp);
-					fastPointArray.put(htpn,htp);
+					//var htpn:String = this.createPointHashName(htp);
+					//fastPointArray.put(htpn,htp);
 				}
 			}
 			else{
-				var npn:String = this.createPointHashName(point);
-				fastPointArray.put(npn,point);
+				//var npn:String = this.createPointHashName(point);
+				//fastPointArray.put(npn,point);
 			}
 			mpms.fastPointArray = fastPointArray;
 			if(isClose) {//如果闭合链了
@@ -178,10 +178,9 @@
 		 * 
 		 */		
 		public function addPoint(point:Point):MapPointManagerState{
-			var mpms:MapPointManagerState = this.hitTestPoint(point);
-			var hp:Point = mpms.hitPoint;
+			var mpms:MapPointManagerState = this.hitTestPoint(point); 
 			if(mpms.isState(IS_CLOSE)) {//如果闭合链了
-				this.addPointToCpaAndHt(hp);
+				this.addPointsToCpaAndHt(mpms);
 				this.addCpaToPpa();
 				this.tracePointAryAry(this.pointAryAry);//////////////////////////////////////测试用，最后删除
 			}
@@ -189,12 +188,46 @@
 				//什么都不做 
 			}
 			else if (mpms.isState(IS_HIT)) {//如果碰撞了，但不在当前链上
-				this.addPointToCpaAndHt(hp);
+				this.addPointsToCpaAndHt(mpms);
 			}
 			else {//其它情况
-				this.addPointToCpaAndHt(hp);
+				this.addPointsToCpaAndHt(mpms);
 			} 
 			return mpms;
+		}
+		
+		/**
+		 *  
+		 * @param mpms
+		 * @return 
+		 * 
+		 */		
+		private function addPointsToCpaAndHt(mpms:MapPointManagerState):void{
+			var fpha:HashArray = mpms.fastPointArray;
+			if(fpha != null && fpha.length > 0){
+				this.addFastPhaToCpaAndHt(mpms);
+			}
+			else{
+				var hp:Point = mpms.hitPoint;
+				this.addPointToCpaAndHt(hp);
+			}
+		}
+		
+		/**
+		 *  
+		 * @param point
+		 * 
+		 */		
+		private function addFastPhaToCpaAndHt(mpms:MapPointManagerState):void{
+			var point:Point = mpms.hitPoint;
+			var mpms:MapPointManagerState = this.hitTestPoint(point);
+			var hp:Point = mpms.hitPoint;
+			var cpa:HashArray = this._currentPointAry;
+			var flha:HashArray = mpms.fastPointArray;
+			for(var i:int =0;i<flha.length;i++){
+				var fp:Point = flha.findByIndex(i) as Point;
+				this.addPointToCpaAndHt(fp);
+			}
 		}
 		
 		/**

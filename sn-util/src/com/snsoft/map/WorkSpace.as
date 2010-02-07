@@ -167,7 +167,9 @@
 			
 			//点管理器
 			var pstate:MapPointManagerState = this.manager.addPoint(mousep); 
+			var cpa:HashArray = this.manager.currentPointAry;
 			var hitp:Point = pstate.hitPoint;
+			var flha:HashArray = pstate.fastPointArray;
 			
 			//如果当前要画的点是闭合、碰撞、正常状态
 			if(pstate.isState(MapPointManagerState.IS_CLOSE) 
@@ -175,8 +177,20 @@
 				|| pstate.isState(MapPointManagerState.IS_HIT)){ //画笔状态，如果能继续画
 				
 				//把画线添加到线层
-				var ml:MapLine = new MapLine(this.suggest.startPoint,this.suggest.endPoint,VIEW_COLOR,VIEW_COLOR,VIEW_FILL_COLOR);
-				this.linesLayer.addChild(ml);
+				if(flha != null && flha.length > 0){
+					var p1:Point = cpa.findLast() as Point;
+					for(var i:int =0;i<flha.length;i++){
+						var p2:Point = flha.findByIndex(i) as Point;
+						var fml:MapLine = new MapLine(p1,p2,VIEW_COLOR,VIEW_COLOR,VIEW_FILL_COLOR);
+						fml.refresh();
+						this.linesLayer.addChild(fml);
+						p1 = p2;
+					}
+				}
+				else { 	
+					var ml:MapLine = new MapLine(this.suggest.startPoint,this.suggest.endPoint,VIEW_COLOR,VIEW_COLOR,VIEW_FILL_COLOR);
+					this.linesLayer.addChild(ml);
+				}
 				
 				//如果当前要画的点是闭合状态
 				if(pstate.isState(MapPointManagerState.IS_CLOSE)){ //如果当前链已关闭
@@ -199,6 +213,7 @@
 					
 					//删除画出的线
 					MapUtil.deleteAllChild(this.linesLayer);
+					MapUtil.deleteAllChild(this.fastViewLayer);
 				}
 				else{//如果当前链没有关闭
 					this.suggest.startPoint = hitp;
@@ -247,11 +262,10 @@
 				this.pen.penSkin = Pen.PEN_LINE_DEFAULT_SKIN;
 			}
 			this.pen.refresh();
-			
+			MapUtil.deleteAllChild(this.fastViewLayer);
 			if(this.pen.penState == Pen.PEN_STATE_DOING){//画笔状态是正在画：起点画完，末点未画
 				var fpa:HashArray = pstate.fastPointArray;
 				if(fpa != null && fpa.length > 0){
-					MapUtil.deleteAllChild(this.fastViewLayer);
 					var p1:Point = cpa.findLast() as Point;
 					for(var i:int =0;i<fpa.length;i++){
 						var p2:Point = fpa.findByIndex(i) as Point;
