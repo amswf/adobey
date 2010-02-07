@@ -131,24 +131,20 @@
 			this.addEventListener(MouseEvent.MOUSE_OUT,handlerMouseOutWorkSpase);
 		}
 		
-		
-		
-		
-		
-		
 		/**
 		 * 事件 MOUSE_OVER
 		 * @param e
 		 * 
 		 */		
 		private function handlerMouseOverWorkSpace(e:Event):void{
-			if(this.toolEventType == null || this.toolEventType != ToolsBar.TOOL_TYPE_LINE){
-				return;
-			}
+			
+			var mousep:Point = new Point(this.mouseX,this.mouseY);
+			this.pen.x = mousep.x;
+			this.pen.y = mousep.y;
+			
 			//画笔
 			Mouse.hide();
 			this.pen.visible = true;
-			
 		}
 		
 		/**
@@ -218,13 +214,20 @@
 		 * 
 		 */		
 		private function handlerMouseMoveWorkSpase(e:Event):void{
-			if(this.toolEventType == null || this.toolEventType != ToolsBar.TOOL_TYPE_LINE){
-				return;
-			}
+			
 			//获得当前鼠标坐标，给画笔置位置
 			var mousep:Point = new Point(this.mouseX,this.mouseY);
 			this.pen.x = mousep.x;
 			this.pen.y = mousep.y;
+			
+			if(this.toolEventType == null){
+				return;
+			}
+			else if(this.toolEventType == ToolsBar.TOOL_TYPE_SELECT){
+				this.pen.penSkin = Pen.PEN_SELECT_DEFAULT_SKIN;
+				this.pen.refresh();
+				return;
+			}
 			
 			//当前点状态
 			var pstate:MapPointManagerState = this.manager.hitTestPoint(mousep); 
@@ -256,9 +259,6 @@
 		 * 
 		 */		
 		private function handlerMouseOutWorkSpase(e:Event):void{
-			if(this.toolEventType == null || this.toolEventType != ToolsBar.TOOL_TYPE_LINE){
-				return;
-			}
 			Mouse.show();
 			this.pen.visible = false;
 		}

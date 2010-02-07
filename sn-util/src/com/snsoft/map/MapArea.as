@@ -27,6 +27,7 @@ package com.snsoft.map
 			this.pointArrayArray = pointArrayArray;
 			this.lineColor = lineColor;
 			this.fillColor = fillColor;
+			this.buttonMode = true;
 			super();
 		}
 		
