@@ -97,7 +97,7 @@
 			//判断是否将要画的链是否已经存在，如果存在反回这个链
 			var isFast:Boolean = false;
 			var fastPointArray:HashArray = new HashArray();
-			if(isHit){
+			if(isHit && !isInCpa){
 				var len:int = cpa.length;
 				if(len >=2){
 					var p1:Point = cpa.findByIndex(len -1) as Point;
@@ -112,7 +112,13 @@
 							var index2:int = pa.findIndex(n2);
 							var indexp:int = pa.findIndex(np);
 							if(index1 >= 0 && index2 >= 0 && indexp >= 0 ){
-								var palength:int = pa.length;
+								var palength:int = pa.length -1;
+								if(index1 == palength){
+									index1 = 0;
+								}
+								if(index2 == palength){
+									index2 = 0;
+								}
 								var subIndex:int = index1 - index2;
 								if(subIndex == palength -1 || subIndex == 1){
 									subIndex = 1;

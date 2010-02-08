@@ -178,9 +178,10 @@
 				
 				//把画线添加到线层
 				if(flha != null && flha.length > 0){
-					var p1:Point = cpa.findLast() as Point;
-					for(var i:int =0;i<flha.length;i++){
-						var p2:Point = flha.findByIndex(i) as Point;
+					var sn:int = cpa.length - flha.length;
+					var p1:Point = cpa.findByIndex(sn -1) as Point;
+					for(var i:int =sn;i<cpa.length;i++){
+						var p2:Point = cpa.findByIndex(i) as Point;
 						var fml:MapLine = new MapLine(p1,p2,VIEW_COLOR,VIEW_COLOR,VIEW_FILL_COLOR);
 						fml.refresh();
 						this.linesLayer.addChild(fml);
