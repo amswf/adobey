@@ -4,6 +4,7 @@ package com.snsoft.map
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.geom.Point;
+	import flash.text.TextField;
 	
 	public class MapDraw
 	{
@@ -32,6 +33,11 @@ package com.snsoft.map
 			gra.beginFill(fillColor,1);
 			gra.drawCircle(point.x,point.y,r);
 			gra.endFill();
+			var tfd:TextField = new TextField();
+			tfd.text = "("+point.x+","+point.y + ")";
+			tfd.x = 5 + point.x;
+			tfd.y = point.y;
+			sprite.addChild(tfd);
 			return sprite;
 		}
 		

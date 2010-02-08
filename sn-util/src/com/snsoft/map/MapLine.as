@@ -43,6 +43,10 @@ package com.snsoft.map
 			this.lineColor = lineColor;
 			this.pointFillColor = pointFillColor;
 			
+			this.mouseEnabled = false;
+			this.buttonMode = false;
+			this.mouseChildren = false;
+			
 			//基类方法
 			super();
 		}
