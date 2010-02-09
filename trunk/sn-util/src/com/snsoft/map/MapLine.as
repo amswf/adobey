@@ -136,7 +136,5 @@ package com.snsoft.map
 		{
 			_pointFillColor = value;
 		}
-
-
 	}
 }

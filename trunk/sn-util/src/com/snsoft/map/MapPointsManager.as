@@ -54,7 +54,6 @@
 		 * 
 		 */		
 		public function hitTestPoint(point:Point):MapPointManagerState{
-			
 			var paa:HashArray = this.pointAryAry;
 			
 			//获得碰撞点
@@ -120,11 +119,11 @@
 									index2 = 0;
 								}
 								var subIndex:int = index1 - index2;
-								if(subIndex == palength -1 || subIndex == 1){
-									subIndex = 1;
-								}
-								else if(subIndex == - (palength -1) || subIndex == -1){
+								if(subIndex == palength -1 || subIndex == -1){
 									subIndex = -1;
+								}
+								else if(subIndex == - (palength -1) || subIndex == 1){
+									subIndex = 1;
 								}
 								if(Math.abs(subIndex) == 1){
 									var startIndex:int = index1;
