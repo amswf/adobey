@@ -208,11 +208,8 @@
 						this.suggest.refresh();
 						
 						//画区块
-						var hpa:HashArray = this.manager.findLatestClosedPointArray();
-						var paa:Array = new Array();
-						var pa:Array = hpa.getArray();
-						paa.push(pa);
-						var ma:MapArea = new MapArea(paa,AREA_LINE_COLOR,AREA_FILL_COLOR);
+						var mado:MapAreaDO = this.manager.findLatestMapAreaDO();
+						var ma:MapArea = new MapArea(mado,AREA_LINE_COLOR,AREA_FILL_COLOR);
 						ma.refresh();
 						this.mapsLayer.addChild(ma);
 						this.addMapAreaEvent(ma);

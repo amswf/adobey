@@ -11,8 +11,8 @@
 		//当前画线的点数组
 		private var _currentPointAry:HashArray = new HashArray();
 		
-		//所有点的数组的数组
-		private var _pointAryAry:HashArray = new HashArray();
+		//地图块数据对象数组
+		private var mapAreaDOAry:HashArray = new HashArray(); 
 		
 		//碰撞检测类对象
 		private var hitTest:HitTest = null;
@@ -36,13 +36,13 @@
 			hitTest = new HitTest(workSizePoint,HIT_TEST_STEP_VALUE_POINT);
 		}
 		
-		public function findLatestClosedPointArray():HashArray{
-			var paa:HashArray = this.pointAryAry;
+		public function findLatestMapAreaDO():MapAreaDO{
+			var doa:HashArray = this.mapAreaDOAry;
 			
-			if(paa.length > 0 ){
-				var lasti:int = paa.length -1;
-				var pa:HashArray = paa.findByIndex(lasti) as HashArray;
-				return pa;
+			if(doa.length > 0 ){
+				var lasti:int = doa.length -1;
+				var mado:MapAreaDO = doa.findByIndex(lasti) as MapAreaDO;
+				return mado;
 			}
 			return null;
 		}
@@ -54,7 +54,7 @@
 		 * 
 		 */		
 		public function hitTestPoint(point:Point):MapPointManagerState{
-			var paa:HashArray = this.pointAryAry;
+			var doa:HashArray = this.mapAreaDOAry;
 			
 			//获得碰撞点
 			var htp:Point = this.hitTest.findPoint(point,HIT_TEST_DVALUE_POINT);
@@ -101,8 +101,9 @@
 				if(len >=2){
 					var p1:Point = cpa.findByIndex(len -1) as Point;
 					var p2:Point = cpa.findByIndex(len -2) as Point;
-					for(var j:int = 0;j<paa.length;j++){
-						var pa:HashArray = paa.findByIndex(j) as HashArray;
+					for(var j:int = 0;j<doa.length;j++){
+						var mado:MapAreaDO = doa.findByIndex(j) as MapAreaDO;
+						var pa:HashArray = mado.pointArray;
 						if(pa != null){
 							var n1:String = this.createPointHashName(p1);
 							var n2:String = this.createPointHashName(p2);
@@ -187,7 +188,7 @@
 			if(mpms.isState(IS_CLOSE)) {//如果闭合链了
 				this.addPointsToCpaAndHt(mpms);
 				this.addCpaToPpa();
-				this.tracePointAryAry(this.pointAryAry);//////////////////////////////////////测试用，最后删除
+				this.tracePointAryAry(this.mapAreaDOAry);//////////////////////////////////////测试用，最后删除
 			}
 			else if(mpms.isState(IS_IN_CPA)){//如果在当前链上，且不闭合
 				//什么都不做 
@@ -254,8 +255,10 @@
 		 */		
 		private function addCpaToPpa():void{
 			var cpa:HashArray = this.currentPointAry;
+			var doa:MapAreaDO = new MapAreaDO();
+			doa.pointArray = cpa;
 			var hn:String = this.creatHashArrayHashName(cpa);
-			this.pointAryAry.put(hn,cpa);
+			this.mapAreaDOAry.put(hn,doa);
 			this._currentPointAry = new HashArray();
 		}
 		
@@ -299,28 +302,22 @@
 		/**
 		 * 测试帮助 
 		 * 
-		 */		
-		private function tracePointAryAry(pointAryAry:HashArray):void{
-			var ppa:Array = pointAryAry.getArray();
+		 */
+		private function tracePointAryAry(hashArray:HashArray):void{
+			var ppa:Array = hashArray.getArray();
 			trace(ppa.length);
 			for(var i:int =0;i<ppa.length;i++){
-				var ha:HashArray = ppa[i] as HashArray;
+				var mado:MapAreaDO = ppa[i] as MapAreaDO;
+				var ha:HashArray = mado.pointArray;
 				if(ha != null){
 					trace(ha.getArray());
 				}
 			}
 		}
-
+		
 		public function get currentPointAry():HashArray
 		{
 			return _currentPointAry;
 		}
-
-		public function get pointAryAry():HashArray
-		{
-			return _pointAryAry;
-		}
-
-
 	}
 }
