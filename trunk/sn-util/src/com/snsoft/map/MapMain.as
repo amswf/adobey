@@ -16,6 +16,8 @@ package com.snsoft.map
 		//工具栏
 		private var bar:ToolsBar = new ToolsBar();
 		
+		private var areaAttribute:AreaAttribute = new AreaAttribute();
+		
 		//工作区
 		private var ws:WorkSpace = null;
 		
@@ -33,13 +35,25 @@ package com.snsoft.map
 			bar.y = SPACE;
 			this.addChild(bar);
 			var wsh:int = this.height - SPACE - SPACE;
-			var wsw:int = this.width - SPACE - SPACE - SPACE - bar.width;
+			var wsw:int = this.width - SPACE - SPACE - SPACE - bar.width - areaAttribute.width;
 			ws = new WorkSpace(new Point(wsw,wsh));
 			ws.x = bar.width + SPACE + SPACE;
 			ws.y = SPACE;
-			
 			this.addChild(ws);
+			
+			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_CLICK,handlerMapAreaClick);
 			bar.addEventListener(ToolsBar.TOOL_CLICK,handlerEventToolsClick);
+			
+			areaAttribute.x = this.width - areaAttribute.width;
+			areaAttribute.y = SPACE;
+			this.addChild(areaAttribute);
+		}
+		
+		private function handlerMapAreaClick(e:Event):void{
+			var mado:MapAreaDO = ws.currentClickMapAreaDO;
+			areaAttribute.setareaName(mado.areaName);
+			areaAttribute.setareaNameX(String(mado.areaNamePlace.x));
+			areaAttribute.setareaNameY(String(mado.areaNamePlace.y));
 		}
 		
 		/**
