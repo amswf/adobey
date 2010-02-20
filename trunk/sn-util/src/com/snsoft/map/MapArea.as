@@ -20,11 +20,11 @@ package com.snsoft.map
 		private var _fillColor:uint = 0x000000;
 		
 		//画区域的点列表的数组，一个图形可有多个点围成，但可以是多个点组成的链组成。
-		private var _pointArrayArray:Array = null;
+		private var _mapAreaDO:MapAreaDO = null;
 		
-		public function MapArea(pointArrayArray:Array,lineColor:uint,fillColor:uint)
+		public function MapArea(mapAreaDO:MapAreaDO,lineColor:uint,fillColor:uint)
 		{
-			this.pointArrayArray = pointArrayArray;
+			this.mapAreaDO = mapAreaDO;
 			this.lineColor = lineColor;
 			this.fillColor = fillColor;
 			this.buttonMode = true;
@@ -36,7 +36,9 @@ package com.snsoft.map
 		 * 
 		 */		
 		override protected function draw():void{
-			var paa:Array = this.pointArrayArray;
+			var mado:MapAreaDO = this.mapAreaDO;
+			var paa:Array = new Array();
+			paa.push(mado.pointArray.getArray());
 			var fill:Shape = MapDraw.drawFill(paa,this.lineColor,this.fillColor);
 			this.addChild(fill);
 			
@@ -52,26 +54,6 @@ package com.snsoft.map
 					}
 				}
 			}
-		}
-		
-		/**
-		 *  
-		 * @return 
-		 * 
-		 */		
-		public function get pointArrayArray():Array
-		{
-			return _pointArrayArray;
-		}
-
-		/**
-		 * 
-		 * @param value
-		 * 
-		 */		
-		public function set pointArrayArray(value:Array):void
-		{
-			_pointArrayArray = value;
 		}
 
 		/**
@@ -113,5 +95,16 @@ package com.snsoft.map
 		{
 			_lineColor = value;
 		}
+
+		public function get mapAreaDO():MapAreaDO
+		{
+			return _mapAreaDO;
+		}
+
+		public function set mapAreaDO(value:MapAreaDO):void
+		{
+			_mapAreaDO = value;
+		}
+
 	}
 }
