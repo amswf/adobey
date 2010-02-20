@@ -70,6 +70,10 @@
 		
 		private static const AREA_FILL_MOUSE_OVER_COLOR:uint = 0x00ff00;
 		
+		public static const EVENT_MAP_AREA_CLICK:String = "EVENT_MAP_AREA_CLICK";
+		
+		private var _currentClickMapAreaDO:MapAreaDO = null;
+		
 		private var threadMouseMoveSign:Boolean = true;
 		
 		private var threadMouseClickSign:Boolean = true;
@@ -327,6 +331,8 @@
 			if(ma != null){
 				this.mapsLayer.setChildIndex(ma,this.mapsLayer.numChildren - 1);
 			}
+			this._currentClickMapAreaDO = ma.mapAreaDO;
+			this.dispatchEvent(new Event(EVENT_MAP_AREA_CLICK));
 		}
 		
 		/**
@@ -378,5 +384,11 @@
 		{
 			_toolEventType = value;
 		}
+
+		public function get currentClickMapAreaDO():MapAreaDO
+		{
+			return _currentClickMapAreaDO;
+		}
+
 	}
 }
