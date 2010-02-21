@@ -80,6 +80,23 @@ package com.snsoft.tortility
 		}
 		
 		/**
+		 * 计算出原来的点坐标百分率 
+		 * @param p
+		 * @param lp11
+		 * @param lp12
+		 * @param lp21
+		 * @param lp22
+		 * @return 
+		 * 
+		 */		
+		public function calculateSpace2LineRate(p:Point,lp11:Point,lp12:Point,lp21:Point,lp22:Point):Number{
+			var s1:Number = Math.sqrt(this.calculateSpacePointTo2PointLineSquare(p,lp11,lp12));
+			var s2:Number = Math.sqrt(this.calculateSpacePointTo2PointLineSquare(p,lp21,lp22));
+			var r:Number = s1 / (s1 + s2);
+			return r;
+		}
+		
+		/**
 		 * 计算一个点到另两个点所在直线的距离的平方值 
 		 * @param p
 		 * @param lp1
@@ -87,12 +104,20 @@ package com.snsoft.tortility
 		 * @return 
 		 * 
 		 */		
-		public function calculateSpacePointTo2PointLineSquare(p:Point,lp1:Point,lp2:Point):Number{
-			
-			var acr:Number = this.calculate3PointAcreage(p,lp1,lp2);
-			return 0;
+		public function calculateSpacePointTo2PointLineSquare(p1:Point,p2:Point,p3:Point):Number{
+			var n:Number = Math.pow((p1.x*(p3.y - p2.y) + p1.y*(p2.x - p3.x) + p3.x*p2.y - p2.x * p3.y),2);
+			var m:Number = Math.pow((p3.y - p2.y),2) + Math.pow((p2.x - p3.x),2);
+			var r:Number= n/m;
+			return r;
 		}
 		
+		/**
+		 * 计算两点距离的平方值
+		 * @param p1
+		 * @param p2
+		 * @return 
+		 * 
+		 */		
 		public function calculate2PointSpaceSquare(p1:Point,p2:Point):Number{
 			return (p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y);
 		}

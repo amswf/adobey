@@ -20,6 +20,8 @@
 				var qp:Vector.<Point> = rt.findAllQuadrilateralPoints(shape);
 				trace(qp.length);
 				
+				rt.calculateSpace2LineRate(p,
+				
 				rt.calculateSpacePointTo2PointLineSquare(new Point(0,0),new Point(0,100),new Point(100,100));
 				
 				var bmd:BitmapData = new BitmapData(shape.width,shape.height);
