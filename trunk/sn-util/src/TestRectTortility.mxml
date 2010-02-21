@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/halo" minWidth="1024" minHeight="768"
+			   creationComplete="init();">
+	<fx:Script>
+		<![CDATA[
+			import com.snsoft.tortility.Quadrilateral4Point;
+			import com.snsoft.tortility.RectTortility;
+			import com.snsoft.util.ImageLoader;
+			 
+			
+			private function init():void{
+				var rt:RectTortility = new RectTortility();
+				var q4p:Quadrilateral4Point = new Quadrilateral4Point(new Point(0,0),new Point(100,0),new Point(150,200),new Point(0,100));
+				var v:Vector.<Point> = new Vector.<Point>();
+				v.push(new Point(0,0),new Point(100,0),new Point(150,200),new Point(0,100),new Point(0,0));
+				var shape:Shape = rt.drawFill(v);
+				this.addChild(shape);
+				var qp:Vector.<Point> = rt.findAllQuadrilateralPoints(shape);
+				trace(qp.length);
+				
+				rt.calculateSpacePointTo2PointLineSquare(new Point(0,0),new Point(0,100),new Point(100,100));
+				
+				var bmd:BitmapData = new BitmapData(shape.width,shape.height);
+				bmd.setPixel32(0,0,0x000000);
+				var bm:Bitmap = new Bitmap(bmd);
+				bm.x = 200;
+				bm.y = 200;
+				this.addChild(bm);
+				
+				var loader:ImageLoader = new ImageLoader();
+				loader.loadImage("test2.jpg");
+				loader.addEventListener(Event.COMPLETE,handlerCmp);
+			}
+			
+			private function handlerCmp(e:Event):void{
+				var loader:ImageLoader = e.currentTarget as ImageLoader;
+				var bmds:BitmapData = loader.bitmapData;
+				
+			}
+		]]>
+	</fx:Script>
+</s:Application>
