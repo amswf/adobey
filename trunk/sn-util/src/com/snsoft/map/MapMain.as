@@ -51,16 +51,17 @@ package com.snsoft.map
 		}
 		
 		private function handlerSubmit(e:Event):void{
-			var mado:MapArea = ws.currentClickMapArea;
+			var ma:MapArea = ws.currentClickMapArea;
 			if(areaAttribute.getareaName() != null){
-				mado.mapAreaDO.areaName = areaAttribute.getareaName();
+				ma.mapAreaDO.areaName = areaAttribute.getareaName();
 			}
 			if(areaAttribute.getareaNameX() != null){
-				mado.mapAreaDO.areaNamePlace.x = Number(areaAttribute.getareaNameX());
+				ma.mapAreaDO.areaNamePlace.x = Number(areaAttribute.getareaNameX());
 			}
 			if(areaAttribute.getareaNameY() != null){
-				mado.mapAreaDO.areaNamePlace.y = Number(areaAttribute.getareaNameY());
+				ma.mapAreaDO.areaNamePlace.y = Number(areaAttribute.getareaNameY());
 			}
+			ma.refresh();
 		}
 		
 		private function handlerMapAreaClick(e:Event):void{
