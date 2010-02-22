@@ -37,8 +37,8 @@ package com.snsoft.tortility
 			var v:Vector.<Point> = new Vector.<Point>();
 			for(var i:int = 0;i < w;i++){
 				for(var j:int = 0;j < w;j++){
-					var p:Point = new Point(startX + i,startY + j);
-					if(shape.hitTestPoint(p.x,p.y,true)){
+					var p:Point = new Point(startX + j,startY + i);
+					if(shape.hitTestPoint(p.x,p.y,false)){
 						v.push(p);
 					}
 				}
@@ -80,6 +80,41 @@ package com.snsoft.tortility
 		}
 		
 		/**
+		 * 求两直线交点，平行时返回 值为 Point(NaN,NaN)
+		 * 
+		 * y = ( (y0-y1)*(y3-y2)*x0 + (y3-y2)*(x1-x0)*y0 + (y1-y0)*(y3-y2)*x2 + (x2-x3)*(y1-y0)*y2 ) / ( (x1-x0)*(y3-y2) + (y0-y1)*(x3-x2) );
+		 * x = x2 + (x3-x2)*(y-y2) / (y3-y2);
+		 * 
+		 * @param p0 p0 p1 为一直线 
+		 * @param p1
+		 * @param p2 p2 p3 为一直线
+		 * @param p3
+		 * @return 
+		 * 
+		 */		
+		public function calculate2LineRateIntersectionPoint(p0:Point,p1:Point,p2:Point,p3:Point):Point{
+			var fy:Number = ( (p1.x - p0.x)*(p3.y - p2.y) + (p0.y - p1.y)*(p3.x - p2.x) );
+			
+			var fx:Number = (p3.y - p2.y);
+			
+			var x:Number = NaN;
+			var y:Number = NaN;
+			if(fy != 0){
+				y = ( (p0.y - p1.y) * (p3.y - p2.y) * p0.x + (p3.y - p2.y) * (p1.x - p0.x) * p0.y +
+					(p1.y - p0.y) * (p3.y - p2.y) * p2.x + (p2.x - p3.x) * (p1.y - p0.y) * p2.y) / fy;
+				
+				if(fx != 0){
+					x = p2.x + ((p3.x - p2.x)) * (y - p2.y) / fx;
+				}
+				else {
+					x = 0;
+				}
+			}
+			
+			return new Point(x,y);
+		}
+		
+		/**
 		 * 计算出原来的点坐标百分率 
 		 * @param p
 		 * @param lp11
@@ -89,11 +124,60 @@ package com.snsoft.tortility
 		 * @return 
 		 * 
 		 */		
-		public function calculateSpace2LineRate(p:Point,lp11:Point,lp12:Point,lp21:Point,lp22:Point):Number{
-			var s1:Number = Math.sqrt(this.calculateSpacePointTo2PointLineSquare(p,lp11,lp12));
-			var s2:Number = Math.sqrt(this.calculateSpacePointTo2PointLineSquare(p,lp21,lp22));
-			var r:Number = s1 / (s1 + s2);
-			return r;
+		public function calculateSpace2LineRatePoint(p:Point,p0:Point,p1:Point,p2:Point,p3:Point):Point{
+			
+			var ipL0L2:Point = this.calculate2LineRateIntersectionPoint(p0,p1,p3,p2);//上下两边交点
+			var ipL3L1:Point = this.calculate2LineRateIntersectionPoint(p0,p3,p1,p2);//左右两边交点
+			
+			var x:Number = 0;
+			var y:Number = 0;
+			
+			var isParallelTB:Boolean = isNaN(ipL3L1.x) && isNaN(ipL3L1.y);//上下平行
+			var isParallelLR:Boolean = isNaN(ipL0L2.x) && isNaN(ipL0L2.y);//左右平行
+			
+			var ipl:Point = null;//左交点
+			var ipr:Point = null;//右交点
+			var ipt:Point = null;//上交点
+			var ipb:Point = null;//下交点
+			
+			var sl:Number = 0;
+			var sr:Number = 0;
+			var st:Number = 0;
+			var sb:Number = 0;
+			
+			ipl = this.calculate2LineRateIntersectionPoint(p,ipL0L2,p0,p3);//左交点
+			ipr = this.calculate2LineRateIntersectionPoint(p,ipL0L2,p1,p2);//右交点
+			ipt = this.calculate2LineRateIntersectionPoint(p,ipL3L1,p0,p1);//上交点
+			ipb = this.calculate2LineRateIntersectionPoint(p,ipL3L1,p3,p2);//下交点
+			
+			if(!isParallelTB && !isParallelLR){
+				sl = Math.sqrt(this.calculate2PointSpaceSquare(p,ipl));
+				sr = Math.sqrt(this.calculate2PointSpaceSquare(p,ipr));
+				st = Math.sqrt(this.calculate2PointSpaceSquare(p,ipt));
+				sb = Math.sqrt(this.calculate2PointSpaceSquare(p,ipb));
+			}
+			else if(!isParallelTB && isParallelLR){
+				sl = Math.sqrt(this.calculate2PointSpaceSquare(p,ipl));
+				sr = Math.sqrt(this.calculate2PointSpaceSquare(p,ipr));
+				st = Math.sqrt(this.calculate2PointSpaceSquare(ipl,p0));
+				sb = Math.sqrt(this.calculate2PointSpaceSquare(ipl,p3));
+			}
+			else if(isParallelTB && !isParallelLR){
+				sl = Math.sqrt(this.calculate2PointSpaceSquare(ipt,p0));
+				sr = Math.sqrt(this.calculate2PointSpaceSquare(ipt,p1));
+				st = Math.sqrt(this.calculate2PointSpaceSquare(p,ipt));
+				sb = Math.sqrt(this.calculate2PointSpaceSquare(p,ipb));
+			}
+			else if(isParallelTB && isParallelLR){
+				sl = Math.sqrt(this.calculateSpacePointTo2PointLineSquare(p,p0,p3));
+				sr = Math.sqrt(this.calculateSpacePointTo2PointLineSquare(p,p1,p2));
+				st = Math.sqrt(this.calculateSpacePointTo2PointLineSquare(p,p0,p1));
+				sb = Math.sqrt(this.calculateSpacePointTo2PointLineSquare(p,p3,p2));
+			}
+			
+			x = sl / (sl + sr);
+			y = st / (st + sb);
+			return new Point(x,y);
 		}
 		
 		/**
