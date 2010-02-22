@@ -47,11 +47,32 @@ package com.snsoft.map
 			areaAttribute.x = this.width - areaAttribute.width;
 			areaAttribute.y = SPACE;
 			this.addChild(areaAttribute);
+			areaAttribute.addEventListener(AreaAttribute.SUBMIT_EVENT,handlerSubmit);
+		}
+		
+		private function handlerSubmit(e:Event):void{
+			var mado:MapArea = ws.currentClickMapArea;
+			if(areaAttribute.getareaName() != null){
+				mado.mapAreaDO.areaName = areaAttribute.getareaName();
+			}
+			if(areaAttribute.getareaNameX() != null){
+				mado.mapAreaDO.areaNamePlace.x = Number(areaAttribute.getareaNameX());
+			}
+			if(areaAttribute.getareaNameY() != null){
+				mado.mapAreaDO.areaNamePlace.y = Number(areaAttribute.getareaNameY());
+			}
 		}
 		
 		private function handlerMapAreaClick(e:Event):void{
-			var mado:MapAreaDO = ws.currentClickMapAreaDO;
-			areaAttribute.setareaName(mado.areaName);
+			var mado:MapAreaDO = ws.currentClickMapArea.mapAreaDO;
+			
+			var an:String = "<名称>";
+			var anx:String = "0";
+			var any:String = "0";
+			if(mado.areaName != null){
+				an = mado.areaName;
+			}
+			areaAttribute.setareaName(an);
 			areaAttribute.setareaNameX(String(mado.areaNamePlace.x));
 			areaAttribute.setareaNameY(String(mado.areaNamePlace.y));
 		}
