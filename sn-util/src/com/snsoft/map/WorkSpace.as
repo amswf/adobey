@@ -72,7 +72,7 @@
 		
 		public static const EVENT_MAP_AREA_CLICK:String = "EVENT_MAP_AREA_CLICK";
 		
-		private var _currentClickMapAreaDO:MapAreaDO = null;
+		private var _currentClickMapArea:MapArea = null;
 		
 		private var threadMouseMoveSign:Boolean = true;
 		
@@ -331,7 +331,7 @@
 			if(ma != null){
 				this.mapsLayer.setChildIndex(ma,this.mapsLayer.numChildren - 1);
 			}
-			this._currentClickMapAreaDO = ma.mapAreaDO;
+			this._currentClickMapArea = ma;
 			this.dispatchEvent(new Event(EVENT_MAP_AREA_CLICK));
 		}
 		
@@ -385,9 +385,9 @@
 			_toolEventType = value;
 		}
 
-		public function get currentClickMapAreaDO():MapAreaDO
+		public function get currentClickMapArea():MapArea
 		{
-			return _currentClickMapAreaDO;
+			return _currentClickMapArea;
 		}
 
 	}
