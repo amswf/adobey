@@ -8,27 +8,30 @@
 			import com.snsoft.tortility.Quadrilateral4Point;
 			import com.snsoft.tortility.RectTortility;
 			import com.snsoft.util.ImageLoader;
-			 
+			
+			private var q4pe:Quadrilateral4Point = new Quadrilateral4Point(new Point(0,0),new Point(100,0),new Point(150,200),new Point(0,100));
+			
+			private var bmd:BitmapData = null;
+			
+			private var qp:Vector.<Point> = null;
+			
+			private var rt:RectTortility = new RectTortility();
 			
 			private function init():void{
-				var rt:RectTortility = new RectTortility();
-				var q4p:Quadrilateral4Point = new Quadrilateral4Point(new Point(0,0),new Point(100,0),new Point(150,200),new Point(0,100));
+				
+				
 				var v:Vector.<Point> = new Vector.<Point>();
 				v.push(new Point(0,0),new Point(100,0),new Point(150,200),new Point(0,100),new Point(0,0));
 				var shape:Shape = rt.drawFill(v);
 				this.addChild(shape);
-				var qp:Vector.<Point> = rt.findAllQuadrilateralPoints(shape);
+				qp = rt.findAllQuadrilateralPoints(shape);
 				trace(qp.length);
 				
-				rt.calculateSpace2LineRate(p,
-				
-				rt.calculateSpacePointTo2PointLineSquare(new Point(0,0),new Point(0,100),new Point(100,100));
-				
-				var bmd:BitmapData = new BitmapData(shape.width,shape.height);
+				bmd = new BitmapData(shape.width,shape.height);
 				bmd.setPixel32(0,0,0x000000);
 				var bm:Bitmap = new Bitmap(bmd);
 				bm.x = 200;
-				bm.y = 200;
+				bm.y = 10;
 				this.addChild(bm);
 				
 				var loader:ImageLoader = new ImageLoader();
@@ -40,6 +43,20 @@
 				var loader:ImageLoader = e.currentTarget as ImageLoader;
 				var bmds:BitmapData = loader.bitmapData;
 				
+				var w:Number = bmds.width;
+				var h:Number = bmds.height;
+				
+				var n:Number = qp.length; 
+				for(var i:int = 0;i < n;i++){
+					var p:Point = qp[i];
+					var rateP:Point = rt.calculateSpace2LineRatePoint(p,q4pe.a,q4pe.d,q4pe.b,q4pe.c);
+					 
+					var ps:Point = new Point(w * rateP.x,h * rateP.y);
+					
+					var color:uint = bmds.getPixel32(ps.x,ps.y);
+					
+					bmd.setPixel32(p.x,p.y,color);
+				}
 			}
 		]]>
 	</fx:Script>
