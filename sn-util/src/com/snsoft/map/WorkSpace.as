@@ -315,7 +315,12 @@
 				mapArea.addEventListener(MouseEvent.MOUSE_DOWN,handlerMapAreaMouseDown);
 				mapArea.addEventListener(MouseEvent.MOUSE_OVER,handlerMapAreaMouseOver);
 				mapArea.addEventListener(MouseEvent.MOUSE_OUT,handlerMapAreaMouseOut);
+				mapArea.addEventListener(MapArea.CUNTRY_NAME_MOVE_EVENT,handlerMapAreaCuntryNameMove);
 			}
+		}
+		
+		private function handlerMapAreaCuntryNameMove(e:Event):void{
+			this.dispatchEvent(new Event(EVENT_MAP_AREA_CLICK));
 		}
 		
 		/**

@@ -1,7 +1,11 @@
 package com.snsoft.map
 {
+	
+	import com.snsoft.util.TextFieldUtil;
+	
 	import flash.display.MovieClip;
 	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
 	 
 	
 	public class CuntryName extends MovieClip
@@ -16,6 +20,7 @@ package com.snsoft.map
 		{
 			super();
 			_lableName = this.getChildByName("lableName") as TextField;
+			_lableName.autoSize = TextFieldAutoSize.LEFT;
 			_msk = this.getChildByName("msk") as MovieClip;
 			this.lableText = lableText;
 		}
@@ -31,6 +36,9 @@ package com.snsoft.map
 				value = "";
 			}
 			this._lableName.text = value;
+			var w:Number = TextFieldUtil.calculateTextFieldWidth(this._lableName);
+			this._lableName.width = w;
+			this._msk.width = w;
 			_lableText = value;
 		}
 

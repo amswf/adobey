@@ -16,6 +16,7 @@ package com.snsoft.map
 		//工具栏
 		private var bar:ToolsBar = new ToolsBar();
 		
+		//地图块属性
 		private var areaAttribute:AreaAttribute = new AreaAttribute();
 		
 		//工作区

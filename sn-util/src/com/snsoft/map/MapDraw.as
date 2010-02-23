@@ -37,7 +37,7 @@ package com.snsoft.map
 			tfd.text = "("+point.x+","+point.y + ")";
 			tfd.x = 5 + point.x;
 			tfd.y = point.y;
-			sprite.addChild(tfd);
+			//sprite.addChild(tfd);
 			tfd.mouseEnabled = false;
 			return sprite;
 		}
