@@ -62,12 +62,12 @@ package com.snsoft.map
 			
 			var dobj:Rectangle = areaFillShape.getRect(this);			
 			var cn:CuntryName = this.cuntryName;
+			cn.lableText = mado.areaName;
 			cn.x = (dobj.width - cn.width)/2 + dobj.x + this.mapAreaDO.areaNamePlace.x;
 			cn.y = (dobj.height - cn.height)/2 + dobj.y + this.mapAreaDO.areaNamePlace.y;
 			cn.mouseEnabled = true;
 			cn.buttonMode = true;
 			cn.mouseChildren = false;
-			cn.lableText = mado.areaName;
 			this.addChild(cn);
 			cn.addEventListener(MouseEvent.MOUSE_DOWN,handlerCnMouseDown);
 			cn.addEventListener(MouseEvent.MOUSE_UP,handlerCnMouseUp);
@@ -89,7 +89,6 @@ package com.snsoft.map
 		
 		private function handlerCnMouseDown(e:Event):void{
 			if(this.cuntryNameMoveSign == false){
-				trace("handlerCnMouseDown");
 				var p:Point = this.cuntryNameMousePoint;
 				var cn:CuntryName = this.cuntryName;
 				p.x = this.mouseX - cn.x;
@@ -99,7 +98,6 @@ package com.snsoft.map
 		}
 		
 		private function handlerCnMouseUp(e:Event):void{
-			trace("handlerCnMouseUp");
 			this.cuntryNameMoveSign = false;
 			var mado:MapAreaDO = this.mapAreaDO;
 			var cn:CuntryName = this.cuntryName;
@@ -112,7 +110,6 @@ package com.snsoft.map
 		
 		private function handlerCnMouseMove(e:Event):void{
 			if(this.cuntryNameMoveSign){
-				trace("handlerCnMouseMove");
 				var cn:CuntryName = this.cuntryName;
 				var p:Point = this.cuntryNameMousePoint;
 				cn.x = this.mouseX - p.x;
