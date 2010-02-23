@@ -60,19 +60,6 @@ package com.snsoft.map
 			areaFillShape = MapDraw.drawFill(paa,this.lineColor,this.fillColor);
 			this.addChild(areaFillShape);
 			
-			var dobj:Rectangle = areaFillShape.getRect(this);			
-			var cn:CuntryName = this.cuntryName;
-			cn.lableText = mado.areaName;
-			cn.x = (dobj.width - cn.width)/2 + dobj.x + this.mapAreaDO.areaNamePlace.x;
-			cn.y = (dobj.height - cn.height)/2 + dobj.y + this.mapAreaDO.areaNamePlace.y;
-			cn.mouseEnabled = true;
-			cn.buttonMode = true;
-			cn.mouseChildren = false;
-			this.addChild(cn);
-			cn.addEventListener(MouseEvent.MOUSE_DOWN,handlerCnMouseDown);
-			cn.addEventListener(MouseEvent.MOUSE_UP,handlerCnMouseUp);
-			cn.addEventListener(MouseEvent.MOUSE_MOVE,handlerCnMouseMove);
-			
 			if(paa != null){
 				for(var i:int = 0;i<paa.length;i++){
 					var pa:Array = paa[i] as Array;
@@ -85,6 +72,19 @@ package com.snsoft.map
 					}
 				}
 			}
+			
+			var dobj:Rectangle = areaFillShape.getRect(this);			
+			var cn:CuntryName = this.cuntryName;
+			cn.lableText = mado.areaName;
+			cn.x = (dobj.width - cn.width)/2 + dobj.x + this.mapAreaDO.areaNamePlace.x;
+			cn.y = (dobj.height - cn.height)/2 + dobj.y + this.mapAreaDO.areaNamePlace.y;
+			cn.mouseEnabled = true;
+			cn.buttonMode = true;
+			cn.mouseChildren = false;
+			this.addChild(cn);
+			cn.addEventListener(MouseEvent.MOUSE_DOWN,handlerCnMouseDown);
+			cn.addEventListener(MouseEvent.MOUSE_UP,handlerCnMouseUp);
+			cn.addEventListener(MouseEvent.MOUSE_MOVE,handlerCnMouseMove);
 		}
 		
 		private function handlerCnMouseDown(e:Event):void{
