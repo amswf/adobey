@@ -49,20 +49,30 @@ package com.snsoft.map
 			areaAttribute.y = SPACE;
 			this.addChild(areaAttribute);
 			areaAttribute.addEventListener(AreaAttribute.SUBMIT_EVENT,handlerSubmit);
+			areaAttribute.addEventListener(AreaAttribute.DELETE_EVENT,handlerDelete);
+		}
+		
+		private function handlerDelete(e:Event):void{
+			var ma:MapArea = ws.currentClickMapArea;
+			if(ma != null){
+				ws.deleteMapArea(ma);
+			}
 		}
 		
 		private function handlerSubmit(e:Event):void{
 			var ma:MapArea = ws.currentClickMapArea;
-			if(areaAttribute.getareaName() != null){
-				ma.mapAreaDO.areaName = areaAttribute.getareaName();
+			if(ma != null){
+				if(areaAttribute.getareaName() != null){
+					ma.mapAreaDO.areaName = areaAttribute.getareaName();
+				}
+				if(areaAttribute.getareaNameX() != null){
+					ma.mapAreaDO.areaNamePlace.x = Number(areaAttribute.getareaNameX());
+				}
+				if(areaAttribute.getareaNameY() != null){
+					ma.mapAreaDO.areaNamePlace.y = Number(areaAttribute.getareaNameY());
+				}
+				ma.refresh();
 			}
-			if(areaAttribute.getareaNameX() != null){
-				ma.mapAreaDO.areaNamePlace.x = Number(areaAttribute.getareaNameX());
-			}
-			if(areaAttribute.getareaNameY() != null){
-				ma.mapAreaDO.areaNamePlace.y = Number(areaAttribute.getareaNameY());
-			}
-			ma.refresh();
 		}
 		
 		private function handlerMapAreaClick(e:Event):void{

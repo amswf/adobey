@@ -15,9 +15,13 @@ package com.snsoft.map
 		
 		private var _areaNameYTextField:TextField = null;
 		
-		private var _btn:Button = null;
+		private var _submitBtn:Button = null;
+		
+		private var _deleteBtn:Button = null;
 		
 		public static const SUBMIT_EVENT:String = "SUBMIT_EVENT";
+		
+		public static const DELETE_EVENT:String = "DELETE_EVENT";
 		
 		public function AreaAttribute()
 		{
@@ -25,12 +29,18 @@ package com.snsoft.map
 			_areaNameTextField = this.getChildByName("areaNameTextField") as TextField;
 			_areaNameXTextField = this.getChildByName("areaNameXTextField") as TextField;
 			_areaNameYTextField = this.getChildByName("areaNameYTextField") as TextField;
-			_btn = this.getChildByName("btn") as Button;
+			_submitBtn = this.getChildByName("submitBtn") as Button;
+			_deleteBtn = this.getChildByName("deleteBtn") as Button;
 			
-			this._btn.addEventListener(MouseEvent.CLICK,handlerMouseClick);
+			this._submitBtn.addEventListener(MouseEvent.CLICK,handlerSubmitMouseClick);
+			this._deleteBtn.addEventListener(MouseEvent.CLICK,handlerdeleteMouseClick);
 		}
 		
-		private function handlerMouseClick(e:Event):void{
+		private function handlerdeleteMouseClick(e:Event):void{
+			this.dispatchEvent(new Event(DELETE_EVENT));
+		}
+		
+		private function handlerSubmitMouseClick(e:Event):void{
 			this.dispatchEvent(new Event(SUBMIT_EVENT));
 		}
 		
@@ -57,11 +67,5 @@ package com.snsoft.map
 		public function getareaNameY():String{
 			return this._areaNameYTextField.text;
 		}
-
-		public function getBtn():Button
-		{
-			return _btn;
-		}
-
 	}
 }

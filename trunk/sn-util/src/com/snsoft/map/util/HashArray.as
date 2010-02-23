@@ -1,6 +1,6 @@
 ﻿package com.snsoft.map.util
 {
-	import flash.geom.Point;
+	
 
 	public class HashArray
 	{
@@ -10,6 +10,8 @@
 		private var listAry:Array = new Array();
 		
 		private var hashAry:Array = new Array();
+		
+		private var nameAry:Array = new Array();
 		
 		public function HashArray()
 		{
@@ -25,22 +27,33 @@
 		public function put(name:String,value:Object):void{
 			if(name != null && name.length > 0){
 				this.listAry.push(value);
+				this.nameAry.push(name);
 				this.hashAry[name] = String(listAry.length -1);
 			}
 		}
 		
 		/**
-		 * 此方法，暂时不用。 
+		 * 通过键值删除项。 
 		 * @param name
 		 * 
 		 */		
-		private function remove(name:String):void{
+		public function remove(name:String):void{
 			if(name != null && name.length > 0){
 				var i:int = this.findIndex(name);
-				if(i >=0 ){
-					this.listAry[i] = null;
-					this.hashAry[name] = HASH_DEFAULT_VALUE;
-				}
+				this.removeByIndex(i);
+			}
+		}
+		
+		/**
+		 * 通过下标删除项 
+		 * @param i
+		 * 
+		 */		
+		public function removeByIndex(i:int):void{
+			if(i >=0 && i<this.listAry.length ){
+				var name:String = this.findName(i);
+				this.listAry.splice(i,1);
+				this.hashAry[name] = HASH_DEFAULT_VALUE;
 			}
 		}
 		
@@ -86,6 +99,20 @@
 				return i;
 			}
 			return -1;
+		}
+		
+		/**
+		 * 查找键值 
+		 * @param i
+		 * @return 
+		 * 
+		 */		
+		public function findName(i:int):String{
+			var name:String = null;
+			if(i>=0 && i<listAry.length){
+				name = this.nameAry[i];
+			}
+			return name;
 		}
 		
 		/**

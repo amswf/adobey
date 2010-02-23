@@ -67,7 +67,51 @@
 				if(yary != null && yary.length >=iy){
 					var pary:Array = yary[iy] as Array;
 					if(pary != null){
-						pary.push(point);
+						var htp:HitTestPoint = this.findHitTestPoint(point,new Point(0,0));
+						if(htp == null){
+							htp = new HitTestPoint(point,1);
+							pary.push(htp);
+						}
+						else {
+							htp.sameCount ++;
+							trace(htp.sameCount);
+						}
+					}
+				}
+			}
+		}
+		
+		/**
+		 * 删除注册的碰撞点 
+		 * @param point
+		 * 
+		 */		
+		public function deletePoint(point:Point):void{
+			if(point != null){
+				var p:Point = this.getArrayIndex(point);
+				var ix:int = int(p.x);
+				var iy:int = int(p.y);
+				
+				if(this.pointAryAryAry != null && this.pointAryAryAry.length >= ix){
+					var yary:Array =  this.pointAryAryAry[ix] as Array;
+					if(yary != null && yary.length >=iy){
+						var pary:Array = yary[iy] as Array;
+						if(pary != null){
+							for(var k:int = 0;k<pary.length;k ++){
+								var ohtp:HitTestPoint = pary[k] as HitTestPoint;
+								if(ohtp != null){
+									var op:Point = ohtp.point;
+									if(this.isHit2Point(op,point,new Point(0,0))){
+										ohtp.sameCount --;
+										trace("hitTest",pary.length);
+										if(ohtp.sameCount <= 0){
+											pary = pary.splice(k,1);
+										}
+										trace(pary.length);
+									}
+								}
+							}
+						}
 					}
 				}
 			}
@@ -81,6 +125,22 @@
 		 * 
 		 */		
 		public function findPoint(point:Point,dvalue:Point = null):Point{
+			var htp:HitTestPoint = this.findHitTestPoint(point,dvalue);
+			var p:Point = null;
+			if(htp != null){
+				p = htp.point;
+			}
+			return p;
+		}
+		
+		/**
+		 *  
+		 * @param point 需要检测的点
+		 * @param dvalue 点坐标的差值域
+		 * @return 
+		 * 
+		 */		
+		private function findHitTestPoint(point:Point,dvalue:Point = null):HitTestPoint{
 			if(dvalue == null){
 				dvalue = new Point(0,0);
 			}
@@ -88,17 +148,18 @@
 				var p:Point = this.getArrayIndex(point);
 				var ix:int = int(p.x);
 				var iy:int = int(p.y);
-	
+				
 				if(this.pointAryAryAry != null && this.pointAryAryAry.length >= ix){
 					var yary:Array =  this.pointAryAryAry[ix] as Array;
 					if(yary != null && yary.length >=iy){
 						var pary:Array = yary[iy] as Array;
 						if(pary != null){
 							for(var k:int = 0;k<pary.length;k ++){
-								var op:Point = pary[k] as Point;
-								if(op != null){
+								var ohtp:HitTestPoint = pary[k] as HitTestPoint;
+								if(ohtp != null){
+									var op:Point = ohtp.point;
 									if(this.isHit2Point(op,point,dvalue)){
-										return op;
+										return ohtp;
 									}
 								}
 							}
