@@ -214,6 +214,7 @@
 						//画区块
 						var mado:MapAreaDO = this.manager.findLatestMapAreaDO();
 						var ma:MapArea = new MapArea(mado,AREA_LINE_COLOR,AREA_FILL_COLOR);
+						ma.name = MapPointsManager.creatHashArrayHashName(mado.pointArray);
 						ma.refresh();
 						this.mapsLayer.addChild(ma);
 						this.addMapAreaEvent(ma);
@@ -230,6 +231,18 @@
 				}
 			}
 			threadMouseClickSign = true;
+		}
+		
+		public function deleteMapArea(mapArea:MapArea):void{
+			var ml:MovieClip = this.mapsLayer;
+			var mado:MapAreaDO = mapArea.mapAreaDO;
+			var name:String = MapPointsManager.creatHashArrayHashName(mado.pointArray);
+			var ma:MapArea = ml.getChildByName(name) as MapArea;
+			if(ma != null){
+				ml.removeChild(ma);
+			}
+			var mpm:MapPointsManager = this.manager;
+			mpm.deletePointAryAndDeleteHitTestPoint(mado);
 		}
 		
 		/**
