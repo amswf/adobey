@@ -130,7 +130,7 @@
 									var startIndex:int = index1;
 									while(true){
 										startIndex += subIndex;
-										if(startIndex >= palength){
+										if(startIndex > palength){
 											startIndex = palength - startIndex;
 										}
 										else if(startIndex < 0){
