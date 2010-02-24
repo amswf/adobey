@@ -1,9 +1,10 @@
 package com.snsoft.map
 {
+	import com.snsoft.util.SpriteMouseAction;
+	
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
@@ -82,22 +83,20 @@ package com.snsoft.map
 			cn.buttonMode = true;
 			cn.mouseChildren = false;
 			this.addChild(cn);
-			cn.addEventListener(MouseEvent.MOUSE_DOWN,handlerCnMouseDown);
-			cn.addEventListener(MouseEvent.MOUSE_UP,handlerCnMouseUp);
-			cn.addEventListener(MouseEvent.MOUSE_MOVE,handlerCnMouseMove);
+			
+			var sma:SpriteMouseAction = new SpriteMouseAction();
+			sma.dragDisplayObject = cn;
+			sma.addMouseDragEvents();
+			sma.addEventListener(SpriteMouseAction.DRAG_COMPLETE_EVENT,dragCmp);
+			 
 		}
 		
-		private function handlerCnMouseDown(e:Event):void{
-			if(this.cuntryNameMoveSign == false){
-				var p:Point = this.cuntryNameMousePoint;
-				var cn:CuntryName = this.cuntryName;
-				p.x = this.mouseX - cn.x;
-				p.y = this.mouseY - cn.y;
-				this.cuntryNameMoveSign = true;
-			}
-		}
-		
-		private function handlerCnMouseUp(e:Event):void{
+		/**
+		 * 拖动完成 事件  DRAG_COMPLETE_EVENT
+		 * @param e
+		 * 
+		 */		
+		private function dragCmp(e:Event):void{
 			this.cuntryNameMoveSign = false;
 			var mado:MapAreaDO = this.mapAreaDO;
 			var cn:CuntryName = this.cuntryName;
@@ -106,15 +105,6 @@ package com.snsoft.map
 			var py:Number = cn.y - (dobj.height - cn.height)/2 - dobj.y;
 			mado.areaNamePlace = new Point(px,py);
 			this.dispatchEvent(new Event(CUNTRY_NAME_MOVE_EVENT));
-		}
-		
-		private function handlerCnMouseMove(e:Event):void{
-			if(this.cuntryNameMoveSign){
-				var cn:CuntryName = this.cuntryName;
-				var p:Point = this.cuntryNameMousePoint;
-				cn.x = this.mouseX - p.x;
-				cn.y = this.mouseY - p.y;
-			}
 		}
 		
 		/**
