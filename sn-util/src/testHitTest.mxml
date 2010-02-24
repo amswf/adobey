@@ -3,12 +3,14 @@
 	<mx:Script>
 		<![CDATA[
 			import com.snsoft.map.util.HitTest;
+			import com.snsoft.util.SpriteMouseAction;
 			
 			public function init():void{
 				var ht:HitTest = new HitTest(new Point(400,500),new Point(10,10));
 				ht.addPoint(new Point(40,50));
 				ht.addPoint(new Point(100,90));
 				trace(ht.findPoint(new Point(40,50),new Point(0,0)));
+				
 			}
 		]]>
 	</mx:Script>

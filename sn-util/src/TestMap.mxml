@@ -6,6 +6,7 @@
 	 <fx:Script>
 		 <![CDATA[
 			 import com.snsoft.map.MapMain;
+			 import com.snsoft.util.SpriteMouseAction;
 			 
 			 
 			 private function init():void{
@@ -13,6 +14,7 @@
 				mm.width = 400;
 				mm.height = 300;
 				this.addChild(mm);
+				var sma:SpriteMouseAction = null;
 			 }
 		 ]]>
 	 </fx:Script>
