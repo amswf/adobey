@@ -2,6 +2,7 @@
 	import com.snsoft.map.util.HashArray;
 	import com.snsoft.map.util.HitTest;
 	import com.snsoft.map.util.MapUtil;
+	import com.snsoft.util.SpriteMouseAction;
 	
 	import fl.core.UIComponent;
 	
@@ -78,6 +79,8 @@
 		
 		private var threadMouseClickSign:Boolean = true;
 		
+		private var spriteMouseAction:SpriteMouseAction = new SpriteMouseAction();
+		
 		/**
 		 * 构造方法 
 		 * 
@@ -133,6 +136,7 @@
 			this.addEventListener(MouseEvent.CLICK,handerMouseClickWorkSpace);
 			this.addEventListener(MouseEvent.MOUSE_MOVE,handlerMouseMoveWorkSpase);
 			this.addEventListener(MouseEvent.MOUSE_OUT,handlerMouseOutWorkSpase);
+			spriteMouseAction.dragDisplayObject = this;
 		}
 		
 		/**
@@ -259,12 +263,22 @@
 				this.pen.x = mousep.x;
 				this.pen.y = mousep.y;
 				
+				spriteMouseAction.removeMouseDragEvents();
+				this.mouseChildren = true;
+				
 				if(this.toolEventType == null){
 					return;
 				}
 				else if(this.toolEventType == ToolsBar.TOOL_TYPE_SELECT){
 					this.pen.penSkin = Pen.PEN_SELECT_DEFAULT_SKIN;
 					this.pen.refresh();
+					return;
+				}
+				else if(this.toolEventType == ToolsBar.TOOL_TYPE_DRAG){
+					this.pen.penSkin = Pen.PEN_DRAG_DEFAULT_SKIN;
+					this.pen.refresh();
+					this.mouseChildren = false;
+					spriteMouseAction.addMouseDragEvents();
 					return;
 				}
 				
@@ -359,17 +373,19 @@
 		 * 
 		 */		
 		private function handlerMapAreaMouseOver(e:Event):void{
-			if(this.toolEventType == null || this.toolEventType != ToolsBar.TOOL_TYPE_SELECT){
+			if(this.toolEventType == null ){
 				return;
 			}
-			this.removeEventListener(MouseEvent.MOUSE_OVER,handlerMouseOverWorkSpace);
-			this.removeEventListener(MouseEvent.CLICK,handerMouseClickWorkSpace);
-			this.removeEventListener(MouseEvent.MOUSE_MOVE,handlerMouseMoveWorkSpase);
-			this.removeEventListener(MouseEvent.MOUSE_OUT,handlerMouseOutWorkSpase);
-			var ma:MapArea = e.currentTarget as MapArea;
-			if(ma != null){
-				ma.fillColor = AREA_FILL_MOUSE_OVER_COLOR;
-				ma.refresh();
+			if(this.toolEventType == ToolsBar.TOOL_TYPE_SELECT){
+				this.removeEventListener(MouseEvent.MOUSE_OVER,handlerMouseOverWorkSpace);
+				this.removeEventListener(MouseEvent.CLICK,handerMouseClickWorkSpace);
+				this.removeEventListener(MouseEvent.MOUSE_MOVE,handlerMouseMoveWorkSpase);
+				this.removeEventListener(MouseEvent.MOUSE_OUT,handlerMouseOutWorkSpase);
+				var ma:MapArea = e.currentTarget as MapArea;
+				if(ma != null){
+					ma.fillColor = AREA_FILL_MOUSE_OVER_COLOR;
+					ma.refresh();
+				}
 			}
 		}
 		
@@ -392,21 +408,21 @@
 			this.addEventListener(MouseEvent.MOUSE_MOVE,handlerMouseMoveWorkSpase);
 			this.addEventListener(MouseEvent.MOUSE_OUT,handlerMouseOutWorkSpase);
 		}
-
+		
 		public function get toolEventType():String
 		{
 			return _toolEventType;
 		}
-
+		
 		public function set toolEventType(value:String):void
 		{
 			_toolEventType = value;
 		}
-
+		
 		public function get currentClickMapArea():MapArea
 		{
 			return _currentClickMapArea;
 		}
-
+		
 	}
 }

@@ -19,6 +19,12 @@ package com.snsoft.map
 		//地图块属性
 		private var areaAttribute:AreaAttribute = new AreaAttribute();
 		
+		//工作区遮罩
+		private var wsMask:MovieClip = null;
+		
+		//工作区边框
+		private var wsFrame:MovieClip = null;
+		
 		//工作区
 		private var ws:WorkSpace = null;
 		
@@ -35,12 +41,36 @@ package com.snsoft.map
 			bar.x = SPACE;
 			bar.y = SPACE;
 			this.addChild(bar);
+			
+			
+			
 			var wsh:int = this.height - SPACE - SPACE;
 			var wsw:int = this.width - SPACE - SPACE - SPACE - bar.width - areaAttribute.width;
+			var wsx:int = bar.width + SPACE + SPACE;
+			var wsy:int = SPACE;
+			 
+			wsMask =  SkinsUtil.createSkinByName(MAIN_FRAME_SKIN);
+			this.addChild(wsMask);
+			wsMask.width = wsw;
+			wsMask.height = wsh;
+			wsMask.x = wsx;
+			wsMask.y = wsy;
+			
 			ws = new WorkSpace(new Point(wsw,wsh));
-			ws.x = bar.width + SPACE + SPACE;
-			ws.y = SPACE;
+			ws.mask = wsMask;
+			ws.x = wsx;
+			ws.y = wsy;
 			this.addChild(ws);
+			
+			wsFrame = SkinsUtil.createSkinByName(MAIN_FRAME_SKIN);
+			wsFrame.width = wsw;
+			wsFrame.height = wsh;
+			wsFrame.x = wsx;
+			wsFrame.y = wsy;
+			wsFrame.mouseEnabled = false;
+			wsFrame.mouseChildren = false;
+			wsFrame.buttonMode = false;
+			this.addChild(wsFrame);
 			
 			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_CLICK,handlerMapAreaClick);
 			bar.addEventListener(ToolsBar.TOOL_CLICK,handlerEventToolsClick);
