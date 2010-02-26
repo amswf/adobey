@@ -68,7 +68,7 @@
 			for (var i:int = 0; i<this.xNum; i++) {
 				var yary:Array = xary[i] as Array;
 				for (var j:int = 0; j<this.xNum; j++) {
-					var pary:Array = yary[i] as Array;
+					var pary:Array = yary[j] as Array;
 					if(pary != null){
 						for(var k:int = 0;k<pary.length;k ++){
 							var ohtp:HitTestPoint = pary[k] as HitTestPoint;

@@ -270,7 +270,6 @@
 			this.currentPointAry.put(name,point);
 			//注册碰撞检测
 			this.hitTest.addPoint(point);
-			var ht:HitTest = this.hitTest.createCopy(this.hitTest.sizePoint,this.hitTest.stepPoint);
 		}
 		
 		/**
