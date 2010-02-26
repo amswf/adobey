@@ -29,6 +29,9 @@ package com.snsoft.map
 		//选择工具默认皮肤。
 		public static const PEN_SELECT_DEFAULT_SKIN:String = "PenSelectDefaultSkin";
 		
+		//选择工具默认皮肤。
+		public static const PEN_DRAG_DEFAULT_SKIN:String = "PenDragDefaultSkin";
+		
 		//画笔状态：起始
 		public static const PEN_STATE_START:int = 0;
 		

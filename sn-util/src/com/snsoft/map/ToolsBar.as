@@ -19,6 +19,9 @@ package com.snsoft.map
 		//点击选择工具事件类型
 		public static const TOOL_TYPE_SELECT:String = "TOOL_TYPE_SELECT";
 		
+		//点击选择工具事件类型
+		public static const TOOL_TYPE_DRAG:String = "TOOL_TYPE_DRAG";
+		
 		//工具点击事件类型		
 		public static const TOOL_CLICK:String = "TOOL_CLICK";
 		
@@ -38,6 +41,9 @@ package com.snsoft.map
 			var selectBtn:ToolBtn = new ToolBtn("ToolSelectDefaultSkin","ToolSelectOverSkin","ToolSelectDownSkin",TOOL_TYPE_SELECT);
 			selectBtn.refresh();
 			this.addToolBtn(selectBtn);
+			var dragBtn:ToolBtn = new ToolBtn("ToolDragDefaultSkin","ToolDragOverSkin","ToolDragDownSkin",TOOL_TYPE_DRAG);
+			dragBtn.refresh();
+			this.addToolBtn(dragBtn);
 		}
 		
 		/**
