@@ -111,8 +111,13 @@
 							var index1:int = pa.findIndex(n1);
 							var index2:int = pa.findIndex(n2);
 							var indexp:int = pa.findIndex(np);
+							
+							var palength:int = pa.length -1;
+							if(indexp == palength){
+								indexp = 0;
+							}
 							if(index1 >= 0 && index2 >= 0 && indexp >= 0 ){
-								var palength:int = pa.length -1;
+								
 								if(index1 == palength){
 									index1 = 0;
 								}
@@ -131,10 +136,10 @@
 									while(true){
 										startIndex += subIndex;
 										if(startIndex > palength){
-											startIndex = palength - startIndex;
+											startIndex = 0;
 										}
 										else if(startIndex < 0){
-											startIndex = palength + startIndex;
+											startIndex = palength -1;
 										}
 										var fp:Point = pa.findByIndex(startIndex) as Point;
 										var fpname:String = MapPointsManager.createPointHashName(p1);
@@ -265,6 +270,7 @@
 			this.currentPointAry.put(name,point);
 			//注册碰撞检测
 			this.hitTest.addPoint(point);
+			var ht:HitTest = this.hitTest.createCopy(this.hitTest.sizePoint,this.hitTest.stepPoint);
 		}
 		
 		/**

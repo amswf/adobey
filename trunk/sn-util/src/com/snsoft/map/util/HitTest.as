@@ -1,20 +1,23 @@
 ﻿package com.snsoft.map.util{
 	import flash.geom.Point;
-
+	
 	public class HitTest {
 		//碰撞检测点数组的矩阵，矩阵是一个二维数组
 		private var pointAryAryAry:Array = new Array();
-
+		
 		//最大值点
-		private var sizePoint:Point = new Point();
+		private var _sizePoint:Point = new Point();
 
+		 
+
+		
 		//X 和 Y 的步进值
-		private var stepPoint:Point = new Point();
-
+		private var _stepPoint:Point = new Point();
+		
 		private var xNum:int = 0;
-
+		
 		private var yNum:int = 0;
-
+		
 		/**
 		 * 全部为正数 
 		 * @param sizePoint
@@ -22,7 +25,7 @@
 		 * 
 		 */
 		public function HitTest(sizePoint:Point,stepPoint:Point) {
-
+			
 			if (stepPoint != null && sizePoint != null) {
 				//stepPoint 的坐标值不能大于 sizePoint的坐标值
 				if (Math.abs(stepPoint.x) > Math.abs(sizePoint.x)) {
@@ -31,14 +34,14 @@
 				if (Math.abs(stepPoint.y) > Math.abs(sizePoint.y)) {
 					stepPoint.y = sizePoint.y;
 				}
-				this.sizePoint = sizePoint;
-				this.stepPoint = stepPoint;
-
+				this._sizePoint = sizePoint;
+				this._stepPoint = stepPoint;
+				
 				var xn:int = int(this.sizePoint.x / this.stepPoint.x + 1);
 				this.xNum = xn;
 				var yn:int = int(this.sizePoint.y / this.stepPoint.y + 1);
 				this.yNum = yn;
-
+				
 				var xary:Array = new Array();
 				for (var i:int = 0; i<xn; i++) {
 					var yary:Array = new Array();
@@ -51,7 +54,33 @@
 				this.pointAryAryAry = xary;
 			}
 		}
-
+		
+		/**
+		 * 创建新的碰撞对象，复制所有碰撞点。 
+		 * @param sizePoint
+		 * @param stepPoint
+		 * @return 
+		 * 
+		 */		
+		public function createCopy(sizePoint:Point,stepPoint:Point):HitTest{
+			var xary:Array = this.pointAryAryAry;
+			var ht:HitTest = new HitTest(sizePoint,stepPoint);
+			for (var i:int = 0; i<this.xNum; i++) {
+				var yary:Array = xary[i] as Array;
+				for (var j:int = 0; j<this.xNum; j++) {
+					var pary:Array = yary[i] as Array;
+					if(pary != null){
+						for(var k:int = 0;k<pary.length;k ++){
+							var ohtp:HitTestPoint = pary[k] as HitTestPoint;
+							ht.addPoint(ohtp.point);
+						}
+					}
+				}
+				xary.push(yary);
+			}
+			return ht;
+		}
+		
 		/**
 		 * 添加点
 		 * @param point
@@ -194,10 +223,22 @@
 		 * 
 		 */
 		public function getArrayIndex(point:Point):Point {
-
+			
 			var xn:int = int(point.x / this.stepPoint.x);
 			var yn:int = int(point.y / this.stepPoint.y);
 			return new Point(xn,yn);
 		}
+
+		public function get stepPoint():Point
+		{
+			return _stepPoint;
+		}
+
+		public function get sizePoint():Point
+		{
+			return _sizePoint;
+		}
+
+
 	}
 }
