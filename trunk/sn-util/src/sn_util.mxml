@@ -2,8 +2,17 @@
 <mx:Application creationComplete="init();" xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
 	<mx:Script>
 		<![CDATA[
+			import com.snsoft.map.MapBackImage;
+			import com.snsoft.map.MapMain;
+			import com.snsoft.util.SpriteMouseAction;
 			private function init():void{
+				var mm:MapMain = new MapMain();
+				mm.width = 400;
+				mm.height = 300;
+				this.addChild(mm);
+				var sma:SpriteMouseAction = null;
 				
+				var mbi:MapBackImage = null;
 			}
 		]]>
 	</mx:Script>
