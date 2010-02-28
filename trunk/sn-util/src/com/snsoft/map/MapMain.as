@@ -1,6 +1,7 @@
 package com.snsoft.map
 {
 	import com.snsoft.util.SkinsUtil;
+	import com.snsoft.util.SpriteMouseAction;
 	
 	import fl.core.UIComponent;
 	
@@ -31,6 +32,8 @@ package com.snsoft.map
 		//工作区
 		private var ws:WorkSpace = null;
 		
+		private var spriteMouseAction:SpriteMouseAction = new SpriteMouseAction();
+		
 		private const SPACE:int = 10;
 		
 		public function MapMain()
@@ -44,8 +47,6 @@ package com.snsoft.map
 			bar.x = SPACE;
 			bar.y = SPACE;
 			this.addChild(bar);
-			
-			
 			
 			var wsh:int = this.height - SPACE - SPACE;
 			var wsw:int = this.width - SPACE - SPACE - SPACE - bar.width - areaAttribute.width;
@@ -63,6 +64,8 @@ package com.snsoft.map
 			ws.mask = wsMask;
 			ws.x = wsx;
 			ws.y = wsy;
+			spriteMouseAction.dragDisplayObject = ws;
+			spriteMouseAction.addEventListener(SpriteMouseAction.DRAG_MOVE_EVENT,handlerWsDragMove);
 			this.addChild(ws);
 			
 			wsFrame = SkinsUtil.createSkinByName(MAIN_FRAME_SKIN);
@@ -139,8 +142,44 @@ package com.snsoft.map
 		 * 
 		 */		
 		private function handlerEventToolsClick(e:Event):void{ 
+			spriteMouseAction.removeMouseDragEvents();
 			var toolEventType:String = bar.toolEventType;
 			ws.toolEventType = toolEventType;
+			if(ws.toolEventType == ToolsBar.TOOL_TYPE_DRAG){
+				spriteMouseAction.addMouseDragEvents();
+			}
+		}
+		
+		/**
+		 *  
+		 * @param e
+		 * 
+		 */		
+		private function handlerWsDragMove(e:Event):void{
+			var wsx:Number = this.ws.x;
+			var wsy:Number = this.ws.y;
+			
+			var wsbx:Number = bar.width + SPACE + SPACE;
+			var wsby:Number = SPACE;
+			
+			var wscx:Number = wsFrame.width - ws.width + wsbx;
+			
+			var wscy:Number = wsFrame.height - ws.height + wsby;
+			
+			if(wsx > wsbx){
+				wsx = wsbx;
+			}
+			else if(wsx < wscx){
+				wsx = wscx;
+			}
+			if(wsy > wsby){
+				wsy = wsby;
+			}
+			else if(wsy < wscy){
+				wsy = wscy;
+			}
+			this.ws.x = wsx;
+			this.ws.y = wsy;
 		}
 	}
 }
