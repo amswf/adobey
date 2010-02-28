@@ -17,7 +17,7 @@ package com.snsoft.map
 		//图片地址
 		private var _imageUrl:String = null;
 		
-		public function MapBackImage(imageUrl:String)
+		public function MapBackImage(imageUrl:String = null)
 		{
 			this.imageUrl = imageUrl;
 			super();
