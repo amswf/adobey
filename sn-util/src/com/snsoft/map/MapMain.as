@@ -84,23 +84,27 @@ package com.snsoft.map
 			areaAttribute.x = this.width - atbw - SPACE;
 			areaAttribute.y = SPACE;
 			this.addChild(areaAttribute);
-			areaAttribute.addEventListener(AreaAttribute.SUBMIT_EVENT,handlerSubmit);
-			areaAttribute.addEventListener(AreaAttribute.DELETE_EVENT,handlerDelete);
+			areaAttribute.addEventListener(AreaAttribute.SUBMIT_EVENT,handlerAreaAttributeSubmit);
+			areaAttribute.addEventListener(AreaAttribute.DELETE_EVENT,handlerAreaAttributeDelete);
 			
 			wsAttribute.x = this.width - atbw - SPACE;
 			wsAttribute.y = SPACE + SPACE + atbh;
 			this.addChild(wsAttribute);
-			wsAttribute.addEventListener(AreaAttribute.SUBMIT_EVENT,handlerSubmit);
+			wsAttribute.addEventListener(AreaAttribute.SUBMIT_EVENT,handlerWsAttributeSubmit);
 		}
 		
-		private function handlerDelete(e:Event):void{
+		private function handlerWsAttributeSubmit(e:Event):void{
+			ws.refreshMapBack(wsAttribute.imageUrl);
+		}
+		
+		private function handlerAreaAttributeDelete(e:Event):void{
 			var ma:MapArea = ws.currentClickMapArea;
 			if(ma != null){
 				ws.deleteMapArea(ma);
 			}
 		}
 		
-		private function handlerSubmit(e:Event):void{
+		private function handlerAreaAttributeSubmit(e:Event):void{
 			var ma:MapArea = ws.currentClickMapArea;
 			if(ma != null){
 				if(areaAttribute.getareaName() != null){

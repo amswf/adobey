@@ -54,6 +54,7 @@ package com.snsoft.map
 		
 		public function handlerFileSelect(e:Event):void{
 			this._imageUrl = file.nativePath;
+			this._mapImageUrlTextFiled.text = this._imageUrl;
 		}
 
 		public function get imageUrl():String
@@ -64,7 +65,6 @@ package com.snsoft.map
 		public function set imageUrl(value:String):void
 		{
 			_imageUrl = value;
-			this._mapImageUrlTextFiled.text = this._imageUrl;
 		}
 	}
 }

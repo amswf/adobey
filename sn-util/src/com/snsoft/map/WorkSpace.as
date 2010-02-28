@@ -126,13 +126,8 @@
 			this.pen.visible = false;
 			
 			this.mapImageLayer.addChild(this.mapImage);//背景图片
-			this.mapImage.width = this.width;
-			this.mapImage.height = this.height;
-			
 			this.backLayer.addChild(this.back);//背影
-			this.back.width = this.width;
-			this.back.height = this.height;
-			this.back.refresh();	
+			this.refreshMapBack(null);
 			
 			this.viewLayer.addChild(this.suggest);//提示
 			this.suggest.pointColor = VIEW_COLOR;
@@ -148,6 +143,23 @@
 			this.addEventListener(MouseEvent.MOUSE_MOVE,handlerMouseMoveWorkSpase);
 			this.addEventListener(MouseEvent.MOUSE_OUT,handlerMouseOutWorkSpase);
 			spriteMouseAction.dragDisplayObject = this;
+		}
+		
+		public function refreshMapBack(imageUrl:String):void{
+			var w:Number = this.width;
+			var h:Number = this.height;
+			
+			this.mapImage.width = w;
+			this.mapImage.height = h;
+			if(imageUrl != null){
+				this.mapImage.imageUrl = imageUrl;
+				this.mapImage.refresh();
+				w = this.mapImage.width;
+				h = this.mapImage.height;
+			}
+			this.back.width = w;
+			this.back.height = h;
+			this.back.refresh();
 		}
 		
 		/**

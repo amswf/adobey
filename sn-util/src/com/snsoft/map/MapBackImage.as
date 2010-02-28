@@ -25,6 +25,8 @@ package com.snsoft.map
 		
 		private function handlerLoadImageComplete(e:Event):void{
 			var bm:Bitmap = new Bitmap(imageLoader.bitmapData);
+			this.width = bm.width;
+			this.height = bm.height;
 			this.addChild(bm);
 		}
 		
