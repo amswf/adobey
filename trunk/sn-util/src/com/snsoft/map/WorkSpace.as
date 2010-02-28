@@ -126,6 +126,7 @@
 			this.pen.visible = false;
 			
 			this.mapImageLayer.addChild(this.mapImage);//背景图片
+			this.mapImage.addEventListener(Event.COMPLETE,mapBackImageLoadComplete);
 			this.backLayer.addChild(this.back);//背影
 			this.refreshMapBack(null);
 			
@@ -148,15 +149,22 @@
 		public function refreshMapBack(imageUrl:String):void{
 			var w:Number = this.width;
 			var h:Number = this.height;
-			
-			this.mapImage.width = w;
-			this.mapImage.height = h;
 			if(imageUrl != null){
 				this.mapImage.imageUrl = imageUrl;
 				this.mapImage.refresh();
-				w = this.mapImage.width;
-				h = this.mapImage.height;
 			}
+			else {
+				this.mapImage.width = w;
+				this.mapImage.height = h;
+				this.back.width = w;
+				this.back.height = h;
+				this.back.refresh();
+			}
+		}
+		
+		public function mapBackImageLoadComplete(e:Event):void{	 
+			var w:Number = this.mapImage.width;
+			var h:Number = this.mapImage.height;
 			this.back.width = w;
 			this.back.height = h;
 			this.back.refresh();

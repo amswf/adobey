@@ -19,8 +19,9 @@ package com.snsoft.map
 		
 		public function MapBackImage(imageUrl:String = null)
 		{
-			this.imageUrl = imageUrl;
 			super();
+			this.imageUrl = imageUrl;
+			imageLoader.addEventListener(Event.COMPLETE,handlerLoadImageComplete);
 		}
 		
 		private function handlerLoadImageComplete(e:Event):void{
@@ -28,6 +29,7 @@ package com.snsoft.map
 			this.width = bm.width;
 			this.height = bm.height;
 			this.addChild(bm);
+			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
 		
 		/**
@@ -38,7 +40,6 @@ package com.snsoft.map
 		override protected function draw():void{
 			if(this.imageUrl != null){
 				imageLoader.loadImage(this.imageUrl);
-				imageLoader.addEventListener(Event.COMPLETE,handlerLoadImageComplete);
 			}
 		}
 
