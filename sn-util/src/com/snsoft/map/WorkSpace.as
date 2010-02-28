@@ -85,7 +85,7 @@
 		
 		private var threadMouseClickSign:Boolean = true;
 		
-		private var spriteMouseAction:SpriteMouseAction = new SpriteMouseAction();
+		
 		
 		/**
 		 * 构造方法 
@@ -143,7 +143,7 @@
 			this.addEventListener(MouseEvent.CLICK,handerMouseClickWorkSpace);
 			this.addEventListener(MouseEvent.MOUSE_MOVE,handlerMouseMoveWorkSpase);
 			this.addEventListener(MouseEvent.MOUSE_OUT,handlerMouseOutWorkSpase);
-			spriteMouseAction.dragDisplayObject = this;
+			
 		}
 		
 		public function refreshMapBack(imageUrl:String):void{
@@ -162,9 +162,12 @@
 			}
 		}
 		
-		public function mapBackImageLoadComplete(e:Event):void{	 
-			var w:Number = this.mapImage.width;
-			var h:Number = this.mapImage.height;
+		public function mapBackImageLoadComplete(e:Event):void{
+			this.width = this.mapImage.width;
+			this.height = this.mapImage.height;
+			trace(this.width,this.height);
+			var w:Number = this.width;
+			var h:Number = this.height;
 			this.back.width = w;
 			this.back.height = h;
 			this.back.refresh();
@@ -293,8 +296,7 @@
 				var mousep:Point = new Point(this.mouseX,this.mouseY);
 				this.pen.x = mousep.x;
 				this.pen.y = mousep.y;
-				
-				spriteMouseAction.removeMouseDragEvents();
+
 				this.mouseChildren = true;
 				
 				if(this.toolEventType == null){
@@ -309,7 +311,6 @@
 					this.pen.penSkin = Pen.PEN_DRAG_DEFAULT_SKIN;
 					this.pen.refresh();
 					this.mouseChildren = false;
-					spriteMouseAction.addMouseDragEvents();
 					return;
 				}
 				
