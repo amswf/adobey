@@ -78,11 +78,19 @@ package com.snsoft.map
 			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_CLICK,handlerMapAreaClick);
 			bar.addEventListener(ToolsBar.TOOL_CLICK,handlerEventToolsClick);
 			
-			areaAttribute.x = this.width - areaAttribute.width;
+			var atbw:Number = 180;
+			var atbh:Number = 150;
+			
+			areaAttribute.x = this.width - atbw - SPACE;
 			areaAttribute.y = SPACE;
 			this.addChild(areaAttribute);
 			areaAttribute.addEventListener(AreaAttribute.SUBMIT_EVENT,handlerSubmit);
 			areaAttribute.addEventListener(AreaAttribute.DELETE_EVENT,handlerDelete);
+			
+			wsAttribute.x = this.width - atbw - SPACE;
+			wsAttribute.y = SPACE + SPACE + atbh;
+			this.addChild(wsAttribute);
+			wsAttribute.addEventListener(AreaAttribute.SUBMIT_EVENT,handlerSubmit);
 		}
 		
 		private function handlerDelete(e:Event):void{
