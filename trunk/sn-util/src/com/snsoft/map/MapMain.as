@@ -19,6 +19,9 @@ package com.snsoft.map
 		//地图块属性
 		private var areaAttribute:AreaAttribute = new AreaAttribute();
 		
+		//工作区属性
+		private var wsAttribute:WorkSpaceAttribute = new WorkSpaceAttribute();
+		
 		//工作区遮罩
 		private var wsMask:MovieClip = null;
 		

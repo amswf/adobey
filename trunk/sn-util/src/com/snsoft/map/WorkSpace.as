@@ -42,11 +42,17 @@
 		//背景层Layer	
 		private var backLayer:MovieClip = new MovieClip();
 		
+		//背景图片层Layer	
+		private var mapImageLayer:MovieClip = new MovieClip();
+		
 		//画笔对象
 		private var pen:Pen = new Pen();
 		
 		//背景对象
 		private var back:MapBack = new MapBack();
+		
+		//背景图片
+		private var mapImage:MapBackImage = new MapBackImage();
 		
 		//提示
 		private var suggest:MapLine = new MapLine();
@@ -107,6 +113,7 @@
 			this.manager = new MapPointsManager(new Point(this.width,this.height));
 			
 			//显示对象层
+			this.addChild(mapImageLayer);//背景图片
 			this.addChild(backLayer);//背影
 			this.addChild(mapsLayer);//区块
 			this.addChild(linesLayer);//点线
@@ -117,6 +124,10 @@
 			//显示对象
 			this.penLayer.addChild(this.pen);//画笔
 			this.pen.visible = false;
+			
+			this.mapImageLayer.addChild(this.mapImage);//背景图片
+			this.mapImage.width = this.width;
+			this.mapImage.height = this.height;
 			
 			this.backLayer.addChild(this.back);//背影
 			this.back.width = this.width;
