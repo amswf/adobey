@@ -2,7 +2,6 @@
 	import com.snsoft.map.util.HashArray;
 	import com.snsoft.map.util.HitTest;
 	import com.snsoft.map.util.MapUtil;
-	import com.snsoft.util.SpriteMouseAction;
 	
 	import fl.core.UIComponent;
 	

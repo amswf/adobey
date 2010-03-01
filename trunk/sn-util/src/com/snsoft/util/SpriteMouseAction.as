@@ -1,6 +1,7 @@
 package com.snsoft.util
 {
 	import flash.display.DisplayObjectContainer;
+	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
@@ -35,10 +36,15 @@ package com.snsoft.util
 		 */		
 		public function addMouseDragEvents():void{
 			var doc:DisplayObjectContainer = this.dragDisplayObject;
+			
 			if(doc != null){
 				doc.addEventListener(MouseEvent.MOUSE_DOWN,handlerCnMouseDown);
 				doc.addEventListener(MouseEvent.MOUSE_UP,handlerCnMouseUp);
 				doc.addEventListener(MouseEvent.MOUSE_MOVE,handlerCnMouseMove);
+				var stg:Stage = doc.stage;
+				if(stg != null){
+					stg.addEventListener(MouseEvent.MOUSE_UP,handlerCnMouseUp);
+				}
 			}
 		}
 		
@@ -48,6 +54,10 @@ package com.snsoft.util
 				doc.removeEventListener(MouseEvent.MOUSE_DOWN,handlerCnMouseDown);
 				doc.removeEventListener(MouseEvent.MOUSE_UP,handlerCnMouseUp);
 				doc.removeEventListener(MouseEvent.MOUSE_MOVE,handlerCnMouseMove);
+				var stg:Stage = doc.stage;
+				if(stg != null){
+					stg.addEventListener(MouseEvent.MOUSE_UP,handlerCnMouseUp);
+				}
 			}
 		}
 		
@@ -77,7 +87,8 @@ package com.snsoft.util
 		private function handlerCnMouseUp(e:Event):void{
 			var doc:DisplayObjectContainer = this.dragDisplayObject;
 			var poc:DisplayObjectContainer = this.dragDisplayObject.parent;
-			if(poc != null){
+			var sign:Boolean = this.cuntryNameMoveSign;
+			if(poc != null && sign){
 				this.cuntryNameMoveSign = false;		
 				this.dispatchEvent(new Event(DRAG_COMPLETE_EVENT));
 			}
