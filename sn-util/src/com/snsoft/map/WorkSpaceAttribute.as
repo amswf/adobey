@@ -23,21 +23,47 @@ package com.snsoft.map
 		//提交数据按钮
 		private var _submitBtn:Button = null;
 		
+		//放大按钮
+		private var _zoomInBtn:Button = null;
+		
+		//缩小按钮
+		private var _zoomOutBtn:Button = null;
+		
+		//修改事件
 		public static const SUBMIT_EVENT:String = "SUBMIT_EVENT";
 		
+		//选择图片事件
 		public static const SELECT_EVENT:String = "SELECT_EVENT";
+		
+		//放大
+		public static const ZOOM_IN_EVENT:String = "ZOOM_IN_EVENT";
+		
+		//缩小
+		public static const ZOOM_OUT_EVENT:String = "ZOOM_OUT_EVENT";
 		
 		private var file:File = new File();
 		
 		public function WorkSpaceAttribute()
 		{
 			super();
-			_mapImageUrlTextFiled = this.getChildByName("mapImageUrlTextFiled") as TextField;
-			_submitBtn = this.getChildByName("submitBtn") as Button;
-			_selectBtn = this.getChildByName("selectBtn") as Button;
+			this._mapImageUrlTextFiled = this.getChildByName("mapImageUrlTextFiled") as TextField;
+			this._submitBtn = this.getChildByName("submitBtn") as Button;
+			this._selectBtn = this.getChildByName("selectBtn") as Button;
+			this._zoomInBtn = this.getChildByName("zoomInBtn") as Button;
+			this._zoomOutBtn = this.getChildByName("zoomOutBtn") as Button;
 			
 			this._submitBtn.addEventListener(MouseEvent.CLICK,handlerSubmitMouseClick);
 			this._selectBtn.addEventListener(MouseEvent.CLICK,handlerselectMouseClick);
+			this._zoomInBtn.addEventListener(MouseEvent.CLICK,handlerZoomInMouseClick);
+			this._zoomOutBtn.addEventListener(MouseEvent.CLICK,handlerZoomOutMouseClick);
+		}
+		
+		private function handlerZoomInMouseClick(e:Event):void{
+			this.dispatchEvent(new Event(ZOOM_IN_EVENT));
+		}
+		
+		private function handlerZoomOutMouseClick(e:Event):void{
+			this.dispatchEvent(new Event(ZOOM_OUT_EVENT));
 		}
 		
 		private function handlerSubmitMouseClick(e:Event):void{
