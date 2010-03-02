@@ -1,6 +1,5 @@
 ﻿package com.snsoft.map{
 	import com.snsoft.map.util.HashArray;
-	import com.snsoft.map.util.HitTest;
 	import com.snsoft.map.util.MapUtil;
 	
 	import fl.core.UIComponent;
@@ -18,9 +17,7 @@
 	 */	
 	public class WorkSpace extends UIComponent {
 		
-		//碰撞检测类对象
-		private var hitTest:HitTest = null;
-		
+		//点管理器
 		private var manager:MapPointsManager = null;
 		
 		//画出的线所在的层Layer
@@ -84,7 +81,9 @@
 		
 		private var threadMouseClickSign:Boolean = true;
 		
+		private var scalePoint:Point = new Point(2,2);
 		
+		private var hitTestDvaluePoint:Point = new Point(5,5);
 		
 		/**
 		 * 构造方法 
@@ -105,11 +104,9 @@
 		 */		
 		public function init():void{
 			
-			//体积碰撞检测类
-			this.hitTest = new HitTest(new Point(this.width,this.height),new Point(10,10));
-			
 			//点管理器
-			this.manager = new MapPointsManager(new Point(this.width,this.height));
+			var scaleHtdP:Point = MapUtil.creatInverseSaclePoint(hitTestDvaluePoint,this.scalePoint);
+			this.manager = new MapPointsManager(new Point(this.width,this.height),scaleHtdP);
 			
 			//显示对象层
 			this.addChild(mapImageLayer);//背景图片
@@ -133,6 +130,7 @@
 			this.suggest.pointColor = VIEW_COLOR;
 			this.suggest.lineColor = VIEW_COLOR;
 			this.suggest.pointFillColor = VIEW_FILL_COLOR;
+			this.suggest.scalePoint = this.scalePoint;
 			this.viewLayer.mouseEnabled = false;
 			this.viewLayer.buttonMode = false;
 			this.viewLayer.mouseChildren = false;
@@ -142,6 +140,18 @@
 			this.addEventListener(MouseEvent.CLICK,handerMouseClickWorkSpace);
 			this.addEventListener(MouseEvent.MOUSE_MOVE,handlerMouseMoveWorkSpase);
 			this.addEventListener(MouseEvent.MOUSE_OUT,handlerMouseOutWorkSpase);
+			
+		}
+		
+		/**
+		 * 缩放刷新工作区 
+		 * 
+		 */		
+		public function refreshScale():void{
+			//刷新地图块
+			
+			
+			//刷新当前画线
 			
 		}
 		
@@ -159,6 +169,18 @@
 				this.back.height = h;
 				this.back.refresh();
 			}
+		}
+		
+		public function deleteMapArea(mapArea:MapArea):void{
+			var ml:MovieClip = this.mapsLayer;
+			var mado:MapAreaDO = mapArea.mapAreaDO;
+			var name:String = MapPointsManager.creatHashArrayHashName(mado.pointArray);
+			var ma:MapArea = ml.getChildByName(name) as MapArea;
+			if(ma != null){
+				ml.removeChild(ma);
+			}
+			var mpm:MapPointsManager = this.manager;
+			mpm.deletePointAryAndDeleteHitTestPoint(mado);
 		}
 		
 		public function mapBackImageLoadComplete(e:Event):void{
@@ -202,17 +224,18 @@
 				
 				//画笔坐标
 				var mousep:Point = new Point(pen.x,pen.y);
+				var mouseScaleP:Point = MapUtil.creatInverseSaclePoint(mousep,this.scalePoint);
 				
 				//画笔状态
 				if(this.pen.penState == Pen.PEN_STATE_START){ //画笔状态是开始画：起点未画，末点未画
 					this.pen.penState = Pen.PEN_STATE_DOING;
 				}
 				else if(this.pen.penState == Pen.PEN_STATE_DOING) { //画笔状态是正在画：起点画完，末点未画
-					mousep = this.suggest.endPoint;
+					mouseScaleP = this.suggest.endPoint;
 				}
 				
 				//点管理器
-				var pstate:MapPointManagerState = this.manager.addPoint(mousep); 
+				var pstate:MapPointManagerState = this.manager.addPoint(mouseScaleP); 
 				var cpa:HashArray = this.manager.currentPointAry;
 				var hitp:Point = pstate.hitPoint;
 				var flha:HashArray = pstate.fastPointArray;
@@ -228,14 +251,14 @@
 						var p1:Point = cpa.findByIndex(sn -1) as Point;
 						for(var i:int =sn;i<cpa.length;i++){
 							var p2:Point = cpa.findByIndex(i) as Point;
-							var fml:MapLine = new MapLine(p1,p2,VIEW_COLOR,VIEW_COLOR,VIEW_FILL_COLOR);
+							var fml:MapLine = new MapLine(p1,p2,VIEW_COLOR,VIEW_COLOR,VIEW_FILL_COLOR,this.scalePoint);
 							fml.refresh();
 							this.linesLayer.addChild(fml);
 							p1 = p2;
 						}
 					}
 					else { 	
-						var ml:MapLine = new MapLine(this.suggest.startPoint,this.suggest.endPoint,VIEW_COLOR,VIEW_COLOR,VIEW_FILL_COLOR);
+						var ml:MapLine = new MapLine(this.suggest.startPoint,this.suggest.endPoint,VIEW_COLOR,VIEW_COLOR,VIEW_FILL_COLOR,this.scalePoint);
 						this.linesLayer.addChild(ml);
 					}
 					
@@ -250,7 +273,7 @@
 						
 						//画区块
 						var mado:MapAreaDO = this.manager.findLatestMapAreaDO();
-						var ma:MapArea = new MapArea(mado,AREA_LINE_COLOR,AREA_FILL_COLOR);
+						var ma:MapArea = new MapArea(mado,AREA_LINE_COLOR,AREA_FILL_COLOR,this.scalePoint);
 						ma.name = MapPointsManager.creatHashArrayHashName(mado.pointArray);
 						ma.refresh();
 						this.mapsLayer.addChild(ma);
@@ -270,17 +293,7 @@
 			threadMouseClickSign = true;
 		}
 		
-		public function deleteMapArea(mapArea:MapArea):void{
-			var ml:MovieClip = this.mapsLayer;
-			var mado:MapAreaDO = mapArea.mapAreaDO;
-			var name:String = MapPointsManager.creatHashArrayHashName(mado.pointArray);
-			var ma:MapArea = ml.getChildByName(name) as MapArea;
-			if(ma != null){
-				ml.removeChild(ma);
-			}
-			var mpm:MapPointsManager = this.manager;
-			mpm.deletePointAryAndDeleteHitTestPoint(mado);
-		}
+		
 		
 		/**
 		 * 事件 MOUSE_MOVE
@@ -293,9 +306,10 @@
 				threadMouseMoveSign = false;
 				//获得当前鼠标坐标，给画笔置位置
 				var mousep:Point = new Point(this.mouseX,this.mouseY);
+				var mouseScaleP:Point = MapUtil.creatInverseSaclePoint(mousep,this.scalePoint);
 				this.pen.x = mousep.x;
 				this.pen.y = mousep.y;
-
+				
 				this.mouseChildren = true;
 				
 				if(this.toolEventType == null){
@@ -314,7 +328,7 @@
 				}
 				
 				//当前点状态
-				var pstate:MapPointManagerState = this.manager.hitTestPoint(mousep); 
+				var pstate:MapPointManagerState = this.manager.hitTestPoint(mouseScaleP); 
 				var hitp:Point = pstate.hitPoint;//检测返回结果点
 				var cpa:HashArray = this.manager.currentPointAry;
 				
@@ -338,7 +352,7 @@
 						var p1:Point = cpa.findLast() as Point;
 						for(var i:int =0;i<fpa.length;i++){
 							var p2:Point = fpa.findByIndex(i) as Point;
-							var ml:MapLine = new MapLine(p1,p2,VIEW_COLOR,VIEW_COLOR,VIEW_FILL_COLOR);
+							var ml:MapLine = new MapLine(p1,p2,VIEW_COLOR,VIEW_COLOR,VIEW_FILL_COLOR,this.scalePoint);
 							ml.refresh();
 							this.fastViewLayer.addChild(ml);
 							p1 = p2;

@@ -35,13 +35,21 @@ package com.snsoft.map
 		 */		
 		private var _pointFillColor:uint;
 		
-		public function MapLine(startPoint:Point=null,endPoint:Point=null,pointColor:uint=0x000000,lineColor:uint=0x000000,pointFillColor:uint = 0xffffff) {
+		/**
+		 * 缩放系数 
+		 */		
+		private var _scalePoint:Point = new Point(1,1);
+		
+		public function MapLine(startPoint:Point=null,endPoint:Point=null,pointColor:uint=0x000000,lineColor:uint=0x000000,pointFillColor:uint = 0xffffff,scalePoint:Point = null) {
 			//初始化参数
 			this.startPoint = startPoint;
 			this.endPoint = endPoint;
 			this.pointColor = pointColor;
 			this.lineColor = lineColor;
 			this.pointFillColor = pointFillColor;
+			if(scalePoint != null){
+				this.scalePoint = scalePoint;
+			}
 			
 			this.mouseEnabled = false;
 			this.buttonMode = false;
@@ -58,11 +66,11 @@ package com.snsoft.map
 		 */		
 		override protected function draw():void{
 			if(this.startPoint != null && this.endPoint != null){
-				var l:Sprite = MapDraw.drawLine(this.startPoint,this.endPoint,0,this.lineColor);
+				var l:Sprite = MapDraw.drawLine(this.startPoint,this.endPoint,0,this.lineColor,this.scalePoint);
 				this.addChild(l);
-				var s:Sprite = MapDraw.drawPoint(this.startPoint,0,2,this.pointColor,this.pointFillColor);
+				var s:Sprite = MapDraw.drawPoint(this.startPoint,0,2,this.pointColor,this.pointFillColor,this.scalePoint);
 				this.addChild(s);
-				var e:Sprite = MapDraw.drawPoint(this.endPoint,0,2,this.pointColor,this.pointFillColor);
+				var e:Sprite = MapDraw.drawPoint(this.endPoint,0,2,this.pointColor,this.pointFillColor,this.scalePoint);
 				this.addChild(e);
 			}
 		}
@@ -136,5 +144,16 @@ package com.snsoft.map
 		{
 			_pointFillColor = value;
 		}
+
+		public function get scalePoint():Point
+		{
+			return _scalePoint;
+		}
+
+		public function set scalePoint(value:Point):void
+		{
+			_scalePoint = value;
+		}
+
 	}
 }

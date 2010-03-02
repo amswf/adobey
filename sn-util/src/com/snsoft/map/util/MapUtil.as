@@ -19,6 +19,37 @@
 		}
 		
 		/**
+		 * 点缩放计算
+		 * @param p
+		 * @param scalePoint
+		 * @return 
+		 * 
+		 */		
+		public static function creatSaclePoint(p:Point,scalePoint:Point = null):Point{
+			if(scalePoint == null){
+				scalePoint = new Point(1,1);
+			}
+			var rp:Point = new Point(p.x * scalePoint.x,p.y * scalePoint.y); 
+			return rp;
+		}
+		
+		/**
+		 * 点缩放逆运算
+		 * @param p
+		 * @param scalePoint
+		 * @return 
+		 * 
+		 */		
+		public static function creatInverseSaclePoint(p:Point,scalePoint:Point = null):Point{
+			if(scalePoint == null){
+				scalePoint = new Point(1,1);
+			}
+			var rp:Point = new Point(p.x / scalePoint.x,p.y / scalePoint.y); 
+			return rp;
+		}
+		
+		
+		/**
 		 * 获得一个点的哈希名字 key 
 		 * @param point 点坐标
 		 * @return 

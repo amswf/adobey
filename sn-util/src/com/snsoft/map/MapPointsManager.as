@@ -12,10 +12,13 @@
 		private var _currentPointAry:HashArray = new HashArray();
 		
 		//地图块数据对象数组
-		private var mapAreaDOAry:HashArray = new HashArray(); 
+		private var _mapAreaDOAry:HashArray = new HashArray(); 
 		
 		//碰撞检测类对象
 		private var hitTest:HitTest = null;
+		
+		//碰撞检测两点碰撞的阈值
+		private var _hitTestDvaluePoint:Point = new Point(0,0);
 		
 		//碰撞检测的坐标差值域
 		private static const HIT_TEST_DVALUE_POINT:Point = new Point(5,5);
@@ -31,9 +34,10 @@
 		
 		private static const IS_NORMAL:int = 0;
 		
-		public function MapPointsManager(workSizePoint:Point)
+		public function MapPointsManager(workSizePoint:Point,hitTestDvaluePoint:Point)
 		{
 			hitTest = new HitTest(workSizePoint,HIT_TEST_STEP_VALUE_POINT);
+			this.hitTestDvaluePoint = hitTestDvaluePoint;
 		}
 		
 		public function findLatestMapAreaDO():MapAreaDO{
@@ -57,7 +61,7 @@
 			var doa:HashArray = this.mapAreaDOAry;
 			
 			//获得碰撞点
-			var htp:Point = this.hitTest.findPoint(point,HIT_TEST_DVALUE_POINT);
+			var htp:Point = this.hitTest.findPoint(point,hitTestDvaluePoint);
 			var cpa:HashArray = this.currentPointAry;
 			
 			//判断闭合
@@ -65,7 +69,7 @@
 			var isClose:Boolean = false;
 			if(cpa.length >=3){
 				var firstp:Point = cpa.findByIndex(0)as Point;
-				if(hitTest.isHit2Point(point,firstp,HIT_TEST_DVALUE_POINT)){
+				if(hitTest.isHit2Point(point,firstp,hitTestDvaluePoint)){
 					isClose = true;
 					cpap = firstp;
 				}
@@ -76,7 +80,7 @@
 			if(cpa.length >0){
 				for(var i:int = 1;i<cpa.length;i++){ 
 					var p:Point = cpa.findByIndex(i)as Point;
-					if(hitTest.isHit2Point(point,p,HIT_TEST_DVALUE_POINT)){
+					if(hitTest.isHit2Point(point,p,hitTestDvaluePoint)){
 						isInCpa = true;
 						break;
 					}
@@ -342,5 +346,22 @@
 		{
 			return _currentPointAry;
 		}
+
+		public function get mapAreaDOAry():HashArray
+		{
+			return _mapAreaDOAry;
+		}
+
+		public function get hitTestDvaluePoint():Point
+		{
+			return _hitTestDvaluePoint;
+		}
+
+		public function set hitTestDvaluePoint(value:Point):void
+		{
+			_hitTestDvaluePoint = value;
+		}
+
+
 	}
 }
