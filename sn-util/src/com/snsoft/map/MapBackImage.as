@@ -1,10 +1,13 @@
 package com.snsoft.map
 {
+	import com.snsoft.map.util.MapUtil;
 	import com.snsoft.util.ImageLoader;
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.geom.Point;
 	
 	public class MapBackImage extends MapComponent
 	{
@@ -17,18 +20,31 @@ package com.snsoft.map
 		//图片地址
 		private var _imageUrl:String = null;
 		
-		public function MapBackImage(imageUrl:String = null)
+		//缩放系数
+		private var _scalePoint:Point = new Point(1,1);
+		
+		public function MapBackImage(imageUrl:String = null,scalePoint:Point = null)
 		{
 			super();
 			this.imageUrl = imageUrl;
+			if(scalePoint != null){
+				this.scalePoint = scalePoint;
+			}
 			imageLoader.addEventListener(Event.COMPLETE,handlerLoadImageComplete);
 		}
 		
 		private function handlerLoadImageComplete(e:Event):void{
 			var bm:Bitmap = new Bitmap(imageLoader.bitmapData);
-			this.width = bm.width;
-			this.height = bm.height;
-			this.addChild(bm);
+			
+			var bmP:Point = new Point(bm.width,bm.height);
+			var sbmP:Point = MapUtil.creatSaclePoint(bmP,this.scalePoint);
+			var mc:MovieClip = new MovieClip();
+			mc.addChild(bm); 
+			mc.width = sbmP.x;
+			mc.height = sbmP.y;
+			this.width = sbmP.x;
+			this.height = sbmP.y;
+			this.addChild(mc);
 			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
 		
@@ -52,6 +68,17 @@ package com.snsoft.map
 		{
 			_imageUrl = value;
 		}
+
+		public function get scalePoint():Point
+		{
+			return _scalePoint;
+		}
+
+		public function set scalePoint(value:Point):void
+		{
+			_scalePoint = value;
+		}
+
 
 	}
 }
