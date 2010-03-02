@@ -24,6 +24,9 @@ package com.snsoft.map
 		//填充色
 		private var _fillColor:uint = 0x000000;
 		
+		//缩放系数
+		private var _scalePoint:Point = new Point(1,1);
+		
 		//画区域的点列表的数组，一个图形可有多个点围成，但可以是多个点组成的链组成。
 		private var _mapAreaDO:MapAreaDO = null;
 		
@@ -41,31 +44,34 @@ package com.snsoft.map
 		
 		public static const CUNTRY_NAME_MOVE_EVENT:String = "CUNTRY_NAME_MOVE_EVENT";
 		
-		public function MapArea(mapAreaDO:MapAreaDO,lineColor:uint,fillColor:uint)
+		public function MapArea(mapAreaDO:MapAreaDO,lineColor:uint,fillColor:uint,scalePoint:Point = null)
 		{
 			this.mapAreaDO = mapAreaDO;
 			this.lineColor = lineColor;
 			this.fillColor = fillColor;
 			this.buttonMode = true;
+			if(scalePoint != null){
+				this.scalePoint = scalePoint;
+			}
 			super();
 		}
 		
 		/**
 		 * 画图并添加到当MC中 
 		 * 
-		 */		
+		 */
 		override protected function draw():void{
 			var mado:MapAreaDO = this.mapAreaDO;
 			var paa:Array = new Array();
 			paa.push(mado.pointArray.getArray());
-			areaFillShape = MapDraw.drawFill(paa,this.lineColor,this.fillColor);
+			areaFillShape = MapDraw.drawFill(paa,this.lineColor,this.fillColor,0,this.scalePoint);
 			this.addChild(areaFillShape);
 			
 			if(paa != null){
 				for(var i:int = 0;i<paa.length;i++){
 					var pa:Array = paa[i] as Array;
 					if(pa != null){
-						var foldLine:Sprite = MapDraw.drawCloseFoldLine(pa,this.lineColor,this.fillColor);
+						var foldLine:Sprite = MapDraw.drawCloseFoldLine(pa,this.lineColor,this.fillColor,0,2,this.scalePoint);
 						foldLine.mouseEnabled = false;
 						foldLine.buttonMode = false;
 						foldLine.mouseChildren = false;
@@ -156,6 +162,17 @@ package com.snsoft.map
 		{
 			_mapAreaDO = value;
 		}
+
+		public function get scalePoint():Point
+		{
+			return _scalePoint;
+		}
+
+		public function set scalePoint(value:Point):void
+		{
+			_scalePoint = value;
+		}
+
 		
 	}
 }

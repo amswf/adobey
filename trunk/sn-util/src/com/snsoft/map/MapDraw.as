@@ -1,5 +1,7 @@
 package com.snsoft.map
 {
+	import com.snsoft.map.util.MapUtil;
+	
 	import flash.display.Graphics;
 	import flash.display.Shape;
 	import flash.display.Sprite;
@@ -24,19 +26,23 @@ package com.snsoft.map
 		 * @return 
 		 * 
 		 */			
-		public static function drawPoint(point:Point,thikness:uint,r:uint,lineColor:uint,fillColor:uint):Sprite{
+		public static function drawPoint(point:Point,thikness:uint,r:uint,lineColor:uint,fillColor:uint,scalePoint:Point = null):Sprite{
+			if(scalePoint == null){
+				scalePoint = new Point(1,1);
+			}
 			var sprite:Sprite = new Sprite();
 			var shape:Shape = new Shape();
 			sprite.addChild(shape);
 			var gra:Graphics = shape.graphics;
 			gra.lineStyle(thikness,lineColor);
 			gra.beginFill(fillColor,1);
-			gra.drawCircle(point.x,point.y,r);
+			var sp:Point = MapUtil.creatSaclePoint(point,scalePoint);
+			gra.drawCircle(sp.x,sp.y,r);
 			gra.endFill();
 			var tfd:TextField = new TextField();
 			tfd.text = "("+point.x+","+point.y + ")";
-			tfd.x = 5 + point.x;
-			tfd.y = point.y;
+			tfd.x = 5 + point.x * scalePoint.x;
+			tfd.y = point.y * scalePoint.y;
 			//sprite.addChild(tfd);
 			tfd.mouseEnabled = false;
 			return sprite;
@@ -51,14 +57,19 @@ package com.snsoft.map
 		 * @return Sprite
 		 * 
 		 */			
-		public static function drawLine(startPoint:Point,endPoint:Point,thikness:uint,lineColor:uint):Sprite{
+		public static function drawLine(startPoint:Point,endPoint:Point,thikness:uint,lineColor:uint,scalePoint:Point = null):Sprite{
+			if(scalePoint == null){
+				scalePoint = new Point(1,1);
+			}
+			var ssp:Point = MapUtil.creatSaclePoint(startPoint,scalePoint);
+			var sep:Point = MapUtil.creatSaclePoint(endPoint,scalePoint);
 			var sprite:Sprite = new Sprite();
 			var shape:Shape = new Shape();
 			sprite.addChild(shape);
 			var gra:Graphics = shape.graphics;
 			gra.lineStyle(thikness,lineColor);
-			gra.moveTo(startPoint.x,startPoint.y);
-			gra.lineTo(endPoint.x,endPoint.y);
+			gra.moveTo(ssp.x,ssp.y);
+			gra.lineTo(sep.x,sep.y);
 			return sprite;
 		}
 		
@@ -71,7 +82,7 @@ package com.snsoft.map
 		 * @return 
 		 * 
 		 */		
-		public static function drawCloseFoldLine(pointArray:Array,lineColor:uint= 0x000000,fillColor:uint = 0xffffff,thikness:uint = 0,r:uint = 2):Sprite{
+		public static function drawCloseFoldLine(pointArray:Array,lineColor:uint= 0x000000,fillColor:uint = 0xffffff,thikness:uint = 0,r:uint = 2,scalePoint:Point = null):Sprite{
 			if(pointArray != null && pointArray.length > 0){
 				var l:int = pointArray.length;
 				var n:int = 0;
@@ -89,11 +100,11 @@ package com.snsoft.map
 				var pointSprite:Sprite = new Sprite();
 				for(var i:int =0;i<n;i++){
 					var si:int = i;
-					var ei:int = (i +1) % l;
+					var ei:int = (i + 1) % l;
 					var sp:Point = pointArray[si] as Point;
 					var ep:Point = pointArray[ei] as Point;
-					var line:Sprite = MapDraw.drawLine(sp,ep,thikness,lineColor);
-					var point:Sprite = MapDraw.drawPoint(sp,thikness,r,lineColor,fillColor);
+					var line:Sprite = MapDraw.drawLine(sp,ep,thikness,lineColor,scalePoint);
+					var point:Sprite = MapDraw.drawPoint(sp,thikness,r,lineColor,fillColor,scalePoint);
 					lineSprite.addChild(line);
 					pointSprite.addChild(point);
 				}
@@ -112,7 +123,10 @@ package com.snsoft.map
 		 * @return Shape
 		 * 
 		 */		
-		public static function drawFill(pointArrayArray:Array,lineColor:uint= 0x000000,fillColor:uint = 0xffffff,thikness:uint = 0):Shape {
+		public static function drawFill(pointArrayArray:Array,lineColor:uint= 0x000000,fillColor:uint = 0xffffff,thikness:uint = 0,scalePoint:Point = null):Shape {
+			if(scalePoint == null){
+				scalePoint = new Point(1,1);
+			}
 			if (pointArrayArray != null) {
 				var shape:Shape = new Shape();
 				var gra:Graphics = shape.graphics;
@@ -122,15 +136,17 @@ package com.snsoft.map
 					var pointArray:Array = pointArrayArray[ii];
 					if (pointArray != null && pointArray.length >= 3) {
 						
-						var pStart:Point = pointArray[0];
+						var pStart:Point = pointArray[0] as Point;
+						pStart = MapUtil.creatSaclePoint(pStart,scalePoint);
 						gra.moveTo(pStart.x,pStart.y);
 						for (var i:int=1; i<pointArray.length; i++) {
-							var p:Point = pointArray[i];
-							gra.lineTo(p.x,p.y);
+							var p:Point = pointArray[i] as Point;
+							p = MapUtil.creatSaclePoint(p,scalePoint);
+							gra.lineTo(p.x ,p.y);
 						}
 						var pEnd:Point = pointArray[pointArray.length - 1];
 						if (! pEnd.equals(pStart)) {
-							gra.lineTo(pStart.x,pStart.y);
+							gra.lineTo(pStart.x ,pStart.y);
 						}
 					}
 				}
