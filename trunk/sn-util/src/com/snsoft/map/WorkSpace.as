@@ -122,6 +122,7 @@
 			this.pen.visible = false;
 			
 			this.mapImageLayer.addChild(this.mapImage);//背景图片
+			this.mapImage.scalePoint = this.scalePoint;
 			this.mapImage.addEventListener(Event.COMPLETE,mapBackImageLoadComplete);
 			this.backLayer.addChild(this.back);//背影
 			this.refreshMapBack(null);
@@ -149,10 +150,37 @@
 		 */		
 		public function refreshScale():void{
 			//刷新地图块
-			
-			
+			var mal:MovieClip = this.mapsLayer;
+			for(var iMal:int = 0;iMal<mal.numChildren;iMal++){
+				var ma:MapArea = mal.getChildAt(iMal) as MapArea;
+				if(ma != null){
+					ma.scalePoint = this.scalePoint;
+					ma.refresh();
+				}
+			}
 			//刷新当前画线
+			var mll:MovieClip = this.mapsLayer;
+			for(var iMll:int = 0;iMll<mll.numChildren;iMll++){
+				var ml:MapLine = mll.getChildAt(iMll) as MapLine;
+				if(ma != null){
+					ma.scalePoint = this.scalePoint;
+					ma.refresh();
+				}
+			}
 			
+			//刷新当前正在画的线
+			this.suggest.scalePoint = this.scalePoint;
+			this.suggest.refresh();
+			
+			//刷新碰撞检测的碰撞阈值
+			this.manager.hitTestDvaluePoint = MapUtil.creatInverseSaclePoint(this.hitTestDvaluePoint,this.scalePoint);
+			var sizeP:Point = MapUtil.creatInverseSaclePoint(new Point(this.width,this.height),this.scalePoint);
+			this.width = sizeP.x;
+			this.height = sizeP.y;
+			
+			//刷新地图
+			this.mapImage.scalePoint = this.scalePoint;
+			this.mapImage.refresh();
 		}
 		
 		public function refreshMapBack(imageUrl:String):void{
@@ -186,7 +214,6 @@
 		public function mapBackImageLoadComplete(e:Event):void{
 			this.width = this.mapImage.width;
 			this.height = this.mapImage.height;
-			trace(this.width,this.height);
 			var w:Number = this.width;
 			var h:Number = this.height;
 			this.back.width = w;

@@ -58,7 +58,6 @@ package com.snsoft.map
 		}
 
 		public function addToolBtn(toolBtn:ToolBtn):void{
-			trace(this.toolBtnHashArray.length);
 			var btn:ToolBtn = toolBtn;
 			btn.x = this.toolSpacePoint.x;
 			btn.y = (this.toolSpacePoint.y + btn.height) * this.toolBtnHashArray.length;

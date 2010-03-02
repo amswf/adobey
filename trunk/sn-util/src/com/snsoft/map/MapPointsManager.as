@@ -20,9 +20,6 @@
 		//碰撞检测两点碰撞的阈值
 		private var _hitTestDvaluePoint:Point = new Point(0,0);
 		
-		//碰撞检测的坐标差值域
-		private static const HIT_TEST_DVALUE_POINT:Point = new Point(5,5);
-		
 		//碰撞检测分块步进值
 		private static const HIT_TEST_STEP_VALUE_POINT:Point = new Point(10,10);
 		
