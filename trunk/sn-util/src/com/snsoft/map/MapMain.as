@@ -93,7 +93,17 @@ package com.snsoft.map
 			wsAttribute.x = this.width - atbw - SPACE;
 			wsAttribute.y = SPACE + SPACE + atbh;
 			this.addChild(wsAttribute);
-			wsAttribute.addEventListener(AreaAttribute.SUBMIT_EVENT,handlerWsAttributeSubmit);
+			wsAttribute.addEventListener(WorkSpaceAttribute.SUBMIT_EVENT,handlerWsAttributeSubmit);
+			wsAttribute.addEventListener(WorkSpaceAttribute.ZOOM_IN_EVENT,handlerWsAttributeZoomIn);
+			wsAttribute.addEventListener(WorkSpaceAttribute.ZOOM_OUT_EVENT,handlerWsAttributeZoomOut);
+		}
+		
+		private function handlerWsAttributeZoomIn(e:Event):void{
+			ws.refreshMapBack(wsAttribute.imageUrl);
+		}
+		
+		private function handlerWsAttributeZoomOut(e:Event):void{
+			ws.refreshMapBack(wsAttribute.imageUrl);
 		}
 		
 		private function handlerWsAttributeSubmit(e:Event):void{
