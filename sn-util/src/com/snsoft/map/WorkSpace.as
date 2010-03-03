@@ -81,7 +81,7 @@
 		
 		private var threadMouseClickSign:Boolean = true;
 		
-		private var scalePoint:Point = new Point(2,2);
+		private var _scalePoint:Point = new Point(2,2);
 		
 		private var hitTestDvaluePoint:Point = new Point(5,5);
 		
@@ -495,6 +495,17 @@
 		{
 			return _currentClickMapArea;
 		}
+
+		public function get scalePoint():Point
+		{
+			return _scalePoint;
+		}
+
+		public function set scalePoint(value:Point):void
+		{
+			_scalePoint = value;
+		}
+
 		
 	}
 }
