@@ -1,5 +1,6 @@
 package com.snsoft.map
 {
+	import com.snsoft.map.util.MapUtil;
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.SpriteMouseAction;
 	
@@ -99,11 +100,13 @@ package com.snsoft.map
 		}
 		
 		private function handlerWsAttributeZoomIn(e:Event):void{
-			ws.refreshMapBack(wsAttribute.imageUrl);
+			ws.scalePoint = MapUtil.creatSaclePoint(ws.scalePoint,new Point(2,2));
+			ws.refreshScale();
 		}
 		
 		private function handlerWsAttributeZoomOut(e:Event):void{
-			ws.refreshMapBack(wsAttribute.imageUrl);
+			ws.scalePoint = MapUtil.creatInverseSaclePoint(ws.scalePoint,new Point(2,2));
+			ws.refreshScale();
 		}
 		
 		private function handlerWsAttributeSubmit(e:Event):void{
