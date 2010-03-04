@@ -185,6 +185,9 @@
 			this.mapImage.scalePoint = this.scalePoint;
 			this.mapImage.refresh();
 			
+			this.width = this.mapImage.width;
+			this.height = this.mapImage.height;
+			trace(this.width,this.height);
 		}
 		
 		public function refreshMapBack(imageUrl:String):void{
