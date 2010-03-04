@@ -80,17 +80,17 @@ package com.snsoft.map
 			if(this.imageBm != null){
 				bmP = MapUtil.getSpriteSize(this.imageBm);
 			}
-			var backP:Point = MapUtil.getSpriteSize(this.backMc);
+			var backP:Point = sizePoint;
 			
 			var bmsP:Point = MapUtil.creatSaclePoint(bmP,this.scalePoint);
 			var backsP:Point = MapUtil.creatSaclePoint(backP,this.scalePoint);
 			
-			var px:Number = bmP.x > backP.x ? bmP.x:backP.x;
-			var py:Number = bmP.y > backP.y ? bmP.y:backP.y;
+			var px:Number = bmsP.x > backsP.x ? bmsP.x:backsP.x;
+			var py:Number = bmsP.y > backsP.y ? bmsP.y:backsP.y;
 			var p:Point = new Point(px,py);
-			trace(p,bmP,backP,this.scalePoint);
+			trace(p,bmsP,backsP,this.scalePoint);
 			MapUtil.setSpriteSize(this.imageMc,bmsP);
-			MapUtil.setSpriteSize(this.backMc,this.sizePoint);
+			MapUtil.setSpriteSize(this.backMc,backsP);
 			MapUtil.setSpriteSize(this,p);
 		}
 
