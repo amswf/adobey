@@ -1,4 +1,4 @@
-package com.snsoft.map
+﻿package com.snsoft.map
 {
 	import com.snsoft.map.util.MapUtil;
 	import com.snsoft.util.SkinsUtil;
@@ -101,12 +101,14 @@ package com.snsoft.map
 		
 		private function handlerWsAttributeZoomIn(e:Event):void{
 			ws.scalePoint = MapUtil.creatSaclePoint(ws.scalePoint,new Point(2,2));
-			ws.refreshScale();
+			var wsFrameP:Point = MapUtil.getSpriteSize(wsFrame);
+			ws.refreshScale(wsFrameP);
 		}
 		
 		private function handlerWsAttributeZoomOut(e:Event):void{
 			ws.scalePoint = MapUtil.creatInverseSaclePoint(ws.scalePoint,new Point(2,2));
-			ws.refreshScale();
+			var wsFrameP:Point = MapUtil.getSpriteSize(wsFrame);
+			ws.refreshScale(wsFrameP);
 		}
 		
 		private function handlerWsAttributeSubmit(e:Event):void{
@@ -179,13 +181,13 @@ package com.snsoft.map
 			
 			var wscy:Number = wsFrame.height - ws.height + wsby;
 			
-			if(wsx > wsbx){
+			if(wsx > wsbx || ws.width < wsFrame.width){
 				wsx = wsbx;
 			}
 			else if(wsx < wscx){
 				wsx = wscx;
 			}
-			if(wsy > wsby){
+			if(wsy > wsby || ws.height < wsFrame.height){
 				wsy = wsby;
 			}
 			else if(wsy < wscy){

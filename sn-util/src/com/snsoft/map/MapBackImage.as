@@ -93,27 +93,27 @@ package com.snsoft.map
 			MapUtil.setSpriteSize(this.backMc,backsP);
 			MapUtil.setSpriteSize(this,p);
 		}
-
+		
 		public function get imageUrl():String
 		{
 			return _imageUrl;
 		}
-
+		
 		public function set imageUrl(value:String):void
 		{
 			_imageUrl = value;
 		}
-
+		
 		public function get scalePoint():Point
 		{
 			return _scalePoint;
 		}
-
+		
 		public function set scalePoint(value:Point):void
 		{
 			_scalePoint = value;
 		}
-
-
+		
+		
 	}
 }
