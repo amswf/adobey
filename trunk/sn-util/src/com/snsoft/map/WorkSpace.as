@@ -151,7 +151,10 @@
 		 * 缩放刷新工作区 
 		 * 
 		 */		
-		public function refreshScale():void{
+		public function refreshScale(wsFrameP:Point):void{
+			var pp:Point = new Point(this.x,this.y);
+			var sp:Point = new Point(this.width,this.height);
+			
 			//刷新地图块
 			var mal:MovieClip = this.mapsLayer;
 			for(var iMal:int = 0;iMal<mal.numChildren;iMal++){
@@ -187,7 +190,11 @@
 			
 			this.width = this.mapImage.width;
 			this.height = this.mapImage.height;
-			trace(this.width,this.height);
+			 
+			var x:Number = pp.x  +    (0.5 * wsFrameP.x - pp.x) * sp.x / this.width;
+			var y:Number = pp.y  +    (0.5 * wsFrameP.y - pp.y) * sp.y / this.height;
+			this.x = x;
+			this.y = y;
 		}
 		
 		public function refreshMapBack(imageUrl:String):void{
