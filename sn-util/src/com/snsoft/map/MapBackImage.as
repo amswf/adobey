@@ -2,6 +2,7 @@ package com.snsoft.map
 {
 	import com.snsoft.map.util.MapUtil;
 	import com.snsoft.util.ImageLoader;
+	import com.snsoft.util.SkinsUtil;
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -11,6 +12,9 @@ package com.snsoft.map
 	
 	public class MapBackImage extends MapComponent
 	{
+		//边框
+		private var MAIN_FRAME_SKIN:String = "BaseBack";
+		
 		//图片加载器
 		private var imageLoader:ImageLoader = new ImageLoader();
 		
@@ -20,32 +24,47 @@ package com.snsoft.map
 		//图片地址
 		private var _imageUrl:String = null;
 		
+		//图片MC
+		private var imageMc:MovieClip = new MovieClip();
+		
+		//图片
+		private var imageBm:Bitmap;
+		
+		//背景
+		private var backMc:MovieClip = SkinsUtil.createSkinByName(MAIN_FRAME_SKIN);
+		
+		private var sizePoint:Point = new Point();
+		
 		//缩放系数
 		private var _scalePoint:Point = new Point(1,1);
 		
-		public function MapBackImage(imageUrl:String = null,scalePoint:Point = null)
+		public function MapBackImage(sizePoint:Point,imageUrl:String = null,scalePoint:Point = null)
 		{
 			super();
 			this.imageUrl = imageUrl;
 			if(scalePoint != null){
 				this.scalePoint = scalePoint;
 			}
+			this.sizePoint = sizePoint;
 			imageLoader.addEventListener(Event.COMPLETE,handlerLoadImageComplete);
+			this.loadImage();
 		}
 		
 		private function handlerLoadImageComplete(e:Event):void{
-			var bm:Bitmap = new Bitmap(imageLoader.bitmapData);
-			
-			var bmP:Point = new Point(bm.width,bm.height);
-			var sbmP:Point = MapUtil.creatSaclePoint(bmP,this.scalePoint);
-			var mc:MovieClip = new MovieClip();
-			mc.addChild(bm); 
-			mc.width = sbmP.x;
-			mc.height = sbmP.y;
-			this.width = sbmP.x;
-			this.height = sbmP.y;
-			this.addChild(mc);
+			imageBm = new Bitmap(imageLoader.bitmapData);
+			imageMc.addChild(imageBm); 
+			this.refresh();
 			this.dispatchEvent(new Event(Event.COMPLETE));
+		}
+		
+		/**
+		 * 加载图片 
+		 * 
+		 */		
+		public function loadImage():void{
+			if(this.imageUrl != null){
+				imageLoader.loadImage(this.imageUrl);
+			}
 		}
 		
 		/**
@@ -54,9 +73,25 @@ package com.snsoft.map
 		 * 
 		 */		
 		override protected function draw():void{
-			if(this.imageUrl != null){
-				imageLoader.loadImage(this.imageUrl);
+			this.addChild(backMc);
+			this.addChild(imageMc);
+			
+			var bmP:Point = new Point();
+			if(this.imageBm != null){
+				bmP = MapUtil.getSpriteSize(this.imageBm);
 			}
+			var backP:Point = MapUtil.getSpriteSize(this.backMc);
+			
+			var bmsP:Point = MapUtil.creatSaclePoint(bmP,this.scalePoint);
+			var backsP:Point = MapUtil.creatSaclePoint(backP,this.scalePoint);
+			
+			var px:Number = bmP.x > backP.x ? bmP.x:backP.x;
+			var py:Number = bmP.y > backP.y ? bmP.y:backP.y;
+			var p:Point = new Point(px,py);
+			trace(p,bmP,backP,this.scalePoint);
+			MapUtil.setSpriteSize(this.imageMc,bmsP);
+			MapUtil.setSpriteSize(this.backMc,this.sizePoint);
+			MapUtil.setSpriteSize(this,p);
 		}
 
 		public function get imageUrl():String

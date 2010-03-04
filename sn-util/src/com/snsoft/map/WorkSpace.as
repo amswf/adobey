@@ -48,7 +48,7 @@
 		private var back:MapBack = new MapBack();
 		
 		//背景图片
-		private var mapImage:MapBackImage = new MapBackImage();
+		private var mapImage:MapBackImage = null;
 		
 		//提示
 		private var suggest:MapLine = new MapLine();
@@ -121,6 +121,9 @@
 			this.penLayer.addChild(this.pen);//画笔
 			this.pen.visible = false;
 			
+			var wsSize:Point = new Point(this.width,this.height);
+			
+			this.mapImage = new MapBackImage(wsSize);
 			this.mapImageLayer.addChild(this.mapImage);//背景图片
 			this.mapImage.scalePoint = this.scalePoint;
 			this.mapImage.addEventListener(Event.COMPLETE,mapBackImageLoadComplete);
@@ -181,6 +184,7 @@
 			//刷新地图
 			this.mapImage.scalePoint = this.scalePoint;
 			this.mapImage.refresh();
+			
 		}
 		
 		public function refreshMapBack(imageUrl:String):void{
@@ -188,14 +192,7 @@
 			var h:Number = this.height;
 			if(imageUrl != null){
 				this.mapImage.imageUrl = imageUrl;
-				this.mapImage.refresh();
-			}
-			else {
-				this.mapImage.width = w;
-				this.mapImage.height = h;
-				this.back.width = w;
-				this.back.height = h;
-				this.back.refresh();
+				this.mapImage.loadImage();
 			}
 		}
 		
@@ -216,9 +213,6 @@
 			this.height = this.mapImage.height;
 			var w:Number = this.width;
 			var h:Number = this.height;
-			this.back.width = w;
-			this.back.height = h;
-			this.back.refresh();
 		}
 		
 		/**
