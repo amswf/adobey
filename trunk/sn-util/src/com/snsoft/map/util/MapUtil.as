@@ -1,4 +1,5 @@
 ﻿package com.snsoft.map.util{
+	import flash.display.DisplayObject;
 	import flash.display.Graphics;
 	import flash.display.MovieClip;
 	import flash.display.Shape;
@@ -16,6 +17,48 @@
 		
 		public function MapUtil() {
 			
+		}
+		
+		/**
+		 * 设置宽高 
+		 * @param s
+		 * @param p
+		 * 
+		 */		
+		public static function setSpriteSize(s:DisplayObject,p:Point):void{
+			s.width  = p.x;
+			s.height = p.y;
+		}
+		
+		/**
+		 * 获得宽高 
+		 * @param s
+		 * @return 
+		 * 
+		 */		
+		public static function getSpriteSize(s:DisplayObject):Point{
+			return new Point(s.width,s.height);
+		}
+		
+		/**
+		 * 设置坐标 
+		 * @param s
+		 * @param p
+		 * 
+		 */		
+		public static function setSpritePlace(s:DisplayObject,p:Point):void{
+			s.x  = p.x;
+			s.y = p.y;
+		}
+		
+		/**
+		 * 获得坐标 
+		 * @param s
+		 * @return 
+		 * 
+		 */		
+		public static function getSpritePlace(s:DisplayObject):Point{
+			return new Point(s.x,s.y);
 		}
 		
 		/**
