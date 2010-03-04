@@ -81,7 +81,7 @@
 		
 		private var threadMouseClickSign:Boolean = true;
 		
-		private var _scalePoint:Point = new Point(2,2);
+		private var _scalePoint:Point = new Point(1,1);
 		
 		private var hitTestDvaluePoint:Point = new Point(5,5);
 		
