@@ -20,6 +20,28 @@
 		}
 		
 		/**
+		 * 两个点相加 
+		 * @param p1
+		 * @param p2
+		 * @return 
+		 * 
+		 */		
+		public static function plusPoint(p1:Point,p2:Point):Point{
+			return new Point(p1.x + p2.x,p1.y + p2.y);	
+		}
+		
+		/**
+		 * 两个点相减 
+		 * @param p1
+		 * @param p2
+		 * @return 
+		 * 
+		 */		
+		public static function subPoint(p1:Point,p2:Point):Point{
+			return new Point(p1.x - p2.x,p1.y - p2.y);	
+		}
+		
+		/**
 		 * 设置宽高 
 		 * @param s
 		 * @param p
