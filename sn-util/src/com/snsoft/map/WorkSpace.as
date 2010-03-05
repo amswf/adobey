@@ -4,6 +4,7 @@
 	
 	import fl.core.UIComponent;
 	
+	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -151,7 +152,7 @@
 		 * 缩放刷新工作区 
 		 * 
 		 */		
-		public function refreshScale(wsFrameP:Point):void{
+		public function refreshScale(wsFrame:DisplayObject):void{
 			var pp:Point = new Point(this.x,this.y);
 			var sp:Point = new Point(this.width,this.height);
 			
@@ -190,9 +191,13 @@
 			
 			this.width = this.mapImage.width;
 			this.height = this.mapImage.height;
-			 
-			var x:Number = pp.x  +    (0.5 * wsFrameP.x - pp.x) * sp.x / this.width;
-			var y:Number = pp.y  +    (0.5 * wsFrameP.y - pp.y) * sp.y / this.height;
+			
+			var signX:Number = this.width > sp.x? -1:1;
+			var signY:Number = this.height > sp.y? -1:1;
+			
+			var x:Number = pp.x - (0.5 * wsFrame.width - (pp.x - wsFrame.x)) * (this.width - sp.x) / sp.x;
+			var y:Number = pp.y - (0.5 * wsFrame.height - (pp.y - wsFrame.y)) * (this.height - sp.y) / sp.y;
+			trace(this.x,sp.x,x,this.width / sp.x);
 			this.x = x;
 			this.y = y;
 		}

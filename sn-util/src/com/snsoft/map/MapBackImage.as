@@ -88,7 +88,6 @@ package com.snsoft.map
 			var px:Number = bmsP.x > backsP.x ? bmsP.x:backsP.x;
 			var py:Number = bmsP.y > backsP.y ? bmsP.y:backsP.y;
 			var p:Point = new Point(px,py);
-			trace(p,bmsP,backsP,this.scalePoint);
 			MapUtil.setSpriteSize(this.imageMc,bmsP);
 			MapUtil.setSpriteSize(this.backMc,backsP);
 			MapUtil.setSpriteSize(this,p);
