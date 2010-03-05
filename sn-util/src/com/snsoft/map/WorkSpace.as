@@ -200,6 +200,7 @@
 			trace(this.x,sp.x,x,this.width / sp.x);
 			this.x = x;
 			this.y = y;
+			this.dispatchEvent(new Event(MouseEvent.MOUSE_UP));//问题在这？？？？？？？？？？？？？？？？？？？？？？？？？？？不能响应。
 		}
 		
 		public function refreshMapBack(imageUrl:String):void{
