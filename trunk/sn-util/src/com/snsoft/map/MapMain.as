@@ -101,14 +101,12 @@
 		
 		private function handlerWsAttributeZoomIn(e:Event):void{
 			ws.scalePoint = MapUtil.creatSaclePoint(ws.scalePoint,new Point(2,2));
-			var wsFrameP:Point = MapUtil.getSpriteSize(wsFrame);
-			ws.refreshScale(wsFrameP);
+			ws.refreshScale(this.wsFrame);
 		}
 		
 		private function handlerWsAttributeZoomOut(e:Event):void{
 			ws.scalePoint = MapUtil.creatInverseSaclePoint(ws.scalePoint,new Point(2,2));
-			var wsFrameP:Point = MapUtil.getSpriteSize(wsFrame);
-			ws.refreshScale(wsFrameP);
+			ws.refreshScale(this.wsFrame);
 		}
 		
 		private function handlerWsAttributeSubmit(e:Event):void{
