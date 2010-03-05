@@ -19,7 +19,7 @@ package com.snsoft.util
 		public static const DRAG_COMPLETE_EVENT:String = "DRAG_COMPLETE_EVENT";
 		
 		//鼠标动作对象
-		private var _dragDisplayObject:DisplayObjectContainer;
+		private var dragDisplayObject:DisplayObjectContainer;
 		
 		//鼠标动作对象动作时初始鼠标位置
 		private var cuntryNameMousePoint:Point = new Point();
@@ -28,7 +28,7 @@ package com.snsoft.util
 		private var cuntryNameMoveSign:Boolean = false;
 		
 		//拖动时限制拖动位置的其它对象
-		private var _dragLimitDisplayObject:DisplayObjectContainer;
+		private var dragLimitDisplayObject:DisplayObjectContainer;
 		
 		public function SpriteMouseAction(target:IEventDispatcher=null)
 		{
@@ -39,7 +39,9 @@ package com.snsoft.util
 		 * 注册鼠标拖动 
 		 * 
 		 */		
-		public function addMouseDragEvents():void{
+		public function addMouseDragEvents(dragDisplayObject:DisplayObjectContainer,dragLimitDisplayObject:DisplayObjectContainer = null):void{
+			this.dragDisplayObject = dragDisplayObject;
+			this.dragLimitDisplayObject = dragLimitDisplayObject;
 			var doc:DisplayObjectContainer = this.dragDisplayObject;
 			if(doc != null){
 				doc.addEventListener(MouseEvent.MOUSE_DOWN,handlerCnMouseDown);
@@ -120,101 +122,87 @@ package com.snsoft.util
 		}
 		
 		public function calculateMoveLimitPoint(dragDisplayObjectPlace:Point):Point{
+			
+			var ddoX:Number = 0;
+			var ddoY:Number = 0;
+			
 			//拖动对象
 			var ddo:DisplayObjectContainer = this.dragDisplayObject;
 			//限制对象
 			var ldo:DisplayObjectContainer = this.dragLimitDisplayObject;
 			
-			//宽高
-			var dsp:Point = MapUtil.getSpriteSize(ddo);//拖动对象
-			var lsp:Point = MapUtil.getSpriteSize(ldo);//限制对象
-			
-			//宽高差
-			var ssp:Point = MapUtil.subPoint(dsp,lsp);
-			
-			//位置
-			var dpp:Point = dragDisplayObjectPlace;//拖动对象
-			var lpp:Point = MapUtil.getSpritePlace(ldo);//限制对象
-			
-			//位置差
-			var spp:Point = MapUtil.subPoint(dpp,lpp);
-			
-			var ddoX:Number = 0;
-			var ddoY:Number = 0;
-			
-			if(ssp.x == 0){ // x方向拖动对象和限制区域重合
-				ddoX = lpp.x;
-			}
-			else if(ssp.x < 0){ // x方向拖动对象在限制区域里面
-				if(spp.x < 0){
+			if(ldo != null){
+				//宽高
+				var dsp:Point = MapUtil.getSpriteSize(ddo);//拖动对象
+				var lsp:Point = MapUtil.getSpriteSize(ldo);//限制对象
+				
+				//宽高差
+				var ssp:Point = MapUtil.subPoint(dsp,lsp);
+				
+				//位置
+				var dpp:Point = dragDisplayObjectPlace;//拖动对象
+				var lpp:Point = MapUtil.getSpritePlace(ldo);//限制对象
+				
+				//位置差
+				var spp:Point = MapUtil.subPoint(dpp,lpp);
+				
+				if(ssp.x == 0){ // x方向拖动对象和限制区域重合
 					ddoX = lpp.x;
 				}
-				else if(spp.x > - ssp.x){
-					ddoX = lpp.x + lsp.x - dsp.x;
-				} 
-				else {
-					ddoX = dpp.x;
+				else if(ssp.x < 0){ // x方向拖动对象在限制区域里面
+					if(spp.x < 0){
+						ddoX = lpp.x;
+					}
+					else if(spp.x > - ssp.x){
+						ddoX = lpp.x + lsp.x - dsp.x;
+					} 
+					else {
+						ddoX = dpp.x;
+					}
 				}
-			}
-			else if(ssp.x > 0){ // x方向拖动对象在限制区域外面
-				if(spp.x < -ssp.x){
-					ddoX = lpp.x + lsp.x - dsp.x;
+				else if(ssp.x > 0){ // x方向拖动对象在限制区域外面
+					if(spp.x < -ssp.x){
+						ddoX = lpp.x + lsp.x - dsp.x;
+					}
+					else if(spp.x > 0){
+						ddoX = lpp.x;
+					}
+					else {
+						ddoX = dpp.x;
+					}
 				}
-				else if(spp.x > 0){
-					ddoX = lpp.x;
-				}
-				else {
-					ddoX = dpp.x;
-				}
-			}
-			
-			if(ssp.y == 0){ // y方向拖动对象和限制区域重合
-				ddoY = lpp.y;
-			}
-			else if(ssp.y < 0){ // y方向拖动对象在限制区域里面
-				if(spp.y < 0){
+				
+				if(ssp.y == 0){ // y方向拖动对象和限制区域重合
 					ddoY = lpp.y;
 				}
-				else if(spp.y > - ssp.y){
-					ddoY = lpp.y + lsp.y - dsp.y;
-				} 
-				else {
-					ddoY = dpp.y;
+				else if(ssp.y < 0){ // y方向拖动对象在限制区域里面
+					if(spp.y < 0){
+						ddoY = lpp.y;
+					}
+					else if(spp.y > - ssp.y){
+						ddoY = lpp.y + lsp.y - dsp.y;
+					} 
+					else {
+						ddoY = dpp.y;
+					}
+				}
+				else if(ssp.y > 0){ // y方向拖动对象在限制区域外面
+					if(spp.y < -ssp.y){
+						ddoY = lpp.y + lsp.y - dsp.y;
+					}
+					else if(spp.y > 0){
+						ddoY = lpp.y;
+					} 
+					else {
+						ddoY = dpp.y;
+					}
 				}
 			}
-			else if(ssp.y > 0){ // y方向拖动对象在限制区域外面
-				if(spp.y < -ssp.y){
-					ddoY = lpp.y + lsp.y - dsp.y;
-				}
-				else if(spp.y > 0){
-					ddoY = lpp.y;
-				} 
-				else {
-					ddoY = dpp.y;
-				}
+			else {
+				ddoX = dragDisplayObjectPlace.x;
+				ddoY = dragDisplayObjectPlace.y;
 			}
-			
 			return new Point(ddoX,ddoY);
-		}
-		
-		public function get dragDisplayObject():DisplayObjectContainer
-		{
-			return _dragDisplayObject;
-		}
-		
-		public function set dragDisplayObject(value:DisplayObjectContainer):void
-		{
-			_dragDisplayObject = value;
-		}
-		
-		public function get dragLimitDisplayObject():DisplayObjectContainer
-		{
-			return _dragLimitDisplayObject;
-		}
-		
-		public function set dragLimitDisplayObject(value:DisplayObjectContainer):void
-		{
-			_dragLimitDisplayObject = value;
 		}
 	}
 }

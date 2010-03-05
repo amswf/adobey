@@ -91,8 +91,7 @@ package com.snsoft.map
 			this.addChild(cn);
 			
 			var sma:SpriteMouseAction = new SpriteMouseAction();
-			sma.dragDisplayObject = cn;
-			sma.addMouseDragEvents();
+			sma.addMouseDragEvents(cn);
 			sma.addEventListener(SpriteMouseAction.DRAG_COMPLETE_EVENT,dragCmp);
 			 
 		}

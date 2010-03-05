@@ -65,7 +65,6 @@
 			ws.mask = wsMask;
 			ws.x = wsx;
 			ws.y = wsy;
-			spriteMouseAction.dragDisplayObject = ws;
 			spriteMouseAction.addEventListener(SpriteMouseAction.DRAG_MOVE_EVENT,handlerWsDragMove);
 			this.addChild(ws);
 			
@@ -159,7 +158,7 @@
 			var toolEventType:String = bar.toolEventType;
 			ws.toolEventType = toolEventType;
 			if(ws.toolEventType == ToolsBar.TOOL_TYPE_DRAG){
-				spriteMouseAction.addMouseDragEvents();
+				spriteMouseAction.addMouseDragEvents(this.ws,this.wsFrame);
 			}
 		}
 		
@@ -169,30 +168,7 @@
 		 * 
 		 */		
 		private function handlerWsDragMove(e:Event):void{
-			var wsx:Number = this.ws.x;
-			var wsy:Number = this.ws.y;
 			
-			var wsbx:Number = bar.width + SPACE + SPACE;
-			var wsby:Number = SPACE;
-			
-			var wscx:Number = wsFrame.width - ws.width + wsbx;
-			
-			var wscy:Number = wsFrame.height - ws.height + wsby;
-			
-			if(wsx > wsbx || ws.width < wsFrame.width){
-				wsx = wsbx;
-			}
-			else if(wsx < wscx){
-				wsx = wscx;
-			}
-			if(wsy > wsby || ws.height < wsFrame.height){
-				wsy = wsby;
-			}
-			else if(wsy < wscy){
-				wsy = wscy;
-			}
-			this.ws.x = wsx;
-			this.ws.y = wsy;
 		}
 	}
 }
