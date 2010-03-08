@@ -1,5 +1,6 @@
 ﻿package com.snsoft.map
 {
+	import com.snsoft.map.file.MapDataFileIO;
 	import com.snsoft.map.util.HashArray;
 	import com.snsoft.map.util.MapUtil;
 	import com.snsoft.util.SkinsUtil;
@@ -101,6 +102,7 @@
 			wsAttribute.addEventListener(WorkSpaceAttribute.SUBMIT_EVENT,handlerWsAttributeSubmit);
 			wsAttribute.addEventListener(WorkSpaceAttribute.ZOOM_IN_EVENT,handlerWsAttributeZoomIn);
 			wsAttribute.addEventListener(WorkSpaceAttribute.ZOOM_OUT_EVENT,handlerWsAttributeZoomOut);
+			wsAttribute.addEventListener(WorkSpaceAttribute.SAVE_EVENT,handlerWsAttributeSave);
 			wsAttribute.addEventListener(WorkSpaceAttribute.TREE_CLICK,handlerWsAttributeTreeClick);
 		}
 		
@@ -121,6 +123,11 @@
 		
 		private function handlerWsAttributeSubmit(e:Event):void{
 			ws.refreshMapBack(wsAttribute.imageUrl);
+		}
+		
+		private function handlerWsAttributeSave(e:Event):void{
+			ws.manager.mapAreaDOAry;
+			var mdfIO:MapDataFileIO ;//**********************************??????????????????????????????????????????????????????
 		}
 		
 		private function handlerAreaAttributeDelete(e:Event):void{
