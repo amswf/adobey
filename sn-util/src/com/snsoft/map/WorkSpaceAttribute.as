@@ -34,6 +34,8 @@ package com.snsoft.map
 		//缩小按钮
 		private var _zoomOutBtn:Button = null;
 		
+		private var _saveBtn:Button = null;
+		
 		private var _treeListScrollPane:ScrollPane = null;
 		
 		private var _currentTreeNodeBtnName:String = null;
@@ -50,6 +52,10 @@ package com.snsoft.map
 		//缩小
 		public static const ZOOM_OUT_EVENT:String = "ZOOM_OUT_EVENT";
 		
+		//保存
+		public static const SAVE_EVENT:String = "SAVE_EVENT";
+		
+		
 		//点击地图块按钮列表项
 		public static const TREE_CLICK:String = "TREE_CLICK";
 		
@@ -63,7 +69,9 @@ package com.snsoft.map
 			this._selectBtn = this.getChildByName("selectBtn") as Button;
 			this._zoomInBtn = this.getChildByName("zoomInBtn") as Button;
 			this._zoomOutBtn = this.getChildByName("zoomOutBtn") as Button;
+			this._saveBtn = this.getChildByName("saveBtn") as Button;
 			this._treeListScrollPane = this.getChildByName("scrollPane") as ScrollPane;
+			this._saveBtn.addEventListener(MouseEvent.CLICK,handlerSaveMouseClick);
 			this._submitBtn.addEventListener(MouseEvent.CLICK,handlerSubmitMouseClick);
 			this._selectBtn.addEventListener(MouseEvent.CLICK,handlerselectMouseClick);
 			this._zoomInBtn.addEventListener(MouseEvent.CLICK,handlerZoomInMouseClick);
@@ -88,6 +96,15 @@ package com.snsoft.map
 				this._treeListScrollPane.source = list;
 				this._treeListScrollPane.drawNow();
 			}
+		}
+		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
+		private function handlerSaveMouseClick(e:Event):void{
+			this.dispatchEvent(new Event(SAVE_EVENT));
 		}
 		
 		/**
