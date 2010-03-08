@@ -1,5 +1,6 @@
 ﻿package com.snsoft.map
 {
+	import com.snsoft.map.util.HashArray;
 	import com.snsoft.map.util.MapUtil;
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.SpriteMouseAction;
@@ -33,6 +34,7 @@
 		//工作区
 		private var ws:WorkSpace = null;
 		
+		//综合事件对象[拖动]
 		private var spriteMouseAction:SpriteMouseAction = new SpriteMouseAction();
 		
 		private const SPACE:int = 10;
@@ -48,6 +50,7 @@
 			bar.x = SPACE;
 			bar.y = SPACE;
 			this.addChild(bar);
+			bar.addEventListener(ToolsBar.TOOL_CLICK,handlerEventToolsClick);
 			
 			var wsh:int = this.height - SPACE - SPACE;
 			var wsw:int = this.width - SPACE - SPACE - SPACE - bar.width - areaAttribute.width;
@@ -79,7 +82,9 @@
 			this.addChild(wsFrame);
 			
 			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_CLICK,handlerMapAreaClick);
-			bar.addEventListener(ToolsBar.TOOL_CLICK,handlerEventToolsClick);
+			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_ADD,handlerMapAreaChange);
+			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_DELETE,handlerMapAreaChange);
+			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_UPDATE,handlerMapAreaChange);
 			
 			var atbw:Number = 180;
 			var atbh:Number = 100;
@@ -96,6 +101,12 @@
 			wsAttribute.addEventListener(WorkSpaceAttribute.SUBMIT_EVENT,handlerWsAttributeSubmit);
 			wsAttribute.addEventListener(WorkSpaceAttribute.ZOOM_IN_EVENT,handlerWsAttributeZoomIn);
 			wsAttribute.addEventListener(WorkSpaceAttribute.ZOOM_OUT_EVENT,handlerWsAttributeZoomOut);
+			wsAttribute.addEventListener(WorkSpaceAttribute.TREE_CLICK,handlerWsAttributeTreeClick);
+		}
+		
+		private function handlerWsAttributeTreeClick(e:Event):void{
+			var name:String = wsAttribute.currentTreeNodeBtnName;
+			ws.setMapAreaIndex(name);
 		}
 		
 		private function handlerWsAttributeZoomIn(e:Event):void{
@@ -120,19 +131,7 @@
 		}
 		
 		private function handlerAreaAttributeSubmit(e:Event):void{
-			var ma:MapArea = ws.currentClickMapArea;
-			if(ma != null){
-				if(areaAttribute.getareaName() != null){
-					ma.mapAreaDO.areaName = areaAttribute.getareaName();
-				}
-				if(areaAttribute.getareaNameX() != null){
-					ma.mapAreaDO.areaNamePlace.x = Number(areaAttribute.getareaNameX());
-				}
-				if(areaAttribute.getareaNameY() != null){
-					ma.mapAreaDO.areaNamePlace.y = Number(areaAttribute.getareaNameY());
-				}
-				ma.refresh();
-			}
+			this.ws.updateMapArea(this.areaAttribute);
 		}
 		
 		private function handlerMapAreaClick(e:Event):void{
@@ -147,6 +146,11 @@
 			areaAttribute.setareaName(an);
 			areaAttribute.setareaNameX(String(mado.areaNamePlace.x));
 			areaAttribute.setareaNameY(String(mado.areaNamePlace.y));
+		}
+		
+		private function handlerMapAreaChange(e:Event):void{
+			var maha:HashArray = this.ws.manager.mapAreaDOAry;
+			this.wsAttribute.refreshMapAreaListBtn(maha);
 		}
 		
 		/**

@@ -19,7 +19,7 @@
 	public class WorkSpace extends UIComponent {
 		
 		//点管理器
-		private var manager:MapPointsManager = null;
+		private var _manager:MapPointsManager = null;
 		
 		//画出的线所在的层Layer
 		private var linesLayer:MovieClip = new MovieClip();
@@ -76,6 +76,12 @@
 		
 		public static const EVENT_MAP_AREA_CLICK:String = "EVENT_MAP_AREA_CLICK";
 		
+		public static const EVENT_MAP_AREA_DELETE:String = "EVENT_MAP_AREA_DELETE";
+
+		public static const EVENT_MAP_AREA_ADD:String = "EVENT_MAP_AREA_ADD";
+		
+		public static const EVENT_MAP_AREA_UPDATE:String = "EVENT_MAP_AREA_UPDATE";
+		
 		private var _currentClickMapArea:MapArea = null;
 		
 		private var threadMouseMoveSign:Boolean = true;
@@ -107,7 +113,7 @@
 			
 			//点管理器
 			var scaleHtdP:Point = MapUtil.creatInverseSaclePoint(hitTestDvaluePoint,this.scalePoint);
-			this.manager = new MapPointsManager(new Point(this.width,this.height),scaleHtdP);
+			this._manager = new MapPointsManager(new Point(this.width,this.height),scaleHtdP);
 			
 			//显示对象层
 			this.addChild(mapImageLayer);//背景图片
@@ -197,7 +203,7 @@
 			
 			var x:Number = pp.x - (0.5 * wsFrame.width - (pp.x - wsFrame.x)) * (this.width - sp.x) / sp.x;
 			var y:Number = pp.y - (0.5 * wsFrame.height - (pp.y - wsFrame.y)) * (this.height - sp.y) / sp.y;
-			trace(this.x,sp.x,x,this.width / sp.x);
+			
 			this.x = x;
 			this.y = y;
 			this.dispatchEvent(new Event(MouseEvent.MOUSE_UP));//问题在这？？？？？？？？？？？？？？？？？？？？？？？？？？？不能响应。
@@ -212,6 +218,23 @@
 			}
 		}
 		
+		public function updateMapArea(areaAttribute:AreaAttribute):void{
+			var ma:MapArea = this.currentClickMapArea;
+			if(ma != null){
+				if(areaAttribute.getareaName() != null){
+					ma.mapAreaDO.areaName = areaAttribute.getareaName();
+				}
+				if(areaAttribute.getareaNameX() != null){
+					ma.mapAreaDO.areaNamePlace.x = Number(areaAttribute.getareaNameX());
+				}
+				if(areaAttribute.getareaNameY() != null){
+					ma.mapAreaDO.areaNamePlace.y = Number(areaAttribute.getareaNameY());
+				}
+				ma.refresh();
+				this.dispatchEvent(new Event(EVENT_MAP_AREA_UPDATE));
+			}
+		}
+		
 		public function deleteMapArea(mapArea:MapArea):void{
 			var ml:MovieClip = this.mapsLayer;
 			var mado:MapAreaDO = mapArea.mapAreaDO;
@@ -222,6 +245,7 @@
 			}
 			var mpm:MapPointsManager = this.manager;
 			mpm.deletePointAryAndDeleteHitTestPoint(mado);
+			this.dispatchEvent(new Event(EVENT_MAP_AREA_DELETE));
 		}
 		
 		public function mapBackImageLoadComplete(e:Event):void{
@@ -315,6 +339,7 @@
 						ma.refresh();
 						this.mapsLayer.addChild(ma);
 						this.addMapAreaEvent(ma);
+						this.dispatchEvent(new Event(EVENT_MAP_AREA_ADD));
 						
 						//删除画出的线
 						MapUtil.deleteAllChild(this.linesLayer);
@@ -442,11 +467,16 @@
 				return;
 			}
 			var ma:MapArea = e.currentTarget as MapArea;
+			this.setMapAreaIndex(ma.name);
+		}
+		
+		public function setMapAreaIndex(name:String):void{
+			var ma:MapArea = this.mapsLayer.getChildByName(name) as MapArea;
 			if(ma != null){
 				this.mapsLayer.setChildIndex(ma,this.mapsLayer.numChildren - 1);
+				this._currentClickMapArea = ma;
+				this.dispatchEvent(new Event(EVENT_MAP_AREA_CLICK));
 			}
-			this._currentClickMapArea = ma;
-			this.dispatchEvent(new Event(EVENT_MAP_AREA_CLICK));
 		}
 		
 		/**
@@ -514,6 +544,11 @@
 		public function set scalePoint(value:Point):void
 		{
 			_scalePoint = value;
+		}
+
+		public function get manager():MapPointsManager
+		{
+			return _manager;
 		}
 
 		
