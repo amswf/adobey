@@ -16,6 +16,10 @@ package com.snsoft.map.tree
 		
 		private var btnHeight:Number = 25;
 		
+		public static const TREE_CLICK:String = "TREE_CLICK";
+		
+		public static const SUB_TREE_VIEW:String = "SUB_TREE_VIEW";
+		
 		public function TreeList()
 		{
 			super();
@@ -65,6 +69,11 @@ package com.snsoft.map.tree
 			this.drawNow();
 		}
 		
+		/**
+		 *  
+		 * @param e
+		 * 
+		 */		
 		private function handlerMskMouseClick(e:Event):void{
 			var btn:TreeNodeButton = e.currentTarget as TreeNodeButton;
 			this._currentClickBtnName = btn.name;
