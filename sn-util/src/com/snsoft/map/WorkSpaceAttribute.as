@@ -1,5 +1,9 @@
 package com.snsoft.map
 {
+	import com.snsoft.map.tree.TreeList;
+	import com.snsoft.map.tree.TreeNodeButton;
+	
+	import fl.containers.ScrollPane;
 	import fl.controls.Button;
 	
 	import flash.display.MovieClip;
@@ -29,6 +33,8 @@ package com.snsoft.map
 		//缩小按钮
 		private var _zoomOutBtn:Button = null;
 		
+		private var _treeListScrollPane:ScrollPane = null;
+		
 		//修改事件
 		public static const SUBMIT_EVENT:String = "SUBMIT_EVENT";
 		
@@ -51,7 +57,13 @@ package com.snsoft.map
 			this._selectBtn = this.getChildByName("selectBtn") as Button;
 			this._zoomInBtn = this.getChildByName("zoomInBtn") as Button;
 			this._zoomOutBtn = this.getChildByName("zoomOutBtn") as Button;
-			
+			this._treeListScrollPane = this.getChildByName("scrollPane") as ScrollPane;
+			var list:TreeList = new TreeList();
+			for (var i:int = 0; i<10; i++) {
+				var btn:TreeNodeButton = new TreeNodeButton("asdf");
+				list.put("asdf",btn);
+			}
+			this._treeListScrollPane.source = list;
 			this._submitBtn.addEventListener(MouseEvent.CLICK,handlerSubmitMouseClick);
 			this._selectBtn.addEventListener(MouseEvent.CLICK,handlerselectMouseClick);
 			this._zoomInBtn.addEventListener(MouseEvent.CLICK,handlerZoomInMouseClick);
