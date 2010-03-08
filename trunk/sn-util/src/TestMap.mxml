@@ -3,19 +3,27 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/halo" minWidth="1024" minHeight="768"
 			   contentCreationComplete="init();">
-	 <fx:Script>
-		 <![CDATA[
-			 import com.snsoft.map.MapMain;
-			 import com.snsoft.util.SpriteMouseAction;
-			 
-			 
-			 private function init():void{
+	<fx:Script>
+		<![CDATA[
+			import com.snsoft.map.MapMain;
+			import com.snsoft.map.tree.TreeList;
+			import com.snsoft.map.tree.TreeNodeButton;
+			import com.snsoft.util.SpriteMouseAction;
+			
+			
+			private function init():void{
 				var mm:MapMain = new MapMain();
 				mm.width = 400;
 				mm.height = 300;
 				this.addChild(mm);
 				var sma:SpriteMouseAction = null;
-			 }
-		 ]]>
-	 </fx:Script>
+				var list:TreeList = new TreeList();
+				for(var i:int = 0;i<10;i++){
+					var btn:TreeNodeButton = new TreeNodeButton("asdf");
+					list.put("asdf",btn);
+				}
+				
+			}
+		]]>
+	</fx:Script>
 </s:Application>

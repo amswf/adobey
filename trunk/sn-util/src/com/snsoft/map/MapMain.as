@@ -82,7 +82,7 @@
 			bar.addEventListener(ToolsBar.TOOL_CLICK,handlerEventToolsClick);
 			
 			var atbw:Number = 180;
-			var atbh:Number = 150;
+			var atbh:Number = 100;
 			
 			areaAttribute.x = this.width - atbw - SPACE;
 			areaAttribute.y = SPACE;
