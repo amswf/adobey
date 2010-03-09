@@ -49,7 +49,7 @@
 		private var back:MapBack = new MapBack();
 		
 		//背景图片
-		private var mapImage:MapBackImage = null;
+		private var _mapImage:MapBackImage = null;
 		
 		//提示
 		private var suggest:MapLine = new MapLine();
@@ -130,7 +130,7 @@
 			
 			var wsSize:Point = new Point(this.width,this.height);
 			
-			this.mapImage = new MapBackImage(wsSize);
+			this._mapImage = new MapBackImage(wsSize);
 			this.mapImageLayer.addChild(this.mapImage);//背景图片
 			this.mapImage.scalePoint = this.scalePoint;
 			this.mapImage.addEventListener(Event.COMPLETE,mapBackImageLoadComplete);
@@ -549,6 +549,11 @@
 		public function get manager():MapPointsManager
 		{
 			return _manager;
+		}
+
+		public function get mapImage():MapBackImage
+		{
+			return _mapImage;
 		}
 
 		
