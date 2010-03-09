@@ -1,4 +1,4 @@
-package com.snsoft.util
+﻿package com.snsoft.util
 {
 	public class XMLUtil
 	{
@@ -52,7 +52,7 @@ package com.snsoft.util
 			for (var i:int = 0; i < tageNum; i++) {
 				str = str + "  ";
 			}
-			return "\n" + str;
+			return "\r\n" + str;
 		}
 		
 		//获得当前字符之前的最后标签
