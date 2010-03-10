@@ -77,7 +77,7 @@
 		public static const EVENT_MAP_AREA_CLICK:String = "EVENT_MAP_AREA_CLICK";
 		
 		public static const EVENT_MAP_AREA_DELETE:String = "EVENT_MAP_AREA_DELETE";
-
+		
 		public static const EVENT_MAP_AREA_ADD:String = "EVENT_MAP_AREA_ADD";
 		
 		public static const EVENT_MAP_AREA_UPDATE:String = "EVENT_MAP_AREA_UPDATE";
@@ -333,14 +333,8 @@
 						this.suggest.refresh();
 						
 						//画区块
-						var madoDefaultName:String = this.creatMapAreaDODefaultAreaName();
 						var mado:MapAreaDO = this.manager.findLatestMapAreaDO();
-						mado.areaName = madoDefaultName;
-						var ma:MapArea = new MapArea(mado,AREA_LINE_COLOR,AREA_FILL_COLOR,this.scalePoint);
-						ma.name = MapPointsManager.creatHashArrayHashName(mado.pointArray);
-						ma.refresh();
-						this.mapsLayer.addChild(ma);
-						this.addMapAreaEvent(ma);
+						addMapArea(mado);
 						this.dispatchEvent(new Event(EVENT_MAP_AREA_ADD));
 						
 						//删除画出的线
@@ -355,6 +349,46 @@
 				}
 			}
 			threadMouseClickSign = true;
+		}
+		
+		/**
+		 * 把地图块添加到工作区 
+		 * @param mado
+		 * 
+		 */		
+		private function addMapArea(mado:MapAreaDO):void{
+			var madoDefaultName:String = this.creatMapAreaDODefaultAreaName();
+			mado.areaName = madoDefaultName;
+			var ma:MapArea = new MapArea(mado,AREA_LINE_COLOR,AREA_FILL_COLOR,this.scalePoint);
+			ma.name = MapPointsManager.creatHashArrayHashName(mado.pointArray);
+			ma.refresh();
+			this.mapsLayer.addChild(ma);
+			this.addMapAreaEvent(ma);
+		}
+		
+		/**
+		 * 外部读取的数据，还原工作区。 
+		 * @param image
+		 * @param mapAreaDoHashArray
+		 * 
+		 */		
+		private function initFromSaveData(image:String,mapAreaDoHashArray:HashArray):void{
+			this.refreshMapBack(image);
+			if(mapAreaDoHashArray != null){
+				for(var i:int = 0;i<mapAreaDoHashArray.length;i++){
+					var mapAreaDo:MapAreaDO = mapAreaDoHashArray.findByIndex(i) as MapAreaDO;
+					if(mapAreaDo != null){
+						this.addMapArea(mapAreaDo);
+						var pha:HashArray = mapAreaDo.pointArray;
+						if(pha != null){
+							for(var j:int;j< pha.length;j++){
+								var p:Point = pha.findByIndex(i) as Point;
+								this.manager.addPoint(p);
+							}
+						}
+					}
+				}
+			}
 		}
 		
 		/**
@@ -544,27 +578,27 @@
 		{
 			return _currentClickMapArea;
 		}
-
+		
 		public function get scalePoint():Point
 		{
 			return _scalePoint;
 		}
-
+		
 		public function set scalePoint(value:Point):void
 		{
 			_scalePoint = value;
 		}
-
+		
 		public function get manager():MapPointsManager
 		{
 			return _manager;
 		}
-
+		
 		public function get mapImage():MapBackImage
 		{
 			return _mapImage;
 		}
-
+		
 		
 	}
 }
