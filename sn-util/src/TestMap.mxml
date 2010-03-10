@@ -6,6 +6,7 @@
 	<fx:Script>
 		<![CDATA[
 			import com.snsoft.map.MapMain;
+			import com.snsoft.map.MapMainAttribute;
 			import com.snsoft.map.tree.TreeList;
 			import com.snsoft.map.tree.TreeNodeButton;
 			import com.snsoft.util.SpriteMouseAction;
@@ -24,6 +25,7 @@
 					list.put("asdf",btn);
 				}
 				var xMLUtil:XMLUtil;
+				var wsa:MapMainAttribute;
 			}
 		]]>
 	</fx:Script>

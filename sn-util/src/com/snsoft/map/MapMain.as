@@ -32,6 +32,9 @@
 		//工作区属性
 		private var wsAttribute:WorkSpaceAttribute = new WorkSpaceAttribute();
 		
+		//主属性
+		private var mmAttribute:MapMainAttribute = new MapMainAttribute();
+		
 		//工作区遮罩
 		private var wsMask:MovieClip = null;
 		
@@ -103,13 +106,21 @@
 			areaAttribute.addEventListener(AreaAttribute.DELETE_EVENT,handlerAreaAttributeDelete);
 			
 			wsAttribute.x = this.width - atbw - SPACE;
-			wsAttribute.y = SPACE + SPACE + atbh;
-			this.addChild(wsAttribute);
+			wsAttribute.y = areaAttribute.y + atbh + SPACE;
 			wsAttribute.addEventListener(WorkSpaceAttribute.SUBMIT_EVENT,handlerWsAttributeSubmit);
 			wsAttribute.addEventListener(WorkSpaceAttribute.ZOOM_IN_EVENT,handlerWsAttributeZoomIn);
 			wsAttribute.addEventListener(WorkSpaceAttribute.ZOOM_OUT_EVENT,handlerWsAttributeZoomOut);
-			wsAttribute.addEventListener(WorkSpaceAttribute.SAVE_EVENT,handlerWsAttributeSave);
 			wsAttribute.addEventListener(WorkSpaceAttribute.TREE_CLICK,handlerWsAttributeTreeClick);
+			this.addChild(wsAttribute);
+			
+			var wsbw:Number = 180;
+			var wsbh:Number = 290;
+			
+			mmAttribute.x = this.width - atbw - SPACE;
+			mmAttribute.y = wsAttribute.y + wsbh + SPACE;
+			mmAttribute.addEventListener(MapMainAttribute.SAVE_EVENT,handlerWsAttributeSave);
+			mmAttribute.addEventListener(MapMainAttribute.OPEN_EVENT,handlerWsAttributeOpen);
+			this.addChild(mmAttribute);
 		}
 		
 		private function handlerWsAttributeTreeClick(e:Event):void{
@@ -132,8 +143,21 @@
 		}
 		
 		private function handlerWsAttributeSave(e:Event):void{
-			ws.manager.mapAreaDOAry;
-			MapDataFileIO.save(ws,"d:/ws.xml");
+			var dir:String = mmAttribute.mapFileMainDirectory;
+			if(dir != null){
+				ws.manager.mapAreaDOAry;
+				MapDataFileIO.save(ws,dir+"/ws.xml");
+			}
+			else {
+				mmAttribute.selectSaveDirectory();
+			}
+		}
+		
+		private function handlerWsAttributeOpen(e:Event):void{
+			var dir:String = mmAttribute.mapFileMainDirectory;
+			if(dir != null){
+				MapDataFileIO.open(dir+"/ws.xml");
+			}
 		}
 		
 		private function handlerAreaAttributeDelete(e:Event):void{
