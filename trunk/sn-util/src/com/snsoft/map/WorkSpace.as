@@ -333,7 +333,9 @@
 						this.suggest.refresh();
 						
 						//画区块
+						var madoDefaultName:String = this.creatMapAreaDODefaultAreaName();
 						var mado:MapAreaDO = this.manager.findLatestMapAreaDO();
+						mado.areaName = madoDefaultName;
 						var ma:MapArea = new MapArea(mado,AREA_LINE_COLOR,AREA_FILL_COLOR,this.scalePoint);
 						ma.name = MapPointsManager.creatHashArrayHashName(mado.pointArray);
 						ma.refresh();
@@ -355,7 +357,14 @@
 			threadMouseClickSign = true;
 		}
 		
-		
+		/**
+		 * 创建默认的地图块显示名称 
+		 * @return 
+		 * 
+		 */		
+		private function creatMapAreaDODefaultAreaName():String{
+			return "area_" + (this.mapsLayer.numChildren + 1);
+		}
 		
 		/**
 		 * 事件 MOUSE_MOVE
