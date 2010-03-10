@@ -12,6 +12,12 @@
 	import flash.events.Event;
 	import flash.geom.Point;
 	
+	/**
+	 * HashArray需要优化算法，需要用Vector 重写。
+	 * MapComponent需要按照 UIComponent的configUI() draw() getStyle() 等重写。 
+	 * @author Administrator
+	 * 
+	 */	
 	public class MapMain extends UIComponent
 	{
 		//边框
@@ -127,7 +133,7 @@
 		
 		private function handlerWsAttributeSave(e:Event):void{
 			ws.manager.mapAreaDOAry;
-			MapDataFileIO.save(ws);
+			MapDataFileIO.save(ws,"d:/ws.xml");
 		}
 		
 		private function handlerAreaAttributeDelete(e:Event):void{
@@ -144,7 +150,7 @@
 		private function handlerMapAreaClick(e:Event):void{
 			var mado:MapAreaDO = ws.currentClickMapArea.mapAreaDO;
 			
-			var an:String = "<名称>";
+			var an:String = "";
 			var anx:String = "0";
 			var any:String = "0";
 			if(mado.areaName != null){

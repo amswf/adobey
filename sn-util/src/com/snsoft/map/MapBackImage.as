@@ -52,6 +52,7 @@ package com.snsoft.map
 		
 		private function handlerLoadImageComplete(e:Event):void{
 			imageBm = new Bitmap(imageLoader.bitmapData);
+			imageMc = new MovieClip();
 			imageMc.addChild(imageBm); 
 			this.refresh();
 			this.dispatchEvent(new Event(Event.COMPLETE));
@@ -73,6 +74,7 @@ package com.snsoft.map
 		 * 
 		 */		
 		override protected function draw():void{
+			MapUtil.deleteAllChild(this);
 			this.addChild(backMc);
 			this.addChild(imageMc);
 			
@@ -89,7 +91,7 @@ package com.snsoft.map
 			var py:Number = bmsP.y > backsP.y ? bmsP.y:backsP.y;
 			var p:Point = new Point(px,py);
 			MapUtil.setSpriteSize(this.imageMc,bmsP);
-			MapUtil.setSpriteSize(this.backMc,backsP);
+			MapUtil.setSpriteSize(this.backMc,p);
 			MapUtil.setSpriteSize(this,p);
 		}
 		
