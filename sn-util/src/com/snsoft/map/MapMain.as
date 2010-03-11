@@ -16,6 +16,7 @@
 	/**
 	 * HashArray需要优化算法，需要用Vector 重写。
 	 * MapComponent需要按照 UIComponent的configUI() draw() getStyle() 等重写。 
+	 * MapMain初始 化各子对象时，需要单个定义化。备以后扩展用。
 	 * @author Administrator
 	 * 
 	 */	

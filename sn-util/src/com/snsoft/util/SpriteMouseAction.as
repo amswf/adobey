@@ -30,18 +30,50 @@ package com.snsoft.util
 		//拖动时限制拖动位置的其它对象
 		private var dragLimitDisplayObject:DisplayObjectContainer;
 		
+		//拖动时拖动对象的显示位置，小地图中的移动框
+		private var viewDrag:DisplayObjectContainer;
+		
+		//拖动时限制对象的显示位置，小地图中的限制框
+		private var viewLimit:DisplayObjectContainer;
+		
+		private var viewEvent:String = "DRAG_MOVE_EVENT";
+		
 		public function SpriteMouseAction(target:IEventDispatcher=null)
 		{
 			super(target);
 		}
 		
 		/**
+		 * 把当前拖动对象和限制对象，算出小地图中拖动对象的位置并置属性。 
+		 * @param d
+		 * @param l
+		 * @param vd
+		 * @param vl
+		 * 
+		 */		
+		private function setViewPlace(d:DisplayObjectContainer,l:DisplayObjectContainer,vd:DisplayObjectContainer,vl:DisplayObjectContainer):void{
+			var dlp:Point = new Point(d.width - l.width,d.height - l.height);
+			var dlsp:Point = new Point(vd.width - vl.width,vd.height - vl.height);
+			vd.x =  vl.x + (d.x - l.x) * dlsp.x / dlp.x;
+			vd.y =  vl.y + (d.y - l.y) * dlsp.y / dlp.y;
+		}
+		
+		private function setView():void{
+			if(this.dragLimitDisplayObject != null && this.viewDrag != null && this.viewLimit != null){
+				this.setViewPlace(this.dragDisplayObject,this.dragLimitDisplayObject,this.viewDrag,this.viewLimit);
+			}
+		}
+		
+		/**
 		 * 注册鼠标拖动 
 		 * 
 		 */		
-		public function addMouseDragEvents(dragDisplayObject:DisplayObjectContainer,dragLimitDisplayObject:DisplayObjectContainer = null):void{
+		public function addMouseDragEvents(dragDisplayObject:DisplayObjectContainer,dragLimitDisplayObject:DisplayObjectContainer = null,viewDrag:DisplayObjectContainer = null,viewLimit:DisplayObjectContainer = null,viewEvent:String = "DRAG_MOVE_EVENT"):void{
 			this.dragDisplayObject = dragDisplayObject;
 			this.dragLimitDisplayObject = dragLimitDisplayObject;
+			this.viewDrag = viewDrag;
+			this.viewLimit = viewLimit;
+			this.viewEvent = viewEvent;
 			var doc:DisplayObjectContainer = this.dragDisplayObject;
 			if(doc != null){
 				doc.addEventListener(MouseEvent.MOUSE_DOWN,handlerCnMouseDown);
@@ -95,7 +127,8 @@ package com.snsoft.util
 			var poc:DisplayObjectContainer = this.dragDisplayObject.parent;
 			var sign:Boolean = this.cuntryNameMoveSign;
 			if(poc != null && sign){
-				this.cuntryNameMoveSign = false;		
+				this.cuntryNameMoveSign = false;
+				this.setView();
 				this.dispatchEvent(new Event(DRAG_COMPLETE_EVENT));
 			}
 		}
@@ -116,6 +149,7 @@ package com.snsoft.util
 					var docp:Point = new Point(docx,docy); 
 					docp = calculateMoveLimitPoint(docp);
 					MapUtil.setSpritePlace(doc,docp);
+					this.setView();
 					this.dispatchEvent(new Event(DRAG_MOVE_EVENT));
 				}
 			}
