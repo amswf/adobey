@@ -9,6 +9,7 @@
 	import fl.core.UIComponent;
 	
 	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
 	
@@ -74,12 +75,7 @@
 			wsMask.x = wsx;
 			wsMask.y = wsy;
 			
-			ws = new WorkSpace(new Point(wsw,wsh));
-			ws.mask = wsMask;
-			ws.x = wsx;
-			ws.y = wsy;
-			spriteMouseAction.addEventListener(SpriteMouseAction.DRAG_MOVE_EVENT,handlerWsDragMove);
-			this.addChild(ws);
+			this.initWorkSpace(wsMask,new Point(wsx,wsy),new Point(wsw,wsh));
 			
 			wsFrame = SkinsUtil.createSkinByName(MAIN_FRAME_SKIN);
 			wsFrame.width = wsw;
@@ -91,10 +87,7 @@
 			wsFrame.buttonMode = false;
 			this.addChild(wsFrame);
 			
-			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_CLICK,handlerMapAreaClick);
-			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_ADD,handlerMapAreaChange);
-			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_DELETE,handlerMapAreaChange);
-			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_UPDATE,handlerMapAreaChange);
+			
 			
 			var atbw:Number = 180;
 			var atbh:Number = 100;
@@ -121,6 +114,29 @@
 			mmAttribute.addEventListener(MapMainAttribute.SAVE_EVENT,handlerWsAttributeSave);
 			mmAttribute.addEventListener(MapMainAttribute.OPEN_EVENT,handlerWsAttributeOpen);
 			this.addChild(mmAttribute);
+		}
+		
+		/**
+		 *  
+		 * @param msk
+		 * 
+		 */		
+		private function initWorkSpace(msk:Sprite,place:Point,size:Point):void{
+	
+			var ws:WorkSpace = new WorkSpace(size);
+			ws.mask = msk;
+			ws.x = place.x;
+			ws.y = place.y;
+			if(this.ws != null){
+				this.removeChild(this.ws);
+			}
+			this.ws = ws;
+			this.addChild(this.ws);
+			
+			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_CLICK,handlerMapAreaClick);
+			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_ADD,handlerMapAreaChange);
+			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_DELETE,handlerMapAreaChange);
+			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_UPDATE,handlerMapAreaChange);
 		}
 		
 		private function handlerWsAttributeTreeClick(e:Event):void{
@@ -171,21 +187,7 @@
 				var wsw:int = this.width - SPACE - SPACE - SPACE - bar.width - areaAttribute.width;
 				var wsx:int = bar.width + SPACE + SPACE;
 				var wsy:int = SPACE;
-				
-				var ws:WorkSpace = new WorkSpace(new Point(wsw,wsh));
-				ws.mask = wsMask;
-				ws.x = wsx;
-				ws.y = wsy;
-				var wsIndex:int = this.getChildIndex(this.ws);
-				this.removeChild(this.ws);
-				this.ws = ws;
-				this.addChild(this.ws);
-				
-				ws.addEventListener(WorkSpace.EVENT_MAP_AREA_CLICK,handlerMapAreaClick);
-				ws.addEventListener(WorkSpace.EVENT_MAP_AREA_ADD,handlerMapAreaChange);
-				ws.addEventListener(WorkSpace.EVENT_MAP_AREA_DELETE,handlerMapAreaChange);
-				ws.addEventListener(WorkSpace.EVENT_MAP_AREA_UPDATE,handlerMapAreaChange);
-				
+				this.initWorkSpace(this.wsMask,new Point(wsx,wsy),new Point(wsw,wsh));
 				this.ws.initFromSaveData(mdfio.workSpaceDO);
 			}
 		}
