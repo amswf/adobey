@@ -357,8 +357,11 @@
 		 * 
 		 */		
 		private function addMapArea(mado:MapAreaDO):void{
-			var madoDefaultName:String = this.creatMapAreaDODefaultAreaName();
-			mado.areaName = madoDefaultName;
+			var madoName:String = this.creatMapAreaDODefaultAreaName();
+			if(mado.areaName != null && mado.areaName.length > 0){
+				madoName = mado.areaName;
+			}
+			mado.areaName = madoName;
 			var ma:MapArea = new MapArea(mado,AREA_LINE_COLOR,AREA_FILL_COLOR,this.scalePoint);
 			ma.name = MapPointsManager.creatHashArrayHashName(mado.pointArray);
 			ma.refresh();
@@ -372,22 +375,30 @@
 		 * @param mapAreaDoHashArray
 		 * 
 		 */		
-		private function initFromSaveData(image:String,mapAreaDoHashArray:HashArray):void{
-			this.refreshMapBack(image);
-			if(mapAreaDoHashArray != null){
-				for(var i:int = 0;i<mapAreaDoHashArray.length;i++){
-					var mapAreaDo:MapAreaDO = mapAreaDoHashArray.findByIndex(i) as MapAreaDO;
-					if(mapAreaDo != null){
-						this.addMapArea(mapAreaDo);
-						var pha:HashArray = mapAreaDo.pointArray;
-						if(pha != null){
-							for(var j:int;j< pha.length;j++){
-								var p:Point = pha.findByIndex(i) as Point;
-								this.manager.addPoint(p);
+		public function initFromSaveData(workSpaceDO:WorkSpaceDO):void{
+			if(workSpaceDO != null){
+				var image:String = workSpaceDO.image;
+				var mapAreaDoHashArray:HashArray = workSpaceDO.mapAreaDOHashArray;
+				this.refreshMapBack(image);
+				if(mapAreaDoHashArray != null){
+					for(var i:int = 0;i<mapAreaDoHashArray.length;i++){
+						var mapAreaDo:MapAreaDO = mapAreaDoHashArray.findByIndex(i) as MapAreaDO;
+						if(mapAreaDo != null){
+							this.addMapArea(mapAreaDo);
+							var pha:HashArray = mapAreaDo.pointArray;
+							if(pha != null){
+								for(var j:int;j< pha.length;j++){
+									var p:Point = pha.findByIndex(j) as Point;
+									this.manager.addPoint(p);
+								}
 							}
+							var mado:MapAreaDO = this.manager.mapAreaDOAry.findByIndex(i) as MapAreaDO;
+							mado.areaName = mapAreaDo.areaName;
+							mado.areaNamePlace = mapAreaDo.areaNamePlace;
 						}
 					}
 				}
+				this.dispatchEvent(new Event(EVENT_MAP_AREA_ADD));
 			}
 		}
 		

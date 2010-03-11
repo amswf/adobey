@@ -66,7 +66,7 @@
 			var wsw:int = this.width - SPACE - SPACE - SPACE - bar.width - areaAttribute.width;
 			var wsx:int = bar.width + SPACE + SPACE;
 			var wsy:int = SPACE;
-			 
+			
 			wsMask =  SkinsUtil.createSkinByName(MAIN_FRAME_SKIN);
 			this.addChild(wsMask);
 			wsMask.width = wsw;
@@ -146,7 +146,8 @@
 			var dir:String = mmAttribute.mapFileMainDirectory;
 			if(dir != null){
 				ws.manager.mapAreaDOAry;
-				MapDataFileIO.save(ws,dir+"/ws.xml");
+				var mapDataFileIO:MapDataFileIO = new MapDataFileIO();
+				mapDataFileIO.save(ws,dir+"/ws.xml");
 			}
 			else {
 				mmAttribute.selectSaveDirectory();
@@ -156,7 +157,16 @@
 		private function handlerWsAttributeOpen(e:Event):void{
 			var dir:String = mmAttribute.mapFileMainDirectory;
 			if(dir != null){
-				MapDataFileIO.open(dir+"/ws.xml");
+				var mdfio:MapDataFileIO = new MapDataFileIO();
+				mdfio.addEventListener(Event.COMPLETE,handlerLoadXMLComplete);
+				mdfio.open(dir+"/ws.xml");
+			}
+		}
+		
+		private function handlerLoadXMLComplete(e:Event):void{
+			var mdfio:MapDataFileIO = e.currentTarget as MapDataFileIO;
+			if(mdfio != null && mdfio.workSpaceDO != null){
+				this.ws.initFromSaveData(mdfio.workSpaceDO);
 			}
 		}
 		
@@ -186,6 +196,7 @@
 		}
 		
 		private function handlerMapAreaChange(e:Event):void{
+			trace("handlerMapAreaChange");
 			var maha:HashArray = this.ws.manager.mapAreaDOAry;
 			this.wsAttribute.refreshMapAreaListBtn(maha);
 		}
