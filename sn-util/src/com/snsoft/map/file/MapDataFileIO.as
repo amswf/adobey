@@ -5,24 +5,34 @@
 	import com.snsoft.map.WorkSpaceDO;
 	import com.snsoft.map.util.HashArray;
 	import com.snsoft.util.XMLUtil;
-	
+
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 	import flash.geom.Point;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
-	
-	public class MapDataFileIO {
+
+	public class MapDataFileIO extends EventDispatcher {
+
+		//加载外部XML完成事件类型
+		public static const COMPLETE:String = Event.COMPLETE;
+
+		//工作区数据对象
+		private var _workSpaceDO:WorkSpaceDO = null;
+
 		public function MapDataFileIO() {
+
 		}
-		
-		public static function open(dir:String):void {
+
+		public function open(dir:String):void {
 			var req:URLRequest = new URLRequest(dir);
 			var loader:URLLoader = new URLLoader();
 			loader.load(req);
-			//loader.addEventListener(Event.COMPLETE,handlerLoaderXML);
-			
+			loader.addEventListener(Event.COMPLETE,handlerLoaderXML);
+
 			/*文件加载方式
 			var file:File = new File(dir);
 			var fs:FileStream = new FileStream();
@@ -32,12 +42,11 @@
 			*/
 		}
 		
-		
-		private static function creatWorkSpaceDO(map:XML):WorkSpaceDO {
-			//工作区数据对象
+		private function handlerLoaderXML(e:Event):void {
+			
 			var wsdo:WorkSpaceDO = new WorkSpaceDO();
 			//<map> 
-			//map
+			var map:XML = new XML(e.currentTarget.data);
 			
 			//<image>
 			var image:XML = map.elements("image")[0];
@@ -45,7 +54,7 @@
 			wsdo.image = mapImage;
 			
 			//工作区地图块数据对象列表
-			var madoha:HashArray = new HashArray
+			var madoha:HashArray = new HashArray  ;
 			//<areas>
 			var areas:XMLList = map.elements("areas").children();
 			if (areas != null) {
@@ -83,7 +92,7 @@
 						if (areaPoints != null) {
 							var areaPointsChilds:XMLList = areaPoints.children();
 							for (var j:int = 0; j<areaPointsChilds.length(); j++) {
-								var areaPoint:XML = areaPointsChilds[i];
+								var areaPoint:XML = areaPointsChilds[j];
 								if (areaPoint != null) {
 									var px:XML = areaPoint.elements("x")[0];
 									var py:XML = areaPoint.elements("y")[0];
@@ -105,22 +114,23 @@
 				}
 			}
 			wsdo.mapAreaDOHashArray = madoha;
-			return wsdo;
+			this._workSpaceDO = wsdo;
+			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
-		
-		
-		public static function save(ws:WorkSpace,filePath:String):void {
+
+
+		public function save(ws:WorkSpace,filePath:String):void {
 			var xml:String = creatXML(ws);
 			xml = XMLUtil.formatXML(new XML(xml));
 			var file:File = new File(filePath);
 			var fs:FileStream = new FileStream();
 			fs.open(file,FileMode.WRITE);
-			
+
 			fs.writeUTFBytes(xml);
 			fs.close();
 		}
-		
-		private static function creatXML(ws:WorkSpace):String {
+
+		private function creatXML(ws:WorkSpace):String {
 			var madoa:HashArray = ws.manager.mapAreaDOAry as HashArray;
 			var image:String = "";
 			if (ws.mapImage != null && ws.mapImage.imageUrl != null) {
@@ -128,11 +138,11 @@
 			}
 			var xml:String = new String();
 			xml = xml.concat("<map>");
-			
+
 			xml = xml.concat("<image>");
 			xml = xml.concat(image);
 			xml = xml.concat("</image>");
-			
+
 			xml = xml.concat("<areas>");
 			if (madoa != null) {
 				for (var i:int = 0; i<madoa.length; i++) {
@@ -141,43 +151,43 @@
 					var placeP:Point = mado.areaNamePlace;
 					var pha:HashArray = mado.pointArray;
 					xml = xml.concat("<area>");
-					
+
 					xml = xml.concat("<areaName>");
 					xml = xml.concat(name);
 					xml = xml.concat("</areaName>");
-					
+
 					xml = xml.concat("<areaNamePoint>");
-					
+
 					xml = xml.concat("<x>");
 					xml = xml.concat(placeP.x);
 					xml = xml.concat("</x>");
-					
+
 					xml = xml.concat("<y>");
 					xml = xml.concat(placeP.y);
 					xml = xml.concat("</y>");
-					
+
 					xml = xml.concat("</areaNamePoint>");
-					
+
 					xml = xml.concat("<areaPoints>");
 					if (pha != null) {
 						for (var j:int = 0; j < pha.length; j++) {
 							var ap:Point = pha.findByIndex(j) as Point;
 							xml = xml.concat("<point>");
-							
+
 							xml = xml.concat("<x>");
 							xml = xml.concat(ap.x);
 							xml = xml.concat("</x>");
-							
+
 							xml = xml.concat("<y>");
 							xml = xml.concat(ap.y);
 							xml = xml.concat("</y>");
-							
+
 							xml = xml.concat("</point>");
 						}
 					}
-					
+
 					xml = xml.concat("</areaPoints>");
-					
+
 					xml = xml.concat("</area>");
 				}
 			}
@@ -185,5 +195,10 @@
 			xml = xml.concat("</map>");
 			return xml;
 		}
+
+		public function get workSpaceDO():WorkSpaceDO {
+			return _workSpaceDO;
+		}
+
 	}
 }
