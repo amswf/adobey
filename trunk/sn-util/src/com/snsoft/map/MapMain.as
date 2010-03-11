@@ -166,6 +166,26 @@
 		private function handlerLoadXMLComplete(e:Event):void{
 			var mdfio:MapDataFileIO = e.currentTarget as MapDataFileIO;
 			if(mdfio != null && mdfio.workSpaceDO != null){
+				
+				var wsh:int = this.height - SPACE - SPACE;
+				var wsw:int = this.width - SPACE - SPACE - SPACE - bar.width - areaAttribute.width;
+				var wsx:int = bar.width + SPACE + SPACE;
+				var wsy:int = SPACE;
+				
+				var ws:WorkSpace = new WorkSpace(new Point(wsw,wsh));
+				ws.mask = wsMask;
+				ws.x = wsx;
+				ws.y = wsy;
+				var wsIndex:int = this.getChildIndex(this.ws);
+				this.removeChild(this.ws);
+				this.ws = ws;
+				this.addChild(this.ws);
+				
+				ws.addEventListener(WorkSpace.EVENT_MAP_AREA_CLICK,handlerMapAreaClick);
+				ws.addEventListener(WorkSpace.EVENT_MAP_AREA_ADD,handlerMapAreaChange);
+				ws.addEventListener(WorkSpace.EVENT_MAP_AREA_DELETE,handlerMapAreaChange);
+				ws.addEventListener(WorkSpace.EVENT_MAP_AREA_UPDATE,handlerMapAreaChange);
+				
 				this.ws.initFromSaveData(mdfio.workSpaceDO);
 			}
 		}
