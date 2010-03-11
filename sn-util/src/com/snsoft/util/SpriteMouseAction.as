@@ -128,7 +128,10 @@ package com.snsoft.util
 			var sign:Boolean = this.cuntryNameMoveSign;
 			if(poc != null && sign){
 				this.cuntryNameMoveSign = false;
-				this.setView();
+				
+				if(this.viewEvent == DRAG_COMPLETE_EVENT){
+					this.setView();
+				}
 				this.dispatchEvent(new Event(DRAG_COMPLETE_EVENT));
 			}
 		}
@@ -149,7 +152,9 @@ package com.snsoft.util
 					var docp:Point = new Point(docx,docy); 
 					docp = calculateMoveLimitPoint(docp);
 					MapUtil.setSpritePlace(doc,docp);
-					this.setView();
+					if(this.viewEvent == DRAG_MOVE_EVENT){
+						this.setView();
+					}
 					this.dispatchEvent(new Event(DRAG_MOVE_EVENT));
 				}
 			}
