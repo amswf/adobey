@@ -5,7 +5,7 @@
 	import com.snsoft.map.WorkSpaceDO;
 	import com.snsoft.map.util.HashArray;
 	import com.snsoft.util.XMLUtil;
-
+	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.filesystem.File;
@@ -14,25 +14,168 @@
 	import flash.geom.Point;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
-
-	public class MapDataFileIO extends EventDispatcher {
-
+	
+	public class MapDataFileManager extends EventDispatcher {
+		
 		//加载外部XML完成事件类型
 		public static const COMPLETE:String = Event.COMPLETE;
-
+		
 		//工作区数据对象
 		private var _workSpaceDO:WorkSpaceDO = null;
-
-		public function MapDataFileIO() {
-
+		
+		//地图存储文件基本名称 ws_1_2.xml
+		private static const MAP_FILE_BASE_NAME:String = "ws";
+		
+		//地图存储文件层分隔符  ws_1_2.xml
+		private static const MAP_FILE_NAME_SPLIT:String = "_";
+		
+		//地图存储文件分层路径名 1x / 2x / 3x
+		private static const MAP_FILE_LAYER_BASE_NAME:String = "x";
+		
+		//地图存储文件扩展名 ws_1_2.xml
+		private static const MAP_FILE_BASE_EXT_NAME:String = ".xml";
+		
+		public function MapDataFileManager() {
+			
 		}
-
+		
+		/**
+		 * 创建地图保存文件 
+		 * @param dir
+		 * @param parentName
+		 * @return 
+		 * 
+		 */		
+		public function creatFileFullPath(dir:String,parentWsName:String = MAP_FILE_BASE_NAME):String{
+			var newFileFullPath:String = null;
+			var nxName:String = getNxPath(dir,parentWsName);
+			var nx:File = new File(nxName);
+			if(nx.isDirectory){
+				var files:Array = nx.getDirectoryListing();
+				if(files.length > 0){
+					for(var n:int =1;n<files.length;n++){
+						var childWsName:String = createChildWorkSpaceName(parentWsName,n);
+						var fullPath:String = nxName + File.separator + childWsName + MAP_FILE_BASE_EXT_NAME;
+						var hasSameName:Boolean = false;
+						if(!fileIsExists(fullPath)){
+							newFileFullPath = fullPath;
+						}
+					}
+				}
+			}
+			if(newFileFullPath == null) {
+				var childWsName2:String = createChildWorkSpaceName(parentWsName,1);
+				var fullPath2:String = nxName + File.separator + childWsName2 + MAP_FILE_BASE_EXT_NAME;
+				newFileFullPath = fullPath2;
+			}
+			return newFileFullPath;
+		}  
+		
+		/**
+		 * 删除文件 
+		 * @param fullPath
+		 * 
+		 */			
+		public function deleteFile(fullPath:String):void{
+			if(fileIsExists(fullPath)){
+				var file:File = new File(fullPath);
+				file.deleteFile();
+			}
+		}
+		
+		/**
+		 * 获得工作区的层完整路径 
+		 * @param dir
+		 * @param wsName
+		 * @return 
+		 * 
+		 */		
+		private function getNxPath(dir:String,wsName:String):String{
+			var layer:int =1 + getFileLayerByName(wsName + MAP_FILE_BASE_EXT_NAME);
+			var nxName:String = dir + File.separator + layer + MAP_FILE_LAYER_BASE_NAME;
+			return nxName;
+		}
+		
+		
+		
+		/**
+		 * 查找文件是否存在 
+		 * @param fullPath
+		 * @return 
+		 * 
+		 */		
+		public function fileIsExists(fullPath:String):Boolean{
+			var exists:Boolean = false;
+			if(fullPath != null && fullPath.length > 0){
+				var newFile:File = new File(fullPath);
+				if(newFile.exists){
+					exists = newFile.exists;
+				}
+			}
+			return exists;
+		}
+		
+		/**
+		 * 获得文件存放所在的层次 
+		 * @param fileName
+		 * @return 
+		 * 
+		 */		
+		private function getFileLayerByName(fileName:String):int{
+			
+			var num:int = 0;
+			if(fileName != null && fileName.length > 0){
+				for(var i:int = 0;i<fileName.length;i++){
+					if(fileName.charAt(i) == MAP_FILE_NAME_SPLIT){
+						num ++;
+					}
+				}
+			}
+			return num;
+		}
+		
+		/**
+		 * 创建工作区基本名称 
+		 * @param parentWorkSpaceName
+		 * @return 
+		 * 
+		 */		
+		private function createChildWorkSpaceName(parentWorkSpaceName:String = null,i:int = 0):String{
+			var wsName:String = MAP_FILE_BASE_NAME;
+			if(parentWorkSpaceName == null && parentWorkSpaceName.length == 0){
+				wsName = parentWorkSpaceName;
+			}
+			else {
+				wsName = parentWorkSpaceName + MAP_FILE_NAME_SPLIT + i;
+			}
+			return wsName;
+		}
+		
+		/**
+		 * 创建工作区父工作区名称
+		 * @param workSpaceName
+		 * @return 
+		 * 
+		 */		
+		private function createParentWorkSpaceBaseName(workSpaceName:String):String{
+			var wsName:String = null;
+			if(workSpaceName == null && workSpaceName.length == 0){
+				
+			}
+			else {
+				var li:int = workSpaceName.lastIndexOf(MAP_FILE_NAME_SPLIT);
+				wsName = workSpaceName.substring(0,li);
+			}
+			return wsName;
+		}
+		
+		
 		public function open(dir:String):void {
 			var req:URLRequest = new URLRequest(dir);
 			var loader:URLLoader = new URLLoader();
 			loader.load(req);
 			loader.addEventListener(Event.COMPLETE,handlerLoaderXML);
-
+			
 			/*文件加载方式
 			var file:File = new File(dir);
 			var fs:FileStream = new FileStream();
@@ -117,19 +260,19 @@
 			this._workSpaceDO = wsdo;
 			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
-
-
+		
+		
 		public function save(ws:WorkSpace,filePath:String):void {
 			var xml:String = creatXML(ws);
 			xml = XMLUtil.formatXML(new XML(xml));
 			var file:File = new File(filePath);
 			var fs:FileStream = new FileStream();
 			fs.open(file,FileMode.WRITE);
-
+			
 			fs.writeUTFBytes(xml);
 			fs.close();
 		}
-
+		
 		private function creatXML(ws:WorkSpace):String {
 			var madoa:HashArray = ws.manager.mapAreaDOAry as HashArray;
 			var image:String = "";
@@ -138,11 +281,11 @@
 			}
 			var xml:String = new String();
 			xml = xml.concat("<map>");
-
+			
 			xml = xml.concat("<image>");
 			xml = xml.concat(image);
 			xml = xml.concat("</image>");
-
+			
 			xml = xml.concat("<areas>");
 			if (madoa != null) {
 				for (var i:int = 0; i<madoa.length; i++) {
@@ -151,43 +294,43 @@
 					var placeP:Point = mado.areaNamePlace;
 					var pha:HashArray = mado.pointArray;
 					xml = xml.concat("<area>");
-
+					
 					xml = xml.concat("<areaName>");
 					xml = xml.concat(name);
 					xml = xml.concat("</areaName>");
-
+					
 					xml = xml.concat("<areaNamePoint>");
-
+					
 					xml = xml.concat("<x>");
 					xml = xml.concat(placeP.x);
 					xml = xml.concat("</x>");
-
+					
 					xml = xml.concat("<y>");
 					xml = xml.concat(placeP.y);
 					xml = xml.concat("</y>");
-
+					
 					xml = xml.concat("</areaNamePoint>");
-
+					
 					xml = xml.concat("<areaPoints>");
 					if (pha != null) {
 						for (var j:int = 0; j < pha.length; j++) {
 							var ap:Point = pha.findByIndex(j) as Point;
 							xml = xml.concat("<point>");
-
+							
 							xml = xml.concat("<x>");
 							xml = xml.concat(ap.x);
 							xml = xml.concat("</x>");
-
+							
 							xml = xml.concat("<y>");
 							xml = xml.concat(ap.y);
 							xml = xml.concat("</y>");
-
+							
 							xml = xml.concat("</point>");
 						}
 					}
-
+					
 					xml = xml.concat("</areaPoints>");
-
+					
 					xml = xml.concat("</area>");
 				}
 			}
@@ -195,10 +338,10 @@
 			xml = xml.concat("</map>");
 			return xml;
 		}
-
+		
 		public function get workSpaceDO():WorkSpaceDO {
 			return _workSpaceDO;
 		}
-
+		
 	}
 }

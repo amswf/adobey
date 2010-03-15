@@ -1,6 +1,6 @@
 ﻿package com.snsoft.map
 {
-	import com.snsoft.map.file.MapDataFileIO;
+	import com.snsoft.map.file.MapDataFileManager;
 	import com.snsoft.map.util.HashArray;
 	import com.snsoft.map.util.MapUtil;
 	import com.snsoft.util.SkinsUtil;
@@ -122,12 +122,13 @@
 		 * @param msk
 		 * 
 		 */		
-		private function initWorkSpace(msk:Sprite,place:Point,size:Point):void{
+		private function initWorkSpace(msk:Sprite,place:Point,size:Point,wsName:String = null):void{
 	
 			var ws:WorkSpace = new WorkSpace(size);
 			ws.mask = msk;
 			ws.x = place.x;
 			ws.y = place.y;
+			ws.wsName = wsName;
 			if(this.ws != null){
 				this.removeChild(this.ws);
 			}
@@ -163,8 +164,9 @@
 			var dir:String = mmAttribute.mapFileMainDirectory;
 			if(dir != null){
 				ws.manager.mapAreaDOAry;
-				var mapDataFileIO:MapDataFileIO = new MapDataFileIO();
-				mapDataFileIO.save(ws,dir+"/ws.xml");
+				var mdfio:MapDataFileManager = new MapDataFileManager();
+				var fullPath:String = mdfio.creatFileFullPath(dir);
+				mdfio.save(ws,fullPath);
 			}
 			else {
 				mmAttribute.selectSaveDirectory();
@@ -174,14 +176,17 @@
 		private function handlerWsAttributeOpen(e:Event):void{
 			var dir:String = mmAttribute.mapFileMainDirectory;
 			if(dir != null){
-				var mdfio:MapDataFileIO = new MapDataFileIO();
+				var mdfio:MapDataFileManager = new MapDataFileManager();
 				mdfio.addEventListener(Event.COMPLETE,handlerLoadXMLComplete);
-				mdfio.open(dir+"/ws.xml");
+				var fullPath:String = mdfio.creatFileFullPath(dir);
+				if(mdfio.fileIsExists(fullPath)){
+					mdfio.open(fullPath);
+				}
 			}
 		}
 		
 		private function handlerLoadXMLComplete(e:Event):void{
-			var mdfio:MapDataFileIO = e.currentTarget as MapDataFileIO;
+			var mdfio:MapDataFileManager = e.currentTarget as MapDataFileManager;
 			if(mdfio != null && mdfio.workSpaceDO != null){
 				
 				var wsh:int = this.height - SPACE - SPACE;
