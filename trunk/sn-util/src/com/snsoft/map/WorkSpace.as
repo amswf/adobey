@@ -76,6 +76,8 @@
 		
 		public static const EVENT_MAP_AREA_CLICK:String = "EVENT_MAP_AREA_CLICK";
 		
+		public static const EVENT_MAP_AREA_DOUBLE_CLICK:String = "EVENT_MAP_AREA_DOUBLE_CLICK";
+		
 		public static const EVENT_MAP_AREA_DELETE:String = "EVENT_MAP_AREA_DELETE";
 		
 		public static const EVENT_MAP_AREA_ADD:String = "EVENT_MAP_AREA_ADD";
@@ -92,6 +94,9 @@
 		
 		private var hitTestDvaluePoint:Point = new Point(5,5);
 		
+		//工作区名称
+		private var _wsName:String = null;
+		
 		/**
 		 * 构造方法 
 		 * 
@@ -104,6 +109,8 @@
 			}
 			init();
 		}
+		
+		
 		
 		/**
 		 * 初始化 
@@ -504,7 +511,9 @@
 				mapArea.addEventListener(MouseEvent.MOUSE_DOWN,handlerMapAreaMouseDown);
 				mapArea.addEventListener(MouseEvent.MOUSE_OVER,handlerMapAreaMouseOver);
 				mapArea.addEventListener(MouseEvent.MOUSE_OUT,handlerMapAreaMouseOut);
+				mapArea.addEventListener(MouseEvent.DOUBLE_CLICK,handlerMapAreaMouseDoubleClick);
 				mapArea.addEventListener(MapArea.CUNTRY_NAME_MOVE_EVENT,handlerMapAreaCuntryNameMove);
+				mapArea.doubleClickEnabled = true;
 			}
 		}
 		
@@ -561,6 +570,15 @@
 		 * @param e
 		 * 
 		 */		
+		private function handlerMapAreaMouseDoubleClick(e:Event):void{
+			this.dispatchEvent(new Event(EVENT_MAP_AREA_DOUBLE_CLICK));
+		}
+		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
 		private function handlerMapAreaMouseOut(e:Event):void{
 			if(this.toolEventType == null || this.toolEventType != ToolsBar.TOOL_TYPE_SELECT){
 				return;
@@ -610,7 +628,16 @@
 		{
 			return _mapImage;
 		}
-		
-		
+
+		public function get wsName():String
+		{
+			return _wsName;
+		}
+
+		public function set wsName(value:String):void
+		{
+			_wsName = value;
+		}
+
 	}
 }
