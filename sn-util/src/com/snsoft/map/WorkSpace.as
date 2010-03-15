@@ -518,6 +518,8 @@
 		}
 		
 		private function handlerMapAreaCuntryNameMove(e:Event):void{
+			var ma:MapArea = e.currentTarget as MapArea;
+			this.setcurrentClickMapArea(ma.name);
 			this.dispatchEvent(new Event(EVENT_MAP_AREA_CLICK));
 		}
 		
@@ -531,10 +533,15 @@
 				return;
 			}
 			var ma:MapArea = e.currentTarget as MapArea;
-			this.setMapAreaIndex(ma.name);
+			this.setcurrentClickMapArea(ma.name);
 		}
 		
-		public function setMapAreaIndex(name:String):void{
+		/**
+		 * 设置当前点击的地图块最顶层，并且设置工作区当前地图块对象 
+		 * @param name
+		 * 
+		 */		
+		public function setcurrentClickMapArea(name:String):void{
 			var ma:MapArea = this.mapsLayer.getChildByName(name) as MapArea;
 			if(ma != null){
 				this.mapsLayer.setChildIndex(ma,this.mapsLayer.numChildren - 1);
