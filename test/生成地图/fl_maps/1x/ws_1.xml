@@ -1,6 +1,7 @@
 <map>
   
-  <image/>
+  <image>D:\工作works\图片\r_294094.jpg</image>
+  
   <areas>
     
     <area>
@@ -9,9 +10,9 @@
       
       <areaNamePoint>
         
-        <x>0</x>
+        <x>3</x>
         
-        <y>0</y>
+        <y>4</y>
       
       </areaNamePoint>
       
@@ -19,49 +20,203 @@
         
         <point>
           
-          <x>244</x>
+          <x>227</x>
           
-          <y>188</y>
+          <y>122</y>
         
         </point>
         
         <point>
           
-          <x>347</x>
+          <x>299</x>
           
-          <y>286</y>
+          <y>166</y>
         
         </point>
         
         <point>
           
-          <x>269</x>
+          <x>368</x>
           
-          <y>382</y>
+          <y>273</y>
         
         </point>
         
         <point>
           
-          <x>152</x>
+          <x>325</x>
           
-          <y>348</y>
+          <y>347</y>
         
         </point>
         
         <point>
           
-          <x>138</x>
+          <x>198</x>
           
-          <y>283</y>
+          <y>354</y>
         
         </point>
         
         <point>
           
-          <x>189</x>
+          <x>135</x>
           
-          <y>230</y>
+          <y>308</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>147</x>
+          
+          <y>237</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>198</x>
+          
+          <y>201</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>205</x>
+          
+          <y>155</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>198</x>
+          
+          <y>133</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>227</x>
+          
+          <y>122</y>
+        
+        </point>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area>
+      
+      <areaName>area_2</areaName>
+      
+      <areaNamePoint>
+        
+        <x>37</x>
+        
+        <y>-53</y>
+      
+      </areaNamePoint>
+      
+      <areaPoints>
+        
+        <point>
+          
+          <x>229</x>
+          
+          <y>63</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>309</x>
+          
+          <y>49</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>362</x>
+          
+          <y>63</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>432</x>
+          
+          <y>117</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>457</x>
+          
+          <y>174</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>445</x>
+          
+          <y>271</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>424</x>
+          
+          <y>329</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>392</x>
+          
+          <y>372</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>325</x>
+          
+          <y>347</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>368</x>
+          
+          <y>273</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>299</x>
+          
+          <y>166</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>227</x>
+          
+          <y>122</y>
         
         </point>
         
@@ -69,15 +224,7 @@
           
           <x>229</x>
           
-          <y>202</y>
-        
-        </point>
-        
-        <point>
-          
-          <x>244</x>
-          
-          <y>188</y>
+          <y>63</y>
         
         </point>
       
