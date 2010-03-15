@@ -1,0 +1,18 @@
+﻿<xml>
+	<function>
+		<rooturl></rooturl>
+		<rootx>-65</rootx>
+		<rooty>30</rooty>
+		<listtype>true</listtype>
+		<childtext>政 务 版</childtext>
+		<childurl>http://www.baidu.com</childurl>
+	</function>
+	<function>
+		<childtext>商 务 版</childtext>
+		<childurl>http://www.qq.com</childurl>
+	</function>
+	<function>
+		<childtext>其它信息</childtext>
+		<childurl>http://www.google.com</childurl>
+	</function>
+</xml>
