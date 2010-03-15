@@ -1,0 +1,90 @@
+<map>
+  
+  <image/>
+  <areas>
+    
+    <area>
+      
+      <areaName>area_1</areaName>
+      
+      <areaNamePoint>
+        
+        <x>0</x>
+        
+        <y>0</y>
+      
+      </areaNamePoint>
+      
+      <areaPoints>
+        
+        <point>
+          
+          <x>244</x>
+          
+          <y>188</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>347</x>
+          
+          <y>286</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>269</x>
+          
+          <y>382</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>152</x>
+          
+          <y>348</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>138</x>
+          
+          <y>283</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>189</x>
+          
+          <y>230</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>229</x>
+          
+          <y>202</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>244</x>
+          
+          <y>188</y>
+        
+        </point>
+      
+      </areaPoints>
+    
+    </area>
+  
+  </areas>
+
+</map>
