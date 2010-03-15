@@ -51,6 +51,21 @@
 		
 		private const SPACE:int = 10;
 		
+		//工作区高
+		private var wsh:int = 0;
+		
+		//工作区宽
+		private var wsw:int = 0;
+		
+		//工作区x坐标
+		private var wsx:int = 0;
+		
+		//工作区y坐标
+		private var wsy:int = 0;
+		
+		//上一层工作区名称
+		private var parentWsName:String = null;
+		
 		public function MapMain()
 		{
 			super();
@@ -64,10 +79,10 @@
 			this.addChild(bar);
 			bar.addEventListener(ToolsBar.TOOL_CLICK,handlerEventToolsClick);
 			
-			var wsh:int = this.height - SPACE - SPACE;
-			var wsw:int = this.width - SPACE - SPACE - SPACE - bar.width - areaAttribute.width;
-			var wsx:int = bar.width + SPACE + SPACE;
-			var wsy:int = SPACE;
+			wsh = this.height - SPACE - SPACE;
+			wsw = this.width - SPACE - SPACE - SPACE - bar.width - areaAttribute.width;
+			wsx = bar.width + SPACE + SPACE;
+			wsy = SPACE;
 			
 			wsMask =  SkinsUtil.createSkinByName(MAIN_FRAME_SKIN);
 			this.addChild(wsMask);
@@ -75,8 +90,10 @@
 			wsMask.height = wsh;
 			wsMask.x = wsx;
 			wsMask.y = wsy;
-			
-			this.initWorkSpace(wsMask,new Point(wsx,wsy),new Point(wsw,wsh));
+			var mdfm:MapDataFileManager = new MapDataFileManager();
+			this.parentWsName = MapDataFileManager.MAP_FILE_BASE_NAME;
+			var wsName:String = mdfm.createChildWorkSpaceName(this.parentWsName,1);
+			this.initWorkSpace(wsMask,new Point(wsx,wsy),new Point(wsw,wsh),wsName);
 			
 			wsFrame = SkinsUtil.createSkinByName(MAIN_FRAME_SKIN);
 			wsFrame.width = wsw;
@@ -87,8 +104,6 @@
 			wsFrame.mouseChildren = false;
 			wsFrame.buttonMode = false;
 			this.addChild(wsFrame);
-			
-			
 			
 			var atbw:Number = 180;
 			var atbh:Number = 100;
@@ -122,8 +137,8 @@
 		 * @param msk
 		 * 
 		 */		
-		private function initWorkSpace(msk:Sprite,place:Point,size:Point,wsName:String = null):void{
-	
+		private function initWorkSpace(msk:Sprite,place:Point,size:Point,wsName:String):void{
+			
 			var ws:WorkSpace = new WorkSpace(size);
 			ws.mask = msk;
 			ws.x = place.x;
@@ -135,31 +150,59 @@
 			this.ws = ws;
 			this.addChild(this.ws);
 			
+			this.wsAttribute.refreshMapAreaListBtn(null);
+			
 			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_CLICK,handlerMapAreaClick);
+			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_DOUBLE_CLICK,handlerMapAreaDoubleClick);
 			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_ADD,handlerMapAreaChange);
 			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_DELETE,handlerMapAreaChange);
 			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_UPDATE,handlerMapAreaChange);
 		}
 		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
 		private function handlerWsAttributeTreeClick(e:Event):void{
 			var name:String = wsAttribute.currentTreeNodeBtnName;
-			ws.setMapAreaIndex(name);
+			ws.setcurrentClickMapArea(name);
 		}
 		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
 		private function handlerWsAttributeZoomIn(e:Event):void{
 			ws.scalePoint = MapUtil.creatSaclePoint(ws.scalePoint,new Point(2,2));
 			ws.refreshScale(this.wsFrame);
 		}
 		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
 		private function handlerWsAttributeZoomOut(e:Event):void{
 			ws.scalePoint = MapUtil.creatInverseSaclePoint(ws.scalePoint,new Point(2,2));
 			ws.refreshScale(this.wsFrame);
 		}
 		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
 		private function handlerWsAttributeSubmit(e:Event):void{
 			ws.refreshMapBack(wsAttribute.imageUrl);
 		}
 		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
 		private function handlerWsAttributeSave(e:Event):void{
 			var dir:String = mmAttribute.mapFileMainDirectory;
 			if(dir != null){
@@ -173,6 +216,11 @@
 			}
 		}
 		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
 		private function handlerWsAttributeOpen(e:Event):void{
 			var dir:String = mmAttribute.mapFileMainDirectory;
 			if(dir != null){
@@ -185,6 +233,11 @@
 			}
 		}
 		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
 		private function handlerLoadXMLComplete(e:Event):void{
 			var mdfio:MapDataFileManager = e.currentTarget as MapDataFileManager;
 			if(mdfio != null && mdfio.workSpaceDO != null){
@@ -193,11 +246,19 @@
 				var wsw:int = this.width - SPACE - SPACE - SPACE - bar.width - areaAttribute.width;
 				var wsx:int = bar.width + SPACE + SPACE;
 				var wsy:int = SPACE;
-				this.initWorkSpace(this.wsMask,new Point(wsx,wsy),new Point(wsw,wsh));
+				
+				var mdfm:MapDataFileManager = new MapDataFileManager();
+				var wsName:String = mdfm.createChildWorkSpaceName(this.parentWsName,1);
+				this.initWorkSpace(this.wsMask,new Point(wsx,wsy),new Point(wsw,wsh),wsName);
 				this.ws.initFromSaveData(mdfio.workSpaceDO);
 			}
 		}
 		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
 		private function handlerAreaAttributeDelete(e:Event):void{
 			var ma:MapArea = ws.currentClickMapArea;
 			if(ma != null){
@@ -205,10 +266,20 @@
 			}
 		}
 		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
 		private function handlerAreaAttributeSubmit(e:Event):void{
 			this.ws.updateMapArea(this.areaAttribute);
 		}
 		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
 		private function handlerMapAreaClick(e:Event):void{
 			var mado:MapAreaDO = ws.currentClickMapArea.mapAreaDO;
 			
@@ -223,6 +294,35 @@
 			areaAttribute.setareaNameY(String(mado.areaNamePlace.y));
 		}
 		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
+		private function handlerMapAreaDoubleClick(e:Event):void{
+			this.parentWsName = this.ws.wsName;
+			var dir:String = mmAttribute.mapFileMainDirectory;
+			var mdfm:MapDataFileManager = new MapDataFileManager();
+			var mado:MapAreaDO = ws.currentClickMapArea.mapAreaDO;
+			var ma:MapArea = ws.currentClickMapArea;
+			var wsName:String = mdfm.createChildWorkSpaceName(this.parentWsName,1);
+			this.initWorkSpace(wsMask,new Point(wsx,wsy),new Point(wsw,wsh),wsName);
+			///初始化数据
+			if(dir != null){
+				var mdfio:MapDataFileManager = new MapDataFileManager();
+				mdfio.addEventListener(Event.COMPLETE,handlerLoadXMLComplete);
+				var fullPath:String = mdfio.creatFileFullPath(dir,this.parentWsName);
+				if(mdfio.fileIsExists(fullPath)){
+					mdfio.open(fullPath);
+				}
+			}
+		}
+		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
 		private function handlerMapAreaChange(e:Event):void{
 			trace("handlerMapAreaChange");
 			var maha:HashArray = this.ws.manager.mapAreaDOAry;

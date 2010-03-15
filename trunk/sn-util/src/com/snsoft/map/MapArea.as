@@ -42,6 +42,9 @@ package com.snsoft.map
 		//地图块图形
 		private var areaFillShape:Shape;
 		
+		//地图块的子地图块所在的工作区
+		private var _childWorkSpace:WorkSpace = null;
+		
 		public static const CUNTRY_NAME_MOVE_EVENT:String = "CUNTRY_NAME_MOVE_EVENT";
 		
 		public function MapArea(mapAreaDO:MapAreaDO,lineColor:uint,fillColor:uint,scalePoint:Point = null)
@@ -170,6 +173,16 @@ package com.snsoft.map
 		public function set scalePoint(value:Point):void
 		{
 			_scalePoint = value;
+		}
+
+		public function get childWorkSpace():WorkSpace
+		{
+			return _childWorkSpace;
+		}
+
+		public function set childWorkSpace(value:WorkSpace):void
+		{
+			_childWorkSpace = value;
 		}
 
 		

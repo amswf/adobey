@@ -24,30 +24,42 @@
 		private var _workSpaceDO:WorkSpaceDO = null;
 		
 		//地图存储文件基本名称 ws_1_2.xml
-		private static const MAP_FILE_BASE_NAME:String = "ws";
+		public static const MAP_FILE_BASE_NAME:String = "ws";
 		
 		//地图存储文件层分隔符  ws_1_2.xml
-		private static const MAP_FILE_NAME_SPLIT:String = "_";
+		public static const MAP_FILE_NAME_SPLIT:String = "_";
 		
 		//地图存储文件分层路径名 1x / 2x / 3x
-		private static const MAP_FILE_LAYER_BASE_NAME:String = "x";
+		public static const MAP_FILE_LAYER_BASE_NAME:String = "x";
 		
 		//地图存储文件扩展名 ws_1_2.xml
-		private static const MAP_FILE_BASE_EXT_NAME:String = ".xml";
+		public static const MAP_FILE_BASE_EXT_NAME:String = ".xml";
 		
 		public function MapDataFileManager() {
 			
 		}
 		
 		/**
-		 * 创建地图保存文件 
+		 * 创建地图保存完整路径 
 		 * @param dir
 		 * @param parentName
 		 * @return 
 		 * 
 		 */		
 		public function creatFileFullPath(dir:String,parentWsName:String = MAP_FILE_BASE_NAME):String{
-			var newFileFullPath:String = null;
+			var nxName:String = getNxPath(dir,parentWsName);
+			return nxName + File.separator + creatFileName(dir,parentWsName) + MAP_FILE_BASE_EXT_NAME;
+		} 
+		
+		/**
+		 * 创建地图保存名称 
+		 * @param dir
+		 * @param parentWsName
+		 * @return 
+		 * 
+		 */		
+		public function creatFileName(dir:String,parentWsName:String = MAP_FILE_BASE_NAME):String{
+			var newFileName:String = null;
 			var nxName:String = getNxPath(dir,parentWsName);
 			var nx:File = new File(nxName);
 			if(nx.isDirectory){
@@ -58,18 +70,17 @@
 						var fullPath:String = nxName + File.separator + childWsName + MAP_FILE_BASE_EXT_NAME;
 						var hasSameName:Boolean = false;
 						if(!fileIsExists(fullPath)){
-							newFileFullPath = fullPath;
+							newFileName = childWsName;
 						}
 					}
 				}
 			}
-			if(newFileFullPath == null) {
+			if(newFileName == null) {
 				var childWsName2:String = createChildWorkSpaceName(parentWsName,1);
-				var fullPath2:String = nxName + File.separator + childWsName2 + MAP_FILE_BASE_EXT_NAME;
-				newFileFullPath = fullPath2;
+				newFileName = childWsName2;
 			}
-			return newFileFullPath;
-		}  
+			return newFileName;
+		}
 		
 		/**
 		 * 删除文件 
@@ -140,7 +151,7 @@
 		 * @return 
 		 * 
 		 */		
-		private function createChildWorkSpaceName(parentWorkSpaceName:String = null,i:int = 0):String{
+		public function createChildWorkSpaceName(parentWorkSpaceName:String = null,i:int = 0):String{
 			var wsName:String = MAP_FILE_BASE_NAME;
 			if(parentWorkSpaceName == null && parentWorkSpaceName.length == 0){
 				wsName = parentWorkSpaceName;
