@@ -386,8 +386,9 @@
 						if(mapAreaDo != null){
 							this.addMapArea(mapAreaDo);
 							var pha:HashArray = mapAreaDo.pointArray;
+							trace(pha != null);
 							if(pha != null){
-								for(var j:int;j< pha.length;j++){
+								for(var j:int=0;j< pha.length;j++){
 									var p:Point = pha.findByIndex(j) as Point;
 									this.manager.addPoint(p);
 								}
