@@ -1,11 +1,22 @@
 ﻿<xml>
 	<function>
-		<rooturl>http://www.baidu.com</rooturl>
-		<rootx>0</rootx>
-		<rooty>0</rooty>
+		<rooturl></rooturl>
+		<rootx>-65</rootx>
+		<rooty>-230</rooty>
 		<listtype>false</listtype>
-		<childtext></childtext>
-		<childurl></childurl>
+		<childtext>网上挂号</childtext>
+		<childurl>http://www.baidu.com</childurl>
 	</function>
-	 
+	<function>
+		<childtext>计划生育</childtext>
+		<childurl>http://www.qq.com</childurl>
+	</function>
+	<function>
+		<childtext>新农合</childtext>
+		<childurl>http://www.google.com</childurl>
+	</function>
+	<function>
+		<childtext>养老保险</childtext>
+		<childurl>http://www.google.com</childurl>
+	</function>
 </xml>

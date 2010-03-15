@@ -6,6 +6,8 @@
 	import flash.net.URLRequest;
 	import flash.net.URLVariables;
 	import flash.net.navigateToURL;
+	import flash.ui.MouseCursor;
+	import flash.ui.Mouse;
 
 	public class RootBtnMc extends MovieClip {
 		private var xlp:XMLLoadParse = null;
@@ -91,8 +93,8 @@
 					}
 					var btnBak:MovieClip = this.btnBakMC;
 					if (btnBak != null) {
-						btnBak.width = stage.stageWidth;
-						btnBak.height = stage.stageHeight;
+						btnBak.width = this.parent.width;
+						btnBak.height = this.parent.height;
 						btnBak.x =  -  this.x;
 						btnBak.y =  -  this.y;
 						btnBak.visible = false;
@@ -116,6 +118,7 @@
 		}
 
 		private function handlerMcMouseOver(e:Event):void {
+			Mouse.cursor = MouseCursor.BUTTON;
 			var pmc:MovieClip = this.parent as MovieClip;
 			pmc.numChildren;
 			pmc.setChildIndex(this,pmc.numChildren -1);
@@ -136,6 +139,7 @@
 
 
 		private function handlerMcMouseOut(e:Event):void {
+			Mouse.cursor = MouseCursor.AUTO;
 			trace("handlerMcMouseOut");
 			try {
 				gotoAndStop(1);
