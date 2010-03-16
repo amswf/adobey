@@ -220,6 +220,11 @@
 						//地图块数据对象
 						var mado:MapAreaDO = new MapAreaDO();
 						
+						//<areaId>
+						var areaId:XML = area.elements("areaId")[0];
+						var mapAreaId:String = areaId.text();
+						mado.areaId = mapAreaId;
+						
 						//<areaName>
 						var areaName:XML = area.elements("areaName")[0];
 						var mapAreaName:String = areaName.text();
@@ -302,9 +307,15 @@
 				for (var i:int = 0; i<madoa.length; i++) {
 					var mado:MapAreaDO = madoa.findByIndex(i) as MapAreaDO;
 					var name:String = mado.areaName;
+					var id:String = mado.areaId;
 					var placeP:Point = mado.areaNamePlace;
 					var pha:HashArray = mado.pointArray;
 					xml = xml.concat("<area>");
+					
+					
+					xml = xml.concat("<areaId>");
+					xml = xml.concat(id);
+					xml = xml.concat("</areaId>");
 					
 					xml = xml.concat("<areaName>");
 					xml = xml.concat(name);

@@ -194,8 +194,6 @@
 			if(mpms.isState(IS_CLOSE)) {//如果闭合链了
 				this.addPointsToCpaAndHt(mpms);
 				this.addCpaToPpa();
-				
-				this.tracePointAryAry(this.mapAreaDOAry);//////////////////////////////////////测试用，最后删除
 			}
 			else if(mpms.isState(IS_IN_CPA)){//如果在当前链上，且不闭合
 				//什么都不做 
@@ -216,9 +214,7 @@
 		public function deletePointAryAndDeleteHitTestPoint(mapAreaDO:MapAreaDO):void{
 			var hpa:HashArray = mapAreaDO.pointArray;
 			var hn:String = MapPointsManager.creatHashArrayHashName(hpa);
-			trace("mapAreaDOAry",this.mapAreaDOAry.length);
 			this.mapAreaDOAry.remove(hn);
-			trace(this.mapAreaDOAry.length);
 			var pa:Array = hpa.getArray();
 			for(var i:int = 0;i<pa.length;i++){
 				var point:Point = pa[i] as Point;
@@ -321,22 +317,6 @@
 		public static function createPointHashName(point:Point):String {
 			var str:String = String(point.x) + "|" + String(point.y);
 			return str;
-		}
-		
-		/**
-		 * 测试帮助 
-		 * 
-		 */
-		private function tracePointAryAry(hashArray:HashArray):void{
-			var ppa:Array = hashArray.getArray();
-			trace(ppa.length);
-			for(var i:int =0;i<ppa.length;i++){
-				var mado:MapAreaDO = ppa[i] as MapAreaDO;
-				var ha:HashArray = mado.pointArray;
-				if(ha != null){
-					trace(ha.getArray());
-				}
-			}
 		}
 		
 		public function get currentPointAry():HashArray
