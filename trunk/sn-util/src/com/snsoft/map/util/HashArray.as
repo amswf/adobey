@@ -53,6 +53,7 @@
 			if(i >=0 && i<this.listAry.length ){
 				var name:String = this.findName(i);
 				this.listAry.splice(i,1);
+				this.nameAry.slice(i,1);
 				this.hashAry[name] = HASH_DEFAULT_VALUE;
 			}
 		}
