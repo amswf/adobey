@@ -250,6 +250,7 @@
 			var ma:MapArea = ml.getChildByName(name) as MapArea;
 			if(ma != null){
 				ml.removeChild(ma);
+				trace("ml.numChildren",ml.numChildren);
 			}
 			var mpm:MapPointsManager = this.manager;
 			mpm.deletePointAryAndDeleteHitTestPoint(mado);

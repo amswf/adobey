@@ -215,6 +215,7 @@
 			var hpa:HashArray = mapAreaDO.pointArray;
 			var hn:String = MapPointsManager.creatHashArrayHashName(hpa);
 			this.mapAreaDOAry.remove(hn);
+			trace("mapAreaDOAry",mapAreaDOAry.length);
 			var pa:Array = hpa.getArray();
 			for(var i:int = 0;i<pa.length;i++){
 				var point:Point = pa[i] as Point;
