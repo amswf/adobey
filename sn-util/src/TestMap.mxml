@@ -29,7 +29,6 @@
 				var wsa:MapMainAttribute;
 				
 				var mdfm:MapDataFileManager = new MapDataFileManager();
-				var file:File = mdfm.creatFile("d:/ws","ws_1");
 			}
 		]]>
 	</fx:Script>

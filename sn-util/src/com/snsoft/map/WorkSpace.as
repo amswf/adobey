@@ -1,4 +1,5 @@
 ﻿package com.snsoft.map{
+	import com.snsoft.map.file.MapDataFileManager;
 	import com.snsoft.map.util.HashArray;
 	import com.snsoft.map.util.MapUtil;
 	
@@ -255,6 +256,38 @@
 			this.dispatchEvent(new Event(EVENT_MAP_AREA_DELETE));
 		}
 		
+		/**
+		 * 创建地图块时，地图块的默人名称，也是地图块的编号。 
+		 * @return 
+		 * 
+		 */		
+		public function createChildWordSpaceId():String{
+			var baseId:String = this.wsName;
+			var areaId:String = null;
+			for(var i:int = 1;i<= this.mapsLayer.numChildren + 1;i++){
+				var id:String = baseId +MapDataFileManager.MAP_FILE_NAME_SPLIT + i;
+				var hasSame:Boolean = false;
+				for(var j:int = 0;j<this.mapsLayer.numChildren;j++){
+					var ma:MapArea = this.mapsLayer.getChildAt(j) as MapArea;
+					var mado:MapAreaDO = ma.mapAreaDO;
+					if(id == mado.areaId){
+						hasSame ||= true;
+						break;
+					}
+				}
+				if(!hasSame){
+					areaId = id;
+					break;
+				}
+			}
+			return areaId;
+		}
+		
+		/**
+		 * 事件 加载图片完成 
+		 * @param e
+		 * 
+		 */		
 		public function mapBackImageLoadComplete(e:Event):void{
 			this.width = this.mapImage.width;
 			this.height = this.mapImage.height;
@@ -364,15 +397,22 @@
 		 * 
 		 */		
 		private function addMapArea(mado:MapAreaDO):void{
-			var madoName:String = this.creatMapAreaDODefaultAreaName();
+			var wsName:String = null;
 			if(mado.areaName != null && mado.areaName.length > 0){
-				madoName = mado.areaName;
+				wsName = mado.areaName;
 			}
-			mado.areaName = madoName;
+			else {
+				wsName = this.createChildWordSpaceId();
+			}
+			mado.areaName = wsName;
+			mado.areaId = wsName;
 			var ma:MapArea = new MapArea(mado,AREA_LINE_COLOR,AREA_FILL_COLOR,this.scalePoint);
 			ma.name = MapPointsManager.creatHashArrayHashName(mado.pointArray);
 			ma.refresh();
 			this.mapsLayer.addChild(ma);
+			var cws:WorkSpace = new WorkSpace(new Point(0,0));
+			ma.childWorkSpace = cws;
+			cws.wsName = wsName;
 			this.addMapAreaEvent(ma);
 		}
 		

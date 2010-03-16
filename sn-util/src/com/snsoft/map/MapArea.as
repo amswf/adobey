@@ -184,7 +184,5 @@ package com.snsoft.map
 		{
 			_childWorkSpace = value;
 		}
-
-		
 	}
 }
