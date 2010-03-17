@@ -191,7 +191,6 @@
 			var file:File = new File(dir);
 			var fs:FileStream = new FileStream();
 			fs.open(file,FileMode.READ);
-			
 			trace(new XML(fs.readUTFBytes(fs.bytesAvailable)));
 			*/
 		}
