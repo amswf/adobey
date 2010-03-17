@@ -35,7 +35,8 @@
 		 * XML分二层，根级(结果集)名称xml,二级(一个结果，对应类似数据的一个记录)名称record
 		 */
 		public function completeHandler(eventObj:Event):void {
-			var xml:XML = new XML(eventObj.currentTarget.data);
+			var xmlLoader:URLLoader = eventObj.currentTarget as URLLoader;
+			var xml:XML = new XML(xmlLoader.data);
 			var xmlList:XMLList = xml.children();
 			for (var i:int = 0; i<xmlList.length(); i ++) {
 				var record:XML = xmlList[i];
@@ -47,6 +48,7 @@
 				}
 				recordSet.push(rcd);
 			}
+			xmlLoader.close();
 			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
 		
