@@ -8,12 +8,12 @@
           <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
-        <DigestValue>61ZFfzu95kNxm+LO5D6zP5b2zPMVFvOlGtOs63Y/TIE=</DigestValue>
+        <DigestValue>+Qeq0WfENSzrDOh5BLYsIbvzJH3i8umv51WYJ6Nm+g8=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue Id="PackageSignatureValue">MkUVEhSAa9zrS4pqMZHIC1sqKXMR+AA3Ft+gdw/T+dG4WVDijRtmsrSXxl7jOmzexhTs0/mw4hSF
-Pn/7pRoqPc3PtRoYSrgsucUUtXE7aVpd9YAGdhXPrGPmXjDkoT1+MrBk8g4MH+1hilUfudxY5kjD
-UOFXzsGzBRFvq6kXPJw=</SignatureValue>
+    <SignatureValue Id="PackageSignatureValue">oCC6rWSXcisTGfCRtstbmmojnqP03UP929Q8q2riAulMRDOMCP1+cyZYJJydivSzX5xZiYaYEZLG
+e5biIV8CVt4H0TCKawaZ5tlBQzV5ibSZjAgNaDZ9lE/OFpPBI78d6JQlztpiHOpRzJ+Fd7CRG1Kw
+H2v/bokW3Wtt0/ypbes=</SignatureValue>
     <KeyInfo>
       <X509Data>
         <X509Certificate>MIICFTCCAX2gAwIBAgIaNmIyNzc1ZDM6MTI3MTIyMTNmYTM6LTgwMDAwDQYJKoZIhvcNAQEFBQAw
@@ -30,7 +30,7 @@ pvmeMuzy0K7Hv9vIznFkbNK5CZRbjP1e</X509Certificate>
     </KeyInfo>
     <Object>
       <Manifest Id="PackageContents">
-        <Reference URI="mimetype"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod><DigestValue>0/oCb84THKMagtI0Dy0KogEu92TegdesqRr/clXct1c=</DigestValue></Reference><Reference URI="META-INF/AIR/application.xml"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod><DigestValue>3vS8O28eCMfMwL6S31UDco+nyEOooSvHf/NE8EI9avk=</DigestValue></Reference><Reference URI="AppIconsForAIRPublish/AIRApp_128.png"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod><DigestValue>4WJqrggSu13maHrR+DGcVqcUrnowj/xUBFTwi60IVSY=</DigestValue></Reference><Reference URI="AppIconsForAIRPublish/AIRApp_16.png"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod><DigestValue>MZ9C32pXnHe61CcxZGAkpEgOVRlIyob+be3fawU0/6M=</DigestValue></Reference><Reference URI="AppIconsForAIRPublish/AIRApp_32.png"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod><DigestValue>5wSYU7b7bH7bwdriIFuwnpxlNJydy9bG6so1k+1Q/MI=</DigestValue></Reference><Reference URI="AppIconsForAIRPublish/AIRApp_48.png"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod><DigestValue>N6OqeFfDDxQuitbscsy9TjEqXOxxeuezElibmn8rR6E=</DigestValue></Reference><Reference URI="zh_maps_air.swf"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod><DigestValue>hlAw7X99NeKg7VEptlyaHEK+LDzgMwBA46QFmisq5/g=</DigestValue></Reference>
+        <Reference URI="mimetype"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod><DigestValue>0/oCb84THKMagtI0Dy0KogEu92TegdesqRr/clXct1c=</DigestValue></Reference><Reference URI="META-INF/AIR/application.xml"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod><DigestValue>N9YD8HzVFJl9cBY6qivDdgvj1mFnbi8dKr+tefHjBBk=</DigestValue></Reference><Reference URI="AppIconsForAIRPublish/AIRApp_128.png"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod><DigestValue>4WJqrggSu13maHrR+DGcVqcUrnowj/xUBFTwi60IVSY=</DigestValue></Reference><Reference URI="AppIconsForAIRPublish/AIRApp_16.png"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod><DigestValue>MZ9C32pXnHe61CcxZGAkpEgOVRlIyob+be3fawU0/6M=</DigestValue></Reference><Reference URI="AppIconsForAIRPublish/AIRApp_32.png"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod><DigestValue>5wSYU7b7bH7bwdriIFuwnpxlNJydy9bG6so1k+1Q/MI=</DigestValue></Reference><Reference URI="AppIconsForAIRPublish/AIRApp_48.png"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod><DigestValue>N6OqeFfDDxQuitbscsy9TjEqXOxxeuezElibmn8rR6E=</DigestValue></Reference><Reference URI="zh_maps_air.swf"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod><DigestValue>ekcpLM0iT9Vzll7xaY9s40zs0JqjmLcKwDOQOcjJyhM=</DigestValue></Reference>
       </Manifest>
     </Object>
     <Object xmlns:xades="http://uri.etsi.org/01903/v1.1.1#" > 
@@ -44,8 +44,8 @@ pvmeMuzy0K7Hv9vIznFkbNK5CZRbjP1e</X509Certificate>
             </Transforms>
             <xades:EncapsulatedTimeStamp>
               MIIIQQYJKoZIhvcNAQcCoIIIMjCCCC4CAQMxCzAJBgUrDgMCGgUAMIGuBgsqhkiG9w0BCRABBKCB
-ngSBmzCBmAIBAQYCKQIwITAJBgUrDgMCGgUABBSMs74oc5JWdQxsGrRXKvmMyxMtjAIDCULdGA8y
-MDEwMDMxNzA2NDgxMVowAwIBPKBRpE8wTTELMAkGA1UEBhMCVVMxFTATBgNVBAoTDEdlb1RydXN0
+ngSBmzCBmAIBAQYCKQIwITAJBgUrDgMCGgUABBQvKU6nr7yrq2v0RWVY1aBx7buQnwIDCeEXGA8y
+MDEwMDMxODAyMjY0NFowAwIBPKBRpE8wTTELMAkGA1UEBhMCVVMxFTATBgNVBAoTDEdlb1RydXN0
 IEluYzEnMCUGA1UEAxMeR2VvVHJ1c3QgVGltZXN0YW1waW5nIFNpZ25lciAxoIIFjzCCAuYwggJP
 oAMCAQICEF6NLaykRmVUa7WHl4GRqL8wDQYJKoZIhvcNAQEFBQAwgYsxCzAJBgNVBAYTAlpBMRUw
 EwYDVQQIEwxXZXN0ZXJuIENhcGUxFDASBgNVBAcTC0R1cmJhbnZpbGxlMQ8wDQYDVQQKEwZUaGF3
@@ -76,11 +76,11 @@ ATCBoDCBizELMAkGA1UEBhMCWkExFTATBgNVBAgTDFdlc3Rlcm4gQ2FwZTEUMBIGA1UEBxMLRHVy
 YmFudmlsbGUxDzANBgNVBAoTBlRoYXd0ZTEdMBsGA1UECxMUVGhhd3RlIENlcnRpZmljYXRpb24x
 HzAdBgNVBAMTFlRoYXd0ZSBUaW1lc3RhbXBpbmcgQ0ECEF6NLaykRmVUa7WHl4GRqL8wCQYFKw4D
 AhoFAKCBjDAaBgkqhkiG9w0BCQMxDQYLKoZIhvcNAQkQAQQwHAYJKoZIhvcNAQkFMQ8XDTEwMDMx
-NzA2NDgxMVowIwYJKoZIhvcNAQkEMRYEFLBAYu+1rhdwiXhTGgqLrZ1KzTK1MCsGCyqGSIb3DQEJ
-EAIMMRwwGjAYMBYEFCI82icHlnOBa2CKG4ywqwIwEH/MMA0GCSqGSIb3DQEBAQUABIGAGxc/vm+Z
-8lAI5/PRDPPyQ3/u5pTnTCFOCd/UW0FcZmTr/2+tabCdt2viSotwBX7DiuVGH3eyR2euGdk2PkLH
-jJkBpqX8PRhoq9SAEGj+IhlEwlIZRmCjIEDeKwb6PgDyG0IjQW/RWb3FvXxzGccBqfKcyagGtsoL
-ylL9VvjTT/g=
+ODAyMjY0NFowIwYJKoZIhvcNAQkEMRYEFKt9x4zw8/6FfRf+YAOY2z89gbqPMCsGCyqGSIb3DQEJ
+EAIMMRwwGjAYMBYEFCI82icHlnOBa2CKG4ywqwIwEH/MMA0GCSqGSIb3DQEBAQUABIGAZki6tAbX
+776DUK4jaaeDvNaTtdcJNuiVbpM1uNddlNpXC6ZDb2TePmBscgtU+OzTbbTAavhdk/3FlvI/NCTR
+gkDJ7fZ+4KDrlhkXqRHU2Ek8TCzR8+za9bhXiuKsPbHUlT/JDRS1ZYxHctGiMtYXGpFhgPnuOMuN
+244O7MOSBfU=
             </xades:EncapsulatedTimeStamp>     	
      	  </xades:HashDataInfo>     	
         </xades:SignatureTimeStamp>
