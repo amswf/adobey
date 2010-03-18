@@ -100,6 +100,30 @@ package com.snsoft.core
 			this.scrollDragBack = this.getDisplayObjectInstance("ScrollDragBack") as Sprite;
 			this.scrollMask = this.createAccessorySprite(this.width,this.height) as Sprite;
 			
+			
+		}
+		
+		/**
+		 * 当前项目改变宽高事件 
+		 * @param e
+		 * 
+		 */		
+		private function handlerResize(e:Event):void{
+			this.refeshList();
+		}
+		
+		/**
+		 * 当前项目进跳入帧事件 
+		 * @param e
+		 * 
+		 */		
+		private function handlerEnterFrame(e:Event):void{
+			//删除监听器
+			try{
+				this.removeEventListener(Event.ENTER_FRAME,handlerEnterFrame);
+			}
+			catch(e:Error){
+			}
 			//向上按钮
 			if(this.scrollUpBtn != null){
 				this.addChild(this.scrollUpBtn);
@@ -137,29 +161,6 @@ package com.snsoft.core
 			//scrollSprite 更新坐标定时器事件
 			timerScroll.addEventListener(TimerEvent.TIMER,handlerTimerScroll);
 			timerScroll.start();
-		}
-		
-		/**
-		 * 当前项目改变宽高事件 
-		 * @param e
-		 * 
-		 */		
-		private function handlerResize(e:Event):void{
-			this.refeshList();
-		}
-		
-		/**
-		 * 当前项目进跳入帧事件 
-		 * @param e
-		 * 
-		 */		
-		private function handlerEnterFrame(e:Event):void{
-			//删除监听器
-			try{
-				this.removeEventListener(Event.ENTER_FRAME,handlerEnterFrame);
-			}
-			catch(e:Error){
-			}
 			//滚动项目及遮罩
 			if(this.scrollSprite != null && this.scrollMask != null){
 				this.addChild(this.scrollSprite);
