@@ -54,8 +54,12 @@ package com.snsoft.util
 		private function setViewPlace(d:DisplayObjectContainer,l:DisplayObjectContainer,vd:DisplayObjectContainer,vl:DisplayObjectContainer):void{
 			var dlp:Point = new Point(d.width - l.width,d.height - l.height);
 			var dlsp:Point = new Point(vd.width - vl.width,vd.height - vl.height);
-			vd.x =  vl.x + (d.x - l.x) * dlsp.x / dlp.x;
-			vd.y =  vl.y + (d.y - l.y) * dlsp.y / dlp.y;
+			if(dlp.x != 0){
+				vd.x =  vl.x + (d.x - l.x) * dlsp.x / dlp.x;
+			}
+			if(dlp.y != 0){
+				vd.y =  vl.y + (d.y - l.y) * dlsp.y / dlp.y;
+			}
 		}
 		
 		private function setView():void{
