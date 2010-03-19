@@ -35,6 +35,9 @@
 		//地图存储文件扩展名 ws_1_2.xml
 		public static const MAP_FILE_BASE_EXT_NAME:String = ".xml";
 		
+		//存储根路径
+		private static var _mainDirectory:String = null;
+		
 		public function MapDataFileManager() {
 			
 		}
@@ -46,9 +49,13 @@
 		 * @return 
 		 * 
 		 */		
-		public function creatFileFullPath(dir:String,parentWsName:String = MAP_FILE_BASE_NAME):String{
-			var nxName:String = getNxPath(dir,parentWsName);
-			return nxName + File.separator + creatFileName(dir,parentWsName) + MAP_FILE_BASE_EXT_NAME;
+		public function creatFileFullPath(parentWsName:String = MAP_FILE_BASE_NAME):String{
+			var dir:String = this.mainDirectory;
+			if(dir != null){
+				var nxName:String = getNxPath(dir,parentWsName);
+				return nxName + File.separator + creatFileName(dir,parentWsName) + MAP_FILE_BASE_EXT_NAME;
+			}
+			return null;
 		} 
 		
 		/**
@@ -363,6 +370,17 @@
 		public function get workSpaceDO():WorkSpaceDO {
 			return _workSpaceDO;
 		}
+
+		public function get mainDirectory():String
+		{
+			return _mainDirectory;
+		}
+
+		public function set mainDirectory(value:String):void
+		{
+			_mainDirectory = value;
+		}
+
 		
 	}
 }
