@@ -227,8 +227,9 @@
 			var dir:String = mmAttribute.mapFileMainDirectory;
 			if(dir != null){
 				var mdfio:MapDataFileManager = new MapDataFileManager();
+				mdfio.mainDirectory = dir;
 				mdfio.addEventListener(Event.COMPLETE,handlerLoadXMLComplete);
-				var fullPath:String = mdfio.creatFileFullPath(dir);
+				var fullPath:String = mdfio.creatFileFullPath();
 				if(mdfio.fileIsExists(fullPath)){
 					mdfio.open(fullPath);
 				}
