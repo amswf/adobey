@@ -324,9 +324,7 @@
 		 * 
 		 */		
 		private function handlerMapAreaChange(e:Event):void{
-			trace("handlerMapAreaChange");
 			var maha:HashVector = this.ws.manager.mapAreaDOAry;
-			trace(maha.toArray());
 			this.wsAttribute.refreshMapAreaListBtn(maha);
 		}
 		
