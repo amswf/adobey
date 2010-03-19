@@ -206,10 +206,12 @@
 		private function handlerWsAttributeSave(e:Event):void{
 			var dir:String = mmAttribute.mapFileMainDirectory;
 			if(dir != null){
-				ws.manager.mapAreaDOAry;
-				var mdfio:MapDataFileManager = new MapDataFileManager();
-				var fullPath:String = mdfio.creatFileFullPath(dir);
-				mdfio.save(ws,fullPath);
+				//设置共享根路径
+				var mdfm:MapDataFileManager = new MapDataFileManager();
+				mdfm.mainDirectory = dir;
+				
+				//保存
+				ws.saveWorkSpace();
 			}
 			else {
 				mmAttribute.selectSaveDirectory();
@@ -311,7 +313,7 @@
 			if(dir != null){
 				var mdfio:MapDataFileManager = new MapDataFileManager();
 				mdfio.addEventListener(Event.COMPLETE,handlerLoadXMLComplete);
-				var fullPath:String = mdfio.creatFileFullPath(dir,this.parentWsName);
+				var fullPath:String = mdfio.creatFileFullPath(this.parentWsName);
 				if(mdfio.fileIsExists(fullPath)){
 					mdfio.open(fullPath);
 				}

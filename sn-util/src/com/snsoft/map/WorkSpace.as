@@ -162,6 +162,19 @@
 			
 		}
 		
+		public function saveWorkSpace(parentWsName:String = MapDataFileManager.MAP_FILE_BASE_NAME):void{
+			var mdfio:MapDataFileManager = new MapDataFileManager();
+			var fullPath:String = mdfio.creatFileFullPath();
+			mdfio.save(this,fullPath);
+			
+			for(var i:int = 0;i<this.mapsLayer.numChildren;i++){
+				var ma:MapArea = this.mapsLayer.getChildAt(i) as MapArea;
+				if(ma != null){
+					ma.childWorkSpace.saveWorkSpace(this.wsName);
+				}
+			} 
+		}
+		
 		/**
 		 * 缩放刷新工作区 
 		 * 
