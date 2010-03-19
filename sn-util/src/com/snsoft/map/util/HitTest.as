@@ -28,12 +28,7 @@
 			
 			if (stepPoint != null && sizePoint != null) {
 				//stepPoint 的坐标值不能大于 sizePoint的坐标值
-				if (Math.abs(stepPoint.x) > Math.abs(sizePoint.x)) {
-					stepPoint.x = sizePoint.x;
-				}
-				if (Math.abs(stepPoint.y) > Math.abs(sizePoint.y)) {
-					stepPoint.y = sizePoint.y;
-				}
+				
 				this._sizePoint = sizePoint;
 				this._stepPoint = stepPoint;
 				
@@ -88,7 +83,6 @@
 		 */
 		public function addPoint(point:Point):void {
 			var p:Point = this.getArrayIndex(point);
-			
 			var ix:int = int(p.x);
 			var iy:int = int(p.y);
 			if(this.pointAryAryAry != null && this.pointAryAryAry.length >= ix){
@@ -103,7 +97,6 @@
 						}
 						else {
 							htp.sameCount ++;
-							trace(htp.sameCount);
 						}
 					}
 				}
