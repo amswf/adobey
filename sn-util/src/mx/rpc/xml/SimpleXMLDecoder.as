@@ -116,7 +116,7 @@ public class SimpleXMLDecoder
             if (makeObjectsBindable)
                 result = new ObjectProxy(result);
 
-            for (var i:uint = 0; i < children.length; i++)
+            for (var i:int = 0; i < children.length; i++)
             {
                 var partNode:XMLNode = children[i];
 

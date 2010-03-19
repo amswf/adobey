@@ -65,7 +65,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
          */
-		private static var groupCount:uint = 0;
+		private static var groupCount:int = 0;
 
 		/**
 		 * Retrieves a reference to the specified radio button group.

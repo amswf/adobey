@@ -261,8 +261,8 @@ public class XMLDecoder extends SchemaProcessor implements IXMLDecoder
         var includedNamespaces:Array;
         var allowTargetNamespace:Boolean = true;
         var targetNamespace:String;
-        var maxOccurs:uint = getMaxOccurs(definition);
-        var minOccurs:uint = getMinOccurs(definition);
+        var maxOccurs:int = getMaxOccurs(definition);
+        var minOccurs:int = getMinOccurs(definition);
 
         if (definition != null)
         {
@@ -624,8 +624,8 @@ public class XMLDecoder extends SchemaProcessor implements IXMLDecoder
     {
         if (context == null)
             context = new DecodingContext();
-        var maxOccurs:uint = getMaxOccurs(definition);
-        var minOccurs:uint = getMinOccurs(definition);
+        var maxOccurs:int = getMaxOccurs(definition);
+        var minOccurs:int = getMinOccurs(definition);
 
         // If maxOccurs is 0 this choice must not be present.
         if (maxOccurs == 0)
@@ -642,8 +642,8 @@ public class XMLDecoder extends SchemaProcessor implements IXMLDecoder
             return true;
 
         var choiceSatisfied:Boolean;
-        var lastIndex:uint;
-        var choiceOccurs:uint;
+        var lastIndex:int;
+        var choiceOccurs:int;
 
         for (choiceOccurs = 0; choiceOccurs < maxOccurs; choiceOccurs++)
         {
@@ -976,8 +976,8 @@ public class XMLDecoder extends SchemaProcessor implements IXMLDecoder
 
         // <element minOccurs="..." maxOccurs="..."> occur on the local element,
         // not on a referent, so we capture this information first.
-        var maxOccurs:uint = getMaxOccurs(definition);
-        var minOccurs:uint = getMinOccurs(definition);
+        var maxOccurs:int = getMaxOccurs(definition);
+        var minOccurs:int = getMinOccurs(definition);
 
         // <element ref="..."> may be used to point to a top-level element definition
         var ref:QName;
@@ -1089,7 +1089,7 @@ public class XMLDecoder extends SchemaProcessor implements IXMLDecoder
                     return false;
             }
             
-            var elementOccurs:uint;
+            var elementOccurs:int;
             for (elementOccurs = 0; elementOccurs < maxOccurs
                                  && elementOccurs < applicableValues.length();
                                  elementOccurs++)
@@ -1267,8 +1267,8 @@ public class XMLDecoder extends SchemaProcessor implements IXMLDecoder
     {
         if (context == null)
             context = new DecodingContext();
-        var maxOccurs:uint = getMaxOccurs(definition);
-        var minOccurs:uint = getMinOccurs(definition);
+        var maxOccurs:int = getMaxOccurs(definition);
+        var minOccurs:int = getMinOccurs(definition);
 
         // If maxOccurs is 0 this sequence must not be present.
         if (maxOccurs == 0)
@@ -1279,7 +1279,7 @@ public class XMLDecoder extends SchemaProcessor implements IXMLDecoder
             return true;
 
         var sequenceElements:XMLList = definition.elements();
-        var sequenceOccurs:uint;
+        var sequenceOccurs:int;
         
         // hasSiblings is passed down to decodeGroupElement to control whether
         // a maxOccurs > 1 element should be decoded as a nested array, or should
@@ -1304,7 +1304,7 @@ public class XMLDecoder extends SchemaProcessor implements IXMLDecoder
             // or the sequence itself doesn't need to be satisfied.
             var requireChild:Boolean = isRequired && sequenceOccurs < minOccurs;
             var sequenceSatisfied:Boolean = true;
-            var lastIndex:uint = context.index + 0; // + 0 to get a different instance of uint
+            var lastIndex:int = context.index + 0; // + 0 to get a different instance of uint
 
             for each (var childDefinition:XML in sequenceElements)
             {
@@ -1859,7 +1859,7 @@ public class XMLDecoder extends SchemaProcessor implements IXMLDecoder
             return XML(value).hasSimpleContent();
         }
         else if (value is String || value is Number || value is Boolean
-            || value is Date || value is int || value is uint
+            || value is Date || value is int || value is int
             || value is ByteArray)
         {
             return true;
@@ -2146,10 +2146,10 @@ public class XMLDecoder extends SchemaProcessor implements IXMLDecoder
     * @private
     */
     protected function getApplicableValues(parent:*, valueElements:XMLList, name:QName,
-                                    context:DecodingContext, maxOccurs:uint):XMLList
+                                    context:DecodingContext, maxOccurs:int):XMLList
     {
         var applicableValues:XMLList = new XMLList();
-        var startIndex:uint = context.index;
+        var startIndex:int = context.index;
         var skipAhead:Boolean = false;
 
         // context.anyIndex indicates that values were previously decoded with
@@ -2163,7 +2163,7 @@ public class XMLDecoder extends SchemaProcessor implements IXMLDecoder
             skipAhead = true;
         }
 
-        for (var i:uint = startIndex; i < valueElements.length(); i++)
+        for (var i:int = startIndex; i < valueElements.length(); i++)
         {
             // We only need up to maxOccurs applicable values.
             if (applicableValues.length() == maxOccurs)

@@ -12,7 +12,7 @@ package ascb.util {
     private var _stop:Number;
     private var _duration:Number;
     private var _shape:Shape;
-    private var _count:uint;
+    private var _count:int;
 
     public function Tween(object:Object, property:String, start:Number, stop:Number, duration:Number) {
     	_object = object;

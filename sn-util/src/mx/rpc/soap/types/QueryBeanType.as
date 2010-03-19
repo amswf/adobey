@@ -84,7 +84,7 @@ public class QueryBeanType implements ICustomSOAPType
             else
                 resultItem = {};
 
-            for (var i:uint = 0; i < columnNames.length; i++)
+            for (var i:int = 0; i < columnNames.length; i++)
             {
                 resultItem[columnNames[i]] = item[i];
             }

@@ -65,7 +65,7 @@ public class AMFXEncoder
 
     private static function encodeHeaders(xml:XML, headers:Array, context:AMFXContext):void
     {
-        for (var i:uint = 0; i < headers.length; i++)
+        for (var i:int = 0; i < headers.length; i++)
         {
             var header:Object = headers[i];
             var element:XML = <header />;
@@ -179,9 +179,9 @@ public class AMFXEncoder
                 encodeArrayItem(element, n, named[n], context);
             }
 
-            var ordinalLength:uint = 0;
+            var ordinalLength:int = 0;
             var dense:Boolean = true;
-            for (var i:uint = 0; i < ordinal.length; i++)
+            for (var i:int = 0; i < ordinal.length; i++)
             {
                 var o:* = ordinal[i];
 
@@ -271,7 +271,7 @@ public class AMFXEncoder
     private static function encodeNumber(xml:XML, num:Number):void
     {
         var element:XML = null;
-        if (num is int || num is uint)
+        if (num is int || num is int)
         {
             element = <int />;
         }
@@ -304,7 +304,7 @@ public class AMFXEncoder
             var className:String = classInfo.name;
             var classAlias:String = classInfo.alias;
             var properties:Array = classInfo.properties;
-            var count:uint = properties.length;
+            var count:int = properties.length;
 
             // We need to special case ObjectProxy as for serialization we actually need the
             // remote alias of ObjectProxy, not the wrapped object.
@@ -337,7 +337,7 @@ public class AMFXEncoder
                 classInfo.externalizable = false;
                 encodeTraits(element, classInfo, context);
 
-                for (var i:uint = 0; i < count; i++)
+                for (var i:int = 0; i < count; i++)
                 {
                     var prop:String = properties[i];
                     encodeValue(element, obj[prop], context);
@@ -397,8 +397,8 @@ public class AMFXEncoder
                 var properties:Array = classInfo.properties;
                 if (properties != null)
                 {
-                    var count:uint = properties.length;
-                    for (var i:uint = 0; i < count; i++)
+                    var count:int = properties.length;
+                    for (var i:int = 0; i < count; i++)
                     {
                         var prop:String = properties[i];
                         encodeString(element, prop, context, true);
@@ -448,7 +448,7 @@ public class AMFXEncoder
 
     private var settings:Object;
 
-    public static const CURRENT_VERSION:uint = 3;
+    public static const CURRENT_VERSION:int = 3;
     public static const NAMESPACE_URI:String = "http://www.macromedia.com/2005/amfx";
     public static const NAMESPACE:Namespace = new Namespace("", NAMESPACE_URI);
 

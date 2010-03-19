@@ -3,7 +3,7 @@
 	import com.snsoft.map.MapPointsManager;
 	import com.snsoft.map.WorkSpace;
 	import com.snsoft.map.WorkSpaceDO;
-	import com.snsoft.map.util.HashArray;
+	import com.snsoft.map.util.HashVector;
 	import com.snsoft.util.XMLUtil;
 	
 	import flash.events.Event;
@@ -207,7 +207,7 @@
 			wsdo.image = mapImage;
 			
 			//工作区地图块数据对象列表
-			var madoha:HashArray = new HashArray  ;
+			var madoha:HashVector = new HashVector  ;
 			//<areas>
 			var areas:XMLList = map.elements("areas").children();
 			if (areas != null) {
@@ -244,7 +244,7 @@
 						}
 						
 						//地图块的点列
-						var pha:HashArray = new HashArray();
+						var pha:HashVector = new HashVector();
 						//<areaPoints>
 						var areaPoints:XML = area.elements("areaPoints")[0];
 						if (areaPoints != null) {
@@ -289,7 +289,7 @@
 		}
 		
 		private function creatXML(ws:WorkSpace):String {
-			var madoa:HashArray = ws.manager.mapAreaDOAry as HashArray;
+			var madoa:HashVector = ws.manager.mapAreaDOAry as HashVector;
 			var image:String = "";
 			if (ws.mapImage != null && ws.mapImage.imageUrl != null) {
 				image = ws.mapImage.imageUrl;
@@ -308,7 +308,7 @@
 					var name:String = mado.areaName;
 					var id:String = mado.areaId;
 					var placeP:Point = mado.areaNamePlace;
-					var pha:HashArray = mado.pointArray;
+					var pha:HashVector = mado.pointArray;
 					xml = xml.concat("<area>");
 					
 					

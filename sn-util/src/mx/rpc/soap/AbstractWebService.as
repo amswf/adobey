@@ -390,8 +390,8 @@ public class AbstractWebService extends AbstractService
      */
     public function getHeader(qname:QName, headerName:String = null):SOAPHeader
     {
-        var length:uint = _headers.length;
-        for (var i:uint = 0; i < length; i++)
+        var length:int = _headers.length;
+        for (var i:int = 0; i < length; i++)
         {
             var header:SOAPHeader = SOAPHeader(_headers[i]);
             if (XMLUtil.qnamesEqual(header.qname, qname))
@@ -420,8 +420,8 @@ public class AbstractWebService extends AbstractService
      */
     public function removeHeader(qname:QName, headerName:String = null):void
     {
-        var length:uint = _headers.length;
-        for (var i:uint = 0; i < length; i++)
+        var length:int = _headers.length;
+        for (var i:int = 0; i < length; i++)
         {
             var header:SOAPHeader = SOAPHeader(_headers[i]);
             if (XMLUtil.qnamesEqual(header.qname, qname))

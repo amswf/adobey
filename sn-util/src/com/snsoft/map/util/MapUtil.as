@@ -194,7 +194,7 @@
 		 * @return 
 		 * 
 		 */
-		public function drawFill(lineColor:uint,fillColor:uint,...pointArrayArray:Array):Shape {
+		public function drawFill(lineColor:int,fillColor:int,...pointArrayArray:Array):Shape {
 			if (pointArrayArray != null) {
 				var shape:Shape = new Shape();
 				var gra:Graphics = shape.graphics;
@@ -230,7 +230,7 @@
 		 * @return 
 		 * 
 		 */
-		public function drawLine(p1:Point,p2:Point,color:uint):Shape {
+		public function drawLine(p1:Point,p2:Point,color:int):Shape {
 			var shape:Shape = new Shape();
 			var gra:Graphics = shape.graphics;
 			gra.lineStyle(1,color,1);
@@ -244,7 +244,7 @@
 		 * @param mc
 		 * 
 		 */		
-		private function setPointSkinColor(mc:MovieClip,color:uint,alpha:Number):void{
+		private function setPointSkinColor(mc:MovieClip,color:int,alpha:Number):void{
 			var trfm:Transform = mc.transform;
 			var ctrfm:ColorTransform = trfm.colorTransform;
 			ctrfm.alphaMultiplier = 1;

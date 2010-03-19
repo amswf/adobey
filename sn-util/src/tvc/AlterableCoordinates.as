@@ -55,7 +55,7 @@
 		private var trueValuebluePointAry:Array = new Array();
 
 		//线色
-		private var color:uint = 0x000000;
+		private var color:int = 0x000000;
 
 		private var lineOrPole:String = "LINE";
 
@@ -185,7 +185,7 @@
 		/**
 		 * 置线的颜色、线宽、透明度：
 		 */
-		public function getShape(borderColor:uint, borderSize:int, alpha:Number ):Shape {
+		public function getShape(borderColor:int, borderSize:int, alpha:Number ):Shape {
 			var shape:Shape = new Shape();
 			shape.graphics.lineStyle(borderSize, borderColor, alpha);
 			this.color=borderColor;
@@ -196,7 +196,7 @@
 			shape.graphics.moveTo(sc.getPoint_X(fx),sc.getPoint_Y(fy));
 			shape.graphics.lineTo(sc.getPoint_X(tx),sc.getPoint_Y(ty));
 		}
-		public function texts(size:int,font:String,bold:Boolean,color:uint,text:String,x:Number,y:Number,moviec:MovieClip):void {
+		public function texts(size:int,font:String,bold:Boolean,color:int,text:String,x:Number,y:Number,moviec:MovieClip):void {
 			var sc:StageCoordinates=new StageCoordinates(this.PointO_X,this.PointO_Y);
 			var format:TextFormat = new TextFormat();
 			format.size=size;
@@ -217,7 +217,7 @@
 		/**
 		 * 
 		 */
-		public function outputText(align:String,width:Number,height:Number,size:int,font:String,bold:Boolean,color:uint,text:String,x:Number,y:Number,moviec:MovieClip):void {
+		public function outputText(align:String,width:Number,height:Number,size:int,font:String,bold:Boolean,color:int,text:String,x:Number,y:Number,moviec:MovieClip):void {
 			var sc:StageCoordinates=new StageCoordinates(this.PointO_X,this.PointO_Y);
 			var format:TextFormat = new TextFormat();
 			format.size=size;
@@ -286,7 +286,7 @@
 		/**
 		 * 
 		 */
-		public function drawRectAndFill(px:Number,py:Number,pw:Number,ph:Number,lineColor:uint,areaColor:uint,moviec:MovieClip):void {
+		public function drawRectAndFill(px:Number,py:Number,pw:Number,ph:Number,lineColor:int,areaColor:int,moviec:MovieClip):void {
 			var sc:StageCoordinates=new StageCoordinates(this.PointO_X,this.PointO_Y);
 			var shape:Shape = new Shape();
 			shape.graphics.lineStyle(2,lineColor,1);

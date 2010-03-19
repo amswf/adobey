@@ -448,7 +448,7 @@ public class SchemaManager extends QualifiedResourceManager
     // 
     //--------------------------------------------------------------------------
 
-    private var namespaceCount:uint = 0;
+    private var namespaceCount:int = 0;
 
     /**
      * A Stack of Schemas which records the current scope and the last Schema

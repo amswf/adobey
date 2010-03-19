@@ -169,7 +169,7 @@ public dynamic class AsyncToken extends EventDispatcher
     {
 		if (_responders != null)
     	{
-    	    for (var i:uint = 0; i < _responders.length; i++)
+    	    for (var i:int = 0; i < _responders.length; i++)
             {
                 var responder:IResponder = _responders[i];
                 if (responder != null)
@@ -189,7 +189,7 @@ public dynamic class AsyncToken extends EventDispatcher
 
     	if (_responders != null)
     	{
-    	    for (var i:uint = 0; i < _responders.length; i++)
+    	    for (var i:int = 0; i < _responders.length; i++)
             {
                 var responder:IResponder = _responders[i];
                 if (responder != null)

@@ -20,7 +20,7 @@ package mx.messaging.channels.amfx
  */
 public class AMFXResult
 {
-    public var version:uint;
+    public var version:int;
     public var headers:Array;
     public var result:Object;
 

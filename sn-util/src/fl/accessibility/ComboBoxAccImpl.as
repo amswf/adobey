@@ -84,7 +84,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
          */
-		private static const ROLE_SYSTEM_LISTITEM:uint = 0x22;
+		private static const ROLE_SYSTEM_LISTITEM:int = 0x22;
 		
 		/**
          *  @private
@@ -92,7 +92,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const STATE_SYSTEM_FOCUSED:uint = 0x00000004;
+		private static const STATE_SYSTEM_FOCUSED:int = 0x00000004;
 		
 		/**
          *  @private
@@ -100,7 +100,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const STATE_SYSTEM_SELECTABLE:uint = 0x00200000;
+		private static const STATE_SYSTEM_SELECTABLE:int = 0x00200000;
 	
 		/**
          *  @private
@@ -108,7 +108,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const STATE_SYSTEM_SELECTED:uint = 0x00000002;
+		private static const STATE_SYSTEM_SELECTED:int = 0x00000002;
 		
 		/**
          *  @private
@@ -116,7 +116,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const EVENT_OBJECT_VALUECHANGE:uint = 0x800E;
+		private static const EVENT_OBJECT_VALUECHANGE:int = 0x800E;
 		
 		/**
          *  @private
@@ -124,7 +124,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const EVENT_OBJECT_SELECTION:uint = 0x8006;
+		private static const EVENT_OBJECT_SELECTION:int = 0x8006;
 	
 		//--------------------------------------------------------------------------
 		//  Class methods
@@ -207,7 +207,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function get_accRole(childID:uint):uint {
+		override public function get_accRole(childID:int):int {
 			if (childID == 0) {
 				return role;
 			}
@@ -227,7 +227,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function get_accValue(childID:uint):String {
+		override public function get_accValue(childID:int):String {
 			if (childID == 0) {
 				return ComboBox(master).text;
 			}
@@ -250,8 +250,8 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function get_accState(childID:uint):uint {
-			var accState:uint = getState(childID);
+		override public function get_accState(childID:int):int {
+			var accState:int = getState(childID);
 			if (childID > 0) {
 				accState |= STATE_SYSTEM_SELECTABLE;
 				if (ComboBox(master).selectedIndex == childID - 1) {
@@ -298,7 +298,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override protected function getName(childID:uint):String {
+		override protected function getName(childID:int):String {
 			var comboBox:ComboBox = ComboBox(master);
 			if (childID == 0 || !comboBox.dataProvider) {
 				return "";
@@ -327,7 +327,7 @@ package fl.accessibility {
 					var index:int = ComboBox(master).selectedIndex;
 					if (index >= 0) {
 						if(Accessibility.active) {
-							var childID:uint = index + 1;
+							var childID:int = index + 1;
 							Accessibility.sendEvent(master, childID, EVENT_OBJECT_SELECTION);
 							Accessibility.sendEvent(master, 0, EVENT_OBJECT_VALUECHANGE);
 						}

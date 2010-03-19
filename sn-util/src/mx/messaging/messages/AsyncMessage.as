@@ -43,8 +43,8 @@ public class AsyncMessage extends AbstractMessage implements ISmallMessage
     // 
     //--------------------------------------------------------------------------
 
-    private static const CORRELATION_ID_FLAG:uint = 1;
-    private static const CORRELATION_ID_BYTES_FLAG:uint = 2;
+    private static const CORRELATION_ID_FLAG:int = 1;
+    private static const CORRELATION_ID_BYTES_FLAG:int = 2;
 
     //--------------------------------------------------------------------------
     //
@@ -146,10 +146,10 @@ public class AsyncMessage extends AbstractMessage implements ISmallMessage
         super.readExternal(input);
 
         var flagsArray:Array = readFlags(input);
-        for (var i:uint = 0; i < flagsArray.length; i++)
+        for (var i:int = 0; i < flagsArray.length; i++)
         {
-            var flags:uint = flagsArray[i] as uint;
-            var reservedPosition:uint = 0;
+            var flags:int = flagsArray[i] as int;
+            var reservedPosition:int = 0;
 
             if (i == 0)
             {
@@ -169,7 +169,7 @@ public class AsyncMessage extends AbstractMessage implements ISmallMessage
             // to preserve the integrity of the input stream...
             if ((flags >> reservedPosition) != 0)
             {
-                for (var j:uint = reservedPosition; j < 6; j++)
+                for (var j:int = reservedPosition; j < 6; j++)
                 {
                     if (((flags >> j) & 1) != 0)
                     {
@@ -190,7 +190,7 @@ public class AsyncMessage extends AbstractMessage implements ISmallMessage
         if (correlationIdBytes == null)
             correlationIdBytes = UIDUtil.toByteArray(_correlationId);
 
-        var flags:uint = 0;
+        var flags:int = 0;
 
         if (correlationId != null && correlationIdBytes == null)
             flags |= CORRELATION_ID_FLAG;

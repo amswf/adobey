@@ -10,6 +10,7 @@
 			import com.snsoft.map.file.MapDataFileManager;
 			import com.snsoft.map.tree.TreeList;
 			import com.snsoft.map.tree.TreeNodeButton;
+			import com.snsoft.map.util.HashVector;
 			import com.snsoft.util.SpriteMouseAction;
 			import com.snsoft.util.XMLUtil;
 			
@@ -29,7 +30,19 @@
 				var wsa:MapMainAttribute;
 				
 				var mdfm:MapDataFileManager = new MapDataFileManager();
-			}
+				
+				var hv:HashVector = new HashVector();
+				hv.put("a",1);
+				trace(hv.toArray());
+				hv.put("b",2);
+				trace(hv.toArray());
+				hv.removeByName("a");
+				trace(hv.toArray());
+				hv.put("c",3);
+				trace(hv.toArray());
+				hv.removeByName("b");
+				trace(hv.toArray());
+			}	
 		]]>
 	</fx:Script>
 </s:Application>

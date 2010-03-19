@@ -1,6 +1,6 @@
 ﻿package com.snsoft.map{
 	import com.snsoft.map.file.MapDataFileManager;
-	import com.snsoft.map.util.HashArray;
+	import com.snsoft.map.util.HashVector;
 	import com.snsoft.map.util.MapUtil;
 	
 	import fl.core.UIComponent;
@@ -61,19 +61,19 @@
 		//所有点的数组的数组
 		private var pointAryAry:Array = new Array();
 		
-		private static const VIEW_COLOR:uint = 0xff0000;
+		private static const VIEW_COLOR:int = 0xff0000;
 		
-		private static const VIEW_FILL_COLOR:uint = 0xffffff;
+		private static const VIEW_FILL_COLOR:int = 0xffffff;
 		
-		private static const LINE_COLOR:uint = 0xff0000;
+		private static const LINE_COLOR:int = 0xff0000;
 		
-		private static const LINE_FILL_COLOR:uint = 0xffffff;
+		private static const LINE_FILL_COLOR:int = 0xffffff;
 		
-		private static const AREA_LINE_COLOR:uint = 0x0000ff;
+		private static const AREA_LINE_COLOR:int = 0x0000ff;
 		
-		private static const AREA_FILL_COLOR:uint = 0xffff00;
+		private static const AREA_FILL_COLOR:int = 0xffff00;
 		
-		private static const AREA_FILL_MOUSE_OVER_COLOR:uint = 0x00ff00;
+		private static const AREA_FILL_MOUSE_OVER_COLOR:int = 0x00ff00;
 		
 		public static const EVENT_MAP_AREA_CLICK:String = "EVENT_MAP_AREA_CLICK";
 		
@@ -250,7 +250,6 @@
 			var ma:MapArea = ml.getChildByName(name) as MapArea;
 			if(ma != null){
 				ml.removeChild(ma);
-				trace("ml.numChildren",ml.numChildren);
 			}
 			var mpm:MapPointsManager = this.manager;
 			mpm.deletePointAryAndDeleteHitTestPoint(mado);
@@ -338,9 +337,9 @@
 				
 				//点管理器
 				var pstate:MapPointManagerState = this.manager.addPoint(mouseScaleP); 
-				var cpa:HashArray = this.manager.currentPointAry;
+				var cpa:HashVector = this.manager.currentPointAry;
 				var hitp:Point = pstate.hitPoint;
-				var flha:HashArray = pstate.fastPointArray;
+				var flha:HashVector = pstate.fastPointArray;
 				
 				//如果当前要画的点是闭合、碰撞、正常状态
 				if(pstate.isState(MapPointManagerState.IS_CLOSE) 
@@ -426,14 +425,14 @@
 		public function initFromSaveData(workSpaceDO:WorkSpaceDO):void{
 			if(workSpaceDO != null){
 				var image:String = workSpaceDO.image;
-				var mapAreaDoHashArray:HashArray = workSpaceDO.mapAreaDOHashArray;
+				var mapAreaDoHashArray:HashVector = workSpaceDO.mapAreaDOHashArray;
 				this.refreshMapBack(image);
 				if(mapAreaDoHashArray != null){
 					for(var i:int = 0;i<mapAreaDoHashArray.length;i++){
 						var mapAreaDo:MapAreaDO = mapAreaDoHashArray.findByIndex(i) as MapAreaDO;
 						if(mapAreaDo != null){
 							this.addMapArea(mapAreaDo);
-							var pha:HashArray = mapAreaDo.pointArray;
+							var pha:HashVector = mapAreaDo.pointArray;
 							trace(pha != null);
 							if(pha != null){
 								for(var j:int=0;j< pha.length;j++){
@@ -495,7 +494,7 @@
 				//当前点状态
 				var pstate:MapPointManagerState = this.manager.hitTestPoint(mouseScaleP); 
 				var hitp:Point = pstate.hitPoint;//检测返回结果点
-				var cpa:HashArray = this.manager.currentPointAry;
+				var cpa:HashVector = this.manager.currentPointAry;
 				
 				if(pstate.isState(MapPointManagerState.IS_CLOSE)) {//如果闭合链了
 					this.pen.penSkin = Pen.PEN_LINE_CLOSE_SKIN;
@@ -512,9 +511,10 @@
 				this.pen.refresh();
 				MapUtil.deleteAllChild(this.fastViewLayer);
 				if(this.pen.penState == Pen.PEN_STATE_DOING){//画笔状态是正在画：起点画完，末点未画
-					var fpa:HashArray = pstate.fastPointArray;
+					var fpa:HashVector = pstate.fastPointArray;
 					if(fpa != null && fpa.length > 0){
-						var p1:Point = cpa.findLast() as Point;
+						var cpal:int = cpa.length;
+						var p1:Point = cpa.findByIndex(cpal) as Point;
 						for(var i:int =0;i<fpa.length;i++){
 							var p2:Point = fpa.findByIndex(i) as Point;
 							var ml:MapLine = new MapLine(p1,p2,VIEW_COLOR,VIEW_COLOR,VIEW_FILL_COLOR,this.scalePoint);

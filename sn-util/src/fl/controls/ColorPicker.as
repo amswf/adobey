@@ -359,7 +359,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
          */
-		protected var _selectedColor:uint;
+		protected var _selectedColor:int;
 
         /**
          * @private (protected)
@@ -554,7 +554,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
          */
-		public function get selectedColor():uint {
+		public function get selectedColor():int {
 			if (colorWell == null) {
 				return 0;
 			}
@@ -567,7 +567,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
          */
-		public function set selectedColor(value:uint):void {
+		public function set selectedColor(value:int):void {
 			if (!_enabled) {
 				return;
 			}
@@ -1041,17 +1041,17 @@ package fl.controls {
 			swatches.x = padding;
 			swatches.y = swatchY;
 
-			var cols:uint = getStyleValue("columnCount") as uint;
-			var pad:uint = getStyleValue("swatchPadding") as uint;
+			var cols:int = getStyleValue("columnCount") as int;
+			var pad:int = getStyleValue("swatchPadding") as int;
 			var w:Number = getStyleValue("swatchWidth") as Number;
 			var h:Number = getStyleValue("swatchHeight") as Number;
 
 			colorHash = {};
 			swatchMap = [];
 
-			var l:uint = Math.min(1024, colors.length);
+			var l:int = Math.min(1024, colors.length);
 			var rc:int = -1;
-			for (var  i:uint=0; i<l; i++) {
+			for (var  i:int=0; i<l; i++) {
 				var s:Sprite = createSwatch(colors[i]);
 
 				s.x = (w + pad) * (i%cols);
@@ -1128,7 +1128,7 @@ package fl.controls {
 		override protected function keyUpHandler(event:KeyboardEvent):void {
 			if (!isOpen) { return; }
 			
-			var newColor:uint;
+			var newColor:int;
 			var cTransform:ColorTransform = new ColorTransform();
 
 			if (editable && showTextField) {
@@ -1247,7 +1247,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
          */
-		protected function findSwatch(color:uint):Sprite {
+		protected function findSwatch(color:int):Sprite {
 			if (!swatchMap.length) {
 				return null;
 			}
@@ -1303,7 +1303,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
          */
-		protected function setColorText(color:uint):void {
+		protected function setColorText(color:int):void {
 			if (textField == null) {
 				return;
 			}
@@ -1316,7 +1316,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
          */
-		protected function colorToString(color:uint):String {
+		protected function colorToString(color:int):String {
 			var colorText:String = color.toString(16);
 			while (colorText.length < 6) {
 				colorText = "0" + colorText;
@@ -1343,7 +1343,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
          */
-		protected function createSwatch(color:uint):Sprite {
+		protected function createSwatch(color:int):Sprite {
 			var swatch:Sprite = new Sprite();
 
 			// Draw the Color part of the swatch
@@ -1556,7 +1556,7 @@ package fl.controls {
 			// Only create the ColorPicker default colors once in an swf.
 			if (ColorPicker.defaultColors == null) {
 				ColorPicker.defaultColors = [];
-				for (var i:uint=0; i<216; i++) {
+				for (var i:int=0; i<216; i++) {
 					ColorPicker.defaultColors.push( ((i/6%3<<0)+((i/108)<<0)*3)*0x33<<16 | i%6*0x33<<8  | (i/18<<0)%6*0x33 );
 				}
 			}

@@ -75,7 +75,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
          */
-		private static const STATE_SYSTEM_CHECKED:uint = 0x00000010;
+		private static const STATE_SYSTEM_CHECKED:int = 0x00000010;
 
 		//--------------------------------------------------------------------------
 		//  Class methods
@@ -150,8 +150,8 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function get_accState(childID:uint):uint {
-			var accState:uint = getState(childID);
+		override public function get_accState(childID:int):int {
+			var accState:int = getState(childID);
 			if (LabelButton(master).selected) {
 				accState |= STATE_SYSTEM_CHECKED;
 			}
@@ -170,7 +170,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function get_accDefaultAction(childID:uint):String {
+		override public function get_accDefaultAction(childID:int):String {
 			return LabelButton(master).selected ? "UnCheck" : "Check";
 		}
 	}

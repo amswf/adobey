@@ -84,7 +84,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const ROLE_SYSTEM_LISTITEM:uint = 0x22; 
+		private static const ROLE_SYSTEM_LISTITEM:int = 0x22; 
 		
 		/**
          *  @private
@@ -92,7 +92,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const STATE_SYSTEM_FOCUSED:uint = 0x00000004;
+		private static const STATE_SYSTEM_FOCUSED:int = 0x00000004;
 		
 		/**
          *  @private
@@ -100,7 +100,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const STATE_SYSTEM_INVISIBLE:uint = 0x00008000;
+		private static const STATE_SYSTEM_INVISIBLE:int = 0x00008000;
 		
 		/**
          *  @private
@@ -108,7 +108,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const STATE_SYSTEM_OFFSCREEN:uint = 0x00010000;
+		private static const STATE_SYSTEM_OFFSCREEN:int = 0x00010000;
 		
 		/**
          *  @private
@@ -116,7 +116,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const STATE_SYSTEM_SELECTABLE:uint = 0x00200000;
+		private static const STATE_SYSTEM_SELECTABLE:int = 0x00200000;
 		
 		/**
          *  @private
@@ -124,7 +124,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const STATE_SYSTEM_SELECTED:uint = 0x00000002;
+		private static const STATE_SYSTEM_SELECTED:int = 0x00000002;
 		
 		/**
 		 *  @private
@@ -133,7 +133,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const EVENT_OBJECT_FOCUS:uint = 0x8005; 
+		private static const EVENT_OBJECT_FOCUS:int = 0x8005; 
 		
 		/**
 		 *  @private
@@ -142,7 +142,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const EVENT_OBJECT_SELECTION:uint = 0x8006; 
+		private static const EVENT_OBJECT_SELECTION:int = 0x8006; 
 		
 		//--------------------------------------------------------------------------
 		//  Class methods
@@ -225,7 +225,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function get_accRole(childID:uint):uint {
+		override public function get_accRole(childID:int):int {
 			if (childID == 0) {
 				return role;
 			}
@@ -246,7 +246,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function get_accValue(childID:uint):String {
+		override public function get_accValue(childID:int):String {
 			var accValue:String;
 			var dataGrid:DataGrid = DataGrid(master);
 			if (childID == 0) {
@@ -310,9 +310,9 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function get_accState(childID:uint):uint {
+		override public function get_accState(childID:int):int {
 			var dataGrid:DataGrid = DataGrid(master);
-			var accState:uint = getState(childID);
+			var accState:int = getState(childID);
 			var row:int;
 			var col:int;
 			if (childID > 0) {
@@ -358,7 +358,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function accDoDefaultAction(childID:uint):void {
+		override public function accDoDefaultAction(childID:int):void {
 			var dataGrid:DataGrid = DataGrid(master);
 			if (childID > 0) {
 				// Assuming childID is always ItemID + 1
@@ -416,7 +416,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function accLocation(childID:uint):* {
+		override public function accLocation(childID:int):* {
 			var dataGrid:DataGrid = DataGrid(master);
 			if(childID > 0) {
 				var index:int = childID - 1;
@@ -454,10 +454,10 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function get_accFocus():uint {
+		override public function get_accFocus():int {
 			var dataGrid:DataGrid = DataGrid(master);
 			if (!dataGrid.editable) {
-				var index:uint = dataGrid.selectedIndex;
+				var index:int = dataGrid.selectedIndex;
 				return (index >= 0) ? index + 1 : 0;
 			} else {
 				var coord:Object = dataGrid.editedItemPosition;
@@ -488,7 +488,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override protected function getName(childID:uint):String {
+		override protected function getName(childID:int):String {
 			// 0 -> DataGrid
 			if (childID == 0) {
 				return "";
@@ -562,7 +562,7 @@ package fl.accessibility {
 					if (Accessibility.active && !dataGrid.editable) {
 						var index:int = dataGrid.selectedIndex;
 						if (index >= 0) {
-							var childID:uint = index + 1;
+							var childID:int = index + 1;
 							Accessibility.sendEvent(dataGrid, childID, EVENT_OBJECT_FOCUS);
 							Accessibility.sendEvent(dataGrid, childID, EVENT_OBJECT_SELECTION);
 						}

@@ -23,24 +23,24 @@ package com.snsoft.map
 		/**
 		 * 点的颜色 
 		 */		
-		private var _pointColor:uint;
+		private var _pointColor:int;
 		
 		/**
 		 * 线的颜色 
 		 */		
-		private var _lineColor:uint;
+		private var _lineColor:int;
 		
 		/**
 		 * 填充色 
 		 */		
-		private var _pointFillColor:uint;
+		private var _pointFillColor:int;
 		
 		/**
 		 * 缩放系数 
 		 */		
 		private var _scalePoint:Point = new Point(1,1);
 		
-		public function MapLine(startPoint:Point=null,endPoint:Point=null,pointColor:uint=0x000000,lineColor:uint=0x000000,pointFillColor:uint = 0xffffff,scalePoint:Point = null) {
+		public function MapLine(startPoint:Point=null,endPoint:Point=null,pointColor:int=0x000000,lineColor:int=0x000000,pointFillColor:int = 0xffffff,scalePoint:Point = null) {
 			//初始化参数
 			this.startPoint = startPoint;
 			this.endPoint = endPoint;
@@ -75,22 +75,22 @@ package com.snsoft.map
 			}
 		}
 	
-		public function get lineColor():uint
+		public function get lineColor():int
 		{
 			return _lineColor;
 		}
 
-		public function set lineColor(value:uint):void
+		public function set lineColor(value:int):void
 		{
 			_lineColor = value;
 		}
 
-		public function get pointColor():uint
+		public function get pointColor():int
 		{
 			return _pointColor;
 		}
 
-		public function set pointColor(value:uint):void
+		public function set pointColor(value:int):void
 		{
 			_pointColor = value;
 		}
@@ -135,12 +135,12 @@ package com.snsoft.map
 			_startPoint = value;
 		}
 
-		public function get pointFillColor():uint
+		public function get pointFillColor():int
 		{
 			return _pointFillColor;
 		}
 
-		public function set pointFillColor(value:uint):void
+		public function set pointFillColor(value:int):void
 		{
 			_pointFillColor = value;
 		}

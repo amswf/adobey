@@ -2,7 +2,7 @@ package com.snsoft.map
 {
 	import com.snsoft.map.tree.TreeList;
 	import com.snsoft.map.tree.TreeNodeButton;
-	import com.snsoft.map.util.HashArray;
+	import com.snsoft.map.util.HashVector;
 	
 	import fl.containers.ScrollPane;
 	import fl.controls.Button;

@@ -42,7 +42,7 @@ package com.cyjb.utils {
 		 * @param ...args 错误的相关信息.该信息就是错误提示中需要被替换的文字,所有需要被
 		 * 替换的文字按顺序传入.
 		 */
-		public static function throwError(type:Class, id:uint, ...args:Array):void {
+		public static function throwError(type:Class, id:int, ...args:Array):void {
 			if(ERROR_TEXT[id]) {
 				var f:Function = function(match:String, ...rest:Array):String {
 					var arg_num:int = -1;

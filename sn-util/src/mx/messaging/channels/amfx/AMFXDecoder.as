@@ -112,7 +112,7 @@ public class AMFXDecoder
         if (name == "amfx")
         {
             var v:String = xml.attribute("ver").toString();
-            var version:uint = uint(v);
+            var version:int = int(v);
 
             if (supportedVersion(version))
             {
@@ -156,7 +156,7 @@ public class AMFXDecoder
     {
         var headers:Array = [];
 
-        for (var i:uint = 0; i < xmlList.length(); i++)
+        for (var i:int = 0; i < xmlList.length(); i++)
         {
             var h:XML = xmlList[i];
             var name:String = h.attribute("name").toString();
@@ -195,7 +195,7 @@ public class AMFXDecoder
         else if (children.length() > 1)
         {
             result = [];
-            for (var i:uint = 0; i < children.length(); i++)
+            for (var i:int = 0; i < children.length(); i++)
             {
                 result[i] = decodeValue(children[i], context);
             }
@@ -284,7 +284,7 @@ public class AMFXDecoder
         var entries:XMLList = xml.*;
         if (entries)
         {
-            for (var i:uint = 0; i < entries.length(); i++)
+            for (var i:int = 0; i < entries.length(); i++)
             {
                 var x:XML = entries[i];
                 var prop:Object;
@@ -420,7 +420,7 @@ public class AMFXDecoder
             }
             else
             {
-                for (var i:uint = 0; i < entries.length(); i++)
+                for (var i:int = 0; i < entries.length(); i++)
                 {
                     var propName:String = traits.properties[i];
                     var propValue:* = decodeValue(entries[i], context);
@@ -480,7 +480,7 @@ public class AMFXDecoder
         var refAttr:String = xml.attribute("id").toString();
         if (refAttr)
         {
-            var ref:uint = uint(refAttr);
+            var ref:int = int(refAttr);
             if (!isNaN(ref))
             {
                 str = context.getString(ref);
@@ -518,7 +518,7 @@ public class AMFXDecoder
         var refAttr:String = xml.attribute("id").toString();
         if (refAttr)
         {
-            var ref:uint = uint(refAttr);
+            var ref:int = int(refAttr);
             if (!isNaN(ref))
             {
                 traits = context.getTraitInfo(ref);
@@ -548,7 +548,7 @@ public class AMFXDecoder
             var nodes:XMLList = xml.*;
             if (nodes)
             {
-                for (var i:uint = 0; i < nodes.length(); i++)
+                for (var i:int = 0; i < nodes.length(); i++)
                 {
                     traits.properties[i] = decodeString(nodes[i], context, true);
                 }
@@ -575,9 +575,9 @@ public class AMFXDecoder
         }
     }
 
-    private static function supportedVersion(ver:uint):Boolean
+    private static function supportedVersion(ver:int):Boolean
     {
-        for (var i:uint = 0; i < SUPPORTED_VERSIONS.length; i++)
+        for (var i:int = 0; i < SUPPORTED_VERSIONS.length; i++)
         {
             if (ver == SUPPORTED_VERSIONS[i])
                 return true;

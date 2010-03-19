@@ -804,7 +804,7 @@ package fl.controls {
 			removeCellRenderers();
 			// add columns
 			_columns = [];
-			for (var i:uint = 0; i < value.length; i++) {
+			for (var i:int = 0; i < value.length; i++) {
 				addColumn(value[i]);
 			}
 		}
@@ -876,7 +876,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function get rowCount():uint {
+		override public function get rowCount():int {
 			// This is low right now (ie. doesn't count two half items as a whole):
 			return Math.ceil(calculateAvailableHeight() / rowHeight);
 		}
@@ -886,7 +886,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function set rowCount(value:uint):void {
+		public function set rowCount(value:int):void {
 			var pad:Number = Number(getStyleValue("contentPadding"));
 			var scrollBarHeight:Number = (_horizontalScrollPolicy == ScrollPolicy.ON || (_horizontalScrollPolicy == ScrollPolicy.AUTO && hScrollBar)) ? 15 : 0;
 			height = rowHeight * value + 2 * pad + scrollBarHeight + (showHeaders ? headerHeight : 0);
@@ -1285,13 +1285,13 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function addColumnAt(column:*, index:uint):DataGridColumn {
+		public function addColumnAt(column:*, index:int):DataGridColumn {
 			var dataGridColumn:DataGridColumn;
 			if (index < _columns.length) {
 				// insert placeholder for new column
 				_columns.splice(index, 0, "");
 				// adjust colNums
-				for(var i:uint = index + 1; i < _columns.length; i++) {
+				for(var i:int = index + 1; i < _columns.length; i++) {
 					dataGridColumn = _columns[i] as DataGridColumn;
 					dataGridColumn.colNum = i;
 				}
@@ -1326,12 +1326,12 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function removeColumnAt(index:uint):DataGridColumn {
+		public function removeColumnAt(index:int):DataGridColumn {
 			var col:DataGridColumn = _columns[index] as DataGridColumn;
 			if(col != null) {
 				removeCellRenderersByColumn(col);
 				_columns.splice(index, 1);
-				for(var i:uint = index; i < _columns.length; i++) {
+				for(var i:int = index; i < _columns.length; i++) {
 					col = _columns[i] as DataGridColumn;
 					if(col) {
 						col.colNum = i;
@@ -1373,7 +1373,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function getColumnAt(index:uint):DataGridColumn {
+		public function getColumnAt(index:int):DataGridColumn {
 			return _columns[index] as DataGridColumn;
 		}
 
@@ -1392,7 +1392,7 @@ package fl.controls {
          * @playerversion Flash 9.0.28.0
 		 */
 		public function getColumnIndex(name:String):int {
-			for (var i:uint = 0; i < _columns.length; i++) {
+			for (var i:int = 0; i < _columns.length; i++) {
 				var column:DataGridColumn = _columns[i] as DataGridColumn;
 				if(column.dataField == name) {
 					return i;
@@ -1414,7 +1414,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function getColumnCount():uint {
+		public function getColumnCount():int {
 			return _columns.length;
 		}
 
@@ -1452,7 +1452,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function editField(index:uint, dataField:String, data:Object):void {
+		public function editField(index:int, dataField:String, data:Object):void {
 			var item:Object = getItemAt(index);
 			item[dataField] = data;
 			replaceItemAt(item, index);
@@ -1612,12 +1612,12 @@ package fl.controls {
 			listHolder.scrollRect = contentScrollRect;
 			listHolder.cacheAsBitmap = useBitmapScrolling;
 			// figure out which rows we have to render:
-			var rowStartIndex:uint = Math.min(Math.max(length - 1, 0), Math.floor(_verticalScrollPosition / rowHeight));
-			var rowEndIndex:uint = Math.min(Math.max(length - 1, 0), rowStartIndex + rowCount + 1);
+			var rowStartIndex:int = Math.min(Math.max(length - 1, 0), Math.floor(_verticalScrollPosition / rowHeight));
+			var rowEndIndex:int = Math.min(Math.max(length - 1, 0), rowStartIndex + rowCount + 1);
 
 			var x:Number;
 			var lastColWidth:Number;
-			var i:uint;
+			var i:int;
 			var item:Object;
 			var renderer:ICellRenderer;
 			var activeRenderers:Array;
@@ -1654,8 +1654,8 @@ package fl.controls {
 			var rendererUIC:UIComponent;
 
 			var visibleColumnsIndices:Array = [];
-			var visibleColumnsLen:uint = visibleColumns.length;
-			for (var ci:uint = 0; ci < visibleColumnsLen; ci++)
+			var visibleColumnsLen:int = visibleColumns.length;
+			for (var ci:int = 0; ci < visibleColumnsLen; ci++)
 			{
 				col = visibleColumns[ci] as DataGridColumn;
 
@@ -1831,8 +1831,8 @@ package fl.controls {
 				renderers = renderers.concat(activeCellRenderersMap[n]);
 			}
 			
-			var l:uint = renderers.length;
-			for (var i:uint=0; i<l; i++) {
+			var l:int = renderers.length;
+			for (var i:int=0; i<l; i++) {
 				if (renderers[i]["setStyle"] == null) { continue; }
 				for (var m:String in updatedRendererStyles) {
 					renderers[i].setStyle(m, updatedRendererStyles[m]);
@@ -1850,7 +1850,7 @@ package fl.controls {
          * @playerversion Flash 9.0.28.0
 		 */
 		protected function removeCellRenderers():void {
-			for (var i:uint = 0; i < _columns.length; i++) {
+			for (var i:int = 0; i < _columns.length; i++) {
 				removeCellRenderersByColumn(_columns[i] as DataGridColumn);
 			}
 		}
@@ -1888,7 +1888,7 @@ package fl.controls {
 					mouseMode = "up";
 				}
 				if(mouseMode) {
-					for(var i:uint = 0; i < visibleColumns.length; i++) {
+					for(var i:int = 0; i < visibleColumns.length; i++) {
 						var col:DataGridColumn = visibleColumns[i] as DataGridColumn;
 						var cellRenderer:ICellRenderer = getCellRendererAt(row, col.colNum);
 						if(cellRenderer) {
@@ -1913,7 +1913,7 @@ package fl.controls {
          * @playerversion Flash 9.0.28.0
 		 */
 		protected function isHovered(renderer:ICellRenderer):Boolean {
-			var rowStartIndex:uint = Math.min(Math.max(length - 1, 0), Math.floor(_verticalScrollPosition / rowHeight));
+			var rowStartIndex:int = Math.min(Math.max(length - 1, 0), Math.floor(_verticalScrollPosition / rowHeight));
 			var rowYPos:Number = (renderer.listData.row - rowStartIndex) * rowHeight;
 			var pt:Point = list.globalToLocal(new Point(0, stage.mouseY));
 			return (pt.y > rowYPos) && (pt.y < rowYPos + rowHeight);
@@ -1955,7 +1955,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function columnItemToLabel(columnIndex:uint, item:Object):String {
+		public function columnItemToLabel(columnIndex:int, item:Object):String {
 			var col:DataGridColumn = _columns[columnIndex] as DataGridColumn;
 			if(col != null) {
 				return col.itemToLabel(item);
@@ -2145,10 +2145,10 @@ package fl.controls {
 		protected function handleHeaderRendererClick(event:MouseEvent):void {
 			if (!_enabled) { return; }
 			var headerRenderer:HeaderRenderer = event.currentTarget as HeaderRenderer;
-			var columnIndex:uint = headerRenderer.column;
+			var columnIndex:int = headerRenderer.column;
 			var column:DataGridColumn = _columns[columnIndex] as DataGridColumn;
 			if(sortableColumns && column.sortable) {
-				var lastSortIndexTmp:uint = _sortIndex;
+				var lastSortIndexTmp:int = _sortIndex;
 				_sortIndex = columnIndex;
 				// this event is cancellable:
 				var dataGridEvent:DataGridEvent = new DataGridEvent(
@@ -2268,7 +2268,7 @@ package fl.controls {
 			if (!enabled || !col || !col.sortable) { return };
 			var desc:Boolean = col.sortDescending;
 			// prepare sort options
-			var sortOptions:uint = col.sortOptions;
+			var sortOptions:int = col.sortOptions;
 			if(desc) {
 				sortOptions |= Array.DESCENDING;
 			} else {
@@ -2314,7 +2314,7 @@ package fl.controls {
          * @playerversion Flash 9.0.28.0
 		 */
 		protected function getVisibleColumnIndex(column:DataGridColumn):int {
-			for(var i:uint = 0; i < visibleColumns.length; i++) {
+			for(var i:int = 0; i < visibleColumns.length; i++) {
 				if(column == visibleColumns[i]) {
 					return i;
 				}
@@ -2385,7 +2385,7 @@ package fl.controls {
 			var dragHandle:Sprite = event.currentTarget as Sprite;
 			var column:DataGridColumn = _columns[columnStretchIndex] as DataGridColumn;
 			var headerRenderer:HeaderRenderer;
-			for(var i:uint = 0; i < header.numChildren; i++) {
+			for(var i:int = 0; i < header.numChildren; i++) {
 				headerRenderer = header.getChildAt(i) as HeaderRenderer;
 				if(headerRenderer && headerRenderer.column == columnStretchIndex) {
 					break;
@@ -2543,7 +2543,7 @@ package fl.controls {
 		 */
 		protected function itemEditorItemEditBeginningHandler(event:DataGridEvent):void {
 			if (!event.isDefaultPrevented()) {
-				setEditedItemPosition( {columnIndex: event.columnIndex, rowIndex: uint(event.rowIndex) } );
+				setEditedItemPosition( {columnIndex: event.columnIndex, rowIndex: int(event.rowIndex) } );
 			} else if (!itemEditorInstance) {
 				_editedItemPosition = null;
 				// return focus to the grid w/o selecting an item
@@ -2565,7 +2565,7 @@ package fl.controls {
 				stage.addEventListener(Event.DEACTIVATE, deactivateHandler, false, 0, true);
 			}
 			if (!event.isDefaultPrevented()) {
-				createItemEditor(event.columnIndex, uint(event.rowIndex));
+				createItemEditor(event.columnIndex, int(event.rowIndex));
 				ICellRenderer(itemEditorInstance).listData = ICellRenderer(editedItemRenderer).listData;
 				ICellRenderer(itemEditorInstance).data = editedItemRenderer.data;
 				itemEditorInstance.imeMode = (columns[event.columnIndex].imeMode == null) ? _imeMode : columns[event.columnIndex].imeMode;
@@ -2610,7 +2610,7 @@ package fl.controls {
 							if (!(newData is String)) { newData = newData.toString(); }
 							break;
 						case "uint":
-							if (!(newData is uint)) { newData = uint(newData); }
+							if (!(newData is int)) { newData = int(newData); }
 							break;
 						case "int":
 							if (!(newData is int)) { newData = int(newData); }
@@ -2734,7 +2734,7 @@ package fl.controls {
 			if (!itemRendererContains(itemEditorInstance, DisplayObject(event.target))) {
 				if(event.target is ICellRenderer && contains(DisplayObject(event.target))) {
 					var cr:ICellRenderer = event.target as ICellRenderer;
-					var row:uint = cr.listData.row;
+					var row:int = cr.listData.row;
 					if(_editedItemPosition.rowIndex == row) {
 						endEdit(DataGridEventReason.NEW_COLUMN);
 					} else {
@@ -2996,7 +2996,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function createItemEditor(colIndex:uint, rowIndex:uint):void {
+		public function createItemEditor(colIndex:int, rowIndex:int):void {
 			if (displayableColumns.length != _columns.length) {
 				for (var i:int = 0; i < displayableColumns.length; i++) {
 					if (displayableColumns[i].colNum >= colIndex) {
@@ -3112,14 +3112,14 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
          */
-		public function getCellRendererAt(row:uint, column:uint):ICellRenderer {
+		public function getCellRendererAt(row:int, column:int):ICellRenderer {
 			// get the column
 			var col:DataGridColumn = _columns[column] as DataGridColumn;
 			if(col != null) {
 				// get the active renderers for that column
 				var activeRenderers:Array = activeCellRenderersMap[col] as Array;
 				if(activeRenderers != null) {
-					for(var i:uint = 0; i < activeRenderers.length; i++) {
+					for(var i:int = 0; i < activeRenderers.length; i++) {
 						var renderer:ICellRenderer = activeRenderers[i] as ICellRenderer;
 						// if the row matches, return the renderer
 						if(renderer.listData.row == row) {
@@ -3207,7 +3207,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override protected function moveSelectionHorizontally(code:uint, shiftKey:Boolean, ctrlKey:Boolean):void {}
+		override protected function moveSelectionHorizontally(code:int, shiftKey:Boolean, ctrlKey:Boolean):void {}
 
 		/**
          * @private (protected)
@@ -3224,7 +3224,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override protected function moveSelectionVertically(code:uint, shiftKey:Boolean, ctrlKey:Boolean):void {
+		override protected function moveSelectionVertically(code:int, shiftKey:Boolean, ctrlKey:Boolean):void {
 			var pageSize:int = Math.max(Math.floor(calculateAvailableHeight() / rowHeight), 1);
 			var newCaretIndex:int = -1;
 			var dir:int = 0;
@@ -3298,7 +3298,7 @@ package fl.controls {
 			scrollToIndex(rowIndex);
 
 			// adjust horizontal scroll if necessary
-			var i:uint;
+			var i:int;
 			var x:Number = 0;
 			var col:DataGridColumn = _columns[columnIndex] as DataGridColumn;
 			for(i = 0; i < displayableColumns.length; i++) {

@@ -478,7 +478,7 @@ public class SOAPDecoder extends XMLDecoder implements ISOAPDecoder
                             // if there are > 1 encodedPartValues, or we are
                             // forcingPartArrays for parts defined with maxOccurs>1
                             // regardless of number of values.
-                            var partMaxOccurs:uint = getMaxOccurs(partDefinition);
+                            var partMaxOccurs:int = getMaxOccurs(partDefinition);
                             if ((partMaxOccurs > 1 && forcePartArrays)
                                     || encodedPartValues.length() > 1)
                             {
@@ -529,7 +529,7 @@ public class SOAPDecoder extends XMLDecoder implements ISOAPDecoder
                         if (sinlgePartResultType == null)
                             sinlgePartResultType = part.name;
 
-                        var singlePartMaxOccurs:uint = getMaxOccurs(partDefinition);
+                        var singlePartMaxOccurs:int = getMaxOccurs(partDefinition);
                         if ((singlePartMaxOccurs > 1 && forcePartArrays)
                                  || encodedPartValues.length() > 1)
                         {
@@ -877,7 +877,7 @@ public class SOAPDecoder extends XMLDecoder implements ISOAPDecoder
     {
         if (_referencesResolved) return;
         
-        var index:uint = 0;
+        var index:int = 0;
         if (_elementsWithId == null)
             _elementsWithId = document..*.(attribute("id").length() > 0);
     

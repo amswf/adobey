@@ -88,7 +88,7 @@ package fl.events {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		protected var _startIndex:uint;
+		protected var _startIndex:int;
 
 
         /**
@@ -97,7 +97,7 @@ package fl.events {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		protected var _endIndex:uint;
+		protected var _endIndex:int;
 
 
         /**
@@ -176,7 +176,7 @@ package fl.events {
          * @playerversion Flash 9.0.28.0
 		 *                   
 		 */
-		public function get startIndex():uint {
+		public function get startIndex():int {
 			return _startIndex;
 		}
 
@@ -189,7 +189,7 @@ package fl.events {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function get endIndex():uint {
+		public function get endIndex():int {
 			return _endIndex;
 		}
 

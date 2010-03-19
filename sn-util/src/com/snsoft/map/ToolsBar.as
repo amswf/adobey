@@ -1,6 +1,6 @@
 package com.snsoft.map
 {
-	import com.snsoft.map.util.HashArray;
+	import com.snsoft.map.util.HashVector;
 	
 	import fl.core.UIComponent;
 	
@@ -28,7 +28,7 @@ package com.snsoft.map
 		private var _toolEventType:String = null;
 		
 		//工具按钮哈希表	
-		private var toolBtnHashArray:HashArray = new HashArray();
+		private var toolBtnHashArray:HashVector = new HashVector();
 		
 		public function ToolsBar()
 		{
@@ -68,7 +68,7 @@ package com.snsoft.map
 		
 		private function handlerToolBtnClick(e:Event):void{
 			var cbtn:ToolBtn = e.currentTarget as ToolBtn;
-			var ha:HashArray = this.toolBtnHashArray;
+			var ha:HashVector = this.toolBtnHashArray;
 			for(var i:int = 0;i<ha.length;i++){
 				var btn:ToolBtn = ha.findByIndex(i) as ToolBtn;
 				if(btn != cbtn){

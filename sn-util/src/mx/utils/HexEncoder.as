@@ -63,7 +63,7 @@ public class HexEncoder
     /**
      *  @private
      */
-    public function encode(data:ByteArray, offset:uint = 0, length:uint = 0):void
+    public function encode(data:ByteArray, offset:int = 0, length:int = 0):void
     {
         if (length == 0)
             length = data.length;
@@ -93,7 +93,7 @@ public class HexEncoder
     {
         var result:String = "";
 
-        for (var i:uint = 0; i < _buffers.length; i++)
+        for (var i:int = 0; i < _buffers.length; i++)
         {
             var buffer:Array = _buffers[i] as Array;
             result += String.fromCharCode.apply(null, buffer);
@@ -147,7 +147,7 @@ public class HexEncoder
      * 
      * @private
      */
-    private static const MAX_BUFFER_SIZE:uint = 65535;
+    private static const MAX_BUFFER_SIZE:int = 65535;
 
     /*
         '0', '1', '2', '3', '4', '5', '6', '7',

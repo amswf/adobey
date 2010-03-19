@@ -140,7 +140,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function get_accValue(childID:uint):String {
+		override public function get_accValue(childID:int):String {
 			var accValue:String;
 			var list:TileList = TileList(master);
 			var index:int = list.selectedIndex;
@@ -177,7 +177,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override protected function getName(childID:uint):String {
+		override protected function getName(childID:int):String {
 			if (childID == 0) {
 				return "";
 			}

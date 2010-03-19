@@ -78,7 +78,7 @@
 		var line:Shape = null;
 		var point:Shape = null;
 		var movie:MovieClip = new MovieClip();
-		var borderColor:uint = 0x000000;
+		var borderColor:int = 0x000000;
 		var borderSize:Number = 1;
 		var alpha:Number = 100;
 		var c:Number = 0;
@@ -97,7 +97,7 @@
 		 * 构造方法：
 		 */
 		public function MoveLine(	borderSize:Number,
-									borderColor:uint,
+									borderColor:int,
 									alpha:Number,
 									speed:int,
 									pointWidth:Number,
@@ -293,7 +293,7 @@
 		/**
 		 * 
 		 */
-		public function drawPoint(px:Number,py:Number,pw:Number,ph:Number,lineColor:uint,areaColor:uint):Shape{
+		public function drawPoint(px:Number,py:Number,pw:Number,ph:Number,lineColor:int,areaColor:int):Shape{
 			var shape:Shape = new Shape();
 			shape.graphics.lineStyle (2,lineColor,1);
 			shape.graphics.beginFill (areaColor,1);
@@ -305,7 +305,7 @@
 		 * 
 		 * 
 		 */
-		public function drawValue(px:Number,py:Number,color:uint,text:String):TextField{
+		public function drawValue(px:Number,py:Number,color:int,text:String):TextField{
 			var format:TextFormat = new TextFormat();
 			format.size = 18;
 			//format.font = "黑体";

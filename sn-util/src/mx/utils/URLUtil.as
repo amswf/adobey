@@ -80,13 +80,13 @@ public class URLUtil
      *  @param url The URL to analyze.
      *  @return The port number of the specified URL.
      */
-    public static function getPort(url:String):uint
+    public static function getPort(url:String):int
     {
         var sp:String = getServerNameWithPort(url);
         // If IPv6 is in use, start looking after the square bracket.
         var delim:int = sp.indexOf("]");
         delim = (delim > -1)? sp.indexOf(":", delim) : sp.indexOf(":");          
-        var port:uint = 0;
+        var port:int = 0;
         if (delim > 0)
         {
             var p:Number = Number(sp.substring(delim + 1));
@@ -240,7 +240,7 @@ public class URLUtil
      *
      *  @return The URI with the new port.
      */
-    public static function replacePort(uri:String, newPort:uint):String
+    public static function replacePort(uri:String, newPort:int):String
     {
         var result:String = "";
 
@@ -331,7 +331,7 @@ public class URLUtil
         var portToken:int = url.indexOf(SERVER_PORT_TOKEN);
         if (portToken > 0)
         {
-            var loaderPort:uint = URLUtil.getPort(loaderURL);
+            var loaderPort:int = URLUtil.getPort(loaderURL);
             if (loaderPort > 0)
             {
                 url = url.replace(SERVER_PORT_REGEX, loaderPort);

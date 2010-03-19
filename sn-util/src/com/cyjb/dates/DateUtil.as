@@ -61,19 +61,19 @@ package com.cyjb.dates {
 		/**
 		 * 一秒相当于的毫秒数.
 		 */
-		public static const SECOND:uint = 1000;
+		public static const SECOND:int = 1000;
 		/**
 		 * 一分钟相当于的毫秒数.
 		 */
-		public static const MINUTE:uint = SECOND * 60;
+		public static const MINUTE:int = SECOND * 60;
 		/**
 		 * 一小时相当于的毫秒数.
 		 */
-		public static const HOUR:uint = MINUTE * 60;
+		public static const HOUR:int = MINUTE * 60;
 		/**
 		 * 一天相当于的毫秒数.
 		 */
-		public static const DAY:uint = HOUR * 24;
+		public static const DAY:int = HOUR * 24;
 		/**
 		 * 获取指定年份是否是闰年.
 		 * 
@@ -84,7 +84,7 @@ package com.cyjb.dates {
 		 * @internal 能整除 4 但不能整除 100 的是闰年,能整除 400 的也是闰年.
 		 * 不存在公元 0 年,如果 year 传入 0,返回 false.
 		 */
-		public static function isLeapYear(year:uint):Boolean {
+		public static function isLeapYear(year:int):Boolean {
 			if(year == 0)
 				return false;
 			return ((year % 400 == 0) || ((year % 4 == 0) && (year % 100 != 0)));
@@ -99,9 +99,9 @@ package com.cyjb.dates {
 		 * 
 		 * @return 该月的天数.
 		 */
-		public static function getDays(month:uint, year:uint = 0):uint {
-			var m:uint = month % 12;
-			var re:uint = DAYS_IN_MONTH[m];
+		public static function getDays(month:int, year:int = 0):int {
+			var m:int = month % 12;
+			var re:int = DAYS_IN_MONTH[m];
 			if((m == 1) && year && isLeapYear(year + month / 12)){
 				//2 月闰年 29 天
 				re ++;
@@ -161,7 +161,7 @@ package com.cyjb.dates {
 		 * @includeExample examples/DateUtil.elapsedTimes.1.as -noswf
 		 */
 		public static function elapsedTimes(date1:Date, date2:Date, 
-				divisor:uint = 1):Number {
+				divisor:int = 1):Number {
 			if(!date1 || !date2) {
 				return 0;
 			}

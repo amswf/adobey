@@ -94,16 +94,16 @@ public class AbstractMessage implements IMessage
     // 
     //--------------------------------------------------------------------------
 
-    private static const HAS_NEXT_FLAG:uint = 128;
-    private static const BODY_FLAG:uint = 1;
-    private static const CLIENT_ID_FLAG:uint = 2;
-    private static const DESTINATION_FLAG:uint = 4;
-    private static const HEADERS_FLAG:uint = 8;
-    private static const MESSAGE_ID_FLAG:uint = 16;
-    private static const TIMESTAMP_FLAG:uint = 32;
-    private static const TIME_TO_LIVE_FLAG:uint = 64;
-    private static const CLIENT_ID_BYTES_FLAG:uint = 1;
-    private static const MESSAGE_ID_BYTES_FLAG:uint = 2;
+    private static const HAS_NEXT_FLAG:int = 128;
+    private static const BODY_FLAG:int = 1;
+    private static const CLIENT_ID_FLAG:int = 2;
+    private static const DESTINATION_FLAG:int = 4;
+    private static const HEADERS_FLAG:int = 8;
+    private static const MESSAGE_ID_FLAG:int = 16;
+    private static const TIMESTAMP_FLAG:int = 32;
+    private static const TIME_TO_LIVE_FLAG:int = 64;
+    private static const CLIENT_ID_BYTES_FLAG:int = 1;
+    private static const MESSAGE_ID_BYTES_FLAG:int = 2;
 
 
     //--------------------------------------------------------------------------
@@ -359,10 +359,10 @@ public class AbstractMessage implements IMessage
     {
         var flagsArray:Array = readFlags(input);
 
-        for (var i:uint = 0; i < flagsArray.length; i++)
+        for (var i:int = 0; i < flagsArray.length; i++)
         {
-            var flags:uint = flagsArray[i] as uint;
-            var reservedPosition:uint = 0;
+            var flags:int = flagsArray[i] as int;
+            var reservedPosition:int = 0;
 
             if (i == 0)
             {
@@ -412,7 +412,7 @@ public class AbstractMessage implements IMessage
             // preserve the integrity of the input stream...
             if ((flags >> reservedPosition) != 0)
             {
-                for (var j:uint = reservedPosition; j < 6; j++)
+                for (var j:int = reservedPosition; j < 6; j++)
                 {
                     if (((flags >> j) & 1) != 0)
                     {
@@ -444,7 +444,7 @@ public class AbstractMessage implements IMessage
      */
     public function writeExternal(output:IDataOutput):void
     {
-        var flags:uint = 0;
+        var flags:int = 0;
 
         // Since we're using custom serialization, we have to invoke the
         // messageId getter to ensure we have a valid id for the message.
@@ -559,7 +559,7 @@ public class AbstractMessage implements IMessage
         }
         propertyNames.sort();
 
-        for (var i:uint = 0; i < propertyNames.length; i++)
+        for (var i:int = 0; i < propertyNames.length; i++)
         {
             var name:String = String(propertyNames[i]);
             var value:String = ObjectUtil.toString(attributes[name]);
@@ -587,7 +587,7 @@ public class AbstractMessage implements IMessage
 
         while (hasNextFlag && input.bytesAvailable > 0)
         {
-            var flags:uint = input.readUnsignedByte();
+            var flags:int = input.readUnsignedByte();
             flagsArray.push(flags);
 
             if ((flags & HAS_NEXT_FLAG) != 0)

@@ -53,7 +53,7 @@
 					 
 					var ps:Point = new Point(w * rateP.x,h * rateP.y);
 					
-					var color:uint = bmds.getPixel32(ps.x,ps.y);
+					var color:int = bmds.getPixel32(ps.x,ps.y);
 					
 					bmd.setPixel32(p.x,p.y,color);
 				}

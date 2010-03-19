@@ -1,6 +1,6 @@
 package com.snsoft.map
 {
-	import com.snsoft.map.util.HashArray;
+	import com.snsoft.map.util.HashVector;
 	
 	import flash.geom.Point;
 
@@ -12,7 +12,7 @@ package com.snsoft.map
 	public class MapAreaDO
 	{
 		//地图块的点链
-		private var _pointArray:HashArray = null;
+		private var _pointArray:HashVector = null;
 		
 		//地图块的显示名称
 		private var _areaName:String = null;
@@ -26,12 +26,12 @@ package com.snsoft.map
 		{
 		}
 
-		public function get pointArray():HashArray
+		public function get pointArray():HashVector
 		{
 			return _pointArray;
 		}
 
-		public function set pointArray(value:HashArray):void
+		public function set pointArray(value:HashVector):void
 		{
 			_pointArray = value;
 		}

@@ -120,7 +120,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		protected var oldLength:uint = 0;
+		protected var oldLength:int = 0;
 		/**
          * @private (protected)
          *
@@ -162,11 +162,11 @@ package fl.controls {
 		/**
 		 * @private (protected)
 		 */
-		protected var __rowCount:uint = 0;
+		protected var __rowCount:int = 0;
 		/**
 		 * @private (protected)
 		 */
-		protected var __columnCount:uint = 0;
+		protected var __columnCount:int = 0;
 		
 		/**
 		 * @private
@@ -453,10 +453,10 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function get rowCount():uint {
+		override public function get rowCount():int {
 			var pad:Number = Number(getStyleValue("contentPadding"));
-			var cols:uint = Math.max(1,(_width-2*pad)/_columnWidth<<0);
-			var rows:uint = Math.max(1,(_height-2*pad)/_rowHeight<<0);
+			var cols:int = Math.max(1,(_width-2*pad)/_columnWidth<<0);
+			var rows:int = Math.max(1,(_height-2*pad)/_rowHeight<<0);
 			if (_scrollDirection == ScrollBarDirection.HORIZONTAL) {
 				if (_scrollPolicy == ScrollPolicy.ON || (_scrollPolicy == ScrollPolicy.AUTO && length > cols*rows)) {
 					// account for horizontal scrollbar:
@@ -475,7 +475,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function set rowCount(value:uint):void {
+		public function set rowCount(value:int):void {
 			if (value == 0) { return; }
 			if (componentInspectorSetting) { 
 				__rowCount = value; 
@@ -535,10 +535,10 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function get columnCount():uint {
+		public function get columnCount():int {
 			var pad:Number = Number(getStyleValue("contentPadding"));
-			var cols:uint = Math.max(1,(_width-2*pad)/_columnWidth<<0);
-			var rows:uint = Math.max(1,(_height-2*pad)/_rowHeight<<0);
+			var cols:int = Math.max(1,(_width-2*pad)/_columnWidth<<0);
+			var rows:int = Math.max(1,(_height-2*pad)/_rowHeight<<0);
 			if (_scrollDirection != ScrollBarDirection.HORIZONTAL) {
 				if (_scrollPolicy == ScrollPolicy.ON || (_scrollPolicy == ScrollPolicy.AUTO && length > cols*rows)) {
 					// account for vertical scrollbar:
@@ -557,7 +557,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function set columnCount(value:uint):void {
+		public function set columnCount(value:int):void {
 			if (value == 0) { return; }
 			if (componentInspectorSetting) { 
 				__columnCount = value; 
@@ -725,7 +725,7 @@ package fl.controls {
 		override public function scrollToIndex(newCaretIndex:int):void {
 			drawNow(); // Force validation.
 			
-			var totalCols:uint = Math.max(1, (contentWidth/_columnWidth<<0));
+			var totalCols:int = Math.max(1, (contentWidth/_columnWidth<<0));
 			if (_scrollDirection == ScrollBarDirection.VERTICAL) {
 				if (rowHeight > availableHeight) {
 					return; // nothing: don't scroll if the item is bigger than the viewable area)
@@ -933,11 +933,11 @@ package fl.controls {
 			_horizontalScrollPolicy = (_scrollDirection == ScrollBarDirection.HORIZONTAL) ? _scrollPolicy : ScrollPolicy.OFF;
 			_verticalScrollPolicy = (_scrollDirection != ScrollBarDirection.HORIZONTAL) ? _scrollPolicy : ScrollPolicy.OFF;
 			if (_scrollDirection == ScrollBarDirection.HORIZONTAL) {
-				var rows:uint = rowCount;
+				var rows:int = rowCount;
 				contentHeight = rows*_rowHeight;
 				contentWidth = _columnWidth*Math.ceil(length/rows);
 			} else {
-				var cols:uint = columnCount;
+				var cols:int = columnCount;
 				contentWidth = cols*_columnWidth;
 				contentHeight = _rowHeight*Math.ceil(length/cols);
 			}
@@ -953,18 +953,18 @@ package fl.controls {
 		 */
 		override protected function drawList():void {
 			// these vars get reused in different loops:
-			var i:uint;
-			var itemIndex:uint;
+			var i:int;
+			var itemIndex:int;
 			var item:Object;
 			var renderer:ICellRenderer;
-			var rows:uint = rowCount;
-			var cols:uint = columnCount;
+			var rows:int = rowCount;
+			var cols:int = columnCount;
 			var colW:Number = columnWidth;
 			var rowH:Number = rowHeight;
 			var baseCol:Number = 0;
 			var baseRow:Number = 0;
-			var col:uint;
-			var row:uint;
+			var col:int;
+			var row:int;
 
 			listHolder.x = listHolder.y = contentPadding;
 
@@ -983,8 +983,8 @@ package fl.controls {
 			if (_scrollDirection == ScrollBarDirection.HORIZONTAL) {
 				// horizontal scrolling is trickier if we want to keep tiles going left to right, then top to bottom.
 				// we can use availableWidth / availableHeight from BaseScrollPane here, because we've just called drawLayout, so we know they are accurate.
-				var fullCols:uint = availableWidth/colW<<0;
-				var rowLength:uint = Math.max(fullCols,Math.ceil(length/rows));
+				var fullCols:int = availableWidth/colW<<0;
+				var rowLength:int = Math.max(fullCols,Math.ceil(length/rows));
 				baseCol = _horizontalScrollPosition/colW<<0;
 				cols = Math.max(fullCols,Math.min(rowLength-baseCol,cols+1));//(horizontalScrollBar.visible ? 1 : -1))); // need to draw an extra two cols for scrolling.
 				//rowLength = Math.max(cols-(horizontalScrollBar.visible ? -1 : 0),rowLength);
@@ -998,8 +998,8 @@ package fl.controls {
 			} else {
 				rows++; // need to draw an extra row for scrolling.
 				baseRow = _verticalScrollPosition/rowH<<0;
-				var startIndex:uint = Math.floor(baseRow*cols);
-				var endIndex:uint = Math.min(length,startIndex+rows*cols);
+				var startIndex:int = Math.floor(baseRow*cols);
+				var endIndex:int = Math.min(length,startIndex+rows*cols);
 				for (i=startIndex; i<endIndex; i++) {
 					items.push(i);
 				}
@@ -1170,10 +1170,10 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
          */
-		override protected function moveSelectionVertically(code:uint, shiftKey:Boolean, ctrlKey:Boolean):void {
-			var totalRows:uint = Math.max(1, (Math.max(contentHeight,availableHeight)/_rowHeight<<0));
-			var perRow:uint = Math.ceil(Math.max(columnCount*rowCount,length) / totalRows); // This is wrong.
-			var totalContentRows:uint = Math.ceil(length / perRow);
+		override protected function moveSelectionVertically(code:int, shiftKey:Boolean, ctrlKey:Boolean):void {
+			var totalRows:int = Math.max(1, (Math.max(contentHeight,availableHeight)/_rowHeight<<0));
+			var perRow:int = Math.ceil(Math.max(columnCount*rowCount,length) / totalRows); // This is wrong.
+			var totalContentRows:int = Math.ceil(length / perRow);
 			
 			var index:int;
 			var newIndex:int;
@@ -1222,8 +1222,8 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override protected function moveSelectionHorizontally(code:uint, shiftKey:Boolean, ctrlKey:Boolean):void {
-			var totalCols:uint = Math.ceil(Math.max(rowCount*columnCount,length) / rowCount);
+		override protected function moveSelectionHorizontally(code:int, shiftKey:Boolean, ctrlKey:Boolean):void {
+			var totalCols:int = Math.ceil(Math.max(rowCount*columnCount,length) / rowCount);
 			
 			var index:int;
 			switch(code) {
@@ -1256,14 +1256,14 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		protected function doKeySelection(newCaretIndex:uint, shiftKey:Boolean, ctrlKey:Boolean):void {	
+		protected function doKeySelection(newCaretIndex:int, shiftKey:Boolean, ctrlKey:Boolean):void {	
 			var indices:Array = selectedIndices;
 			var selChanged:Boolean = false;
 			
 			if (newCaretIndex < 0 || newCaretIndex > length-1) {
 				// The index is out of range, do nothing.
 			} else if (shiftKey && indices.length > 0 && newCaretIndex != indices[0]) {
-				var firstIndex:uint = indices[0];
+				var firstIndex:int = indices[0];
 				indices = [];
 				var i:int;
 				if (newCaretIndex < firstIndex) {

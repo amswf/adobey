@@ -76,7 +76,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const STATE_SYSTEM_PRESSED:uint = 0x00000008;
+		private static const STATE_SYSTEM_PRESSED:int = 0x00000008;
 	
 		/**
          *  @private
@@ -84,7 +84,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const EVENT_OBJECT_NAMECHANGE:uint = 0x800C;
+		private static const EVENT_OBJECT_NAMECHANGE:int = 0x800C;
 		
 		/**
          *  @private
@@ -92,7 +92,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const EVENT_OBJECT_STATECHANGE:uint = 0x800A;
+		private static const EVENT_OBJECT_STATECHANGE:int = 0x800A;
 		
 		//--------------------------------------------------------------------------
 		//  Class methods
@@ -187,8 +187,8 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function get_accState(childID:uint):uint {
-			var accState:uint = getState(childID);
+		override public function get_accState(childID:int):int {
+			var accState:int = getState(childID);
 			if (LabelButton(master).selected) {
 				accState |= STATE_SYSTEM_PRESSED;
 			}
@@ -208,7 +208,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function get_accDefaultAction(childID:uint):String {
+		override public function get_accDefaultAction(childID:int):String {
 			return "Press";
 		}
 	
@@ -222,7 +222,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function accDoDefaultAction(childID:uint):void {
+		override public function accDoDefaultAction(childID:int):void {
 			
 			
 			if (master.enabled) {
@@ -255,7 +255,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override protected function getName(childID:uint):String {
+		override protected function getName(childID:int):String {
 			var label:String = LabelButton(master).label;
 			return label != null && label != "" ? label : "";
 		}

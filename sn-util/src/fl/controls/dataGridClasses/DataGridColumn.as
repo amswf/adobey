@@ -250,7 +250,7 @@ package fl.controls.dataGridClasses {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public var sortOptions:uint = 0;
+		public var sortOptions:int = 0;
 
 
         /**

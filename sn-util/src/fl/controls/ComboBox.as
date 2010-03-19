@@ -473,7 +473,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		protected var _rowCount:uint = 5;
+		protected var _rowCount:int = 5;
 		/**
          * @private (protected)
          *
@@ -531,7 +531,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		protected var listOverIndex:uint;
+		protected var listOverIndex:int;
 		
 		/**
          * @private (protected)
@@ -710,7 +710,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
          */
-		public function get rowCount():uint {
+		public function get rowCount():int {
 			return _rowCount;
 		}
 
@@ -720,7 +720,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
          */
-		public function set rowCount(value:uint):void {
+		public function set rowCount(value:int):void {
 			_rowCount = value;
 			invalidate(InvalidationType.SIZE);
 		}
@@ -1118,7 +1118,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function addItemAt(item:Object,index:uint):void {
+		public function addItemAt(item:Object,index:int):void {
 			list.addItemAt(item,index);
 			invalidate(InvalidationType.DATA);
 		}
@@ -1173,7 +1173,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function removeItemAt(index:uint):void {
+		public function removeItemAt(index:int):void {
 			list.removeItemAt(index);
 			invalidate(InvalidationType.DATA);
 		}
@@ -1186,7 +1186,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function getItemAt(index:uint):Object {
+		public function getItemAt(index:int):Object {
 			return list.getItemAt(index);
 		}
 
@@ -1198,7 +1198,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function replaceItemAt(item:Object, index:uint):Object {
+		public function replaceItemAt(item:Object, index:int):Object {
 			return list.replaceItemAt(item, index);
 		}
 
@@ -1739,7 +1739,7 @@ package fl.controls {
 			event.stopPropagation();
 			
 			var pageSize:int = Math.max((calculateAvailableHeight() / list.rowHeight)<<0, 1);
-			var sel:uint = selectedIndex;
+			var sel:int = selectedIndex;
 			var lastSel:Number = (highlightedCell == -1) ? selectedIndex : highlightedCell;
 			var newSel:int = -1;
 			switch (event.keyCode) {

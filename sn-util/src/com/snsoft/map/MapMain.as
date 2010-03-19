@@ -1,7 +1,7 @@
 ﻿package com.snsoft.map
 {
 	import com.snsoft.map.file.MapDataFileManager;
-	import com.snsoft.map.util.HashArray;
+	import com.snsoft.map.util.HashVector;
 	import com.snsoft.map.util.MapUtil;
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.SpriteMouseAction;
@@ -325,7 +325,8 @@
 		 */		
 		private function handlerMapAreaChange(e:Event):void{
 			trace("handlerMapAreaChange");
-			var maha:HashArray = this.ws.manager.mapAreaDOAry;
+			var maha:HashVector = this.ws.manager.mapAreaDOAry;
+			trace(maha.toArray());
 			this.wsAttribute.refreshMapAreaListBtn(maha);
 		}
 		

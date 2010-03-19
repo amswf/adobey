@@ -424,8 +424,8 @@ package fl.core {
          */
 		public static function mergeStyles(...list:Array):Object {
 			var styles:Object = {};
-			var l:uint = list.length;
-			for (var i:uint=0; i<l; i++) {
+			var l:int = list.length;
+			for (var i:int=0; i<l; i++) {
 				var styleList:Object = list[i];
 				for (var n:String in styleList) {
 					if (styles[n] != null) { continue; }

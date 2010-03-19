@@ -119,7 +119,7 @@ public class SimpleXMLEncoder
             return null;
 
 		// Skip properties that are functions
-        var typeType:uint = getDataTypeFromObject(obj);
+        var typeType:int = getDataTypeFromObject(obj);
         if (typeType == SimpleXMLEncoder.FUNCTION_TYPE)
             return null;
 
@@ -138,8 +138,8 @@ public class SimpleXMLEncoder
         {
             var classInfo:Object = ObjectUtil.getClassInfo(obj, null, CLASS_INFO_OPTIONS);
 			var properties:Array = classInfo.properties;
-			var pCount:uint = properties.length;
-			for (var p:uint = 0; p < pCount; p++)
+			var pCount:int = properties.length;
+			for (var p:int = 0; p < pCount; p++)
 			{
 				var fieldName:String = properties[p];
 				var propQName:QName = new QName("", fieldName);
@@ -148,10 +148,10 @@ public class SimpleXMLEncoder
         }
         else if (typeType == SimpleXMLEncoder.ARRAY_TYPE)
         {
-            var numMembers:uint = obj.length;
+            var numMembers:int = obj.length;
             var itemQName:QName = new QName("", "item");
 
-            for (var i:uint = 0; i < numMembers; i++)
+            for (var i:int = 0; i < numMembers; i++)
             {
                 encodeValue(obj[i], itemQName, myElement);
             }
@@ -201,7 +201,7 @@ public class SimpleXMLEncoder
     /**
      *  @private
      */
-    private function getDataTypeFromObject(obj:Object):uint
+    private function getDataTypeFromObject(obj:Object):int
     {
         if (obj is Number)
         	return SimpleXMLEncoder.NUMBER_TYPE;
@@ -225,25 +225,25 @@ public class SimpleXMLEncoder
     }
 
 
-    private static const NUMBER_TYPE:uint   = 0;
-    private static const STRING_TYPE:uint   = 1;
-    private static const OBJECT_TYPE:uint   = 2;
-    private static const DATE_TYPE:uint     = 3;
-    private static const BOOLEAN_TYPE:uint  = 4;
-    private static const XML_TYPE:uint      = 5;
-    private static const ARRAY_TYPE:uint    = 6;  // An array with a wrapper element
-    private static const MAP_TYPE:uint      = 7;
-    private static const ANY_TYPE:uint      = 8;
+    private static const NUMBER_TYPE:int   = 0;
+    private static const STRING_TYPE:int   = 1;
+    private static const OBJECT_TYPE:int   = 2;
+    private static const DATE_TYPE:int     = 3;
+    private static const BOOLEAN_TYPE:int  = 4;
+    private static const XML_TYPE:int      = 5;
+    private static const ARRAY_TYPE:int    = 6;  // An array with a wrapper element
+    private static const MAP_TYPE:int      = 7;
+    private static const ANY_TYPE:int      = 8;
     // We don't appear to use this type anywhere, commenting out
     //private static const COLL_TYPE:uint     = 10; // A collection (no wrapper element, just maxOccurs)
-    private static const ROWSET_TYPE:uint   = 11;
-    private static const QBEAN_TYPE:uint    = 12; // CF QueryBean
-    private static const DOC_TYPE:uint      = 13;
-    private static const SCHEMA_TYPE:uint   = 14;
-    private static const FUNCTION_TYPE:uint = 15; // We currently do not serialize properties of type function
-    private static const ELEMENT_TYPE:uint  = 16;
-    private static const BASE64_BINARY_TYPE:uint = 17;
-    private static const HEX_BINARY_TYPE:uint = 18;
+    private static const ROWSET_TYPE:int   = 11;
+    private static const QBEAN_TYPE:int    = 12; // CF QueryBean
+    private static const DOC_TYPE:int      = 13;
+    private static const SCHEMA_TYPE:int   = 14;
+    private static const FUNCTION_TYPE:int = 15; // We currently do not serialize properties of type function
+    private static const ELEMENT_TYPE:int  = 16;
+    private static const BASE64_BINARY_TYPE:int = 17;
+    private static const HEX_BINARY_TYPE:int = 18;
 
     /**
      * @private

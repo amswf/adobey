@@ -76,7 +76,7 @@ package com.snsoft.webservice{
                 }
                 
                 private function completeHandler(e:Event):void{
-                        var tmpXML:XML, wsdl:Namespace, s:Namespace, i:uint, j:uint, item:String, elementXML:XML, itemLen:int;
+                        var tmpXML:XML, wsdl:Namespace, s:Namespace, i:int, j:int, item:String, elementXML:XML, itemLen:int;
                         
                         tmpXML = XML(e.target.data);
                         wsdl = tmpXML.namespace();

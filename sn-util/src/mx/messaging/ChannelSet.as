@@ -592,7 +592,7 @@ public class ChannelSet extends EventDispatcher
     override public function toString():String
     {
         var s:String = "[ChannelSet ";
-        for (var i:uint = 0; i < _channels.length; i++)
+        for (var i:int = 0; i < _channels.length; i++)
         {
             if (_channels[i] != null)
                 s += _channels[i].id + " ";
