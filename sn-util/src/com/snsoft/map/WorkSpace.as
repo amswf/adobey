@@ -438,6 +438,8 @@
 									var p:Point = pha.findByIndex(j) as Point;
 									this.manager.addPoint(p);
 								}
+								var endP:Point = pha.findByIndex(0) as Point;
+								this.manager.addPoint(endP);
 							}
 							var mado:MapAreaDO = this.manager.mapAreaDOAry.findByIndex(i) as MapAreaDO;
 							mado.areaName = mapAreaDo.areaName;
