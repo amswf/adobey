@@ -1,4 +1,10 @@
 package com.snsoft.map.util{
+	
+	/**
+	 * 查找的速度最优处理，添加，删除时慢，为的是碰撞点检测点过多时，保持效率。 
+	 * @author Administrator
+	 * 
+	 */	
 	public class HashVector{
 		
 		//数据
@@ -7,6 +13,7 @@ package com.snsoft.map.util{
 		//名称
 		private var nameVec:Vector.<String> = new Vector.<String>();
 		
+		//下标 ，例如：array[name] = index
 		private var idAry:Array = new Array();
 		
 		public function HashVector(){
@@ -37,12 +44,21 @@ package com.snsoft.map.util{
 		 * @param i
 		 * 
 		 */		
-		public function removeByIndex(i:int):void{
-			if(indexIsCorrect(i)){
-				var name:String = this.findNameByIndex(i);
+		public function removeByIndex(index:int):void{
+			if(indexIsCorrect(index)){
+				var name:String = this.findNameByIndex(index);
+				this.nameVec.splice(index,1);
+				this.valueVec.splice(index,1);
 				idAry[name] = -1;
-				this.nameVec.splice(i,1);
-				this.valueVec.splice(i,1);
+				for(var i:int = index;i<this.nameVec.length;i++){
+					var rname:String = this.nameVec[i];
+					if(idAry[rname] != null){
+						var rIndex:int = idAry[rname] as int;
+						if(rIndex >= 0){
+							idAry[rname] = i;
+						}
+					}
+				}
 			}
 		}
 		
