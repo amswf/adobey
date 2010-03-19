@@ -19,7 +19,6 @@ package com.snsoft.tortility
 		 */		
 		public function tranBitMap(shape:Shape):BitmapData{
 			var qp:Vector.<Point> = this.findAllQuadrilateralPoints(shape);
-			trace(qp);
 			return null;
 		}
 		

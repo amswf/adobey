@@ -59,7 +59,6 @@ package com.snsoft.map
 		 * 
 		 */	
 		private function handlerMouseClick(e:Event):void{
-			//trace("click");
 			if(this.mouseOverSkin != null && this.defaultSkin != null && this.mouseDownSkin !=null){
 				if(this.skin != this.mouseDownSkin){
 					this.skin = this.mouseDownSkin;
@@ -74,7 +73,6 @@ package com.snsoft.map
 		 * 
 		 */		
 		private function handlerMouseOver(e:Event):void{
-			//trace("over");
 			if(this.mouseOverSkin != null && this.defaultSkin != null && this.mouseDownSkin !=null){
 				if(this.skin != this.mouseDownSkin && this.skin != this.mouseOverSkin){
 					this.skin = this.mouseOverSkin;
@@ -89,7 +87,6 @@ package com.snsoft.map
 		 * 
 		 */
 		private function handlerMouseOut(e:Event):void{
-			//trace("out");
 			if(this.mouseOverSkin != null && this.defaultSkin != null && this.mouseDownSkin !=null){
 				if(this.skin != this.mouseDownSkin && this.skin != this.defaultSkin){
 					this.skin = this.defaultSkin;
