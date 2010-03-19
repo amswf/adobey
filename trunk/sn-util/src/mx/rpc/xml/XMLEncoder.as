@@ -175,8 +175,8 @@ public class XMLEncoder extends SchemaProcessor implements IXMLEncoder
 //        if (value == null)
 //            return false;
         
-        var maxOccurs:uint = getMaxOccurs(definition);
-        var minOccurs:uint = getMinOccurs(definition);
+        var maxOccurs:int = getMaxOccurs(definition);
+        var minOccurs:int = getMinOccurs(definition);
 
         if (isSimpleValue(value))
         {
@@ -501,8 +501,8 @@ public class XMLEncoder extends SchemaProcessor implements IXMLEncoder
      */
     public function encodeChoice(definition:XML, parent:XMLList, name:QName, value:*, isRequired:Boolean = true):Boolean
     {
-        var maxOccurs:uint = getMaxOccurs(definition);
-        var minOccurs:uint = getMinOccurs(definition);
+        var maxOccurs:int = getMaxOccurs(definition);
+        var minOccurs:int = getMinOccurs(definition);
 
         // If maxOccurs is 0 this choice must not be present.
         // If minOccurs == 0 the choice is optional so it can be omitted if
@@ -514,8 +514,8 @@ public class XMLEncoder extends SchemaProcessor implements IXMLEncoder
 
 		var choiceElements:XMLList = definition.elements();
 		var choiceSatisfied:Boolean = true;
-		var lastIndex:uint;
-        var choiceOccurs:uint;
+		var lastIndex:int;
+        var choiceOccurs:int;
 
         // We don't enforce occurs bounds on the choice element itself. Since all
         // child elements of the choice definition would be properties on the
@@ -835,8 +835,8 @@ public class XMLEncoder extends SchemaProcessor implements IXMLEncoder
     {
         // <element minOccurs="..." maxOccurs="..."> occur on the local element,
         // not on a referent, so we capture this information first.
-        var maxOccurs:uint = getMaxOccurs(definition);
-        var minOccurs:uint = getMinOccurs(definition);
+        var maxOccurs:int = getMaxOccurs(definition);
+        var minOccurs:int = getMinOccurs(definition);
 
         isRequired = isRequired && minOccurs > 0;
 
@@ -896,7 +896,7 @@ public class XMLEncoder extends SchemaProcessor implements IXMLEncoder
         }
         else if (maxOccurs > 1)
         {
-            var valueOccurence:uint = getValueOccurence(elementValue);
+            var valueOccurence:int = getValueOccurence(elementValue);
 
             // If maxOccurs is greater than 1 then we would expect an
             // Array of values
@@ -924,7 +924,7 @@ public class XMLEncoder extends SchemaProcessor implements IXMLEncoder
             // minOccurs and maxOccurs
             var iter:TypeIterator = new TypeIterator(elementValue);
             
-            for (var i:uint = 0; i < maxOccurs && i < valueOccurence; i++)
+            for (var i:int = 0; i < maxOccurs && i < valueOccurence; i++)
             {
                 var item:*;
                 if (iter.hasNext())
@@ -1079,8 +1079,8 @@ public class XMLEncoder extends SchemaProcessor implements IXMLEncoder
      */
     public function encodeSequence(definition:XML, siblings:XMLList, name:QName, value:*, isRequired:Boolean=true):Boolean
     {
-        var maxOccurs:uint = getMaxOccurs(definition);
-        var minOccurs:uint = getMinOccurs(definition);
+        var maxOccurs:int = getMaxOccurs(definition);
+        var minOccurs:int = getMinOccurs(definition);
 
         // If maxOccurs is 0 this sequence must not be present.
         // If minOccurs == 0 the sequence is optional so it can be omitted if
@@ -1599,7 +1599,7 @@ public class XMLEncoder extends SchemaProcessor implements IXMLEncoder
     public function isSimpleValue(value:*):Boolean
     {
         if (value is String || value is Number || value is Boolean
-            || value is Date || value is int || value is uint
+            || value is Date || value is int || value is int
             || value is ByteArray)
         {
             return true;

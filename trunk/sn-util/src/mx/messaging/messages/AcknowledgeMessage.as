@@ -77,16 +77,16 @@ public class AcknowledgeMessage extends AsyncMessage implements ISmallMessage
         super.readExternal(input);
 
         var flagsArray:Array = readFlags(input);
-        for (var i:uint = 0; i < flagsArray.length; i++)
+        for (var i:int = 0; i < flagsArray.length; i++)
         {
-            var flags:uint = flagsArray[i] as uint;
-            var reservedPosition:uint = 0;
+            var flags:int = flagsArray[i] as int;
+            var reservedPosition:int = 0;
 
             // For forwards compatibility, read in any other flagged objects
             // to preserve the integrity of the input stream...
             if ((flags >> reservedPosition) != 0)
             {
-                for (var j:uint = reservedPosition; j < 6; j++)
+                for (var j:int = reservedPosition; j < 6; j++)
                 {
                     if (((flags >> j) & 1) != 0)
                     {
@@ -104,7 +104,7 @@ public class AcknowledgeMessage extends AsyncMessage implements ISmallMessage
     {
         super.writeExternal(output);
 
-        var flags:uint = 0;
+        var flags:int = 0;
         output.writeByte(flags);
     }
     

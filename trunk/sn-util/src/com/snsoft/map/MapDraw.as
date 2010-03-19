@@ -26,7 +26,7 @@ package com.snsoft.map
 		 * @return 
 		 * 
 		 */			
-		public static function drawPoint(point:Point,thikness:uint,r:uint,lineColor:uint,fillColor:uint,scalePoint:Point = null):Sprite{
+		public static function drawPoint(point:Point,thikness:int,r:int,lineColor:int,fillColor:int,scalePoint:Point = null):Sprite{
 			if(scalePoint == null){
 				scalePoint = new Point(1,1);
 			}
@@ -57,7 +57,7 @@ package com.snsoft.map
 		 * @return Sprite
 		 * 
 		 */			
-		public static function drawLine(startPoint:Point,endPoint:Point,thikness:uint,lineColor:uint,scalePoint:Point = null):Sprite{
+		public static function drawLine(startPoint:Point,endPoint:Point,thikness:int,lineColor:int,scalePoint:Point = null):Sprite{
 			if(scalePoint == null){
 				scalePoint = new Point(1,1);
 			}
@@ -82,7 +82,7 @@ package com.snsoft.map
 		 * @return 
 		 * 
 		 */		
-		public static function drawCloseFoldLine(pointArray:Array,lineColor:uint= 0x000000,fillColor:uint = 0xffffff,thikness:uint = 0,r:uint = 2,scalePoint:Point = null):Sprite{
+		public static function drawCloseFoldLine(pointArray:Array,lineColor:int= 0x000000,fillColor:int = 0xffffff,thikness:int = 0,r:int = 2,scalePoint:Point = null):Sprite{
 			if(pointArray != null && pointArray.length > 0){
 				var l:int = pointArray.length;
 				var n:int = 0;
@@ -123,7 +123,7 @@ package com.snsoft.map
 		 * @return Shape
 		 * 
 		 */		
-		public static function drawFill(pointArrayArray:Array,lineColor:uint= 0x000000,fillColor:uint = 0xffffff,thikness:uint = 0,scalePoint:Point = null):Shape {
+		public static function drawFill(pointArrayArray:Array,lineColor:int= 0x000000,fillColor:int = 0xffffff,thikness:int = 0,scalePoint:Point = null):Shape {
 			if(scalePoint == null){
 				scalePoint = new Point(1,1);
 			}

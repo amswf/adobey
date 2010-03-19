@@ -422,7 +422,7 @@
 				var p2:Point = new Point(cdm.x + cdm.width,cdm.y);
 				var p3:Point = new Point(cdm.x + cdm.width,cdm.y + cdm.height);
 				var p4:Point = new Point(cdm.x,cdm.y + cdm.height);
-				var color:uint = 0x000000;
+				var color:int = 0x000000;
 				var alpha:Number = 0.05;
 				if (topView) {
 					var shape1:Shape = su.drawShapeWithPoint(color,alpha,new Point(p1.x,p1.y),new Point(p2.x,p2.y),new Point(dayMcPoint.x,dayMcPoint.y));

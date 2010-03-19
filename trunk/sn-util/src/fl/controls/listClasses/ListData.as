@@ -48,7 +48,7 @@ package fl.controls.listClasses {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		protected var _index:uint;
+		protected var _index:int;
 
         /**
          * @private (protected)
@@ -56,7 +56,7 @@ package fl.controls.listClasses {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		protected var _row:uint;
+		protected var _row:int;
 
         /**
          * @private (protected)
@@ -64,7 +64,7 @@ package fl.controls.listClasses {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		protected var _column:uint;
+		protected var _column:int;
 	
 		/**
 		 * Creates a new instance of the ListData class as specified by its parameters. 
@@ -87,7 +87,7 @@ package fl.controls.listClasses {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function ListData(label:String,icon:Object,owner:UIComponent,index:uint,row:uint,col:uint=0) {
+		public function ListData(label:String,icon:Object,owner:UIComponent,index:int,row:int,col:int=0) {
 			_label = label;
 			_icon = icon;
 			_owner = owner;
@@ -137,7 +137,7 @@ package fl.controls.listClasses {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function get index():uint {
+		public function get index():int {
 			return _index;
 		}
 		
@@ -147,7 +147,7 @@ package fl.controls.listClasses {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function get row():uint {
+		public function get row():int {
 			return _row;
 		}
 		
@@ -158,7 +158,7 @@ package fl.controls.listClasses {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function get column():uint {
+		public function get column():int {
 			return _column;
 		}		
 	}

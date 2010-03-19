@@ -94,7 +94,7 @@ package fl.data {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function get length():uint {
+		public function get length():int {
 			return data.length;
 		}
 
@@ -131,7 +131,7 @@ package fl.data {
          * @playerversion Flash 9.0.28.0
 		 */
 		public function invalidateItem(item:Object):void {
-			var index:uint = getItemIndex(item);
+			var index:int = getItemIndex(item);
 			if (index == -1) { return; }
 			invalidateItemAt(index);
 		}
@@ -173,7 +173,7 @@ package fl.data {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function addItemAt(item:Object,index:uint):void {
+		public function addItemAt(item:Object,index:int):void {
 			checkIndex(index,data.length);
 			dispatchPreChangeEvent(DataChangeType.ADD,[item],index,index);
 			data.splice(index,0,item);
@@ -218,7 +218,7 @@ package fl.data {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function addItemsAt(items:Object,index:uint):void {
+		public function addItemsAt(items:Object,index:int):void {
 			checkIndex(index,data.length);
 			var arr:Array = getDataFromObject(items);
 			dispatchPreChangeEvent(DataChangeType.ADD,arr,index,index+arr.length-1);			
@@ -280,12 +280,12 @@ package fl.data {
 		 */
 		public function merge(newData:Object):void {
 			var arr:Array = getDataFromObject(newData);
-			var l:uint = arr.length;
-			var startLength:uint = data.length;
+			var l:int = arr.length;
+			var startLength:int = data.length;
 			
 			dispatchPreChangeEvent(DataChangeType.ADD,data.slice(startLength,data.length),startLength,this.data.length-1);
 			
-			for (var i:uint=0; i<l; i++) {
+			for (var i:int=0; i<l; i++) {
 				var item:Object = arr[i];
 				if (getItemIndex(item) == -1) {
 					data.push(item);
@@ -314,7 +314,7 @@ package fl.data {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function getItemAt(index:uint):Object {
+		public function getItemAt(index:int):Object {
 			checkIndex(index,data.length-1);
 			return data[index];
 		}
@@ -352,7 +352,7 @@ package fl.data {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function removeItemAt(index:uint):Object {
+		public function removeItemAt(index:int):Object {
 			checkIndex(index,data.length-1);
 			dispatchPreChangeEvent(DataChangeType.REMOVE, data.slice(index,index+1), index, index);
 			var arr:Array = data.splice(index,1);
@@ -443,7 +443,7 @@ package fl.data {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function replaceItemAt(newItem:Object,index:uint):Object {
+		public function replaceItemAt(newItem:Object,index:int):Object {
 			checkIndex(index,data.length-1);
 			var arr:Array = [data[index]];
 			dispatchPreChangeEvent(DataChangeType.REPLACE,arr,index,index);
@@ -560,7 +560,7 @@ package fl.data {
 					if (arr[0] is String || arr[0] is Number) {
 						retArr = [];
 						// convert to object array.
-						for (var i:uint = 0; i < arr.length; i++) {
+						for (var i:int = 0; i < arr.length; i++) {
 							var o:Object = {label:String(arr[i]),data:arr[i]}
 							retArr.push(o);
 						}

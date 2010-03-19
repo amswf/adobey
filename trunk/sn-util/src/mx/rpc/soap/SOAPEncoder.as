@@ -196,14 +196,14 @@ public class SOAPEncoder extends XMLEncoder implements ISOAPEncoder
     {
         if (headers != null)
         {
-            var count:uint = headers.length;
+            var count:int = headers.length;
             if (count > 0)
             {
                 var headersXML:XML = <{soapConstants.headerQName.localName}/> 
                 headersXML.setNamespace(soapConstants.envelopeNamespace);
                 envelopeXML.appendChild(headersXML);
 
-                for (var i:uint = 0; i < count; i++)
+                for (var i:int = 0; i < count; i++)
                 {
                     encodeHeaderElement(headers[i], headersXML);
                 }
@@ -496,7 +496,7 @@ public class SOAPEncoder extends XMLEncoder implements ISOAPEncoder
 		var message:String;
 
         // Match the input parameters to WSDL message parts
-        for (var i:uint = 0; i < parts.length; i++)
+        for (var i:int = 0; i < parts.length; i++)
         {
             var part:WSDLMessagePart = parts[i];
             var value:* = undefined;
@@ -656,8 +656,8 @@ public class SOAPEncoder extends XMLEncoder implements ISOAPEncoder
             // <element minOccurs="..." maxOccurs="..."> occur on a local element
             // that may act like a top-level element for wrapped-style document
             // literal.
-            var maxOccurs:uint = getMaxOccurs(definition);
-            var minOccurs:uint = getMinOccurs(definition);
+            var maxOccurs:int = getMaxOccurs(definition);
+            var minOccurs:int = getMinOccurs(definition);
 
             // If the maximum occurence should 0 this element must not be present.
             if (maxOccurs == 0)

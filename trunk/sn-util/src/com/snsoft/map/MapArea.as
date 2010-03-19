@@ -19,10 +19,10 @@ package com.snsoft.map
 	{
 		
 		//线色
-		private var _lineColor:uint = 0x000000;
+		private var _lineColor:int = 0x000000;
 		
 		//填充色
-		private var _fillColor:uint = 0x000000;
+		private var _fillColor:int = 0x000000;
 		
 		//缩放系数
 		private var _scalePoint:Point = new Point(1,1);
@@ -47,7 +47,7 @@ package com.snsoft.map
 		
 		public static const CUNTRY_NAME_MOVE_EVENT:String = "CUNTRY_NAME_MOVE_EVENT";
 		
-		public function MapArea(mapAreaDO:MapAreaDO,lineColor:uint,fillColor:uint,scalePoint:Point = null)
+		public function MapArea(mapAreaDO:MapAreaDO,lineColor:int,fillColor:int,scalePoint:Point = null)
 		{
 			this.mapAreaDO = mapAreaDO;
 			this.lineColor = lineColor;
@@ -66,7 +66,7 @@ package com.snsoft.map
 		override protected function draw():void{
 			var mado:MapAreaDO = this.mapAreaDO;
 			var paa:Array = new Array();
-			paa.push(mado.pointArray.getArray());
+			paa.push(mado.pointArray.toArray());
 			areaFillShape = MapDraw.drawFill(paa,this.lineColor,this.fillColor,0,this.scalePoint);
 			this.addChild(areaFillShape);
 			
@@ -120,7 +120,7 @@ package com.snsoft.map
 		 * @return 
 		 * 
 		 */		
-		public function get fillColor():uint
+		public function get fillColor():int
 		{
 			return _fillColor;
 		}
@@ -130,7 +130,7 @@ package com.snsoft.map
 		 * @param value
 		 * 
 		 */		
-		public function set fillColor(value:uint):void
+		public function set fillColor(value:int):void
 		{
 			_fillColor = value;
 		}
@@ -140,7 +140,7 @@ package com.snsoft.map
 		 * @return 
 		 * 
 		 */		
-		public function get lineColor():uint
+		public function get lineColor():int
 		{
 			return _lineColor;
 		}
@@ -150,7 +150,7 @@ package com.snsoft.map
 		 * @param value
 		 * 
 		 */		
-		public function set lineColor(value:uint):void
+		public function set lineColor(value:int):void
 		{
 			_lineColor = value;
 		}

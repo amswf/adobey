@@ -201,7 +201,7 @@ package ascb.util {
       }
     }
 
-    static public function toString(oArray:Object, nLevel:uint = 0):String {
+    static public function toString(oArray:Object, nLevel:int = 0):String {
       var sIndent:String = "";
       for(var i:Number = 0; i < nLevel; i++) {
         sIndent += "\t";

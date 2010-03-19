@@ -100,9 +100,9 @@ public class SchemaProcessor
      * 
      * @private
      */
-    public function getValueOccurence(value:*):uint
+    public function getValueOccurence(value:*):int
     {
-        var result:uint = 1;
+        var result:int = 1;
         if (value != null && TypeIterator.isIterable(value))
         {
             result = TypeIterator.getLength(value);
@@ -167,12 +167,12 @@ public class SchemaProcessor
      * is 1. The constraint value "unbounded" is interpreted as
      * <code>uint.MAX_VALUE</code>.
      */
-    protected function getMaxOccurs(definition:XML):uint
+    protected function getMaxOccurs(definition:XML):int
     {
-        var maxOccurs:uint = 1;
+        var maxOccurs:int = 1;
         var attributeValue:String = getAttributeFromNode("maxOccurs", definition);
         if (attributeValue != null)
-            maxOccurs = (attributeValue == "unbounded") ? uint.MAX_VALUE : parseInt(attributeValue);
+            maxOccurs = (attributeValue == "unbounded") ? int.MAX_VALUE : parseInt(attributeValue);
 
         return maxOccurs;
     }
@@ -181,9 +181,9 @@ public class SchemaProcessor
      * Looks for a minOccurs constraint on the given definition. The default
      * is 1.
      */
-    protected function getMinOccurs(definition:XML):uint
+    protected function getMinOccurs(definition:XML):int
     {
-        var minOccurs:uint = 1;
+        var minOccurs:int = 1;
         var attributeValue:String = getAttributeFromNode("minOccurs", definition);
         if (attributeValue != null)
             minOccurs = parseInt(attributeValue);

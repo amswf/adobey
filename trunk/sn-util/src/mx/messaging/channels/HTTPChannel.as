@@ -1000,7 +1000,7 @@ class HTTPMessageResponder extends MessageResponder
         {
             try
             {
-                for (var i:uint = 0; i < packet.headers.length; i++)
+                for (var i:int = 0; i < packet.headers.length; i++)
                 {
                     var header:AMFXHeader = packet.headers[i];
                     if (header != null && header.name == APPEND_TO_URL_HEADER)

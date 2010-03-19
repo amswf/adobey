@@ -1,5 +1,5 @@
 package com.snsoft.map{
-	import com.snsoft.map.util.HashArray;
+	import com.snsoft.map.util.HashVector;
 	
 	public class WorkSpaceDO{
 		
@@ -7,7 +7,7 @@ package com.snsoft.map{
 		private var _image:String = null;
 		
 		//地图块数据对象列表
-		private var _mapAreaDOHashArray:HashArray = null;
+		private var _mapAreaDOHashArray:HashVector = null;
 		
 		
 		public function WorkSpaceDO(){
@@ -23,12 +23,12 @@ package com.snsoft.map{
 			_image = value;
 		}
 
-		public function get mapAreaDOHashArray():HashArray
+		public function get mapAreaDOHashArray():HashVector
 		{
 			return _mapAreaDOHashArray;
 		}
 
-		public function set mapAreaDOHashArray(value:HashArray):void
+		public function set mapAreaDOHashArray(value:HashVector):void
 		{
 			_mapAreaDOHashArray = value;
 		}

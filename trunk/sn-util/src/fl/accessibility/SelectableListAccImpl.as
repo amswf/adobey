@@ -52,7 +52,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const ROLE_SYSTEM_LISTITEM:uint = 0x22; 
+		private static const ROLE_SYSTEM_LISTITEM:int = 0x22; 
 		
 		/**
          *  @private
@@ -60,7 +60,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const STATE_SYSTEM_FOCUSED:uint = 0x00000004;
+		private static const STATE_SYSTEM_FOCUSED:int = 0x00000004;
 		
 		/**
          *  @private
@@ -68,7 +68,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const STATE_SYSTEM_INVISIBLE:uint = 0x00008000;
+		private static const STATE_SYSTEM_INVISIBLE:int = 0x00008000;
 		
 		/**
          *  @private
@@ -76,7 +76,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const STATE_SYSTEM_OFFSCREEN:uint = 0x00010000;
+		private static const STATE_SYSTEM_OFFSCREEN:int = 0x00010000;
 		
 		/**
          *  @private
@@ -84,7 +84,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const STATE_SYSTEM_SELECTABLE:uint = 0x00200000;
+		private static const STATE_SYSTEM_SELECTABLE:int = 0x00200000;
 		
 		/**
          *  @private
@@ -92,7 +92,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const STATE_SYSTEM_SELECTED:uint = 0x00000002;
+		private static const STATE_SYSTEM_SELECTED:int = 0x00000002;
 		
 		/**
 		 *  @private
@@ -101,7 +101,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const EVENT_OBJECT_FOCUS:uint = 0x8005; 
+		private static const EVENT_OBJECT_FOCUS:int = 0x8005; 
 		
 		/**
 		 *  @private
@@ -110,7 +110,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const EVENT_OBJECT_SELECTION:uint = 0x8006; 
+		private static const EVENT_OBJECT_SELECTION:int = 0x8006; 
 		
 		//--------------------------------------------------------------------------
 		//  Class methods
@@ -196,7 +196,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function get_accRole(childID:uint):uint {
+		override public function get_accRole(childID:int):int {
 			if (childID == 0) {
 				return role;
 			}
@@ -213,7 +213,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function get_accValue(childID:uint):String {
+		override public function get_accValue(childID:int):String {
 			return "";
 		}
 
@@ -232,11 +232,11 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function get_accState(childID:uint):uint {
-			var accState:uint = getState(childID);
+		override public function get_accState(childID:int):int {
+			var accState:int = getState(childID);
 			if (childID > 0) {
 				var list:SelectableList = SelectableList(master);
-				var index:uint = childID - 1;
+				var index:int = childID - 1;
 				// For returning states (OffScreen and Invisible)
 				// when the list Item is not in the displayed rows.
 				if (index < list.verticalScrollPosition || index >= list.verticalScrollPosition + list.rowCount) {
@@ -267,7 +267,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function get_accDefaultAction(childID:uint):String {
+		override public function get_accDefaultAction(childID:int):String {
 			if (childID == 0) {
 				return null;
 			}
@@ -283,7 +283,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function accDoDefaultAction(childID:uint):void {
+		override public function accDoDefaultAction(childID:int):void {
 			if (childID > 0) {
 				SelectableList(master).selectedIndex = childID - 1;
 			}
@@ -302,7 +302,7 @@ package fl.accessibility {
 			var childIDs:Array = [];
 			var list:SelectableList = SelectableList(master);
 			if (list.dataProvider) {
-				var n:uint = list.dataProvider.length;
+				var n:int = list.dataProvider.length;
 				for (var i:int = 0; i < n; i++) {
 					childIDs[i] = i + 1;
 				}
@@ -321,10 +321,10 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function accLocation(childID:uint):* {
+		override public function accLocation(childID:int):* {
 			var list:SelectableList = SelectableList(master);
 			if(childID > 0) {
-				var index:uint = childID - 1;
+				var index:int = childID - 1;
 				if (index < list.verticalScrollPosition || index >= list.verticalScrollPosition + list.rowCount) {
 					return null;
 				}
@@ -366,8 +366,8 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function get_accFocus():uint {
-			var index:uint = SelectableList(master).selectedIndex;
+		override public function get_accFocus():int {
+			var index:int = SelectableList(master).selectedIndex;
 			return (index >= 0) ? index + 1 : 0;
 		}
 
@@ -380,9 +380,9 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function accSelect(selFlag:uint, childID:uint):void {
+		override public function accSelect(selFlag:int, childID:int):void {
 			var list:SelectableList = SelectableList(master);
-			var index:uint = childID - 1;
+			var index:int = childID - 1;
 			if(list.dataProvider) {
 				if (index >= 0 && index < list.dataProvider.length) {
 					list.selectedIndex = index;
@@ -404,7 +404,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override protected function getName(childID:uint):String {
+		override protected function getName(childID:int):String {
 			return "";
 		}
 
@@ -426,10 +426,10 @@ package fl.accessibility {
 		override protected function eventHandler(event:Event):void {
 			switch (event.type) {
 				case "change":
-					var index:uint = SelectableList(master).selectedIndex;
+					var index:int = SelectableList(master).selectedIndex;
 					if (index >= 0) {
 						if(Accessibility.active) {
-							var childID:uint = index + 1;
+							var childID:int = index + 1;
 							Accessibility.sendEvent(master, childID, EVENT_OBJECT_FOCUS);
 							Accessibility.sendEvent(master, childID, EVENT_OBJECT_SELECTION);
 						}

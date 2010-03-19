@@ -2,7 +2,7 @@ package com.snsoft.map
 {
 	import com.snsoft.map.tree.TreeList;
 	import com.snsoft.map.tree.TreeNodeButton;
-	import com.snsoft.map.util.HashArray;
+	import com.snsoft.map.util.HashVector;
 	
 	import fl.containers.ScrollPane;
 	import fl.controls.Button;
@@ -78,12 +78,12 @@ package com.snsoft.map
 		 * @param mapAreas
 		 * 
 		 */		
-		public function refreshMapAreaListBtn(mapAreas:HashArray):void{
+		public function refreshMapAreaListBtn(mapAreas:HashVector):void{
 			var list:TreeList = new TreeList();
 			if(mapAreas != null){
 				for (var i:int = 0; i<mapAreas.length; i++) {
 					var ma:MapAreaDO = mapAreas.findByIndex(i) as MapAreaDO;
-					var name:String = mapAreas.findName(i);
+					var name:String = mapAreas.findNameByIndex(i);
 					var btn:TreeNodeButton = new TreeNodeButton(ma.areaName);
 					list.put(name,btn);
 				}

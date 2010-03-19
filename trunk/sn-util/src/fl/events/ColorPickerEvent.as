@@ -123,7 +123,7 @@ package fl.events {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		protected var _color:uint;
+		protected var _color:int;
 		
 		/**
          * Gets the color value that is associated with the event.
@@ -131,7 +131,7 @@ package fl.events {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		 public function get color():uint {
+		 public function get color():int {
 			 return _color;
 		 }
 		
@@ -145,7 +145,7 @@ package fl.events {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function ColorPickerEvent(type:String, color:uint) {
+		public function ColorPickerEvent(type:String, color:int) {
 			super(type, true);			
 			_color = color;
 		}

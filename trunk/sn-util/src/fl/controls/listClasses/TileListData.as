@@ -52,7 +52,7 @@ package fl.controls.listClasses {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function TileListData(label:String,icon:Object,source:Object,owner:UIComponent,index:uint,row:uint,col:uint=0) {
+		public function TileListData(label:String,icon:Object,source:Object,owner:UIComponent,index:int,row:int,col:int=0) {
 			super(label,icon,owner,index,row,col);
 			_source = source;
 		}

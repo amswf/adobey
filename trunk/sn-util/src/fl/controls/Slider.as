@@ -675,7 +675,7 @@ package fl.controls {
 			var divisor:Number = (maximum<1)?tickInterval/100:tickInterval;
 			var l:Number = (maximum-minimum)/divisor;
 			var dist:Number = _width/l;
-			for (var i:uint=0;i<=l;i++) {
+			for (var i:int=0;i<=l;i++) {
 				var tick:DisplayObject = getDisplayObjectInstance(getStyleValue("tickSkin"));
 				tick.x = dist * i;
 				tick.y = (track.y - tick.height) - 2;

@@ -1,6 +1,6 @@
 ﻿package com.snsoft.map
 {
-	import com.snsoft.map.util.HashArray;
+	import com.snsoft.map.util.HashVector;
 	import com.snsoft.map.util.HitTest;
 	
 	import flash.geom.Point;
@@ -9,10 +9,10 @@
 	{
 		
 		//当前画线的点数组
-		private var _currentPointAry:HashArray = new HashArray();
+		private var _currentPointAry:HashVector = new HashVector();
 		
 		//地图块数据对象数组
-		private var _mapAreaDOAry:HashArray = new HashArray(); 
+		private var _mapAreaDOAry:HashVector = new HashVector(); 
 		
 		//碰撞检测类对象
 		private var hitTest:HitTest = null;
@@ -38,7 +38,7 @@
 		}
 		
 		public function findLatestMapAreaDO():MapAreaDO{
-			var doa:HashArray = this.mapAreaDOAry;
+			var doa:HashVector = this.mapAreaDOAry;
 			
 			if(doa.length > 0 ){
 				var lasti:int = doa.length -1;
@@ -55,11 +55,11 @@
 		 * 
 		 */		
 		public function hitTestPoint(point:Point):MapPointManagerState{
-			var doa:HashArray = this.mapAreaDOAry;
+			var doa:HashVector = this.mapAreaDOAry;
 			
 			//获得碰撞点
 			var htp:Point = this.hitTest.findPoint(point,hitTestDvaluePoint);
-			var cpa:HashArray = this.currentPointAry;
+			var cpa:HashVector = this.currentPointAry;
 			
 			//判断闭合
 			var cpap:Point = null;
@@ -96,7 +96,7 @@
 			
 			//判断是否将要画的链是否已经存在，如果存在反回这个链
 			var isFast:Boolean = false;
-			var fastPointArray:HashArray = new HashArray();
+			var fastPointArray:HashVector = new HashVector();
 			if(isHit && !isInCpa){
 				var len:int = cpa.length;
 				if(len >=2){
@@ -104,14 +104,14 @@
 					var p2:Point = cpa.findByIndex(len -2) as Point;
 					for(var j:int = 0;j<doa.length;j++){
 						var mado:MapAreaDO = doa.findByIndex(j) as MapAreaDO;
-						var pa:HashArray = mado.pointArray;
+						var pa:HashVector = mado.pointArray;
 						if(pa != null){
 							var n1:String = MapPointsManager.createPointHashName(p1);
 							var n2:String = MapPointsManager.createPointHashName(p2);
 							var np:String = MapPointsManager.createPointHashName(htp);
-							var index1:int = pa.findIndex(n1);
-							var index2:int = pa.findIndex(n2);
-							var indexp:int = pa.findIndex(np);
+							var index1:int = pa.findIndexByName(n1);
+							var index2:int = pa.findIndexByName(n2);
+							var indexp:int = pa.findIndexByName(np);
 							
 							var palength:int = pa.length -1;
 							if(indexp == palength){
@@ -212,11 +212,10 @@
 		 * 
 		 */		
 		public function deletePointAryAndDeleteHitTestPoint(mapAreaDO:MapAreaDO):void{
-			var hpa:HashArray = mapAreaDO.pointArray;
+			var hpa:HashVector = mapAreaDO.pointArray;
 			var hn:String = MapPointsManager.creatHashArrayHashName(hpa);
-			this.mapAreaDOAry.remove(hn);
-			trace("mapAreaDOAry",mapAreaDOAry.length);
-			var pa:Array = hpa.getArray();
+			this.mapAreaDOAry.removeByName(hn);
+			var pa:Array = hpa.toArray();
 			for(var i:int = 0;i<pa.length;i++){
 				var point:Point = pa[i] as Point;
 				this.hitTest.deletePoint(point);
@@ -230,7 +229,7 @@
 		 * 
 		 */		
 		private function addPointsToCpaAndHt(mpms:MapPointManagerState):void{
-			var fpha:HashArray = mpms.fastPointArray;
+			var fpha:HashVector = mpms.fastPointArray;
 			if(fpha != null && fpha.length > 0){
 				this.addFastPhaToCpaAndHt(mpms);
 			}
@@ -249,8 +248,8 @@
 			var point:Point = mpms.hitPoint;
 			var mpms:MapPointManagerState = this.hitTestPoint(point);
 			var hp:Point = mpms.hitPoint;
-			var cpa:HashArray = this._currentPointAry;
-			var flha:HashArray = mpms.fastPointArray;
+			var cpa:HashVector = this._currentPointAry;
+			var flha:HashVector = mpms.fastPointArray;
 			for(var i:int =0;i<flha.length;i++){
 				var fp:Point = flha.findByIndex(i) as Point;
 				this.addPointToCpaAndHt(fp);
@@ -275,12 +274,12 @@
 		 * 
 		 */		
 		private function addCpaToPpa():void{
-			var cpa:HashArray = this.currentPointAry;
+			var cpa:HashVector = this.currentPointAry;
 			var doa:MapAreaDO = new MapAreaDO();
 			doa.pointArray = cpa;
 			var hn:String = MapPointsManager.creatHashArrayHashName(cpa);
 			this.mapAreaDOAry.put(hn,doa);
-			this._currentPointAry = new HashArray();
+			this._currentPointAry = new HashVector();
 		}
 		
 		/**
@@ -289,9 +288,9 @@
 		 * @return 哈希名字 key
 		 * 
 		 */		
-		public static function creatHashArrayHashName(ha:HashArray):String{
+		public static function creatHashArrayHashName(ha:HashVector):String{
 			var hn:String = null;
-			var ary:Array = ha.getArray();
+			var ary:Array = ha.toArray();
 			if(ary != null){
 				for(var i:int =0;i<ary.length;i++){
 					var p:Point = ary[i] as Point;
@@ -320,12 +319,12 @@
 			return str;
 		}
 		
-		public function get currentPointAry():HashArray
+		public function get currentPointAry():HashVector
 		{
 			return _currentPointAry;
 		}
 
-		public function get mapAreaDOAry():HashArray
+		public function get mapAreaDOAry():HashVector
 		{
 			return _mapAreaDOAry;
 		}

@@ -33,36 +33,36 @@ public class CommandMessage extends AsyncMessage
     /**
      *  This operation is used to subscribe to a remote destination.
      */
-	public static const SUBSCRIBE_OPERATION:uint = 0;
+	public static const SUBSCRIBE_OPERATION:int = 0;
 
     /**
      *  This operation is used to unsubscribe from a remote destination.
      */
-	public static const UNSUBSCRIBE_OPERATION:uint = 1;
+	public static const UNSUBSCRIBE_OPERATION:int = 1;
 
     /**
      *  This operation is used to poll a remote destination for pending,
      *  undelivered messages.
      */
-	public static const POLL_OPERATION:uint = 2;
+	public static const POLL_OPERATION:int = 2;
 
     /**
      *  This operation is used by a remote destination to sync missed or cached messages 
      *  back to a client as a result of a client issued poll command.
      */
-	public static const CLIENT_SYNC_OPERATION:uint = 4;
+	public static const CLIENT_SYNC_OPERATION:int = 4;
 
     /**
      *  This operation is used to test connectivity over the current channel to
      *  the remote endpoint.
      */
-	public static const CLIENT_PING_OPERATION:uint = 5;
+	public static const CLIENT_PING_OPERATION:int = 5;
 	
     /**
      *  This operation is used to request a list of failover endpoint URIs
      *  for the remote destination based on cluster membership.
      */
-	public static const CLUSTER_REQUEST_OPERATION:uint = 7;
+	public static const CLUSTER_REQUEST_OPERATION:int = 7;
 	
 	/**
 	 * This operation is used to send credentials to the endpoint so that
@@ -70,13 +70,13 @@ public class CommandMessage extends AsyncMessage
 	 * The credentials need to be Base64 encoded and stored in the <code>body</code>
 	 * of the message.
 	 */
-    public static const LOGIN_OPERATION:uint = 8;
+    public static const LOGIN_OPERATION:int = 8;
     
     /**
      * This operation is used to log the user out of the current channel, and 
      * will invalidate the server session if the channel is HTTP based.
      */
-    public static const LOGOUT_OPERATION:uint = 9;
+    public static const LOGOUT_OPERATION:int = 9;
 
     /**
      * Endpoints can imply what features they support by reporting the
@@ -89,23 +89,23 @@ public class CommandMessage extends AsyncMessage
      * This operation is used to indicate that the client's subscription with a
      * remote destination has timed out.
      */
-    public static const SUBSCRIPTION_INVALIDATE_OPERATION:uint = 10;
+    public static const SUBSCRIPTION_INVALIDATE_OPERATION:int = 10;
 
     /**
      * Used by the MultiTopicConsumer to subscribe/unsubscribe for more
      * than one topic in the same message.
      */
-    public static const MULTI_SUBSCRIBE_OPERATION:uint = 11;
+    public static const MULTI_SUBSCRIBE_OPERATION:int = 11;
     
     /**
      *  This operation is used to indicate that a channel has disconnected.
      */
-    public static const DISCONNECT_OPERATION:uint = 12;
+    public static const DISCONNECT_OPERATION:int = 12;
 	
     /**
      *  This is the default operation for new CommandMessage instances.
      */
-	public static const UNKNOWN_OPERATION:uint = 10000;
+	public static const UNKNOWN_OPERATION:int = 10000;
 	
 	/**
 	 *  The server message type for authentication commands.
@@ -173,7 +173,7 @@ public class CommandMessage extends AsyncMessage
     // 
     //--------------------------------------------------------------------------
 
-    private static const OPERATION_FLAG:uint = 1;
+    private static const OPERATION_FLAG:int = 1;
 
     //--------------------------------------------------------------------------
     //
@@ -215,7 +215,7 @@ public class CommandMessage extends AsyncMessage
      *  Operations indicate how this message should be processed by the remote
      *  destination.
      */
-	public var operation:uint;
+	public var operation:int;
 
     //--------------------------------------------------------------------------
     //
@@ -280,7 +280,7 @@ public class CommandMessage extends AsyncMessage
      *            CommandMessage.getOperationAsString(msg.operation)+ "'.");
      *  </pre></code>
      */
-    public static function getOperationAsString(op:uint):String
+    public static function getOperationAsString(op:int):String
     {
         if (operationTexts == null)
         {
@@ -310,15 +310,15 @@ public class CommandMessage extends AsyncMessage
         super.readExternal(input);
 
         var flagsArray:Array = readFlags(input);
-        for (var i:uint = 0; i < flagsArray.length; i++)
+        for (var i:int = 0; i < flagsArray.length; i++)
         {
-            var flags:uint = flagsArray[i] as uint;
-            var reservedPosition:uint = 0;
+            var flags:int = flagsArray[i] as int;
+            var reservedPosition:int = 0;
 
             if (i == 0)
             {
                 if ((flags & OPERATION_FLAG) != 0)
-                    operation = input.readObject() as uint;
+                    operation = input.readObject() as int;
 
                 reservedPosition = 1;
             }
@@ -327,7 +327,7 @@ public class CommandMessage extends AsyncMessage
             // to preserve the integrity of the input stream...
             if ((flags >> reservedPosition) != 0)
             {
-                for (var j:uint = reservedPosition; j < 6; j++)
+                for (var j:int = reservedPosition; j < 6; j++)
                 {
                     if (((flags >> j) & 1) != 0)
                     {
@@ -345,7 +345,7 @@ public class CommandMessage extends AsyncMessage
     {
         super.writeExternal(output);
 
-        var flags:uint = 0;
+        var flags:int = 0;
 
         if (operation != 0)
             flags |= OPERATION_FLAG;

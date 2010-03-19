@@ -5,8 +5,8 @@
 	import flash.geom.*;
 	import flash.display.*;
 	public class DrawPole {
-		private var lineColor:uint = 0x000000;
-		private var bgColor:uint = 0x00FF00;
+		private var lineColor:int = 0x000000;
+		private var bgColor:int = 0x00FF00;
 		private var height:Number = 0;
 		private var width:Number = 0;
 		private var x = 0;
@@ -18,7 +18,7 @@
 		/**
 		 * 
 		 */
-		public function DrawPole (boder:Number,lineColor:uint,fillColors:Array,fillColors2:Array,height:Number,width:Number,x:Number,y:Number) {
+		public function DrawPole (boder:Number,lineColor:int,fillColors:Array,fillColors2:Array,height:Number,width:Number,x:Number,y:Number) {
 			this.lineColor = lineColor;
 			this.height = height;
 			this.width = width;

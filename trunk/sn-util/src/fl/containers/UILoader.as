@@ -387,7 +387,7 @@ package fl.containers {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function get bytesLoaded():uint {
+		public function get bytesLoaded():int {
 			return (loader == null || loader.contentLoaderInfo == null) ? 0 : loader.contentLoaderInfo.bytesLoaded;
 		}
 
@@ -404,7 +404,7 @@ package fl.containers {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function get bytesTotal():uint {
+		public function get bytesTotal():int {
 			return (loader == null || loader.contentLoaderInfo == null) ? 0 : loader.contentLoaderInfo.bytesTotal;
 		}
 		

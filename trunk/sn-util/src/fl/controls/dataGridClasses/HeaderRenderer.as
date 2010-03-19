@@ -76,7 +76,7 @@ package fl.controls.dataGridClasses {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public var _column:uint;
+		public var _column:int;
 
         /**
          * Creates a new HeaderRenderer instance.
@@ -138,7 +138,7 @@ package fl.controls.dataGridClasses {
          * @playerversion Flash 9.0.28.0
 		 * @internal Adobe: [LM] Added more details.  This *could* be marked (at)private.
 		 */
-		public function get column():uint {
+		public function get column():int {
 			return _column;
 		}
 		
@@ -148,7 +148,7 @@ package fl.controls.dataGridClasses {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function set column(value:uint):void {
+		public function set column(value:int):void {
 			_column = value;
 		}
 

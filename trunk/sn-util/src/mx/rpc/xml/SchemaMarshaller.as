@@ -708,7 +708,7 @@ public class SchemaMarshaller //implements IXMLTypeMarshaller
         else if (type == datatypes.unsignedIntQName)
         {
             min = 0;
-            max = uint.MAX_VALUE;
+            max = int.MAX_VALUE;
         }
         else if (type == datatypes.unsignedShortQName)
         {
@@ -866,12 +866,12 @@ public class SchemaMarshaller //implements IXMLTypeMarshaller
             // dateLexicalRep ::= yearFrag '-' monthFrag '-' dayFrag timezoneFrag?
             // yearFrag ::= '-'? (([1-9] digit digit digit+)) | ('0' digit digit digit))
             index = datePart.indexOf("-", 1);
-            var year:uint = uint(datePart.substring(0, index++));
+            var year:int = int(datePart.substring(0, index++));
             // monthFrag ::= ('0' [1-9]) | ('1' [0-2])
-            var month:uint = uint(datePart.substring(index, index + 2));
+            var month:int = int(datePart.substring(index, index + 2));
             index += 3;
             // dayFrag ::= (0 [1-9]) | ([12] digit) | ('3' [01])
-            var day:uint = uint(datePart.substring(index, index + 2));
+            var day:int = int(datePart.substring(index, index + 2));
             index += 2;
             // timezoneFrag ::= 'Z' | (('+' | '-') ('0' digit | '1' [0-4]) ':' minuteFrag)
             if (datePart.charAt(index) == "Z") // UTC.
@@ -986,12 +986,12 @@ public class SchemaMarshaller //implements IXMLTypeMarshaller
             // dateLexicalRep ::= yearFrag '-' monthFrag '-' dayFrag timezoneFrag?
             // yearFrag ::= '-'? (([1-9] digit digit digit+)) | ('0' digit digit digit))
             index = datePart.indexOf("-", 1);
-            var year:uint = uint(datePart.substring(0, index++));
+            var year:int = int(datePart.substring(0, index++));
             // monthFrag ::= ('0' [1-9]) | ('1' [0-2])
-            var month:uint = uint(datePart.substring(index, index + 2));
+            var month:int = int(datePart.substring(index, index + 2));
             index += 3;
             // dayFrag ::= (0 [1-9]) | ([12] digit) | ('3' [01])
-            var day:uint = uint(datePart.substring(index, index + 2));
+            var day:int = int(datePart.substring(index, index + 2));
                         
             if (utc) 
                 date = new Date(Date.UTC(year, month - 1, day));
@@ -1080,7 +1080,7 @@ public class SchemaMarshaller //implements IXMLTypeMarshaller
         // FIXME: Consider timezone, if provided, for gregorian date info
         if (type == datatypes.gYearQName)
         {
-            result = uint(rawValue.substring(0, 4));
+            result = int(rawValue.substring(0, 4));
         }
         /*
         // FIXME: Should we leave YearMonth and MonthDay as String?
@@ -1095,11 +1095,11 @@ public class SchemaMarshaller //implements IXMLTypeMarshaller
         */
         else if (type == datatypes.gMonthQName)
         {
-            result = uint(rawValue.substring(2, 4));
+            result = int(rawValue.substring(2, 4));
         }
         else if (type == datatypes.gDayQName)
         {
-            result = uint(rawValue.substring(3, 5));
+            result = int(rawValue.substring(3, 5));
         }
 
         return result;
@@ -1136,7 +1136,7 @@ public class SchemaMarshaller //implements IXMLTypeMarshaller
     public static function guessSimpleType(value:*):*
     {
         var localName:String = "string";
-        if (value is uint)
+        if (value is int)
         {
             localName = "unsignedInt";
         }

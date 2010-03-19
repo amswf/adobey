@@ -459,7 +459,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function get length():uint {
+		public function get length():int {
 			return _dataProvider.length;
 		}
 		
@@ -646,7 +646,7 @@ package fl.controls {
 		 */
 		public function get selectedItems():Array {
 			var items:Array = [];
-			for (var i:uint = 0; i < _selectedIndices.length; i++) {
+			for (var i:int = 0; i < _selectedIndices.length; i++) {
 				items.push(_dataProvider.getItemAt(_selectedIndices[i]));
 			}
 			return items;
@@ -665,7 +665,7 @@ package fl.controls {
 				return;
 			}
 			var indices:Array = [];
-			for (var i:uint = 0; i < value.length; i++) {
+			for (var i:int = 0; i < value.length; i++) {
 				var index:int = _dataProvider.getItemIndex(value[i]);
 				if (index != -1) {
 					indices.push(index);
@@ -686,7 +686,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function get rowCount():uint {
+		public function get rowCount():int {
 			return 0;
 		}
 
@@ -764,7 +764,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function addItemAt(item:Object,index:uint):void {
+		public function addItemAt(item:Object,index:int):void {
 			_dataProvider.addItemAt(item,index);
 			invalidateList();
 		}
@@ -790,7 +790,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function getItemAt(index:uint):Object {
+		public function getItemAt(index:int):Object {
 			return _dataProvider.getItemAt(index);
 		}
 
@@ -828,7 +828,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function removeItemAt(index:uint):Object {
+		public function removeItemAt(index:int):Object {
 			return _dataProvider.removeItemAt(index);
 		}
 
@@ -852,7 +852,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function replaceItemAt(item:Object, index:uint):Object {
+		public function replaceItemAt(item:Object, index:int):Object {
 			return _dataProvider.replaceItemAt(item, index);
 		}
 		
@@ -905,7 +905,7 @@ package fl.controls {
 		 * @internal [kenos] This method appears to invalid an item, but it is described as
 		 *                   invalidating an item renderer. What is correct?
 		 */
-		public function invalidateItemAt(index:uint):void {
+		public function invalidateItemAt(index:int):void {
 			var item:Object = _dataProvider.getItemAt(index);
 			if (item != null) {
 				invalidateItem(item);
@@ -1072,7 +1072,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function setRendererStyle(name:String, style:Object, column:uint=0):void {
+		public function setRendererStyle(name:String, style:Object, column:int=0):void {
 			if (rendererStyles[name] == style) { return; }
 			updatedRendererStyles[name] = style;
 			rendererStyles[name] = style;
@@ -1152,7 +1152,7 @@ package fl.controls {
 			var startIndex:int = event.startIndex;
 			var endIndex:int = event.endIndex;
 			var changeType:String = event.changeType;
-			var i:uint;
+			var i:int;
 			if (changeType == DataChangeType.INVALIDATE_ALL) {
 				clearSelection();
 				invalidateList();
@@ -1208,7 +1208,7 @@ package fl.controls {
 		protected function handleCellRendererClick(event:MouseEvent):void {
 			if (!_enabled) { return; }
 			var renderer:ICellRenderer = event.currentTarget as ICellRenderer;
-			var itemIndex:uint = renderer.listData.index;
+			var itemIndex:int = renderer.listData.index;
 			// this event is cancellable:
 			if (!dispatchEvent(new ListEvent(ListEvent.ITEM_CLICK,false,true,renderer.listData.column,renderer.listData.row,itemIndex,renderer.data)) || !_selectable) { return; }
 			var selectIndex:int = selectedIndices.indexOf(itemIndex);
@@ -1223,7 +1223,7 @@ package fl.controls {
 				lastCaretIndex = caretIndex = itemIndex;
 			} else {
 				if (event.shiftKey) {
-					var oldIndex:uint = (_selectedIndices.length > 0) ? _selectedIndices[0] : itemIndex;
+					var oldIndex:int = (_selectedIndices.length > 0) ? _selectedIndices[0] : itemIndex;
 					_selectedIndices = [];
 					if (oldIndex > itemIndex) {
 						for (i = oldIndex; i >= itemIndex; i--) {
@@ -1261,7 +1261,7 @@ package fl.controls {
 		 */
 		protected function handleCellRendererChange(event:Event):void {
 			var renderer:ICellRenderer = event.currentTarget as ICellRenderer;
-			var itemIndex:uint = renderer.listData.index;
+			var itemIndex:int = renderer.listData.index;
 			_dataProvider.invalidateItemAt(itemIndex);
 		}
 		
@@ -1271,7 +1271,7 @@ package fl.controls {
 		protected function handleCellRendererDoubleClick(event:MouseEvent):void {
 			if (!_enabled) { return; }
 			var renderer:ICellRenderer = event.currentTarget as ICellRenderer;
-			var itemIndex:uint = renderer.listData.index;
+			var itemIndex:int = renderer.listData.index;
 			dispatchEvent(new ListEvent(ListEvent.ITEM_DOUBLE_CLICK,false,true,renderer.listData.column,renderer.listData.row,itemIndex,renderer.data));		
 		}
 		
@@ -1335,8 +1335,8 @@ package fl.controls {
 		 */
 		protected function updateRendererStyles():void {
 			var renderers:Array = availableCellRenderers.concat(activeCellRenderers);
-			var l:uint = renderers.length;
-			for (var i:uint=0; i<l; i++) {
+			var l:int = renderers.length;
+			for (var i:int=0; i<l; i++) {
 				if (renderers[i].setStyle == null) { continue; }
 				for (var n:String in updatedRendererStyles) {
 					renderers[i].setStyle(n, updatedRendererStyles[n]);
@@ -1402,7 +1402,7 @@ package fl.controls {
          *         the keyboard key was pressed
          *
 		 */
-		protected function moveSelectionHorizontally(code:uint, shiftKey:Boolean, ctrlKey:Boolean):void {}
+		protected function moveSelectionHorizontally(code:int, shiftKey:Boolean, ctrlKey:Boolean):void {}
 		
 		/**
          * @private (protected)
@@ -1421,7 +1421,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		protected function moveSelectionVertically(code:uint, shiftKey:Boolean, ctrlKey:Boolean):void {}
+		protected function moveSelectionVertically(code:int, shiftKey:Boolean, ctrlKey:Boolean):void {}
 
         /**
          * @private (protected)

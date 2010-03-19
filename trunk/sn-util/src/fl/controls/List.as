@@ -293,7 +293,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function get rowCount():uint {
+		override public function get rowCount():int {
 			//This is low right now (ie. doesn't count two half items as a whole):
 			return Math.ceil(calculateAvailableHeight()/rowHeight);
 		}
@@ -304,7 +304,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		public function set rowCount(value:uint):void {
+		public function set rowCount(value:int):void {
 			var pad:Number = Number(getStyleValue("contentPadding"));
 			var scrollBarHeight:Number = (_horizontalScrollPolicy == ScrollPolicy.ON || (_horizontalScrollPolicy == ScrollPolicy.AUTO && _maxHorizontalScrollPosition > 0)) ? 15 : 0;
 			height = rowHeight*value+2*pad+scrollBarHeight;
@@ -342,8 +342,8 @@ package fl.controls {
 		override public function scrollToIndex(newCaretIndex:int):void {
 			drawNow();
 			
-			var lastVisibleItemIndex:uint = Math.floor((_verticalScrollPosition + availableHeight) / rowHeight) - 1;
-			var firstVisibleItemIndex:uint = Math.ceil(_verticalScrollPosition / rowHeight);
+			var lastVisibleItemIndex:int = Math.floor((_verticalScrollPosition + availableHeight) / rowHeight) - 1;
+			var firstVisibleItemIndex:int = Math.ceil(_verticalScrollPosition / rowHeight);
 			if(newCaretIndex < firstVisibleItemIndex) {
 				verticalScrollPosition = newCaretIndex * rowHeight;
 			} else if(newCaretIndex > lastVisibleItemIndex) {
@@ -463,12 +463,12 @@ package fl.controls {
 			listHolder.cacheAsBitmap = useBitmapScrolling;
 			
 			// figure out what we have to render:
-			var startIndex:uint = Math.floor(_verticalScrollPosition/rowHeight);
-			var endIndex:uint = Math.min(length,startIndex + rowCount+1);
+			var startIndex:int = Math.floor(_verticalScrollPosition/rowHeight);
+			var endIndex:int = Math.min(length,startIndex + rowCount+1);
 			
 			
 			// these vars get reused in different loops:
-			var i:uint;
+			var i:int;
 			var item:Object;
 			var renderer:ICellRenderer;
 			
@@ -618,7 +618,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override protected function moveSelectionHorizontally(code:uint, shiftKey:Boolean, ctrlKey:Boolean):void {}
+		override protected function moveSelectionHorizontally(code:int, shiftKey:Boolean, ctrlKey:Boolean):void {}
 		
 		/**
          * @private (protected)
@@ -637,7 +637,7 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override protected function moveSelectionVertically(code:uint, shiftKey:Boolean, ctrlKey:Boolean):void {
+		override protected function moveSelectionVertically(code:int, shiftKey:Boolean, ctrlKey:Boolean):void {
 			var pageSize:int = Math.max(Math.floor(calculateAvailableHeight() / rowHeight), 1);
 			var newCaretIndex:int = -1;
 			var dir:int = 0;

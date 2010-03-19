@@ -586,8 +586,8 @@ public class Operation extends AbstractOperation
      */
     public function getHeader(qname:QName, headerName:String = null):SOAPHeader
     {
-        var length:uint = _headers.length;
-        for (var i:uint = 0; i < length; i++)
+        var length:int = _headers.length;
+        for (var i:int = 0; i < length; i++)
         {
             var header:SOAPHeader = SOAPHeader(_headers[i]);
             if (XMLUtil.qnamesEqual(header.qname, qname))
@@ -616,8 +616,8 @@ public class Operation extends AbstractOperation
      */
     public function removeHeader(qname:QName, headerName:String = null):void
     {
-        var length:uint = _headers.length;
-        for (var i:uint = 0; i < length; i++)
+        var length:int = _headers.length;
+        for (var i:int = 0; i < length; i++)
         {
             var header:SOAPHeader = SOAPHeader(_headers[i]);
             if (XMLUtil.qnamesEqual(header.qname, qname))
@@ -862,7 +862,7 @@ public class Operation extends AbstractOperation
     {
         if (responseHeaders != null)
         {
-            for (var i:uint = 0; i < responseHeaders.length; i++)
+            for (var i:int = 0; i < responseHeaders.length; i++)
             {
                 var header:Object = responseHeaders[i];
                 var mustUnderstand:Boolean;

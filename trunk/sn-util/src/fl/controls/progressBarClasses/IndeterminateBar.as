@@ -49,7 +49,7 @@ package fl.controls.progressBarClasses {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		protected var animationCount:uint = 0;
+		protected var animationCount:int = 0;
 		/**
          * @private (protected)
          *

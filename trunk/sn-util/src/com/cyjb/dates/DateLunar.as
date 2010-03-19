@@ -53,7 +53,7 @@ package com.cyjb.dates {
 		 * @see #MAX_SUPPORTED_YEAR
 		 * @see #MIN_SUPPORTED_DATE
 		 */
-		public static const MIN_SUPPORTED_YEAR:uint = 1900;
+		public static const MIN_SUPPORTED_YEAR:int = 1900;
 		/**
 		 * 农历数据支持的最小公历日期.
 		 * 
@@ -72,7 +72,7 @@ package com.cyjb.dates {
 		 * @see #MIN_SUPPORTED_YEAR
 		 * @see #MAX_SUPPORTED_DATE
 		 */
-		public static const MAX_SUPPORTED_YEAR:uint = 2100;
+		public static const MAX_SUPPORTED_YEAR:int = 2100;
 		/**
 		 * 农历数据支持的最大公历日期.
 		 * 
@@ -141,19 +141,19 @@ package com.cyjb.dates {
 		 * 
 		 * MIN_SUPPORTED_YEAR - MAX_SUPPORTED_YEAR
 		 */
-		private var _year:uint;
+		private var _year:int;
 		/**
 		 * 农历月份.
 		 * 
 		 * 0 - 11
 		 */
-		private var _month:uint;
+		private var _month:int;
 		/**
 		 * 农历日期.
 		 * 
 		 * 1 - 30
 		 */
-		private var _date:uint;
+		private var _date:int;
 		//干
 		private var Gan:Array = new Array("甲","乙","丙","丁","戊","己","庚","辛","壬","癸");
 		
@@ -217,8 +217,8 @@ package com.cyjb.dates {
 		 * 
 		 * @includeExample examples/DateLunar.DateLunar.1.as -noswf
 		 */
-		public function DateLunar(yearOrTimevalue:Object = null, month:uint = 0, 
-				date:uint = 1, isLeap:Boolean = false):void {
+		public function DateLunar(yearOrTimevalue:Object = null, month:int = 0, 
+				date:int = 1, isLeap:Boolean = false):void {
 			if(yearOrTimevalue is Date) {
 				//指定的是日期
 				_dateSolar = yearOrTimevalue as Date;
@@ -227,10 +227,10 @@ package com.cyjb.dates {
 			} else if(arguments.length) {
 				if(arguments.length == 1) {
 					//指定的是日期偏移
-					calculateDate(uint(yearOrTimevalue));
+					calculateDate(int(yearOrTimevalue));
 				} else {
 					//指定的是年,月,日
-					_year = uint(yearOrTimevalue);
+					_year = int(yearOrTimevalue);
 					_month = month;
 					_date = date;
 					_isLeap = isLeap;
@@ -261,10 +261,10 @@ package com.cyjb.dates {
 		 * 
 		 * @throws ArgumentError 当时间不在可支持的范围内时引发.
 		 */
-		public function get time():uint {
+		public function get time():int {
 			return DateUtil.elapsedTimes(_dateSolar, MIN_SUPPORTED_DATE, DateUtil.DAY);;
 		}
-		public function set time(value:uint):void {
+		public function set time(value:int):void {
 			calculateDate(value);
 		}
 		
@@ -278,10 +278,10 @@ package com.cyjb.dates {
 		 * 
 		 * @throws ArgumentError 当年份不在可支持的范围内时引发.
 		 */
-		public function get year():uint {
+		public function get year():int {
 			return _year;
 		}
-		public function set year(value:uint):void {
+		public function set year(value:int):void {
 			_year = value;
 			calculateLunar();
 		}
@@ -308,10 +308,10 @@ package com.cyjb.dates {
 		 * 
 		 * @throws ArgumentError 当日期不在可支持的范围内时引发.
 		 */
-		public function get month():uint {
+		public function get month():int {
 			return _month;
 		}
-		public function set month(value:uint):void {
+		public function set month(value:int):void {
 			_month = value;
 			calculateLunar();
 		}
@@ -342,10 +342,10 @@ package com.cyjb.dates {
 		 * 
 		 * @throws ArgumentError 当日期不在可支持的范围内时引发.
 		 */
-		public function get date():uint {
+		public function get date():int {
 			return _date;
 		}
-		public function set date(value:uint):void {
+		public function set date(value:int):void {
 			_date = value;
 			calculateLunar();
 		}
@@ -363,7 +363,7 @@ package com.cyjb.dates {
 			if(_isLeap == value) {
 				return;
 			}
-			var m:uint = getLeapMonth(_year);
+			var m:int = getLeapMonth(_year);
 			if(m == _month + 1) {
 				_isLeap = value;
 				calculateLunar();
@@ -386,8 +386,8 @@ package com.cyjb.dates {
 		 * @see #year
 		 * @see #getYearCyclical()
 		 */
-		public function get yearCyclical():uint {
-			var index:uint;
+		public function get yearCyclical():int {
+			var index:int;
 			if(sliceFromSolarTerm) {
 				//以节气为分界
 				index = getYearCyclical(_dateSolar.fullYear);
@@ -416,11 +416,11 @@ package com.cyjb.dates {
 		 * @see #month
 		 * @see #getMonthCyclical()
 		 */
-		public function get monthCyclical():uint {
+		public function get monthCyclical():int {
 			if(sliceFromSolarTerm) {
 				//1900 年 1 月小寒以前为 丙子月(12)
-				var firstTerm:uint = calculateTerm(_dateSolar.fullYear, _dateSolar.month * 2);
-				var index:uint;
+				var firstTerm:int = calculateTerm(_dateSolar.fullYear, _dateSolar.month * 2);
+				var index:int;
 				index = (_dateSolar.fullYear - 1900) * 12 + _dateSolar.month + 12;
 				if(_dateSolar.date >= firstTerm) {
 					index ++;
@@ -448,7 +448,7 @@ package com.cyjb.dates {
 		 * 
 		 * @see #date
 		 */
-		public function get dateCyclical():uint {
+		public function get dateCyclical():int {
 			//1900.1.1 日为甲戌日(60进制10)
 			var num:Number = DateUtil.elapsedTimes(_dateSolar, 
 				new Date(1900, 0, 1), DateUtil.DAY);
@@ -483,7 +483,7 @@ package com.cyjb.dates {
 		 * 
 		 * 干支序号的可能范围是 <code>0 - 59</code>, 0 是甲子, 59 是癸亥.
 		 */
-		public function get hourCyclical():uint {
+		public function get hourCyclical():int {
 			//1900.1.1 日 从 1:00 开始为乙丑时(60进制1)
 			var num:Number = DateUtil.elapsedTimes(_dateSolar, 
 				new Date(1900, 0, 1, 1), DateUtil.HOUR) / 2 + 1;
@@ -500,7 +500,7 @@ package com.cyjb.dates {
 		 * 
 		 * @see #getAnimal()
 		 */
-		public function get animal():uint {
+		public function get animal():int {
 			if(sliceFromSolarTerm) {
 				//以节气为分界
 				return yearCyclical % 12;
@@ -527,9 +527,9 @@ package com.cyjb.dates {
 		 * @see #getSolarTerm()
 		 */
 		public function get solarTerm():int {
-			var year:uint = _dateSolar.fullYear;
-			var index:uint = _dateSolar.month * 2;
-			var day:uint = calculateTerm(year, index);
+			var year:int = _dateSolar.fullYear;
+			var index:int = _dateSolar.month * 2;
+			var day:int = calculateTerm(year, index);
 			if(day == _dateSolar.date) {
 				return index;
 			}
@@ -551,7 +551,7 @@ package com.cyjb.dates {
 		 * 
 		 * @throws ArgumentError 当年份不在可支持的范围内时引发.
 		 */
-		public static function getLeapMonth(year:uint):uint {
+		public static function getLeapMonth(year:int):int {
 			checkYear(year);
 			return leapMonth(year - MIN_SUPPORTED_YEAR);
 		}
@@ -564,7 +564,7 @@ package com.cyjb.dates {
 		 * 
 		 * @throws ArgumentError 当年份不在可支持的范围内时引发.
 		 */
-		public static function getLeapDays(year:uint):uint {
+		public static function getLeapDays(year:int):int {
 			checkYear(year);
 			return leapDays(year - MIN_SUPPORTED_YEAR);
 		}
@@ -579,7 +579,7 @@ package com.cyjb.dates {
 		 * @throws ArgumentError 当年份不在可支持的范围内时引发.
 		 * @throws ArgumentError 当月份不在可支持的范围内时引发.
 		 */
-		public static function getMonthDays(year:uint, month:uint):uint {
+		public static function getMonthDays(year:int, month:int):int {
 			checkYear(year);
 			checkMonth(month);
 			return monthDays(year - MIN_SUPPORTED_YEAR, month);
@@ -593,7 +593,7 @@ package com.cyjb.dates {
 		 * 
 		 * @throws ArgumentError 当年份不在可支持的范围内时引发.
 		 */
-		public static function getYearDays(year:uint):uint {
+		public static function getYearDays(year:int):int {
 			checkYear(year);
 			return yearDays(year - MIN_SUPPORTED_YEAR);
 		}
@@ -606,7 +606,7 @@ package com.cyjb.dates {
 		 * 
 		 * @return 指定年份的干支序号.
 		 */
-		public static function getYearCyclical(year:uint):uint {
+		public static function getYearCyclical(year:int):int {
 			//农历 0 年为庚申年(60进制56)
 			return (year + 56) % 60;
 		}
@@ -619,7 +619,7 @@ package com.cyjb.dates {
 		 * 
 		 * @return 指定年份属相的索引.
 		 */
-		public static function getAnimal(year:uint):uint {
+		public static function getAnimal(year:int):int {
 			return (year + 56) % 12;
 		}
 		/**
@@ -636,7 +636,7 @@ package com.cyjb.dates {
 		 * 
 		 * @throws ArgumentError 当月份不在可支持的范围内时引发.
 		 */
-		public static function getMonthCyclical(year:uint, month:uint):uint {
+		public static function getMonthCyclical(year:int, month:int):int {
 			checkMonth(month);
 			//农历 0 年正月为戊寅月(60进制14)
 			return (year * 12 + month + 14) % 60;
@@ -679,7 +679,7 @@ package com.cyjb.dates {
 		 * 	return vs;
 		 * }
 		 */
-		public static function getSolarTerm(year:uint, index:uint):Date {
+		public static function getSolarTerm(year:int, index:int):Date {
 			if(index >= 24) {
 				ErrorUtil.throwError(ArgumentError, 1508, "index");
 			}
@@ -730,7 +730,7 @@ package com.cyjb.dates {
 		/**
 		 * 根据公历日期计算农历日期.
 		 */
-		private function calculateDate(time:uint = 0):void {
+		private function calculateDate(time:int = 0):void {
 			//当前日期与最小支持日期间隔的天数
 			var offset:int;
 			if(arguments.length) {
@@ -740,7 +740,7 @@ package com.cyjb.dates {
 				offset = DateUtil.elapsedTimes(_dateSolar, MIN_SUPPORTED_DATE, 
 					DateUtil.DAY);
 			}
-			var i:uint, y:uint, nYear:uint, temp:uint = 0, leap:uint = 0;
+			var i:int, y:int, nYear:int, temp:int = 0, leap:int = 0;
 			//计算年份
 			//缓存以前的年份计算结果,极大的提高了计算效率
 			//年份的索引
@@ -816,7 +816,7 @@ package com.cyjb.dates {
 		 */
 		private function calculateLunar():void {
 			//sum :从 1900 年正月初一至今的天数
-			var i:uint, sum:uint = 0, leap:uint = 0;
+			var i:int, sum:int = 0, leap:int = 0;
 			//若是月份超出范围,则将多余的月份累加到下一年
 			if(_month > 12) {
 				_year += Math.floor(_month / 12);
@@ -828,7 +828,7 @@ package com.cyjb.dates {
 			//计算年份
 			//缓存以前的年份计算结果,极大的提高了计算效率
 			//年份的索引
-			var y:uint = _year - MIN_SUPPORTED_YEAR;
+			var y:int = _year - MIN_SUPPORTED_YEAR;
 			//以前计算过的最大年份的索引
 			i = YEAR_DATE.length - 1;
 			if(i < y) {
@@ -893,7 +893,7 @@ package com.cyjb.dates {
 		 * 
 		 * @throws ArgumentError 当节气索引不在可支持的范围内时引发.
 		 */
-		private static function calculateTerm(year:uint, index:uint):uint {
+		private static function calculateTerm(year:int, index:int):int {
 			return getSolarTerm(year, index).date;
 		}
 		/**
@@ -903,7 +903,7 @@ package com.cyjb.dates {
 		 * 
 		 * @throws ArgumentError 当年份不在可支持的范围内时引发.
 		 */
-		private static function checkYear(year:uint):void {
+		private static function checkYear(year:int):void {
 			if((year < MIN_SUPPORTED_YEAR) || (year > MAX_SUPPORTED_YEAR)) {
 				ErrorUtil.throwError(ArgumentError, 1508, "year");
 			}
@@ -915,7 +915,7 @@ package com.cyjb.dates {
 		 * 
 		 * @throws ArgumentError 当月份不在可支持的范围内时引发.
 		 */
-		private static function checkMonth(month:uint):void {
+		private static function checkMonth(month:int):void {
 			if((month < 0) || (month > 11)) {
 				ErrorUtil.throwError(ArgumentError, 1508, "month");
 			}
@@ -944,7 +944,7 @@ package com.cyjb.dates {
 		 * 
 		 * @return 指定年的闰月.
 		 */
-		private static function leapMonth(index:uint):uint {
+		private static function leapMonth(index:int):int {
 			//获取农历信息最后一位的数值
 			return (LUNAR_INFO[index] & 0xF);
 		}
@@ -955,7 +955,7 @@ package com.cyjb.dates {
 		 * 
 		 * @return 指定年闰月的天数,没有闰月是 <code>0</code>.
 		 */
-		private static function leapDays(index:uint):uint {
+		private static function leapDays(index:int):int {
 			if(leapMonth(index)) {
 				//获取农历信息第一位的数值
 				return ((LUNAR_INFO[index] & 0x10000)? 30:29);
@@ -971,7 +971,7 @@ package com.cyjb.dates {
 		 * 
 		 * @return 指定年指定月份的天数.
 		 */
-		private static function monthDays(index:uint, month:uint):uint {
+		private static function monthDays(index:int, month:int):int {
 			//获取农历信息中月份信息
 			//0x8000 = 1000 0000 0000 0000
 			//最后四位是闰月月份,仅前 12 位是有效的
@@ -984,10 +984,10 @@ package com.cyjb.dates {
 		 * 
 		 * @return 指定年份的总天数.
 		 */
-		private static function yearDays(index:uint):uint {
+		private static function yearDays(index:int):int {
 			//每月都是 29 天的话,总天数是 348.
-			var i:uint, sum:uint = 348;
-			var date:uint = LUNAR_INFO[index];
+			var i:int, sum:int = 348;
+			var date:int = LUNAR_INFO[index];
 			for(i = 0x8000;i > 0x8; i >>= 1) {
 				sum += (date & i)? 1:0;
 			}

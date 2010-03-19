@@ -246,7 +246,7 @@ public class DirectHTTPChannel extends Channel
      * @private
      * Incremented per new instance of the channel to create clientIds.
      */
-    private static var clientCounter:uint;
+    private static var clientCounter:int;
 }
 }
 

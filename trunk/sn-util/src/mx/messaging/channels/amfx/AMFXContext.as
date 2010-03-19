@@ -53,14 +53,14 @@ public class AMFXContext
      */
     public function findTraitInfo(traitInfo:Object):int
     {
-        for (var i:uint = 0; i < traits.length; i++)
+        for (var i:int = 0; i < traits.length; i++)
         {
             var ti:Object = traits[i];
 
             if (ti.alias == traitInfo.alias
                 && ti.properties.length == traitInfo.properties.length)
             {
-                var j:uint = 0;
+                var j:int = 0;
                 for (; j < ti.properties.length; j++)
                 {
                     if (ti.properties[i] != traitInfo.properties[j])
@@ -88,7 +88,7 @@ public class AMFXContext
      */
     public function findObject(object:Object):int
     {
-        for (var i:uint = 0; i < objects.length; i++)
+        for (var i:int = 0; i < objects.length; i++)
         {
             var o:Object = objects[i];
             if (o === object)
@@ -111,7 +111,7 @@ public class AMFXContext
     {
         if (str != "")
         {
-            for (var i:uint = 0; i < strings.length; i++)
+            for (var i:int = 0; i < strings.length; i++)
             {
                 var s:String = strings[i];
                 if (s == str)
@@ -161,7 +161,7 @@ public class AMFXContext
      * Retrieve trait info for an object by its reference
      * table index.
      */
-    public function getTraitInfo(ref:uint):*
+    public function getTraitInfo(ref:int):*
     {
         return traits[ref];
     }
@@ -169,7 +169,7 @@ public class AMFXContext
     /**
      * Retrieve an object by its reference table index.
      */
-    public function getObject(ref:uint):*
+    public function getObject(ref:int):*
     {
         return objects[ref];
     }
@@ -177,7 +177,7 @@ public class AMFXContext
     /**
      * Retrieve a string by its reference table index.
      */
-    public function getString(ref:uint):String
+    public function getString(ref:int):String
     {
         return strings[ref];
     }

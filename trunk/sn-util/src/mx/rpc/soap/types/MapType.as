@@ -64,7 +64,7 @@ public class MapType implements ICustomSOAPType
                 var typeLocalName:String = "string";
                 if (keyValue is Number)
                 {
-                    if (keyValue is uint)
+                    if (keyValue is int)
                     {
                         typeLocalName = "unsignedInt";
                     }

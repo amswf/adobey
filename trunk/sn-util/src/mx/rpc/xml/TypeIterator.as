@@ -58,7 +58,7 @@ public class TypeIterator
         return result;
     }
 
-    public function get length():uint
+    public function get length():int
     {
         return getLength(_value);
     }
@@ -73,7 +73,7 @@ public class TypeIterator
         return _value;
     }
 
-    public static function getItemAt(value:*, index:uint):*
+    public static function getItemAt(value:*, index:int):*
     {
         var result:*;
 
@@ -99,9 +99,9 @@ public class TypeIterator
         return result;
     }
 
-    public static function getLength(value:*):uint
+    public static function getLength(value:*):int
     {
-        var result:uint;
+        var result:int;
 
         if (value != null)
         {
@@ -142,9 +142,9 @@ public class TypeIterator
         return false;
     }
 
-    public static function push(parent:*, value:*):uint
+    public static function push(parent:*, value:*):int
     {
-        var result:uint;
+        var result:int;
 
         if (parent != null)
         {
@@ -180,7 +180,7 @@ public class TypeIterator
     }
 
     private var _value:*;
-    private var counter:uint;
+    private var counter:int;
 }
 
 }

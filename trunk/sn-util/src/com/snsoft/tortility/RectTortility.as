@@ -54,7 +54,7 @@ package com.snsoft.tortility
 		 * @return Shape
 		 * 
 		 */		
-		public function drawFill(points:Vector.<Point>,lineColor:uint= 0x000000,fillColor:uint = 0xe6e6e6,thikness:uint = 0):Shape {
+		public function drawFill(points:Vector.<Point>,lineColor:int= 0x000000,fillColor:int = 0xe6e6e6,thikness:int = 0):Shape {
 			if (points != null) {
 				var shape:Shape = new Shape();
 				var gra:Graphics = shape.graphics;

@@ -305,14 +305,14 @@ public class ServerConfig
             // in the specified channelset.
             var csUris:Array = [];
             var csChannels:Array = channelSet.channels;
-            for (var i:uint = 0; i<csChannels.length; i++)
+            for (var i:int = 0; i<csChannels.length; i++)
                 csUris.push(csChannels[i].uri);
                 
             var ids:Array = getChannelIdList(destination);
             var dsUris:Array = [];
             var dsChannels:XMLList;
             var channelConfig:XML;
-            for (var j:uint = 0; j<ids.length; j++)
+            for (var j:int = 0; j<ids.length; j++)
             {
                 dsChannels = xml.channels.channel.(@id == ids[j]);
                 channelConfig = dsChannels[0];                               

@@ -54,8 +54,8 @@ public class NamespaceUtil
                 elements.push(xmlNode);
             }
 
-            var numChildren:uint = xmlNode.childNodes.length;
-            for (var i:uint = 0; i < numChildren; i++)
+            var numChildren:int = xmlNode.childNodes.length;
+            for (var i:int = 0; i < numChildren; i++)
             {
                 var subElement:XMLNode = xmlNode.childNodes[i];
                 // NOTE: No longer digging deeper than one level (big perf boost)

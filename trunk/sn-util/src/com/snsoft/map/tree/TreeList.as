@@ -1,6 +1,6 @@
 package com.snsoft.map.tree
 {
-	import com.snsoft.map.util.HashArray;
+	import com.snsoft.map.util.HashVector;
 	import com.snsoft.map.util.MapUtil;
 	
 	import fl.core.UIComponent;
@@ -10,7 +10,7 @@ package com.snsoft.map.tree
 	public class TreeList extends UIComponent
 	{
 		//树列表
-		private var v:HashArray = new HashArray();
+		private var v:HashVector = new HashVector();
 		
 		private var _currentClickBtnName:String = null;
 		

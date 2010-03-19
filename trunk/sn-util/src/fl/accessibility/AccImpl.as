@@ -30,7 +30,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const STATE_SYSTEM_NORMAL:uint = 0x00000000;
+		private static const STATE_SYSTEM_NORMAL:int = 0x00000000;
 	
 		/**
          *  @private
@@ -38,7 +38,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const STATE_SYSTEM_FOCUSABLE:uint = 0x00100000;
+		private static const STATE_SYSTEM_FOCUSABLE:int = 0x00100000;
 		
 		/**
          *  @private
@@ -46,7 +46,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const STATE_SYSTEM_FOCUSED:uint = 0x00000004;
+		private static const STATE_SYSTEM_FOCUSED:int = 0x00000004;
 		
 		/**
          *  @private
@@ -54,7 +54,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const STATE_SYSTEM_UNAVAILABLE:uint = 0x00000001;
+		private static const STATE_SYSTEM_UNAVAILABLE:int = 0x00000001;
 		
 		/**
          *  @private
@@ -62,7 +62,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		private static const EVENT_OBJECT_NAMECHANGE:uint = 0x800C;
+		private static const EVENT_OBJECT_NAMECHANGE:int = 0x800C;
 
 
 		//--------------------------------------------------------------------------
@@ -86,7 +86,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		protected var role:uint;
+		protected var role:int;
 
 
 		//--------------------------------------------------------------------------
@@ -184,7 +184,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function get_accRole(childID:uint):uint {
+		override public function get_accRole(childID:int):int {
 			return role;
 		}
 		
@@ -199,7 +199,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		override public function get_accName(childID:uint):String {
+		override public function get_accName(childID:int):String {
 			var accName:String = "";
 			if (childID == 0
 					&& master.accessibilityProperties 
@@ -228,7 +228,7 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		protected function getName(childID:uint):String {
+		protected function getName(childID:int):String {
 			return null;
 		}
 		
@@ -243,8 +243,8 @@ package fl.accessibility {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 */
-		protected function getState(childID:uint):uint {
-			var accState:uint = STATE_SYSTEM_NORMAL;
+		protected function getState(childID:int):int {
+			var accState:int = STATE_SYSTEM_NORMAL;
 			if (!UIComponent(master).enabled) {
 				accState |= STATE_SYSTEM_UNAVAILABLE;
 			} else {

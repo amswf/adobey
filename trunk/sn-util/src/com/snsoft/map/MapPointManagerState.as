@@ -1,6 +1,6 @@
 package com.snsoft.map
 {
-	import com.snsoft.map.util.HashArray;
+	import com.snsoft.map.util.HashVector;
 	
 	import flash.geom.Point;
 
@@ -25,7 +25,7 @@ package com.snsoft.map
 		private var _hitPoint:Point = null;
 		
 		//满足条件时快速生成已画过的链
-		private var _fastPointArray:HashArray = null;
+		private var _fastPointArray:HashVector = null;
 		
 		public function MapPointManagerState(pointState:int=0,hitPoint:Point = null)
 		{
@@ -60,12 +60,12 @@ package com.snsoft.map
 			_hitPoint = value;
 		}
 
-		public function get fastPointArray():HashArray
+		public function get fastPointArray():HashVector
 		{
 			return _fastPointArray;
 		}
 
-		public function set fastPointArray(value:HashArray):void
+		public function set fastPointArray(value:HashVector):void
 		{
 			_fastPointArray = value;
 		}

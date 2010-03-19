@@ -28,7 +28,7 @@ package ascb.play {
       var nCardsEach:Number = (nPerPlayer == -1) ? Math.floor(_cdkDeck.deck.length / nPlayers) : nPerPlayer;
 
       // Deal out the specified number of cards to each player.
-      for (var i:uint = 0; i < nPlayers; i++) {
+      for (var i:int = 0; i < nPlayers; i++) {
 
         aHands.push(new CardHand(_cdkDeck));
 
@@ -141,7 +141,7 @@ package ascb.play {
       return _aHand;
     }
     
-    public function get length():uint {
+    public function get length():int {
       return _aHand.length;
     }
 
@@ -152,7 +152,7 @@ package ascb.play {
       _cdkDeck = cdkDeck;
     }
     
-    public function getCardAt(nIndex:uint):Card {
+    public function getCardAt(nIndex:int):Card {
       return _aHand[nIndex];
     }
     
@@ -172,7 +172,7 @@ package ascb.play {
     public function draw(nDraw:Number = 1):Void {
     
       // Add the specified number of cards to the hand.
-      for (var i:uint = 0; i < nDraw; i++) {
+      for (var i:int = 0; i < nDraw; i++) {
         _aHand.push(_cdkDeck.deck.shift());
       }
 

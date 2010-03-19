@@ -68,7 +68,7 @@ public class RowSetType implements ICustomSOAPType
         var fields:Array = [];
 
         var fieldNodes:XMLList = rowSetNode.elements()[0].elements();
-        var i:uint;
+        var i:int;
 
         // Gather each of the field names and types
         for each (var field:XML in fieldNodes)
@@ -95,7 +95,7 @@ public class RowSetType implements ICustomSOAPType
         {
             var columns:XMLList = item.elements();
             var row:* = decoder.createContent();
-            var j:uint = 0;
+            var j:int = 0;
             for each (var column:XML in columns)
             {
                 row[fields[j]] = decoder.decode(column, null, types[j] as QName);

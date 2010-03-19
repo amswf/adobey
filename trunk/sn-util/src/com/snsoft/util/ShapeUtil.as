@@ -10,7 +10,7 @@ package com.snsoft.util
 		{
 		}
 		
-		public function drawShapeWithPoint(color:uint,alpha:Number,... points:Array):Shape{
+		public function drawShapeWithPoint(color:int,alpha:Number,... points:Array):Shape{
 			if(points != null){
 				var shape:Shape = new Shape();
 				var gra:Graphics = shape.graphics;

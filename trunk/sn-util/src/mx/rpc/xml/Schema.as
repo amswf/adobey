@@ -204,7 +204,7 @@ public class Schema
             }
         }
 
-        for (var s:uint = 0; s < schemas.length; s++)
+        for (var s:int = 0; s < schemas.length; s++)
         {
             var schema:Schema = schemas[s] as Schema;
             var currentTargetNamespace:Namespace = schema.targetNamespace;
@@ -212,7 +212,7 @@ public class Schema
             var schemaXML:XML = schema.xml;
             var constants:SchemaConstants = schema.schemaConstants;
 
-            for (var t:uint = 0; t < componentTypes.length; t++)
+            for (var t:int = 0; t < componentTypes.length; t++)
             {
                 var componentType:QName = componentTypes[t] as QName;
 

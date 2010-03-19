@@ -171,7 +171,7 @@ public class SOAPArrayType implements ICustomSOAPType
             value = [value];
 
         var iter:TypeIterator = new TypeIterator(value);
-        var d:uint = 0;
+        var d:int = 0;
         
         if (dimensions.length > 0)
         {
@@ -225,7 +225,7 @@ public class SOAPArrayType implements ICustomSOAPType
                 else
                 {
                     // Bounded dimension
-                    for (var i:uint = 0; i < dimensionSize; i++)
+                    for (var i:int = 0; i < dimensionSize; i++)
                     {
                         itemValue = TypeIterator.getItemAt(iter.value, i);
                         if (dimensions.length == 1)
@@ -266,7 +266,7 @@ public class SOAPArrayType implements ICustomSOAPType
             value = [value];
 
         var iter:TypeIterator = new TypeIterator(value);
-        var d:uint = 0;
+        var d:int = 0;
 
         if (dimensions.length > 0)
         {
@@ -314,7 +314,7 @@ public class SOAPArrayType implements ICustomSOAPType
                 else
                 {
                     // Bounded dimension
-                    for (var i:uint = 0; i < dimensionSize; i++)
+                    for (var i:int = 0; i < dimensionSize; i++)
                     {
                         itemValue = TypeIterator.getItemAt(iter.value, i);
                         if (dimensions.length == 1)
