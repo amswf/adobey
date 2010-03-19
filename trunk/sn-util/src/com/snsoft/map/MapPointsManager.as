@@ -109,47 +109,40 @@
 							var n1:String = MapPointsManager.createPointHashName(p1);
 							var n2:String = MapPointsManager.createPointHashName(p2);
 							var np:String = MapPointsManager.createPointHashName(htp);
+							var paLen:int = pa.length - 1;
 							var index1:int = pa.findIndexByName(n1);
-							var index2:int = pa.findIndexByName(n2);
-							var indexp:int = pa.findIndexByName(np);
-							
-							var palength:int = pa.length -1;
-							if(indexp == palength){
-								indexp = 0;
-							}
-							if(index1 >= 0 && index2 >= 0 && indexp >= 0 ){
-								
-								if(index1 == palength){
-									index1 = 0;
-								}
-								if(index2 == palength){
-									index2 = 0;
-								}
-								var subIndex:int = index1 - index2;
-								if(subIndex == palength -1 || subIndex == -1){
-									subIndex = -1;
-								}
-								else if(subIndex == - (palength -1) || subIndex == 1){
-									subIndex = 1;
-								}
-								if(Math.abs(subIndex) == 1){
-									var startIndex:int = index1;
-									while(true){
-										startIndex += subIndex;
-										if(startIndex > palength){
-											startIndex = 0;
+							if(index1 >= 0){
+								var index2:int = pa.findIndexByName(n2);
+								if(index2 >= 0 ){
+									var indexp:int = pa.findIndexByName(np);
+									if(indexp >= 0 ){
+										var subIndex:int = index1 - index2;
+										if(subIndex == paLen || subIndex == -1){
+											subIndex = -1;
 										}
-										else if(startIndex < 0){
-											startIndex = palength -1;
+										else if(subIndex == - (paLen) || subIndex == 1){
+											subIndex = 1;
 										}
-										var fp:Point = pa.findByIndex(startIndex) as Point;
-										var fpname:String = MapPointsManager.createPointHashName(p1);
-										fastPointArray.put(fpname,fp);
-										if(startIndex == indexp) break;
+										if(Math.abs(subIndex) == 1){
+											var startIndex:int = index1;
+											while(true){
+												startIndex += subIndex;
+												if(startIndex > paLen){
+													startIndex = 0;
+												}
+												else if(startIndex < 0){
+													startIndex = paLen;
+												}
+												var fp:Point = pa.findByIndex(startIndex) as Point;
+												var fpname:String = MapPointsManager.createPointHashName(fp);
+												fastPointArray.put(fpname,fp);
+												if(startIndex == indexp) break;
+											}
+										}
+										isFast = true;
+										break;
 									}
 								}
-								isFast = true;
-								break;
 							}
 						}
 					}
