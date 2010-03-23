@@ -7,6 +7,7 @@ package com.snsoft.util
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
+	import flash.events.IOErrorEvent;
 	import flash.net.URLRequest;
 	
 	public class ImageLoader extends EventDispatcher
@@ -29,6 +30,7 @@ package com.snsoft.util
 				var loader:Loader = new Loader();
 				loader.load(req);
 				loader.contentLoaderInfo.addEventListener(Event.COMPLETE,handlerLoaderComplete);
+				loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR,handlerLoaderIoError);
 			}
 		}
 		
@@ -48,6 +50,10 @@ package com.snsoft.util
 				this._bitmapData = data;
 				this.dispatchEvent(new Event(Event.COMPLETE));
 			}
+		}
+		
+		private function handlerLoaderIoError(e:Event):void{
+			trace("图片地址错误！");
 		}
 
 		public function get bitmapData():BitmapData
