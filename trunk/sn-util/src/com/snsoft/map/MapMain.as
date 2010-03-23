@@ -46,6 +46,9 @@
 		//工作区
 		private var ws:WorkSpace = null;
 		
+		//根工作区
+		private var rootWs:WorkSpace = null;
+		
 		//综合事件对象[拖动]
 		private var spriteMouseAction:SpriteMouseAction = new SpriteMouseAction();
 		
@@ -83,7 +86,7 @@
 			wsw = this.width - SPACE - SPACE - SPACE - bar.width - areaAttribute.width;
 			wsx = bar.width + SPACE + SPACE;
 			wsy = SPACE;
-			
+			//工作区遮罩
 			wsMask =  SkinsUtil.createSkinByName(MAIN_FRAME_SKIN);
 			this.addChild(wsMask);
 			wsMask.width = wsw;
@@ -93,7 +96,10 @@
 			var mdfm:MapDataFileManager = new MapDataFileManager();
 			this.parentWsName = MapDataFileManager.MAP_FILE_BASE_NAME;
 			var wsName:String = mdfm.createChildWorkSpaceName(this.parentWsName,1);
+			
+			//工作区
 			this.initWorkSpace(wsMask,new Point(wsx,wsy),new Point(wsw,wsh),wsName);
+			this.rootWs = this.ws;
 			
 			wsFrame = SkinsUtil.createSkinByName(MAIN_FRAME_SKIN);
 			wsFrame.width = wsw;
@@ -211,7 +217,7 @@
 				mdfm.mainDirectory = dir;
 				
 				//保存
-				ws.saveWorkSpace();
+				this.rootWs.saveWorkSpace();
 			}
 			else {
 				mmAttribute.selectSaveDirectory();
@@ -227,6 +233,7 @@
 			var dir:String = mmAttribute.mapFileMainDirectory;
 			if(dir != null){
 				var mdfio:MapDataFileManager = new MapDataFileManager();
+				this.parentWsName = MapDataFileManager.MAP_FILE_BASE_NAME;
 				mdfio.mainDirectory = dir;
 				mdfio.addEventListener(Event.COMPLETE,handlerLoadXMLComplete);
 				var fullPath:String = mdfio.creatFileFullPath();
@@ -310,6 +317,7 @@
 			var ma:MapArea = ws.currentClickMapArea;
 			var wsName:String = mdfm.createChildWorkSpaceName(this.parentWsName,1);
 			this.initWorkSpace(wsMask,new Point(wsx,wsy),new Point(wsw,wsh),wsName);
+			ma.childWorkSpace = this.ws;
 			///初始化数据
 			if(dir != null){
 				var mdfio:MapDataFileManager = new MapDataFileManager();
