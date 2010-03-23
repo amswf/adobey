@@ -227,7 +227,7 @@
 			
 			this.x = x;
 			this.y = y;
-			this.dispatchEvent(new Event(MouseEvent.MOUSE_UP));//问题在这？？？？？？？？？？？？？？？？？？？？？？？？？？？不能响应。
+			this.dispatchEvent(new Event(MouseEvent.MOUSE_UP));
 		}
 		
 		public function refreshMapBack(imageUrl:String):void{
