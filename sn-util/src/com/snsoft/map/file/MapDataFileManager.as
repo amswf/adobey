@@ -153,12 +153,12 @@
 		}
 		
 		/**
-		 * 创建工作区基本名称 
+		 * 创建子工作区基本名称 
 		 * @param parentWorkSpaceName
 		 * @return 
 		 * 
 		 */		
-		public function createChildWorkSpaceName(parentWorkSpaceName:String = null,i:int = 0):String{
+		public static function createChildWorkSpaceName(parentWorkSpaceName:String = null,i:int = 0):String{
 			var wsName:String = MAP_FILE_BASE_NAME;
 			if(parentWorkSpaceName == null && parentWorkSpaceName.length == 0){
 				wsName = parentWorkSpaceName;
@@ -170,12 +170,29 @@
 		}
 		
 		/**
+		 * 创建父工作区基本名称 
+		 * @param parentWorkSpaceName
+		 * @return 
+		 * 
+		 */		
+		public static function createParentWorkSpaceName(childWorkSpaceName:String = null):String{
+			var wsName:String = null;
+			if(childWorkSpaceName != null){
+				var index:int = childWorkSpaceName.lastIndexOf("_");
+				if(index >= 0){
+					wsName = childWorkSpaceName.substring(0,index);
+				}
+			}
+			return wsName;
+		}
+		
+		/**
 		 * 创建工作区父工作区名称
 		 * @param workSpaceName
 		 * @return 
 		 * 
 		 */		
-		private function createParentWorkSpaceBaseName(workSpaceName:String):String{
+		private static function createParentWorkSpaceBaseName(workSpaceName:String):String{
 			var wsName:String = null;
 			if(workSpaceName == null && workSpaceName.length == 0){
 				

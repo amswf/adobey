@@ -69,6 +69,9 @@
 		//上一层工作区名称
 		private var parentWsName:String = null;
 		
+		//
+		private var wshv:HashVector = new HashVector();
+		
 		public function MapMain()
 		{
 			super();
@@ -86,6 +89,7 @@
 			wsw = this.width - SPACE - SPACE - SPACE - bar.width - areaAttribute.width;
 			wsx = bar.width + SPACE + SPACE;
 			wsy = SPACE;
+			
 			//工作区遮罩
 			wsMask =  SkinsUtil.createSkinByName(MAIN_FRAME_SKIN);
 			this.addChild(wsMask);
@@ -93,9 +97,10 @@
 			wsMask.height = wsh;
 			wsMask.x = wsx;
 			wsMask.y = wsy;
+			
 			var mdfm:MapDataFileManager = new MapDataFileManager();
 			this.parentWsName = MapDataFileManager.MAP_FILE_BASE_NAME;
-			var wsName:String = mdfm.createChildWorkSpaceName(this.parentWsName,1);
+			var wsName:String = MapDataFileManager.createChildWorkSpaceName(this.parentWsName,1);
 			
 			//工作区
 			this.initWorkSpace(wsMask,new Point(wsx,wsy),new Point(wsw,wsh),wsName);
@@ -125,6 +130,7 @@
 			wsAttribute.addEventListener(WorkSpaceAttribute.SUBMIT_EVENT,handlerWsAttributeSubmit);
 			wsAttribute.addEventListener(WorkSpaceAttribute.ZOOM_IN_EVENT,handlerWsAttributeZoomIn);
 			wsAttribute.addEventListener(WorkSpaceAttribute.ZOOM_OUT_EVENT,handlerWsAttributeZoomOut);
+			wsAttribute.addEventListener(WorkSpaceAttribute.BACK_PARENT_EVENT,handlerWsAttributeBackParent);
 			wsAttribute.addEventListener(WorkSpaceAttribute.TREE_CLICK,handlerWsAttributeTreeClick);
 			this.addChild(wsAttribute);
 			
@@ -163,6 +169,7 @@
 			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_ADD,handlerMapAreaChange);
 			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_DELETE,handlerMapAreaChange);
 			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_UPDATE,handlerMapAreaChange);
+			this.wshv.put(wsName,ws);
 		}
 		
 		/**
@@ -193,6 +200,27 @@
 		private function handlerWsAttributeZoomOut(e:Event):void{
 			ws.scalePoint = MapUtil.creatInverseSaclePoint(ws.scalePoint,new Point(2,2));
 			ws.refreshScale(this.wsFrame);
+		}
+		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
+		private function handlerWsAttributeBackParent(e:Event):void{
+			var wsName:String = this.ws.wsName;
+			if(wsName != null){
+				wsName = MapDataFileManager.createParentWorkSpaceName(wsName);
+				if(wsName != null){
+					var ws:WorkSpace = this.wshv.findByName(wsName) as WorkSpace;
+					if(ws != null){
+						this.removeChild(this.ws);
+						this.ws = ws;
+						this.ws.mask = this.wsMask;
+						this.addChild(this.ws);
+					}
+				}
+			}
 		}
 		
 		/**
@@ -258,7 +286,7 @@
 				var wsy:int = SPACE;
 				
 				var mdfm:MapDataFileManager = new MapDataFileManager();
-				var wsName:String = mdfm.createChildWorkSpaceName(this.parentWsName,1);
+				var wsName:String = MapDataFileManager.createChildWorkSpaceName(this.parentWsName,1);
 				this.initWorkSpace(this.wsMask,new Point(wsx,wsy),new Point(wsw,wsh),wsName);
 				this.ws.initFromSaveData(mdfio.workSpaceDO);
 			}
@@ -304,30 +332,17 @@
 			areaAttribute.setareaNameY(String(mado.areaNamePlace.y));
 		}
 		
+		
 		/**
 		 * 
 		 * @param e
 		 * 
 		 */		
 		private function handlerMapAreaDoubleClick(e:Event):void{
-			this.parentWsName = this.ws.wsName;
-			var dir:String = mmAttribute.mapFileMainDirectory;
-			var mdfm:MapDataFileManager = new MapDataFileManager();
-			var mado:MapAreaDO = ws.currentClickMapArea.mapAreaDO;
-			var ma:MapArea = ws.currentClickMapArea;
-			var wsName:String = mdfm.createChildWorkSpaceName(this.parentWsName,1);
-			this.initWorkSpace(wsMask,new Point(wsx,wsy),new Point(wsw,wsh),wsName);
-			ma.childWorkSpace = this.ws;
-			///初始化数据
-			if(dir != null){
-				var mdfio:MapDataFileManager = new MapDataFileManager();
-				mdfio.addEventListener(Event.COMPLETE,handlerLoadXMLComplete);
-				var fullPath:String = mdfio.creatFileFullPath(this.parentWsName);
-				if(mdfio.fileIsExists(fullPath)){
-					mdfio.open(fullPath);
-				}
-			}
+			this.initWorkSpaceByName(this.ws.wsName);
 		}
+		
+		
 		
 		/**
 		 * 
@@ -359,6 +374,32 @@
 		 */		
 		private function handlerWsDragMove(e:Event):void{
 			
+		}
+		
+		
+		/**
+		 * 通过工作区名称初始化工作区 
+		 * @param parentWsName
+		 * 
+		 */		
+		private function initWorkSpaceByName(parentWsName:String):void{
+			this.parentWsName = parentWsName;
+			var dir:String = mmAttribute.mapFileMainDirectory;
+			var mdfm:MapDataFileManager = new MapDataFileManager();
+			var mado:MapAreaDO = ws.currentClickMapArea.mapAreaDO;
+			var ma:MapArea = ws.currentClickMapArea;
+			var wsName:String = MapDataFileManager.createChildWorkSpaceName(this.parentWsName,1);
+			this.initWorkSpace(wsMask,new Point(wsx,wsy),new Point(wsw,wsh),wsName);
+			ma.childWorkSpace = this.ws;
+			///初始化数据
+			if(dir != null){
+				var mdfio:MapDataFileManager = new MapDataFileManager();
+				mdfio.addEventListener(Event.COMPLETE,handlerLoadXMLComplete);
+				var fullPath:String = mdfio.creatFileFullPath(this.parentWsName);
+				if(mdfio.fileIsExists(fullPath)){
+					mdfio.open(fullPath);
+				}
+			}	
 		}
 	}
 }
