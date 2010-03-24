@@ -23,6 +23,8 @@
 		//工作区数据对象
 		private var _workSpaceDO:WorkSpaceDO = null;
 		
+		private var _workSpaceDOVector:Vector.<WorkSpaceDO> = new Vector.<WorkSpaceDO>();
+		
 		//地图存储文件基本名称 ws_1_2.xml
 		public static const MAP_FILE_BASE_NAME:String = "ws";
 		
@@ -275,9 +277,95 @@
 		
 		private function handlerLoaderXML(e:Event):void {
 			var map:XML = new XML(e.currentTarget.data);
-			var wsdo:WorkSpaceDO = this.creatWorkSpaceDO(map);
+			var wsdo:WorkSpaceDO = this.creatWorkSpaceDO(map,null);
 			this._workSpaceDO = wsdo;
 			this.dispatchEvent(new Event(Event.COMPLETE));
+		}
+		
+		/**
+		 * 
+		 * 
+		 */		
+		public function openAll():void{
+			var dir:String = this.mainDirectory;
+			if(dir != null){
+				var dfv:Vector.<File> = this.getAllDataFile();
+				loadAllDataFile(dfv,0);
+			}
+		}
+		
+		/**
+		 * 
+		 * @return 
+		 * 
+		 */		
+		private function getAllDataFile():Vector.<File>{
+			var dir:String = this.mainDirectory;
+			var v:Vector.<File> = new Vector.<File>();
+			if(dir != null){
+				var rootDirFile:File = new File(dir);
+				if(rootDirFile.exists){
+					var nxDirFileList:Array = rootDirFile.getDirectoryListing();
+					for(var i:int = 0;i<nxDirFileList.length;i++){
+						var nxDirFile:File = nxDirFileList[i] as File;
+						if(nxDirFile.isDirectory){
+							var dataFileList:Array = nxDirFile.getDirectoryListing();
+							for(var j:int = 0;j < dataFileList.length;j ++){
+								var dataFile:File = dataFileList[j] as File;
+								if(!dataFile.isDirectory){
+									v.push(dataFile);
+								}
+							}
+						}
+					}
+				}
+			}
+			return v;
+		}
+		
+		
+		private var wsName:String = null;
+		
+		private var nextIndex:int = 0;
+		
+		private var dataFileVector:Vector.<File> = null;
+		/**
+		 * 
+		 * @param v
+		 * @param index
+		 * 
+		 */		
+		private function loadAllDataFile(v:Vector.<File>,index:int):void{
+			if(v != null && index >= 0 && index < v.length){
+				nextIndex = index;
+				dataFileVector = v;
+				var dataFile:File = v[index];
+				var name:String = dataFile.name;
+				wsName = name.replace(MAP_FILE_BASE_EXT_NAME);
+				var dir:String = dataFile.nativePath;
+				var req:URLRequest = new URLRequest(dir);
+				var loader:URLLoader = new URLLoader();
+				loader.load(req);
+				loader.addEventListener(Event.COMPLETE,handlerLoadAllDataFile); 
+			}
+		}
+		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
+		private function handlerLoadAllDataFile(e:Event):void{
+			var map:XML = new XML(e.currentTarget.data);
+			var wsdo:WorkSpaceDO = this.creatWorkSpaceDO(map,wsName);
+			this._workSpaceDOVector.push(wsdo);
+			nextIndex ++;
+			if(nextIndex < dataFileVector.length){
+				loadAllDataFile(dataFileVector,nextIndex);
+			}
+			else{
+				this.dispatchEvent(new Event(Event.COMPLETE));
+			}
 		}
 		
 		/**
@@ -286,7 +374,7 @@
 		 * @return 
 		 * 
 		 */		
-		public function creatWorkSpaceDO(xml:XML):WorkSpaceDO{
+		public function creatWorkSpaceDO(xml:XML,wsName:String):WorkSpaceDO{
 			var wsdo:WorkSpaceDO = new WorkSpaceDO();
 			//<map> 
 			var map:XML = xml;
@@ -460,6 +548,11 @@
 		public function set mainDirectory(value:String):void
 		{
 			_mainDirectory = value;
+		}
+
+		public function get workSpaceDOVector():Vector.<WorkSpaceDO>
+		{
+			return _workSpaceDOVector;
 		}
 
 		

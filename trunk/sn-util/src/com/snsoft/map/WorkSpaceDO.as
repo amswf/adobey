@@ -3,6 +3,9 @@ package com.snsoft.map{
 	
 	public class WorkSpaceDO{
 		
+		//工作区名称
+		private var _wsName:String = null;
+		
 		//工作区背景图片		
 		private var _image:String = null;
 		
@@ -31,6 +34,16 @@ package com.snsoft.map{
 		public function set mapAreaDOHashArray(value:HashVector):void
 		{
 			_mapAreaDOHashArray = value;
+		}
+
+		public function get wsName():String
+		{
+			return _wsName;
+		}
+
+		public function set wsName(value:String):void
+		{
+			_wsName = value;
 		}
 
 
