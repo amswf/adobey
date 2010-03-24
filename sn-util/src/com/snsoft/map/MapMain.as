@@ -12,7 +12,6 @@
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
-	import flash.html.script.Package;
 	
 	/**
 	 * HashArray需要优化算法，需要用Vector 重写。
@@ -278,15 +277,12 @@
 			var dir:String = mmAttribute.mapFileMainDirectory;
 			if(dir != null){
 				var mdfio:MapDataFileManager = new MapDataFileManager();
-				var wsName:String = MapDataFileManager.MAP_FILE_DEFAULT_NAME;
-				var ws:WorkSpace = new WorkSpace(new Point(this.wsw,this.wsh));
-				this.updateAndSetWorkSpace(ws,wsName);
 				mdfio.mainDirectory = dir;
 				mdfio.addEventListener(Event.COMPLETE,handlerLoadXMLComplete);
-				var fullPath:String = mdfio.creatFileFullPath2(wsName);
-				if(mdfio.fileIsExists(fullPath)){
-					mdfio.open(fullPath);
-				}
+				mdfio.openAll();
+				
+				
+				
 			}
 		}
 		
@@ -297,10 +293,17 @@
 		 */		
 		private function handlerLoadXMLComplete(e:Event):void{
 			var mdfio:MapDataFileManager = e.currentTarget as MapDataFileManager;
-			if(mdfio != null && mdfio.workSpaceDO != null){
-				var mdfm:MapDataFileManager = new MapDataFileManager();
-				this.ws.initFromSaveData(mdfio.workSpaceDO);
+			var v:Vector.<WorkSpaceDO> = mdfio.workSpaceDOVector;
+			for(var i:int = 0;i < v.length;i ++){
+				var wsdo:WorkSpaceDO = v[i];
+				var wsName:String = wsdo.wsName;
+				var ws:WorkSpace = new WorkSpace(new Point(this.wsw,this.wsh));
+				ws.initFromSaveData(wsdo);
+				this.workSpaceHashVector.put(wsName,ws);
 			}
+			var rootWsName:String = MapDataFileManager.MAP_FILE_DEFAULT_NAME;
+			var rootWs:WorkSpace = this.workSpaceHashVector.findByName(wsName) as WorkSpace; 
+			this.updateAndSetWorkSpace(rootWs,rootWsName);
 		}
 		
 		/**
