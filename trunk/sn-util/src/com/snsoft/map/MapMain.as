@@ -248,6 +248,9 @@
 				var mdfm:MapDataFileManager = new MapDataFileManager();
 				mdfm.mainDirectory = dir;
 				
+				//删除所有分层保存文件
+				mdfm.deleteAllChildDirectory();
+				
 				//保存
 				var mdfio:MapDataFileManager = new MapDataFileManager();
 				var hv:HashVector = this.workSpaceHashVector;

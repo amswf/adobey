@@ -456,6 +456,7 @@
 							}
 							var mado:MapAreaDO = this.manager.mapAreaDOAry.findByIndex(i) as MapAreaDO;
 							mado.areaName = mapAreaDo.areaName;
+							mado.areaId = mapAreaDo.areaId;
 							mado.areaNamePlace = mapAreaDo.areaNamePlace;
 						}
 					}

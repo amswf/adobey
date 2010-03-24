@@ -45,6 +45,29 @@
 			
 		}
 		
+		public function deleteAllChildDirectory():void{
+			var dir:String = this.mainDirectory;
+			if(dir != null){
+				var file:File = new File(dir);
+				if(file.isDirectory){
+					var fileAry:Array = file.getDirectoryListing();
+					if(fileAry != null){
+						for(var i:int = 0;i<fileAry.length;i++){
+							var cfile:File = fileAry[i] as File;
+							if(cfile != null){
+								if(cfile.isDirectory){
+									 cfile.deleteDirectory(true);
+								}
+								else{
+									cfile.deleteFile();
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
 		/**
 		 * 创建地图保存完整路径 
 		 * @param dir
