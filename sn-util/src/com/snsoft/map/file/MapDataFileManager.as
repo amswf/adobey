@@ -26,6 +26,9 @@
 		//地图存储文件基本名称 ws_1_2.xml
 		public static const MAP_FILE_BASE_NAME:String = "ws";
 		
+		//地图存储文件基本名称 ws_1_2.xml
+		public static const MAP_FILE_DEFAULT_NAME:String = "ws_1";
+		
 		//地图存储文件层分隔符  ws_1_2.xml
 		public static const MAP_FILE_NAME_SPLIT:String = "_";
 		
@@ -110,6 +113,34 @@
 		 */		
 		private function getNxPath(dir:String,wsName:String):String{
 			var layer:int =1 + getFileLayerByName(wsName + MAP_FILE_BASE_EXT_NAME);
+			var nxName:String = dir + File.separator + layer + MAP_FILE_LAYER_BASE_NAME;
+			return nxName;
+		}
+		
+		/**
+		 *  
+		 * @param wsName
+		 * @return 
+		 * 
+		 */		
+		public function creatFileFullPath2(wsName:String):String{
+			var dir:String = this.mainDirectory;
+			if(dir != null){
+				var nxName:String = getNxPath2(dir,wsName);
+				return nxName + File.separator + wsName + MAP_FILE_BASE_EXT_NAME;
+			}
+			return null;
+		} 
+		
+		/**
+		 * 
+		 * @param dir
+		 * @param wsName
+		 * @return 
+		 * 
+		 */		
+		private function getNxPath2(dir:String,wsName:String):String{
+			var layer:int =getFileLayerByName(wsName + MAP_FILE_BASE_EXT_NAME);
 			var nxName:String = dir + File.separator + layer + MAP_FILE_LAYER_BASE_NAME;
 			return nxName;
 		}
