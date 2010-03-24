@@ -274,10 +274,22 @@
 		}
 		
 		private function handlerLoaderXML(e:Event):void {
-			
+			var map:XML = new XML(e.currentTarget.data);
+			var wsdo:WorkSpaceDO = this.creatWorkSpaceDO(map);
+			this._workSpaceDO = wsdo;
+			this.dispatchEvent(new Event(Event.COMPLETE));
+		}
+		
+		/**
+		 * 把XML数据转换成工作区对象 
+		 * @param xml
+		 * @return 
+		 * 
+		 */		
+		public function creatWorkSpaceDO(xml:XML):WorkSpaceDO{
 			var wsdo:WorkSpaceDO = new WorkSpaceDO();
 			//<map> 
-			var map:XML = new XML(e.currentTarget.data);
+			var map:XML = xml;
 			
 			//<image>
 			var image:XML = map.elements("image")[0];
@@ -350,10 +362,8 @@
 				}
 			}
 			wsdo.mapAreaDOHashArray = madoha;
-			this._workSpaceDO = wsdo;
-			this.dispatchEvent(new Event(Event.COMPLETE));
+			return wsdo;
 		}
-		
 		
 		public function save(ws:WorkSpace,filePath:String):void {
 			var xml:String = creatXML(ws);
