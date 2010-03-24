@@ -12,6 +12,7 @@
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
+	import flash.html.script.Package;
 	
 	/**
 	 * HashArray需要优化算法，需要用Vector 重写。
@@ -70,7 +71,7 @@
 		private var parentWsName:String = null;
 		
 		//
-		private var wshv:HashVector = new HashVector();
+		private var workSpaceHashVector:HashVector = new HashVector();
 		
 		public function MapMain()
 		{
@@ -103,7 +104,8 @@
 			var wsName:String = MapDataFileManager.createChildWorkSpaceName(this.parentWsName,1);
 			
 			//工作区
-			this.initWorkSpace(wsMask,new Point(wsx,wsy),new Point(wsw,wsh),wsName);
+			//this.initWorkSpace(wsMask,new Point(wsx,wsy),new Point(wsw,wsh),wsName);
+			this.initWorkSpaceByName();
 			this.rootWs = this.ws;
 			
 			wsFrame = SkinsUtil.createSkinByName(MAIN_FRAME_SKIN);
@@ -169,8 +171,10 @@
 			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_ADD,handlerMapAreaChange);
 			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_DELETE,handlerMapAreaChange);
 			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_UPDATE,handlerMapAreaChange);
-			this.wshv.put(wsName,ws);
+			this.workSpaceHashVector.put(wsName,ws);
 		}
+		
+		
 		
 		/**
 		 * 
@@ -212,7 +216,7 @@
 			if(wsName != null){
 				wsName = MapDataFileManager.createParentWorkSpaceName(wsName);
 				if(wsName != null){
-					var ws:WorkSpace = this.wshv.findByName(wsName) as WorkSpace;
+					var ws:WorkSpace = this.workSpaceHashVector.findByName(wsName) as WorkSpace;
 					if(ws != null){
 						this.removeChild(this.ws);
 						this.ws = ws;
@@ -245,7 +249,17 @@
 				mdfm.mainDirectory = dir;
 				
 				//保存
-				this.rootWs.saveWorkSpace();
+				var mdfio:MapDataFileManager = new MapDataFileManager();
+				var hv:HashVector = this.workSpaceHashVector;
+				if(hv != null){
+					for(var i:int = 0;i < hv.length;i ++){
+						var ws:WorkSpace = hv.findByIndex(i) as WorkSpace;
+						var fullPath:String = mdfio.creatFileFullPath2(ws.wsName);
+						if(ws != null){
+							mdfio.save(ws,fullPath);
+						}
+					}
+				}
 			}
 			else {
 				mmAttribute.selectSaveDirectory();
@@ -261,10 +275,12 @@
 			var dir:String = mmAttribute.mapFileMainDirectory;
 			if(dir != null){
 				var mdfio:MapDataFileManager = new MapDataFileManager();
-				this.parentWsName = MapDataFileManager.MAP_FILE_BASE_NAME;
+				var wsName:String = MapDataFileManager.MAP_FILE_DEFAULT_NAME;
+				var ws:WorkSpace = new WorkSpace(new Point(this.wsw,this.wsh));
+				this.updateAndSetWorkSpace(ws,wsName);
 				mdfio.mainDirectory = dir;
 				mdfio.addEventListener(Event.COMPLETE,handlerLoadXMLComplete);
-				var fullPath:String = mdfio.creatFileFullPath();
+				var fullPath:String = mdfio.creatFileFullPath2(wsName);
 				if(mdfio.fileIsExists(fullPath)){
 					mdfio.open(fullPath);
 				}
@@ -279,15 +295,7 @@
 		private function handlerLoadXMLComplete(e:Event):void{
 			var mdfio:MapDataFileManager = e.currentTarget as MapDataFileManager;
 			if(mdfio != null && mdfio.workSpaceDO != null){
-				
-				var wsh:int = this.height - SPACE - SPACE;
-				var wsw:int = this.width - SPACE - SPACE - SPACE - bar.width - areaAttribute.width;
-				var wsx:int = bar.width + SPACE + SPACE;
-				var wsy:int = SPACE;
-				
 				var mdfm:MapDataFileManager = new MapDataFileManager();
-				var wsName:String = MapDataFileManager.createChildWorkSpaceName(this.parentWsName,1);
-				this.initWorkSpace(this.wsMask,new Point(wsx,wsy),new Point(wsw,wsh),wsName);
 				this.ws.initFromSaveData(mdfio.workSpaceDO);
 			}
 		}
@@ -339,7 +347,9 @@
 		 * 
 		 */		
 		private function handlerMapAreaDoubleClick(e:Event):void{
-			this.initWorkSpaceByName(this.ws.wsName);
+			var ma:MapArea = this.ws.currentClickMapArea;
+			var mado:MapAreaDO = ma.mapAreaDO;
+			this.initWorkSpaceByName(mado.areaId);
 		}
 		
 		
@@ -382,24 +392,59 @@
 		 * @param parentWsName
 		 * 
 		 */		
-		private function initWorkSpaceByName(parentWsName:String):void{
-			this.parentWsName = parentWsName;
+		private function initWorkSpaceByName(wsName:String = MapDataFileManager.MAP_FILE_DEFAULT_NAME):void{
+			var newWs:WorkSpace = null;
+			var wshv:HashVector = this.workSpaceHashVector;
+			var hvWs:WorkSpace = wshv.findByName(wsName) as WorkSpace;
 			var dir:String = mmAttribute.mapFileMainDirectory;
-			var mdfm:MapDataFileManager = new MapDataFileManager();
-			var mado:MapAreaDO = ws.currentClickMapArea.mapAreaDO;
-			var ma:MapArea = ws.currentClickMapArea;
-			var wsName:String = MapDataFileManager.createChildWorkSpaceName(this.parentWsName,1);
-			this.initWorkSpace(wsMask,new Point(wsx,wsy),new Point(wsw,wsh),wsName);
-			ma.childWorkSpace = this.ws;
-			///初始化数据
-			if(dir != null){
+			var sign:Boolean = false;
+			if(hvWs != null){
+				newWs = hvWs;
+			}
+			else{
+				newWs = new WorkSpace(new Point(this.wsw,this.wsh));
+			}
+			this.updateAndSetWorkSpace(newWs,wsName); 
+			
+			if(dir != null && hvWs == null){
 				var mdfio:MapDataFileManager = new MapDataFileManager();
 				mdfio.addEventListener(Event.COMPLETE,handlerLoadXMLComplete);
-				var fullPath:String = mdfio.creatFileFullPath(this.parentWsName);
+				var fullPath:String = mdfio.creatFileFullPath2(wsName);
 				if(mdfio.fileIsExists(fullPath)){
 					mdfio.open(fullPath);
 				}
-			}	
+			}
+		}
+		
+		/**
+		 * 更新工作区并设置关联属性
+		 * @param ws
+		 * @param wsName
+		 * @param msk
+		 * @param place
+		 * @param size
+		 * 
+		 */		
+		private function updateAndSetWorkSpace(ws:WorkSpace,wsName:String):void{
+			ws.mask = this.wsMask;
+			ws.x = this.wsx;
+			ws.y = this.wsy;
+			ws.wsName = wsName;
+			if(this.ws != null){
+				this.removeChild(this.ws);
+			}
+			this.ws = ws;
+			this.addChild(this.ws);
+			
+			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_CLICK,handlerMapAreaClick);
+			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_DOUBLE_CLICK,handlerMapAreaDoubleClick);
+			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_ADD,handlerMapAreaChange);
+			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_DELETE,handlerMapAreaChange);
+			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_UPDATE,handlerMapAreaChange);
+			
+			//相关联属性设置
+			this.wsAttribute.refreshMapAreaListBtn(null);
+			this.workSpaceHashVector.put(wsName,ws);
 		}
 	}
 }
