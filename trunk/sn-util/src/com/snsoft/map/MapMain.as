@@ -256,9 +256,12 @@
 				if(hv != null){
 					for(var i:int = 0;i < hv.length;i ++){
 						var ws:WorkSpace = hv.findByIndex(i) as WorkSpace;
-						var fullPath:String = mdfio.creatFileFullPath2(ws.wsName);
-						if(ws != null){
-							mdfio.save(ws,fullPath);
+						var wsName:String = ws.wsName;
+						if(wsName != null){
+							var fullPath:String = mdfio.creatFileFullPath2(wsName);
+							if(ws != null){
+								mdfio.save(ws,fullPath);
+							}
 						}
 					}
 				}
@@ -296,6 +299,7 @@
 				var wsName:String = wsdo.wsName;
 				var ws:WorkSpace = new WorkSpace(new Point(this.wsw,this.wsh));
 				ws.initFromSaveData(wsdo);
+				ws.wsName = wsName;
 				this.workSpaceHashVector.put(wsName,ws);
 			}
 			var rootWsName:String = MapDataFileManager.MAP_FILE_DEFAULT_NAME;
