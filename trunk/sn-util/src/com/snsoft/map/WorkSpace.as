@@ -576,6 +576,15 @@
 		private function handlerMapAreaCuntryNameMove(e:Event):void{
 			var ma:MapArea = e.currentTarget as MapArea;
 			this.setcurrentClickMapArea(ma.name);
+			var newMado:MapAreaDO = ma.mapAreaDO;
+			var hv:HashVector = newMado.pointArray;
+			var madoName:String = MapPointsManager.creatHashArrayHashName(hv);
+			var madohv:HashVector = this.manager.mapAreaDOAry;
+			var managerMado:MapAreaDO = madohv.findByName(madoName) as MapAreaDO;
+			if(managerMado != null){
+				managerMado.areaNamePlace = newMado.areaNamePlace;
+			}
+			
 			this.dispatchEvent(new Event(EVENT_MAP_AREA_CLICK));
 		}
 		
