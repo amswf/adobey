@@ -555,7 +555,5 @@
 		{
 			return _workSpaceDOVector;
 		}
-
-		
 	}
 }
