@@ -452,6 +452,7 @@
 			//相关联属性设置
 			this.wsAttribute.refreshMapAreaListBtn(null);
 			this.workSpaceHashVector.put(wsName,ws);
+			this.ws.dispatchEvent(new Event(WorkSpace.EVENT_MAP_AREA_ADD));
 		}
 	}
 }
