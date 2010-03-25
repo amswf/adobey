@@ -341,7 +341,7 @@
 				dataFileVector = v;
 				var dataFile:File = v[index];
 				var name:String = dataFile.name;
-				wsName = name.replace(MAP_FILE_BASE_EXT_NAME);
+				wsName = name.replace(MAP_FILE_BASE_EXT_NAME,"");
 				var dir:String = dataFile.nativePath;
 				var req:URLRequest = new URLRequest(dir);
 				var loader:URLLoader = new URLLoader();
@@ -383,6 +383,7 @@
 			var image:XML = map.elements("image")[0];
 			var mapImage:String = image.text();
 			wsdo.image = mapImage;
+			wsdo.wsName = wsName;
 			
 			//工作区地图块数据对象列表
 			var madoha:HashVector = new HashVector  ;

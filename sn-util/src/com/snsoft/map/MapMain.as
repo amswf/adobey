@@ -280,9 +280,6 @@
 				mdfio.mainDirectory = dir;
 				mdfio.addEventListener(Event.COMPLETE,handlerLoadXMLComplete);
 				mdfio.openAll();
-				
-				
-				
 			}
 		}
 		
@@ -302,7 +299,7 @@
 				this.workSpaceHashVector.put(wsName,ws);
 			}
 			var rootWsName:String = MapDataFileManager.MAP_FILE_DEFAULT_NAME;
-			var rootWs:WorkSpace = this.workSpaceHashVector.findByName(wsName) as WorkSpace; 
+			var rootWs:WorkSpace = this.workSpaceHashVector.findByName(rootWsName) as WorkSpace; 
 			this.updateAndSetWorkSpace(rootWs,rootWsName);
 		}
 		
