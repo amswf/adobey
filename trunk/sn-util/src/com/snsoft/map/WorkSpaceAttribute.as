@@ -95,9 +95,11 @@ package com.snsoft.map
 					var btn:TreeNodeButton = new TreeNodeButton(ma.areaName);
 					list.put(name,btn);
 				}
-				list.addEventListener(TreeList.TREE_CLICK,handlerTreeListClick);
-				this._treeListScrollPane.source = list;
-				this._treeListScrollPane.drawNow();
+				if(list.length > 0){
+					list.addEventListener(TreeList.TREE_CLICK,handlerTreeListClick);
+					this._treeListScrollPane.source = list;
+					this._treeListScrollPane.drawNow();
+				}
 			}
 		}
 		
