@@ -216,12 +216,7 @@
 				wsName = MapDataFileManager.createParentWorkSpaceName(wsName);
 				if(wsName != null){
 					var ws:WorkSpace = this.workSpaceHashVector.findByName(wsName) as WorkSpace;
-					if(ws != null){
-						this.removeChild(this.ws);
-						this.ws = ws;
-						this.ws.mask = this.wsMask;
-						this.addChild(this.ws);
-					}
+					this.updateAndSetWorkSpace(ws,wsName);
 				}
 			}
 		}
