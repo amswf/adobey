@@ -340,7 +340,6 @@
 			areaAttribute.setareaName(an);
 			areaAttribute.setareaNameX(String(mado.areaNamePlace.x));
 			areaAttribute.setareaNameY(String(mado.areaNamePlace.y));
-			this.ws
 			this.workSpaceHashVector.put(this.ws.wsName,this.ws);
 		}
 		
