@@ -583,6 +583,7 @@
 			var managerMado:MapAreaDO = madohv.findByName(madoName) as MapAreaDO;
 			if(managerMado != null){
 				managerMado.areaNamePlace = newMado.areaNamePlace;
+				managerMado.areaName = newMado.areaName;
 			}
 			
 			this.dispatchEvent(new Event(EVENT_MAP_AREA_CLICK));
