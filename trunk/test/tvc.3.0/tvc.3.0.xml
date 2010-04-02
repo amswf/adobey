@@ -6,7 +6,7 @@
     <var name="company" value="大华夏神农信息技术有限公司" text=""/>
     <var name="dateText" value="2010-04-01 -- 2010-04-06" text=""/>
   </vars>
-  <aboveBizs>
+  <timeLine name="aboveBizs" text="">
     <biz name="广告或其它与业务同步显示的组件" text="" type="common" doStyle="">
       <!--伴音-->
       <sounds>
@@ -24,8 +24,8 @@
         <media name="" timeOffset="1000" timeLength="5000" timeout="10000" text="" url="" x="" y= "" />
       </medias>
     </biz>
-  </aboveBizs>
-  <underBizs>
+  </timeLine>
+  <timeLine name="underBizs" text="">
     <biz name="广告或其它与业务同步显示的组件" text="" type="common" doStyle="">
       <!--伴音-->
       <sounds>
@@ -43,8 +43,8 @@
         <media name="" timeOffset="1000" timeLength="5000" timeout="10000" text="" url="" x="" y= "" />
       </medias>
     </biz>
-  </underBizs>
-  <bizs>
+  </timeLine>
+  <timeLine name="bizs" text="">
     <biz name="片头" text="" type="common" doStyle="">
       <!--伴音-->
       <sounds>
@@ -192,5 +192,5 @@
         <media name="" timeOffset="1000" timeLength="5000" timeout="10000" text="" url="" x="" y= "" />
       </medias>
     </biz>
-  </bizs>
+  </timeLine>
 </xml>
