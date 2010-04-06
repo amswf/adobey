@@ -1,6 +1,6 @@
 package com.snsoft.map.tree
 {
-	import com.snsoft.map.util.HashVector;
+	import com.snsoft.util.HashVector;
 	import com.snsoft.map.util.MapUtil;
 	
 	import fl.core.UIComponent;

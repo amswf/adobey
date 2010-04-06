@@ -1,4 +1,4 @@
-package com.snsoft.map.util{
+package com.snsoft.util{
 	
 	/**
 	 * 查找的速度最优处理，添加，删除时慢，为的是碰撞点检测点过多时，保持效率。 

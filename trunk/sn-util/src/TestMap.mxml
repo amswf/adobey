@@ -10,7 +10,7 @@
 			import com.snsoft.map.file.MapDataFileManager;
 			import com.snsoft.map.tree.TreeList;
 			import com.snsoft.map.tree.TreeNodeButton;
-			import com.snsoft.map.util.HashVector;
+			import com.snsoft.util.HashVector;
 			import com.snsoft.util.SpriteMouseAction;
 			import com.snsoft.util.XMLUtil;
 			

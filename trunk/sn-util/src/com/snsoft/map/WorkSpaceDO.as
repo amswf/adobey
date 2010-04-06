@@ -1,5 +1,5 @@
 package com.snsoft.map{
-	import com.snsoft.map.util.HashVector;
+	import com.snsoft.util.HashVector;
 	
 	public class WorkSpaceDO{
 		

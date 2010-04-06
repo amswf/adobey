@@ -3,7 +3,7 @@
 	import com.snsoft.map.MapPointsManager;
 	import com.snsoft.map.WorkSpace;
 	import com.snsoft.map.WorkSpaceDO;
-	import com.snsoft.map.util.HashVector;
+	import com.snsoft.util.HashVector;
 	import com.snsoft.util.XMLUtil;
 	
 	import flash.events.Event;
