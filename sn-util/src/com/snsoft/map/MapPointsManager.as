@@ -1,6 +1,6 @@
 ﻿package com.snsoft.map
 {
-	import com.snsoft.map.util.HashVector;
+	import com.snsoft.util.HashVector;
 	import com.snsoft.map.util.HitTest;
 	
 	import flash.geom.Point;

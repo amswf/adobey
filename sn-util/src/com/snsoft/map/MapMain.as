@@ -1,7 +1,7 @@
 ﻿package com.snsoft.map
 {
 	import com.snsoft.map.file.MapDataFileManager;
-	import com.snsoft.map.util.HashVector;
+	import com.snsoft.util.HashVector;
 	import com.snsoft.map.util.MapUtil;
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.SpriteMouseAction;
