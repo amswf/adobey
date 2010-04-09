@@ -1,0 +1,8 @@
+	linux下必须使用内嵌字体。
+	
+	var tf = new TextFormat(EmbedFonts.findFontByName("SimSung"));
+	var tx:TextField=new TextField();
+	tx.embedFonts = true;//linux下这里设置为false。
+	tx.antiAliasType = AntiAliasType.ADVANCED;
+	tx.gridFitType = GridFitType.PIXEL;
+	tx.setTextFormat(tf);
