@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xml>
+  <!--常量或全局公共变量-->
+  <vars>
+    <var name="title" value="临漳科技局" text=""/>
+    <var name="company" value="大华夏神农信息技术有限公司" text=""/>
+    <var name="dateText" value="2010-04-01 -- 2010-04-06" text=""/>
+  </vars>
+  <timeLine name="bizs" text="">
+    <biz name="普通" text="" type="common" doStyle="">
+      <!--常量或模块内公共变量-->
+      <vars>
+        <var name="title" value="全国联网价格趋势预测" text=""/>
+        <var name="goods" value="白菜" text=""/>
+        <var name="market" value="北京新发地" text=""/>
+      </vars>
+      <!--伴音-->
+      <sounds>
+        <!--timeOffset 相对于播放开始时间"0"的偏移量/timeLength最小播放时长 /timeout 最大播放时长-->
+        <sound name="" timeOffset="1000" timeLength="5000" timeout="10000" text="片头伴音" url="head.mp3" />
+      </sounds>
+      <!--显示文字-->
+      <textOuts>
+        <!--timeOffset 相对于播放开始时间"0"的偏移量/timeLength最小播放时长 /timeout 最大播放时长-->
+        <textOut name="" timeOffset="1000" timeLength="5000" timeout="10000" text="临漳科技局" x="0" y= "0" textStyle=""/>
+      </textOuts>
+      <!--显示图片/flash动画-->
+      <medias>
+        <!--timeOffset 相对于播放开始时间"0"的偏移量/timeLength最小播放时长 /timeout 最大播放时长-->
+        <media name="" timeOffset="1000" timeLength="5000" timeout="10000" text="" url="head.swf" x="0" y= "0" />
+      </medias>
+    </biz>
+    <biz name="折线图" text="" type="polylines" doStyle="">
+      <!--常量或模块内公共变量-->
+      <vars>
+        <var name="title" value="全国联网价格趋势预测" text=""/>
+        <var name="goods" value="白菜" text=""/>
+        <var name="market" value="北京新发地" text=""/>
+      </vars>
+      <!--数据-->
+      <data>
+        <!--图表数据-->
+        <chart>
+          <!--线样式/点样式-->
+          <list name="实况价格" text="" doStyle="">
+            <textPoint name="" value="" text="" />
+          </list>
+          <list name="预测价格" text="" doStyle="">
+            <textPoint name="" value="" text="" />
+          </list>
+        </chart>
+      </data>
+      <!--伴音-->
+      <sounds>
+        <!--timeOffset 相对于播放开始时间"0"的偏移量/timeLength最小播放时长 /timeout 最大播放时长-->
+        <sound name="" timeOffset="1000" timeLength="5000" timeout="10000" text="" url="" />
+      </sounds>
+      <!--显示文字-->
+      <textOuts>
+        <!--timeOffset 相对于播放开始时间"0"的偏移量/timeLength最小播放时长 /timeout 最大播放时长-->
+        <textOut name="" timeOffset="1000" timeLength="5000" timeout="10000" text="" x="" y= "" textStyle=""/>
+      </textOuts>
+      <!--显示图片/flash动画-->
+      <medias>
+        <!--timeOffset 相对于播放开始时间"0"的偏移量/timeLength最小播放时长 /timeout 最大播放时长-->
+        <media name="" timeOffset="1000" timeLength="5000" timeout="10000" text="" url="" x="" y= "" />
+      </medias>
+    </biz>
+    <biz name="柱状图" text="" type="histogram" doStyle="">
+      <!--常量或模块内公共变量-->
+      <vars>
+        <var name="title" value="全国联网价格趋势预测" text=""/>
+        <var name="goods" value="白菜" text=""/>
+        <var name="market" value="北京新发地" text=""/>
+      </vars>
+      <!--数据-->
+      <data>
+        <!--图表数据-->
+        <chart>
+          <!--线样式/点样式-->
+          <list name="实况价格" text="" doStyle="">
+            <textPoint name="" value="" text="" />
+          </list>
+          <list name="预测价格" text="" doStyle="" >
+            <textPoint name="" value="" text="" />
+          </list>
+        </chart>
+      </data>
+      <!--伴音-->
+      <sounds>
+        <!--timeOffset 相对于播放开始时间"0"的偏移量/timeLength最小播放时长 /timeout 最大播放时长-->
+        <sound name="" timeOffset="1000" timeLength="5000" timeout="10000" text="" url="" />
+      </sounds>
+      <!--显示文字-->
+      <textOuts>
+        <!--timeOffset 相对于播放开始时间"0"的偏移量/timeLength最小播放时长 /timeout 最大播放时长-->
+        <textOut name="" timeOffset="1000" timeLength="5000" timeout="10000" text="" x="" y= "" textStyle=""/>
+      </textOuts>
+      <!--显示图片/flash动画-->
+      <medias>
+        <!--timeOffset 相对于播放开始时间"0"的偏移量/timeLength最小播放时长 /timeout 最大播放时长-->
+        <media name="" timeOffset="1000" timeLength="5000" timeout="10000" text="" url="" x="" y= "" />
+      </medias>
+    </biz>
+    <!--价格分布和价格播报-->
+    <biz name="高中低价格分布及三高三低价格播报" text="" type="comment" doStyle="">
+      <!--常量或模块内公共变量-->
+      <vars>
+        <var name="title" value="全国联网价格分布情况" text=""/>
+        <var name="goods" value="白菜" text=""/>
+        <var name="highNum" value="3" text=""/>
+        <var name="lowNum" value="3" text=""/>
+      </vars>
+      <!--数据-->
+      <data>
+        <!--价格分布图数据-->
+        <distribute>
+          <!--点样式-->
+          <list name="较低价格" text="" doStyle="" >
+            <textPoint name="" value="" text="" />
+          </list>
+          <list name="中间价格" text="" doStyle="" >
+            <textPoint name="" value="" text="" />
+          </list>
+          <list name="较高价格" text="" doStyle="" >
+            <textPoint name="" value="" text="" />
+          </list>
+        </distribute>
+      </data>
+      <!--伴音-->
+      <sounds>
+        <!--timeOffset 相对于播放开始时间"0"的偏移量/timeLength最小播放时长 /timeout 最大播放时长-->
+        <sound name="" timeOffset="1000" timeLength="5000" timeout="10000" text="" url="" />
+      </sounds>
+      <!--显示文字-->
+      <textOuts>
+        <!--timeOffset 相对于播放开始时间"0"的偏移量/timeLength最小播放时长 /timeout 最大播放时长-->
+        <textOut name="" timeOffset="1000" timeLength="5000" timeout="10000" text="" x="" y= "" textStyle=""/>
+      </textOuts>
+      <!--显示jpg,png图片/flash动画-->
+      <medias>
+        <!--timeOffset 相对于播放开始时间"0"的偏移量/timeLength最小播放时长 /timeout 最大播放时长-->
+        <media name="" timeOffset="1000" timeLength="5000" timeout="10000" text="" url="" x="" y= "" />
+      </medias>
+    </biz>
+  </timeLine>
+</xml>
