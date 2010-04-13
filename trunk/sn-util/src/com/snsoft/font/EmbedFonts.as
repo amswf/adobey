@@ -14,7 +14,7 @@
 	   	import com.snsoft.font.EmbedFonts;
 		import com.snsoft.font.EmbedFontsEvent;
 		
-		var ef:EmbedFonts = new EmbedFonts("SimHei","STXihei","YouYuan","MicrosoftYaHei");
+		var ef:EmbedFonts = new EmbedFonts("SimHei","STXihei","YouYuan","MicrosoftYaHei"'"SimSung");
 		ef.loadFontSwf();
 		ef.addEventListener(Event.COMPLETE,handler);
 		ef.addEventListener(EmbedFontsEvent.IO_ERROR,handlerIOError);
