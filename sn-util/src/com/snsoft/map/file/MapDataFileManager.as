@@ -277,7 +277,7 @@
 		
 		private function handlerLoaderXML(e:Event):void {
 			var map:XML = new XML(e.currentTarget.data);
-			var wsdo:WorkSpaceDO = this.creatWorkSpaceDO(map,null);
+			var wsdo:WorkSpaceDO = creatWorkSpaceDO(map,null);
 			this._workSpaceDO = wsdo;
 			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
@@ -357,7 +357,7 @@
 		 */		
 		private function handlerLoadAllDataFile(e:Event):void{
 			var map:XML = new XML(e.currentTarget.data);
-			var wsdo:WorkSpaceDO = this.creatWorkSpaceDO(map,wsName);
+			var wsdo:WorkSpaceDO = creatWorkSpaceDO(map,wsName);
 			this._workSpaceDOVector.push(wsdo);
 			nextIndex ++;
 			if(nextIndex < dataFileVector.length){
@@ -374,7 +374,7 @@
 		 * @return 
 		 * 
 		 */		
-		public function creatWorkSpaceDO(xml:XML,wsName:String):WorkSpaceDO{
+		public static function creatWorkSpaceDO(xml:XML,wsName:String):WorkSpaceDO{
 			var wsdo:WorkSpaceDO = new WorkSpaceDO();
 			//<map> 
 			var map:XML = xml;
