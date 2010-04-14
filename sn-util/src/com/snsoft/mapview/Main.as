@@ -26,7 +26,7 @@
 		private function handlerLoadComplete(e:Event):void{
 			var loader:URLLoader = e.currentTarget as URLLoader;
 			var xml:XML = new XML(loader.data);
-			var wsdo:WorkSpaceDO = MapViewXMLLoader.creatWorkSpaceDO(xml,"ws");
+			var wsdo:WorkSpaceDO = MapViewXMLLoader.creatWorkSpaceDO(xml,"ws_1");
 			var mv:MapView = new MapView();
 			mv.workSpaceDO = wsdo;
 			this.addChild(mv);

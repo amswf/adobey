@@ -1,14 +1,26 @@
 package com.snsoft.mapview{
+	import com.snsoft.map.CuntryName;
 	import com.snsoft.map.MapAreaDO;
 	import com.snsoft.mapview.util.MapViewDraw;
+	import com.snsoft.mapview.util.MyColorTransform;
 	
 	import fl.core.UIComponent;
 	
 	import flash.display.Shape;
+	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.geom.Rectangle;
 	
 	public class AreaView extends UIComponent{
 		
 		private var _mapAreaDO:MapAreaDO = null;
+		
+		private var areaBtnLayer:Sprite = new Sprite();
+		
+		private var areaNameLayer:Sprite = new Sprite();
+		
+		private var cuntryName:CuntryName = new CuntryName("");
 		
 		/**
 		 * 
@@ -24,7 +36,12 @@ package com.snsoft.mapview{
 		 * 
 		 */				
 		override protected function configUI():void{
-			
+			this.addChild(areaBtnLayer);
+			this.addChild(areaNameLayer);
+			this.setMouseOutColor();
+			this.buttonMode = true;
+			this.mouseChildren = false;
+			this.mouseEnabled = true;
 		}
 		
 		/**
@@ -36,11 +53,48 @@ package com.snsoft.mapview{
 			if(mado != null){
 				var pointAry:Array = mado.pointArray.toArray();
 				var cl:Shape = MapViewDraw.drawFill(0xffffff,0x000000,1,1,pointAry);
-				this.addChild(cl);
+				areaBtnLayer.addChild(cl);
+				
+				var dobj:Rectangle = cl.getRect(this);
+				var cn:CuntryName = this.cuntryName;
+				cn.lableText = mado.areaName;
+				cn.x =dobj.x + (dobj.width - cn.width) * 0.5 + mado.areaNamePlace.x;
+				cn.y =dobj.y + (dobj.height - cn.height) * 0.5 + mado.areaNamePlace.y;
+				areaNameLayer.addChild(cn);
+				this.addEventListener(MouseEvent.MOUSE_OVER,handlerAreaViewMouseOver);
+				this.addEventListener(MouseEvent.MOUSE_OUT,handlerAreaViewMouseOut);
 			}
 			else{
 				trace("mapAreaDO:"+mapAreaDO);
 			}
+		}
+		
+		private function setMouseOverColor():void{
+			MyColorTransform.transColor(this.areaBtnLayer,1,200,0,0);
+			MyColorTransform.transColor(this.areaNameLayer,1,200,0,0);
+		}
+		
+		private function setMouseOutColor():void{
+			MyColorTransform.transColor(this.areaBtnLayer,0,0,0,0);
+			MyColorTransform.transColor(this.areaNameLayer,1,0,0,0);
+		}
+		
+		/**
+		 * 事件 
+		 * @param e
+		 * 
+		 */		
+		private function handlerAreaViewMouseOver(e:Event):void{
+			 this.setMouseOverColor();
+		}
+		
+		/**
+		 * 事件 
+		 * @param e
+		 * 
+		 */		
+		private function handlerAreaViewMouseOut(e:Event):void{
+			 this.setMouseOutColor();
 		}
 		
 		public function get mapAreaDO():MapAreaDO
