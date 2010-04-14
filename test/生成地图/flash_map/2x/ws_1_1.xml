@@ -1,0 +1,260 @@
+<map>
+  
+  <image/>
+  <areas>
+    
+    <area>
+      
+      <areaId>ws_1_1_1</areaId>
+      
+      <areaName>ws_1_1_1</areaName>
+      
+      <areaNamePoint>
+        
+        <x>0</x>
+        
+        <y>0</y>
+      
+      </areaNamePoint>
+      
+      <areaPoints>
+        
+        <point>
+          
+          <x>182</x>
+          
+          <y>89</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>275</x>
+          
+          <y>93</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>289</x>
+          
+          <y>160</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>223</x>
+          
+          <y>177</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>174</x>
+          
+          <y>144</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>170</x>
+          
+          <y>117</y>
+        
+        </point>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area>
+      
+      <areaId>ws_1_1_2</areaId>
+      
+      <areaName>ws_1_1_2</areaName>
+      
+      <areaNamePoint>
+        
+        <x>0</x>
+        
+        <y>0</y>
+      
+      </areaNamePoint>
+      
+      <areaPoints>
+        
+        <point>
+          
+          <x>343</x>
+          
+          <y>161</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>378</x>
+          
+          <y>218</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>380</x>
+          
+          <y>276</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>298</x>
+          
+          <y>277</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>278</x>
+          
+          <y>256</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>284</x>
+          
+          <y>228</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>307</x>
+          
+          <y>191</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>321</x>
+          
+          <y>174</y>
+        
+        </point>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area>
+      
+      <areaId>ws_1_1_3</areaId>
+      
+      <areaName>ws_1_1_3</areaName>
+      
+      <areaNamePoint>
+        
+        <x>0</x>
+        
+        <y>0</y>
+      
+      </areaNamePoint>
+      
+      <areaPoints>
+        
+        <point>
+          
+          <x>290</x>
+          
+          <y>332</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>240</x>
+          
+          <y>383</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>188</x>
+          
+          <y>386</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>145</x>
+          
+          <y>365</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>130</x>
+          
+          <y>301</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>173</x>
+          
+          <y>260</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>227</x>
+          
+          <y>273</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>262</x>
+          
+          <y>305</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>280</x>
+          
+          <y>323</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>289</x>
+          
+          <y>323</y>
+        
+        </point>
+      
+      </areaPoints>
+    
+    </area>
+  
+  </areas>
+
+</map>
