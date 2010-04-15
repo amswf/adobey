@@ -7,11 +7,16 @@ package com.snsoft.mapview{
 	
 	import fl.core.UIComponent;
 	
+	import flash.display.DisplayObject;
 	import flash.display.Shape;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.filters.DropShadowFilter;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	
+	[Style(name="backSkin", type="Class")]
 	
 	/**
 	 * 显示地图 
@@ -19,6 +24,10 @@ package com.snsoft.mapview{
 	 * 
 	 */	
 	public class MapView extends UIComponent{
+		
+		public static const AREA_DOUBLE_CLICK_EVENT:String = "AREA_DOUBLE_CLICK_EVENT";
+		
+		private var _doubleClickAreaName:String;
 		
 		private var _workSpaceDO:WorkSpaceDO = null;
 		
@@ -38,6 +47,19 @@ package com.snsoft.mapview{
 			super();
 		}
 		
+		/**
+		 * 
+		 */		
+		private static var defaultStyles:Object = {backSkin:"Map_backskin"};
+		
+		/**
+		 * 
+		 * @return 
+		 * 
+		 */		
+		public static function getStyleDefinition():Object { 
+			return UIComponent.mergeStyles(UIComponent.getStyleDefinition(), defaultStyles);
+		}	
 		/**
 		 *  
 		 * 
@@ -75,14 +97,78 @@ package com.snsoft.mapview{
 						av.mapAreaDO = mado;
 						av.drawNow();
 						areaBtns.addChild(av);	
+						av.doubleClickEnabled = true;
 						av.addEventListener(MouseEvent.MOUSE_OVER,handlerAreaViewMouseOver);
 						av.addEventListener(MouseEvent.MOUSE_OUT,handlerAreaViewMouseOut);
+						av.addEventListener(MouseEvent.DOUBLE_CLICK,handlerAreaViewDoubleClick);
 					}
 				}
+				
+				var maplinesSprite:Sprite = this.drawMapLines(wsdo);
+				var dsFilter:DropShadowFilter = new DropShadowFilter(0,0,0x000000,1,4,4);
+				var filterAry:Array = new Array();
+				filterAry.push(dsFilter);
+				maplinesSprite.filters = filterAry;
+				this.mapLines.addChild(maplinesSprite);
+				
+				var backMask:Sprite = this.drawBackMask(wsdo);
+				this.back.addChild(backMask);
+				
+				var backMaskRec:Rectangle = backMask.getRect(this.back);
+				var sizep:Point = new Point(backMaskRec.width,backMaskRec.height);
+				var placep:Point = new Point(backMaskRec.x,backMaskRec.y);
+				
+				var back:DisplayObject = getDisplayObjectInstance(getStyleValue("backSkin"));
+				back.mask = backMask;
+				MapUtil.setSpriteSize(back,sizep);
+				MapUtil.setSpritePlace(back,placep);
+				this.back.addChild(back);
+				
 			}
 			else{
 				trace("WorkSpaceDO:"+WorkSpaceDO);
 			}
+		}
+		
+		private function drawBackMask(workSpaceDO:WorkSpaceDO):Sprite{
+			if(workSpaceDO != null){
+				var sprite:Sprite = new Sprite();
+				var madohv:HashVector = workSpaceDO.mapAreaDOHashArray;
+				for(var i:int = 0;i<madohv.length;i ++){
+					var mado:MapAreaDO = madohv.findByIndex(i) as MapAreaDO;
+					var ary:Array = mado.pointArray.toArray();
+					var shape:Shape = MapViewDraw.drawFill(0xffffff,0xffffff,0,1,ary);
+					sprite.addChild(shape);
+				}
+				return sprite;
+			}
+			return null;
+		}
+		
+		private function drawMapLines(workSpaceDO:WorkSpaceDO):Sprite{
+			if(workSpaceDO != null){
+				var sprite:Sprite = new Sprite();
+				var madohv:HashVector = workSpaceDO.mapAreaDOHashArray;
+				for(var i:int = 0;i<madohv.length;i ++){
+					var mado:MapAreaDO = madohv.findByIndex(i) as MapAreaDO;
+					var ary:Array = mado.pointArray.toArray();
+					var shape:Shape = MapViewDraw.drawCloseLines(0xffffff,ary);
+					sprite.addChild(shape);
+				}
+				return sprite;
+			}
+			return null;
+		}
+		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
+		private function handlerAreaViewDoubleClick(e:Event):void{
+			var av:AreaView = e.currentTarget as AreaView;
+			this._doubleClickAreaName = av.mapAreaDO.areaName;
+			this.dispatchEvent(new Event(AREA_DOUBLE_CLICK_EVENT));
 		}
 		
 		/**
@@ -169,6 +255,11 @@ package com.snsoft.mapview{
 		public function set workSpaceDO(value:WorkSpaceDO):void
 		{
 			_workSpaceDO = value;
+		}
+
+		public function get doubleClickAreaName():String
+		{
+			return _doubleClickAreaName;
 		}
 		
 		
