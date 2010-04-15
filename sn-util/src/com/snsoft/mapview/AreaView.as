@@ -37,12 +37,15 @@ package com.snsoft.mapview{
 		 * 
 		 */				
 		override protected function configUI():void{
-			this.addChild(areaBtnLayer);
-			this.addChild(areaNameLayer);
+			
 			this.setMouseOutColor();
 			this.buttonMode = true;
 			this.mouseChildren = false;
 			this.mouseEnabled = true;
+			
+			this.invalidate(InvalidationType.ALL,true);
+			this.invalidate(InvalidationType.SIZE,true);
+			super.configUI();
 		}
 		
 		/**
@@ -50,6 +53,9 @@ package com.snsoft.mapview{
 		 * 
 		 */		
 		override protected function draw():void{
+			this.addChild(areaBtnLayer);
+			this.addChild(areaNameLayer);
+			
 			var mado:MapAreaDO = this.mapAreaDO;
 			if(mado != null){
 				var pointAry:Array = mado.pointArray.toArray();
