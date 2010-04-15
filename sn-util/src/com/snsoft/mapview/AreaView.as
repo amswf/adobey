@@ -4,6 +4,7 @@ package com.snsoft.mapview{
 	import com.snsoft.mapview.util.MapViewDraw;
 	import com.snsoft.mapview.util.MyColorTransform;
 	
+	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
 	
 	import flash.display.Shape;

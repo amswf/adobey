@@ -5,6 +5,7 @@ package com.snsoft.mapview{
 	import com.snsoft.mapview.util.MapViewDraw;
 	import com.snsoft.util.HashVector;
 	
+	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
 	
 	import flash.display.DisplayObject;
@@ -79,7 +80,6 @@ package com.snsoft.mapview{
 			lightShapes.mouseChildren = false;
 			lightShapes.mouseEnabled = false;
 			lightShapes.buttonMode = false;
-			
 		}
 		
 		/**

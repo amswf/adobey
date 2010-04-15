@@ -1,8 +1,10 @@
 ﻿package com.snsoft.mapview{
 	import com.snsoft.map.WorkSpaceDO;
+	import com.snsoft.map.util.MapUtil;
 	import com.snsoft.mapview.util.MapViewXMLLoader;
 	import com.snsoft.util.HashVector;
 	
+	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
 	
 	import flash.events.Event;
@@ -13,7 +15,7 @@
 	public class MapMain extends UIComponent{
 		
 		//XML文件文件根目录
-		private var baseUrl:String = "flash_map";
+		private var _baseUrl:String = "flash_map";
 		
 		//XML文件基本名称
 		private static const BASE_XML_NAME:String = "ws";
@@ -44,6 +46,23 @@
 		public function MapMain()
 		{
 			super();
+		}
+			
+		/**
+		 *  
+		 * 
+		 */				
+		override protected function configUI():void{
+			this.invalidate(InvalidationType.ALL,true);
+			this.invalidate(InvalidationType.SIZE,true);
+			super.configUI();
+		}
+		
+		/**
+		 * 
+		 * 
+		 */		
+		override protected function draw():void{
 			this.drawMapView(mapXmlName);
 		}
 		
@@ -98,7 +117,6 @@
 		
 		private function handlerMapAreaDoubleClick(e:Event):void{
 			var wsName:String = mapView.doubleClickAreaName;
-			trace(wsName);
 			if(wsName != null){
 				this.drawMapView(wsName);
 			}
@@ -131,5 +149,16 @@
 			}
 			return num;
 		}
+
+		public function get baseUrl():String
+		{
+			return _baseUrl;
+		}
+
+		public function set baseUrl(value:String):void
+		{
+			_baseUrl = value;
+		}
+
 	}
 }
