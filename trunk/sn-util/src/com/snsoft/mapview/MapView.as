@@ -66,11 +66,7 @@ package com.snsoft.mapview{
 		 * 
 		 */				
 		override protected function configUI():void{
-			this.addChild(back);
-			this.addChild(areaBtns);
-			this.addChild(mapLines);
-			this.addChild(lightShapes);
-			this.addChild(cuntyLable);
+			
 			
 			cuntyLable.visible = false;
 			cuntyLable.mouseChildren = false;
@@ -80,6 +76,10 @@ package com.snsoft.mapview{
 			lightShapes.mouseChildren = false;
 			lightShapes.mouseEnabled = false;
 			lightShapes.buttonMode = false;
+			
+			this.invalidate(InvalidationType.ALL,true);
+			this.invalidate(InvalidationType.SIZE,true);
+			super.configUI();
 		}
 		
 		/**
@@ -87,6 +87,12 @@ package com.snsoft.mapview{
 		 * 
 		 */		
 		override protected function draw():void{
+			this.addChild(back);
+			this.addChild(areaBtns);
+			this.addChild(mapLines);
+			this.addChild(lightShapes);
+			this.addChild(cuntyLable);
+			
 			var wsdo:WorkSpaceDO = this.workSpaceDO;
 			if(wsdo != null){
 				var madohv:HashVector = wsdo.mapAreaDOHashArray;
