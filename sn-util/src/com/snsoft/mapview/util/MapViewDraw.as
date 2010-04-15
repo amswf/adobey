@@ -87,5 +87,20 @@ package com.snsoft.mapview.util{
 			gra.lineTo(p2.x,p2.y);
 			return shape;
 		}
+		
+		/**
+		 *  
+		 * @param sizePoint
+		 * @return 
+		 * 
+		 */		
+		public static function drawRect(sizePoint:Point):Shape{
+			var shape:Shape = new Shape();
+			var gra:Graphics = shape.graphics;
+			gra.beginFill(0x000000,1);
+			gra.drawRect(0,0,sizePoint.x,sizePoint.y);
+			gra.endFill();
+			return shape;
+		}
 	}
 }
