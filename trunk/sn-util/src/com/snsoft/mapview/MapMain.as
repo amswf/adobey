@@ -1,16 +1,23 @@
 ﻿package com.snsoft.mapview{
 	import com.snsoft.map.WorkSpaceDO;
-	import com.snsoft.map.util.MapUtil;
+	import com.snsoft.mapview.util.MapViewDraw;
 	import com.snsoft.mapview.util.MapViewXMLLoader;
 	import com.snsoft.util.HashVector;
 	
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
 	
+	import flash.display.DisplayObject;
+	import flash.display.Shape;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.events.MouseEvent;
+	import flash.events.TimerEvent;
+	import flash.geom.Point;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
+	import flash.utils.Timer;
 	
 	public class MapMain extends UIComponent{
 		
@@ -37,11 +44,17 @@
 	
 		private var wsdoCatchHv:HashVector = new HashVector();
 		
+		private var oldMapView:MapView = null;
+		
+		private var oldMapLayer:Sprite = null;
+		
 		private var mapView:MapView = null;
 		
 		private var mapXmlName:String = DEFAULT_XML_NAME;
 		
 		private var xmlUrl:String = null;
+		
+		private var mapBack:Sprite = null;
 		
 		public function MapMain()
 		{
@@ -95,7 +108,7 @@
 		private function handlerLoadComplete(e:Event):void{
 			var loader:URLLoader = e.currentTarget as URLLoader;
 			var xml:XML = new XML(loader.data);
-			var wsdo:WorkSpaceDO = MapViewXMLLoader.creatWorkSpaceDO(xml,DEFAULT_XML_NAME);
+			var wsdo:WorkSpaceDO = MapViewXMLLoader.creatWorkSpaceDO(xml,mapXmlName);
 			this.wsdoCatchHv.put(wsdo.wsName,wsdo);
 			this.refreshMapView(wsdo);
 		}
@@ -106,8 +119,26 @@
 		 * 
 		 */		
 		private function refreshMapView(wsdo:WorkSpaceDO):void{
+			
+			if(mapBack != null){
+				this.removeChild(mapBack);
+			}
+			mapBack = new Sprite();
+			mapBack.alpha = 0.2;
+			var shape:Shape = MapViewDraw.drawRect(new Point(stage.stageWidth,stage.stageHeight));
+			mapBack.addChild(shape);
+			this.addChild(mapBack);
+			mapBack.doubleClickEnabled = true;
+			mapBack.addEventListener(MouseEvent.DOUBLE_CLICK,handlerMapBackDoubleClick);
+			
 			if(mapView != null){
 				this.removeChild(mapView);
+				oldMapView = mapView;
+				oldMapLayer = new Sprite();
+				this.addChild(oldMapLayer);
+				oldMapLayer.addChild(oldMapView);
+				
+				switchEffect(oldMapView);
 			}
 			mapView = new MapView();
 			mapView.workSpaceDO = wsdo;
@@ -115,10 +146,56 @@
 			this.addChild(mapView);
 		}
 		
+		/**
+		 * 
+		 * @param dobj
+		 * 
+		 */		
+		private function switchEffect(dobj:DisplayObject):void{
+			var timer:Timer = new Timer(500,10);
+			timer.addEventListener(TimerEvent.TIMER,handlerTimerSwitchEffect);
+			timer.start();
+		}
+		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
+		private function handlerTimerSwitchEffect(e:Event):void{
+			var timer:Timer = e.currentTarget as Timer;
+			oldMapView.alpha = (10 - timer.currentCount) / 10;
+			oldMapView.width = oldMapView.width - 10;
+			oldMapView.width = oldMapView.height - 10;
+			oldMapView.x = oldMapView.width + 5;
+			oldMapView.y = oldMapView.height + 5;
+		}
+		
+		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
+		private function handlerMapBackDoubleClick(e:Event):void{
+			
+			var mxn:String = this.getParentWsName(mapXmlName);
+			if(mxn != null){
+				mapXmlName = mxn;
+				this.drawMapView(mapXmlName);
+			}
+		}
+		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
 		private function handlerMapAreaDoubleClick(e:Event):void{
 			var wsName:String = mapView.doubleClickAreaName;
 			if(wsName != null){
-				this.drawMapView(wsName);
+				mapXmlName = wsName;
+				this.drawMapView(mapXmlName);
 			}
 		}
 		
@@ -130,6 +207,22 @@
 		 */		
 		private function getNxName(xmlName:String):String{
 			return getXmlLayerByName(xmlName) + MAP_XML_LAYER_BASE_NAME;
+		}
+		
+		/**
+		 * 
+		 * @param xmlName
+		 * @return 
+		 * 
+		 */		
+		private function getParentWsName(xmlName:String):String{
+			var layer:int = getXmlLayerByName(xmlName);
+			if(layer > 1){
+				var lastIndex:int = mapXmlName.lastIndexOf(MAP_XML_NAME_SPLIT);
+				var pXMLName:String = mapXmlName.substring(0,lastIndex);
+				return pXMLName;
+			}
+			return null;
 		}
 		
 		/**
