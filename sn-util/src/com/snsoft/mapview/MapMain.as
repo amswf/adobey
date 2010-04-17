@@ -1,5 +1,6 @@
 ﻿package com.snsoft.mapview{
 	import com.snsoft.map.WorkSpaceDO;
+	import com.snsoft.map.util.MapUtil;
 	import com.snsoft.mapview.util.MapViewDraw;
 	import com.snsoft.mapview.util.MapViewXMLLoader;
 	import com.snsoft.util.HashVector;
@@ -7,7 +8,6 @@
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
 	
-	import flash.display.DisplayObject;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -41,26 +41,34 @@
 		
 		// ws_1.xml
 		private static const DEFAULT_XML_NAME:String = BASE_XML_NAME + MAP_XML_NAME_SPLIT + "1";
-	
+		
 		private var wsdoCatchHv:HashVector = new HashVector();
 		
 		private var oldMapView:MapView = null;
 		
 		private var oldMapLayer:Sprite = null;
 		
+		private var newMapLayer:Sprite = null;
+		
 		private var mapView:MapView = null;
+		
+		private var switchEffectScaleRate:Number = 1;
+		
+		private var switchEffectTimerRepeatCount:int = 10;
+		
+		private var switchEffectTimerDelay:int = 10;
 		
 		private var mapXmlName:String = DEFAULT_XML_NAME;
 		
 		private var xmlUrl:String = null;
 		
-		private var mapBack:Sprite = null;
+		private var mapBackLayer:Sprite = null;
 		
 		public function MapMain()
 		{
 			super();
 		}
-			
+		
 		/**
 		 *  
 		 * 
@@ -68,6 +76,13 @@
 		override protected function configUI():void{
 			this.invalidate(InvalidationType.ALL,true);
 			this.invalidate(InvalidationType.SIZE,true);
+			mapBackLayer = new Sprite();
+			this.addChild(mapBackLayer);
+			newMapLayer = new Sprite();
+			this.addChild(newMapLayer);
+			oldMapLayer = new Sprite();
+			this.addChild(oldMapLayer);
+			
 			super.configUI();
 		}
 		
@@ -120,30 +135,23 @@
 		 */		
 		private function refreshMapView(wsdo:WorkSpaceDO):void{
 			
-			if(mapBack != null){
-				this.removeChild(mapBack);
-			}
-			mapBack = new Sprite();
-			mapBack.alpha = 0.2;
 			var shape:Shape = MapViewDraw.drawRect(new Point(stage.stageWidth,stage.stageHeight));
-			mapBack.addChild(shape);
-			this.addChild(mapBack);
-			mapBack.doubleClickEnabled = true;
-			mapBack.addEventListener(MouseEvent.DOUBLE_CLICK,handlerMapBackDoubleClick);
+			MapUtil.deleteAllChild(mapBackLayer);
+			mapBackLayer.addChild(shape);
+			shape.alpha = 0.2;
+			mapBackLayer.doubleClickEnabled = true;
+			mapBackLayer.addEventListener(MouseEvent.DOUBLE_CLICK,handlerMapBackDoubleClick);
 			
 			if(mapView != null){
-				this.removeChild(mapView);
+				newMapLayer.removeChild(mapView);
 				oldMapView = mapView;
-				oldMapLayer = new Sprite();
-				this.addChild(oldMapLayer);
 				oldMapLayer.addChild(oldMapView);
-				
-				switchEffect(oldMapView);
+				switchEffect();
 			}
 			mapView = new MapView();
 			mapView.workSpaceDO = wsdo;
 			mapView.addEventListener(MapView.AREA_DOUBLE_CLICK_EVENT,handlerMapAreaDoubleClick);
-			this.addChild(mapView);
+			newMapLayer.addChild(mapView);
 		}
 		
 		/**
@@ -151,8 +159,19 @@
 		 * @param dobj
 		 * 
 		 */		
-		private function switchEffect(dobj:DisplayObject):void{
-			var timer:Timer = new Timer(500,10);
+		private function switchEffect():void{
+			var backSacleRate:Number = 1 / switchEffectScaleRate;
+			backSacleRate = Math.pow(backSacleRate,switchEffectTimerRepeatCount);
+			
+			newMapLayer.alpha = backSacleRate;
+			newMapLayer.scaleX = backSacleRate;
+			newMapLayer.scaleY = backSacleRate;
+			
+			oldMapLayer.alpha = 1;
+			oldMapLayer.scaleX = 1;
+			oldMapLayer.scaleY = 1;
+			
+			var timer:Timer = new Timer(switchEffectTimerDelay,switchEffectTimerRepeatCount);
 			timer.addEventListener(TimerEvent.TIMER,handlerTimerSwitchEffect);
 			timer.start();
 		}
@@ -164,11 +183,20 @@
 		 */		
 		private function handlerTimerSwitchEffect(e:Event):void{
 			var timer:Timer = e.currentTarget as Timer;
-			oldMapView.alpha = (10 - timer.currentCount) / 10;
-			oldMapView.width = oldMapView.width - 10;
-			oldMapView.width = oldMapView.height - 10;
-			oldMapView.x = oldMapView.width + 5;
-			oldMapView.y = oldMapView.height + 5;
+			oldMapLayer.alpha /= switchEffectScaleRate;
+			oldMapLayer.scaleX *= switchEffectScaleRate;
+			oldMapLayer.scaleY *= switchEffectScaleRate;
+			
+			newMapLayer.alpha *= switchEffectScaleRate;
+			newMapLayer.scaleX *= switchEffectScaleRate;
+			newMapLayer.scaleY *= switchEffectScaleRate;
+			
+			if(timer.currentCount == switchEffectTimerRepeatCount){
+				MapUtil.deleteAllChild(oldMapLayer);
+				oldMapLayer.alpha = 1;
+				oldMapLayer.scaleX = 1;
+				oldMapLayer.scaleY = 1;
+			}
 		}
 		
 		
@@ -181,8 +209,10 @@
 			
 			var mxn:String = this.getParentWsName(mapXmlName);
 			if(mxn != null){
+				switchEffectScaleRate = 0.9;
 				mapXmlName = mxn;
 				this.drawMapView(mapXmlName);
+				
 			}
 		}
 		
@@ -194,6 +224,7 @@
 		private function handlerMapAreaDoubleClick(e:Event):void{
 			var wsName:String = mapView.doubleClickAreaName;
 			if(wsName != null){
+				switchEffectScaleRate = 1.1;
 				mapXmlName = wsName;
 				this.drawMapView(mapXmlName);
 			}
@@ -242,16 +273,16 @@
 			}
 			return num;
 		}
-
+		
 		public function get baseUrl():String
 		{
 			return _baseUrl;
 		}
-
+		
 		public function set baseUrl(value:String):void
 		{
 			_baseUrl = value;
 		}
-
+		
 	}
 }
