@@ -60,6 +60,8 @@
 		
 		private var mapXmlName:String = DEFAULT_XML_NAME;
 		
+		private var lastMapXmlName:String = DEFAULT_XML_NAME;
+		
 		private var xmlUrl:String = null;
 		
 		private var mapBackLayer:Sprite = null;
@@ -76,11 +78,11 @@
 		override protected function configUI():void{
 			this.invalidate(InvalidationType.ALL,true);
 			this.invalidate(InvalidationType.SIZE,true);
-			mapBackLayer = new Sprite();
+			this.mapBackLayer = new Sprite();
 			this.addChild(mapBackLayer);
-			newMapLayer = new Sprite();
+			this.newMapLayer = new Sprite();
 			this.addChild(newMapLayer);
-			oldMapLayer = new Sprite();
+			this.oldMapLayer = new Sprite();
 			this.addChild(oldMapLayer);
 			
 			super.configUI();
@@ -91,10 +93,12 @@
 		 * 
 		 */		
 		override protected function draw():void{
-			this.drawMapView(mapXmlName);
+			this.drawMapView(this.mapXmlName);
 		}
 		
 		private function drawMapView(mapXmlName:String):void{
+			this.lastMapXmlName = this.mapXmlName;
+			this.mapXmlName = mapXmlName;
 			var wsdo:WorkSpaceDO = wsdoCatchHv.findByName(mapXmlName) as WorkSpaceDO;
 			if(wsdo != null){
 				this.refreshMapView(wsdo);
@@ -112,6 +116,7 @@
 		
 		private function handlerLoadIOError(e:Event):void{
 			var loader:URLLoader = e.currentTarget as URLLoader;
+			this.mapXmlName = this.lastMapXmlName;
 			trace("地址错误：",xmlUrl);
 		}
 		
@@ -123,7 +128,7 @@
 		private function handlerLoadComplete(e:Event):void{
 			var loader:URLLoader = e.currentTarget as URLLoader;
 			var xml:XML = new XML(loader.data);
-			var wsdo:WorkSpaceDO = MapViewXMLLoader.creatWorkSpaceDO(xml,mapXmlName);
+			var wsdo:WorkSpaceDO = MapViewXMLLoader.creatWorkSpaceDO(xml,this.mapXmlName);
 			this.wsdoCatchHv.put(wsdo.wsName,wsdo);
 			this.refreshMapView(wsdo);
 		}
@@ -136,44 +141,36 @@
 		private function refreshMapView(wsdo:WorkSpaceDO):void{
 			
 			var shape:Shape = MapViewDraw.drawRect(new Point(stage.stageWidth,stage.stageHeight));
-			MapUtil.deleteAllChild(mapBackLayer);
-			mapBackLayer.addChild(shape);
+			MapUtil.deleteAllChild(this.mapBackLayer);
+			this.mapBackLayer.addChild(shape);
 			shape.alpha = 0.2;
-			mapBackLayer.doubleClickEnabled = true;
-			mapBackLayer.addEventListener(MouseEvent.DOUBLE_CLICK,handlerMapBackDoubleClick);
+			this.mapBackLayer.doubleClickEnabled = true;
+			this.mapBackLayer.addEventListener(MouseEvent.DOUBLE_CLICK,handlerMapBackDoubleClick);
 			
-			if(mapView != null){
-				newMapLayer.removeChild(mapView);
-				oldMapView = mapView;
-				oldMapLayer.addChild(oldMapView);
-				switchEffect();
+			if(this.mapView != null){
+				newMapLayer.removeChild(this.mapView);
+				this.oldMapView = this.mapView;
+				this.oldMapLayer.addChild(this.oldMapView);
+				
+				var backSacleRate:Number = 1 / switchEffectScaleRate;
+				backSacleRate = Math.pow(backSacleRate,switchEffectTimerRepeatCount);
+				
+				newMapLayer.alpha = backSacleRate;
+				newMapLayer.scaleX = backSacleRate;
+				newMapLayer.scaleY = backSacleRate;
+				
+				oldMapLayer.alpha = 1;
+				oldMapLayer.scaleX = 1;
+				oldMapLayer.scaleY = 1;
+				
+				var timer:Timer = new Timer(switchEffectTimerDelay,switchEffectTimerRepeatCount);
+				timer.addEventListener(TimerEvent.TIMER,handlerTimerSwitchEffect);
+				timer.start();
 			}
-			mapView = new MapView();
-			mapView.workSpaceDO = wsdo;
-			mapView.addEventListener(MapView.AREA_DOUBLE_CLICK_EVENT,handlerMapAreaDoubleClick);
-			newMapLayer.addChild(mapView);
-		}
-		
-		/**
-		 * 
-		 * @param dobj
-		 * 
-		 */		
-		private function switchEffect():void{
-			var backSacleRate:Number = 1 / switchEffectScaleRate;
-			backSacleRate = Math.pow(backSacleRate,switchEffectTimerRepeatCount);
-			
-			newMapLayer.alpha = backSacleRate;
-			newMapLayer.scaleX = backSacleRate;
-			newMapLayer.scaleY = backSacleRate;
-			
-			oldMapLayer.alpha = 1;
-			oldMapLayer.scaleX = 1;
-			oldMapLayer.scaleY = 1;
-			
-			var timer:Timer = new Timer(switchEffectTimerDelay,switchEffectTimerRepeatCount);
-			timer.addEventListener(TimerEvent.TIMER,handlerTimerSwitchEffect);
-			timer.start();
+			this.mapView = new MapView();
+			this.mapView.workSpaceDO = wsdo;
+			this.mapView.addEventListener(MapView.AREA_DOUBLE_CLICK_EVENT,handlerMapAreaDoubleClick);
+			newMapLayer.addChild(this.mapView);
 		}
 		
 		/**
@@ -207,11 +204,10 @@
 		 */		
 		private function handlerMapBackDoubleClick(e:Event):void{
 			
-			var mxn:String = this.getParentWsName(mapXmlName);
+			var mxn:String = this.getParentWsName(this.mapXmlName);
 			if(mxn != null){
 				switchEffectScaleRate = 0.9;
-				mapXmlName = mxn;
-				this.drawMapView(mapXmlName);
+				this.drawMapView(mxn);
 				
 			}
 		}
@@ -225,8 +221,7 @@
 			var wsName:String = mapView.doubleClickAreaName;
 			if(wsName != null){
 				switchEffectScaleRate = 1.1;
-				mapXmlName = wsName;
-				this.drawMapView(mapXmlName);
+				this.drawMapView(wsName);
 			}
 		}
 		
@@ -249,8 +244,8 @@
 		private function getParentWsName(xmlName:String):String{
 			var layer:int = getXmlLayerByName(xmlName);
 			if(layer > 1){
-				var lastIndex:int = mapXmlName.lastIndexOf(MAP_XML_NAME_SPLIT);
-				var pXMLName:String = mapXmlName.substring(0,lastIndex);
+				var lastIndex:int = xmlName.lastIndexOf(MAP_XML_NAME_SPLIT);
+				var pXMLName:String = xmlName.substring(0,lastIndex);
 				return pXMLName;
 			}
 			return null;
