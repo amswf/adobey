@@ -15,6 +15,7 @@
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.utils.Timer;
@@ -169,8 +170,16 @@
 			}
 			this.mapView = new MapView();
 			this.mapView.workSpaceDO = wsdo;
+			this.mapView.drawNow();
 			this.mapView.addEventListener(MapView.AREA_DOUBLE_CLICK_EVENT,handlerMapAreaDoubleClick);
 			newMapLayer.addChild(this.mapView);
+			
+			var mapViewRec:Rectangle = this.newMapLayer.getRect(this);
+			trace(mapViewRec.width,mapViewRec.width);
+			
+			var mvrspr:Shape = MapViewDraw.drawRect(new Point(mapViewRec.width,mapViewRec.height));
+			mvrspr.x = mapViewRec.x;
+			mvrspr.y = mapViewRec.y;
 		}
 		
 		/**
