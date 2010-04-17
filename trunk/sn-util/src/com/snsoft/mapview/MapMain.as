@@ -140,7 +140,7 @@
 		 */		
 		private function refreshMapView(wsdo:WorkSpaceDO):void{
 			
-			var shape:Shape = MapViewDraw.drawRect(new Point(stage.stageWidth,stage.stageHeight));
+			var shape:Shape = MapViewDraw.drawRect(new Point(this.width,this.height));
 			MapUtil.deleteAllChild(this.mapBackLayer);
 			this.mapBackLayer.addChild(shape);
 			shape.alpha = 0.2;
