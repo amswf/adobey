@@ -32,15 +32,17 @@ package com.snsoft.mapview{
 		
 		private var _workSpaceDO:WorkSpaceDO = null;
 		
-		private var areaBtns:UIComponent = new UIComponent();
+		private var areaBtnsLayer:Sprite = new Sprite();
 		
-		private var mapLines:UIComponent = new UIComponent();
+		private var mapLinesLayer:Sprite = new Sprite();
 		
-		private var back:UIComponent = new UIComponent();
+		private var backLayer:Sprite = new Sprite();
+		
+		private var cuntyLableLayer:Sprite = new Sprite();
 		
 		private var cuntyLable:CuntyLable = new CuntyLable("","");
 		
-		private var lightShapes:UIComponent = new UIComponent();
+		private var lightShapesLayer:Sprite = new Sprite();
 		
 		private var LIGHT_SPACE:Number = 40;
 		
@@ -66,16 +68,21 @@ package com.snsoft.mapview{
 		 * 
 		 */				
 		override protected function configUI():void{
-			
+			this.addChild(backLayer);
+			this.addChild(areaBtnsLayer);
+			this.addChild(mapLinesLayer);
+			this.addChild(lightShapesLayer);
+			this.addChild(cuntyLableLayer);
 			
 			cuntyLable.visible = false;
 			cuntyLable.mouseChildren = false;
 			cuntyLable.mouseEnabled = false;
 			cuntyLable.buttonMode = false;
+			cuntyLableLayer.addChild(cuntyLable);
 			
-			lightShapes.mouseChildren = false;
-			lightShapes.mouseEnabled = false;
-			lightShapes.buttonMode = false;
+			lightShapesLayer.mouseChildren = false;
+			lightShapesLayer.mouseEnabled = false;
+			lightShapesLayer.buttonMode = false;
 			
 			this.invalidate(InvalidationType.ALL,true);
 			this.invalidate(InvalidationType.SIZE,true);
@@ -87,11 +94,8 @@ package com.snsoft.mapview{
 		 * 
 		 */		
 		override protected function draw():void{
-			this.addChild(back);
-			this.addChild(areaBtns);
-			this.addChild(mapLines);
-			this.addChild(lightShapes);
-			this.addChild(cuntyLable);
+			
+			MapUtil.deleteAllChild(backLayer);
 			
 			var wsdo:WorkSpaceDO = this.workSpaceDO;
 			if(wsdo != null){
@@ -102,7 +106,7 @@ package com.snsoft.mapview{
 						var av:AreaView = new AreaView();
 						av.mapAreaDO = mado;
 						av.drawNow();
-						areaBtns.addChild(av);	
+						areaBtnsLayer.addChild(av);	
 						av.doubleClickEnabled = true;
 						av.addEventListener(MouseEvent.MOUSE_OVER,handlerAreaViewMouseOver);
 						av.addEventListener(MouseEvent.MOUSE_OUT,handlerAreaViewMouseOut);
@@ -115,12 +119,12 @@ package com.snsoft.mapview{
 				var filterAry:Array = new Array();
 				filterAry.push(dsFilter);
 				maplinesSprite.filters = filterAry;
-				this.mapLines.addChild(maplinesSprite);
+				this.mapLinesLayer.addChild(maplinesSprite);
 				
 				var backMask:Sprite = this.drawBackMask(wsdo);
-				this.back.addChild(backMask);
+				this.backLayer.addChild(backMask);
 				
-				var backMaskRec:Rectangle = backMask.getRect(this.back);
+				var backMaskRec:Rectangle = backMask.getRect(this.backLayer);
 				var sizep:Point = new Point(backMaskRec.width,backMaskRec.height);
 				var placep:Point = new Point(backMaskRec.x,backMaskRec.y);
 				
@@ -128,14 +132,19 @@ package com.snsoft.mapview{
 				back.mask = backMask;
 				MapUtil.setSpriteSize(back,sizep);
 				MapUtil.setSpritePlace(back,placep);
-				this.back.addChild(back);
-				
+				this.backLayer.addChild(back);
 			}
 			else{
 				trace("WorkSpaceDO:"+WorkSpaceDO);
 			}
 		}
 		
+		/**
+		 * 
+		 * @param workSpaceDO
+		 * @return 
+		 * 
+		 */		
 		private function drawBackMask(workSpaceDO:WorkSpaceDO):Sprite{
 			if(workSpaceDO != null){
 				var sprite:Sprite = new Sprite();
@@ -186,7 +195,7 @@ package com.snsoft.mapview{
 			var av:AreaView = e.currentTarget as AreaView;
 			var mado:MapAreaDO = av.mapAreaDO;
 			cuntyLable.nameStr = mado.areaName;
-			var mapRect:Rectangle = areaBtns.getRect(this);
+			var mapRect:Rectangle = areaBtnsLayer.getRect(this);
 			var areaRect:Rectangle = av.getRect(av.parent);
 			
 			var mapCenterP:Point = new Point();
@@ -235,11 +244,11 @@ package com.snsoft.mapview{
 			var shapeX:Shape = MapViewDraw.drawFill(0x000000,0xffffff,0.1,0.5,aryx);
 			var shapeY:Shape = MapViewDraw.drawFill(0x000000,0xffffff,0.1,0.5,aryy);
 			
-			MapUtil.deleteAllChild(this.lightShapes);
+			MapUtil.deleteAllChild(this.lightShapesLayer);
 			
-			this.lightShapes.addChild(shapeX);
-			this.lightShapes.addChild(shapeY);
-			this.lightShapes.visible = true;
+			this.lightShapesLayer.addChild(shapeX);
+			this.lightShapesLayer.addChild(shapeY);
+			this.lightShapesLayer.visible = true;
 			cuntyLable.visible = true;
 		}
 		
@@ -249,7 +258,7 @@ package com.snsoft.mapview{
 		 * 
 		 */		
 		private function handlerAreaViewMouseOut(e:Event):void{
-			this.lightShapes.visible = false;
+			this.lightShapesLayer.visible = false;
 			cuntyLable.visible = false;
 		}
 		
