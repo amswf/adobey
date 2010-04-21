@@ -8,6 +8,8 @@
 	
 	public class MapPointsManager
 	{
+		//一个闭合链的最短长度
+		private var POINT_ARY_MIN_LEN:int = 4;
 		
 		//当前画线的点数组
 		private var _currentPointAry:HashVector = new HashVector();
@@ -186,6 +188,7 @@
 		public function addPoint(point:Point):MapPointManagerState{
 			var mpms:MapPointManagerState = this.hitTestPoint(point); 
 			if(mpms.isState(IS_CLOSE)) {//如果闭合链了
+				trace("IS_CLOSE:" + point);
 				this.addPointsToCpaAndHt(mpms);
 				this.addCpaToPpa();
 			}
@@ -199,6 +202,13 @@
 				this.addPointsToCpaAndHt(mpms);
 			} 
 			return mpms;
+		}
+		
+		public function addPointFromXML(point:Point,isEnd:Boolean = false):void{
+			this.addPointToCpaAndHt(point);
+			if(isEnd){
+				this.addCpaToPpa();
+			}
 		}
 		
 		/**
