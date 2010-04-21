@@ -4,10 +4,12 @@
 	import com.snsoft.mapview.util.MapViewDraw;
 	import com.snsoft.mapview.util.MapViewXMLLoader;
 	import com.snsoft.util.HashVector;
+	import com.snsoft.util.SpriteMouseAction;
 	
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
 	
+	import flash.display.DisplayObject;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -19,6 +21,10 @@
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.utils.Timer;
+	
+	[Style(name="viewDagSkin", type="Class")]
+	
+	[Style(name="viewDagLimitSkin", type="Class")]
 	
 	public class MapMain extends UIComponent{
 		
@@ -51,6 +57,10 @@
 		
 		private var newMapLayer:Sprite = null;
 		
+		private var viewDrag:DisplayObject = null;
+		
+		private var viewDragLimit:DisplayObject = null;
+		
 		private var mapView:MapView = null;
 		
 		private var switchEffectScaleRate:Number = 1;
@@ -67,11 +77,29 @@
 		
 		private var mapBackLayer:Sprite = null;
 		
+		private var newMapMaskLayer:Sprite = null;
+		
+		private var oldMapMaskLayer:Sprite = null;
+		
 		public function MapMain()
 		{
 			super();
 		}
 		
+		/**
+		 * 
+		 */		
+		private static var defaultStyles:Object = {viewDagSkin:"MapViewDrag_skin",viewDagLimitSkin:"MapViewDragLimit_skin"};
+		
+		
+		/**
+		 * 
+		 * @return 
+		 * 
+		 */		
+		public static function getStyleDefinition():Object { 
+			return UIComponent.mergeStyles(UIComponent.getStyleDefinition(), defaultStyles);
+		}
 		/**
 		 *  
 		 * 
@@ -79,12 +107,6 @@
 		override protected function configUI():void{
 			this.invalidate(InvalidationType.ALL,true);
 			this.invalidate(InvalidationType.SIZE,true);
-			this.mapBackLayer = new Sprite();
-			this.addChild(mapBackLayer);
-			this.newMapLayer = new Sprite();
-			this.addChild(newMapLayer);
-			this.oldMapLayer = new Sprite();
-			this.addChild(oldMapLayer);
 			
 			super.configUI();
 		}
@@ -94,9 +116,48 @@
 		 * 
 		 */		
 		override protected function draw():void{
+			this.mapBackLayer = new Sprite();
+			this.addChild(mapBackLayer);
+			
+			this.newMapMaskLayer = new Sprite();
+			this.addChild(newMapMaskLayer);
+			
+			var newMapMaskShape:Shape = MapViewDraw.drawRect(new Point(this.width,this.height));
+			MapUtil.deleteAllChild(this.newMapMaskLayer);
+			this.newMapMaskLayer.addChild(newMapMaskShape);
+			
+			this.newMapLayer = new Sprite();
+			this.addChild(newMapLayer);
+			this.newMapLayer.mask = this.newMapMaskLayer;
+			
+			this.oldMapMaskLayer = new Sprite();
+			this.addChild(oldMapMaskLayer);
+			
+			var oldMapMaskShape:Shape = MapViewDraw.drawRect(new Point(this.width,this.height));
+			MapUtil.deleteAllChild(this.oldMapMaskLayer);
+			this.oldMapMaskLayer.addChild(oldMapMaskShape);
+			
+			this.oldMapLayer = new Sprite();
+			this.addChild(oldMapLayer);
+			this.oldMapLayer.mask = this.oldMapMaskLayer;
+			
+			this.viewDragLimit = getDisplayObjectInstance(getStyleValue("viewDagLimitSkin"));
+			var viewPlace:Point = MapUtil.subSize(this,this.viewDragLimit);
+			MapUtil.setSpritePlace(viewDragLimit,viewPlace);
+			this.addChild(this.viewDragLimit);
+			
+			this.viewDrag = getDisplayObjectInstance(getStyleValue("viewDagSkin"));
+			MapUtil.setSpritePlace(viewDrag,viewPlace);
+			this.addChild(this.viewDrag);
+			
 			this.drawMapView(this.mapXmlName);
 		}
 		
+		/**
+		 * 
+		 * @param mapXmlName
+		 * 
+		 */		
 		private function drawMapView(mapXmlName:String):void{
 			this.lastMapXmlName = this.mapXmlName;
 			this.mapXmlName = mapXmlName;
@@ -172,14 +233,15 @@
 			this.mapView.workSpaceDO = wsdo;
 			this.mapView.drawNow();
 			this.mapView.addEventListener(MapView.AREA_DOUBLE_CLICK_EVENT,handlerMapAreaDoubleClick);
-			newMapLayer.addChild(this.mapView);
+			newMapLayer.addChild(this.mapView);	
 			
-			var mapViewRec:Rectangle = this.newMapLayer.getRect(this);
-			trace(mapViewRec.width,mapViewRec.width);
-			
-			var mvrspr:Shape = MapViewDraw.drawRect(new Point(mapViewRec.width,mapViewRec.height));
-			mvrspr.x = mapViewRec.x;
-			mvrspr.y = mapViewRec.y;
+			var sma:SpriteMouseAction = new SpriteMouseAction();
+			var mapViewRect:Rectangle = this.mapView.backMaskRec;
+			var vdlp:Point = MapUtil.getSpriteSize(this.viewDragLimit);
+			var dragAlterRect:Rectangle = new Rectangle(vdlp.x,vdlp.y,-vdlp.x,-vdlp.y);
+			//mapViewRect = RectangleUtil.plusRect(mapViewRect,dragAlterRect);//拖动显示框不会被挡住
+			MapUtil.setSpriteSize(mapView,mapViewRect.bottomRight);
+			sma.addMouseDragEvents(this.mapView,this.mapBackLayer,this.viewDrag,this.viewDragLimit,mapViewRect);
 		}
 		
 		/**

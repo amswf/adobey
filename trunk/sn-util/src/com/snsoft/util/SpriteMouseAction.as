@@ -2,14 +2,20 @@ package com.snsoft.util
 {
 	import com.snsoft.map.util.MapUtil;
 	
-	import flash.display.DisplayObjectContainer;
+	import flash.display.DisplayObject;
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	
+	/**
+	 *  
+	 * @author Administrator
+	 * 
+	 */	
 	public class SpriteMouseAction extends EventDispatcher
 	{
 		//正在拖动事件名称
@@ -19,7 +25,7 @@ package com.snsoft.util
 		public static const DRAG_COMPLETE_EVENT:String = "DRAG_COMPLETE_EVENT";
 		
 		//鼠标动作对象
-		private var dragDisplayObject:DisplayObjectContainer;
+		private var dragDisplayObject:DisplayObject;
 		
 		//鼠标动作对象动作时初始鼠标位置
 		private var cuntryNameMousePoint:Point = new Point();
@@ -28,13 +34,19 @@ package com.snsoft.util
 		private var cuntryNameMoveSign:Boolean = false;
 		
 		//拖动时限制拖动位置的其它对象
-		private var dragLimitDisplayObject:DisplayObjectContainer;
+		private var dragLimitDisplayObject:DisplayObject;
 		
 		//拖动时拖动对象的显示位置，小地图中的移动框
-		private var viewDrag:DisplayObjectContainer;
+		private var viewDrag:DisplayObject;
 		
 		//拖动时限制对象的显示位置，小地图中的限制框
-		private var viewLimit:DisplayObjectContainer;
+		private var viewLimit:DisplayObject;
+		
+		//拖动对象可拖动区域起始坐标和可拖动区域的宽高
+		private var dragRect:Rectangle = null;
+		
+		//显示位置对象可拖动区域起始坐标和可拖动区域的宽高
+		private var viewDragRect:Rectangle = null;
 		
 		private var viewEvent:String = "DRAG_MOVE_EVENT";
 		
@@ -51,14 +63,35 @@ package com.snsoft.util
 		 * @param vl
 		 * 
 		 */		
-		private function setViewPlace(d:DisplayObjectContainer,l:DisplayObjectContainer,vd:DisplayObjectContainer,vl:DisplayObjectContainer):void{
+		private function setViewPlace(d:DisplayObject,l:DisplayObject,vd:DisplayObject,vl:DisplayObject):void{
 			var dlp:Point = new Point(d.width - l.width,d.height - l.height);
 			var dlsp:Point = new Point(vd.width - vl.width,vd.height - vl.height);
+			
+			var dpp:Point = new Point();
+			if(this.dragRect != null){
+				var dragSize:Point = RectangleUtil.getSize(this.dragRect);
+				var lSize:Point = new Point(l.width,l.height); 
+				dlp = MapUtil.subPoint(dragSize,lSize);
+				
+				var dragPlace:Point = RectangleUtil.getPlace(this.dragRect);
+				dpp = dragPlace;
+			}
+			
+			var vdpp:Point = new Point();
+			if(this.viewDragRect != null){
+				var viewDragSize:Point = RectangleUtil.getSize(this.viewDragRect);
+				var vlSize:Point = new Point(vl.width,vl.height); 
+				dlsp = MapUtil.subPoint(viewDragSize,vlSize);
+				
+				var viewDragPlace:Point = RectangleUtil.getPlace(this.viewDragRect);
+				vdpp = viewDragPlace;
+			}
+			
 			if(dlp.x != 0){
-				vd.x =  vl.x + (d.x - l.x) * dlsp.x / dlp.x;
+				vd.x =  vl.x - vdpp.x + (d.x + dpp.x - l.x) * dlsp.x / dlp.x;
 			}
 			if(dlp.y != 0){
-				vd.y =  vl.y + (d.y - l.y) * dlsp.y / dlp.y;
+				vd.y =  vl.y - vdpp.y + (d.y + dpp.y - l.y) * dlsp.y / dlp.y;
 			}
 		}
 		
@@ -69,16 +102,30 @@ package com.snsoft.util
 		}
 		
 		/**
-		 * 注册鼠标拖动 
 		 * 
-		 */		
-		public function addMouseDragEvents(dragDisplayObject:DisplayObjectContainer,dragLimitDisplayObject:DisplayObjectContainer = null,viewDrag:DisplayObjectContainer = null,viewLimit:DisplayObjectContainer = null,viewEvent:String = "DRAG_MOVE_EVENT"):void{
-			this.dragDisplayObject = dragDisplayObject;
-			this.dragLimitDisplayObject = dragLimitDisplayObject;
+		 * @param dragDisplayObject
+		 * @param dragLimitDisplayObject
+		 * @param viewDrag
+		 * @param viewLimit
+		 * @param viewEvent
+		 * 
+		 */			
+		public function addMouseDragEvents(drag:DisplayObject,
+										   dragLimit:DisplayObject = null,
+										   viewDrag:DisplayObject = null,
+										   viewLimit:DisplayObject = null,
+										   dragRect:Rectangle = null,
+										   viewDragRect:Rectangle = null,
+										   viewEvent:String = "DRAG_MOVE_EVENT"):void{
+			
+			this.dragDisplayObject = drag;
+			this.dragLimitDisplayObject = dragLimit;
 			this.viewDrag = viewDrag;
 			this.viewLimit = viewLimit;
 			this.viewEvent = viewEvent;
-			var doc:DisplayObjectContainer = this.dragDisplayObject;
+			this.dragRect = dragRect;
+			this.viewDragRect = viewDragRect;
+			var doc:DisplayObject = this.dragDisplayObject;
 			if(doc != null){
 				doc.addEventListener(MouseEvent.MOUSE_DOWN,handlerCnMouseDown);
 				doc.addEventListener(MouseEvent.MOUSE_UP,handlerCnMouseUp);
@@ -91,7 +138,7 @@ package com.snsoft.util
 		}
 		
 		public function removeMouseDragEvents():void{
-			var doc:DisplayObjectContainer = this.dragDisplayObject;
+			var doc:DisplayObject = this.dragDisplayObject;
 			if(doc != null){
 				doc.removeEventListener(MouseEvent.MOUSE_DOWN,handlerCnMouseDown);
 				doc.removeEventListener(MouseEvent.MOUSE_UP,handlerCnMouseUp);
@@ -109,8 +156,8 @@ package com.snsoft.util
 		 * 
 		 */		
 		private function handlerCnMouseDown(e:Event):void{
-			var doc:DisplayObjectContainer = this.dragDisplayObject;
-			var poc:DisplayObjectContainer = this.dragDisplayObject.parent;
+			var doc:DisplayObject = this.dragDisplayObject;
+			var poc:DisplayObject = this.dragDisplayObject.parent;
 			if(poc != null){
 				if(this.cuntryNameMoveSign == false){
 					var p:Point = this.cuntryNameMousePoint;
@@ -127,8 +174,8 @@ package com.snsoft.util
 		 * 
 		 */		
 		private function handlerCnMouseUp(e:Event):void{
-			var doc:DisplayObjectContainer = this.dragDisplayObject;
-			var poc:DisplayObjectContainer = this.dragDisplayObject.parent;
+			var doc:DisplayObject = this.dragDisplayObject;
+			var poc:DisplayObject = this.dragDisplayObject.parent;
 			var sign:Boolean = this.cuntryNameMoveSign;
 			if(poc != null && sign){
 				this.cuntryNameMoveSign = false;
@@ -146,8 +193,8 @@ package com.snsoft.util
 		 * 
 		 */		
 		private function handlerCnMouseMove(e:Event):void{
-			var doc:DisplayObjectContainer = this.dragDisplayObject;
-			var poc:DisplayObjectContainer = this.dragDisplayObject.parent;
+			var doc:DisplayObject = this.dragDisplayObject;
+			var poc:DisplayObject = this.dragDisplayObject.parent;
 			if(poc != null){
 				if(this.cuntryNameMoveSign){
 					var p:Point = this.cuntryNameMousePoint;
@@ -166,18 +213,21 @@ package com.snsoft.util
 		
 		public function calculateMoveLimitPoint(dragDisplayObjectPlace:Point):Point{
 			
-			var ddoX:Number = 0;
-			var ddoY:Number = 0;
+			var ddoPlace:Point = new Point();
 			
 			//拖动对象
-			var ddo:DisplayObjectContainer = this.dragDisplayObject;
+			var ddo:DisplayObject = this.dragDisplayObject;
 			//限制对象
-			var ldo:DisplayObjectContainer = this.dragLimitDisplayObject;
+			var ldo:DisplayObject = this.dragLimitDisplayObject;
 			
 			if(ldo != null){
 				//宽高
 				var dsp:Point = MapUtil.getSpriteSize(ddo);//拖动对象
 				var lsp:Point = MapUtil.getSpriteSize(ldo);//限制对象
+				
+				if(this.dragRect != null){
+					dsp = RectangleUtil.getSize(this.dragRect);
+				}
 				
 				//宽高差
 				var ssp:Point = MapUtil.subPoint(dsp,lsp);
@@ -186,66 +236,72 @@ package com.snsoft.util
 				var dpp:Point = dragDisplayObjectPlace;//拖动对象
 				var lpp:Point = MapUtil.getSpritePlace(ldo);//限制对象
 				
+				if(this.dragRect != null){
+					var dragPlace:Point = RectangleUtil.getPlace(this.dragRect);
+					lpp = MapUtil.subPoint(lpp,dragPlace);
+				}
+				
 				//位置差
 				var spp:Point = MapUtil.subPoint(dpp,lpp);
 				
 				if(ssp.x == 0){ // x方向拖动对象和限制区域重合
-					ddoX = lpp.x;
+					ddoPlace.x = lpp.x;
 				}
 				else if(ssp.x < 0){ // x方向拖动对象在限制区域里面
 					if(spp.x < 0){
-						ddoX = lpp.x;
+						ddoPlace.x = lpp.x;
 					}
 					else if(spp.x > - ssp.x){
-						ddoX = lpp.x + lsp.x - dsp.x;
+						ddoPlace.x = lpp.x + lsp.x - dsp.x;
 					} 
 					else {
-						ddoX = dpp.x;
+						ddoPlace.x = dpp.x;
 					}
 				}
 				else if(ssp.x > 0){ // x方向拖动对象在限制区域外面
 					if(spp.x < -ssp.x){
-						ddoX = lpp.x + lsp.x - dsp.x;
+						ddoPlace.x = lpp.x + lsp.x - dsp.x;
 					}
 					else if(spp.x > 0){
-						ddoX = lpp.x;
+						ddoPlace.x = lpp.x;
 					}
 					else {
-						ddoX = dpp.x;
+						ddoPlace.x = dpp.x;
 					}
 				}
 				
 				if(ssp.y == 0){ // y方向拖动对象和限制区域重合
-					ddoY = lpp.y;
+					ddoPlace.y = lpp.y;
 				}
 				else if(ssp.y < 0){ // y方向拖动对象在限制区域里面
 					if(spp.y < 0){
-						ddoY = lpp.y;
+						ddoPlace.y = lpp.y;
 					}
 					else if(spp.y > - ssp.y){
-						ddoY = lpp.y + lsp.y - dsp.y;
+						ddoPlace.y = lpp.y + lsp.y - dsp.y;
 					} 
 					else {
-						ddoY = dpp.y;
+						ddoPlace.y = dpp.y;
 					}
 				}
 				else if(ssp.y > 0){ // y方向拖动对象在限制区域外面
 					if(spp.y < -ssp.y){
-						ddoY = lpp.y + lsp.y - dsp.y;
+						ddoPlace.y = lpp.y + lsp.y - dsp.y;
 					}
 					else if(spp.y > 0){
-						ddoY = lpp.y;
+						ddoPlace.y = lpp.y;
 					} 
 					else {
-						ddoY = dpp.y;
+						ddoPlace.y = dpp.y;
 					}
 				}
 			}
 			else {
-				ddoX = dragDisplayObjectPlace.x;
-				ddoY = dragDisplayObjectPlace.y;
+				
+				ddoPlace.x = dragDisplayObjectPlace.x;
+				ddoPlace.y = dragDisplayObjectPlace.y;
 			}
-			return new Point(ddoX,ddoY);
+			return ddoPlace;
 		}
 	}
 }

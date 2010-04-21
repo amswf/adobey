@@ -1,7 +1,8 @@
 ﻿package com.snsoft.map
 {
-	import com.snsoft.util.HashVector;
+	import com.adobe.crypto.MD5;
 	import com.snsoft.map.util.HitTest;
+	import com.snsoft.util.HashVector;
 	
 	import flash.geom.Point;
 	
@@ -297,6 +298,7 @@
 						}
 					}
 				}
+				hn = MD5.hash(hn);
 			}
 			return hn;
 		}
@@ -309,6 +311,7 @@
 		 */		
 		public static function createPointHashName(point:Point):String {
 			var str:String = String(point.x) + "|" + String(point.y);
+			str = MD5.hash(str);
 			return str;
 		}
 		
