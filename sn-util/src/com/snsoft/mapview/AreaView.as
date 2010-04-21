@@ -1,6 +1,7 @@
 package com.snsoft.mapview{
 	import com.snsoft.map.CuntryName;
 	import com.snsoft.map.MapAreaDO;
+	import com.snsoft.map.util.MapUtil;
 	import com.snsoft.mapview.util.MapViewDraw;
 	import com.snsoft.mapview.util.MyColorTransform;
 	
@@ -53,6 +54,9 @@ package com.snsoft.mapview{
 		 * 
 		 */		
 		override protected function draw():void{
+			MapUtil.deleteAllChild(this);
+			MapUtil.deleteAllChild(areaBtnLayer);
+			MapUtil.deleteAllChild(areaNameLayer);
 			this.addChild(areaBtnLayer);
 			this.addChild(areaNameLayer);
 			

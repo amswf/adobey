@@ -46,6 +46,8 @@ package com.snsoft.mapview{
 		
 		private var LIGHT_SPACE:Number = 40;
 		
+		private var _backMaskRec:Rectangle = null;
+		
 		public function MapView(){
 			super();
 		}
@@ -68,17 +70,12 @@ package com.snsoft.mapview{
 		 * 
 		 */				
 		override protected function configUI():void{
-			this.addChild(backLayer);
-			this.addChild(areaBtnsLayer);
-			this.addChild(mapLinesLayer);
-			this.addChild(lightShapesLayer);
-			this.addChild(cuntyLableLayer);
 			
-			cuntyLable.visible = false;
-			cuntyLable.mouseChildren = false;
-			cuntyLable.mouseEnabled = false;
-			cuntyLable.buttonMode = false;
-			cuntyLableLayer.addChild(cuntyLable);
+			cuntyLableLayer.visible = false;
+			cuntyLableLayer.mouseChildren = false;
+			cuntyLableLayer.mouseEnabled = false;
+			cuntyLableLayer.buttonMode = false;
+			
 			
 			lightShapesLayer.mouseChildren = false;
 			lightShapesLayer.mouseEnabled = false;
@@ -95,7 +92,20 @@ package com.snsoft.mapview{
 		 */		
 		override protected function draw():void{
 			
+			MapUtil.deleteAllChild(this);
 			MapUtil.deleteAllChild(backLayer);
+			MapUtil.deleteAllChild(areaBtnsLayer);
+			MapUtil.deleteAllChild(mapLinesLayer);
+			MapUtil.deleteAllChild(lightShapesLayer);
+			MapUtil.deleteAllChild(cuntyLableLayer);
+			
+			this.addChild(backLayer);
+			this.addChild(areaBtnsLayer);
+			this.addChild(mapLinesLayer);
+			this.addChild(lightShapesLayer);
+			this.addChild(cuntyLableLayer);
+			
+			cuntyLableLayer.addChild(cuntyLable);
 			
 			var wsdo:WorkSpaceDO = this.workSpaceDO;
 			if(wsdo != null){
@@ -124,9 +134,9 @@ package com.snsoft.mapview{
 				var backMask:Sprite = this.drawBackMask(wsdo);
 				this.backLayer.addChild(backMask);
 				
-				var backMaskRec:Rectangle = backMask.getRect(this.backLayer);
-				var sizep:Point = new Point(backMaskRec.width,backMaskRec.height);
-				var placep:Point = new Point(backMaskRec.x,backMaskRec.y);
+				_backMaskRec = backMask.getRect(this.backLayer);
+				var sizep:Point = new Point(_backMaskRec.width,_backMaskRec.height);
+				var placep:Point = new Point(_backMaskRec.x,_backMaskRec.y);
 				
 				var back:DisplayObject = getDisplayObjectInstance(getStyleValue("backSkin"));
 				back.mask = backMask;
@@ -249,7 +259,7 @@ package com.snsoft.mapview{
 			this.lightShapesLayer.addChild(shapeX);
 			this.lightShapesLayer.addChild(shapeY);
 			this.lightShapesLayer.visible = true;
-			cuntyLable.visible = true;
+			cuntyLableLayer.visible = true;
 		}
 		
 		/**
@@ -259,7 +269,7 @@ package com.snsoft.mapview{
 		 */		
 		private function handlerAreaViewMouseOut(e:Event):void{
 			this.lightShapesLayer.visible = false;
-			cuntyLable.visible = false;
+			cuntyLableLayer.visible = false;
 		}
 		
 		public function get workSpaceDO():WorkSpaceDO
@@ -276,7 +286,12 @@ package com.snsoft.mapview{
 		{
 			return _doubleClickAreaName;
 		}
-		
-		
+
+		public function get backMaskRec():Rectangle
+		{
+			return _backMaskRec;
+		}
+
+
 	}
 }

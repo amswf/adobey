@@ -42,6 +42,90 @@
 		}
 		
 		/**
+		 * 两个对象的宽高差 
+		 * @param dobj1
+		 * @param dobj2
+		 * @return 
+		 * 
+		 */		
+		public static function subSize(dobj1:DisplayObject,dobj2:DisplayObject):Point{
+			var p1:Point = new Point();
+			var p2:Point = new Point();
+			if(dobj1 != null){
+				p1 = getSpriteSize(dobj1);
+			}
+			
+			if(dobj2 != null){
+				p2 = getSpriteSize(dobj2);
+			}
+			
+			return subPoint(p1,p2);
+		}
+		
+		/**
+		 * 两个对象的宽高和
+		 * @param dobj1
+		 * @param dobj2
+		 * @return 
+		 * 
+		 */		
+		public static function plusSize(dobj1:DisplayObject,dobj2:DisplayObject):Point{
+			var p1:Point = new Point();
+			var p2:Point = new Point();
+			if(dobj1 != null){
+				p1 = getSpriteSize(dobj1);
+			}
+			
+			if(dobj2 != null){
+				p2 = getSpriteSize(dobj2);
+			}
+			
+			return plusPoint(p1,p2);
+		}
+		
+		/**
+		 * 两个对象的宽高差 
+		 * @param dobj1
+		 * @param dobj2
+		 * @return 
+		 * 
+		 */		
+		public static function subPlace(dobj1:DisplayObject,dobj2:DisplayObject):Point{
+			var p1:Point = new Point();
+			var p2:Point = new Point();
+			if(dobj1 != null){
+				p1 = getSpritePlace(dobj1);
+			}
+			
+			if(dobj2 != null){
+				p2 = getSpritePlace(dobj2);
+			}
+			
+			return subPoint(p1,p2);
+		}
+		
+		/**
+		 * 两个对象的宽高和
+		 * @param dobj1
+		 * @param dobj2
+		 * @return 
+		 * 
+		 */		
+		public static function plusPlace(dobj1:DisplayObject,dobj2:DisplayObject):Point{
+			var p1:Point = new Point();
+			var p2:Point = new Point();
+			if(dobj1 != null){
+				p1 = getSpritePlace(dobj1);
+			}
+			
+			if(dobj2 != null){
+				p1 = getSpritePlace(dobj2);
+			}
+			
+			return plusPoint(p1,p2);
+		}
+		
+		/**
 		 * 设置宽高 
 		 * @param s
 		 * @param p
@@ -111,18 +195,6 @@
 			}
 			var rp:Point = new Point(p.x / scalePoint.x,p.y / scalePoint.y); 
 			return rp;
-		}
-		
-		
-		/**
-		 * 获得一个点的哈希名字 key 
-		 * @param point 点坐标
-		 * @return 
-		 * 
-		 */		
-		public static function createPointHashName(point:Point):String {
-			var str:String = String(point.x) + "|" + String(point.y);
-			return str;
 		}
 		
 		/**
