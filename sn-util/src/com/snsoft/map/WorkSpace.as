@@ -447,12 +447,13 @@
 							this.addMapArea(mapAreaDo);
 							var pha:HashVector = mapAreaDo.pointArray;
 							if(pha != null){
+								 
 								for(var j:int=0;j< pha.length;j++){
 									var p:Point = pha.findByIndex(j) as Point;
-									this.manager.addPoint(p);
+									this.manager.addPointFromXML(p);
 								}
 								var endP:Point = pha.findByIndex(0) as Point;
-								this.manager.addPoint(endP);
+								this.manager.addPointFromXML(endP,true); 
 							}
 							var mado:MapAreaDO = this.manager.mapAreaDOAry.findByIndex(i) as MapAreaDO;
 							mado.areaName = mapAreaDo.areaName;
