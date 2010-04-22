@@ -98,6 +98,8 @@
 		//工作区名称
 		private var _wsName:String = null;
 		
+		//工作区数据对象
+		private var workSpaceDO:WorkSpaceDO = null;
 		/**
 		 * 构造方法 
 		 * 
@@ -235,6 +237,7 @@
 			var h:Number = this.height;
 			if(imageUrl != null){
 				this.mapImage.imageUrl = imageUrl;
+				this.mapImage.addEventListener(Event.COMPLETE,mapBackImageLoadComplete);
 				this.mapImage.loadImage();
 			}
 		}
@@ -302,10 +305,10 @@
 		 * 
 		 */		
 		public function mapBackImageLoadComplete(e:Event):void{
-			this.width = this.mapImage.width;
-			this.height = this.mapImage.height;
-			var w:Number = this.width;
-			var h:Number = this.height;
+			var wsSize:Point = new Point(this.mapImage.width,this.mapImage.height);
+			MapUtil.setSpriteSize(this,wsSize);
+			this.manager.setHitTest(wsSize);
+			this.mapImage.removeEventListener(Event.COMPLETE,mapBackImageLoadComplete);
 		}
 		
 		/**
@@ -437,33 +440,66 @@
 		 */		
 		public function initFromSaveData(workSpaceDO:WorkSpaceDO):void{
 			if(workSpaceDO != null){
-				var image:String = workSpaceDO.image;
-				var mapAreaDoHashArray:HashVector = workSpaceDO.mapAreaDOHashArray;
-				this.refreshMapBack(image);
-				if(mapAreaDoHashArray != null){
-					for(var i:int = 0;i<mapAreaDoHashArray.length;i++){
-						var mapAreaDo:MapAreaDO = mapAreaDoHashArray.findByIndex(i) as MapAreaDO;
-						if(mapAreaDo != null){
-							this.addMapArea(mapAreaDo);
-							var pha:HashVector = mapAreaDo.pointArray;
-							if(pha != null){
-								 
-								for(var j:int=0;j< pha.length;j++){
-									var p:Point = pha.findByIndex(j) as Point;
-									this.manager.addPointFromXML(p);
-								}
-								var endP:Point = pha.findByIndex(0) as Point;
-								this.manager.addPointFromXML(endP,true); 
+				this.workSpaceDO = workSpaceDO;
+				this.refreshMapBackFromSaveData();
+			}
+		}
+		
+		/**
+		 * 
+		 * 
+		 */		
+		private function refreshMapBackFromSaveData():void{
+			var imageUrl:String = workSpaceDO.image;
+			var w:Number = this.width;
+			var h:Number = this.height;
+			if(imageUrl != null){
+				this.mapImage.imageUrl = imageUrl;
+				this.mapImage.addEventListener(Event.COMPLETE,mapBackImageLoadFromSaveDataComplete);
+				this.mapImage.loadImage();
+			}
+		}
+		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
+		private function mapBackImageLoadFromSaveDataComplete(e:Event):void{
+			var wsSize:Point = new Point(this.mapImage.width,this.mapImage.height);
+			MapUtil.setSpriteSize(this,wsSize);
+			this.manager.setHitTest(wsSize);
+			initMapAreasFromSaveData();
+		}
+		
+		/**
+		 * 
+		 * 
+		 */		
+		private function initMapAreasFromSaveData():void{
+			var mapAreaDoHashArray:HashVector = workSpaceDO.mapAreaDOHashArray;
+			if(mapAreaDoHashArray != null){
+				for(var i:int = 0;i<mapAreaDoHashArray.length;i++){
+					var mapAreaDo:MapAreaDO = mapAreaDoHashArray.findByIndex(i) as MapAreaDO;
+					if(mapAreaDo != null){
+						this.addMapArea(mapAreaDo);
+						var pha:HashVector = mapAreaDo.pointArray;
+						if(pha != null){
+							for(var j:int=0;j< pha.length;j++){
+								var p:Point = pha.findByIndex(j) as Point;
+								this.manager.addPointFromXML(p);
 							}
-							var mado:MapAreaDO = this.manager.mapAreaDOAry.findByIndex(i) as MapAreaDO;
-							mado.areaName = mapAreaDo.areaName;
-							mado.areaId = mapAreaDo.areaId;
-							mado.areaNamePlace = mapAreaDo.areaNamePlace;
+							var endP:Point = pha.findByIndex(0) as Point;
+							this.manager.addPointFromXML(endP,true); 
 						}
+						var mado:MapAreaDO = this.manager.mapAreaDOAry.findByIndex(i) as MapAreaDO;
+						mado.areaName = mapAreaDo.areaName;
+						mado.areaId = mapAreaDo.areaId;
+						mado.areaNamePlace = mapAreaDo.areaNamePlace;
 					}
 				}
-				this.dispatchEvent(new Event(EVENT_MAP_AREA_ADD));
 			}
+			this.dispatchEvent(new Event(EVENT_MAP_AREA_ADD));
 		}
 		
 		/**
