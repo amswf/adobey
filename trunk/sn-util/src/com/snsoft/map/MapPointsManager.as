@@ -40,6 +40,12 @@
 			this.hitTestDvaluePoint = hitTestDvaluePoint;
 		}
 		
+		public function setHitTest(size:Point):void{
+			if(hitTest != null){
+				hitTest = hitTest.createCopy(size,HIT_TEST_STEP_VALUE_POINT);
+			}
+		}
+		
 		public function findLatestMapAreaDO():MapAreaDO{
 			var doa:HashVector = this.mapAreaDOAry;
 			
