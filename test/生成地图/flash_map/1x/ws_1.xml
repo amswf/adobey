@@ -1,4 +1,4 @@
-<map>
+﻿<map>
   
   <image>C:\Documents and Settings\Administrator\桌面\1.jpg</image>
   
@@ -1234,7 +1234,7 @@
     
     <area>
       
-      <areaId>西藏</areaId>
+      <areaId>ws_1_2</areaId>
       
       <areaName>西藏</areaName>
       
@@ -3354,7 +3354,7 @@
     
     <area>
       
-      <areaId>甘肃</areaId>
+      <areaId>ws_1_4</areaId>
       
       <areaName>甘肃</areaName>
       
@@ -4790,7 +4790,7 @@
     
     <area>
       
-      <areaId>内蒙古</areaId>
+      <areaId>ws_1_5</areaId>
       
       <areaName>内蒙古</areaName>
       
@@ -6738,7 +6738,7 @@
     
     <area>
       
-      <areaId>宁夏</areaId>
+      <areaId>ws_1_6</areaId>
       
       <areaName>宁夏</areaName>
       
@@ -7102,7 +7102,7 @@
     
     <area>
       
-      <areaId>四川</areaId>
+      <areaId>ws_1_7</areaId>
       
       <areaName>四川</areaName>
       
@@ -8138,7 +8138,7 @@
     
     <area>
       
-      <areaId>云南</areaId>
+      <areaId>ws_1_8</areaId>
       
       <areaName>云南</areaName>
       
@@ -9198,7 +9198,7 @@
     
     <area>
       
-      <areaId>陕西</areaId>
+      <areaId>ws_1_9</areaId>
       
       <areaName>陕西</areaName>
       
@@ -9930,7 +9930,7 @@
     
     <area>
       
-      <areaId>黑龙江</areaId>
+      <areaId>ws_1_10</areaId>
       
       <areaName>黑龙江</areaName>
       
@@ -10902,7 +10902,7 @@
     
     <area>
       
-      <areaId>吉林</areaId>
+      <areaId>ws_1_11</areaId>
       
       <areaName>吉林</areaName>
       
@@ -11602,7 +11602,7 @@
     
     <area>
       
-      <areaId>辽宁</areaId>
+      <areaId>ws_1_12</areaId>
       
       <areaName>辽宁</areaName>
       
@@ -12174,7 +12174,7 @@
     
     <area>
       
-      <areaId>河北</areaId>
+      <areaId>ws_1_13</areaId>
       
       <areaName>河北</areaName>
       
@@ -13082,7 +13082,7 @@
     
     <area>
       
-      <areaId>北京</areaId>
+      <areaId>ws_1_14</areaId>
       
       <areaName>北京</areaName>
       
@@ -13286,7 +13286,7 @@
     
     <area>
       
-      <areaId>天津</areaId>
+      <areaId>ws_1_15</areaId>
       
       <areaName>天津</areaName>
       
@@ -13982,7 +13982,7 @@
     
     <area>
       
-      <areaId>山东</areaId>
+      <areaId>ws_1_17</areaId>
       
       <areaName>山东</areaName>
       
@@ -15158,7 +15158,7 @@
     
     <area>
       
-      <areaId>江苏</areaId>
+      <areaId>ws_1_19</areaId>
       
       <areaName>江苏</areaName>
       
@@ -15698,7 +15698,7 @@
     
     <area>
       
-      <areaId>上海</areaId>
+      <areaId>ws_1_20</areaId>
       
       <areaName>上海</areaName>
       
@@ -15862,7 +15862,7 @@
     
     <area>
       
-      <areaId>安徽</areaId>
+      <areaId>ws_1_21</areaId>
       
       <areaName>安徽</areaName>
       
@@ -16410,7 +16410,7 @@
     
     <area>
       
-      <areaId>浙江</areaId>
+      <areaId>ws_1_22</areaId>
       
       <areaName>浙江</areaName>
       
@@ -16870,7 +16870,7 @@
     
     <area>
       
-      <areaId>重庆</areaId>
+      <areaId>ws_1_23</areaId>
       
       <areaName>重庆</areaName>
       
@@ -17402,7 +17402,7 @@
     
     <area>
       
-      <areaId>湖北</areaId>
+      <areaId>ws_1_24</areaId>
       
       <areaName>湖北</areaName>
       
@@ -18046,7 +18046,7 @@
     
     <area>
       
-      <areaId>贵林</areaId>
+      <areaId>ws_1_25</areaId>
       
       <areaName>贵林</areaName>
       
@@ -18634,7 +18634,7 @@
     
     <area>
       
-      <areaId>广西</areaId>
+      <areaId>ws_1_26</areaId>
       
       <areaName>广西</areaName>
       
@@ -19230,7 +19230,7 @@
     
     <area>
       
-      <areaId>湖南</areaId>
+      <areaId>ws_1_27</areaId>
       
       <areaName>湖南</areaName>
       
@@ -19842,7 +19842,7 @@
     
     <area>
       
-      <areaId>江西</areaId>
+      <areaId>ws_1_28</areaId>
       
       <areaName>江西</areaName>
       
@@ -20326,7 +20326,7 @@
     
     <area>
       
-      <areaId>福建</areaId>
+      <areaId>ws_1_29</areaId>
       
       <areaName>福建</areaName>
       
@@ -20858,7 +20858,7 @@
     
     <area>
       
-      <areaId>广东</areaId>
+      <areaId>ws_1_30</areaId>
       
       <areaName>广东</areaName>
       
@@ -21622,7 +21622,7 @@
     
     <area>
       
-      <areaId>澳门</areaId>
+      <areaId>ws_1_31</areaId>
       
       <areaName>澳门</areaName>
       
@@ -21706,7 +21706,7 @@
     
     <area>
       
-      <areaId>香港</areaId>
+      <areaId>ws_1_32</areaId>
       
       <areaName>香港</areaName>
       
@@ -21790,7 +21790,7 @@
     
     <area>
       
-      <areaId>海南</areaId>
+      <areaId>ws_1_33</areaId>
       
       <areaName>海南</areaName>
       
