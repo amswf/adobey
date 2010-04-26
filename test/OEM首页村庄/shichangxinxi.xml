@@ -2,8 +2,8 @@
 	<function>
 		<rooturl></rooturl>
 		<rootx>-65</rootx>
-		<rooty>-230</rooty>
-		<listtype>false</listtype>
+		<rooty>30</rooty>
+		<listtype>true</listtype>
 		<childtext>农产品供求</childtext>
 		<childurl></childurl>
 	</function>
