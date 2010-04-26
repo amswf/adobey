@@ -1,0 +1,26 @@
+﻿<xml>
+	<function>
+		<rooturl></rooturl>
+		<rootx>-65</rootx>
+		<rooty>-230</rooty>
+		<listtype>false</listtype>
+		<childtext>饮食信息</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>生活常识与信息</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>健康知识</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>家政信息</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>万年历</childtext>
+		<childurl></childurl>
+	</function>
+</xml>

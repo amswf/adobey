@@ -1,0 +1,34 @@
+﻿<xml>
+	<function>
+		<rooturl></rooturl>
+		<rootx>-65</rootx>
+		<rooty>-230</rooty>
+		<listtype>false</listtype>
+		<childtext>农村公务</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>政府办事指南</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>政策与法规</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>党团信息</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>妇联信息</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>民兵信息</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>破除迷信</childtext>
+		<childurl></childurl>
+	</function>
+</xml>

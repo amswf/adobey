@@ -1,0 +1,22 @@
+﻿<xml>
+	<function>
+		<rooturl></rooturl>
+		<rootx>-65</rootx>
+		<rooty>-230</rooty>
+		<listtype>false</listtype>
+		<childtext>戏曲与曲艺</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>文学作品</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>影视欣赏</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>游戏棋牌</childtext>
+		<childurl></childurl>
+	</function>
+</xml>

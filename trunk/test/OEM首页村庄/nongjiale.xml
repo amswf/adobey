@@ -1,11 +1,22 @@
 ﻿<xml>
 	<function>
-		<rooturl>http://www.baidu.com</rooturl>
-		<rootx>0</rootx>
-		<rooty>0</rooty>
+		<rooturl></rooturl>
+		<rootx>-65</rootx>
+		<rooty>-230</rooty>
 		<listtype>false</listtype>
-		<childtext></childtext>
+		<childtext>农家乐信息</childtext>
 		<childurl></childurl>
 	</function>
-	 
+	<function>
+		<childtext>旅游知识与信息</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>交通信息</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>气象信息</childtext>
+		<childurl></childurl>
+	</function>
 </xml>

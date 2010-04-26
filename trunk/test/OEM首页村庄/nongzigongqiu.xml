@@ -1,0 +1,18 @@
+﻿<xml>
+	<function>
+		<rooturl></rooturl>
+		<rootx>-65</rootx>
+		<rooty>-230</rooty>
+		<listtype>false</listtype>
+		<childtext>农资供应</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>农资求购</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>农资使用技术</childtext>
+		<childurl></childurl>
+	</function>
+</xml>
