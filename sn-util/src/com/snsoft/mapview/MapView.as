@@ -28,7 +28,7 @@ package com.snsoft.mapview{
 		
 		public static const AREA_DOUBLE_CLICK_EVENT:String = "AREA_DOUBLE_CLICK_EVENT";
 		
-		private var _doubleClickAreaName:String;
+		private var _doubleClickAreaId:String;
 		
 		private var _workSpaceDO:WorkSpaceDO = null;
 		
@@ -192,7 +192,7 @@ package com.snsoft.mapview{
 		 */		
 		private function handlerAreaViewDoubleClick(e:Event):void{
 			var av:AreaView = e.currentTarget as AreaView;
-			this._doubleClickAreaName = av.mapAreaDO.areaName;
+			this._doubleClickAreaId = av.mapAreaDO.areaId;
 			this.dispatchEvent(new Event(AREA_DOUBLE_CLICK_EVENT));
 		}
 		
@@ -282,9 +282,9 @@ package com.snsoft.mapview{
 			_workSpaceDO = value;
 		}
 
-		public function get doubleClickAreaName():String
+		public function get doubleClickAreaId():String
 		{
-			return _doubleClickAreaName;
+			return _doubleClickAreaId;
 		}
 
 		public function get backMaskRec():Rectangle

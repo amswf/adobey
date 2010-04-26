@@ -290,7 +290,7 @@
 		 * 
 		 */		
 		private function handlerMapAreaDoubleClick(e:Event):void{
-			var wsName:String = mapView.doubleClickAreaName;
+			var wsName:String = mapView.doubleClickAreaId;
 			if(wsName != null){
 				switchEffectScaleRate = 1.1;
 				this.drawMapView(wsName);

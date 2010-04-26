@@ -417,14 +417,12 @@
 		 */		
 		private function addMapArea(mado:MapAreaDO):void{
 			var wsName:String = null;
-			if(mado.areaName != null && mado.areaName.length > 0){
-				wsName = mado.areaName;
+			if(mado.areaId != null && mado.areaId.length > 0){
+				wsName = mado.areaId;
 			}
 			else {
 				wsName = this.createChildWordSpaceId();
 			}
-			mado.areaName = wsName;
-			mado.areaId = wsName;
 			var ma:MapArea = new MapArea(mado,AREA_LINE_COLOR,AREA_FILL_COLOR,this.scalePoint);
 			ma.name = MapPointsManager.creatHashArrayHashName(mado.pointArray);
 			ma.refresh();
