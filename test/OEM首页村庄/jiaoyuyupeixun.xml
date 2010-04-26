@@ -1,10 +1,22 @@
 ﻿<xml>
 	<function>
-		<rooturl>http://www.baidu.com</rooturl>
-		<rootx>-85</rootx>
-		<rooty>30</rooty>
-		<listtype></listtype>
-		<childtext></childtext>
+		<rooturl></rooturl>
+		<rootx>-65</rootx>
+		<rooty>-230</rooty>
+		<listtype>false</listtype>
+		<childtext>中小学教育</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>幼儿教育</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>农民工培训</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>就业信息</childtext>
 		<childurl></childurl>
 	</function>
 </xml>

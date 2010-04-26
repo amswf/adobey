@@ -1,0 +1,22 @@
+﻿<xml>
+	<function>
+		<rooturl></rooturl>
+		<rootx>-65</rootx>
+		<rooty>-230</rooty>
+		<listtype>false</listtype>
+		<childtext>医疗信息</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>保健知识</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>计划生育知识</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>养老保险</childtext>
+		<childurl></childurl>
+	</function>
+</xml>

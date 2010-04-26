@@ -1,0 +1,22 @@
+﻿<xml>
+	<function>
+		<rooturl></rooturl>
+		<rootx>-65</rootx>
+		<rooty>-230</rooty>
+		<listtype>false</listtype>
+		<childtext>农村工业技术</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>工业市场信息</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>运输业信息</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>其它行业信息</childtext>
+		<childurl></childurl>
+	</function>
+</xml>

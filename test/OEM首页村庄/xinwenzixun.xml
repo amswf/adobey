@@ -1,0 +1,26 @@
+﻿<xml>
+	<function>
+		<rooturl></rooturl>
+		<rootx>-65</rootx>
+		<rooty>-230</rooty>
+		<listtype>false</listtype>
+		<childtext>农村新闻</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>农业资讯</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>社会热点</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>网络聊天</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>站点导航</childtext>
+		<childurl></childurl>
+	</function>
+</xml>

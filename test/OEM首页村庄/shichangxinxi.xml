@@ -1,0 +1,18 @@
+﻿<xml>
+	<function>
+		<rooturl></rooturl>
+		<rootx>-65</rootx>
+		<rooty>-230</rooty>
+		<listtype>false</listtype>
+		<childtext>农产品供求</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>市场行情</childtext>
+		<childurl></childurl>
+	</function>
+	<function>
+		<childtext>价格预测</childtext>
+		<childurl></childurl>
+	</function>
+</xml>
