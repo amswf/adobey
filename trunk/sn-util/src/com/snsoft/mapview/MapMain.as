@@ -143,6 +143,7 @@
 			
 			this.viewDragLimit = getDisplayObjectInstance(getStyleValue("viewDagLimitSkin"));
 			var viewPlace:Point = MapUtil.subSize(this,this.viewDragLimit);
+			viewPlace.x = 0;
 			MapUtil.setSpritePlace(viewDragLimit,viewPlace);
 			this.addChild(this.viewDragLimit);
 			

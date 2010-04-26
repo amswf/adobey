@@ -10,12 +10,14 @@
 		<![CDATA[
 			import com.snsoft.util.SpriteMouseAction;
 			
+			import flash.display.DisplayObject;
 			import flash.geom.Rectangle;
 			private function init():void{
+				var obj:DisplayObject;
 				var sma:SpriteMouseAction = new SpriteMouseAction();
 				var rect:Rectangle = new Rectangle(50,50,50,50);
 				var rect2:Rectangle = new Rectangle(10,10,10,10);
-				//sma.addMouseDragEvents(d,l,vd,vl,rect,rect2);
+				sma.addMouseDragEvents(obj,obj,obj,obj,rect,rect2);
 			}
 		]]>
 	</fx:Script>
