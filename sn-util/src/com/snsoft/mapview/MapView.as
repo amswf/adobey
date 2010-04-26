@@ -100,8 +100,8 @@ package com.snsoft.mapview{
 			MapUtil.deleteAllChild(cuntyLableLayer);
 			
 			this.addChild(backLayer);
-			this.addChild(areaBtnsLayer);
 			this.addChild(mapLinesLayer);
+			this.addChild(areaBtnsLayer);
 			this.addChild(lightShapesLayer);
 			this.addChild(cuntyLableLayer);
 			
