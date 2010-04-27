@@ -56,6 +56,57 @@ package com.snsoft.util
 		}
 		
 		/**
+		 * 
+		 * @param drag
+		 * @param dragLimit
+		 * @param viewDrag
+		 * @param viewLimit
+		 * @param dragRect
+		 * @param viewDragRect
+		 * @param viewEvent
+		 * 
+		 */				
+		public function addMouseDragEvents(drag:DisplayObject,
+										   dragLimit:DisplayObject = null,
+										   viewDrag:DisplayObject = null,
+										   viewLimit:DisplayObject = null,
+										   dragRect:Rectangle = null,
+										   viewDragRect:Rectangle = null,
+										   viewEvent:String = "DRAG_MOVE_EVENT"):void{
+			
+			this.dragDisplayObject = drag;
+			this.dragLimitDisplayObject = dragLimit;
+			this.viewDrag = viewDrag;
+			this.viewLimit = viewLimit;
+			this.viewEvent = viewEvent;
+			this.dragRect = dragRect;
+			this.viewDragRect = viewDragRect;
+			var doc:DisplayObject = this.dragDisplayObject;
+			if(doc != null){
+				doc.addEventListener(MouseEvent.MOUSE_DOWN,handlerCnMouseDown);
+				doc.addEventListener(MouseEvent.MOUSE_UP,handlerCnMouseUp);
+				doc.addEventListener(MouseEvent.MOUSE_MOVE,handlerCnMouseMove);
+				var stg:Stage = doc.stage;
+				if(stg != null){
+					stg.addEventListener(MouseEvent.MOUSE_UP,handlerCnMouseUp);
+				}
+			}
+		}
+		
+		public function removeMouseDragEvents():void{
+			var doc:DisplayObject = this.dragDisplayObject;
+			if(doc != null){
+				doc.removeEventListener(MouseEvent.MOUSE_DOWN,handlerCnMouseDown);
+				doc.removeEventListener(MouseEvent.MOUSE_UP,handlerCnMouseUp);
+				doc.removeEventListener(MouseEvent.MOUSE_MOVE,handlerCnMouseMove);
+				var stg:Stage = doc.stage;
+				if(stg != null){
+					stg.addEventListener(MouseEvent.MOUSE_UP,handlerCnMouseUp);
+				}
+			}
+		}
+		
+		/**
 		 * 把当前拖动对象和限制对象，算出小地图中拖动对象的位置并置属性。 
 		 * @param d
 		 * @param l
@@ -98,55 +149,6 @@ package com.snsoft.util
 		private function setView():void{
 			if(this.dragLimitDisplayObject != null && this.viewDrag != null && this.viewLimit != null){
 				this.setViewPlace(this.dragDisplayObject,this.dragLimitDisplayObject,this.viewDrag,this.viewLimit);
-			}
-		}
-		
-		/**
-		 * 
-		 * @param dragDisplayObject
-		 * @param dragLimitDisplayObject
-		 * @param viewDrag
-		 * @param viewLimit
-		 * @param viewEvent
-		 * 
-		 */			
-		public function addMouseDragEvents(drag:DisplayObject,
-										   dragLimit:DisplayObject = null,
-										   viewDrag:DisplayObject = null,
-										   viewLimit:DisplayObject = null,
-										   dragRect:Rectangle = null,
-										   viewDragRect:Rectangle = null,
-										   viewEvent:String = "DRAG_MOVE_EVENT"):void{
-			
-			this.dragDisplayObject = drag;
-			this.dragLimitDisplayObject = dragLimit;
-			this.viewDrag = viewDrag;
-			this.viewLimit = viewLimit;
-			this.viewEvent = viewEvent;
-			this.dragRect = dragRect;
-			this.viewDragRect = viewDragRect;
-			var doc:DisplayObject = this.dragDisplayObject;
-			if(doc != null){
-				doc.addEventListener(MouseEvent.MOUSE_DOWN,handlerCnMouseDown);
-				doc.addEventListener(MouseEvent.MOUSE_UP,handlerCnMouseUp);
-				doc.addEventListener(MouseEvent.MOUSE_MOVE,handlerCnMouseMove);
-				var stg:Stage = doc.stage;
-				if(stg != null){
-					stg.addEventListener(MouseEvent.MOUSE_UP,handlerCnMouseUp);
-				}
-			}
-		}
-		
-		public function removeMouseDragEvents():void{
-			var doc:DisplayObject = this.dragDisplayObject;
-			if(doc != null){
-				doc.removeEventListener(MouseEvent.MOUSE_DOWN,handlerCnMouseDown);
-				doc.removeEventListener(MouseEvent.MOUSE_UP,handlerCnMouseUp);
-				doc.removeEventListener(MouseEvent.MOUSE_MOVE,handlerCnMouseMove);
-				var stg:Stage = doc.stage;
-				if(stg != null){
-					stg.addEventListener(MouseEvent.MOUSE_UP,handlerCnMouseUp);
-				}
 			}
 		}
 		
@@ -211,7 +213,7 @@ package com.snsoft.util
 			}
 		}
 		
-		public function calculateMoveLimitPoint(dragDisplayObjectPlace:Point):Point{
+		private function calculateMoveLimitPoint(dragDisplayObjectPlace:Point):Point{
 			
 			var ddoPlace:Point = new Point();
 			
