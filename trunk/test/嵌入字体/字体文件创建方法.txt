@@ -1,0 +1,10 @@
+
+1.在FontLook.fla 里新建字体，不用改名，然后运行这个flash，会输出字体名称xxxx，把这个字体名称做字体fla/swf文件的名称xxxx.fla/xxxx.swf。
+如果字体名称中有特殊字符，就把特殊字符去掉，可以与字体英文名称不同。
+
+2.在font文件夹下建立xxxx.fla,打开fla文件，库->右键->新建字型，名称xxxx，高级里面类xxxx，点击确定。
+
+3.运行一下xxxx.fla,会生成一个xxxx.swf文件，字体就在这个swf文件里了。
+
+4.test.fla有例子，用EmbedFonts类初始化xxxx字体，和调用xxxx字体。
+
