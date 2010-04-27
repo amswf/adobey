@@ -4,7 +4,7 @@
 	import com.snsoft.mapview.util.MapViewDraw;
 	import com.snsoft.mapview.util.MapViewXMLLoader;
 	import com.snsoft.util.HashVector;
-	import com.snsoft.util.SpriteMouseAction;
+	import com.snsoft.util.complexEvent.CplxMouseDrag;
 	
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
@@ -236,13 +236,13 @@
 			this.mapView.addEventListener(MapView.AREA_DOUBLE_CLICK_EVENT,handlerMapAreaDoubleClick);
 			newMapLayer.addChild(this.mapView);	
 			
-			var sma:SpriteMouseAction = new SpriteMouseAction();
+			var sma:CplxMouseDrag = new CplxMouseDrag();
 			var mapViewRect:Rectangle = this.mapView.backMaskRec;
 			var vdlp:Point = MapUtil.getSpriteSize(this.viewDragLimit);
 			var dragAlterRect:Rectangle = new Rectangle(vdlp.x,vdlp.y,-vdlp.x,-vdlp.y);
 			//mapViewRect = RectangleUtil.plusRect(mapViewRect,dragAlterRect);//拖动显示框不会被挡住
 			MapUtil.setSpriteSize(mapView,mapViewRect.bottomRight);
-			sma.addMouseDragEvents(this.mapView,this.mapBackLayer,this.viewDrag,this.viewDragLimit,mapViewRect);
+			sma.addEvents(this.mapView,this.mapBackLayer,this.viewDrag,this.viewDragLimit,mapViewRect);
 		}
 		
 		/**

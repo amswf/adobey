@@ -8,16 +8,16 @@
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
-			import com.snsoft.util.SpriteMouseAction;
+			import com.snsoft.util.complexEvent.CplxMouseDrag;
 			
 			import flash.display.DisplayObject;
 			import flash.geom.Rectangle;
 			private function init():void{
 				var obj:DisplayObject;
-				var sma:SpriteMouseAction = new SpriteMouseAction();
+				var sma:CplxMouseDrag = new CplxMouseDrag();
 				var rect:Rectangle = new Rectangle(50,50,50,50);
 				var rect2:Rectangle = new Rectangle(10,10,10,10);
-				sma.addMouseDragEvents(obj,obj,obj,obj,rect,rect2);
+				sma.addEvents(obj,obj,obj,obj,rect,rect2);
 			}
 		]]>
 	</fx:Script>

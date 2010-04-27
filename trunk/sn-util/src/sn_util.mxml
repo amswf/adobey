@@ -4,13 +4,13 @@
 		<![CDATA[
 			import com.snsoft.map.MapBackImage;
 			import com.snsoft.map.MapMain;
-			import com.snsoft.util.SpriteMouseAction;
+			import com.snsoft.util.complexEvent.CplxMouseDrag;
 			private function init():void{
 				var mm:MapMain = new MapMain();
 				mm.width = 400;
 				mm.height = 300;
 				this.addChild(mm);
-				var sma:SpriteMouseAction = null;
+				var sma:CplxMouseDrag = null;
 				
 				var mbi:MapBackImage = null;
 			}
