@@ -1,4 +1,4 @@
-<map>
+﻿<map>
   
   <image>C:\Documents and Settings\Administrator\桌面\2.jpg</image>
   
@@ -6,7 +6,7 @@
     
     <area>
       
-      <areaId>null</areaId>
+      <areaId>ws_1_13_1</areaId>
       
       <areaName>承德</areaName>
       
@@ -722,7 +722,7 @@
     
     <area>
       
-      <areaId>null</areaId>
+      <areaId>ws_1_13_2</areaId>
       
       <areaName>秦皇岛</areaName>
       
@@ -1030,7 +1030,7 @@
     
     <area>
       
-      <areaId>null</areaId>
+      <areaId>ws_1_13_3</areaId>
       
       <areaName>唐山</areaName>
       
@@ -1434,7 +1434,7 @@
     
     <area>
       
-      <areaId>null</areaId>
+      <areaId>ws_1_13_4</areaId>
       
       <areaName>张家口</areaName>
       
@@ -2150,7 +2150,7 @@
     
     <area>
       
-      <areaId>null</areaId>
+      <areaId>ws_1_13_5</areaId>
       
       <areaName>廊坊</areaName>
       
@@ -2682,7 +2682,7 @@
     
     <area>
       
-      <areaId>null</areaId>
+      <areaId>ws_1_13_6</areaId>
       
       <areaName>保定</areaName>
       
@@ -3502,7 +3502,7 @@
     
     <area>
       
-      <areaId>null</areaId>
+      <areaId>ws_1_13_7</areaId>
       
       <areaName>沧州</areaName>
       
@@ -4106,7 +4106,7 @@
     
     <area>
       
-      <areaId>null</areaId>
+      <areaId>ws_1_13_8</areaId>
       
       <areaName>衡水</areaName>
       
@@ -4550,7 +4550,7 @@
     
     <area>
       
-      <areaId>null</areaId>
+      <areaId>ws_1_13_9</areaId>
       
       <areaName>石家庄</areaName>
       
@@ -5098,7 +5098,7 @@
     
     <area>
       
-      <areaId>null</areaId>
+      <areaId>ws_1_13_10</areaId>
       
       <areaName>邢台</areaName>
       
@@ -5590,7 +5590,7 @@
     
     <area>
       
-      <areaId>null</areaId>
+      <areaId>ws_1_13_11</areaId>
       
       <areaName>邯郸</areaName>
       
