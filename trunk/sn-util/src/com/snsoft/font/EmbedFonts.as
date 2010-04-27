@@ -188,6 +188,7 @@
 				var f:Font = fary[j] as Font;
 				var cname:String = getQualifiedClassName(f);
 				var fname:String = f.fontName;
+				trace(cname,":",fname);
 				if(cname != null && fname != null){
 					EmbedFonts.fontEnNameAry[cname] = fname;
 				}
