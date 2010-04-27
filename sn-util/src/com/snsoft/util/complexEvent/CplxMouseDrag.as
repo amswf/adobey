@@ -1,4 +1,4 @@
-package com.snsoft.util
+package com.snsoft.util.complexEvent
 {
 	import com.snsoft.map.util.MapUtil;
 	
@@ -10,13 +10,14 @@ package com.snsoft.util
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import com.snsoft.util.RectangleUtil;
 	
 	/**
-	 *  
+	 * 物体在限制区拖动，及显示物体拖动位置小地图显示 
 	 * @author Administrator
 	 * 
 	 */	
-	public class SpriteMouseAction extends EventDispatcher
+	public class CplxMouseDrag extends EventDispatcher
 	{
 		//正在拖动事件名称
 		public static const DRAG_MOVE_EVENT:String = "DRAG_MOVE_EVENT";
@@ -50,7 +51,7 @@ package com.snsoft.util
 		
 		private var viewEvent:String = "DRAG_MOVE_EVENT";
 		
-		public function SpriteMouseAction(target:IEventDispatcher=null)
+		public function CplxMouseDrag(target:IEventDispatcher=null)
 		{
 			super(target);
 		}
@@ -66,7 +67,7 @@ package com.snsoft.util
 		 * @param viewEvent
 		 * 
 		 */				
-		public function addMouseDragEvents(drag:DisplayObject,
+		public function addEvents(drag:DisplayObject,
 										   dragLimit:DisplayObject = null,
 										   viewDrag:DisplayObject = null,
 										   viewLimit:DisplayObject = null,
@@ -93,7 +94,7 @@ package com.snsoft.util
 			}
 		}
 		
-		public function removeMouseDragEvents():void{
+		public function removeEvents():void{
 			var doc:DisplayObject = this.dragDisplayObject;
 			if(doc != null){
 				doc.removeEventListener(MouseEvent.MOUSE_DOWN,handlerCnMouseDown);

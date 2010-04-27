@@ -3,7 +3,7 @@
 	<mx:Script>
 		<![CDATA[
 			import com.snsoft.map.util.HitTest;
-			import com.snsoft.util.SpriteMouseAction;
+			import com.snsoft.util.complexEvent.CplxMouseDrag;
 			
 			public function init():void{
 				var ht:HitTest = new HitTest(new Point(400,500),new Point(10,10));

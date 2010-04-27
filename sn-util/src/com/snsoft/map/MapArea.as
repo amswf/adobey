@@ -1,6 +1,6 @@
 package com.snsoft.map
 {
-	import com.snsoft.util.SpriteMouseAction;
+	import com.snsoft.util.complexEvent.CplxMouseDrag;
 	
 	import flash.display.Shape;
 	import flash.display.Sprite;
@@ -93,9 +93,9 @@ package com.snsoft.map
 			cn.mouseChildren = false;
 			this.addChild(cn);
 			
-			var sma:SpriteMouseAction = new SpriteMouseAction();
-			sma.addMouseDragEvents(cn);
-			sma.addEventListener(SpriteMouseAction.DRAG_COMPLETE_EVENT,dragCmp);
+			var sma:CplxMouseDrag = new CplxMouseDrag();
+			sma.addEvents(cn);
+			sma.addEventListener(CplxMouseDrag.DRAG_COMPLETE_EVENT,dragCmp);
 			 
 		}
 		

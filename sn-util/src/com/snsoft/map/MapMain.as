@@ -4,7 +4,7 @@
 	import com.snsoft.util.HashVector;
 	import com.snsoft.map.util.MapUtil;
 	import com.snsoft.util.SkinsUtil;
-	import com.snsoft.util.SpriteMouseAction;
+	import com.snsoft.util.complexEvent.CplxMouseDrag;
 	
 	import fl.core.UIComponent;
 	
@@ -50,7 +50,7 @@
 		private var rootWs:WorkSpace = null;
 		
 		//综合事件对象[拖动]
-		private var spriteMouseAction:SpriteMouseAction = new SpriteMouseAction();
+		private var spriteMouseAction:CplxMouseDrag = new CplxMouseDrag();
 		
 		private const SPACE:int = 10;
 		
@@ -372,11 +372,11 @@
 		 * 
 		 */		
 		private function handlerEventToolsClick(e:Event):void{ 
-			spriteMouseAction.removeMouseDragEvents();
+			spriteMouseAction.removeEvents();
 			var toolEventType:String = bar.toolEventType;
 			ws.toolEventType = toolEventType;
 			if(ws.toolEventType == ToolsBar.TOOL_TYPE_DRAG){
-				spriteMouseAction.addMouseDragEvents(this.ws,this.wsFrame);
+				spriteMouseAction.addEvents(this.ws,this.wsFrame);
 			}
 		}
 		
