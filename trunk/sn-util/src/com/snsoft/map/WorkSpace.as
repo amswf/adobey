@@ -8,6 +8,7 @@
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.ui.Mouse;
@@ -422,6 +423,8 @@
 			}
 			else {
 				wsName = this.createChildWordSpaceId();
+				mado.areaId = wsName;
+				mado.areaName = wsName;
 			}
 			var ma:MapArea = new MapArea(mado,AREA_LINE_COLOR,AREA_FILL_COLOR,this.scalePoint);
 			ma.name = MapPointsManager.creatHashArrayHashName(mado.pointArray);
@@ -457,6 +460,7 @@
 			if(imageUrl != null){
 				this.mapImage.imageUrl = imageUrl;
 				this.mapImage.addEventListener(Event.COMPLETE,mapBackImageLoadFromSaveDataComplete);
+				this.mapImage.addEventListener(IOErrorEvent.IO_ERROR,mapBackImageLoadFromSaveDataIOError);
 				this.mapImage.loadImage();
 			}
 		}
@@ -470,6 +474,15 @@
 			var wsSize:Point = new Point(this.mapImage.width,this.mapImage.height);
 			MapUtil.setSpriteSize(this,wsSize);
 			this.manager.setHitTest(wsSize);
+			initMapAreasFromSaveData();
+		}
+		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
+		private function mapBackImageLoadFromSaveDataIOError(e:Event):void{
 			initMapAreasFromSaveData();
 		}
 		
