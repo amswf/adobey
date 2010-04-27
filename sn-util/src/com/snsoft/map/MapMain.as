@@ -429,26 +429,28 @@
 		 * 
 		 */		
 		private function updateAndSetWorkSpace(ws:WorkSpace,wsName:String):void{
-			ws.mask = this.wsMask;
-			ws.x = this.wsx;
-			ws.y = this.wsy;
-			ws.wsName = wsName;
-			if(this.ws != null){
-				this.removeChild(this.ws);
+			if(ws != null && wsName != null){
+				ws.mask = this.wsMask;
+				ws.x = this.wsx;
+				ws.y = this.wsy;
+				ws.wsName = wsName;
+				if(this.ws != null){
+					this.removeChild(this.ws);
+				}
+				this.ws = ws;
+				this.addChild(this.ws);
+				
+				ws.addEventListener(WorkSpace.EVENT_MAP_AREA_CLICK,handlerMapAreaClick);
+				ws.addEventListener(WorkSpace.EVENT_MAP_AREA_DOUBLE_CLICK,handlerMapAreaDoubleClick);
+				ws.addEventListener(WorkSpace.EVENT_MAP_AREA_ADD,handlerMapAreaChange);
+				ws.addEventListener(WorkSpace.EVENT_MAP_AREA_DELETE,handlerMapAreaChange);
+				ws.addEventListener(WorkSpace.EVENT_MAP_AREA_UPDATE,handlerMapAreaChange);
+				
+				//相关联属性设置
+				this.wsAttribute.refreshMapAreaListBtn(null);
+				this.workSpaceHashVector.put(wsName,ws);
+				this.ws.dispatchEvent(new Event(WorkSpace.EVENT_MAP_AREA_ADD));
 			}
-			this.ws = ws;
-			this.addChild(this.ws);
-			
-			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_CLICK,handlerMapAreaClick);
-			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_DOUBLE_CLICK,handlerMapAreaDoubleClick);
-			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_ADD,handlerMapAreaChange);
-			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_DELETE,handlerMapAreaChange);
-			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_UPDATE,handlerMapAreaChange);
-			
-			//相关联属性设置
-			this.wsAttribute.refreshMapAreaListBtn(null);
-			this.workSpaceHashVector.put(wsName,ws);
-			this.ws.dispatchEvent(new Event(WorkSpace.EVENT_MAP_AREA_ADD));
 		}
 	}
 }

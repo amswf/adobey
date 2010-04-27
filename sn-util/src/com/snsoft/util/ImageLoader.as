@@ -54,6 +54,7 @@ package com.snsoft.util
 		
 		private function handlerLoaderIoError(e:Event):void{
 			trace("图片地址错误！");
+			this.dispatchEvent(new Event(IOErrorEvent.IO_ERROR));
 		}
 
 		public function get bitmapData():BitmapData

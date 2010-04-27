@@ -8,6 +8,7 @@ package com.snsoft.map
 	import flash.display.BitmapData;
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.geom.Point;
 	
 	public class MapBackImage extends MapComponent
@@ -47,9 +48,13 @@ package com.snsoft.map
 			}
 			this.sizePoint = sizePoint;
 			imageLoader.addEventListener(Event.COMPLETE,handlerLoadImageComplete);
+			imageLoader.addEventListener(IOErrorEvent.IO_ERROR,handlerLoadImageIOError);
 			this.loadImage();
 		}
 		
+		private function handlerLoadImageIOError(e:Event):void{
+			this.dispatchEvent(new Event(IOErrorEvent.IO_ERROR));
+		}
 		private function handlerLoadImageComplete(e:Event):void{
 			imageBm = new Bitmap(imageLoader.bitmapData);
 			imageMc = new MovieClip();
