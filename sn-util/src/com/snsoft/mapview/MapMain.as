@@ -65,7 +65,7 @@
 		
 		private var switchEffectScaleRate:Number = 1;
 		
-		private var switchEffectTimerRepeatCount:int = 10;
+		private var switchEffectTimerRepeatCount:int = 5;
 		
 		private var switchEffectTimerDelay:int = 10;
 		
@@ -290,10 +290,12 @@
 		 * 
 		 */		
 		private function handlerMapAreaDoubleClick(e:Event):void{
-			var wsName:String = mapView.doubleClickAreaId;
-			if(wsName != null){
-				switchEffectScaleRate = 1.1;
-				this.drawMapView(wsName);
+			if(mapView.doubleClickAreaView != null && mapView.doubleClickAreaView.mapAreaDO != null){
+				var wsName:String = mapView.doubleClickAreaView.mapAreaDO.areaId;
+				if(wsName != null){
+					switchEffectScaleRate = 1.1;
+					this.drawMapView(wsName);
+				}
 			}
 		}
 		
