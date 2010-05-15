@@ -31,6 +31,7 @@ var ELE_ATTR_MIN_LENGTH = 'minlength';
 var ELE_ATTR_CHECK_TYPE = 'checktype';
 var ELE_ATTR_CHECK_FORMAT = 'checkformat';
 var ELE_ATTR_CHECK_MSG = 'checkmsg';
+var ELE_ATTR_CHECK_FUN = 'checkfun';
 
 var MIN_LENGTH_DEFAULT_VALUE = '-1';
 var MAX_LENGTH_DEFAULT_VALUE = '-1';
@@ -117,6 +118,20 @@ function getNowDocumentElement(aele) {
  * 
  * @param {}
  *            ele
+ * @param {}
+ *            functionName
+ */
+function callBack(ele,functionName) {
+	var nele = getNowDocumentElement(ele);
+	if (nele != null && functionName != null) {
+		eval(functionName + '(nele)');
+	}
+}
+
+/**
+ * 
+ * @param {}
+ *            ele
  * @return {Boolean}
  */
 function checkElement(ele) {
@@ -131,15 +146,16 @@ function checkElement(ele) {
 	var cmsgStr = getElementAttribute(ele, ELE_ATTR_CHECK_MSG,
 			CHECK_MSG_DEFAULT_VALUE);
 	var eleValueStr = getElementAttribute(ele, ELE_ATTR_VALUE, '');
-
+	var checkfunStr = getElementAttribute(ele, ELE_ATTR_CHECK_FUN,
+			null);
 	if (ctypeStr != null && ctypeStr.length > 0) {
 		if (ctypeStr == CHECK_TYPE_TEXT) {
 			var minlen = parseInt(minlenStr);
 			var maxlen = parseInt(maxlenStr);
 			var eleValueLen = -1;
-			if(eleValueStr != null && eleValueStr.length > 0){ 
-				var trimStr = checkCTrim(eleValueStr,0);
-			 	eleValueLen = checkTextLength(trimStr);
+			if (eleValueStr != null && eleValueStr.length > 0) {
+				var trimStr = checkCTrim(eleValueStr, 0);
+				eleValueLen = checkTextLength(trimStr);
 			}
 			if (!isNaN(minlen) && minlen >= 0) {
 				if (eleValueLen < minlen) {
@@ -147,12 +163,14 @@ function checkElement(ele) {
 					return false;
 				}
 			}
-
-			if (!isNaN(maxlen) && maxlen >= 0) {
+			else if (!isNaN(maxlen) && maxlen >= 0) {
 				if (eleValueLen > maxlen) {
 					alertMsg(ele, cmsgStr + "　:" + "长度不能大于" + maxlen);
 					return false;
 				}
+			}
+			if(checkfunStr != null){
+				this.callBack(ele,checkfunStr);
 			}
 		}
 		else if (ctypeStr == CHECK_TYPE_NUM) {
@@ -346,8 +364,9 @@ function creatMsgDiv(ele, msg) {
 
 		var left = getAbsoluteLeft(ele) + ele.offsetWidth;
 		var top = getAbsoluteTop(ele);
-		var divStr = '<div id=\"' + divIdStr + '\" class=\"msgdiv\" style=\" left: ' + left
-				+ 'px; top: ' + top + 'px;\">' + msg + '</div>';
+		var divStr = '<div id=\"' + divIdStr
+				+ '\" class=\"msgdiv\" style=\" left: ' + left + 'px; top: '
+				+ top + 'px;\">' + msg + '</div>';
 
 		if (document.body != null) {
 			document.body.innerHTML += divStr;
@@ -388,28 +407,31 @@ function checkTextLength(text) {
 
 /**
  * 1=去掉字符串左边的空格 2=去掉字符串左边的空格 0=去掉字符串左边和右边的空格 return
- * @param {} sInputString
- * @param {} iType
+ * 
+ * @param {}
+ *            sInputString
+ * @param {}
+ *            iType
  * @return {}
  */
-function checkCTrim(sInputString, iType){
-    var sTmpStr = ' ';
-    var i = -1;
-    if (iType == 0 || iType == 1) {
-        while (sTmpStr == ' ') {
-            ++i;
-            sTmpStr = sInputString.substr(i, 1);
-        }
-        sInputString = sInputString.substring(i);
-    }
-    if (iType == 0 || iType == 2) {
-        sTmpStr = ' ';
-        i = sInputString.length;
-        while (sTmpStr == ' ') {
-            --i;
-            sTmpStr = sInputString.substr(i, 1);
-        }
-        sInputString = sInputString.substring(0, i + 1);
-    }
-    return sInputString;
+function checkCTrim(sInputString, iType) {
+	var sTmpStr = ' ';
+	var i = -1;
+	if (iType == 0 || iType == 1) {
+		while (sTmpStr == ' ') {
+			++i;
+			sTmpStr = sInputString.substr(i, 1);
+		}
+		sInputString = sInputString.substring(i);
+	}
+	if (iType == 0 || iType == 2) {
+		sTmpStr = ' ';
+		i = sInputString.length;
+		while (sTmpStr == ' ') {
+			--i;
+			sTmpStr = sInputString.substr(i, 1);
+		}
+		sInputString = sInputString.substring(0, i + 1);
+	}
+	return sInputString;
 }
