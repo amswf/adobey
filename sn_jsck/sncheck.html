@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>无标题文档</title>
+    </head>
+     
+    <script src="sncheck.js" language="javascript" type="text/javascript">
+    </script>
+    
+    <style>
+        .msgdiv {
+            position: absolute;
+            width: 200px;
+            height: 20px;
+            z-index: 1;
+            font-size: 12px;
+            color: #900;
+            font-weight: bold;
+            background-color: #FF0;
+            line-height: 20px;
+        }
+    </style>
+    <body onload="addEventCheckElements('form1');">
+        <form action="" method="post" enctype="multipart/form-data" name="form1" id="form1">
+            <input type="text" name="textfield" id="textfield" value="12345" maxlength="5" minlength="1" checktype="text" checkformat="0.00" checkmsg="请输入文字长度1-5!"/>
+            asdfasdf<br/>
+            <input type="text" name="textfield2" id="textfield2" onabort="" value="6.33" checkfun="isInt" checktype="num" checkformat="0.00" checkmsg="请输入小数" msgdiv=""/>
+            asdfasdf<br/>
+            <textarea name="textarea" id="textarea" cols="45" rows="5">
+                asdf
+            </textarea>
+            aasdfasdf<br/>
+            <input type="checkbox" name="checkbox" id="checkbox" />
+            <br/>
+            <input type="radio" name="radio" id="radio" value="radio" />
+            <br/>
+            <select name="select" id="select">
+                <option value="a">a</option>
+            </select>
+            <br/>
+            <input type="file" name="fileField" id="fileField" value="" maxlength="500" minlength="1" checktype="text"/>
+            asdfasdf<br/>
+            <input type="button" onclick="alert(snCheck('form1'));" value="button"/>
+        </form>
+    </body>
+</html>
