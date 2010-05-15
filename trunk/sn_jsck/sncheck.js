@@ -136,15 +136,20 @@ function checkElement(ele) {
 		if (ctypeStr == CHECK_TYPE_TEXT) {
 			var minlen = parseInt(minlenStr);
 			var maxlen = parseInt(maxlenStr);
+			var eleValueLen = -1;
+			if(eleValueStr != null && eleValueStr.length > 0){ 
+				var trimStr = checkCTrim(eleValueStr,0);
+			 	eleValueLen = checkTextLength(trimStr);
+			}
 			if (!isNaN(minlen) && minlen >= 0) {
-				if (eleValueStr.length < minlen) {
+				if (eleValueLen < minlen) {
 					alertMsg(ele, cmsgStr + "　:" + "长度不能小于" + minlen);
 					return false;
 				}
 			}
 
 			if (!isNaN(maxlen) && maxlen >= 0) {
-				if (eleValueStr.length > maxlen) {
+				if (eleValueLen > maxlen) {
 					alertMsg(ele, cmsgStr + "　:" + "长度不能大于" + maxlen);
 					return false;
 				}
@@ -353,6 +358,7 @@ function creatMsgDiv(ele, msg) {
 	else {
 		if (msgdivStr != null && msgdivStr.length > 0) {
 			var divEle = document.getElementById(msgdivStr);
+			divEle.innerHTML = msg;
 			divEle.style.display = '';
 		}
 	}
@@ -374,4 +380,36 @@ function creatMsgDivIdStr(str) {
 		i++;
 	}
 	return rstr + i;
+}
+
+function checkTextLength(text) {
+	return (text.replace(/[^\x00-\xff]/g, "aa")).length;
+}
+
+/**
+ * 1=去掉字符串左边的空格 2=去掉字符串左边的空格 0=去掉字符串左边和右边的空格 return
+ * @param {} sInputString
+ * @param {} iType
+ * @return {}
+ */
+function checkCTrim(sInputString, iType){
+    var sTmpStr = ' ';
+    var i = -1;
+    if (iType == 0 || iType == 1) {
+        while (sTmpStr == ' ') {
+            ++i;
+            sTmpStr = sInputString.substr(i, 1);
+        }
+        sInputString = sInputString.substring(i);
+    }
+    if (iType == 0 || iType == 2) {
+        sTmpStr = ' ';
+        i = sInputString.length;
+        while (sTmpStr == ' ') {
+            --i;
+            sTmpStr = sInputString.substr(i, 1);
+        }
+        sInputString = sInputString.substring(0, i + 1);
+    }
+    return sInputString;
 }
