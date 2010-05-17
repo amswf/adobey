@@ -45,11 +45,11 @@ var TYPE_VALUE_FILE = 'file';
  *            formId
  */
 function snCheck(formId) {
+
 	var form = document.getElementById(formId);
 	if (form != null) {
 		var allEle = new Array();
 		allEle = getAllElements(form);
-		// alert(allEle.length);
 		for (var i = 0; i < allEle.length; i++) {
 			var ele = allEle[i];
 			var check = checkElement(ele);
@@ -118,38 +118,27 @@ function getNowDocumentElement(aele) {
  * 
  * @param {}
  *            ele
- * @param {}
- *            functionName
- */
-function callBack(ele,functionName) {
-	var nele = getNowDocumentElement(ele);
-	if (nele != null && functionName != null) {
-		eval(functionName + '(nele)');
-	}
-}
-
-/**
- * 
- * @param {}
- *            ele
  * @return {Boolean}
  */
 function checkElement(ele) {
-	var minlenStr = getElementAttribute(ele, ELE_ATTR_MIN_LENGTH,
+	var nele = getNowDocumentElement(ele);
+	var minlenStr = getElementAttribute(nele, ELE_ATTR_MIN_LENGTH,
 			MIN_LENGTH_DEFAULT_VALUE);
-	var maxlenStr = getElementAttribute(ele, ELE_ATTR_MAX_LENGTH,
+	var maxlenStr = getElementAttribute(nele, ELE_ATTR_MAX_LENGTH,
 			MAX_LENGTH_DEFAULT_VALUE);
-	var ctypeStr = getElementAttribute(ele, ELE_ATTR_CHECK_TYPE,
+	var ctypeStr = getElementAttribute(nele, ELE_ATTR_CHECK_TYPE,
 			CHECK_TYPE_DEFAULT);
-	var cfmtStr = getElementAttribute(ele, ELE_ATTR_CHECK_FORMAT,
+	var cfmtStr = getElementAttribute(nele, ELE_ATTR_CHECK_FORMAT,
 			CHECK_FORMAT_DEFAULT_VALUE);
-	var cmsgStr = getElementAttribute(ele, ELE_ATTR_CHECK_MSG,
+	var cmsgStr = getElementAttribute(nele, ELE_ATTR_CHECK_MSG,
 			CHECK_MSG_DEFAULT_VALUE);
-	var eleValueStr = getElementAttribute(ele, ELE_ATTR_VALUE, '');
-	var checkfunStr = getElementAttribute(ele, ELE_ATTR_CHECK_FUN,
-			null);
+	var eleValueStr = getElementAttribute(nele, ELE_ATTR_VALUE, '');
+	var checkfunStr = getElementAttribute(nele, ELE_ATTR_CHECK_FUN, '');
+	var sign = true;
+	var ctypeIsEffective = false;
 	if (ctypeStr != null && ctypeStr.length > 0) {
 		if (ctypeStr == CHECK_TYPE_TEXT) {
+			ctypeIsEffective = true;
 			var minlen = parseInt(minlenStr);
 			var maxlen = parseInt(maxlenStr);
 			var eleValueLen = -1;
@@ -159,24 +148,31 @@ function checkElement(ele) {
 			}
 			if (!isNaN(minlen) && minlen >= 0) {
 				if (eleValueLen < minlen) {
-					alertMsg(ele, cmsgStr + "　:" + "长度不能小于" + minlen);
-					return false;
+					alertMsg(nele, cmsgStr + "　:" + "长度不能小于" + minlen);
+					sign = sign && false;
 				}
 			}
 			else if (!isNaN(maxlen) && maxlen >= 0) {
 				if (eleValueLen > maxlen) {
-					alertMsg(ele, cmsgStr + "　:" + "长度不能大于" + maxlen);
-					return false;
+					alertMsg(nele, cmsgStr + "　:" + "长度不能大于" + maxlen);
+					sign = sign && false;
 				}
 			}
-			if(checkfunStr != null){
-				this.callBack(ele,checkfunStr);
-			}
+
 		}
 		else if (ctypeStr == CHECK_TYPE_NUM) {
+			ctypeIsEffective = true;
 			if (!checkFormatValue(cfmtStr, eleValueStr)) {
-				alertMsg(ele, cmsgStr + "　:" + "数字格式应为" + cfmtStr);
-				return false;
+				alertMsg(nele, cmsgStr + "　:" + "数字格式应为" + cfmtStr);
+				sign = sign && false;
+			}
+
+		}
+
+		if (ctypeIsEffective) {
+			if (checkfunStr.length > 0) {
+				var cb = this.callBack(nele, checkfunStr);
+				sign = sign && cb;
 			}
 		}
 	}
@@ -186,13 +182,47 @@ function checkElement(ele) {
 		var divEle = document.getElementById(msgdivStr);
 		divEle.style.display = 'none';
 	}
+	return sign;
+}
+
+/**
+ * 
+ * @param {}
+ *            ele
+ * @param {}
+ *            functionName
+ */
+function callBack(ele, functionName) {
+	var nele = getNowDocumentElement(ele);
+	if (nele != null && functionName != null && functionName.length > 0) {
+		try {
+			return eval(functionName + '(nele)');
+		}
+		catch (e) {
+		}
+	}
 	return true;
 }
 
+/**
+ * 
+ * @param {}
+ *            ele
+ * @param {}
+ *            msg
+ */
 function alertMsg(ele, msg) {
 	creatMsgDiv(ele, msg);
 }
 
+/**
+ * 
+ * @param {}
+ *            cfmtStr
+ * @param {}
+ *            value
+ * @return {Boolean}
+ */
 function checkFormatValue(cfmtStr, value) {
 	// var cfmtStr = '';//删除本行
 	var ary = new Array();
