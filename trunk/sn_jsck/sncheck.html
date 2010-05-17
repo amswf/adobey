@@ -20,13 +20,14 @@
         </style>
 		<script type="text/javascript" language="javaScript">
 			function isInt(ele){
-				alert('asdf');
+				alert('callBack');
+				return true;
 			}
 		</script>
     </head>
     <body onload="addEventCheckElements('form1');">
         <form action="" method="post" enctype="multipart/form-data" name="form1" id="form1">
-            <input type="text" name="textfield" id="textfield" value="12345" maxlength="5" minlength="1" checktype="text" checkformat="0.00" checkmsg="请输入文字长度1-5!"/>asdfasdf
+            <input type="text" name="textfield" id="textfield" value="12345" maxlength="5" checkfun="isInt" minlength="1" checktype="text" checkformat="0.00" checkmsg="请输入文字长度1-5!"/>asdfasdf
             <br/>
             <input type="text" name="textfield2" id="textfield2" onabort="" value="6.33" checkfun="isInt" checktype="num" checkformat="0.00" checkmsg="请输入小数" msgdiv=""/>asdfasdf
             <br/>
