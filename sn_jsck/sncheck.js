@@ -383,7 +383,19 @@ var SnJsckForm = function(formId){
      *
      */
     function initBaseDiv(){
-        document.body.innerHTML += '<div id=\"snjsck\"></div>';
+        var divSnjsck = document.getElementById('snjsck');
+        if (divSnjsck == null) {
+            var divSnjsckFormHTML = '';
+            var formsAry = document.getElementsByTagName('form');
+            for (var i = 0; i < formsAry.length; i++) {
+                var form = formsAry[i];
+                var formId = form.id;
+                if (formId != null && formId.length > 0) {
+                    divSnjsckFormHTML += '<div id=\"snjsck_' + formId + '\"></div>';
+                }
+            }
+            document.body.innerHTML += '<div id=\"snjsck\">' + divSnjsckFormHTML + '</div>';
+        }
     }
     
     /**
@@ -414,7 +426,7 @@ var SnJsckForm = function(formId){
             '</div>';
             
             if (document.body != null) {
-                document.getElementById('snjsck').innerHTML += divStr;
+                document.getElementById('snjsck_'+formId).innerHTML += divStr;
             }
             var nele = getNowDocumentElement(ele);
             nele.setAttribute('msgdiv', divIdStr);
