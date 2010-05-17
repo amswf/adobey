@@ -70,6 +70,8 @@ function snCheck(formId) {
  *            formId
  */
 function addEventCheckElements(formId) {
+	initBaseDiv();
+	
 	var form = document.getElementById(formId);
 	if (form != null) {
 		var allEle = new Array();
@@ -95,7 +97,9 @@ function handlerElementEventOnblur() {
 	var ele = getNowDocumentElement(aele);
 
 	if (ele != null) {
-		checkElement(ele);
+		setInterval(function() {
+					checkElement(ele);
+				}, 0);
 	}
 }
 
@@ -177,10 +181,12 @@ function checkElement(ele) {
 		}
 	}
 
-	var msgdivStr = getElementAttribute(ele, 'msgdiv', null);
-	if (msgdivStr != null && msgdivStr.length > 0) {
-		var divEle = document.getElementById(msgdivStr);
-		divEle.style.display = 'none';
+	if (sign) {
+		var msgdivStr = getElementAttribute(ele, 'msgdiv', null);
+		if (msgdivStr != null && msgdivStr.length > 0) {
+			var divEle = document.getElementById(msgdivStr);
+			divEle.style.display = 'none';
+		}
 	}
 	return sign;
 }
@@ -377,6 +383,13 @@ getAbsoluteTop = function(obj) {
 
 /**
  * 
+ */
+function initBaseDiv(){
+	document.body.innerHTML += '<div id=\"snjsck\"></div>';
+}
+
+/**
+ * 
  * @param {}
  *            ele
  * @param {}
@@ -384,7 +397,6 @@ getAbsoluteTop = function(obj) {
  * @return {}
  */
 function creatMsgDiv(ele, msg) {
-	// var ele = getNowDocumentElement(aele);
 	var msgdivStr = getElementAttribute(ele, 'msgdiv', null);
 	var divIdStr = '';
 	if (msgdivStr == null || msgdivStr.length == 0) {
@@ -399,7 +411,7 @@ function creatMsgDiv(ele, msg) {
 				+ top + 'px;\">' + msg + '</div>';
 
 		if (document.body != null) {
-			document.body.innerHTML += divStr;
+			document.getElementById('snjsck').innerHTML += divStr;
 		}
 		var nele = getNowDocumentElement(ele);
 		nele.setAttribute('msgdiv', divIdStr);
@@ -414,6 +426,7 @@ function creatMsgDiv(ele, msg) {
 	return divIdStr;
 
 }
+
 
 /**
  * 创建div id 查询有重的尾号加1
