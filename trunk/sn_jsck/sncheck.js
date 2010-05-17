@@ -105,8 +105,12 @@ var SnJsckForm = function(formId) {
 		}
 		var ele = getNowDocumentElement(aele);
 		if (ele != null) {
+			var sign = true;
 			setInterval(function() {
-						checkElement(ele);
+						if (sign) {
+							sign = false;
+							checkElement(ele);
+						}
 					}, 0);
 		}
 	}
@@ -133,6 +137,7 @@ var SnJsckForm = function(formId) {
 	 * @return {Boolean}
 	 */
 	function checkElement(ele) {
+		var ff = document.getElementById('fileField').value;
 		var nele = getNowDocumentElement(ele);
 		var minlenStr = getElementAttribute(nele, ELE_ATTR_MIN_LENGTH,
 				MIN_LENGTH_DEFAULT_VALUE);
@@ -144,7 +149,7 @@ var SnJsckForm = function(formId) {
 				CHECK_FORMAT_DEFAULT_VALUE);
 		var cmsgStr = getElementAttribute(nele, ELE_ATTR_CHECK_MSG,
 				CHECK_MSG_DEFAULT_VALUE);
-		var eleValueStr = getElementAttribute(nele, ELE_ATTR_VALUE, '');
+		var eleValueStr = getElementValue(nele, '');
 		var checkfunStr = getElementAttribute(nele, ELE_ATTR_CHECK_FUN, '');
 		var sign = true;
 		var ctypeIsEffective = false;
@@ -307,6 +312,31 @@ var SnJsckForm = function(formId) {
 		var attrStr = null;
 		try {
 			attrStr = ele.getAttribute(attrName);
+		}
+		catch (e) {
+		}
+		if (attrStr == null) {
+			attrStr = defValue;
+		}
+
+		return attrStr;
+	}
+
+	/**
+	 * 获得结点属性
+	 * 
+	 * @param {}
+	 *            ele 结点
+	 * @param {}
+	 *            attrName 属性
+	 * @param {}
+	 *            defValue 默认置
+	 * @return {} 结点属性值
+	 */
+	function getElementValue(ele, defValue) {
+		var attrStr = null;
+		try {
+			attrStr = ele.value;
 		}
 		catch (e) {
 		}
