@@ -18,14 +18,15 @@
                 line-height: 20px;
             }
         </style>
-		<script type="text/javascript" language="javaScript">
+		<script type="text/javascript" language="javascript">
 			function isInt(ele){
-				//alert('callBack');
+				alert('callBack');
 				return true;
 			}
+			var sjf = new SnJsckForm('form1');
 		</script>
     </head>
-    <body onload="addEventCheckElements('form1');">
+    <body onload="sjf.addEventCheckElements();">
         <form action="" method="post" enctype="multipart/form-data" name="form1" id="form1">
             <input type="text" name="textfield" id="textfield" value="12345" maxlength="5" checkfun="isInt" minlength="1" checktype="text" checkformat="0.00" checkmsg="请输入文字长度1-5!"/>asdfasdf
             <br/>
@@ -46,7 +47,7 @@
             <br/>
             <input type="file" name="fileField" id="fileField" value="" maxlength="500" minlength="1" checktype="text"/>asdfasdf
             <br/>
-            <input type="button" onclick="alert(snCheck('form1'));" value="button"/>
+            <input type="button" onclick="alert(sjf.snCheck());" value="button"/>
         </form>
     </body>
 </html>
