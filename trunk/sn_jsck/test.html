@@ -4,15 +4,26 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>Untitled Document</title>
         <script type="text/javascript">
-        	
-			function init(){
-				
-				var msg = 'lala';
-				eval('a(msg)');
+            var SnJsck = function(name){
+				var n = '';
+                this.name = name; //加this 后为公开属性或方法
+                this.getName = function(){
+                    initBaseDiv();
+                    return name;
+                }
+                
+                function initBaseDiv(){
+                    document.body.innerHTML += '<div id=\"snjsck\">asdf</div>';
+                }
             }
             
-            function a(msgs){
-                alert(msgs);
+            function init(){
+                var sj = new SnJsck('a');
+                var sj2 = new SnJsck('b');
+                alert(sj.name);
+                alert(sj.getName());
+                alert(sj2.getName());
+				SnJsck.name
             }
         </script>
     </head>
