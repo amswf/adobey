@@ -23,10 +23,11 @@
 				alert('callBack');
 				return true;
 			}
-			var sjf = new SnJsckForm('form1');
+			var sjf1 = new SnJsckForm('form1');
+			var sjf2 = new SnJsckForm('form2');
 		</script>
     </head>
-    <body onload="sjf.addEventCheckElements();">
+    <body onload="sjf1.addEventCheckElements();sjf2.addEventCheckElements();">
         <form action="" method="post" enctype="multipart/form-data" name="form1" id="form1">
             <input type="text" name="textfield" id="textfield" value="12345" maxlength="5" checkfun="isInt" minlength="1" checktype="text" checkformat="0.00" checkmsg="请输入文字长度1-5!"/>asdfasdf
             <br/>
@@ -47,7 +48,29 @@
             <br/>
             <input type="file" name="fileField" id="fileField" value="" maxlength="500" minlength="1" checktype="text"/>asdfasdf
             <br/>
-            <input type="button" onclick="alert(sjf.snCheck());" value="button"/>
+            <input type="button" onclick="alert(sjf1.snCheck());" value="button"/>
+        </form>
+		<form action="" method="post" enctype="multipart/form-data" name="form2" id="form2">
+            <input type="text" name="textfield" id="textfield" value="12345" maxlength="5" checkfun="isInt" minlength="1" checktype="text" checkformat="0.00" checkmsg="请输入文字长度1-5!"/>asdfasdf
+            <br/>
+            <input type="text" name="textfield2" id="textfield2" onabort="" value="6.33" checkfun="isInt" checktype="num" checkformat="0.00" checkmsg="请输入小数" msgdiv=""/>asdfasdf
+            <br/>
+            <textarea name="textarea" id="textarea" cols="45" rows="5">
+                asdf
+            </textarea>
+            aasdfasdf
+            <br/>
+            <input type="checkbox" name="checkbox" id="checkbox" />
+            <br/>
+            <input type="radio" name="radio" id="radio" value="radio" />
+            <br/>
+            <select name="select" id="select">
+                <option value="a">a</option>
+            </select>
+            <br/>
+            <input type="file" name="fileField" id="fileField" value="" maxlength="500" minlength="1" checktype="text"/>asdfasdf
+            <br/>
+            <input type="button" onclick="alert(sjf2.snCheck());" value="button"/>
         </form>
     </body>
 </html>
