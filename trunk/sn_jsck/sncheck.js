@@ -109,7 +109,6 @@ var SnJsckForm = function(formId) {
 		if (window.event) {
 			aele = window.event.srcElement;
 		}
-
 		else {
 			aele = e.target;
 		}
