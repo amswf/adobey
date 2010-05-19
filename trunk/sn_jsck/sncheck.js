@@ -52,14 +52,15 @@ var SnJsckForm = function(formId) {
 		if (form != null) {
 			var allEle = new Array();
 			allEle = getAllElements(form);
+			var sign = true;
 			for (var i = 0; i < allEle.length; i++) {
 				var ele = allEle[i];
 				var check = checkElement(ele);
 				if (!check) {
-					return false;
+					sign &= false;
 				}
 			}
-			return true;
+			return sign;
 		}
 		else {
 			alert('找不到id为:' + formId + '的form');
