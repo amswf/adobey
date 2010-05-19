@@ -57,7 +57,7 @@ var SnJsckForm = function(formId) {
 				var ele = allEle[i];
 				var check = checkElement(ele);
 				if (!check) {
-					sign &= false;
+					sign = sign && false;
 				}
 			}
 			return sign;
@@ -65,6 +65,7 @@ var SnJsckForm = function(formId) {
 		else {
 			alert('找不到id为:' + formId + '的form');
 		}
+		return false;
 	}
 
 	/**
