@@ -1,6 +1,7 @@
 package com.snsoft.util.complexEvent
 {
 	import com.snsoft.map.util.MapUtil;
+	import com.snsoft.util.RectangleUtil;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Stage;
@@ -10,7 +11,6 @@ package com.snsoft.util.complexEvent
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import com.snsoft.util.RectangleUtil;
 	
 	/**
 	 * 物体在限制区拖动，及显示物体拖动位置小地图显示 
@@ -86,9 +86,9 @@ package com.snsoft.util.complexEvent
 			if(doc != null){
 				doc.addEventListener(MouseEvent.MOUSE_DOWN,handlerCnMouseDown);
 				doc.addEventListener(MouseEvent.MOUSE_UP,handlerCnMouseUp);
-				doc.addEventListener(MouseEvent.MOUSE_MOVE,handlerCnMouseMove);
 				var stg:Stage = doc.stage;
 				if(stg != null){
+					stg.addEventListener(MouseEvent.MOUSE_MOVE,handlerCnMouseMove);
 					stg.addEventListener(MouseEvent.MOUSE_UP,handlerCnMouseUp);
 				}
 			}
@@ -102,6 +102,7 @@ package com.snsoft.util.complexEvent
 				doc.removeEventListener(MouseEvent.MOUSE_MOVE,handlerCnMouseMove);
 				var stg:Stage = doc.stage;
 				if(stg != null){
+					stg.addEventListener(MouseEvent.MOUSE_MOVE,handlerCnMouseMove);
 					stg.addEventListener(MouseEvent.MOUSE_UP,handlerCnMouseUp);
 				}
 			}
@@ -213,6 +214,8 @@ package com.snsoft.util.complexEvent
 				}
 			}
 		}
+		
+		 
 		
 		private function calculateMoveLimitPoint(dragDisplayObjectPlace:Point):Point{
 			
