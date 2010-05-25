@@ -456,7 +456,7 @@
 		
 		public function save(ws:WorkSpace,filePath:String):void {
 			var xml:String = creatXML(ws);
-			xml = XMLUtil.formatXML(new XML(xml));
+			xml = com.snsoft.util.XMLUtil.formatXML(new XML(xml));
 			var file:File = new File(filePath);
 			var fs:FileStream = new FileStream();
 			fs.open(file,FileMode.WRITE);
