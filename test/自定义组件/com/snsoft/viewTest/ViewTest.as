@@ -1,4 +1,4 @@
-﻿package {
+﻿package com.snsoft.viewTest {
 	import fl.core.UIComponent;
 	import com.snsoft.util.SkinsUtil;
 	import flash.display.MovieClip;
