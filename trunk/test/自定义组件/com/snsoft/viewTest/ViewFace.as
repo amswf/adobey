@@ -1,4 +1,4 @@
-﻿package {
+﻿package com.snsoft.viewTest {
 	import flash.events.Event;
 	import flash.utils.getQualifiedClassName;
 	import fl.livepreview.LivePreviewParent;
