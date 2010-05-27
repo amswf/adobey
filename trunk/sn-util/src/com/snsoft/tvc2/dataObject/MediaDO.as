@@ -1,4 +1,6 @@
 package com.snsoft.tvc2.dataObject{
+	import flash.geom.Point;
+
 	public class MediaDO{
 		
 		private var _name:String;
