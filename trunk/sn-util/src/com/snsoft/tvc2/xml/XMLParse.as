@@ -169,7 +169,7 @@
 				bizDO.textOutsHv = this.parseTextOutsXML(textOutsXMLList);
 				
 				//解析媒体文件，图片、flash
-				var mediasXMLList = bizXML.elements(TAG_MEDIAS);
+				var mediasXMLList:XMLList = bizXML.elements(TAG_MEDIAS);
 				bizDO.mediasHv = this.parseMediasXML(mediasXMLList);
 			}
 			return bizDOHv;
