@@ -5,6 +5,8 @@
 	import com.snsoft.tvc2.dataObject.DataDO;
 	import com.snsoft.tvc2.dataObject.ListDO;
 	import com.snsoft.tvc2.dataObject.MainDO;
+	import com.snsoft.tvc2.dataObject.MediaDO;
+	import com.snsoft.tvc2.dataObject.MediasDO;
 	import com.snsoft.tvc2.dataObject.SoundDO;
 	import com.snsoft.tvc2.dataObject.SoundsDO;
 	import com.snsoft.tvc2.dataObject.TextOutDO;
@@ -159,12 +161,16 @@
 				
 				
 				//解析声音
-				var soundXMLList:XMLList = bizXML.elements(TAG_SOUNDS);
-				bizDO.soundsHv = this.parseSoundsXML(soundXMLList);
+				var soundsXMLList:XMLList = bizXML.elements(TAG_SOUNDS);
+				bizDO.soundsHv = this.parseSoundsXML(soundsXMLList);
 				
-				//解析声音
-				var textOutXMLList:XMLList = bizXML.elements(TAG_TEXTOUTS);
-				bizDO.textOutsHv = this.parseTextOutsXML(textOutXMLList);
+				//解析输出文字
+				var textOutsXMLList:XMLList = bizXML.elements(TAG_TEXTOUTS);
+				bizDO.textOutsHv = this.parseTextOutsXML(textOutsXMLList);
+				
+				//解析媒体文件，图片、flash
+				var mediasXMLList = bizXML.elements(TAG_MEDIAS);
+				bizDO.mediasHv = this.parseMediasXML(mediasXMLList);
 			}
 			return bizDOHv;
 		}
@@ -206,15 +212,17 @@
 		 * 
 		 */		
 		private function parseTextOutsXML(textOutsXMLList:XMLList):HashVector{
+			trace("parseTextOutsXML");
 			var ssv:HashVector = new HashVector();
 			for(var i:int = 0;i<textOutsXMLList.length();i++){
 				var textOutsXML:XML = textOutsXMLList[i];
-				var textOutXMLList:XMLList = textOutsXML.elements(TAG_SOUND);
+				var textOutXMLList:XMLList = textOutsXML.elements(TAG_TEXTOUT);
 				var textOutsDO:TextOutsDO = new TextOutsDO();
 				var textOutv:Vector.<TextOutDO> = new Vector.<TextOutDO>();
 				for(var j:int = 0;j<textOutXMLList.length();j++){
-					var textOutXML:XML = textOutXMLList[i];
+					var textOutXML:XML = textOutXMLList[j];
 					var textOutDO:TextOutDO = new TextOutDO();
+					trace(textOutXML);
 					var textOutAttributeHv:HashVector = this.getXMLAttributes(textOutXML);
 					textOutDO.name = textOutAttributeHv.findByName(ATT_NAME)as String;
 					textOutDO.text = textOutAttributeHv.findByName(ATT_TEXT)as String;
@@ -229,6 +237,40 @@
 				}
 			}
 			return ssv;
+		}
+		
+		/**
+		 * 
+		 * @param textOutsXMLList
+		 * @return 
+		 * 
+		 */		
+		private function parseMediasXML(mediasXMLList:XMLList):HashVector{
+			trace("parseMediasXML");
+			var msv:HashVector = new HashVector();
+			for(var i:int = 0;i<mediasXMLList.length();i++){
+				var mediasXML:XML = mediasXMLList[i];
+				var mediaXMLList:XMLList = mediasXML.elements(TAG_MEDIA);
+				var mediasDO:MediasDO = new MediasDO();
+				var mediav:Vector.<MediaDO> = new Vector.<MediaDO>();
+				for(var j:int = 0;j<mediaXMLList.length();j++){
+					var mediaXML:XML = mediaXMLList[j];
+					var mediaDO:MediaDO = new MediaDO();
+					trace(mediaXML);
+					var mediaAttributeHv:HashVector = this.getXMLAttributes(mediaXML);
+					mediaDO.name = mediaAttributeHv.findByName(ATT_NAME)as String;
+					mediaDO.text = mediaAttributeHv.findByName(ATT_TEXT)as String;
+					mediaDO.timeLength = int(mediaAttributeHv.findByName(ATT_TIMELENGTH)as String);
+					mediaDO.timeOffset = int(mediaAttributeHv.findByName(ATT_TIMEOFFSET)as String);
+					mediaDO.timeout = int(mediaAttributeHv.findByName(ATT_TIMEOUT)as String);
+					var x:int = int(mediaAttributeHv.findByName(ATT_X)as String);
+					var y:int = int(mediaAttributeHv.findByName(ATT_Y)as String);
+					mediaDO.place = new Point(x,y);
+					mediaDO.url = mediaAttributeHv.findByName(ATT_URL)as String
+					mediav.push(mediaDO);
+				}
+			}
+			return msv;
 		}
 		
 		/**
