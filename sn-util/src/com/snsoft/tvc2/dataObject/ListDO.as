@@ -7,9 +7,9 @@ package com.snsoft.tvc2.dataObject{
 		
 		private var _text:String;
 		
-		private var _doStyle:String;
+		private var _style:String;
 		
-		private var _listHv:Vector = new Vector();
+		private var _listHv:Vector.<TextPointDO>;
 		
 		public function ListDO()
 		{
@@ -35,22 +35,22 @@ package com.snsoft.tvc2.dataObject{
 			_text = value;
 		}
 
-		public function get doStyle():String
+		public function get style():String
 		{
-			return _doStyle;
+			return _style;
 		}
 
-		public function set doStyle(value:String):void
+		public function set style(value:String):void
 		{
-			_doStyle = value;
+			_style = value;
 		}
 
-		public function get listHv():Vector
+		public function get listHv():Vector.<TextPointDO>
 		{
 			return _listHv;
 		}
 
-		public function set listHv(value:Vector):void
+		public function set listHv(value:Vector.<TextPointDO>):void
 		{
 			_listHv = value;
 		}

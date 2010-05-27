@@ -7,7 +7,7 @@ package com.snsoft.tvc2.dataObject{
 		private var _mainVarDOHv:HashVector = new HashVector();
 		
 		// timeLines
-		private var _dataDOHv:HashVector = new HashVector();
+		private var _timeLineDOHv:HashVector = new HashVector();
 		
 		public function MainDO()	{
 		}
@@ -22,14 +22,16 @@ package com.snsoft.tvc2.dataObject{
 			_mainVarDOHv = value;
 		}
 
-		public function get dataDOHv():HashVector
+		public function get timeLineDOHv():HashVector
 		{
-			return _dataDOHv;
+			return _timeLineDOHv;
 		}
 
-		public function set dataDOHv(value:HashVector):void
+		public function set timeLineDOHv(value:HashVector):void
 		{
-			_dataDOHv = value;
+			_timeLineDOHv = value;
 		}
+
+		 
 	}
 }
