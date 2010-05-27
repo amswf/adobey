@@ -15,7 +15,7 @@ package com.snsoft.tvc2.dataObject{
 		
 		private var _place:Point;
 		
-		private var _textStyle:String;
+		private var _style:String;
 		
 		public function TextOutDO()
 		{
@@ -81,14 +81,14 @@ package com.snsoft.tvc2.dataObject{
 			_place = value;
 		}
 
-		public function get textStyle():String
+		public function get style():String
 		{
-			return _textStyle;
+			return _style;
 		}
 
-		public function set textStyle(value:String):void
+		public function set style(value:String):void
 		{
-			_textStyle = value;
+			_style = value;
 		}
 
 

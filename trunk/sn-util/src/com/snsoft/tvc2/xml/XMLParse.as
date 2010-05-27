@@ -85,7 +85,7 @@
 		
 		public static const ATT_TIMEOUT:String = "timeout";
 		
-		public static const ATT_TEXTSTYLE:String = "textStyle";
+		public static const ATT_STYLE:String = "style";
 		
 		public function XMLParse(){
 			
@@ -106,9 +106,9 @@
 			var varsXMLList:XMLList = xml.elements(TAG_VARS); 
 			mdo.mainVarDOHv = this.parseVarsXML(varsXMLList);
 			
-			//timeLine
-			
+			//解析timeLine
 			var timeLinesXMLList:XMLList = xml.elements(TAG_TIMELINE);
+			mdo.timeLineDOHv = this.parseTimeLinesXML(timeLinesXMLList);
 			
 			return null;
 		}
@@ -145,9 +145,11 @@
 				var bizXML:XML = bizsXMLList[i];
 				var bizDO:BizDO = new BizDO();
 				
+				//解析  biz 的  var 变量
 				var varsXMLList:XMLList = bizXML.elements(TAG_VARS);
 				bizDO.varDOHv = this.parseVarsXML(varsXMLList);
 				
+				//解析 data 数据
 				var dataXMLList:XMLList = bizXML.elements(TAG_DATA);
 				var dataDO:DataDO = this.parseDataXML(dataXMLList);
 				bizDO.dataDO = dataDO;
@@ -213,7 +215,7 @@
 					var x:int = int(textOutAttributeHv.findByName(ATT_X)as String);
 					var y:int = int(textOutAttributeHv.findByName(ATT_Y)as String);
 					textOutDO.place = new Point(x,y);
-					textOutDO.textStyle = textOutAttributeHv.findByName(ATT_TEXTSTYLE)as String;
+					textOutDO.style = textOutAttributeHv.findByName(ATT_STYLE)as String;
 					textOutv.push(textOutDO);
 				}
 			}
@@ -230,11 +232,12 @@
 			var dataDO:DataDO = new DataDO();
 			for(var i:int = 0;i<datasXMLList.length();i++){
 				var dataXML:XML = datasXMLList[i];
-				var dataXMLList:XMLList;
+				
 				if(dataXML.elements(TAG_DISTRIBUTE) != null){
-					dataXMLList = dataXML.elements(TAG_DISTRIBUTE);
+					var dataXMLList:XMLList = dataXML.elements(TAG_DISTRIBUTE);
 					dataDO.type = TAG_DISTRIBUTE;
-					dataDO.data = this.parseListsXML(dataXMLList);
+					var listsXMLList:XMLList = dataXMLList.elements(TAG_LIST);
+					dataDO.data = this.parseListsXML(listsXMLList);
 				}
 				else if(dataXML.elements(TAG_CHART) != null){
 					dataXMLList = dataXML.elements(TAG_CHART);
@@ -253,11 +256,15 @@
 			var lv:Vector.<ListDO> = new Vector.<ListDO>();
 			for(var i:int = 0;i<listsXMLList.length();i++){
 				var listXML:XML = listsXMLList[i];
+				var listAttrHv:HashVector = this.getXMLAttributes(listXML);
 				var listDO:ListDO = new ListDO();
+				listDO.name = listAttrHv.findByName(ATT_NAME) as String;
+				listDO.text = listAttrHv.findByName(ATT_TEXT) as String;
+				listDO.style = listAttrHv.findByName(ATT_STYLE) as String;
 				var tpv:Vector.<TextPointDO> = new Vector.<TextPointDO>();
 				var textPointsXMLList:XMLList = listXML.elements(TAG_TEXTPOINT);
 				for(var j:int = 0;j<listXML.length();j++){
-					var textPointXML:XML = textPointsXMLList[i];
+					var textPointXML:XML = textPointsXMLList[j];
 					var textPointDO:TextPointDO = new TextPointDO();
 					var texPointHv:HashVector = this.getXMLAttributes(textPointXML);
 					textPointDO.name = texPointHv.findByName(ATT_NAME) as String;
@@ -265,7 +272,8 @@
 					textPointDO.value = texPointHv.findByName(ATT_VALUE) as String;
 					tpv.push(textPointDO);
 				}
-				lv.push(tpv);
+				listDO.listHv = tpv;
+				lv.push(listDO);
 			}
 			return lv;
 		}
