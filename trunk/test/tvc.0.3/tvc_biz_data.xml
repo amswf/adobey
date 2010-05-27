@@ -5,7 +5,7 @@
     <var name="dateText" value="2010-04-01 -- 2010-04-06" text=""/>
   </vars>
   <timeLine name="bizs" text="">
-    <biz name="片头" text="" type="common" doStyle="">
+    <biz name="片头" text="" type="common" style="">
       <!--伴音-->
       <sounds>
         <!--timeOffset 相对于播放开始时间"0"的偏移量/timeLength最小播放时长 /timeout 最大播放时长-->
@@ -14,7 +14,7 @@
       <!--显示文字-->
       <textOuts>
         <!--timeOffset 相对于播放开始时间"0"的偏移量/timeLength最小播放时长 /timeout 最大播放时长-->
-        <textOut name="" timeOffset="1000" timeLength="5000" timeout="10000" text="临漳科技局" x="0" y= "0" textStyle=""/>
+        <textOut name="" timeOffset="1000" timeLength="5000" timeout="10000" text="临漳科技局" x="0" y= "0" style=""/>
       </textOuts>
       <!--显示图片/flash动画-->
       <medias>
@@ -22,14 +22,14 @@
         <media name="" timeOffset="1000" timeLength="5000" timeout="10000" text="" url="head.swf" x="0" y= "0" />
       </medias>
     </biz>
-    <biz name="开始播报" text="" type="common" doStyle="">
+    <biz name="开始播报" text="" type="common" style="">
       <!--常量或模块内公共变量-->
       <vars>
         <var name="goodsName" value="农产品名称" text=""/>
         <var name="goodsCode" value="g01" text=""/>
       </vars>
     </biz>
-    <biz name="折线图" text="" type="polylines" doStyle="">
+    <biz name="折线图" text="" type="polylines" style="">
       <!--常量或模块内公共变量-->
       <vars>
         <var name="title" value="全国联网价格趋势预测" text=""/>
@@ -42,16 +42,16 @@
         <!--图表数据-->
         <chart>
           <!--线样式/点样式-->
-          <list name="实况价格" text="" doStyle="">
+          <list name="实况价格" text="" style="">
             <textPoint name="" value="" text="" />
           </list>
-          <list name="预测价格" text="" doStyle="">
+          <list name="预测价格" text="" style="">
             <textPoint name="" value="" text="" />
           </list>
         </chart>
       </data>
     </biz>
-    <biz name="柱状图" text="" type="histogram" doStyle="">
+    <biz name="柱状图" text="" type="histogram" style="">
       <!--常量或模块内公共变量-->
       <vars>
         <var name="title" value="全国联网价格趋势预测" text=""/>
@@ -64,21 +64,20 @@
         <!--图表数据-->
         <chart>
           <!--线样式/点样式-->
-          <list name="实况价格" text="" doStyle="">
+          <list name="实况价格" text="" style="">
             <textPoint name="" value="" text="" />
           </list>
-          <list name="预测价格" text="" doStyle="" >
+          <list name="预测价格" text="" style="" >
             <textPoint name="" value="" text="" />
           </list>
         </chart>
       </data>
     </biz>
     <!--价格分布和价格播报-->
-    <biz name="高中低价格分布及三高三低价格播报" text="" type="comment" doStyle="">
+    <biz name="高中低价格分布及三高三低价格播报" text="" type="comment" style="">
       <!--常量或模块内公共变量-->
       <vars>
         <var name="title" value="全国联网价格分布情况" text=""/>
-        <var name="title" value="全国联网价格趋势预测" text=""/>
         <var name="goodsName" value="大白菜" text=""/>
         <var name="goodsCode" value="g01" text=""/>
         <var name="highNum" value="3" text=""/>
@@ -89,13 +88,13 @@
         <!--价格分布图数据-->
         <distribute>
           <!--点样式-->
-          <list name="较低价格" text="" doStyle="" >
+          <list name="较低价格" text="" style="" >
             <textPoint name="" value="" text="" />
           </list>
-          <list name="中间价格" text="" doStyle="" >
+          <list name="中间价格" text="" style="" >
             <textPoint name="" value="" text="" />
           </list>
-          <list name="较高价格" text="" doStyle="" >
+          <list name="较高价格" text="" style="" >
             <textPoint name="" value="" text="" />
           </list>
         </distribute>
@@ -103,7 +102,7 @@
     </biz>
   </timeLine>
   <timeLine name="topBizs" text="">
-    <biz name="台标和公司信息" text="" type="common" doStyle="">
+    <biz name="台标和公司信息" text="" type="common" style="">
       <!--常量或模块内公共变量-->
       <vars></vars>
       <!--伴音-->
@@ -114,11 +113,11 @@
       <!--显示文字-->
       <textOuts>
         <!--timeOffset 相对于播放开始时间"0"的偏移量/timeLength最小播放时长 /timeout 最大播放时长-->
-        <textOut name="" timeOffset="1000" timeLength="5000" timeout="10000" text="大华夏神农信息技术有限公司" x="" y= "" textStyle=""/>
+        <textOut name="" timeOffset="1000" timeLength="5000" timeout="10000" text="大华夏神农信息技术有限公司" x="" y= "" style=""/>
       </textOuts>
       <textOuts>
         <!--timeOffset 相对于播放开始时间"0"的偏移量/timeLength最小播放时长 /timeout 最大播放时长-->
-        <textOut name="" timeOffset="1000" timeLength="5000" timeout="10000" text="临漳科技局" x="" y= "" textStyle=""/>
+        <textOut name="" timeOffset="1000" timeLength="5000" timeout="10000" text="临漳科技局" x="" y= "" style=""/>
       </textOuts>
       <!--显示图片/flash动画-->
       <medias>
