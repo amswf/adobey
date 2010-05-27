@@ -114,7 +114,7 @@
 		}
 		
 		/**
-		 * 
+		 * 解析时间线列表
 		 * @param timeLinesXMLList
 		 * @return 
 		 * 
@@ -122,11 +122,14 @@
 		private function parseTimeLinesXML(timeLinesXMLList:XMLList):HashVector{
 			var timeLinesDOHv:HashVector = new HashVector();
 			for(var i:int = 0;i<timeLinesXMLList.length();i++){
+				//时间线属性
 				var timeLineDO:TimeLineDO = new TimeLineDO();
 				var timeLineXML:XML = timeLinesXMLList[i];
 				var timeLineAttributeHv:HashVector = getXMLAttributes(timeLineXML);
 				timeLineDO.name = timeLineAttributeHv.findByName(ATT_NAME) as String;
 				timeLineDO.text = timeLineAttributeHv.findByName(ATT_TEXT) as String;
+				
+				//解析业务列表
 				var bizsXMLList:XMLList = timeLineXML.elements(TAG_BIZ);
 				timeLineDO.bizDOHv = this.parseBizsXML(bizsXMLList);
 			}
@@ -134,7 +137,7 @@
 		}
 		
 		/**
-		 * 
+		 * 解析业务列表
 		 * @param bizsXMLList
 		 * @return 
 		 * 
@@ -155,19 +158,25 @@
 				bizDO.dataDO = dataDO;
 				
 				
-				//...
+				//解析声音
+				var soundXMLList:XMLList = bizXML.elements(TAG_SOUNDS);
+				bizDO.soundsHv = this.parseSoundsXML(soundXMLList);
+				
+				//解析声音
+				var textOutXMLList:XMLList = bizXML.elements(TAG_TEXTOUTS);
+				bizDO.textOutsHv = this.parseTextOutsXML(textOutXMLList);
 			}
 			return bizDOHv;
 		}
 		
 		/**
-		 * 
+		 * 解析声音列表
 		 * @param soundsXMLList
 		 * @return 
 		 * 
 		 */		
-		private function parseSoundsXML(soundsXMLList:XMLList):Vector.<SoundsDO>{
-			var ssv:Vector.<SoundsDO> = new Vector.<SoundsDO>();
+		private function parseSoundsXML(soundsXMLList:XMLList):HashVector{
+			var ssv:HashVector = new HashVector();
 			for(var i:int = 0;i<soundsXMLList.length();i++){
 				var soundsXML:XML = soundsXMLList[i];
 				var soundXMLList:XMLList = soundsXML.elements(TAG_SOUND);
@@ -185,19 +194,19 @@
 					soundDO.url = soundAttributeHv.findByName(ATT_URL)as String;
 					soundv.push(soundDO);
 				}
-				 
+				
 			}
 			return ssv;
 		}
 		
 		/**
-		 * 
+		 * 解析输出文字列表
 		 * @param textOutsXMLList
 		 * @return 
 		 * 
 		 */		
-		private function parseTextOutsXML(textOutsXMLList:XMLList):Vector.<TextOutsDO>{
-			var ssv:Vector.<TextOutsDO> = new Vector.<TextOutsDO>();
+		private function parseTextOutsXML(textOutsXMLList:XMLList):HashVector{
+			var ssv:HashVector = new HashVector();
 			for(var i:int = 0;i<textOutsXMLList.length();i++){
 				var textOutsXML:XML = textOutsXMLList[i];
 				var textOutXMLList:XMLList = textOutsXML.elements(TAG_SOUND);
@@ -223,7 +232,7 @@
 		}
 		
 		/**
-		 * 
+		 * 解析业务主数据
 		 * @param datasXMLList
 		 * @return 
 		 * 
@@ -247,7 +256,7 @@
 		}
 		
 		/**
-		 * 
+		 * 解析业务主数据列表
 		 * @param listsXMLList
 		 * @return 
 		 * 
@@ -307,7 +316,7 @@
 		}
 		
 		/**
-		 * 
+		 * 解析XML结点属性列表
 		 * @param xml
 		 * @return 
 		 * 
