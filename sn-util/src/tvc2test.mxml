@@ -9,6 +9,7 @@
 			import com.snsoft.tvc2.media.Mp3Loader;
 			import com.snsoft.tvc2.media.Mp3Player;
 			import com.snsoft.tvc2.util.FrameTimer;
+			import com.snsoft.util.PriceUtils;
 			import com.snsoft.tvc2.xml.XMLParse;
 			import com.snsoft.util.NumberUtil;
 			private function init():void{
@@ -19,6 +20,7 @@
 				var ml:Mp3Loader;
 				var mp:Mp3Player;
 				var ft:FrameTimer;
+				var mu:PriceUtils;
 				//parse.parseTvcMainXML(xml);
 			}
 		]]>
