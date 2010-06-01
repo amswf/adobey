@@ -4,9 +4,21 @@
 					   xmlns:mx="library://ns.adobe.com/flex/halo">
 	<fx:Script>
 		<![CDATA[
+			import com.snsoft.tvc2.chart.Coordinate;
+			import com.snsoft.tvc2.chart.UIColumn;
+			import com.snsoft.tvc2.media.Mp3Loader;
+			import com.snsoft.tvc2.media.Mp3Player;
+			import com.snsoft.tvc2.util.FrameTimer;
 			import com.snsoft.tvc2.xml.XMLParse;
+			import com.snsoft.util.NumberUtil;
 			private function init():void{
 				var parse:XMLParse = new XMLParse();
+				var coor:Coordinate;
+				var nu:NumberUtil;
+				var uic:UIColumn;
+				var ml:Mp3Loader;
+				var mp:Mp3Player;
+				var ft:FrameTimer;
 				//parse.parseTvcMainXML(xml);
 			}
 		]]>
