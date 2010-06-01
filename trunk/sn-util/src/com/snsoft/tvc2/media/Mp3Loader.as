@@ -17,6 +17,8 @@ package com.snsoft.tvc2.media{
 		//已经加载的声音个数
 		private var _loadedNum:int;
 		
+		private var isDispatchEvent:Boolean;
+		
 		
 		/**
 		 * 加载声音列表
@@ -56,9 +58,11 @@ package com.snsoft.tvc2.media{
 		 */		
 		private function handlerLoadSoundComplete(e:Event):void {
 			var s:Sound = e.currentTarget as Sound;
+			s.removeEventListener(Event.COMPLETE,handlerLoadSoundComplete);
 			this._soundList.push(s);//可能需要优化，列表中已存在，就不再次加载了。
 			this._loadedNum ++;
-			if(this.loadedNum == this.soundList.length){
+			if(this.loadedNum == this.soundList.length && !isDispatchEvent){
+				isDispatchEvent = true;
 				this.dispatchEvent(new Event(Event.COMPLETE));
 			}
 		}
