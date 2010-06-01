@@ -11,12 +11,12 @@
 	{   
 		//零壹贰叁肆伍陆柒捌镹元万亿兆千百拾点
 		//1：个，2：十，3：百，4：千，5：万，6：十万，7：百万，8：千万，9：亿，10：十亿，11：百亿，12：千亿，13：兆, 14：十兆， 15：百兆， 16：千兆   
-		public static const NUM_CN:Array = ["零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "镹"];   
+		public static const NUM_CN:Array = ["mp3/num/0.mp3", "mp3/num/1.mp3", "mp3/num/2.mp3", "mp3/num/3.mp3", "mp3/num/4.mp3", "mp3/num/5.mp3", "mp3/num/6.mp3", "mp3/num/7.mp3", "mp3/num/8.mp3", "mp3/num/9.mp3"];   
 		public static const DECIMAL_UNITS:Array = ["角", "分"];   
-		public static const LEVELS:Array = ["元", "万", "亿", "兆"];   
-		public static const UNITS:Array = ["千", "百", "拾"];
-		public static const POINT:String = "点";
-		public static const YUAN:String = "元";
+		public static const LEVELS:Array = ["元", "mp3/num/wan.mp3", "mp3/num/yi.mp3", "mp3/num/zhao.mp3"];   
+		public static const UNITS:Array = ["mp3/num/qian.mp3", "mp3/num/bai.mp3", "mp3/num/shi.mp3"];
+		public static const POINT:String = "mp3/num/dian.mp3";
+		public static const YUAN:String = "mp3/num/yuan.mp3";
 		
 		public function PriceUtils(){   
 		}   
