@@ -2,6 +2,7 @@ package com.snsoft.tvc2.media{
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
+	import flash.events.IOErrorEvent;
 	import flash.media.Sound;
 	import flash.net.URLRequest;
 
@@ -49,6 +50,12 @@ package com.snsoft.tvc2.media{
 			var reqStream:URLRequest = new URLRequest(url);
 			var sound:Sound = new Sound(reqStream);
 			sound.addEventListener(Event.COMPLETE,handlerLoadSoundComplete);
+			sound.addEventListener(IOErrorEvent.IO_ERROR,handlerIOError);
+		}
+		
+		private function handlerIOError(e:Event):void{
+			var sound:Sound = e.currentTarget as Sound;
+			trace("加载mp3 出错!");
 		}
 		
 		/**
