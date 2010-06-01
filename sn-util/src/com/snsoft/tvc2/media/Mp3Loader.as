@@ -55,7 +55,7 @@ package com.snsoft.tvc2.media{
 		
 		private function handlerIOError(e:Event):void{
 			var sound:Sound = e.currentTarget as Sound;
-			trace("加载mp3 出错!");
+			trace("加载mp3 出错!" + this._soundList);
 		}
 		
 		/**
