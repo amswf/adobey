@@ -15,6 +15,7 @@ package com.snsoft.tvc2.util{
 		//延时时间
 		private var delayCtrTime:Number;
 		
+		//计时控制的 sprite
 		private var timerSprite:Sprite;
 		
 		public function FrameTimer(frameRate:Number,delayCtrTime:Number,timerSprite:Sprite,target:IEventDispatcher = null)
@@ -31,7 +32,6 @@ package com.snsoft.tvc2.util{
 		 * 
 		 */		
 		public function timer():void{
-			trace(new Date().getTime());
 			if(this.timerSprite != null){
 				this.timerSprite.removeEventListener(Event.ENTER_FRAME,handlerDelay);
 				this.timerSprite.addEventListener(Event.ENTER_FRAME,handlerDelay);
@@ -52,7 +52,6 @@ package com.snsoft.tvc2.util{
 				if(this.timerSprite != null){
 					this.timerSprite.removeEventListener(Event.ENTER_FRAME,handlerDelay);
 					this.dispatchEvent(new Event(Event.COMPLETE));
-					trace(new Date().getTime());
 				}
 			}
 		}
