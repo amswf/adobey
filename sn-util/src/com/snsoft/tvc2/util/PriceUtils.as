@@ -1,11 +1,15 @@
-package com.snsoft.tvc2.util 
+﻿package com.snsoft.tvc2.util 
 {      
+	
+	
+	
 	/**  
 	 * 主要功能把阿拉伯数字单位转换成中文大写  
 	 * @author marcoLee  
 	 */    
 	public class PriceUtils   
 	{   
+		//零壹贰叁肆伍陆柒捌镹元万亿兆千百拾点
 		//1：个，2：十，3：百，4：千，5：万，6：十万，7：百万，8：千万，9：亿，10：十亿，11：百亿，12：千亿，13：兆, 14：十兆， 15：百兆， 16：千兆   
 		public static const NUM_CN:Array = ["零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "镹"];   
 		public static const DECIMAL_UNITS:Array = ["角", "分"];   
@@ -22,7 +26,7 @@ package com.snsoft.tvc2.util
 		 * @param num 阿拉伯数字  
 		 * @return 中文大写  
 		 */        
-		public static function toCNUpper( num:Number ):String   
+		public static function toCNUpper( num:Number ):Vector.<String>   
 		{   
 			if( num == 0 )   
 				return NUM_CN[0];   
@@ -31,12 +35,23 @@ package com.snsoft.tvc2.util
 			var numStr:String = num.toFixed(2);   
 			var pos:int = numStr.indexOf(".");   
 			var dotLeft:String = pos == -1 ? numStr : numStr.substring(0, pos);   
-			var dotRight:String = pos == -1 ? "" : numStr.substring(pos + 1, numStr.length);   
+			var dotRight:String = pos == -1 ? "" : numStr.substring(pos + 1, numStr.length); 
+			
 			if( dotLeft.length > 16 )   
 				throw new Error("数字太大，无法处理！");   
 			
-			var cnMoney:String = convertIntegerStr(dotLeft) + POINT + convertDecimalStr(dotRight) + YUAN;   
-			return cnMoney;   
+			var integerVector:Vector.<String> = convertIntegerStr(dotLeft);
+			var decimalVector:Vector.<String> = convertDecimalStr(dotRight);
+			var moneyVector:Vector.<String> = new Vector.<String>();
+			
+			for(var i:int;i<integerVector.length;i++){
+				moneyVector.push(integerVector[i]);
+			}
+			for(var j:int;j<decimalVector.length;j++){
+				moneyVector.push(decimalVector[j]);
+			}
+			moneyVector.push(YUAN);   
+			return moneyVector;   
 		}   
 		
 		/**  
@@ -44,7 +59,7 @@ package com.snsoft.tvc2.util
 		 * @param str  
 		 * @return   
 		 */        
-		public static function convertIntegerStr( str:String ):String   
+		public static function convertIntegerStr( str:String ):Vector.<String>   
 		{   
 			var tCount:int = Math.floor( str.length / 4 );   
 			var rCount:int = str.length % 4;   
@@ -61,18 +76,20 @@ package com.snsoft.tvc2.util
 			return convertNodes( nodes );   
 		}   
 		
-		private static function convertNodes( nodes:Array ):String   
+		private static function convertNodes( nodes:Array ):Vector.<String>   
 		{   
-			var str:String = "";   
+			var str:Vector.<String> = new Vector.<String>();   
 			var beforeZero:Boolean;   
 			for( var i:int = 0; i < nodes.length; i++)   
 			{   
 				var node:ThousandNode = nodes[i] as ThousandNode;   
 				if( ( beforeZero && node.desc.length > 0 ) ||   
 					( node.beforeZero && node.desc.length > 0 && str.length > 0))   
-					str += NUM_CN[0];   
+					str.push(NUM_CN[0]);   
 				
-				str += node.desc;   
+				for( var j:int =0;j<node.desc.length;j++){
+					str.push(node.desc[j]);
+				}
 				if( node.afterZero && i < nodes.length - 1 )   
 					beforeZero = true;   
 				else if( node.desc.length > 0 )   
@@ -106,26 +123,25 @@ package com.snsoft.tvc2.util
 			
 			if( n1 == 0 )   
 				node.beforeZero = true;   
-			else  
-				node.desc += NUM_CN[n1] + UNITS[0];   
+			else   
+				node.desc.push(NUM_CN[n1],UNITS[0]); 
 			
-			if( n2 == 0 && node.desc != "" && n3 + n4 > 0)   
-				node.desc += NUM_CN[0];   
+			if( n2 == 0 && node.desc.length > 0 && n3 + n4 > 0)   
+				node.desc.push( NUM_CN[0]);   
 			else if( n2 > 0 )   
-				node.desc += NUM_CN[n2] + UNITS[1];   
+				node.desc.push(NUM_CN[n2],UNITS[1]);   
 			
-			if( n3 == 0 && node.desc != "" && n4 > 0)   
-				node.desc += NUM_CN[0];   
+			if( n3 == 0 && node.desc.length > 0 && n4 > 0)   
+				node.desc.push( NUM_CN[0]);
 			else if( n3 > 0 )   
-				node.desc += NUM_CN[n3] + UNITS[2];   
-			
+				node.desc.push( NUM_CN[n3],UNITS[2] );
 			if( n4 == 0 )   
 				node.afterZero = true;   
 			else if( n4 > 0 )   
-				node.desc += NUM_CN[n4];   
+				node.desc.push( NUM_CN[n4] );  
 			//level > 0 去掉元字。
-			if( node.desc.length > 0 && level >0 )    
-				node.desc  += LEVELS[level];   
+			if( node.desc.length > 0 && level >0 ) 
+				node.desc.push( LEVELS[level] );   
 			return node;   
 		}   
 		
@@ -134,15 +150,17 @@ package com.snsoft.tvc2.util
 		 * @param str  
 		 * @return   
 		 */        
-		public static function convertDecimalStr( str:String ):String   
-		{   
-			var newStr:String = "";   
-			for( var i:int = 0; i < str.length; i++ )   
-			{   
-				var n:int = int(str.charAt(i));   
-				if( n > 0 )   
-					newStr += NUM_CN[n];   
-			}   
+		public static function convertDecimalStr( str:String ):Vector.<String> {   
+			var newStr:Vector.<String>  = new Vector.<String>();  
+			if(str.length > 0 && Number(str) > 0){
+				newStr.push(POINT);
+				for( var i:int = 0; i < str.length; i++ )   
+				{   
+					var n:int = int(str.charAt(i));   
+					if( n >= 0 )   
+						newStr.push(NUM_CN[n]);   
+				}   
+			}
 			return newStr;   
 		}   
 		
@@ -168,5 +186,5 @@ class ThousandNode
 	
 	public var beforeZero:Boolean;   
 	public var afterZero:Boolean;   
-	public var desc:String = "";   
+	public var desc:Vector.<String> = new Vector.<String>();   
 }  
