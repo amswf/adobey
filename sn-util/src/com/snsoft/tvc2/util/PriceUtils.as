@@ -21,18 +21,21 @@
 		public function PriceUtils(){   
 		}   
 		
-		/**  
-		 * 把阿拉伯数字单位转换成中文大写  
-		 * @param num 阿拉伯数字  
-		 * @return 中文大写  
-		 */        
-		public static function toCNUpper( num:Number ):Vector.<String>   
+		 
+		/**
+		 * 把数字转换成语音文件序列 
+		 * @param num 要转换的数字
+		 * @param fixed 小数点后保留位数，四舍五入截取
+		 * @return 语音文件地址序列
+		 * 
+		 */		
+		public static function toCNUpper( num:Number,fixed:int = 2 ):Vector.<String>   
 		{   
 			if( num == 0 )   
 				return NUM_CN[0];   
 			
 			var count:int = getUnitCount( num );   
-			var numStr:String = num.toFixed(2);   
+			var numStr:String = num.toFixed(fixed);   
 			var pos:int = numStr.indexOf(".");   
 			var dotLeft:String = pos == -1 ? numStr : numStr.substring(0, pos);   
 			var dotRight:String = pos == -1 ? "" : numStr.substring(pos + 1, numStr.length); 
@@ -152,7 +155,7 @@
 		 */        
 		public static function convertDecimalStr( str:String ):Vector.<String> {   
 			var newStr:Vector.<String>  = new Vector.<String>();  
-			if(str.length > 0 && Number(str) > 0){
+			if(str.length > 0){
 				newStr.push(POINT);
 				for( var i:int = 0; i < str.length; i++ )   
 				{   
