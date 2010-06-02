@@ -2,6 +2,7 @@ package com.snsoft.tvc2.media{
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
+	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
@@ -54,6 +55,10 @@ package com.snsoft.tvc2.media{
 		private function handlerLoadComplete(e:Event):void{
 			var info:LoaderInfo = e.currentTarget as LoaderInfo;
 			var dobj:DisplayObject = info.content;
+			if(dobj is MovieClip){
+				var mc:MovieClip = dobj as MovieClip;
+				mc.stop();
+			}
 			this._mediaList.push(dobj);
 			this._loadedNum ++;
 			if(this._loadedNum != this.urlList.length){
