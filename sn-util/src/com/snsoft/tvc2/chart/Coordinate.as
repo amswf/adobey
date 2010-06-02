@@ -45,8 +45,12 @@
 					}
 				}
 				
-				if(!isDynamic){
+				if(!isDynamic && minNum > 0){
 					minNum = 0;
+				}
+				
+				if(!isDynamic && maxNum < 0){
+					maxNum = 0;
 				}
 				
 				//计算出  值 为(1 或 2 或 5 ) * 10^N 的刻度，用这个值做刻度比较通用好看
