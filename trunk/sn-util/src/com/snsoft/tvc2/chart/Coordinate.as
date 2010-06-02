@@ -14,7 +14,7 @@
 		 * @return 
 		 * 
 		 */		
-		public function calculateCalibration(vct:Vector.<Number>):Vector.<Number>{
+		public function calculateCalibration(vct:Vector.<Number>,isDynamic:Boolean = false):Vector.<Number>{
 			var caliList:Vector.<Number> = null;
 			if(vct != null && vct.length > 0){
 				var cali:Number = 1;
@@ -44,6 +44,11 @@
 						maxNum = num;
 					}
 				}
+				
+				if(!isDynamic){
+					minNum = 0;
+				}
+				
 				//计算出  值 为(1 或 2 或 5 ) * 10^N 的刻度，用这个值做刻度比较通用好看
 				var maxPoor:Number = maxNum - minNum;
 				var caliTemp:Number = Math.abs(maxPoor)/5;
@@ -69,13 +74,13 @@
 					caliTemp=10;
 				}
 				cali = (caliTemp / power);
-				trace(cali,minNum,maxNum);
+				//trace(cali,minNum,maxNum);
 				
 				//坐标值列表计算
 				//caliList
 				var minIndex:int = int(minNum / cali);
 				var minMod:int = minNum >= 0 ? 0 : 1;
-				trace("minNum,minMod:",minNum,minMod);
+				//trace("minNum,minMod:",minNum,minMod);
 				minIndex -= minMod;
 				
 				
@@ -89,7 +94,7 @@
 				for (var j:int = minIndex;j <= maxIndex;j ++){
 					var icali:Number = cali * j;
 					caliList.push(icali);
-					trace("caliList:",icali);
+					//trace("caliList:",icali);
 				}
 				
 			}
