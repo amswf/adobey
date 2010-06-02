@@ -1,5 +1,4 @@
 ﻿package com.snsoft.tvc2.chart{
-	import com.snsoft.util.NumberUtil;
 	
 	/**
 	 * 坐标系

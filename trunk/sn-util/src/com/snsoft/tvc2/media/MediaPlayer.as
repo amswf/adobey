@@ -103,11 +103,9 @@ package com.snsoft.tvc2.media{
 					if(playingMedia is MovieClip){
 						var mc:MovieClip = playingMedia as MovieClip;
 						mc.play();
-						trace("MovieClip");
 						playingMedia.addEventListener(Event.EXIT_FRAME,handlerMovieClipPlayExitFrame);
 					}
 					else if(playingMedia is Bitmap){
-						trace("Bitmap");
 						var ft:FrameTimer = new FrameTimer(this.stage.frameRate,1000,this);
 						ft.timer();
 						ft.addEventListener(Event.COMPLETE,handlerBitmapPlayComplete);
@@ -120,8 +118,12 @@ package com.snsoft.tvc2.media{
 			}
 		}
 		
+		/**
+		 * 事件 
+		 * @param e
+		 * 
+		 */		
 		private function handlerBitmapPlayComplete(e:Event):void{
-			trace("handlerBitmapPlayComplete");
 			var ft:FrameTimer = e.currentTarget as FrameTimer;
 			ft.removeEventListener(Event.COMPLETE,handlerBitmapPlayComplete);
 			this.playNum ++;
