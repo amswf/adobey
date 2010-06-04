@@ -25,13 +25,13 @@ package ascb.util {
 				var tempChars:Array = originalMap.concat();
 				
 				// Loop through all the character code points in originalMap.
-				for ( var i:int = 0; i < originalMap.length; i++ ) {
+				for ( var ii:int = 0; ii < originalMap.length; ii++ ) {
 					// Create a random number that is between 0 and the last index of tempChars.
 					var randomIndex:int = Math.floor( Math.random() * ( tempChars.length - 1 ) );
 					
 					// Assign to codeMap values such that the keys are the original code points,
 					// and the values are the code points to which they should be mapped.
-					codeMap[ originalMap[i] ] = tempChars[ randomIndex ];
+					codeMap[ originalMap[ii] ] = tempChars[ randomIndex ];
 					
 					// Remove the elements from tempChars that was just assigned to codeMap. 
 					// This prevents duplicates.
@@ -64,7 +64,7 @@ package ascb.util {
 		    // This allows you to do a reverse lookup based on the encoded character
 		    // rather than the original character.
 		    reverseCodeMap = new Object();
-		    for ( var key in codeMap ) {
+		    for ( var key:String in codeMap ) {
 		      reverseCodeMap[ codeMap[key] ] = key;
 		    }
 		  }
