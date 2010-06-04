@@ -7,7 +7,7 @@
 		
 		/**
 		 * 加载字体文件出错 
-		 */		
+		 */
 		public static var IO_ERROR:String = IOErrorEvent.IO_ERROR;
 		
 		/**
