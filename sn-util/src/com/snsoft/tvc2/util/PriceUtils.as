@@ -9,7 +9,7 @@
 	 */    
 	public class PriceUtils   
 	{   
-		//零壹贰叁肆伍陆柒捌镹元万亿兆千百拾点
+		//零壹贰叁肆伍陆柒捌镹万亿兆千百拾点元
 		//1：个，2：十，3：百，4：千，5：万，6：十万，7：百万，8：千万，9：亿，10：十亿，11：百亿，12：千亿，13：兆, 14：十兆， 15：百兆， 16：千兆   
 		public static const NUM_CN:Array = ["mp3/num/0.mp3", "mp3/num/1.mp3", "mp3/num/2.mp3", "mp3/num/3.mp3", "mp3/num/4.mp3", "mp3/num/5.mp3", "mp3/num/6.mp3", "mp3/num/7.mp3", "mp3/num/8.mp3", "mp3/num/9.mp3"];   
 		public static const DECIMAL_UNITS:Array = ["角", "分"];   
@@ -18,7 +18,8 @@
 		public static const POINT:String = "mp3/num/dian.mp3";
 		public static const YUAN:String = "mp3/num/yuan.mp3";
 		
-		public function PriceUtils(){   
+		public function PriceUtils(){  
+			
 		}   
 		
 		 
