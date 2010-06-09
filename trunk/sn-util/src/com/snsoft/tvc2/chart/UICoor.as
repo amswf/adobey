@@ -34,7 +34,9 @@ package com.snsoft.tvc2.chart{
 		
 		private var _yGradValue:int = 1;
 		
+		public static const GRAD_TYPE_POINT:String = "POINT";
 		
+		public static const GRAD_TYPE_AREA:String = "AREA";
 		
 		/**
 		 * 
@@ -44,7 +46,7 @@ package com.snsoft.tvc2.chart{
 		 * @param yGradValue y 轴单位刻度代表的坐标值
 		 * 
 		 */		
-		public function UICoor(xGradValue:Number = 1,yGradValue:Number = 1,xGradNum:int = 5,yGradNum:int = 5){
+		public function UICoor(xGradValue:Number = 1,yGradValue:Number = 1,xGradNum:int = 5,yGradNum:int = 5,xGradType:String = "POINT" ,yGradType:String = "POINT"){
 			
 			this.xGradValue = xGradValue;
 			this.yGradValue = yGradValue;
@@ -64,6 +66,7 @@ package com.snsoft.tvc2.chart{
 		public static const GRADUATION_X_DEFAULT_SKIN:String = "graduationX_default_skin";
 		
 		public static const GRADUATION_Y_DEFAULT_SKIN:String = "graduationY_default_skin";
+		
 		
 		/**
 		 * 
@@ -132,18 +135,18 @@ package com.snsoft.tvc2.chart{
 			this.coorSprite.addChild(axesXSkin);
 			
 			//刻度间隔长度
-			var xlen:Number = coorWidth / this.xGradNum;
-			var ylen:Number = coorHeight / this.yGradNum;
+			var xlen:Number = coorWidth / (this.xGradNum - 1);
+			var ylen:Number = coorHeight / (this.yGradNum - 1);
 			
 			//x刻度
-			for(var i:int = 0;i <= this.xGradNum;i++){
+			for(var i:int = 0;i < this.xGradNum;i++){
 				var gradXSkin:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_X_DEFAULT_SKIN)) as MovieClip;
 				gradXSkin.x = i * xlen;
 				this.coorSprite.addChild(gradXSkin);
 			}
 			
 			//y刻度
-			for(var j:int = 0;j <= this.yGradNum;j++){
+			for(var j:int = 0;j < this.yGradNum;j++){
 				var gradYSkin:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_Y_DEFAULT_SKIN)) as MovieClip;
 				gradYSkin.y = - j * ylen;
 				this.coorSprite.addChild(gradYSkin);
@@ -158,8 +161,8 @@ package com.snsoft.tvc2.chart{
 		
 		public function transPoint(p:Point):Point{
 			var rp:Point = new Point();
-			rp.x = p.x + this.coorSprite.x;
-			rp.y = this.coorSprite.y - p.y;
+			rp.x = p.x * this.width /this.xGradValue / this.xGradNum;
+			rp.y = this.height - p.y * this.height /this.yGradValue / this.yGradNum ;
 			return rp;
 		}
 
