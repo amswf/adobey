@@ -108,11 +108,11 @@ package com.snsoft.tvc2.chart{
 			var coorWidth:Number = this.width;
 			var coorHeight:Number = this.height;
 			
-			var gradXSkinH:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_X_DEFAULT_SKIN)) as MovieClip;
-			var gradYSkinW:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_Y_DEFAULT_SKIN)) as MovieClip;
-			
-			coorWidth -= gradYSkinW.width;
-			coorHeight -= gradXSkinH.height;
+//			var gradXSkinH:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_X_DEFAULT_SKIN)) as MovieClip;
+//			var gradYSkinW:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_Y_DEFAULT_SKIN)) as MovieClip;
+//			
+//			coorWidth -= gradYSkinW.width;
+//			coorHeight -= gradXSkinH.height;
 			
 			//坐标系对象
 			this.coorSprite = new Sprite();
@@ -153,7 +153,7 @@ package com.snsoft.tvc2.chart{
 			var coorRect:Rectangle = this.coorSprite.getRect(this);
 			var tlPoint:Point = coorRect.topLeft;
 			this.coorSprite.y = - tlPoint.y;
-			this.coorSprite.x = - tlPoint.x;
+			//this.coorSprite.x = - tlPoint.x;
 		}
 		
 		public function transPoint(p:Point):Point{
