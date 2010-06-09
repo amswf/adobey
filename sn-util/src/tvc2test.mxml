@@ -4,8 +4,11 @@
 					   xmlns:mx="library://ns.adobe.com/flex/halo">
 	<fx:Script>
 		<![CDATA[
+			import ascb.util.DateFormat;
+			
 			import com.snsoft.tvc2.chart.Coordinate;
 			import com.snsoft.tvc2.chart.UIColumn;
+			import com.snsoft.tvc2.chart.UICoor;
 			import com.snsoft.tvc2.media.MediaLoader;
 			import com.snsoft.tvc2.media.MediaPlayer;
 			import com.snsoft.tvc2.media.Mp3Loader;
@@ -25,6 +28,8 @@
 				var mel:MediaLoader;
 				var mep:MediaPlayer;
 				var tp:TextPlayer;
+				var df:DateFormat;
+				var uicoor:UICoor;
 				//parse.parseTvcMainXML(xml);
 			}
 		]]>
