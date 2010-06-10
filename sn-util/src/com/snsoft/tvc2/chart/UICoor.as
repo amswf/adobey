@@ -92,7 +92,7 @@ package com.snsoft.tvc2.chart{
 			graduationLineY_default_skin:"GraduationLineY_default_skin",
 			graduationX_default_skin:"GraduationX_default_skin",
 			graduationY_default_skin:"GraduationY_default_skin",
-			myTextFormat:new TextFormat("宋体",14,0x000000)
+			myTextFormat:new TextFormat("宋体",13,0x000000)
 		};
 		
 		/**
@@ -184,10 +184,11 @@ package com.snsoft.tvc2.chart{
 					var tfd:TextField = new TextField();
 					var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
 					tfd.text = this.xGradVector[ii];
+					tfd.selectable = false;
 					tfd.setTextFormat(tft);
 					var tfdw:Number = TextFieldUtil.calculateTextFieldWidth(tfd);
 					tfd.width = tfdw;
-					tfd.height = Number(tft.size + 2);
+					tfd.height = Number(tft.size + 4);
 					this.coorSprite.addChild(tfd);
 					tfd.x = ii * xlen - tfd.width * 0.5;
 					tfd.y = gradXSkinH.height;
@@ -199,15 +200,15 @@ package com.snsoft.tvc2.chart{
 					var tfdy:TextField = new TextField();
 					var tfty:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
 					tfdy.text = this.yGradVector[jj];
+					tfdy.selectable = false;
 					tfdy.setTextFormat(tfty);
 					var tfdyw:Number = TextFieldUtil.calculateTextFieldWidth(tfdy);
 					tfdy.width = tfdyw;
-					tfdy.height = Number(tfty.size + 2);
+					tfdy.height = Number(tfty.size + 4);
 					this.coorSprite.addChild(tfdy);
 					tfdy.x = - tfdy.width - gradYSkinW.width;
 					tfdy.y = - jj * ylen - tfdy.height * 0.5;
 				}
-				
 				
 			}
 		}
