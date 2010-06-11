@@ -168,7 +168,7 @@ package com.snsoft.tvc2.chart{
 				
 				var ygn:Number = this.yGradNum;
 				var yTextY:Number = 0;
-				if(this.xGradType == GRAD_TYPE_AREA){
+				if(this.yGradType == GRAD_TYPE_AREA){
 					ygn = ygn + 1;
 				}
 				
