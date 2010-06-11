@@ -43,6 +43,10 @@ package com.snsoft.tvc2.chart{
 		
 		private var _yGradValue:int = 1;
 		
+		private var xGradType:String = GRAD_TYPE_POINT;
+		
+		private var yGradType:String = GRAD_TYPE_POINT;
+		
 		public static const GRAD_TYPE_POINT:String = "POINT";
 		
 		public static const GRAD_TYPE_AREA:String = "AREA";
@@ -65,6 +69,10 @@ package com.snsoft.tvc2.chart{
 			
 			this.xGradValue = xGradValue;
 			this.yGradValue = yGradValue;
+			
+			this.xGradType = xGradType;
+			this.yGradType = yGradType;
+
 		}
 		
 		public static const COOR_AXES_X_DEFAULT_SKIN:String = "coorAxesX_default_skin";
@@ -151,22 +159,49 @@ package com.snsoft.tvc2.chart{
 				this.coorSprite.addChild(axesYSkin);
 				this.coorSprite.addChild(axesXSkin);
 				
-				//刻度间隔长度
-				var xlen:Number = coorWidth / (this.xGradNum - 1);
-				var ylen:Number = coorHeight / (this.yGradNum - 1);
-				
 				//x刻度
-				for(var i:int = 0;i < this.xGradNum;i++){
+				var xgn:Number = this.xGradNum;
+				var xTextX:Number = 0;
+				if(this.xGradType == GRAD_TYPE_AREA){
+					xgn = xgn + 1;
+				}
+				
+				var ygn:Number = this.yGradNum;
+				var yTextY:Number = 0;
+				if(this.xGradType == GRAD_TYPE_AREA){
+					ygn = ygn + 1;
+				}
+				
+				//刻度间隔长度
+				var xlen:Number = coorWidth / (xgn - 1);
+				var ylen:Number = coorHeight / (ygn - 1);
+				
+				if(this.xGradType == GRAD_TYPE_AREA){
+					xTextX = xlen;
+				}
+				
+				if(this.yGradType == GRAD_TYPE_AREA){
+					yTextY = ylen;
+				}
+				
+				for(var i:int = 0;i < xgn;i++){
 					var gradXSkin:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_X_DEFAULT_SKIN)) as MovieClip;
 					gradXSkin.x = i * xlen;
 					this.coorSprite.addChild(gradXSkin);					
 				}
 				
 				//y刻度
-				for(var j:int = 0;j < this.yGradNum;j++){
+				for(var j:int = 0;j < ygn;j++){
 					var gradYSkin:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_Y_DEFAULT_SKIN)) as MovieClip;
 					gradYSkin.y = - j * ylen;
 					this.coorSprite.addChild(gradYSkin);
+					
+					if(j > 0){
+						var gradLineYSkin:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_LINE_Y_DEFAULT_SKIN)) as MovieClip;
+						gradLineYSkin.y = - j * ylen;
+						gradLineYSkin.width = coorWidth;
+						this.coorSprite.addChild(gradLineYSkin);
+					}
 				}
 				
 				//把两坐标轴的交点做为原点，移动坐标系，y平移
@@ -180,7 +215,7 @@ package com.snsoft.tvc2.chart{
 				
 				//x刻度文字
 				for(var ii:int = 0;ii < this.xGradNum;ii++){
-					 
+					
 					var tfd:TextField = new TextField();
 					var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
 					tfd.text = this.xGradVector[ii];
@@ -190,7 +225,7 @@ package com.snsoft.tvc2.chart{
 					tfd.width = tfdw;
 					tfd.height = Number(tft.size + 4);
 					this.coorSprite.addChild(tfd);
-					tfd.x = ii * xlen - tfd.width * 0.5;
+					tfd.x = ii * xlen - tfd.width * 0.5 + xTextX * 0.5;
 					tfd.y = gradXSkinH.height;
 					
 				}
@@ -207,7 +242,7 @@ package com.snsoft.tvc2.chart{
 					tfdy.height = Number(tfty.size + 4);
 					this.coorSprite.addChild(tfdy);
 					tfdy.x = - tfdy.width - gradYSkinW.width;
-					tfdy.y = - jj * ylen - tfdy.height * 0.5;
+					tfdy.y = - jj * ylen - tfdy.height * 0.5 - yTextY * 0.5;
 				}
 				
 			}
@@ -239,27 +274,27 @@ package com.snsoft.tvc2.chart{
 		{
 			_yGradValue = value;
 		}
-
+		
 		public function get xGradVector():Vector.<String>
 		{
 			return _xGradVector;
 		}
-
+		
 		public function set xGradVector(value:Vector.<String>):void
 		{
 			_xGradVector = value;
 		}
-
+		
 		public function get yGradVector():Vector.<String>
 		{
 			return _yGradVector;
 		}
-
+		
 		public function set yGradVector(value:Vector.<String>):void
 		{
 			_yGradVector = value;
 		}
-
+		
 		
 	}
 }
