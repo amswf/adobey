@@ -25,9 +25,7 @@ package com.snsoft.tvc2.media{
 			this.textFormat = textFormat;
 			this.delayTime = delayTime;
 			this.timeLength = timeLength;
-			this.timeOut = timeOut;
-			trace(timeLength,timeOut);
-			
+			this.timeOut = timeOut;			
 		}
 		
 		override protected function play():void{
