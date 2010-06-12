@@ -1,4 +1,6 @@
 ﻿package com.snsoft.tvc2.chart{
+	import com.snsoft.tvc2.Business;
+	
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
 	
@@ -16,7 +18,7 @@
 	
 	[Style(name="myTextFormat", type="Class")]
 	
-	public class UILine extends UIComponent{
+	public class UILine extends Business{
 		
 		private var currentLine:MovieClip;
 		
@@ -30,9 +32,15 @@
 		
 		private var timer:Timer;
 		
-		public function UILine(points:Vector.<Point> = null){
-			this.points = points;
+		public function UILine(points:Vector.<Point> = null,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0){
 			super();
+			this.delayTime = delayTime;
+			this.timeLength = timeLength;
+			this.timeOut = timeOut;
+			this.points = points;
+			currentIndex = 0;
+			this.currentLineParent = new Sprite();
+			this.addChild(this.currentLineParent);
 		}
 		
 		public static const LINE_DEFAULT_SKIN:String = "line_default_skin";
@@ -74,10 +82,26 @@
 		 * 
 		 */		
 		override protected function draw():void{
-			currentIndex = 0;
-			this.currentLineParent = new Sprite();
-			this.addChild(this.currentLineParent);
-			this.drawLine();
+			
+		}
+		
+		/**
+		 * 
+		 * 
+		 */		
+		override protected function dispatchEventState():void{
+			var sign:Boolean = false;
+			if(this.isPlayCmp && this.isTimeLen){
+				sign = true;
+			}
+			else if(this.isTimeOut){
+				sign = true;
+			}
+			
+			if(sign){
+				timer.stop();
+				this.dispatchEvent(new Event(Event.COMPLETE));
+			}
 		}
 		
 		/**
@@ -86,7 +110,7 @@
 		 * @param p2
 		 * 
 		 */		
-		private function drawLine():void {
+		override protected function play():void {
 			
 			if(points != null && currentIndex < points.length - 1){
 				var p1:Point = this.points[currentIndex];
@@ -132,10 +156,11 @@
 					this.currentLineParent.addChild(endPoint);
 					currentIndex ++;
 					if(currentIndex < points.length - 1){
-						drawLine();
+						play();
 					}
 					else {
-						this.dispatchEvent(new Event(Event.COMPLETE));
+						this.isPlayCmp = true;
+						dispatchEventState();
 					}
 				}
 				currentLine.width += perLen;
