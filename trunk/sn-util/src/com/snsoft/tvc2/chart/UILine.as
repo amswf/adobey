@@ -140,6 +140,7 @@
 				timer = new Timer(20,0);
 				timer.start();
 				timer.addEventListener(TimerEvent.TIMER,handlerTimer);
+				
 			}
 		}
 		
