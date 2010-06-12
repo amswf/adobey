@@ -27,6 +27,9 @@ package com.snsoft.tvc2.chart{
 	
 	[Style(name="graduationY_default_skin", type="Class")]
 	
+	[Style(name="myTextFormat", type="Class")]
+	
+	
 	public class UICoor extends UIComponent{
 		
 		private var coorSprite:Sprite;
