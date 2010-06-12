@@ -6,10 +6,12 @@
 		<![CDATA[
 			import ascb.util.DateFormat;
 			
+			import com.snsoft.tvc2.Business;
 			import com.snsoft.tvc2.chart.Coordinate;
 			import com.snsoft.tvc2.chart.UIColumn;
 			import com.snsoft.tvc2.chart.UICoor;
 			import com.snsoft.tvc2.chart.UILine;
+			import com.snsoft.tvc2.dataObject.BizDO;
 			import com.snsoft.tvc2.media.MediaLoader;
 			import com.snsoft.tvc2.media.MediaPlayer;
 			import com.snsoft.tvc2.media.Mp3Loader;
@@ -32,6 +34,7 @@
 				var df:DateFormat;
 				var uicoor:UICoor;
 				var uilc:UILine;
+				var biz:Business;
 				//parse.parseTvcMainXML(xml);
 			}
 		]]>
