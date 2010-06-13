@@ -247,7 +247,6 @@ package com.snsoft.tvc2.chart{
 					tfdy.x = - tfdy.width - gradYSkinW.width;
 					tfdy.y = - jj * ylen - tfdy.height * 0.5 - yTextY * 0.5;
 				}
-				
 			}
 		}
 		

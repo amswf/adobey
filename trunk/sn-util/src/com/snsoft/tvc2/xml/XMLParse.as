@@ -18,6 +18,8 @@
 	
 	import flash.geom.Point;
 	
+	 
+	
 	/**
 	 * xml解析 
 	 * @author Administrator
@@ -280,18 +282,24 @@
 		 * 
 		 */		
 		private function parseDataXML(datasXMLList:XMLList):DataDO{
+			trace("parseDataXML");
 			var dataDO:DataDO = new DataDO();
 			for(var i:int = 0;i<datasXMLList.length();i++){
 				var dataXML:XML = datasXMLList[i];
-				
+				var dataXMLList:XMLList;
+				var listsXMLList:XMLList;
 				if(dataXML.elements(TAG_DISTRIBUTE) != null){
-					var dataXMLList:XMLList = dataXML.elements(TAG_DISTRIBUTE);
+					dataXMLList = dataXML.elements(TAG_DISTRIBUTE);
 					dataDO.type = TAG_DISTRIBUTE;
-					var listsXMLList:XMLList = dataXMLList.elements(TAG_LIST);
-					dataDO.data = this.parseListsXML(listsXMLList);
 				}
-				else if(dataXML.elements(TAG_CHART) != null){
+				
+				if(dataXML.elements(TAG_CHART) != null){
 					dataXMLList = dataXML.elements(TAG_CHART);
+					dataDO.type = TAG_CHART;
+				}
+				if(dataXMLList != null){
+					listsXMLList = dataXMLList.elements(TAG_LIST);
+					dataDO.data = this.parseListsXML(listsXMLList);
 				}
 			}
 			return dataDO;
@@ -304,6 +312,7 @@
 		 * 
 		 */		
 		private function parseListsXML(listsXMLList:XMLList):Vector.<ListDO>{
+			trace("parseListsXML");
 			var lv:Vector.<ListDO> = new Vector.<ListDO>();
 			for(var i:int = 0;i<listsXMLList.length();i++){
 				var listXML:XML = listsXMLList[i];
@@ -312,15 +321,17 @@
 				listDO.name = listAttrHv.findByName(ATT_NAME) as String;
 				listDO.text = listAttrHv.findByName(ATT_TEXT) as String;
 				listDO.style = listAttrHv.findByName(ATT_STYLE) as String;
+				trace(listDO.name);
 				var tpv:Vector.<TextPointDO> = new Vector.<TextPointDO>();
 				var textPointsXMLList:XMLList = listXML.elements(TAG_TEXTPOINT);
-				for(var j:int = 0;j<listXML.length();j++){
+				for(var j:int = 0;j<textPointsXMLList.length();j++){
 					var textPointXML:XML = textPointsXMLList[j];
 					var textPointDO:TextPointDO = new TextPointDO();
 					var texPointHv:HashVector = this.getXMLAttributes(textPointXML);
 					textPointDO.name = texPointHv.findByName(ATT_NAME) as String;
 					textPointDO.text = texPointHv.findByName(ATT_TEXT) as String;
 					textPointDO.value = texPointHv.findByName(ATT_VALUE) as String;
+					trace("textPointDO:",textPointDO.name,textPointDO.text,textPointDO.value);
 					tpv.push(textPointDO);
 				}
 				listDO.listHv = tpv;
