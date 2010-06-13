@@ -32,12 +32,15 @@
 		
 		private var timer:Timer;
 		
-		public function UILine(points:Vector.<Point> = null,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0){
+		private var isAnimation:Boolean;
+		
+		public function UILine(points:Vector.<Point> = null,isAnimation:Boolean = true,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0){
 			super();
 			this.delayTime = delayTime;
 			this.timeLength = timeLength;
 			this.timeOut = timeOut;
 			this.points = points;
+			this.isAnimation = isAnimation;
 			currentIndex = 0;
 			this.currentLineParent = new Sprite();
 			this.addChild(this.currentLineParent);
@@ -74,6 +77,8 @@
 		override protected function configUI():void{			
 			this.invalidate(InvalidationType.ALL,true);
 			this.invalidate(InvalidationType.SIZE,true);
+			this.width = 400;
+			this.height = 300;
 			super.configUI();	
 		}
 		
@@ -138,15 +143,27 @@
 				lr.rotation = rate;
 				
 				timer = new Timer(20,0);
-				timer.start();
 				timer.addEventListener(TimerEvent.TIMER,handlerTimer);
+				if(isAnimation){
+					timer.start();
+				}
+				else {
+					timer.dispatchEvent(new Event(TimerEvent.TIMER));
+				}
 				
 			}
 		}
 		
 		private function handlerTimer(e:Event):void{
 			if(points != null &&　currentIndex < points.length - 1){
+				
 				var perLen:Number = 2;
+				if(isAnimation){
+					currentLine.width += perLen;
+				}
+				else {
+					currentLine.width = this.currentLineLength;
+				}
 				if((this.currentLineLength - currentLine.width) <= perLen){
 					timer.removeEventListener(TimerEvent.TIMER,handlerTimer);
 					currentLine.width = this.currentLineLength;
@@ -164,7 +181,7 @@
 						dispatchEventState();
 					}
 				}
-				currentLine.width += perLen;
+				
 			}	
 		}
 	}
