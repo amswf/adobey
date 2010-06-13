@@ -32,6 +32,5 @@ package com.snsoft.tvc2.dataObject{
 			_timeLineDOHv = value;
 		}
 
-		 
 	}
 }
