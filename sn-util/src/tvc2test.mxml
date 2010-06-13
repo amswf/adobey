@@ -11,6 +11,7 @@
 			import com.snsoft.tvc2.chart.UIColumn;
 			import com.snsoft.tvc2.chart.UICoor;
 			import com.snsoft.tvc2.chart.UILine;
+			import com.snsoft.tvc2.chart.UILineCharts;
 			import com.snsoft.tvc2.dataObject.BizDO;
 			import com.snsoft.tvc2.media.MediaLoader;
 			import com.snsoft.tvc2.media.MediaPlayer;
@@ -35,6 +36,7 @@
 				var uicoor:UICoor;
 				var uilc:UILine;
 				var biz:Business;
+				var uilcht:UILineCharts;
 				//parse.parseTvcMainXML(xml);
 			}
 		]]>
