@@ -3,17 +3,18 @@ package com.snsoft.tvc2.dataObject{
 
 	public class MediasDO{
 		
-		private var _mediaDOHv:HashVector;
+		private var _mediaDOHv:Vector.<MediaDO>;
+		
 		public function MediasDO()
 		{
 		}
 
-		public function get mediaDOHv():HashVector
+		public function get mediaDOHv():Vector.<MediaDO>
 		{
 			return _mediaDOHv;
 		}
 
-		public function set mediaDOHv(value:HashVector):void
+		public function set mediaDOHv(value:Vector.<MediaDO>):void
 		{
 			_mediaDOHv = value;
 		}
