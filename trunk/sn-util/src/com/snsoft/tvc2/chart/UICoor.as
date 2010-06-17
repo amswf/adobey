@@ -42,10 +42,6 @@ package com.snsoft.tvc2.chart{
 		
 		private var _yGradVector:Vector.<String>;
 		
-		private var _xGradValue:int = 1;
-		
-		private var _yGradValue:int = 1;
-		
 		private var xGradType:String = GRAD_TYPE_POINT;
 		
 		private var yGradType:String = GRAD_TYPE_POINT;
@@ -62,7 +58,7 @@ package com.snsoft.tvc2.chart{
 		 * @param yGradValue y 轴单位刻度代表的坐标值
 		 * 
 		 */		
-		public function UICoor(xGradVector:Vector.<String> = null,yGradVector:Vector.<String> = null,xGradValue:Number = 1,yGradValue:Number = 1,xGradType:String = "POINT" ,yGradType:String = "POINT"){
+		public function UICoor(xGradVector:Vector.<String> = null,yGradVector:Vector.<String> = null,xGradType:String = "POINT" ,yGradType:String = "POINT"){
 			if(xGradVector != null && yGradVector != null){
 				this.xGradNum = xGradVector.length;
 				this.yGradNum = yGradVector.length;
@@ -70,8 +66,9 @@ package com.snsoft.tvc2.chart{
 				this.yGradVector = yGradVector;
 			}
 			
-			this.xGradValue = xGradValue;
-			this.yGradValue = yGradValue;
+			 
+			
+			 
 			
 			this.xGradType = xGradType;
 			this.yGradType = yGradType;
@@ -250,33 +247,6 @@ package com.snsoft.tvc2.chart{
 			}
 		}
 		
-		public function transPoint(p:Point):Point{
-			var rp:Point = new Point();
-			rp.x = p.x * this.width /this.xGradValue / this.xGradNum;
-			rp.y = this.height - p.y * this.height /this.yGradValue / this.yGradNum ;
-			return rp;
-		}
-		
-		public function get xGradValue():int
-		{
-			return _xGradValue;
-		}
-		
-		public function set xGradValue(value:int):void
-		{
-			_xGradValue = value;
-		}
-		
-		public function get yGradValue():int
-		{
-			return _yGradValue;
-		}
-		
-		public function set yGradValue(value:int):void
-		{
-			_yGradValue = value;
-		}
-		
 		public function get xGradVector():Vector.<String>
 		{
 			return _xGradVector;
@@ -295,8 +265,7 @@ package com.snsoft.tvc2.chart{
 		public function set yGradVector(value:Vector.<String>):void
 		{
 			_yGradVector = value;
-		}
-		
+		}		
 		
 	}
 }
