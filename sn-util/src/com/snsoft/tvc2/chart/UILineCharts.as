@@ -75,21 +75,25 @@
 		override protected function draw():void{
 			if(this.dataDo != null){
 				var ldv:Vector.<ListDO> = this.dataDo.data;
-				var cd:Coordinate = new Coordinate();
 				var cdpv:Vector.<Number> = new Vector.<Number>();
 				for(var i:int;i<ldv.length;i++){
 					var ld:ListDO = ldv[i];
 					var phv:Vector.<TextPointDO> = ld.listHv;
 					for(var j:int = 0;j<phv.length;j++){
-						var tpd:TextPointDO = phv[i];
+						var tpd:TextPointDO = phv[j];
 						var p:Point = new Point();
 						p.y = Number(tpd.value);
 						cdpv.push(p.y);
 					}
 				}
-				var ygv:Vector.<String> = Vector.<String>(cd.calculateCalibration(cdpv,true));
+				var xv:Vector.<Number> = new Vector.<Number>();
+				xv.push(0,1,2,3,4);
+				var xcd:Coordinate = new Coordinate(xv);
+				var ycd:Coordinate = new Coordinate(cdpv,true);
+				var ygv:Vector.<String> = Vector.<String>(ycd.calibrationVct);
 				var xgv:Vector.<String> = new Vector.<String>();
 				xgv.push("前3周","前2周","前1周","本周","下周");
+				trace("ycd.gradValue: ",ycd.gradValue);
 				var uic:UICoor = new UICoor(xgv,ygv);
 				this.addChild(uic);
 				uic.drawNow();
@@ -103,8 +107,10 @@
 						var p2:Point = new Point();
 						p2.y = Number(tpd2.value);
 						p2.x = jj;
-						var pr:Point = uic.transPoint(p2);
+						trace("p2: ",p2);
+						var pr:Point = this.transPoint(uic,xcd,ycd,p2);
 						pv.push(pr);
+						trace("pr: ",pr);
 					}
 					var uil:UILine = new UILine(pv,true,this.delayTime,this.timeLength,this.timeOut);
 					uil.setStyle(LINE_DEFAULT_SKIN,this.getStyle(LINE_DEFAULT_SKIN));
@@ -123,6 +129,31 @@
 					}
 				}
 			}
+		}
+		
+		/**
+		 * 
+		 * @param uiCoor
+		 * @param xcd
+		 * @param ycd
+		 * @param p
+		 * @return 
+		 * p2:  (x=1, y=120)
+400 1 0 400 6
+300 120 100 300 50
+pr:  (x=66.66666666666667, y=180)
+		 */		
+		public function transPoint(uiCoor:UICoor,xcd:Coordinate,ycd:Coordinate,p:Point):Point{
+			var rp:Point = new Point();
+			if(xcd != null){
+				trace(uiCoor.width,p.x,xcd.gradeBaseValue,uiCoor.width,xcd.differenceValue);
+				rp.x = (p.x - xcd.gradeBaseValue) * uiCoor.width /xcd.differenceValue;
+			}
+			if(ycd != null){
+				trace(uiCoor.height,p.y,ycd.gradeBaseValue,uiCoor.height,ycd.differenceValue);
+				rp.y = uiCoor.height - (p.y - ycd.gradeBaseValue) * uiCoor.height /(ycd.differenceValue);
+			}
+			return rp;
 		}
 	}
 }

@@ -6,7 +6,33 @@
 	 * 
 	 */	
 	public class Coordinate{
-		public function Coordinate(){
+		
+		//数据列表
+		private var _dataVct:Vector.<Number>;
+		
+		//刻度列表
+		private var _calibrationVct:Vector.<Number>;
+		
+		//坐标系原点是否动态
+		private var isDynamic:Boolean;
+		
+		//刻度值
+		private var _gradValue:Number;
+		
+		//刻度基值
+		private var _gradeBaseValue:Number;
+		
+		//最大刻度最小刻度差值
+		private var _differenceValue:Number;
+		
+		private var _gradeNum:Number;
+		
+		public function Coordinate(vct:Vector.<Number>,isDynamic:Boolean = false){
+			
+			this._dataVct = vct;
+			this.isDynamic = isDynamic;
+			
+			this.calculateCalibration(this.dataVct,this.isDynamic);
 		}
 		
 		/**
@@ -14,7 +40,7 @@
 		 * @return 
 		 * 
 		 */		
-		public function calculateCalibration(vct:Vector.<Number>,isDynamic:Boolean = false):Vector.<Number>{
+		private function calculateCalibration(vct:Vector.<Number>,isDynamic:Boolean = false):void{
 			var caliList:Vector.<Number> = null;
 			if(vct != null && vct.length > 0){
 				var cali:Number = 1;
@@ -100,10 +126,46 @@
 					caliList.push(icali);
 					//trace("caliList:",icali);
 				}
-				
+				this._gradValue = cali;
+				this._gradeBaseValue = cali * minIndex;
+				trace("max - min: ",maxIndex,minIndex);
+				this._differenceValue = cali*(maxIndex - minIndex);
+				this._gradeNum = maxIndex - minIndex + 1;
+				this._calibrationVct = caliList;
 			}
-			return caliList;
+			
 		}
+
+		public function get dataVct():Vector.<Number>
+		{
+			return _dataVct;
+		}
+
+		public function get calibrationVct():Vector.<Number>
+		{
+			return _calibrationVct;
+		}
+
+		public function get gradValue():Number
+		{
+			return _gradValue;
+		}
+
+		public function get gradeBaseValue():Number
+		{
+			return _gradeBaseValue;
+		}
+
+		public function get differenceValue():Number
+		{
+			return _differenceValue;
+		}
+
+		public function get gradeNum():Number
+		{
+			return _gradeNum;
+		}
+
 		
 	}
 }
