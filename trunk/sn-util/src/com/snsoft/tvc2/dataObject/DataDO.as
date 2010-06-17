@@ -11,6 +11,10 @@ package com.snsoft.tvc2.dataObject{
 		
 		private var _data:Vector.<ListDO> = null;
 		
+		private var _xGraduationText:Vector.<ListDO> = null;
+		
+		private var _yGraduationText:Vector.<ListDO> = null;
+		
 		public function DataDO()
 		{
 		}
@@ -33,6 +37,26 @@ package com.snsoft.tvc2.dataObject{
 		public function set type(value:String):void
 		{
 			_type = value;
+		}
+
+		public function get xGraduationText():Vector.<ListDO>
+		{
+			return _xGraduationText;
+		}
+
+		public function set xGraduationText(value:Vector.<ListDO>):void
+		{
+			_xGraduationText = value;
+		}
+
+		public function get yGraduationText():Vector.<ListDO>
+		{
+			return _yGraduationText;
+		}
+
+		public function set yGraduationText(value:Vector.<ListDO>):void
+		{
+			_yGraduationText = value;
 		}
 
 

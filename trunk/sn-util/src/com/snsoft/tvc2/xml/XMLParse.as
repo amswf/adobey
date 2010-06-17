@@ -55,6 +55,10 @@
 		
 		public static const TAG_CHART:String = "chart";
 		
+		public static const X_GRADUATION_TEXT:String = "xGraduationText";
+		
+		public static const Y_GRADUATION_TEXT:String = "yGraduationText";
+		
 		public static const TAG_DISTRIBUTE:String = "distribute";
 		
 		public static const TAG_LIST:String = "list";
@@ -299,7 +303,6 @@
 					dataXMLList = dataXML.elements(TAG_DISTRIBUTE);
 					dataDO.type = TAG_DISTRIBUTE;
 				}
-				
 				if(dataXML.elements(TAG_CHART) != null){
 					dataXMLList = dataXML.elements(TAG_CHART);
 					dataDO.type = TAG_CHART;
@@ -307,6 +310,15 @@
 				if(dataXMLList != null){
 					listsXMLList = dataXMLList.elements(TAG_LIST);
 					dataDO.data = this.parseListsXML(listsXMLList);
+				}
+				
+				var xGraduationTextList:XMLList;
+				if(dataXML.elements(X_GRADUATION_TEXT) != null){
+					xGraduationTextList = dataXML.elements(X_GRADUATION_TEXT);
+				}
+				if(xGraduationTextList != null){
+					var xGraduationXMLList:XMLList = xGraduationTextList.elements(TAG_LIST);
+					dataDO.xGraduationText = this.parseListsXML(xGraduationXMLList);
 				}
 			}
 			return dataDO;

@@ -3,6 +3,8 @@
 	import com.snsoft.tvc2.dataObject.DataDO;
 	import com.snsoft.tvc2.dataObject.ListDO;
 	import com.snsoft.tvc2.dataObject.TextPointDO;
+	import com.snsoft.tvc2.util.NumberUtil;
+	import com.snsoft.util.StringUtil;
 	
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
@@ -81,9 +83,10 @@
 					var phv:Vector.<TextPointDO> = ld.listHv;
 					for(var j:int = 0;j<phv.length;j++){
 						var tpd:TextPointDO = phv[j];
-						var p:Point = new Point();
-						p.y = Number(tpd.value);
-						cdpv.push(p.y);
+						if(NumberUtil.isEffective(tpd.value)){
+							var n:Number = Number(tpd.value);
+							cdpv.push(n);
+						}
 					}
 				}
 				var xv:Vector.<Number> = new Vector.<Number>();
@@ -92,21 +95,33 @@
 				var ycd:Coordinate = new Coordinate(cdpv,true);
 				var ygv:Vector.<String> = Vector.<String>(ycd.calibrationVct);
 				var xgv:Vector.<String> = new Vector.<String>();
-				xgv.push("前3周","前2周","前1周","本周","下周");
+				var xglv:Vector.<ListDO> = this.dataDo.xGraduationText;
+				var xgldo:ListDO = xglv[0];
+				var xgtpv:Vector.<TextPointDO> = xgldo.listHv;
+				for(var ii:int = 0;ii < xgtpv.length;ii ++){
+					var xgtp:TextPointDO = xgtpv[ii];
+					xgv.push(xgtp.value);
+				}
 				trace("ycd.gradValue: ",ycd.gradValue);
 				var uic:UICoor = new UICoor(xgv,ygv);
 				this.addChild(uic);
 				uic.drawNow();
 				
-				for(var ii:int;ii<ldv.length;ii++){
+				for(var iii:int;iii<ldv.length;iii++){
 					var pv:Vector.<Point> = new Vector.<Point>();
-					var ld2:ListDO = ldv[ii];
+					var ld2:ListDO = ldv[iii];
 					var phv2:Vector.<TextPointDO> = ld2.listHv;
-					for(var jj:int = 0;jj<phv2.length;jj++){
-						var tpd2:TextPointDO = phv2[jj];
+					for(var jjj:int = 0;jjj<phv2.length;jjj++){
+						var tpd2:TextPointDO = phv2[jjj];
 						var p2:Point = new Point();
-						p2.y = Number(tpd2.value);
-						p2.x = jj;
+						
+						if(NumberUtil.isEffective(tpd2.value)){
+							p2.y = Number(tpd2.value);
+						}
+						else{
+							p2.y = NaN;
+						}
+						p2.x = jjj;
 						trace("p2: ",p2);
 						var pr:Point = this.transPoint(uic,null,ycd,p2);
 						pv.push(pr);
@@ -118,13 +133,13 @@
 					uil.setStyle(TEXT_FORMAT,this.getStyle(TEXT_FORMAT));
 					this.addChild(uil);
 					uil.drawNow();
-					if(ii == 0){
+					if(iii == 0){
 						MyColorTransform.transColor(uil,1,200,0,0);
 					}
-					if(ii == 1){
+					if(iii == 1){
 						MyColorTransform.transColor(uil,1,0,200,0);
 					}
-					if(ii == 2){
+					if(iii == 2){
 						MyColorTransform.transColor(uil,1,0,0,200);
 					}
 				}
@@ -145,13 +160,20 @@ pr:  (x=66.66666666666667, y=180)
 		 */		
 		public function transPoint(uiCoor:UICoor,xcd:Coordinate,ycd:Coordinate,p:Point):Point{
 			var rp:Point = new Point();
-			if(xcd != null){
+			if(isNaN(p.x)){
+				rp.x = NaN;
+			}
+			else if(xcd != null){
 				rp.x = (p.x - xcd.gradeBaseValue) * uiCoor.width /xcd.differenceValue;
 			}
 			else {
 				rp.x = p.x * uiCoor.width / (uiCoor.xGradVector.length - 1);
 			}
-			if(ycd != null){
+			
+			if(isNaN(p.y)){
+				rp.y = NaN;
+			}
+			else if(ycd != null){
 				rp.y = uiCoor.height - (p.y - ycd.gradeBaseValue) * uiCoor.height / (ycd.differenceValue);
 			}
 			else {
