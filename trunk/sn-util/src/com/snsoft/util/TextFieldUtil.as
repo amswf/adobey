@@ -26,5 +26,13 @@ package com.snsoft.util
 			}
 			return width;
 		}
+		
+		public static function fitSize(textField:TextField):void{
+			if(textField != null && textField.text != null){
+				textField.width = calculateTextFieldWidth(textField);
+				var tft:TextFormat = textField.getTextFormat();
+				textField.height = tft.size + 5;
+			}
+		}
 	}
 }
