@@ -80,7 +80,6 @@
 				for(var i:int;i<ldv.length;i++){
 					var ld:ListDO = ldv[i];
 					var phv:Vector.<TextPointDO> = ld.listHv;
-					var pv:Vector.<Point> = new Vector.<Point>();
 					for(var j:int = 0;j<phv.length;j++){
 						var tpd:TextPointDO = phv[i];
 						var p:Point = new Point();
@@ -93,12 +92,26 @@
 				xgv.push("前3周","前2周","前1周","本周","下周");
 				var uic:UICoor = new UICoor(xgv,ygv);
 				this.addChild(uic);
+				uic.drawNow();
+				
 				for(var ii:int;ii<ldv.length;ii++){
+					var pv:Vector.<Point> = new Vector.<Point>();
+					var ld2:ListDO = ldv[ii];
+					var phv2:Vector.<TextPointDO> = ld2.listHv;
+					for(var jj:int = 0;jj<phv2.length;jj++){
+						var tpd2:TextPointDO = phv2[jj];
+						var p2:Point = new Point();
+						p2.y = Number(tpd2.value);
+						p2.x = jj;
+						var pr:Point = uic.transPoint(p2);
+						pv.push(pr);
+					}
 					var uil:UILine = new UILine(pv,true,this.delayTime,this.timeLength,this.timeOut);
 					uil.setStyle(LINE_DEFAULT_SKIN,this.getStyle(LINE_DEFAULT_SKIN));
 					uil.setStyle(POINT_DEFAULT_SKIN,this.getStyle(POINT_DEFAULT_SKIN));
 					uil.setStyle(TEXT_FORMAT,this.getStyle(TEXT_FORMAT));
 					this.addChild(uil);
+					uil.drawNow();
 					if(ii == 0){
 						MyColorTransform.transColor(uil,1,200,0,0);
 					}
