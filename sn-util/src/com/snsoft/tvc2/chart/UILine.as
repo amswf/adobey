@@ -118,39 +118,55 @@
 		override protected function play():void {
 			
 			if(points != null && currentIndex < points.length - 1){
-				var p1:Point = this.points[currentIndex];
-				var p2:Point = this.points[currentIndex + 1];
-				this.currentLineLength = Math.sqrt(Math.pow((p1.x - p2.x),2) + Math.pow((p1.y - p2.y),2));
-				
-				var l:MovieClip = getDisplayObjectInstance(getStyleValue(LINE_DEFAULT_SKIN)) as MovieClip;
-				var lr:MovieClip = new MovieClip;
-				lr.addChild(l);
-				currentLine = l;
-				this.currentLineParent.addChild(lr);
-				
-				
-				var s:MovieClip = getDisplayObjectInstance(getStyleValue(POINT_DEFAULT_SKIN)) as MovieClip;
-				s.x = p1.x;
-				s.y = p1.y;
-				this.currentLineParent.addChild(s);
-				
-				l.width = 0;
-				lr.x = p1.x;
-				lr.y = p1.y;
-				
-				var rate:Number = Math.atan((p2.y - p1.y) / (p2.x - p1.x)) * 180 / Math.PI;
-				
-				lr.rotation = rate;
-				
-				timer = new Timer(20,0);
-				timer.addEventListener(TimerEvent.TIMER,handlerTimer);
-				if(isAnimation){
-					timer.start();
+				var p1:Point = new Point();
+				for( var i:int = currentIndex;i<points.length -1;i++){
+					p1 = this.points[i];
+					if(!isNaN(p1.y)){
+						currentIndex = i;
+						break;
+					}
 				}
-				else {
-					timer.dispatchEvent(new Event(TimerEvent.TIMER));
-				}
+				var p2:Point = new Point();
 				
+				for( var ii:int = currentIndex + 1;ii<points.length;ii++){
+					p2 = this.points[ii];
+					if(!isNaN(p2.y)){
+						currentIndex = ii - 1;
+						break;
+					}
+				}
+				if(!isNaN(p1.y) && !isNaN(p2.y)){
+					this.currentLineLength = Math.sqrt(Math.pow((p1.x - p2.x),2) + Math.pow((p1.y - p2.y),2));
+					
+					var l:MovieClip = getDisplayObjectInstance(getStyleValue(LINE_DEFAULT_SKIN)) as MovieClip;
+					var lr:MovieClip = new MovieClip;
+					lr.addChild(l);
+					currentLine = l;
+					this.currentLineParent.addChild(lr);
+					
+					
+					var s:MovieClip = getDisplayObjectInstance(getStyleValue(POINT_DEFAULT_SKIN)) as MovieClip;
+					s.x = p1.x;
+					s.y = p1.y;
+					this.currentLineParent.addChild(s);
+					
+					l.width = 0;
+					lr.x = p1.x;
+					lr.y = p1.y;
+					
+					var rate:Number = Math.atan((p2.y - p1.y) / (p2.x - p1.x)) * 180 / Math.PI;
+					
+					lr.rotation = rate;
+					
+					timer = new Timer(20,0);
+					timer.addEventListener(TimerEvent.TIMER,handlerTimer);
+					if(isAnimation){
+						timer.start();
+					}
+					else {
+						timer.dispatchEvent(new Event(TimerEvent.TIMER));
+					}
+				}
 			}
 		}
 		
