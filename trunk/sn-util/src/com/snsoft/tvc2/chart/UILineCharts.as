@@ -5,11 +5,14 @@
 	import com.snsoft.tvc2.dataObject.TextPointDO;
 	import com.snsoft.tvc2.util.NumberUtil;
 	import com.snsoft.util.StringUtil;
+	import com.snsoft.util.TextFieldUtil;
 	
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
 	
+	import flash.events.Event;
 	import flash.geom.Point;
+	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
 	public class UILineCharts extends UIComponent{
@@ -25,6 +28,8 @@
 		
 		//点列表的列表
 		private var dataDo:DataDO;
+		
+		private var pointTextCountV:Vector.<int> = new Vector.<int>();
 		
 		public function UILineCharts(dataDo:DataDO = null,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0){
 			super();
@@ -89,9 +94,6 @@
 						}
 					}
 				}
-				var xv:Vector.<Number> = new Vector.<Number>();
-				xv.push(0,1,2,3,4);
-				var xcd:Coordinate = new Coordinate(xv);
 				var ycd:Coordinate = new Coordinate(cdpv,true);
 				var ygv:Vector.<String> = Vector.<String>(ycd.calibrationVct);
 				var xgv:Vector.<String> = new Vector.<String>();
@@ -109,6 +111,7 @@
 				
 				for(var iii:int;iii<ldv.length;iii++){
 					var pv:Vector.<Point> = new Vector.<Point>();
+					var ptv:Vector.<String> = new Vector.<String>();
 					var ld2:ListDO = ldv[iii];
 					var phv2:Vector.<TextPointDO> = ld2.listHv;
 					for(var jjj:int = 0;jjj<phv2.length;jjj++){
@@ -125,14 +128,16 @@
 						trace("p2: ",p2);
 						var pr:Point = this.transPoint(uic,null,ycd,p2);
 						pv.push(pr);
+						ptv.push(String(p2.y.toFixed(2)));
 						trace("pr: ",pr);
 					}
-					var uil:UILine = new UILine(pv,true,this.delayTime,this.timeLength,this.timeOut);
+					var uil:UILine = new UILine(pv,ptv,true,this.delayTime,this.timeLength,this.timeOut);
 					uil.setStyle(LINE_DEFAULT_SKIN,this.getStyle(LINE_DEFAULT_SKIN));
 					uil.setStyle(POINT_DEFAULT_SKIN,this.getStyle(POINT_DEFAULT_SKIN));
 					uil.setStyle(TEXT_FORMAT,this.getStyle(TEXT_FORMAT));
 					this.addChild(uil);
 					uil.drawNow();
+					uil.addEventListener(UILine.EVENT_POINT_CMP,handlerEventPointCmp);
 					if(iii == 0){
 						MyColorTransform.transColor(uil,1,200,0,0);
 					}
@@ -146,6 +151,34 @@
 			}
 		}
 		
+		private function handlerEventPointCmp(e:Event):void{
+			
+			var uil:UILine = e.currentTarget as UILine;
+			if(uil != null){
+				var index:int = uil.currentIndex;
+				trace(index);
+				var n:int = 0;
+				if(index >= this.pointTextCountV.length){
+					this.pointTextCountV.push(1);
+				}
+				else if(this.pointTextCountV[index] > 0){
+					this.pointTextCountV[index] += 1;
+					n = this.pointTextCountV[index];
+				}
+				
+				var p:Point = uil.getCurrentPoint();
+				var pt:String = uil.getCurrentPointText();
+				
+				var tfd:TextField = new TextField();
+				tfd.text = pt;
+				TextFieldUtil.fitSize(tfd);
+				tfd.x = p.x;
+				tfd.y = p.y;
+				this.addChild(tfd);
+			}
+			
+		}
+		
 		/**
 		 * 
 		 * @param uiCoor
@@ -153,10 +186,7 @@
 		 * @param ycd
 		 * @param p
 		 * @return 
-		 * p2:  (x=1, y=120)
-400 1 0 400 6
-300 120 100 300 50
-pr:  (x=66.66666666666667, y=180)
+		 *  
 		 */		
 		public function transPoint(uiCoor:UICoor,xcd:Coordinate,ycd:Coordinate,p:Point):Point{
 			var rp:Point = new Point();
