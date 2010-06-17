@@ -3,18 +3,18 @@ package com.snsoft.tvc2.dataObject{
 
 	public class TextOutsDO{
 		
-		private var _textOutDOHv:HashVector;
+		private var _textOutDOHv:Vector.<TextOutDO>;
 		
 		public function TextOutsDO()
 		{
 		}
 
-		public function get textOutDOHv():HashVector
+		public function get textOutDOHv():Vector.<TextOutDO>
 		{
 			return _textOutDOHv;
 		}
 
-		public function set textOutDOHv(value:HashVector):void
+		public function set textOutDOHv(value:Vector.<TextOutDO>):void
 		{
 			_textOutDOHv = value;
 		}

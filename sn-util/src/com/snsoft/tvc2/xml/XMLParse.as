@@ -114,7 +114,7 @@
 			var timeLinesXMLList:XMLList = xml.elements(TAG_TIMELINE);
 			mdo.timeLineDOHv = this.parseTimeLinesXML(timeLinesXMLList);
 			
-			return null;
+			return mdo;
 		}
 		
 		/**
@@ -136,6 +136,7 @@
 				//解析业务列表
 				var bizsXMLList:XMLList = timeLineXML.elements(TAG_BIZ);
 				timeLineDO.bizDOHv = this.parseBizsXML(bizsXMLList);
+				timeLinesDOHv.put(String(i),timeLineDO);
 			}
 			return timeLinesDOHv;
 		}
@@ -173,6 +174,7 @@
 				//解析媒体文件，图片、flash
 				var mediasXMLList:XMLList = bizXML.elements(TAG_MEDIAS);
 				bizDO.mediasHv = this.parseMediasXML(mediasXMLList);
+				bizDOHv.put(String(i),bizDO);
 			}
 			return bizDOHv;
 		}
@@ -202,7 +204,8 @@
 					soundDO.url = soundAttributeHv.findByName(ATT_URL)as String;
 					soundv.push(soundDO);
 				}
-				
+				soundsDO.soundDOHv = soundv;
+				ssv.put(String(i),soundsDO);
 			}
 			return ssv;
 		}
@@ -237,6 +240,8 @@
 					textOutDO.style = textOutAttributeHv.findByName(ATT_STYLE)as String;
 					textOutv.push(textOutDO);
 				}
+				textOutsDO.textOutDOHv = textOutv;
+				ssv.put(String(i),textOutsDO);
 			}
 			return ssv;
 		}
@@ -271,6 +276,8 @@
 					mediaDO.url = mediaAttributeHv.findByName(ATT_URL)as String
 					mediav.push(mediaDO);
 				}
+				mediasDO.mediaDOHv = mediav;
+				msv.put(String(i),mediasDO);
 			}
 			return msv;
 		}
