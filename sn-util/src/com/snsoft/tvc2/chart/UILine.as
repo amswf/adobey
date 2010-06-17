@@ -20,30 +20,48 @@
 	
 	public class UILine extends Business{
 		
+		public static const EVENT_POINT_CMP:String = "EVENT_POINT_CMP";
+		
 		private var currentLine:MovieClip;
 		
 		private var currentLineLength:Number;
 		
 		private var currentLineParent:Sprite;
 		
-		private var currentIndex:int;
+		private var _currentIndex:int;
 		
 		private var points:Vector.<Point>;
+		
+		private var pointsText:Vector.<String>;
 		
 		private var timer:Timer;
 		
 		private var isAnimation:Boolean;
 		
-		public function UILine(points:Vector.<Point> = null,isAnimation:Boolean = true,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0){
+		public function UILine(points:Vector.<Point> = null,pointsText:Vector.<String> = null,isAnimation:Boolean = true,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0){
 			super();
 			this.delayTime = delayTime;
 			this.timeLength = timeLength;
 			this.timeOut = timeOut;
 			this.points = points;
+			this.pointsText = pointsText;
 			this.isAnimation = isAnimation;
-			currentIndex = 0;
+			_currentIndex = 0;
 			this.currentLineParent = new Sprite();
 			this.addChild(this.currentLineParent);
+		}
+		
+		/**
+		 * 获得当前点 
+		 * @return 
+		 * 
+		 */		
+		public function getCurrentPoint():Point{
+			return points[currentIndex];
+		}
+		
+		public function getCurrentPointText():String{
+			return pointsText[currentIndex];
 		}
 		
 		public static const LINE_DEFAULT_SKIN:String = "line_default_skin";
@@ -122,7 +140,7 @@
 				for( var i:int = currentIndex;i<points.length -1;i++){
 					p1 = this.points[i];
 					if(!isNaN(p1.y)){
-						currentIndex = i;
+						_currentIndex = i;
 						break;
 					}
 				}
@@ -131,10 +149,11 @@
 				for( var ii:int = currentIndex + 1;ii<points.length;ii++){
 					p2 = this.points[ii];
 					if(!isNaN(p2.y)){
-						currentIndex = ii - 1;
+						_currentIndex = ii - 1;
 						break;
 					}
 				}
+				
 				if(!isNaN(p1.y) && !isNaN(p2.y)){
 					this.currentLineLength = Math.sqrt(Math.pow((p1.x - p2.x),2) + Math.pow((p1.y - p2.y),2));
 					
@@ -143,7 +162,7 @@
 					lr.addChild(l);
 					currentLine = l;
 					this.currentLineParent.addChild(lr);
-					
+					this.dispatchEvent(new Event(EVENT_POINT_CMP));
 					
 					var s:MovieClip = getDisplayObjectInstance(getStyleValue(POINT_DEFAULT_SKIN)) as MovieClip;
 					s.x = p1.x;
@@ -167,11 +186,12 @@
 						timer.dispatchEvent(new Event(TimerEvent.TIMER));
 					}
 				}
+				_currentIndex ++;
 			}
 		}
 		
 		private function handlerTimer(e:Event):void{
-			if(points != null &&　currentIndex < points.length - 1){
+			if(points != null &&　currentIndex < points.length){
 				
 				var perLen:Number = 2;
 				if(isAnimation){
@@ -183,12 +203,12 @@
 				if((this.currentLineLength - currentLine.width) <= perLen){
 					timer.removeEventListener(TimerEvent.TIMER,handlerTimer);
 					currentLine.width = this.currentLineLength;
-					var p2:Point = this.points[currentIndex + 1];
+					var p2:Point = this.points[currentIndex];
 					var endPoint:MovieClip = getDisplayObjectInstance(getStyleValue(POINT_DEFAULT_SKIN)) as MovieClip;
 					endPoint.x = p2.x;
 					endPoint.y = p2.y;
 					this.currentLineParent.addChild(endPoint);
-					currentIndex ++;
+					this.dispatchEvent(new Event(EVENT_POINT_CMP));
 					if(currentIndex < points.length - 1){
 						play();
 					}
@@ -199,5 +219,11 @@
 				}
 			}	
 		}
+
+		public function get currentIndex():int
+		{
+			return _currentIndex;
+		}
+
 	}
 }
