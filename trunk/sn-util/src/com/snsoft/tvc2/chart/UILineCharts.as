@@ -108,7 +108,7 @@
 						p2.y = Number(tpd2.value);
 						p2.x = jj;
 						trace("p2: ",p2);
-						var pr:Point = this.transPoint(uic,xcd,ycd,p2);
+						var pr:Point = this.transPoint(uic,null,ycd,p2);
 						pv.push(pr);
 						trace("pr: ",pr);
 					}
@@ -146,12 +146,16 @@ pr:  (x=66.66666666666667, y=180)
 		public function transPoint(uiCoor:UICoor,xcd:Coordinate,ycd:Coordinate,p:Point):Point{
 			var rp:Point = new Point();
 			if(xcd != null){
-				trace(uiCoor.width,p.x,xcd.gradeBaseValue,uiCoor.width,xcd.differenceValue);
 				rp.x = (p.x - xcd.gradeBaseValue) * uiCoor.width /xcd.differenceValue;
 			}
+			else {
+				rp.x = p.x * uiCoor.width / (uiCoor.xGradVector.length - 1);
+			}
 			if(ycd != null){
-				trace(uiCoor.height,p.y,ycd.gradeBaseValue,uiCoor.height,ycd.differenceValue);
-				rp.y = uiCoor.height - (p.y - ycd.gradeBaseValue) * uiCoor.height /(ycd.differenceValue);
+				rp.y = uiCoor.height - (p.y - ycd.gradeBaseValue) * uiCoor.height / (ycd.differenceValue);
+			}
+			else {
+				rp.y = uiCoor.height - p.y * uiCoor.height / (uiCoor.yGradVector.length - 1);
 			}
 			return rp;
 		}
