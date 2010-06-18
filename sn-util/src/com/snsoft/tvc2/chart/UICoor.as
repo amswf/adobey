@@ -59,16 +59,13 @@ package com.snsoft.tvc2.chart{
 		 * 
 		 */		
 		public function UICoor(xGradVector:Vector.<String> = null,yGradVector:Vector.<String> = null,xGradType:String = "POINT" ,yGradType:String = "POINT"){
+			super();
 			if(xGradVector != null && yGradVector != null){
 				this.xGradNum = xGradVector.length;
 				this.yGradNum = yGradVector.length;
 				this.xGradVector = xGradVector;
 				this.yGradVector = yGradVector;
 			}
-			
-			 
-			
-			 
 			
 			this.xGradType = xGradType;
 			this.yGradType = yGradType;
@@ -220,11 +217,9 @@ package com.snsoft.tvc2.chart{
 					var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
 					tfd.text = this.xGradVector[ii];
 					tfd.selectable = false;
-					tfd.setTextFormat(tft);
-					var tfdw:Number = TextFieldUtil.calculateTextFieldWidth(tfd);
-					tfd.width = tfdw;
-					tfd.height = Number(tft.size + 4);
 					this.coorSprite.addChild(tfd);
+					tfd.setTextFormat(tft);
+					TextFieldUtil.fitSize(tfd);
 					tfd.x = ii * xlen - tfd.width * 0.5 + xTextX * 0.5;
 					tfd.y = gradXSkinH.height;
 					
@@ -236,11 +231,10 @@ package com.snsoft.tvc2.chart{
 					var tfty:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
 					tfdy.text = this.yGradVector[jj];
 					tfdy.selectable = false;
-					tfdy.setTextFormat(tfty);
-					var tfdyw:Number = TextFieldUtil.calculateTextFieldWidth(tfdy);
-					tfdy.width = tfdyw;
-					tfdy.height = Number(tfty.size + 4);
+					 
 					this.coorSprite.addChild(tfdy);
+					tfdy.setTextFormat(tfty);
+					TextFieldUtil.fitSize(tfdy);
 					tfdy.x = - tfdy.width - gradYSkinW.width;
 					tfdy.y = - jj * ylen - tfdy.height * 0.5 - yTextY * 0.5;
 				}

@@ -4,6 +4,7 @@
 	import com.snsoft.tvc2.dataObject.ListDO;
 	import com.snsoft.tvc2.dataObject.TextPointDO;
 	import com.snsoft.tvc2.util.NumberUtil;
+	import com.snsoft.util.ColorTransformUtil;
 	import com.snsoft.util.StringUtil;
 	import com.snsoft.util.TextFieldUtil;
 	
@@ -11,6 +12,7 @@
 	import fl.core.UIComponent;
 	
 	import flash.events.Event;
+	import flash.filters.DropShadowFilter;
 	import flash.geom.Point;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -51,7 +53,7 @@
 		private static var defaultStyles:Object = {
 			line_default_skin:"Line_default_skin",
 			point_default_skin:"Point_default_skin",
-			myTextFormat:new TextFormat("宋体",13,0x000000)
+			myTextFormat:new TextFormat("宋体",16,0x000000)
 		};
 		
 		/**
@@ -104,8 +106,9 @@
 					var xgtp:TextPointDO = xgtpv[ii];
 					xgv.push(xgtp.value);
 				}
-				trace("ycd.gradValue: ",ycd.gradValue);
+				
 				var uic:UICoor = new UICoor(xgv,ygv);
+			    uic.setStyle(TEXT_FORMAT,this.getStyleValue(TEXT_FORMAT));
 				this.addChild(uic);
 				uic.drawNow();
 				var pvv:Vector.<Vector.<Point>> = new Vector.<Vector.<Point>>();
@@ -128,11 +131,11 @@
 							p2.y = NaN;
 						}
 						p2.x = j3;
-						trace("p2: ",p2);
+						
 						var pr:Point = this.transPoint(uic,null,ycd,p2);
 						pv.push(pr);
 						ptv.push(String(p2.y.toFixed(2)));
-						trace("pr: ",pr);
+						
 					}
 					pvv.push(pv);
 					ptvv.push(ptv);
@@ -143,8 +146,7 @@
 					var pv2:Vector.<Point> = pvv[i4];
 					var ptv2:Vector.<String> = ptvv[i4];
 					var ptsv:Vector.<Point> = ptsvv[i4];
-					trace(pv2);
-					trace(ptsv);
+					
 					var uil:UILine = new UILine(pv2,ptv2,ptsv,true,this.delayTime,this.timeLength,this.timeOut,i4);
 					uil.setStyle(LINE_DEFAULT_SKIN,this.getStyle(LINE_DEFAULT_SKIN));
 					uil.setStyle(POINT_DEFAULT_SKIN,this.getStyle(POINT_DEFAULT_SKIN));
@@ -153,14 +155,15 @@
 					uilv.push(uil);
 					uil.addEventListener(UILine.EVENT_POINT_CMP,handlerEventPointCmp);
 					if(i4 == 0){
-						MyColorTransform.transColor(uil,1,200,0,0);
+						uil.transformColor = 0x990000;
 					}
 					if(i4 == 1){
-						MyColorTransform.transColor(uil,1,0,200,0);
+						uil.transformColor = 0x009900;
 					}
 					if(i4 == 2){
-						MyColorTransform.transColor(uil,1,0,0,200);
+						uil.transformColor = 0x000099; 
 					}
+					ColorTransformUtil.setColor(uil,uil.transformColor);
 				}
 				
 				for(var i5:int = 0;i5<uilv.length;i5++){
@@ -198,7 +201,7 @@
 					if(i < pv.length){
 						var p:Point = pv[i];
 						var opvl:int = orderpv.length;
-						trace(p);
+					
 						if(opvl > 0){
 							for(var k:int = 0;k < opvl;k++){
 								var ok:int = orderpv[k];
@@ -230,16 +233,13 @@
 						}
 					}
 				}
-				trace("orderpv:",orderpv);
 				
-				
-				trace("一列：");
 				for(var j3:int = orderpv.length -1;j3 >= 0;j3 --){
 					var orderIndex:int = orderpv[j3];
 					var pv3:Vector.<Point> = ptvv[orderIndex];
 					if(i < pv3.length){
 						var p3:Point = pv3[i];
-						trace(orderIndex,p3);
+						
 						if( j3 + 1 <= orderpv.length -1){
 							var orderFrontIndex:int = orderpv[j3 + 1];
 							var pvf:Vector.<Point> = ptvv[orderFrontIndex];
@@ -274,17 +274,27 @@
 					this.pointTextCountV[index] += 1;
 					n = this.pointTextCountV[index];
 				}
-				trace("index,n:",index,n);
+			
 				var p:Point = uil.getCurrentPoint();
 				var pt:String = uil.getCurrentPointText();
 				var ptp:Point = uil.getCurrentPointTextPlace();
+				var dsf:DropShadowFilter = new DropShadowFilter(0,45,0xffffff,1,3,3,1000,1);
+				var dsf2:DropShadowFilter = new DropShadowFilter(0,45,0x000000,1,5,5,1,1);
+				var filterAry:Array = new Array();
+				filterAry.push(dsf,dsf2);
 				
+				var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
+				tft.color = uil.transformColor;
 				var tfd:TextField = new TextField();
 				tfd.text = pt;
-				TextFieldUtil.fitSize(tfd);
+				tfd.selectable = false;
+				
 				tfd.x = ptp.x;
 				tfd.y = ptp.y;
 				this.addChild(tfd);
+				tfd.setTextFormat(tft);
+				tfd.filters = filterAry;
+				TextFieldUtil.fitSize(tfd);
 			}
 			
 		}

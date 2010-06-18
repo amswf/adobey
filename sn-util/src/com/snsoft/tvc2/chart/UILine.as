@@ -42,7 +42,9 @@
 		
 		private var _serialNumber:int;
 		
-		public function UILine(points:Vector.<Point> = null,pointsText:Vector.<String> = null,pointsTextPlace:Vector.<Point> = null,isAnimation:Boolean = true,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0,serialNumber:int = 0){
+		private var _transformColor:uint;
+		
+		public function UILine(points:Vector.<Point> = null,pointsText:Vector.<String> = null,pointsTextPlace:Vector.<Point> = null,isAnimation:Boolean = true,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0,serialNumber:int = 0,transformColor:uint = 0x000000){
 			super();
 			this.delayTime = delayTime;
 			this.timeLength = timeLength;
@@ -52,6 +54,7 @@
 			this.pointsTextPlace = pointsTextPlace;
 			this.isAnimation = isAnimation;
 			this._serialNumber = serialNumber;
+			this._transformColor = transformColor;
 			this._currentIndex = 0;
 			this.currentLineParent = new Sprite();
 			this.addChild(this.currentLineParent);
@@ -218,11 +221,11 @@
 					endPoint.x = p2.x;
 					endPoint.y = p2.y;
 					this.currentLineParent.addChild(endPoint);
-					this.dispatchEvent(new Event(EVENT_POINT_CMP));
 					if(currentIndex < points.length - 1){
 						play();
 					}
 					else {
+						this.dispatchEvent(new Event(EVENT_POINT_CMP));
 						this.isPlayCmp = true;
 						dispatchEventState();
 					}
@@ -240,6 +243,14 @@
 			return _serialNumber;
 		}
 
-
+		public function get transformColor():uint
+		{
+			return _transformColor;
+		}
+		
+		public function set transformColor(transformColor:uint):void
+		{
+			this._transformColor = transformColor;
+		}
 	}
 }
