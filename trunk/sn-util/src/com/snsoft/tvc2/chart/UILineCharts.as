@@ -84,6 +84,8 @@
 		override protected function draw():void{
 			if(this.dataDo != null){
 				var ldv:Vector.<ListDO> = this.dataDo.data;
+				
+				//把列表值全部放到一个列表中
 				var cdpv:Vector.<Number> = new Vector.<Number>();
 				for(var i:int;i<ldv.length;i++){
 					var ld:ListDO = ldv[i];
@@ -96,6 +98,8 @@
 						}
 					}
 				}
+				
+				//计算值坐标刻度个数和分度值
 				var ycd:Coordinate = new Coordinate(cdpv,true);
 				var ygv:Vector.<String> = Vector.<String>(ycd.calibrationVct);
 				var xgv:Vector.<String> = new Vector.<String>();
@@ -107,6 +111,7 @@
 					xgv.push(xgtp.value);
 				}
 				
+				//画坐标系
 				var uic:UICoor = new UICoor(xgv,ygv);
 			    uic.setStyle(TEXT_FORMAT,this.getStyleValue(TEXT_FORMAT));
 				this.addChild(uic);
@@ -115,6 +120,7 @@
 				var ptvv:Vector.<Vector.<String>> = new Vector.<Vector.<String>>();
 				var uilv:Vector.<UILine> = new Vector.<UILine>();
 				
+				//转换坐标值和显示值
 				for(var i3:int;i3<ldv.length;i3++){
 					var pv:Vector.<Point> = new Vector.<Point>();
 					var ptv:Vector.<String> = new Vector.<String>();
@@ -123,7 +129,6 @@
 					for(var j3:int = 0;j3<phv2.length;j3++){
 						var tpd2:TextPointDO = phv2[j3];
 						var p2:Point = new Point();
-						
 						if(NumberUtil.isEffective(tpd2.value)){
 							p2.y = Number(tpd2.value);
 						}
@@ -141,6 +146,7 @@
 					ptvv.push(ptv);
 					
 				}
+				//组织折线
 				var ptsvv:Vector.<Vector.<Point>> = this.calculatePointTextPlace(pvv,20);
 				for(var i4:int;i4<pvv.length;i4++){
 					var pv2:Vector.<Point> = pvv[i4];
@@ -166,6 +172,7 @@
 					ColorTransformUtil.setColor(uil,uil.transformColor);
 				}
 				
+				//画折线
 				for(var i5:int = 0;i5<uilv.length;i5++){
 					var uil2:UILine = uilv[i5];
 					uil2.drawNow();
@@ -173,6 +180,7 @@
 			}
 		}
 		
+		//计算出显示数值显示位置，保证Y坐标不重合
 		private function calculatePointTextPlace(pvv:Vector.<Vector.<Point>>,yMin:Number):Vector.<Vector.<Point>>{
 			var maxpvLen:int = 0;
 			for(var iMax:int =0;iMax<pvv.length;iMax++){
@@ -260,6 +268,7 @@
 			return ptvv;
 		}
 		
+		//显示图表上的数值
 		private function handlerEventPointCmp(e:Event):void{
 			
 			var uil:UILine = e.currentTarget as UILine;
@@ -300,7 +309,7 @@
 		}
 		
 		/**
-		 * 
+		 * 转换点坐标
 		 * @param uiCoor
 		 * @param xcd
 		 * @param ycd
