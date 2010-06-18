@@ -148,27 +148,21 @@
 		override protected function play():void {
 			
 			if(points != null && currentIndex < points.length - 1){
-				var p1:Point = new Point();
-				for( var i:int = currentIndex;i<points.length -1;i++){
-					p1 = this.points[i];
-					if(!isNaN(p1.y)){
-						_currentIndex = i;
-						break;
-					}
+				var p1:Point = null;
+				this._currentIndex = findNextEffectiveIndex(points,currentIndex);
+				if(this._currentIndex >= 0){
+					p1 = points[this._currentIndex];
 				}
-				var p2:Point = new Point();
+				var index2:int = findNextEffectiveIndex(points,currentIndex + 1);
 				
-				for( var ii:int = currentIndex + 1;ii<points.length;ii++){
-					p2 = this.points[ii];
-					if(!isNaN(p2.y)){
-						_currentIndex = ii - 1;
-						break;
-					}
+				var p2:Point = null;
+				if(this._currentIndex >= 0){
+					p2 = points[index2];
 				}
 				
 				if(!isNaN(p1.y) && !isNaN(p2.y)){
-					this.currentLineLength = Math.sqrt(Math.pow((p1.x - p2.x),2) + Math.pow((p1.y - p2.y),2));
-					
+					trace(p1,p2,lineLength(p1,p2));
+					this.currentLineLength = lineLength(p1,p2);
 					var l:MovieClip = getDisplayObjectInstance(getStyleValue(LINE_DEFAULT_SKIN)) as MovieClip;
 					var lr:MovieClip = new MovieClip;
 					lr.addChild(l);
@@ -185,33 +179,23 @@
 					lr.x = p1.x;
 					lr.y = p1.y;
 					
-					var rate:Number = Math.atan((p2.y - p1.y) / (p2.x - p1.x)) * 180 / Math.PI;
+					var rate:Number = lineRate(p1,p2);
 					
 					lr.rotation = rate;
 					
 					timer = new Timer(20,0);
 					timer.addEventListener(TimerEvent.TIMER,handlerTimer);
-					if(isAnimation){
-						timer.start();
-					}
-					else {
-						timer.dispatchEvent(new Event(TimerEvent.TIMER));
-					}
+					
+					timer.start();
+					_currentIndex = index2;//可能由于this.dispatchEvent(new Event(EVENT_POINT_CMP)); 执行慢了会出错。
 				}
-				_currentIndex ++;
 			}
 		}
 		
 		private function handlerTimer(e:Event):void{
 			if(points != null &&　currentIndex < points.length){
-				
-				var perLen:Number = 2;
-				if(isAnimation){
-					currentLine.width += perLen;
-				}
-				else {
-					currentLine.width = this.currentLineLength;
-				}
+				var perLen:Number = 2; 
+				currentLine.width += perLen;
 				if((this.currentLineLength - currentLine.width) <= perLen){
 					timer.removeEventListener(TimerEvent.TIMER,handlerTimer);
 					currentLine.width = this.currentLineLength;
@@ -231,17 +215,72 @@
 				}
 			}	
 		}
-
+		
+		private function drawLines(points:Vector.<Point>):void{
+			
+		}
+		
+		private function findNextEffectivePoint(points:Vector.<Point>,index:int):Point{
+			var index1:int = findNextEffectiveIndex(points,currentIndex);
+			var p:Point = null;
+			if(index >= 0 && index < points.length){
+				p = points[index1];
+			}
+			return p;
+		}
+		
+		private function findNextEffectiveIndex(points:Vector.<Point>,index:int):int{
+			if(index >= 0 && index < points.length){
+				for( var i:int = index;i<points.length;i++){
+					var p:Point = this.points[i];
+					if(!isNaN(p.y)){
+						return i;
+					}
+				}
+			}
+			return -1;
+		}
+		
+		/**
+		 * 计算线长 
+		 * @param p1
+		 * @param p2
+		 * @return 
+		 * 
+		 */		
+		private function lineLength(p1:Point,p2:Point):Number{
+			return Math.sqrt(Math.pow((p1.x - p2.x),2) + Math.pow((p1.y - p2.y),2));
+		}
+		
+		/**
+		 * 计算旋转角度 
+		 * @param p1
+		 * @param p2
+		 * @return 
+		 * 
+		 */		
+		private function lineRate(p1:Point,p2:Point):Number{
+			var rate:Number = 0;
+			
+			if(p2.x - p1.x == 0){
+				rate = p2.y - p1.y > 0 ? 90 : -90;
+			}
+			else {
+				rate = Math.atan((p2.y - p1.y) / (p2.x - p1.x)) * 180 / Math.PI;
+			}
+			return rate;
+		}
+		
 		public function get currentIndex():int
 		{
 			return _currentIndex;
 		}
-
+		
 		public function get serialNumber():int
 		{
 			return _serialNumber;
 		}
-
+		
 		public function get transformColor():uint
 		{
 			return _transformColor;
