@@ -11,9 +11,12 @@
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
 	
+	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.filters.DropShadowFilter;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
@@ -32,6 +35,8 @@
 		private var dataDo:DataDO;
 		
 		private var pointTextCountV:Vector.<int> = new Vector.<int>();
+		
+		private var cutlineSprite:Sprite;
 		
 		public function UILineCharts(dataDo:DataDO = null,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0){
 			super();
@@ -146,6 +151,11 @@
 					ptvv.push(ptv);
 					
 				}
+				
+				cutlineSprite = new Sprite();
+				cutlineSprite.x = this.width + 80;
+				this.addChild(cutlineSprite);
+				
 				//组织折线
 				var ptsvv:Vector.<Vector.<Point>> = this.calculatePointTextPlace(pvv,20);
 				for(var i4:int;i4<pvv.length;i4++){
@@ -170,12 +180,37 @@
 						uil.transformColor = 0x000099; 
 					}
 					ColorTransformUtil.setColor(uil,uil.transformColor);
-				}
-				
-				//画折线
-				for(var i5:int = 0;i5<uilv.length;i5++){
-					var uil2:UILine = uilv[i5];
-					uil2.drawNow();
+					
+					var ldo:ListDO = ldv[i4];
+					var cutlineText:TextField = new TextField();
+					 
+					cutlineText.y = cutlineSprite.height;
+					 
+					trace(cutlineText.y);
+					cutlineSprite.addChild(cutlineText);
+					cutlineText.text = ldo.text;
+					
+					var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
+					tft.color = uil.transformColor;
+					cutlineText.setTextFormat(tft);
+					TextFieldUtil.fitSize(cutlineText);
+					
+					var l:MovieClip = getDisplayObjectInstance(getStyleValue(LINE_DEFAULT_SKIN)) as MovieClip;
+					var s:MovieClip = getDisplayObjectInstance(getStyleValue(POINT_DEFAULT_SKIN)) as MovieClip;
+					var e:MovieClip = getDisplayObjectInstance(getStyleValue(POINT_DEFAULT_SKIN)) as MovieClip;
+					var clspr:Sprite = new Sprite();
+					clspr.addChild(l);
+					clspr.addChild(s);
+					clspr.addChild(e);
+					var px:Number = s.width / 2;
+					var py:Number = s.height / 2;
+					var pw:Number = 30;
+					l.width = pw;
+					e.x = pw;
+					clspr.y = cutlineSprite.height + py;
+					clspr.x = px;
+					ColorTransformUtil.setColor(clspr,uil.transformColor);
+					cutlineSprite.addChild(clspr);
 				}
 			}
 		}
