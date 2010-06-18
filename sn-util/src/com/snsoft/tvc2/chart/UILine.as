@@ -34,19 +34,25 @@
 		
 		private var pointsText:Vector.<String>;
 		
+		private var pointsTextPlace:Vector.<Point>;
+		
 		private var timer:Timer;
 		
 		private var isAnimation:Boolean;
 		
-		public function UILine(points:Vector.<Point> = null,pointsText:Vector.<String> = null,isAnimation:Boolean = true,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0){
+		private var _serialNumber:int;
+		
+		public function UILine(points:Vector.<Point> = null,pointsText:Vector.<String> = null,pointsTextPlace:Vector.<Point> = null,isAnimation:Boolean = true,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0,serialNumber:int = 0){
 			super();
 			this.delayTime = delayTime;
 			this.timeLength = timeLength;
 			this.timeOut = timeOut;
 			this.points = points;
 			this.pointsText = pointsText;
+			this.pointsTextPlace = pointsTextPlace;
 			this.isAnimation = isAnimation;
-			_currentIndex = 0;
+			this._serialNumber = serialNumber;
+			this._currentIndex = 0;
 			this.currentLineParent = new Sprite();
 			this.addChild(this.currentLineParent);
 		}
@@ -62,6 +68,10 @@
 		
 		public function getCurrentPointText():String{
 			return pointsText[currentIndex];
+		}
+		
+		public function getCurrentPointTextPlace():Point{
+			return pointsTextPlace[currentIndex];
 		}
 		
 		public static const LINE_DEFAULT_SKIN:String = "line_default_skin";
@@ -224,6 +234,12 @@
 		{
 			return _currentIndex;
 		}
+
+		public function get serialNumber():int
+		{
+			return _serialNumber;
+		}
+
 
 	}
 }
