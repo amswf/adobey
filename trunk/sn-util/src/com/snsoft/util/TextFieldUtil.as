@@ -22,7 +22,7 @@ package com.snsoft.util
 				var size:int = tft.size as int;
 				var text:String = textField.text;
 				var len:int = StringUtil.getByteLen(text);
-				width = 0.5 * size * len + 5;
+				width = 0.5 * size * len + 6;
 			}
 			return width;
 		}
@@ -31,7 +31,7 @@ package com.snsoft.util
 			if(textField != null && textField.text != null){
 				textField.width = calculateTextFieldWidth(textField);
 				var tft:TextFormat = textField.getTextFormat();
-				textField.height = tft.size + 5;
+				textField.height = tft.size + 6;
 			}
 		}
 	}

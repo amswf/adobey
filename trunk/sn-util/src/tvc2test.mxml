@@ -21,6 +21,7 @@
 			import com.snsoft.tvc2.util.FrameTimer;
 			import com.snsoft.tvc2.util.PriceUtils;
 			import com.snsoft.tvc2.xml.XMLParse;
+			import com.snsoft.util.ColorTransformUtil;
 			private function init():void{
 				var parse:XMLParse = new XMLParse();
 				var coor:Coordinate;
@@ -37,6 +38,7 @@
 				var uilc:UILine;
 				var biz:Business;
 				var uilcht:UILineCharts;
+				var ctf:ColorTransformUtil;
 				//parse.parseTvcMainXML(xml);
 			}
 		]]>
