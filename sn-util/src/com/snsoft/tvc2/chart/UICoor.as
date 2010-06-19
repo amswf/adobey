@@ -34,9 +34,9 @@ package com.snsoft.tvc2.chart{
 		
 		private var coorSprite:Sprite;
 		
-		private var xGradNum:int = 5;
+		private var _xGradNum:int = 5;
 		
-		private var yGradNum:int = 5;
+		private var _yGradNum:int = 5;
 		
 		private var _xGradVector:Vector.<String>;
 		
@@ -61,15 +61,13 @@ package com.snsoft.tvc2.chart{
 		public function UICoor(xGradVector:Vector.<String> = null,yGradVector:Vector.<String> = null,xGradType:String = "POINT" ,yGradType:String = "POINT"){
 			super();
 			if(xGradVector != null && yGradVector != null){
-				this.xGradNum = xGradVector.length;
-				this.yGradNum = yGradVector.length;
 				this.xGradVector = xGradVector;
 				this.yGradVector = yGradVector;
 			}
 			
 			this.xGradType = xGradType;
 			this.yGradType = yGradType;
-
+			
 		}
 		
 		public static const COOR_AXES_X_DEFAULT_SKIN:String = "coorAxesX_default_skin";
@@ -126,117 +124,118 @@ package com.snsoft.tvc2.chart{
 		 * 
 		 */		
 		override protected function draw():void{
-			if(this.xGradNum > 0 && this.yGradNum > 0){
-				
-				com.snsoft.util.SpriteUtil.deleteAllChild(this);
-				
-				var coorWidth:Number = this.width;
-				var coorHeight:Number = this.height;
-				
-				//			var gradXSkinH:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_X_DEFAULT_SKIN)) as MovieClip;
-				//			var gradYSkinW:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_Y_DEFAULT_SKIN)) as MovieClip;
-				//			
-				//			coorWidth -= gradYSkinW.width;
-				//			coorHeight -= gradXSkinH.height;
-				
-				//坐标系对象
-				this.coorSprite = new Sprite();
-				this.addChild(this.coorSprite);
-				
-				//添加坐标轴
-				var axesXSkin:MovieClip = getDisplayObjectInstance(getStyleValue(COOR_AXES_X_DEFAULT_SKIN)) as MovieClip;
-				var axesYSkin:MovieClip = getDisplayObjectInstance(getStyleValue(COOR_AXES_Y_DEFAULT_SKIN)) as MovieClip;
-				
-				axesXSkin.width = coorWidth;
-				axesXSkin.height = 8;
-				
-				axesYSkin.width = 8;
-				axesYSkin.height = coorHeight;			
-				
-				this.coorSprite.addChild(axesYSkin);
-				this.coorSprite.addChild(axesXSkin);
-				
-				//x刻度
-				var xgn:Number = this.xGradNum;
-				var xTextX:Number = 0;
-				if(this.xGradType == GRAD_TYPE_AREA){
-					xgn = xgn + 1;
-				}
-				
-				var ygn:Number = this.yGradNum;
-				var yTextY:Number = 0;
-				if(this.yGradType == GRAD_TYPE_AREA){
-					ygn = ygn + 1;
-				}
-				
-				//刻度间隔长度
-				var xlen:Number = coorWidth / (xgn - 1);
-				var ylen:Number = coorHeight / (ygn - 1);
-				
-				if(this.xGradType == GRAD_TYPE_AREA){
-					xTextX = xlen;
-				}
-				
-				if(this.yGradType == GRAD_TYPE_AREA){
-					yTextY = ylen;
-				}
-				
-				for(var i:int = 0;i < xgn;i++){
-					var gradXSkin:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_X_DEFAULT_SKIN)) as MovieClip;
-					gradXSkin.x = i * xlen;
-					this.coorSprite.addChild(gradXSkin);					
-				}
-				
-				//y刻度
-				for(var j:int = 0;j < ygn;j++){
-					var gradYSkin:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_Y_DEFAULT_SKIN)) as MovieClip;
-					gradYSkin.y = - j * ylen;
-					this.coorSprite.addChild(gradYSkin);
+			if(this.xGradVector != null && this.yGradVector != null){
+				if(this.xGradVector.length > 0 && this.yGradVector.length > 0){
+					com.snsoft.util.SpriteUtil.deleteAllChild(this);
 					
-					if(j > 0){
-						var gradLineYSkin:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_LINE_Y_DEFAULT_SKIN)) as MovieClip;
-						gradLineYSkin.y = - j * ylen;
-						gradLineYSkin.width = coorWidth;
-						this.coorSprite.addChild(gradLineYSkin);
+					var coorWidth:Number = this.width;
+					var coorHeight:Number = this.height;
+					
+					//			var gradXSkinH:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_X_DEFAULT_SKIN)) as MovieClip;
+					//			var gradYSkinW:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_Y_DEFAULT_SKIN)) as MovieClip;
+					//			
+					//			coorWidth -= gradYSkinW.width;
+					//			coorHeight -= gradXSkinH.height;
+					
+					//坐标系对象
+					this.coorSprite = new Sprite();
+					this.addChild(this.coorSprite);
+					
+					//添加坐标轴
+					var axesXSkin:MovieClip = getDisplayObjectInstance(getStyleValue(COOR_AXES_X_DEFAULT_SKIN)) as MovieClip;
+					var axesYSkin:MovieClip = getDisplayObjectInstance(getStyleValue(COOR_AXES_Y_DEFAULT_SKIN)) as MovieClip;
+					
+					axesXSkin.width = coorWidth;
+					axesXSkin.height = 8;
+					
+					axesYSkin.width = 8;
+					axesYSkin.height = coorHeight;			
+					
+					this.coorSprite.addChild(axesYSkin);
+					this.coorSprite.addChild(axesXSkin);
+					
+					//x刻度
+					var xgn:Number = xGradVector.length;
+					var xTextX:Number = 0;
+					if(this.xGradType == GRAD_TYPE_AREA){
+						this._xGradNum = xgn + 1;
 					}
-				}
-				
-				//把两坐标轴的交点做为原点，移动坐标系，y平移
-				var coorRect:Rectangle = this.coorSprite.getRect(this);
-				var tlPoint:Point = coorRect.topLeft;
-				this.coorSprite.y = - tlPoint.y;
-				//this.coorSprite.x = - tlPoint.x;
-				
-				var gradXSkinH:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_X_DEFAULT_SKIN)) as MovieClip;
-				var gradYSkinW:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_Y_DEFAULT_SKIN)) as MovieClip;
-				
-				//x刻度文字
-				for(var ii:int = 0;ii < this.xGradNum;ii++){
 					
-					var tfd:TextField = new TextField();
-					var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
-					tfd.text = this.xGradVector[ii];
-					tfd.selectable = false;
-					this.coorSprite.addChild(tfd);
-					tfd.setTextFormat(tft);
-					TextFieldUtil.fitSize(tfd);
-					tfd.x = ii * xlen - tfd.width * 0.5 + xTextX * 0.5;
-					tfd.y = gradXSkinH.height;
+					var ygn:Number = yGradVector.length;
+					var yTextY:Number = 0;
+					if(this.yGradType == GRAD_TYPE_AREA){
+						this._yGradNum = ygn + 1;
+					}
 					
-				}
-				
-				//y刻度文字
-				for(var jj:int = 0;jj < this.yGradNum;jj++){
-					var tfdy:TextField = new TextField();
-					var tfty:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
-					tfdy.text = this.yGradVector[jj];
-					tfdy.selectable = false;
-					 
-					this.coorSprite.addChild(tfdy);
-					tfdy.setTextFormat(tfty);
-					TextFieldUtil.fitSize(tfdy);
-					tfdy.x = - tfdy.width - gradYSkinW.width;
-					tfdy.y = - jj * ylen - tfdy.height * 0.5 - yTextY * 0.5;
+					//刻度间隔长度
+					var xlen:Number = coorWidth / (this.xGradNum - 1);
+					var ylen:Number = coorHeight / (this.xGradNum - 1);
+					
+					if(this.xGradType == GRAD_TYPE_AREA){
+						xTextX = xlen;
+					}
+					
+					if(this.yGradType == GRAD_TYPE_AREA){
+						yTextY = ylen;
+					}
+					
+					for(var i:int = 0;i < this.xGradNum;i++){
+						var gradXSkin:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_X_DEFAULT_SKIN)) as MovieClip;
+						gradXSkin.x = i * xlen;
+						this.coorSprite.addChild(gradXSkin);					
+					}
+					
+					//y刻度
+					for(var j:int = 0;j < this.xGradNum;j++){
+						var gradYSkin:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_Y_DEFAULT_SKIN)) as MovieClip;
+						gradYSkin.y = - j * ylen;
+						this.coorSprite.addChild(gradYSkin);
+						
+						if(j > 0){
+							var gradLineYSkin:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_LINE_Y_DEFAULT_SKIN)) as MovieClip;
+							gradLineYSkin.y = - j * ylen;
+							gradLineYSkin.width = coorWidth;
+							this.coorSprite.addChild(gradLineYSkin);
+						}
+					}
+					
+					//把两坐标轴的交点做为原点，移动坐标系，y平移
+					var coorRect:Rectangle = this.coorSprite.getRect(this);
+					var tlPoint:Point = coorRect.topLeft;
+					this.coorSprite.y = - tlPoint.y;
+					//this.coorSprite.x = - tlPoint.x;
+					
+					var gradXSkinH:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_X_DEFAULT_SKIN)) as MovieClip;
+					var gradYSkinW:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_Y_DEFAULT_SKIN)) as MovieClip;
+					
+					//x刻度文字
+					for(var ii:int = 0;ii < xgn;ii++){
+						
+						var tfd:TextField = new TextField();
+						var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
+						tfd.text = this.xGradVector[ii];
+						tfd.selectable = false;
+						this.coorSprite.addChild(tfd);
+						tfd.setTextFormat(tft);
+						TextFieldUtil.fitSize(tfd);
+						tfd.x = ii * xlen - tfd.width * 0.5 + xTextX * 0.5;
+						tfd.y = gradXSkinH.height;
+						
+					}
+					
+					//y刻度文字
+					for(var jj:int = 0;jj < ygn;jj++){
+						var tfdy:TextField = new TextField();
+						var tfty:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
+						tfdy.text = this.yGradVector[jj];
+						tfdy.selectable = false;
+						
+						this.coorSprite.addChild(tfdy);
+						tfdy.setTextFormat(tfty);
+						TextFieldUtil.fitSize(tfdy);
+						tfdy.x = - tfdy.width - gradYSkinW.width;
+						tfdy.y = - jj * ylen - tfdy.height * 0.5 - yTextY * 0.5;
+					}
 				}
 			}
 		}
@@ -260,6 +259,17 @@ package com.snsoft.tvc2.chart{
 		{
 			_yGradVector = value;
 		}		
+
+		public function get yGradNum():int
+		{
+			return _yGradNum;
+		}
+
+		public function get xGradNum():int
+		{
+			return _xGradNum;
+		}
+
 		
 	}
 }
