@@ -204,6 +204,7 @@
 					cutlineText.y = cutlineSprite.height;
 					cutlineSprite.addChild(cutlineText);
 					cutlineText.text = ldo.text;
+					cutlineText.selectable = false;
 					var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
 					tft.color = uil.transformColor;
 					cutlineText.setTextFormat(tft);
