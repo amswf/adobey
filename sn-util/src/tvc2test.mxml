@@ -13,6 +13,7 @@
 			import com.snsoft.tvc2.chart.UILine;
 			import com.snsoft.tvc2.chart.UILineCharts;
 			import com.snsoft.tvc2.chart.UIPillar;
+			import com.snsoft.tvc2.chart.UIPillarCharts;
 			import com.snsoft.tvc2.dataObject.BizDO;
 			import com.snsoft.tvc2.media.MediaLoader;
 			import com.snsoft.tvc2.media.MediaPlayer;
@@ -40,7 +41,8 @@
 				var biz:Business;
 				var uilcht:UILineCharts;
 				var ctf:ColorTransformUtil;
-				var uif:UIPillar;
+				var uip:UIPillar;
+				var uipc:UIPillarCharts;
 				//parse.parseTvcMainXML(xml);
 			}
 		]]>
