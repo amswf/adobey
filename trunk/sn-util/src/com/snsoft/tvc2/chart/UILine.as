@@ -49,6 +49,10 @@
 		
 		private var lineTextSprite:Sprite;
 		
+		private var perLen:Number = 2;
+		
+		private const PERLEN_BASE:Number = 2;
+		
 		public function UILine(points:Vector.<Point> = null,pointsText:Vector.<String> = null,pointsTextPlace:Vector.<Point> = null,isAnimation:Boolean = true,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0,serialNumber:int = 0,lineTextSprite:Sprite = null,transformColor:uint = 0x000000){
 			super();
 			this.delayTime = delayTime;
@@ -189,6 +193,9 @@
 					
 					lr.rotation = rate;
 					
+					perLen = PERLEN_BASE / Math.abs(Math.cos(rate * Math.PI / 180));
+					trace(rate,perLen);
+					
 					timer = new Timer(20,0);
 					timer.addEventListener(TimerEvent.TIMER,handlerTimer);
 					
@@ -200,7 +207,7 @@
 		
 		private function handlerTimer(e:Event):void{
 			if(points != null &&　currentIndex < points.length){
-				var perLen:Number = 2; 
+				
 				currentLine.width += perLen;
 				if((this.currentLineLength - currentLine.width) <= perLen){
 					timer.removeEventListener(TimerEvent.TIMER,handlerTimer);
