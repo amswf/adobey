@@ -141,14 +141,14 @@
 			    uic.setStyle(TEXT_FORMAT,this.getStyleValue(TEXT_FORMAT));
 				coorSprite.addChild(uic);
 				uic.drawNow();
-				var pvv:Vector.<Vector.<Point>> = new Vector.<Vector.<Point>>();
-				var ptvv:Vector.<Vector.<String>> = new Vector.<Vector.<String>>();
+				
 				var uilv:Vector.<UILine> = new Vector.<UILine>();
+				
+				var charPointDOVV:Vector.<Vector.<CharPointDO>> = new Vector.<Vector.<CharPointDO>>();
 				
 				//转换坐标值和显示值
 				for(var i3:int;i3<ldv.length;i3++){
-					var pv:Vector.<Point> = new Vector.<Point>();
-					var ptv:Vector.<String> = new Vector.<String>();
+					var cpdov:Vector.<CharPointDO> = new Vector.<CharPointDO>();
 					var ld2:ListDO = ldv[i3];
 					var phv2:Vector.<TextPointDO> = ld2.listHv;
 					for(var j3:int = 0;j3<phv2.length;j3++){
@@ -163,25 +163,21 @@
 						p2.x = j3;
 						
 						var pr:Point = this.transPoint(uic,null,ycd,p2);
-						pv.push(pr);
-						ptv.push(String(p2.y.toFixed(2)));
-						
+						var cpdo:CharPointDO = new CharPointDO();
+						cpdo.point = pr;
+						cpdo.pointText = String(p2.y.toFixed(2));
+						cpdov.push(cpdo);
 					}
-					pvv.push(pv);
-					ptvv.push(ptv);
-					
+					charPointDOVV.push(cpdov);
 				}
 				
 				
 				
 				//组织折线和图例
-				var ptsvv:Vector.<Vector.<Point>> = this.calculatePointTextPlace(pvv,20);
-				for(var i4:int;i4<pvv.length;i4++){
-					var pv2:Vector.<Point> = pvv[i4];
-					var ptv2:Vector.<String> = ptvv[i4];
-					var ptsv:Vector.<Point> = ptsvv[i4];
-					
-					var uil:UILine = new UILine(pv2,ptv2,ptsv,false,this.delayTime,this.timeLength,this.timeOut,i4,lineTextSprite);
+				var cpdotpvv:Vector.<Vector.<CharPointDO>> = this.calculatePointTextPlace(charPointDOVV,20);
+				for(var i4:int;i4<charPointDOVV.length;i4++){
+					var charPointDOV:Vector.<CharPointDO> = cpdotpvv[i4];
+					var uil:UILine = new UILine(charPointDOV,false,this.delayTime,this.timeLength,this.timeOut,lineTextSprite);
 					uil.setStyle(LINE_DEFAULT_SKIN,this.getStyleValue(LINE_DEFAULT_SKIN));
 					uil.setStyle(POINT_DEFAULT_SKIN,this.getStyleValue(POINT_DEFAULT_SKIN));
 					uil.setStyle(TEXT_FORMAT,this.getStyleValue(TEXT_FORMAT));
@@ -228,7 +224,7 @@
 					cutlineSprite.addChild(clspr);
 				}
 				
-				for(var i5:int;i5<pvv.length;i5++){
+				for(var i5:int;i5<charPointDOVV.length;i5++){
 					var uil5:UILine = uilv[i5]
 					lineSprite.addChild(uil5);
 				}
@@ -236,40 +232,41 @@
 		}
 		
 		//计算出显示数值显示位置，保证Y坐标不重合
-		private function calculatePointTextPlace(pvv:Vector.<Vector.<Point>>,yMin:Number):Vector.<Vector.<Point>>{
+		private function calculatePointTextPlace(charPointDOVV:Vector.<Vector.<CharPointDO>>,yMin:Number):Vector.<Vector.<CharPointDO>>{
 			var maxpvLen:int = 0;
-			for(var iMax:int =0;iMax<pvv.length;iMax++){
-				var mpv:Vector.<Point> = pvv[iMax];
+			for(var iMax:int =0;iMax<charPointDOVV.length;iMax++){
+				var mpv:Vector.<CharPointDO> = charPointDOVV[iMax];
 				if(mpv.length > maxpvLen){
 					maxpvLen = mpv.length;
 				}
 			}
-			var ptvv:Vector.<Vector.<Point>> = new Vector.<Vector.<Point>>();
+			var cpdovvClone:Vector.<Vector.<CharPointDO>> = new Vector.<Vector.<CharPointDO>>();
 			
-			for(var ii:int =0;ii<pvv.length;ii++){
-				var pv2:Vector.<Point> = pvv[ii];
-				var ptv2:Vector.<Point> = new Vector.<Point>();
-				for(var jj:int =0;jj<pv2.length;jj++){
-					var p2:Point = pv2[jj];
-					var pt:Point = p2.clone();
-					ptv2.push(pt); 
+			for(var ii:int =0;ii<charPointDOVV.length;ii++){
+				var cpdov:Vector.<CharPointDO> = charPointDOVV[ii];
+				var cpdovClone:Vector.<CharPointDO> = new Vector.<CharPointDO>();
+				for(var jj:int =0;jj<cpdov.length;jj++){
+					var cpdo:CharPointDO = new CharPointDO();
+					cpdo.point = cpdov[jj].point.clone();
+					cpdo.pointText = cpdov[jj].pointText;
+					cpdovClone.push(cpdo); 
 				}
-				ptvv.push(ptv2);
+				cpdovvClone.push(cpdovClone);
 			}
 			
 			for(var i:int =0;i<maxpvLen;i++){
 				var orderpv:Vector.<int> = new Vector.<int>();
-				for(var j:int =0;j<pvv.length;j++){
-					var pv:Vector.<Point> = pvv[j];
+				for(var j:int =0;j<cpdovvClone.length;j++){
+					var pv:Vector.<CharPointDO> = cpdovvClone[j];
 					if(i < pv.length){
-						var p:Point = pv[i];
+						var p:Point = pv[i].point;
 						var opvl:int = orderpv.length;
 					
 						if(opvl > 0){
 							for(var k:int = 0;k < opvl;k++){
 								var ok:int = orderpv[k];
-								var opv:Vector.<Point> = pvv[ok];
-								var op:Point = opv[i];
+								var opv:Vector.<CharPointDO> = cpdovvClone[ok];
+								var op:Point = opv[i].point;
 								if(p.y > op.y){
 									if(k + 1 == opvl){
 										orderpv.push(j);
@@ -277,8 +274,8 @@
 									}
 									else{
 										var ek:int = orderpv[k + 1];
-										var epv:Vector.<Point> = pvv[ek];
-										var ep:Point = epv[i];
+										var epv:Vector.<CharPointDO> = cpdovvClone[ek];
+										var ep:Point = epv[i].point;
 										if(p.y < ep.y){
 											orderpv.push(j);
 											break;
@@ -299,28 +296,29 @@
 				
 				for(var j3:int = orderpv.length -1;j3 >= 0;j3 --){
 					var orderIndex:int = orderpv[j3];
-					var pv3:Vector.<Point> = ptvv[orderIndex];
+					var pv3:Vector.<CharPointDO> = cpdovvClone[orderIndex];
 					if(i < pv3.length){
-						var p3:Point = pv3[i];
-						
+						var ptp:Point = pv3[i].point.clone();
+						pv3[i].pointTextPlace = ptp;
+						var p3:Point = pv3[i].point;
 						if( j3 + 1 <= orderpv.length -1){
 							var orderFrontIndex:int = orderpv[j3 + 1];
-							var pvf:Vector.<Point> = ptvv[orderFrontIndex];
+							var pvf:Vector.<CharPointDO> = cpdovvClone[orderFrontIndex];
 							if(i < pvf.length){
-								var pf:Point = pvf[i];
-								if(p3.y > pf.y - yMin){
-									p3.y = pf.y - yMin;  
+								var pf:Point = pvf[i].point;
+								if(ptp.y > pf.y - yMin){
+									ptp.y = pf.y - yMin;  
 								}
 							}
 						}
 						else {
-							p3.y -= yMin;
+							ptp.y -= yMin;
 						}
 					}
 				}
 				
 			}
-			return ptvv;
+			return cpdovvClone;
 		}
 		
 		/**

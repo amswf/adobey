@@ -31,19 +31,11 @@
 		
 		private var currentLineParent:Sprite;
 		
-		private var _currentIndex:int;
-		
-		private var points:Vector.<Point>;
-		
-		private var pointsText:Vector.<String>;
-		
-		private var pointsTextPlace:Vector.<Point>;
+		private var currentIndex:int;
 		
 		private var timer:Timer;
 		
 		private var isAnimation:Boolean;
-		
-		private var _serialNumber:int;
 		
 		private var _transformColor:uint;
 		
@@ -53,20 +45,19 @@
 		
 		private const PERLEN_BASE:Number = 2;
 		
-		public function UILine(points:Vector.<Point> = null,pointsText:Vector.<String> = null,pointsTextPlace:Vector.<Point> = null,isAnimation:Boolean = true,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0,serialNumber:int = 0,lineTextSprite:Sprite = null,transformColor:uint = 0x000000){
+		private var charPointDOV:Vector.<CharPointDO>;
+		
+		public function UILine(charPointDOV:Vector.<CharPointDO> = null,isAnimation:Boolean = true,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0,lineTextSprite:Sprite = null,transformColor:uint = 0x000000){
 			super();
 			this.delayTime = delayTime;
 			this.timeLength = timeLength;
 			this.timeOut = timeOut;
-			this.points = points;
-			this.pointsText = pointsText;
-			this.pointsTextPlace = pointsTextPlace;
 			this.isAnimation = isAnimation;
-			this._serialNumber = serialNumber;
 			this._transformColor = transformColor;
-			this._currentIndex = 0;
+			this.currentIndex = 0;
 			this.currentLineParent = new Sprite();
 			this.lineTextSprite = lineTextSprite;
+			this.charPointDOV = charPointDOV;
 			this.addChild(this.currentLineParent);
 		}
 		
@@ -76,15 +67,15 @@
 		 * 
 		 */		
 		public function getCurrentPoint(index:int):Point{
-			return points[index];
+			return charPointDOV[index].point;
 		}
 		
 		public function getCurrentPointText(index:int):String{
-			return pointsText[index];
+			return charPointDOV[index].pointText;
 		}
 		
 		public function getCurrentPointTextPlace(index:int):Point{
-			return pointsTextPlace[index];
+			return charPointDOV[index].pointTextPlace;
 		}
 		
 		public static const LINE_DEFAULT_SKIN:String = "line_default_skin";
@@ -158,17 +149,17 @@
 		 */		
 		override protected function play():void {
 			
-			if(points != null && currentIndex < points.length - 1){
+			if(charPointDOV != null && currentIndex < charPointDOV.length - 1){
 				var p1:Point = null;
-				this._currentIndex = findNextEffectiveIndex(points,currentIndex);
-				if(this._currentIndex >= 0){
-					p1 = points[this._currentIndex];
+				this.currentIndex = findNextEffectiveIndex(charPointDOV,currentIndex);
+				if(this.currentIndex >= 0){
+					p1 = charPointDOV[this.currentIndex].point;
 				}
-				var index2:int = findNextEffectiveIndex(points,currentIndex + 1);
+				var index2:int = findNextEffectiveIndex(charPointDOV,currentIndex + 1);
 				
 				var p2:Point = null;
-				if(this._currentIndex >= 0){
-					p2 = points[index2];
+				if(this.currentIndex >= 0){
+					p2 = charPointDOV[index2].point;
 				}
 				
 				if(!isNaN(p1.y) && !isNaN(p2.y)){
@@ -197,24 +188,24 @@
 					timer = new Timer(20,0);
 					timer.addEventListener(TimerEvent.TIMER,handlerTimer);
 					timer.start();
-					_currentIndex = index2;//可能由于this.dispatchEvent(new Event(EVENT_POINT_CMP)); 执行慢了会出错。
+					currentIndex = index2;//可能由于this.dispatchEvent(new Event(EVENT_POINT_CMP)); 执行慢了会出错。
 				}
 			}
 		}
 		
 		private function handlerTimer(e:Event):void{
-			if(points != null &&　currentIndex < points.length){
+			if(charPointDOV != null &&　currentIndex < charPointDOV.length){
 				
 				currentLine.width += perLen;
 				if((this.currentLineLength - currentLine.width) <= perLen){
 					timer.removeEventListener(TimerEvent.TIMER,handlerTimer);
 					currentLine.width = this.currentLineLength;
-					var p2:Point = this.points[currentIndex];
+					var p2:Point = this.charPointDOV[currentIndex].point;
 					var endPoint:MovieClip = getDisplayObjectInstance(getStyleValue(POINT_DEFAULT_SKIN)) as MovieClip;
 					endPoint.x = p2.x;
 					endPoint.y = p2.y;
 					this.currentLineParent.addChild(endPoint);
-					if(currentIndex < points.length - 1){
+					if(currentIndex < charPointDOV.length - 1){
 						play();
 					}
 					else {
@@ -260,19 +251,19 @@
 			}
 		}
 		
-		private function findNextEffectivePoint(points:Vector.<Point>,index:int):Point{
-			var index1:int = findNextEffectiveIndex(points,currentIndex);
+		private function findNextEffectivePoint(charPointDOV:Vector.<CharPointDO>,index:int):Point{
+			var index1:int = findNextEffectiveIndex(charPointDOV,currentIndex);
 			var p:Point = null;
-			if(index >= 0 && index < points.length){
-				p = points[index1];
+			if(index >= 0 && index < charPointDOV.length){
+				p = charPointDOV[index1].point;
 			}
 			return p;
 		}
 		
-		private function findNextEffectiveIndex(points:Vector.<Point>,index:int):int{
-			if(index >= 0 && index < points.length){
-				for( var i:int = index;i<points.length;i++){
-					var p:Point = this.points[i];
+		private function findNextEffectiveIndex(charPointDOV:Vector.<CharPointDO>,index:int):int{
+			if(index >= 0 && index < charPointDOV.length){
+				for( var i:int = index;i<charPointDOV.length;i++){
+					var p:Point = this.charPointDOV[i].point;
 					if(!isNaN(p.y)){
 						return i;
 					}
@@ -309,16 +300,6 @@
 				rate = Math.atan((p2.y - p1.y) / (p2.x - p1.x)) * 180 / Math.PI;
 			}
 			return rate;
-		}
-		
-		public function get currentIndex():int
-		{
-			return _currentIndex;
-		}
-		
-		public function get serialNumber():int
-		{
-			return _serialNumber;
 		}
 		
 		public function get transformColor():uint
