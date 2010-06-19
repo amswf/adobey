@@ -1,5 +1,6 @@
 ﻿package com.snsoft.tvc2.chart{
 	import com.snsoft.tvc2.Business;
+	import com.snsoft.util.TextFieldUtil;
 	
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
@@ -8,7 +9,9 @@
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
+	import flash.filters.DropShadowFilter;
 	import flash.geom.Point;
+	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.utils.Timer;
 	
@@ -44,7 +47,10 @@
 		
 		private var _transformColor:uint;
 		
-		public function UILine(points:Vector.<Point> = null,pointsText:Vector.<String> = null,pointsTextPlace:Vector.<Point> = null,isAnimation:Boolean = true,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0,serialNumber:int = 0,transformColor:uint = 0x000000){
+		private var lineTextSprite:Sprite;
+		
+		public function UILine(points:Vector.<Point> = null,pointsText:Vector.<String> = null,pointsTextPlace:Vector.<Point> = null,isAnimation:Boolean = true,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0,serialNumber:int = 0,lineTextSprite:Sprite = null,transformColor:uint = 0x000000){
+			super();
 			this.delayTime = delayTime;
 			this.timeLength = timeLength;
 			this.timeOut = timeOut;
@@ -56,6 +62,7 @@
 			this._transformColor = transformColor;
 			this._currentIndex = 0;
 			this.currentLineParent = new Sprite();
+			this.lineTextSprite = lineTextSprite;
 			this.addChild(this.currentLineParent);
 		}
 		
@@ -64,16 +71,16 @@
 		 * @return 
 		 * 
 		 */		
-		public function getCurrentPoint():Point{
-			return points[currentIndex];
+		public function getCurrentPoint(index:int):Point{
+			return points[index];
 		}
 		
-		public function getCurrentPointText():String{
-			return pointsText[currentIndex];
+		public function getCurrentPointText(index:int):String{
+			return pointsText[index];
 		}
 		
-		public function getCurrentPointTextPlace():Point{
-			return pointsTextPlace[currentIndex];
+		public function getCurrentPointTextPlace(index:int):Point{
+			return pointsTextPlace[index];
 		}
 		
 		public static const LINE_DEFAULT_SKIN:String = "line_default_skin";
@@ -161,14 +168,13 @@
 				}
 				
 				if(!isNaN(p1.y) && !isNaN(p2.y)){
-					trace(p1,p2,lineLength(p1,p2));
 					this.currentLineLength = lineLength(p1,p2);
 					var l:MovieClip = getDisplayObjectInstance(getStyleValue(LINE_DEFAULT_SKIN)) as MovieClip;
 					var lr:MovieClip = new MovieClip;
 					lr.addChild(l);
 					currentLine = l;
 					this.currentLineParent.addChild(lr);
-					this.dispatchEvent(new Event(EVENT_POINT_CMP));
+					drawLineText(currentIndex);
 					
 					var s:MovieClip = getDisplayObjectInstance(getStyleValue(POINT_DEFAULT_SKIN)) as MovieClip;
 					s.x = p1.x;
@@ -208,7 +214,7 @@
 						play();
 					}
 					else {
-						this.dispatchEvent(new Event(EVENT_POINT_CMP));
+						drawLineText(currentIndex);
 						this.isPlayCmp = true;
 						dispatchEventState();
 					}
@@ -218,6 +224,36 @@
 		
 		private function drawLines(points:Vector.<Point>):void{
 			
+		}
+		
+		/**
+		 *  
+		 * @param sprite
+		 * 
+		 */		
+		private function drawLineText(index:int):void{	
+			if(lineTextSprite != null){
+				var p:Point = this.getCurrentPoint(index);
+				var pt:String = this.getCurrentPointText(index);
+				var ptp:Point = this.getCurrentPointTextPlace(index);
+				var dsf:DropShadowFilter = new DropShadowFilter(0,45,0xffffff,1,3,3,1000,1);
+				var dsf2:DropShadowFilter = new DropShadowFilter(0,45,0x000000,1,5,5,1,1);
+				var filterAry:Array = new Array();
+				filterAry.push(dsf,dsf2);
+				
+				var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
+				tft.color = this.transformColor;
+				var tfd:TextField = new TextField();
+				tfd.text = pt;
+				tfd.selectable = false;
+				
+				tfd.x = ptp.x;
+				tfd.y = ptp.y;
+				lineTextSprite.addChild(tfd);
+				tfd.setTextFormat(tft);
+				tfd.filters = filterAry;
+				TextFieldUtil.fitSize(tfd);
+			}
 		}
 		
 		private function findNextEffectivePoint(points:Vector.<Point>,index:int):Point{

@@ -38,6 +38,12 @@
 		
 		private var cutlineSprite:Sprite;
 		
+		private var lineTextSprite:Sprite;
+		
+		private var lineSprite:Sprite;
+		
+		private var coorSprite:Sprite;
+		
 		public function UILineCharts(dataDo:DataDO = null,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0){
 			super();
 			this.delayTime = delayTime;
@@ -88,6 +94,20 @@
 		 */		
 		override protected function draw():void{
 			if(this.dataDo != null){
+				
+				coorSprite = new Sprite();
+				this.addChild(coorSprite);
+				
+				lineSprite = new Sprite();
+				this.addChild(lineSprite);
+				
+				cutlineSprite = new Sprite();
+				cutlineSprite.x = this.width + 80;
+				this.addChild(cutlineSprite);
+				
+				lineTextSprite = new Sprite();
+				this.addChild(lineTextSprite);
+				
 				var ldv:Vector.<ListDO> = this.dataDo.data;
 				
 				//把列表值全部放到一个列表中
@@ -119,7 +139,7 @@
 				//画坐标系
 				var uic:UICoor = new UICoor(xgv,ygv);
 			    uic.setStyle(TEXT_FORMAT,this.getStyleValue(TEXT_FORMAT));
-				this.addChild(uic);
+				coorSprite.addChild(uic);
 				uic.drawNow();
 				var pvv:Vector.<Vector.<Point>> = new Vector.<Vector.<Point>>();
 				var ptvv:Vector.<Vector.<String>> = new Vector.<Vector.<String>>();
@@ -152,24 +172,21 @@
 					
 				}
 				
-				cutlineSprite = new Sprite();
-				cutlineSprite.x = this.width + 80;
-				this.addChild(cutlineSprite);
 				
-				//组织折线
+				
+				//组织折线和图例
 				var ptsvv:Vector.<Vector.<Point>> = this.calculatePointTextPlace(pvv,20);
 				for(var i4:int;i4<pvv.length;i4++){
 					var pv2:Vector.<Point> = pvv[i4];
 					var ptv2:Vector.<String> = ptvv[i4];
 					var ptsv:Vector.<Point> = ptsvv[i4];
 					
-					var uil:UILine = new UILine(pv2,ptv2,ptsv,true,this.delayTime,this.timeLength,this.timeOut,i4);
-					uil.setStyle(LINE_DEFAULT_SKIN,this.getStyle(LINE_DEFAULT_SKIN));
-					uil.setStyle(POINT_DEFAULT_SKIN,this.getStyle(POINT_DEFAULT_SKIN));
-					uil.setStyle(TEXT_FORMAT,this.getStyle(TEXT_FORMAT));
-					this.addChild(uil);
+					var uil:UILine = new UILine(pv2,ptv2,ptsv,true,this.delayTime,this.timeLength,this.timeOut,i4,lineTextSprite);
+					uil.setStyle(LINE_DEFAULT_SKIN,this.getStyleValue(LINE_DEFAULT_SKIN));
+					uil.setStyle(POINT_DEFAULT_SKIN,this.getStyleValue(POINT_DEFAULT_SKIN));
+					uil.setStyle(TEXT_FORMAT,this.getStyleValue(TEXT_FORMAT));
+					lineSprite.addChild(uil);
 					uilv.push(uil);
-					uil.addEventListener(UILine.EVENT_POINT_CMP,handlerEventPointCmp);
 					if(i4 == 0){
 						uil.transformColor = 0x990000;
 					}
@@ -181,19 +198,17 @@
 					}
 					ColorTransformUtil.setColor(uil,uil.transformColor);
 					
+					//图例
 					var ldo:ListDO = ldv[i4];
 					var cutlineText:TextField = new TextField();
-					 
 					cutlineText.y = cutlineSprite.height;
-					 
-					trace(cutlineText.y);
 					cutlineSprite.addChild(cutlineText);
 					cutlineText.text = ldo.text;
-					
 					var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
 					tft.color = uil.transformColor;
 					cutlineText.setTextFormat(tft);
 					TextFieldUtil.fitSize(cutlineText);
+					
 					
 					var l:MovieClip = getDisplayObjectInstance(getStyleValue(LINE_DEFAULT_SKIN)) as MovieClip;
 					var s:MovieClip = getDisplayObjectInstance(getStyleValue(POINT_DEFAULT_SKIN)) as MovieClip;
@@ -301,46 +316,6 @@
 				
 			}
 			return ptvv;
-		}
-		
-		//显示图表上的数值
-		private function handlerEventPointCmp(e:Event):void{
-			
-			var uil:UILine = e.currentTarget as UILine;
-			if(uil != null){
-				var index:int = uil.currentIndex;
-				
-				var n:int = 0;
-				if(index >= this.pointTextCountV.length){
-					this.pointTextCountV.push(1);
-				}
-				else if(this.pointTextCountV[index] > 0){
-					this.pointTextCountV[index] += 1;
-					n = this.pointTextCountV[index];
-				}
-			
-				var p:Point = uil.getCurrentPoint();
-				var pt:String = uil.getCurrentPointText();
-				var ptp:Point = uil.getCurrentPointTextPlace();
-				var dsf:DropShadowFilter = new DropShadowFilter(0,45,0xffffff,1,3,3,1000,1);
-				var dsf2:DropShadowFilter = new DropShadowFilter(0,45,0x000000,1,5,5,1,1);
-				var filterAry:Array = new Array();
-				filterAry.push(dsf,dsf2);
-				
-				var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
-				tft.color = uil.transformColor;
-				var tfd:TextField = new TextField();
-				tfd.text = pt;
-				tfd.selectable = false;
-				
-				tfd.x = ptp.x;
-				tfd.y = ptp.y;
-				this.addChild(tfd);
-				tfd.setTextFormat(tft);
-				tfd.filters = filterAry;
-				TextFieldUtil.fitSize(tfd);
-			}
-			
 		}
 		
 		/**
