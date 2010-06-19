@@ -185,7 +185,6 @@
 					uil.setStyle(LINE_DEFAULT_SKIN,this.getStyleValue(LINE_DEFAULT_SKIN));
 					uil.setStyle(POINT_DEFAULT_SKIN,this.getStyleValue(POINT_DEFAULT_SKIN));
 					uil.setStyle(TEXT_FORMAT,this.getStyleValue(TEXT_FORMAT));
-					lineSprite.addChild(uil);
 					uilv.push(uil);
 					if(i4 == 0){
 						uil.transformColor = 0x990000;
@@ -227,6 +226,11 @@
 					clspr.x = px;
 					ColorTransformUtil.setColor(clspr,uil.transformColor);
 					cutlineSprite.addChild(clspr);
+				}
+				
+				for(var i5:int;i5<pvv.length;i5++){
+					var uil5:UILine = uilv[i5]
+					lineSprite.addChild(uil5);
 				}
 			}
 		}
