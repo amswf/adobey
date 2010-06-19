@@ -23,8 +23,6 @@
 	
 	public class UILine extends Business{
 		
-		public static const EVENT_POINT_CMP:String = "EVENT_POINT_CMP";
-		
 		private var currentLine:MovieClip;
 		
 		private var currentLineLength:Number;
@@ -55,9 +53,11 @@
 			this.isAnimation = isAnimation;
 			this._transformColor = transformColor;
 			this.currentIndex = 0;
-			this.currentLineParent = new Sprite();
+			
 			this.lineTextSprite = lineTextSprite;
 			this.charPointDOV = charPointDOV;
+			
+			this.currentLineParent = new Sprite();
 			this.addChild(this.currentLineParent);
 		}
 		
