@@ -227,7 +227,7 @@
 		}
 		
 		private function drawLines(points:Vector.<Point>):void{
-			
+			//静态折线图画线
 		}
 		
 		/**

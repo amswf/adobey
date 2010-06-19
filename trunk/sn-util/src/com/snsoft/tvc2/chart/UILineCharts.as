@@ -181,7 +181,7 @@
 					var ptv2:Vector.<String> = ptvv[i4];
 					var ptsv:Vector.<Point> = ptsvv[i4];
 					
-					var uil:UILine = new UILine(pv2,ptv2,ptsv,true,this.delayTime,this.timeLength,this.timeOut,i4,lineTextSprite);
+					var uil:UILine = new UILine(pv2,ptv2,ptsv,false,this.delayTime,this.timeLength,this.timeOut,i4,lineTextSprite);
 					uil.setStyle(LINE_DEFAULT_SKIN,this.getStyleValue(LINE_DEFAULT_SKIN));
 					uil.setStyle(POINT_DEFAULT_SKIN,this.getStyleValue(POINT_DEFAULT_SKIN));
 					uil.setStyle(TEXT_FORMAT,this.getStyleValue(TEXT_FORMAT));
