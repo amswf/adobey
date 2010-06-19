@@ -194,11 +194,8 @@
 					lr.rotation = rate;
 					
 					perLen = PERLEN_BASE / Math.abs(Math.cos(rate * Math.PI / 180));
-					trace(rate,perLen);
-					
 					timer = new Timer(20,0);
 					timer.addEventListener(TimerEvent.TIMER,handlerTimer);
-					
 					timer.start();
 					_currentIndex = index2;//可能由于this.dispatchEvent(new Event(EVENT_POINT_CMP)); 执行慢了会出错。
 				}
