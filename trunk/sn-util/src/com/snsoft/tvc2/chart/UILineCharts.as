@@ -339,7 +339,7 @@
 				rp.x = (p.x - xcd.gradeBaseValue) * uiCoor.width /xcd.differenceValue;
 			}
 			else {
-				rp.x = p.x * uiCoor.width / (uiCoor.xGradVector.length - 1);
+				rp.x = p.x * uiCoor.width / (uiCoor.xGradNum - 1);
 			}
 			
 			if(isNaN(p.y)){
@@ -349,7 +349,7 @@
 				rp.y = uiCoor.height - (p.y - ycd.gradeBaseValue) * uiCoor.height / (ycd.differenceValue);
 			}
 			else {
-				rp.y = uiCoor.height - p.y * uiCoor.height / (uiCoor.yGradVector.length - 1);
+				rp.y = uiCoor.height - p.y * uiCoor.height / (uiCoor.yGradNum - 1);
 			}
 			return rp;
 		}
