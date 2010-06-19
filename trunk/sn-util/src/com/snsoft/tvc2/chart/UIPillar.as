@@ -122,6 +122,7 @@
 				currentPillar.x = charPointDO.point.x;
 				currentPillar.y = this.height;
 				currentPillar.height = 0;
+				currentPillar.width = this.width;
 				this.addChild(currentPillar);
 				this.currentPillarLength =this.height - charPointDO.point.y;
 				timer = new Timer(20,0);
