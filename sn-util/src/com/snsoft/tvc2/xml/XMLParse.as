@@ -5,6 +5,9 @@
 	import com.snsoft.tvc2.dataObject.DataDO;
 	import com.snsoft.tvc2.dataObject.ListDO;
 	import com.snsoft.tvc2.dataObject.MainDO;
+	import com.snsoft.tvc2.dataObject.MarketCoordDO;
+	import com.snsoft.tvc2.dataObject.MarketCoordsDO;
+	import com.snsoft.tvc2.dataObject.MarketMainDO;
 	import com.snsoft.tvc2.dataObject.MediaDO;
 	import com.snsoft.tvc2.dataObject.MediasDO;
 	import com.snsoft.tvc2.dataObject.SoundDO;
@@ -65,6 +68,10 @@
 		
 		public static const TAG_TEXTPOINT:String = "textPoint";
 		
+		public static const TAG_MARKET_COORDS:String = "marketCoords";
+		
+		public static const TAG_MARKET_COORD:String = "marketCoord";
+		
 		/**
 		 * Attribute name 
 		 */
@@ -82,6 +89,10 @@
 		public static const ATT_X:String = "x";
 		
 		public static const ATT_Y:String = "y";
+		
+		public static const ATT_Z:String = "z";
+		
+		public static const ATT_S:String = "s";
 		
 		public static const ATT_SCALEX:String = "scaleX";
 		
@@ -119,6 +130,73 @@
 			mdo.timeLineDOHv = this.parseTimeLinesXML(timeLinesXMLList);
 			
 			return mdo;
+		}
+		
+		/**
+		 * 解析市场主方法 
+		 * @param xml
+		 * @return 
+		 * 
+		 */		
+		public function parseMarketCoordsMain(xml:XML):MarketMainDO{
+			var mmdo:MarketMainDO = new MarketMainDO();
+			var marketCoordsXMLList:XMLList = xml.elements(TAG_MARKET_COORDS);
+			var mcsdoHv:HashVector = parseMarketCoords(marketCoordsXMLList);
+			mmdo.marketCoordsDOHV = mcsdoHv;
+			return mmdo;
+		}
+		
+		/**
+		 * 解析某市场区域坐标  
+		 * @param marketCoordsXMLList
+		 * @return 
+		 * 
+		 */		
+		private function parseMarketCoords(marketCoordsXMLList:XMLList):HashVector{
+			var hv:HashVector = new HashVector();
+			for(var i:int = 0;i<marketCoordsXMLList.length();i++){
+				var marketCoordsDO:MarketCoordsDO = new MarketCoordsDO();
+				var marketCoordsXML:XML = marketCoordsXMLList[i];
+				var  mcsaHv:HashVector = getXMLAttributes(marketCoordsXML);
+				marketCoordsDO.name = String(mcsaHv.findByName(ATT_NAME));
+				marketCoordsDO.value = String(mcsaHv.findByName(ATT_VALUE));
+				marketCoordsDO.text = String(mcsaHv.findByName(ATT_TEXT));
+				marketCoordsDO.x = Number(mcsaHv.findByName(ATT_X));
+				marketCoordsDO.y = Number(mcsaHv.findByName(ATT_Y));
+				marketCoordsDO.z = Number(mcsaHv.findByName(ATT_Z));
+				marketCoordsDO.s = Number(mcsaHv.findByName(ATT_S));
+				var marketCoordXMLList:XMLList = marketCoordsXML.elements(TAG_MARKET_COORD);
+				var mcdoHv:HashVector = parseMarketCoord(marketCoordXMLList);
+				marketCoordsDO.marketCoordDOHV = mcdoHv;
+				trace("marketCoordsDO.name",marketCoordsDO.name);
+				hv.put(marketCoordsDO.name,marketCoordsDO);
+			}
+			return hv;
+		}
+		
+		/**
+		 * 解析市场坐标 
+		 * @param marketCoordXMLList
+		 * @return 
+		 * 
+		 */		
+		private function parseMarketCoord(marketCoordXMLList:XMLList):HashVector{
+			var hv:HashVector = new HashVector();
+			for(var i:int = 0;i<marketCoordXMLList.length();i++){
+				var marketCoordDO:MarketCoordDO = new MarketCoordDO();
+				var marketCoordXML:XML = marketCoordXMLList[i];
+				var  mcaHv:HashVector = getXMLAttributes(marketCoordXML);
+				marketCoordDO.name = String(mcaHv.findByName(ATT_NAME));
+				marketCoordDO.value = String(mcaHv.findByName(ATT_VALUE));
+				marketCoordDO.text = String(mcaHv.findByName(ATT_TEXT));
+				marketCoordDO.x = Number(mcaHv.findByName(ATT_X));
+				marketCoordDO.y = Number(mcaHv.findByName(ATT_Y));
+				marketCoordDO.z = Number(mcaHv.findByName(ATT_Z));
+				marketCoordDO.s = Number(mcaHv.findByName(ATT_S));
+				trace("marketCoordDO.name",marketCoordDO.name);
+				hv.put(marketCoordDO.name,marketCoordDO);
+			}
+			return hv;
 		}
 		
 		/**
