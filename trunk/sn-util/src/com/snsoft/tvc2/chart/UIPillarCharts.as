@@ -25,7 +25,7 @@
 	
 	[Style(name="myTextFormat", type="Class")]
 	
-	public class UIPillarCharts extends UIComponent{
+	public class UIPillarCharts extends UICoorChartBase{
 		
 		//开始播放时间
 		private var delayTime:Number;
@@ -49,6 +49,10 @@
 		
 		private var coorSprite:Sprite;
 		
+		private var lineNum:int = 0;
+		
+		private var lineCmpNum:int = 0;
+		
 		public function UIPillarCharts(dataDo:DataDO = null,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0){
 			super();
 			this.delayTime = delayTime;
@@ -66,7 +70,7 @@
 		 */		
 		private static var defaultStyles:Object = {
 			pillar_default_skin:"Pillar_default_skin",
-			myTextFormat:new TextFormat("宋体",13,0x000000)
+			myTextFormat:new TextFormat("宋体",18,0x000000)
 		};
 		
 		/**
@@ -224,8 +228,9 @@
 				
 				//计算每组柱的起点坐标和宽度
 				var xlen:Number = uic.xGradLength;
-				var xbl:Number = int(xlen * 0.2);//起点坐标
-				var xw:Number = int(xlen * 0.6 / cpdotpvv.length);//宽度
+				var xgp:Number = 0.2;
+				var xbl:Number = int(xlen * xgp);//起点坐标
+				var xw:Number = int((xlen *(1 - xgp * 2)) / cpdotpvv.length);//宽度
 				
 				//组织柱状显示
 				for(var j4:int = 0;j4<maxpvLen;j4 ++){
@@ -237,6 +242,7 @@
 							var valuey:Number = cpdo4.point.y;
 							if(!isNaN(valuey)){
 								var uip:UIPillar = new UIPillar(cpdo4,false,0,0,0,this.lineTextSprite);
+								uip.setStyle(TEXT_FORMAT,this.getStyleValue(TEXT_FORMAT));
 								uip.height = this.height;
 								uip.width = xw;
 								
@@ -253,7 +259,9 @@
 								}
 								ColorTransformUtil.setColor(uip,color4);
 								uip.transformColor = color4;
+								lineNum ++;
 								this.lineSprite.addChild(uip);
+								uip.addEventListener(Event.COMPLETE,handlerUIPillarPlayCmp);
 								pillarNum ++;
 							}
 						}
@@ -262,129 +270,12 @@
 			}
 		}
 		
-		//计算出显示数值显示位置，保证Y坐标不重合
-		private function calculatePointTextPlace(charPointDOVV:Vector.<Vector.<CharPointDO>>,yMin:Number):Vector.<Vector.<CharPointDO>>{
-			var maxpvLen:int = 0;
-			for(var iMax:int =0;iMax<charPointDOVV.length;iMax++){
-				var mpv:Vector.<CharPointDO> = charPointDOVV[iMax];
-				if(mpv.length > maxpvLen){
-					maxpvLen = mpv.length;
-				}
+		private function handlerUIPillarPlayCmp(e:Event):void{
+			lineCmpNum ++;
+			if(lineCmpNum == lineNum){
+				this.dispatchEvent(new Event(Event.COMPLETE));
 			}
-			var cpdovvClone:Vector.<Vector.<CharPointDO>> = new Vector.<Vector.<CharPointDO>>();
-			
-			for(var ii:int =0;ii<charPointDOVV.length;ii++){
-				var cpdov:Vector.<CharPointDO> = charPointDOVV[ii];
-				var cpdovClone:Vector.<CharPointDO> = new Vector.<CharPointDO>();
-				for(var jj:int =0;jj<cpdov.length;jj++){
-					var cpdo:CharPointDO = new CharPointDO();
-					cpdo.point = cpdov[jj].point.clone();
-					cpdo.pointText = cpdov[jj].pointText;
-					cpdovClone.push(cpdo); 
-				}
-				cpdovvClone.push(cpdovClone);
-			}
-			
-			for(var i:int =0;i<maxpvLen;i++){
-				var orderpv:Vector.<int> = new Vector.<int>();
-				for(var j:int =0;j<cpdovvClone.length;j++){
-					var pv:Vector.<CharPointDO> = cpdovvClone[j];
-					if(i < pv.length){
-						var p:Point = pv[i].point;
-						var opvl:int = orderpv.length;
-						
-						if(opvl > 0){
-							for(var k:int = 0;k < opvl;k++){
-								var ok:int = orderpv[k];
-								var opv:Vector.<CharPointDO> = cpdovvClone[ok];
-								var op:Point = opv[i].point;
-								if(p.y > op.y){
-									if(k + 1 == opvl){
-										orderpv.push(j);
-										break;
-									}
-									else{
-										var ek:int = orderpv[k + 1];
-										var epv:Vector.<CharPointDO> = cpdovvClone[ek];
-										var ep:Point = epv[i].point;
-										if(p.y < ep.y){
-											orderpv.push(j);
-											break;
-										}
-									}
-								}
-								else {
-									orderpv.splice(0,0,j);
-									break;
-								}
-							}
-						}
-						else{
-							orderpv.push(j);
-						}
-					}
-				}
-				
-				for(var j3:int = orderpv.length -1;j3 >= 0;j3 --){
-					var orderIndex:int = orderpv[j3];
-					var pv3:Vector.<CharPointDO> = cpdovvClone[orderIndex];
-					if(i < pv3.length){
-						var ptp:Point = pv3[i].point.clone();
-						pv3[i].pointTextPlace = ptp;
-						var p3:Point = pv3[i].point;
-						if( j3 + 1 <= orderpv.length -1){
-							var orderFrontIndex:int = orderpv[j3 + 1];
-							var pvf:Vector.<CharPointDO> = cpdovvClone[orderFrontIndex];
-							if(i < pvf.length){
-								var pf:Point = pvf[i].pointTextPlace;
-								trace(pf.y,ptp.y);
-								if(ptp.y > pf.y - yMin){
-									ptp.y = pf.y - yMin;  
-								}
-							}
-						}
-						else {
-							ptp.y -= yMin;
-							trace(ptp.y);
-						}
-					}
-				}
-				
-			}
-			return cpdovvClone;
 		}
 		
-		/**
-		 * 转换点坐标
-		 * @param uiCoor
-		 * @param xcd
-		 * @param ycd
-		 * @param p
-		 * @return 
-		 *  
-		 */		
-		public function transPoint(uiCoor:UICoor,xcd:Coordinate,ycd:Coordinate,p:Point):Point{
-			var rp:Point = new Point();
-			if(isNaN(p.x)){
-				rp.x = NaN;
-			}
-			else if(xcd != null){
-				rp.x = (p.x - xcd.gradeBaseValue) * uiCoor.width /xcd.differenceValue;
-			}
-			else {
-				rp.x = p.x * uiCoor.width / (uiCoor.xGradNum -1);
-			}
-			
-			if(isNaN(p.y)){
-				rp.y = NaN;
-			}
-			else if(ycd != null){
-				rp.y = uiCoor.height - (p.y - ycd.gradeBaseValue) * uiCoor.height / (ycd.differenceValue);
-			}
-			else {
-				rp.y = uiCoor.height - p.y * uiCoor.height / (uiCoor.yGradNum -1);
-			}
-			return rp;
-		}
 	}
 }
