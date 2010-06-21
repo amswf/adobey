@@ -140,6 +140,8 @@
 				
 				//画坐标系
 				var uic:UICoor = new UICoor(xgv,ygv,UICoor.GRAD_TYPE_AREA,UICoor.GRAD_TYPE_POINT);
+				uic.width = this.width;
+				uic.height = this.height;
 				uic.setStyle(TEXT_FORMAT,this.getStyleValue(TEXT_FORMAT));
 				coorSprite.addChild(uic);
 				uic.drawNow();
@@ -175,7 +177,7 @@
 				
 				
 				
-				//组织折线和图例
+				
 				var cpdotpvv:Vector.<Vector.<CharPointDO>> = this.calculatePointTextPlace(charPointDOVV,20);
 				
 				var maxpvLen:int = 0;
@@ -220,30 +222,40 @@
 					cutlineSprite.addChild(clspr);
 				}
 				
+				//计算每组柱的起点坐标和宽度
+				var xlen:Number = uic.xGradLength;
+				var xbl:Number = int(xlen * 0.2);//起点坐标
+				var xw:Number = int(xlen * 0.6 / cpdotpvv.length);//宽度
+				
+				//组织柱状显示
 				for(var j4:int = 0;j4<maxpvLen;j4 ++){
-					trace(j4);
+					var pillarNum:int = 0;
 					for(var i4:int = 0;i4<cpdotpvv.length;i4++){
-						trace(i4);
 						var charPointDOV:Vector.<CharPointDO> = cpdotpvv[i4];
 						if(j4 < charPointDOV.length){
 							var cpdo4:CharPointDO = charPointDOV[j4];
-							var uip:UIPillar = new UIPillar(cpdo4);
-							uip.height = this.height;
-							uip.width = 20;
-							
-							uip.x = uip.width * i4;
-							var color4:uint = 0x000000;
-							if(i4 == 0){
-								color4 = 0x990000;
+							var valuey:Number = cpdo4.point.y;
+							if(!isNaN(valuey)){
+								var uip:UIPillar = new UIPillar(cpdo4,false,0,0,0,this.lineTextSprite);
+								uip.height = this.height;
+								uip.width = xw;
+								
+								uip.x = uip.width * pillarNum + xbl;
+								var color4:uint = 0x000000;
+								if(i4 == 0){
+									color4 = 0x990000;
+								}
+								if(i4 == 1){
+									color4 = 0x009900;
+								}
+								if(i4 == 2){
+									color4 = 0x000099; 
+								}
+								ColorTransformUtil.setColor(uip,color4);
+								uip.transformColor = color4;
+								this.lineSprite.addChild(uip);
+								pillarNum ++;
 							}
-							if(i4 == 1){
-								color4 = 0x009900;
-							}
-							if(i4 == 2){
-								color4 = 0x000099; 
-							}
-							ColorTransformUtil.setColor(uip,color4);
-							this.lineSprite.addChild(uip);
 						}
 					}
 				}
@@ -324,7 +336,8 @@
 							var orderFrontIndex:int = orderpv[j3 + 1];
 							var pvf:Vector.<CharPointDO> = cpdovvClone[orderFrontIndex];
 							if(i < pvf.length){
-								var pf:Point = pvf[i].point;
+								var pf:Point = pvf[i].pointTextPlace;
+								trace(pf.y,ptp.y);
 								if(ptp.y > pf.y - yMin){
 									ptp.y = pf.y - yMin;  
 								}
@@ -332,6 +345,7 @@
 						}
 						else {
 							ptp.y -= yMin;
+							trace(ptp.y);
 						}
 					}
 				}

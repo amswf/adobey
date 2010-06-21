@@ -165,7 +165,7 @@
 				tfd.text = pt;
 				tfd.selectable = false;
 				
-				tfd.x = ptp.x;
+				tfd.x = ptp.x + this.x;
 				tfd.y = ptp.y;
 				pillarTextSprite.addChild(tfd);
 				tfd.setTextFormat(tft);

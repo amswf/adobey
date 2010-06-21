@@ -46,6 +46,10 @@ package com.snsoft.tvc2.chart{
 		
 		private var yGradType:String = GRAD_TYPE_POINT;
 		
+		private var _xGradLength:Number;
+		
+		private var _yGradLength:Number;
+		
 		public static const GRAD_TYPE_POINT:String = "POINT";
 		
 		public static const GRAD_TYPE_AREA:String = "AREA";
@@ -63,6 +67,8 @@ package com.snsoft.tvc2.chart{
 			if(xGradVector != null && yGradVector != null){
 				this.xGradVector = xGradVector;
 				this.yGradVector = yGradVector;
+				this._xGradNum = this.xGradVector.length;
+				this._yGradNum = this.yGradVector.length;
 			}
 			
 			this.xGradType = xGradType;
@@ -169,7 +175,10 @@ package com.snsoft.tvc2.chart{
 					
 					//刻度间隔长度
 					var xlen:Number = coorWidth / (this.xGradNum - 1);
-					var ylen:Number = coorHeight / (this.xGradNum - 1);
+					var ylen:Number = coorHeight / (this.yGradNum - 1);
+					
+					this._xGradLength = xlen;
+					this._yGradLength = ylen;
 					
 					if(this.xGradType == GRAD_TYPE_AREA){
 						xTextX = xlen;
@@ -186,7 +195,7 @@ package com.snsoft.tvc2.chart{
 					}
 					
 					//y刻度
-					for(var j:int = 0;j < this.xGradNum;j++){
+					for(var j:int = 0;j < this.yGradNum;j++){
 						var gradYSkin:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_Y_DEFAULT_SKIN)) as MovieClip;
 						gradYSkin.y = - j * ylen;
 						this.coorSprite.addChild(gradYSkin);
@@ -210,7 +219,6 @@ package com.snsoft.tvc2.chart{
 					
 					//x刻度文字
 					for(var ii:int = 0;ii < xgn;ii++){
-						
 						var tfd:TextField = new TextField();
 						var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
 						tfd.text = this.xGradVector[ii];
@@ -268,6 +276,16 @@ package com.snsoft.tvc2.chart{
 		public function get xGradNum():int
 		{
 			return _xGradNum;
+		}
+
+		public function get xGradLength():Number
+		{
+			return _xGradLength;
+		}
+
+		public function get yGradLength():Number
+		{
+			return _yGradLength;
 		}
 
 		
