@@ -165,6 +165,7 @@
 				marketCoordsDO.y = Number(mcsaHv.findByName(ATT_Y));
 				marketCoordsDO.z = Number(mcsaHv.findByName(ATT_Z));
 				marketCoordsDO.s = Number(mcsaHv.findByName(ATT_S));
+				marketCoordsDO.url = String(mcsaHv.findByName(ATT_URL));
 				var marketCoordXMLList:XMLList = marketCoordsXML.elements(TAG_MARKET_COORD);
 				var mcdoHv:HashVector = parseMarketCoord(marketCoordXMLList);
 				marketCoordsDO.marketCoordDOHV = mcdoHv;

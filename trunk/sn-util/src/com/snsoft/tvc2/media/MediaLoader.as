@@ -26,12 +26,12 @@ package com.snsoft.tvc2.media{
 		//是否已经调度事件
 		private var isDispatchEvent:Boolean;
 		
-		private var _mediaDO:MediaDO;
+		private var _data:Object;
 		
-		public function MediaLoader(mediaDO:MediaDO,target:IEventDispatcher=null)
+		public function MediaLoader(data:Object,target:IEventDispatcher=null)
 		{
 			super(target);
-			this.mediaDO = mediaDO;
+			this.data = data;
 		}
 		
 		public function loadList(list:Vector.<String>):void{
@@ -92,14 +92,14 @@ package com.snsoft.tvc2.media{
 			return _mediaList;
 		}
 
-		public function get mediaDO():MediaDO
+		public function get data():Object
 		{
-			return _mediaDO;
+			return _data;
 		}
 
-		public function set mediaDO(value:MediaDO):void
+		public function set data(value:Object):void
 		{
-			_mediaDO = value;
+			_data = value;
 		}
 
 		

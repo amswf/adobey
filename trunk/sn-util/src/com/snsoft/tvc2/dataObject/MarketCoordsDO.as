@@ -2,6 +2,8 @@ package com.snsoft.tvc2.dataObject{
 	import ascb.util.StringUtilities;
 	
 	import com.snsoft.util.HashVector;
+	
+	import flash.display.DisplayObject;
 
 	public class MarketCoordsDO{
 		
@@ -20,6 +22,10 @@ package com.snsoft.tvc2.dataObject{
 		private var _s:Number;
 		
 		private var _marketCoordDOHV:HashVector;
+		
+		private var _url:String;
+		
+		private var _imageList:Vector.<DisplayObject>;
 		
 		public function MarketCoordsDO()
 		{
@@ -116,6 +122,26 @@ package com.snsoft.tvc2.dataObject{
 		public function set marketCoordDOHV(value:HashVector):void
 		{
 			_marketCoordDOHV = value;
+		}
+
+		public function get url():String
+		{
+			return _url;
+		}
+
+		public function set url(value:String):void
+		{
+			_url = value;
+		}
+
+		public function get imageList():Vector.<DisplayObject>
+		{
+			return _imageList;
+		}
+
+		public function set imageList(value:Vector.<DisplayObject>):void
+		{
+			_imageList = value;
 		}
 
 
