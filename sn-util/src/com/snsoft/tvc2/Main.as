@@ -1,6 +1,8 @@
 ﻿package com.snsoft.tvc2{
 	import com.snsoft.tvc2.dataObject.BizDO;
 	import com.snsoft.tvc2.dataObject.MainDO;
+	import com.snsoft.tvc2.dataObject.MarketCoordsDO;
+	import com.snsoft.tvc2.dataObject.MarketMainDO;
 	import com.snsoft.tvc2.dataObject.MediaDO;
 	import com.snsoft.tvc2.dataObject.MediasDO;
 	import com.snsoft.tvc2.dataObject.SoundDO;
@@ -24,14 +26,19 @@
 		
 		private var mainXmlUrl:String;
 		
+		private var marketXmlUrl:String;
+		
 		private var mainDO:MainDO;
+		
+		private var marketMainDO:MarketMainDO;
 		
 		private var sourceCount:int = 0;
 		
-		public function Main(mainXmlUrl:String){
+		public function Main(mainXmlUrl:String,marketXmlUrl:String){
 			super();
 			
 			this.mainXmlUrl = mainXmlUrl;
+			this.marketXmlUrl = marketXmlUrl;
 		}
 		
 		/**
@@ -49,16 +56,18 @@
 		 * 
 		 */		
 		override protected function draw():void{
-			if(mainXmlUrl != null){
-				import com.snsoft.tvc2.xml.XMLParse;
-				import flash.utils.getTimer;
-				import flash.system.System;
+			if(mainXmlUrl != null){				
 				var url:String = mainXmlUrl;
 				var req:URLRequest = new URLRequest(url);
-				var n:Number = new Date().getTime();
 				var loader:URLLoader = new URLLoader();
 				loader.load(req);
 				loader.addEventListener(Event.COMPLETE,handlerLoaderCMP);
+			}
+			if(marketXmlUrl != null){
+				var reqm:URLRequest = new URLRequest(marketXmlUrl);
+				var loaderm:URLLoader = new URLLoader();
+				loaderm.load(reqm);
+				loaderm.addEventListener(Event.COMPLETE,handlerLoaderMarketXmlCMP);
 			}
 		}
 		
@@ -90,6 +99,27 @@
 			
 		}
 		
+		private function handlerLoaderMarketXmlCMP(e:Event):void{
+			var loader:URLLoader = e.currentTarget as URLLoader;
+			var xml:XML = new XML(loader.data);
+			var parse:XMLParse = new XMLParse();
+			marketMainDO = parse.parseMarketCoordsMain(xml);
+			marketMainDOSourceLoad(marketMainDO);
+			
+		}
+		
+		private function marketMainDOSourceLoad(marketMainDO:MarketMainDO):void{
+			if(marketMainDO != null){
+				var marketCoordsDOHV:HashVector = marketMainDO.marketCoordsDOHV;
+				for(var i:int = 0;i < marketCoordsDOHV.length;i ++){
+					var marketCoordsDO:MarketCoordsDO = marketCoordsDOHV.findByIndex(i) as MarketCoordsDO;
+					var mediaUrl:String = marketCoordsDO.url;
+					var mediaLoader:MediaLoader = new MediaLoader(marketCoordsDO);
+					mediaLoader.addEventListener(Event.COMPLETE,handlerMediaLoaderMarketCoordsComplete);
+				}
+			}
+		}
+		
 		private function mainDOSourceLoad(mainDO:MainDO):void{
 			if(mainDO != null){
 				var timeLineDOHv:HashVector = mainDO.timeLineDOHv;
@@ -101,7 +131,6 @@
 							if(bizDOHv != null){
 								for(var j:int = 0;j < bizDOHv.length;j ++){
 									var bizDO:BizDO = bizDOHv.findByIndex(j) as BizDO;
-									
 									var mediasHv:HashVector = bizDO.mediasHv;
 									if(mediasHv != null){
 										for(var k:int = 0;k < mediasHv.length;k ++){
@@ -176,13 +205,21 @@
 		
 		private function handlerMediaLoaderComplete(e:Event):void{
 			var mediaLoader:MediaLoader = e.currentTarget as MediaLoader;
-			mediaLoader.mediaDO.mediaList = mediaLoader.mediaList;
+			var mediaDO:MediaDO = mediaLoader.data as MediaDO;
+			mediaDO.mediaList = mediaLoader.mediaList;
 			subSourceCount();
 		}
 		
 		private function handlerSoundLoaderComplete(e:Event):void{
 			var mediaLoader:Mp3Loader = e.currentTarget as Mp3Loader;
 			mediaLoader.soundDO.soundList = mediaLoader.soundList;
+			subSourceCount();
+		}
+		
+		private function handlerMediaLoaderMarketCoordsComplete(e:Event):void{
+			var mediaLoader:MediaLoader = e.currentTarget as MediaLoader;
+			var marketCoordsDO:MarketCoordsDO = mediaLoader.data as MarketCoordsDO;
+			marketCoordsDO.imageList = mediaLoader.mediaList;
 			subSourceCount();
 		}
 	}
