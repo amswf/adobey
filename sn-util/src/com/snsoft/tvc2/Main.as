@@ -9,6 +9,7 @@
 	import com.snsoft.tvc2.media.MediaLoader;
 	import com.snsoft.tvc2.media.Mp3Loader;
 	import com.snsoft.tvc2.util.PriceUtils;
+	import com.snsoft.tvc2.util.StringUtil;
 	import com.snsoft.tvc2.xml.XMLParse;
 	import com.snsoft.util.HashVector;
 	
@@ -24,6 +25,8 @@
 		private var mainXmlUrl:String;
 		
 		private var mainDO:MainDO;
+		
+		private var sourceCount:int = 0;
 		
 		public function Main(mainXmlUrl:String){
 			super();
@@ -58,6 +61,26 @@
 				loader.addEventListener(Event.COMPLETE,handlerLoaderCMP);
 			}
 		}
+		
+		/**
+		 * 
+		 * 
+		 */		
+		private function play():void{
+			if(mainDO != null){
+				var timeLineDOHv:HashVector = mainDO.timeLineDOHv;
+				if(timeLineDOHv != null){
+					for(var i:int = 0;i < timeLineDOHv.length;i ++){
+						var timeLineDO:TimeLineDO = timeLineDOHv.findByIndex(i) as TimeLineDO;
+						if(timeLineDO != null){
+							 var timeLine:TimeLine = new TimeLine(timeLineDO);
+							 this.addChild(timeLine);
+						}
+					}	
+				}
+			}
+		}
+		
 		private function handlerLoaderCMP(e:Event):void{
 			var loader:URLLoader = e.currentTarget as URLLoader;
 			var xml:XML = new XML(loader.data);
@@ -88,9 +111,15 @@
 												var mediaDO:MediaDO = mediaDOHv[l];
 												var mediaLoader:MediaLoader = new MediaLoader(mediaDO);
 												var mediaUrlV:Vector.<String> = new Vector.<String>();
-												mediaUrlV.push(mediaDO.url);
-												mediaLoader.loadList(mediaUrlV);
-												mediaLoader.addEventListener(Event.COMPLETE,handlerMediaLoaderComplete);
+												var mediaUrl:String = mediaDO.url;
+												if(StringUtil.isEffective(mediaUrl)){
+													mediaUrlV.push(mediaDO.url);
+												}
+												if(mediaUrlV.length > 0){
+													mediaLoader.loadList(mediaUrlV);
+													plusSourceCount();
+													mediaLoader.addEventListener(Event.COMPLETE,handlerMediaLoaderComplete);
+												}
 											}
 										}
 									}
@@ -106,11 +135,11 @@
 												var soundUrl:String = soundDO.url;
 												var soundText:String = soundDO.text;
 												var soundUrlV:Vector.<String> = new Vector.<String>();
-												if(soundUrl != null){
+												if(StringUtil.isEffective(soundUrl)){
 													soundUrlV.push(soundUrl);
 													
 												}
-												else if(soundText != null){
+												else if(StringUtil.isEffective(soundText)){
 													var n:Number = Number(soundText);
 													if(n > 0){
 														soundUrlV = PriceUtils.toCNUpper(n,2);
@@ -118,6 +147,7 @@
 												}
 												if(soundUrlV != null && soundUrlV.length > 0){
 													soundLoader.loadList(soundUrlV);
+													plusSourceCount();
 													soundLoader.addEventListener(Event.COMPLETE,handlerSoundLoaderComplete);
 												}
 											}
@@ -131,14 +161,29 @@
 			}
 		}
 		
+		private function plusSourceCount():void{
+			sourceCount ++;
+			trace(sourceCount);
+		}
+		
+		private function subSourceCount():void{
+			sourceCount --;
+			trace(sourceCount);
+			if(sourceCount == 0){
+				play();
+			}
+		}
+		
 		private function handlerMediaLoaderComplete(e:Event):void{
 			var mediaLoader:MediaLoader = e.currentTarget as MediaLoader;
 			mediaLoader.mediaDO.mediaList = mediaLoader.mediaList;
+			subSourceCount();
 		}
 		
 		private function handlerSoundLoaderComplete(e:Event):void{
 			var mediaLoader:Mp3Loader = e.currentTarget as Mp3Loader;
 			mediaLoader.soundDO.soundList = mediaLoader.soundList;
+			subSourceCount();
 		}
 	}
 }

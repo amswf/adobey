@@ -36,6 +36,7 @@ package com.snsoft.tvc2{
 		 */		
 		override protected function draw():void{
 			play();
+			trace("tlPlay");
 		}
 		
 		private function play():void{
@@ -46,6 +47,7 @@ package com.snsoft.tvc2{
 					var biz:Biz = new Biz(bizDO);
 					biz.addEventListener(Event.COMPLETE,handlerBizComplete);
 					this.addChild(biz);
+					biz.drawNow();
 				}
 			}
 		}
