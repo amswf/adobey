@@ -57,8 +57,7 @@
 		 */		
 		override protected function draw():void{
 			if(mainXmlUrl != null){				
-				var url:String = mainXmlUrl;
-				var req:URLRequest = new URLRequest(url);
+				var req:URLRequest = new URLRequest(mainXmlUrl);
 				var loader:URLLoader = new URLLoader();
 				loader.load(req);
 				loader.addEventListener(Event.COMPLETE,handlerLoaderCMP);
