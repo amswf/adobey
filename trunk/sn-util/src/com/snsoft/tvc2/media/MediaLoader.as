@@ -1,4 +1,6 @@
 package com.snsoft.tvc2.media{
+	import com.snsoft.tvc2.dataObject.MediaDO;
+	
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
@@ -24,9 +26,12 @@ package com.snsoft.tvc2.media{
 		//是否已经调度事件
 		private var isDispatchEvent:Boolean;
 		
-		public function MediaLoader(target:IEventDispatcher=null)
+		private var _mediaDO:MediaDO;
+		
+		public function MediaLoader(mediaDO:MediaDO,target:IEventDispatcher=null)
 		{
 			super(target);
+			this.mediaDO = mediaDO;
 		}
 		
 		public function loadList(list:Vector.<String>):void{
@@ -85,6 +90,16 @@ package com.snsoft.tvc2.media{
 		public function get mediaList():Vector.<DisplayObject>
 		{
 			return _mediaList;
+		}
+
+		public function get mediaDO():MediaDO
+		{
+			return _mediaDO;
+		}
+
+		public function set mediaDO(value:MediaDO):void
+		{
+			_mediaDO = value;
 		}
 
 		

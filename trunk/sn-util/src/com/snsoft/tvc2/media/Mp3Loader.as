@@ -1,4 +1,7 @@
 package com.snsoft.tvc2.media{
+	import com.snsoft.tvc2.dataObject.MediaDO;
+	import com.snsoft.tvc2.dataObject.SoundDO;
+	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
@@ -8,8 +11,9 @@ package com.snsoft.tvc2.media{
 
 	public class Mp3Loader extends EventDispatcher{
 		
-		public function Mp3Loader(target:IEventDispatcher = null){
+		public function Mp3Loader(soundDO:SoundDO,target:IEventDispatcher = null){
 			super(target);
+			this.soundDO = soundDO;
 		}
 		
 		//声音列表 Sound 对象
@@ -21,7 +25,7 @@ package com.snsoft.tvc2.media{
 		//已经加载的声音个数
 		private var _loadedNum:int;
 		
-		
+		private var _soundDO:SoundDO;
 		/**
 		 * 加载声音列表
 		 * @param list
@@ -83,6 +87,16 @@ package com.snsoft.tvc2.media{
 
 		public function get loadedNum():int	{
 			return _loadedNum;
+		}
+
+		public function get soundDO():SoundDO
+		{
+			return _soundDO;
+		}
+
+		public function set soundDO(value:SoundDO):void
+		{
+			_soundDO = value;
 		}
 
 		

@@ -239,6 +239,9 @@
 				var varsXMLList:XMLList = bizXML.elements(TAG_VARS);
 				bizDO.varDOHv = this.parseVarsXML(varsXMLList);
 				
+				var bizAtr:HashVector = getXMLAttributes(bizXML);
+				bizDO.type = bizAtr.findByName("type") as String;
+				
 				//解析 data 数据
 				var dataXMLList:XMLList = bizXML.elements(TAG_DATA);
 				var dataDO:DataDO = this.parseDataXML(dataXMLList);

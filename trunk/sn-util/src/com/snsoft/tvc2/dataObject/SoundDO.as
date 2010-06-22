@@ -1,4 +1,7 @@
 package com.snsoft.tvc2.dataObject{
+	import flash.display.DisplayObject;
+	import flash.media.Sound;
+
 	public class SoundDO{
 		
 		private var _name:String;
@@ -12,6 +15,8 @@ package com.snsoft.tvc2.dataObject{
 		private var _text:String;
 		
 		private var _url:String;
+		
+		private var _soundList:Vector.<Sound>;
 		
 		public function SoundDO()
 		{
@@ -75,6 +80,16 @@ package com.snsoft.tvc2.dataObject{
 		public function set url(value:String):void
 		{
 			_url = value;
+		}
+
+		public function get soundList():Vector.<Sound>
+		{
+			return _soundList;
+		}
+
+		public function set soundList(value:Vector.<Sound>):void
+		{
+			_soundList = value;
 		}
 
 
