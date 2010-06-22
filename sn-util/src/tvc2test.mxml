@@ -7,6 +7,7 @@
 			import ascb.util.DateFormat;
 			
 			import com.snsoft.tvc2.Business;
+			import com.snsoft.tvc2.Main;
 			import com.snsoft.tvc2.TimeLine;
 			import com.snsoft.tvc2.chart.Coordinate;
 			import com.snsoft.tvc2.chart.UIColumn;
@@ -45,6 +46,7 @@
 				var uip:UIPillar;
 				var uipc:UIPillarCharts;
 				var tl:TimeLine;
+				var main:Main;
 				//parse.parseTvcMainXML(xml);
 			}
 		]]>

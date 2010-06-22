@@ -18,6 +18,8 @@ package com.snsoft.tvc2.dataObject{
 		//medias
 		private var _mediasHv:HashVector = null;
 		
+		private var _type:String = null;
+		
 		public function BizDO()
 		{
 		}
@@ -70,6 +72,16 @@ package com.snsoft.tvc2.dataObject{
 		public function set mediasHv(value:HashVector):void
 		{
 			_mediasHv = value;
+		}
+
+		public function get type():String
+		{
+			return _type;
+		}
+
+		public function set type(value:String):void
+		{
+			_type = value;
 		}
 
 

@@ -1,4 +1,5 @@
 package com.snsoft.tvc2.dataObject{
+	import flash.display.DisplayObject;
 	import flash.geom.Point;
 
 	public class MediaDO{
@@ -16,6 +17,8 @@ package com.snsoft.tvc2.dataObject{
 		private var _url:String;
 		
 		private var _place:Point;
+		
+		private var _mediaList:Vector.<DisplayObject>;
 		
 		public function MediaDO()
 		{
@@ -89,6 +92,16 @@ package com.snsoft.tvc2.dataObject{
 		public function set place(value:Point):void
 		{
 			_place = value;
+		}
+
+		public function get mediaList():Vector.<DisplayObject>
+		{
+			return _mediaList;
+		}
+
+		public function set mediaList(value:Vector.<DisplayObject>):void
+		{
+			_mediaList = value;
 		}
 
 
