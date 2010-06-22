@@ -4,7 +4,7 @@ package com.snsoft.tvc2{
 	import fl.core.UIComponent;
 	
 	import flash.events.Event;
-
+	
 	public class Business extends UIComponent{
 		
 		
@@ -47,15 +47,17 @@ package com.snsoft.tvc2{
 		 */		
 		private function handlerAddedToStage(e:Event):void{
 			this.removeEventListener(Event.ADDED_TO_STAGE,handlerAddedToStage);
-			delayFrameTimer = new FrameTimer(this.stage.frameRate,this.delayTime,this);
-			delayFrameTimer.timer();
-			delayFrameTimer.addEventListener(Event.COMPLETE,handlerDelayFrameTimer);
+			if(this.stage != null){
+				delayFrameTimer = new FrameTimer(this.stage.frameRate,this.delayTime,this);
+				delayFrameTimer.timer();
+				delayFrameTimer.addEventListener(Event.COMPLETE,handlerDelayFrameTimer);
+			}
 		}
 		
 		private function handlerDelayFrameTimer(e:Event):void{
 			delayFrameTimer.removeEventListener(Event.COMPLETE,handlerDelayFrameTimer);
 			trace("handlerDelayFrameTimer",this.timeLength,this.timeOut);
-			if(this.timeLength > 0){
+			if(this.timeLength > 0 && this.stage != null){
 				timeLengthFrameTimer = new FrameTimer(this.stage.frameRate,this.timeLength,this);
 				timeLengthFrameTimer.timer();
 				timeLengthFrameTimer.addEventListener(Event.COMPLETE,handlerTimeLength);
@@ -64,7 +66,7 @@ package com.snsoft.tvc2{
 				this.isTimeLen = true;
 			}
 			
-			if(this.timeOut > 0){
+			if(this.timeOut > 0 && this.stage != null){
 				timeOutFrameTimer = new FrameTimer(this.stage.frameRate,this.timeOut,this);
 				timeOutFrameTimer.timer();
 				timeOutFrameTimer.addEventListener(Event.COMPLETE,handlerTimeOut);
@@ -78,6 +80,7 @@ package com.snsoft.tvc2{
 		 * 
 		 */		
 		private function handlerTimeLength(e:Event):void{
+			trace("handlerTimeLength");
 			timeLengthFrameTimer.removeEventListener(Event.COMPLETE,handlerTimeLength);
 			this.isTimeLen = true;
 			this.dispatchEventState();
@@ -89,6 +92,7 @@ package com.snsoft.tvc2{
 		 * 
 		 */		
 		private function handlerTimeOut(e:Event):void{
+			trace("handlerTimeOut");
 			timeOutFrameTimer.removeEventListener(Event.COMPLETE,handlerTimeOut);
 			this.isTimeOut = true;
 			this.dispatchEventState();

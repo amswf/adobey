@@ -142,6 +142,8 @@
 				
 				//画坐标系
 				var uic:UICoor = new UICoor(xgv,ygv);
+				uic.width = this.width;
+				uic.height = this.height;
 			    uic.setStyle(TEXT_FORMAT,this.getStyleValue(TEXT_FORMAT));
 				coorSprite.addChild(uic);
 				uic.drawNow();
