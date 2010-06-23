@@ -81,7 +81,7 @@
 					for(var i:int = 0;i < timeLineDOHv.length;i ++){
 						var timeLineDO:TimeLineDO = timeLineDOHv.findByIndex(i) as TimeLineDO;
 						if(timeLineDO != null){
-							 var timeLine:TimeLine = new TimeLine(timeLineDO);
+							 var timeLine:TimeLine = new TimeLine(timeLineDO,marketMainDO);
 							 this.addChild(timeLine);
 						}
 					}	
@@ -103,21 +103,9 @@
 			var xml:XML = new XML(loader.data);
 			var parse:XMLParse = new XMLParse();
 			marketMainDO = parse.parseMarketCoordsMain(xml);
-			marketMainDOSourceLoad(marketMainDO);
-			
 		}
 		
-		private function marketMainDOSourceLoad(marketMainDO:MarketMainDO):void{
-			if(marketMainDO != null){
-				var marketCoordsDOHV:HashVector = marketMainDO.marketCoordsDOHV;
-				for(var i:int = 0;i < marketCoordsDOHV.length;i ++){
-					var marketCoordsDO:MarketCoordsDO = marketCoordsDOHV.findByIndex(i) as MarketCoordsDO;
-					var mediaUrl:String = marketCoordsDO.url;
-					var mediaLoader:MediaLoader = new MediaLoader(marketCoordsDO);
-					mediaLoader.addEventListener(Event.COMPLETE,handlerMediaLoaderMarketCoordsComplete);
-				}
-			}
-		}
+		 
 		
 		private function mainDOSourceLoad(mainDO:MainDO):void{
 			if(mainDO != null){
@@ -214,12 +202,6 @@
 			mediaLoader.soundDO.soundList = mediaLoader.soundList;
 			subSourceCount();
 		}
-		
-		private function handlerMediaLoaderMarketCoordsComplete(e:Event):void{
-			var mediaLoader:MediaLoader = e.currentTarget as MediaLoader;
-			var marketCoordsDO:MarketCoordsDO = mediaLoader.data as MarketCoordsDO;
-			marketCoordsDO.imageList = mediaLoader.mediaList;
-			subSourceCount();
-		}
+
 	}
 }

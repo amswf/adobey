@@ -17,6 +17,7 @@
 			import com.snsoft.tvc2.chart.UIPillar;
 			import com.snsoft.tvc2.chart.UIPillarCharts;
 			import com.snsoft.tvc2.dataObject.BizDO;
+			import com.snsoft.tvc2.map.PriceDistribute;
 			import com.snsoft.tvc2.media.MediaLoader;
 			import com.snsoft.tvc2.media.MediaPlayer;
 			import com.snsoft.tvc2.media.Mp3Loader;
@@ -47,6 +48,7 @@
 				var uipc:UIPillarCharts;
 				var tl:TimeLine;
 				var main:Main;
+				var priceDistribute:PriceDistribute;
 				//parse.parseTvcMainXML(xml);
 			}
 		]]>
