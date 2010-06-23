@@ -64,6 +64,8 @@
 		
 		public static const TAG_DISTRIBUTE:String = "distribute";
 		
+		public static const TAG_BROADCAST:String = "broadcast";
+		
 		public static const TAG_LIST:String = "list";
 		
 		public static const TAG_TEXTPOINT:String = "textPoint";
@@ -404,6 +406,16 @@
 				if(xGraduationTextList != null && xGraduationTextList.length() > 0){
 					var xGraduationXMLList:XMLList = xGraduationTextList.elements(TAG_LIST);
 					dataDO.xGraduationText = this.parseListsXML(xGraduationXMLList);
+				}
+				
+				var broadcastList:XMLList;
+				var brXMLList:XMLList = dataXML.elements(TAG_BROADCAST);
+				if(brXMLList != null && brXMLList.length() > 0){
+					broadcastList = brXMLList;
+				}
+				if(broadcastList != null && broadcastList.length() > 0){
+					var broadcastXMLList:XMLList = broadcastList.elements(TAG_LIST);
+					dataDO.broadcast = this.parseListsXML(broadcastXMLList);
 				}
 			}
 			return dataDO;
