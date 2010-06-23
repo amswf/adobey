@@ -165,7 +165,6 @@
 				marketCoordsDO.y = Number(mcsaHv.findByName(ATT_Y));
 				marketCoordsDO.z = Number(mcsaHv.findByName(ATT_Z));
 				marketCoordsDO.s = Number(mcsaHv.findByName(ATT_S));
-				marketCoordsDO.url = String(mcsaHv.findByName(ATT_URL));
 				var marketCoordXMLList:XMLList = marketCoordsXML.elements(TAG_MARKET_COORD);
 				var mcdoHv:HashVector = parseMarketCoord(marketCoordXMLList);
 				marketCoordsDO.marketCoordDOHV = mcdoHv;
@@ -381,24 +380,28 @@
 				var dataXML:XML = datasXMLList[i];
 				var dataXMLList:XMLList;
 				var listsXMLList:XMLList;
-				if(dataXML.elements(TAG_DISTRIBUTE) != null){
-					dataXMLList = dataXML.elements(TAG_DISTRIBUTE);
+				var disXMLList:XMLList = dataXML.elements(TAG_DISTRIBUTE);
+				if(disXMLList != null && disXMLList.length() > 0){
+					dataXMLList = disXMLList;
 					dataDO.type = TAG_DISTRIBUTE;
 				}
-				if(dataXML.elements(TAG_CHART) != null){
-					dataXMLList = dataXML.elements(TAG_CHART);
+				
+				var chrXMLList:XMLList = dataXML.elements(TAG_CHART);
+				if(chrXMLList != null && chrXMLList.length() > 0){
+					dataXMLList = chrXMLList;
 					dataDO.type = TAG_CHART;
 				}
-				if(dataXMLList != null){
+				if(dataXMLList != null && dataXMLList.length() > 0){
 					listsXMLList = dataXMLList.elements(TAG_LIST);
 					dataDO.data = this.parseListsXML(listsXMLList);
 				}
 				
 				var xGraduationTextList:XMLList;
-				if(dataXML.elements(X_GRADUATION_TEXT) != null){
-					xGraduationTextList = dataXML.elements(X_GRADUATION_TEXT);
+				var xgrXMLList:XMLList = dataXML.elements(X_GRADUATION_TEXT);
+				if(xgrXMLList != null && xgrXMLList.length() > 0){
+					xGraduationTextList = xgrXMLList;
 				}
-				if(xGraduationTextList != null){
+				if(xGraduationTextList != null && xGraduationTextList.length() > 0){
 					var xGraduationXMLList:XMLList = xGraduationTextList.elements(TAG_LIST);
 					dataDO.xGraduationText = this.parseListsXML(xGraduationXMLList);
 				}

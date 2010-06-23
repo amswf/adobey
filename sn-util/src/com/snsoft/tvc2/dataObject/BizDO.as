@@ -83,7 +83,5 @@ package com.snsoft.tvc2.dataObject{
 		{
 			_type = value;
 		}
-
-
 	}
 }

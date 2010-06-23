@@ -23,8 +23,6 @@ package com.snsoft.tvc2.dataObject{
 		
 		private var _marketCoordDOHV:HashVector;
 		
-		private var _url:String;
-		
 		private var _imageList:Vector.<DisplayObject>;
 		
 		public function MarketCoordsDO()
@@ -42,6 +40,14 @@ package com.snsoft.tvc2.dataObject{
 		
 		public function findMarketCoordDO(marketCoordName:String):MarketCoordDO{
 			return marketCoordDOHV.findByName(marketCoordName) as MarketCoordDO;
+		}
+		
+		public function getRealCoordMarketCoordDO(marketCoordName:String):MarketCoordDO{
+			var mcdo:MarketCoordDO = findMarketCoordDO(marketCoordName);
+			if(mcdo != null){
+				mcdo.x = (mcdo.x - this.x) * this.s;
+			}
+			return mcdo;
 		}
 
 		public function get name():String
@@ -122,16 +128,6 @@ package com.snsoft.tvc2.dataObject{
 		public function set marketCoordDOHV(value:HashVector):void
 		{
 			_marketCoordDOHV = value;
-		}
-
-		public function get url():String
-		{
-			return _url;
-		}
-
-		public function set url(value:String):void
-		{
-			_url = value;
 		}
 
 		public function get imageList():Vector.<DisplayObject>
