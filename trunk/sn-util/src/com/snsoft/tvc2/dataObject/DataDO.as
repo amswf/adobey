@@ -15,6 +15,8 @@ package com.snsoft.tvc2.dataObject{
 		
 		private var _yGraduationText:Vector.<ListDO> = null;
 		
+		private var _broadcast:Vector.<ListDO> = null;
+		
 		public function DataDO()
 		{
 		}
@@ -58,6 +60,18 @@ package com.snsoft.tvc2.dataObject{
 		{
 			_yGraduationText = value;
 		}
+
+		public function get broadcast():Vector.<ListDO>
+		{
+			return _broadcast;
+		}
+
+		public function set broadcast(value:Vector.<ListDO>):void
+		{
+			_broadcast = value;
+		}
+
+		 
 
 
 	}
