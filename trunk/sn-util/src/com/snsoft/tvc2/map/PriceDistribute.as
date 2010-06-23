@@ -1,4 +1,4 @@
-package com.snsoft.tvc2.map{
+﻿package com.snsoft.tvc2.map{
 	import com.snsoft.tvc2.Business;
 	import com.snsoft.tvc2.dataObject.DataDO;
 	import com.snsoft.tvc2.dataObject.ListDO;
@@ -17,8 +17,10 @@ package com.snsoft.tvc2.map{
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.TimerEvent;
 	import flash.text.TextFormat;
-
+	import flash.utils.Timer;
+	
 	public class PriceDistribute extends Business{
 		
 		//点列表的列表
@@ -29,6 +31,16 @@ package com.snsoft.tvc2.map{
 		private var marketMap:MarketMap;
 		
 		private var MAP_NAME:String = "china";
+		
+		private var listSmallCount:int = 0;
+		
+		private var listDOV:Vector.<ListDO>;
+		
+		private var marketCoordsDO:MarketCoordsDO;
+		
+		private var listSmallTimer:Timer;
+		
+		private var currentListMC:Sprite;
 		
 		public function PriceDistribute(dataDO:DataDO,marketMainDO:MarketMainDO,marketMap:MarketMap,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0)	{
 			super();
@@ -93,27 +105,32 @@ package com.snsoft.tvc2.map{
 				this.dispatchEvent(new Event(Event.COMPLETE));
 			}
 		}
-			
+		
 		override protected function draw():void {
 			
 		}
 		
 		override protected function play():void {
 			var marketCoordsDOHV:HashVector = marketMainDO.marketCoordsDOHV;
-			var marketCoordsDO:MarketCoordsDO= marketCoordsDOHV.findByName(MAP_NAME) as MarketCoordsDO;
-			 
-			 
-			var listDOV:Vector.<ListDO> = dataDO.data;
-			for(var ii:int;ii<listDOV.length;ii++){
-				var listDO:ListDO = listDOV[ii];
+			this.marketCoordsDO = marketCoordsDOHV.findByName(MAP_NAME) as MarketCoordsDO;
+			this.listDOV = dataDO.data;
+			this.listSmallCount = 0;
+			playSmallPoint();
+		}
+		
+		private function playSmallPoint():void{
+			var index:int = this.listSmallCount;
+			this.listSmallCount ++;
+			if(index < listDOV.length){
+				var listDO:ListDO = listDOV[index];
 				var color:uint = 0x000000;
-				if(ii == 0){
+				if(index == 0){
 					color = 0x000000;
 				}
-				if(ii == 1){
+				if(index == 1){
 					color = 0x009900;
 				}
-				if(ii == 2){
+				if(index == 2){
 					color = 0x990000; 
 				}
 				
@@ -128,22 +145,54 @@ package com.snsoft.tvc2.map{
 					var spdobj:MovieClip = getDisplayObjectInstance(getStyleValue(SMALL_POINT_DEFAULT_SKIN)) as MovieClip;
 					spdobj.x = (marketCoordDO.x - this.marketMap.x) * this.marketMap.s;
 					spdobj.y = (marketCoordDO.y - this.marketMap.y) * this.marketMap.s;
-					trace(spdobj.x,spdobj.y);
 					listMC.addChild(spdobj);
 				}
+				currentListMC = listMC;
 				this.addChild(listMC);
+				var timer:Timer = new Timer(2000,1);
+				timer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerListSmallStartTimerCMP);
+				timer.start();
 			}
 		}
-
+		
+		private function handlerListSmallStartTimerCMP(e:Event):void{
+			trace(handlerListSmallStartTimerCMP);
+			listSmallTimer = new Timer(200,7);
+			listSmallTimer.start();
+			listSmallTimer.addEventListener(TimerEvent.TIMER,handlerListSmallTimer);
+			listSmallTimer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerListSmallTimerCMP);
+		}
+		
+		private function handlerListSmallTimer(e:Event):void{
+			var timer:Timer = e.currentTarget as Timer;
+			var state:int = timer.currentCount % 2;
+			if(state == 0){
+				currentListMC.visible = false;
+			}
+			else{
+				currentListMC.visible = true;
+			}
+		}
+		
+		private function handlerListSmallTimerCMP(e:Event):void{
+			var timer:Timer = new Timer(5000,1);
+			timer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerListSmallEndTimerCMP);
+			timer.start();
+		}
+		
+		private function handlerListSmallEndTimerCMP(e:Event):void{
+			playSmallPoint();
+		}
+		
 		public function get dataDO():DataDO
 		{
 			return _dataDO;
 		}
-
+		
 		public function set dataDO(value:DataDO):void
 		{
 			_dataDO = value;
 		}
-
+		
 	}
 }
