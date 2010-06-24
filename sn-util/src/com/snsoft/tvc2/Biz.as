@@ -13,6 +13,7 @@
 	import com.snsoft.tvc2.dataObject.TextOutDO;
 	import com.snsoft.tvc2.dataObject.TextOutsDO;
 	import com.snsoft.tvc2.map.PriceDistribute;
+	import com.snsoft.tvc2.map.PriceMapArea;
 	import com.snsoft.tvc2.media.MediaPlayer;
 	import com.snsoft.tvc2.media.Mp3Player;
 	import com.snsoft.tvc2.media.TextPlayer;
@@ -38,6 +39,8 @@
 		private var BIZ_TYPE_PILLAR:String = "pillar";
 		
 		private var BIZ_TYPE_DISTRIBUTE:String = "distribute";
+		
+		private var BIZ_TYPE_DISTRIBUTE_AREA:String = "distributeArea";
 		
 		private var counter:Counter;
 		
@@ -72,8 +75,6 @@
 		private function play():void{
 			SpriteUtil.deleteAllChild(this);
 			if(bizDO != null){
-				
-				
 				var mediasHv:HashVector = bizDO.mediasHv;
 				if(mediasHv != null){
 					for(var i:int = 0;i < mediasHv.length;i ++){
@@ -160,6 +161,10 @@
 						
 						uilcs = new PriceDistribute(dataDO,marketMainDO,marketMap);
 					}
+					else if(type == BIZ_TYPE_DISTRIBUTE_AREA){
+						uilcs = new PriceMapArea(bizDO.mapView);
+					}
+					
 					uilcs.addEventListener(Event.COMPLETE,handlerCmp);
 					uilcs.width = 450;
 					uilcs.height = 300;

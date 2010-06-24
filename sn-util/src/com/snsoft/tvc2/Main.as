@@ -1,4 +1,6 @@
 ﻿package com.snsoft.tvc2{
+	import com.snsoft.map.WorkSpaceDO;
+	import com.snsoft.mapview.util.MapViewXMLLoader;
 	import com.snsoft.tvc2.dataObject.BizDO;
 	import com.snsoft.tvc2.dataObject.MainDO;
 	import com.snsoft.tvc2.dataObject.MarketCoordsDO;
@@ -8,8 +10,11 @@
 	import com.snsoft.tvc2.dataObject.SoundDO;
 	import com.snsoft.tvc2.dataObject.SoundsDO;
 	import com.snsoft.tvc2.dataObject.TimeLineDO;
+	import com.snsoft.tvc2.dataObject.VarDO;
+	import com.snsoft.tvc2.map.MapView;
 	import com.snsoft.tvc2.media.MediaLoader;
 	import com.snsoft.tvc2.media.Mp3Loader;
+	import com.snsoft.tvc2.source.AreaMapLoader;
 	import com.snsoft.tvc2.util.PriceUtils;
 	import com.snsoft.tvc2.util.StringUtil;
 	import com.snsoft.tvc2.xml.XMLParse;
@@ -19,6 +24,7 @@
 	import fl.core.UIComponent;
 	
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	
@@ -33,6 +39,10 @@
 		private var marketMainDO:MarketMainDO;
 		
 		private var sourceCount:int = 0;
+		
+		private var AREA_MAP_NAME:String = "areaMapName";
+		
+		
 		
 		public function Main(mainXmlUrl:String,marketXmlUrl:String){
 			super();
@@ -81,8 +91,8 @@
 					for(var i:int = 0;i < timeLineDOHv.length;i ++){
 						var timeLineDO:TimeLineDO = timeLineDOHv.findByIndex(i) as TimeLineDO;
 						if(timeLineDO != null){
-							 var timeLine:TimeLine = new TimeLine(timeLineDO,marketMainDO);
-							 this.addChild(timeLine);
+							var timeLine:TimeLine = new TimeLine(timeLineDO,marketMainDO);
+							this.addChild(timeLine);
 						}
 					}	
 				}
@@ -105,7 +115,7 @@
 			marketMainDO = parse.parseMarketCoordsMain(xml);
 		}
 		
-		 
+		
 		
 		private function mainDOSourceLoad(mainDO:MainDO):void{
 			if(mainDO != null){
@@ -118,6 +128,21 @@
 							if(bizDOHv != null){
 								for(var j:int = 0;j < bizDOHv.length;j ++){
 									var bizDO:BizDO = bizDOHv.findByIndex(j) as BizDO;
+									
+									var varDOHv:HashVector = bizDO.varDOHv;
+									if(varDOHv != null && varDOHv.length > 0){
+										var areaMapNameVarDO:VarDO = varDOHv.findByName(AREA_MAP_NAME) as VarDO;
+										if(areaMapNameVarDO != null){
+											var areaMapName:String = areaMapNameVarDO.getAttribute(XMLParse.ATT_VALUE) as String;
+											if(StringUtil.isEffective(areaMapName)){
+												var aml:AreaMapLoader = new AreaMapLoader(areaMapName,bizDO);
+												plusSourceCount();
+												aml.load();
+												aml.addEventListener(Event.COMPLETE,handlerLoadAreaMapComplete);
+												aml.addEventListener(IOErrorEvent.IO_ERROR,handlerLoadIOError);
+											}
+										}
+									}
 									var mediasHv:HashVector = bizDO.mediasHv;
 									if(mediasHv != null){
 										for(var k:int = 0;k < mediasHv.length;k ++){
@@ -190,6 +215,16 @@
 			}
 		}
 		
+		private function handlerLoadAreaMapComplete(e:Event):void{
+			trace("handlerLoadAreaMapComplete");
+			subSourceCount();
+		}
+		
+		
+		private function handlerLoadIOError(e:Event):void{
+			trace("地图数据地址错误");
+		}
+		
 		private function handlerMediaLoaderComplete(e:Event):void{
 			var mediaLoader:MediaLoader = e.currentTarget as MediaLoader;
 			var mediaDO:MediaDO = mediaLoader.data as MediaDO;
@@ -202,6 +237,6 @@
 			mediaLoader.soundDO.soundList = mediaLoader.soundList;
 			subSourceCount();
 		}
-
+		
 	}
 }
