@@ -136,7 +136,7 @@
 			this.broadcastListDOV = dataDO.broadcast;
 			this.listSmallCount = 0;
 			this.broadcastListCount = 0;
-			playBigPoint();
+			playSmallPoint();
 		}
 		
 		private function playSmallPoint():void{
@@ -257,6 +257,7 @@
 				ppdobj.height = pbdobj.height;
 				ppdobj.width = this.lineLength(new Point(bpdobj.x,bpdobj.y),new Point(priceMC.x,priceMC.y + pbdobj.height / 2));
 				ppdobj.rotation = this.lineRate(new Point(bpdobj.x,bpdobj.y),new Point(priceMC.x,priceMC.y + pbdobj.height / 2));
+				ColorTransformUtil.setColor(ppdobj,color);
 				this.addChild(ppdobj);
 				
 				var marketName:TextField = new TextField();
@@ -274,15 +275,16 @@
 				timer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerListBigStartTimerCMP);
 				timer.start();
 			}
+			else{
+				this.dispatchEvent(new Event(Event.COMPLETE));
+			}
 		}
 		
 		private function creatTextFormat(tfd:TextField,text:String,color:uint,size:int):void{
-			trace("creatTextFormat.color:",color);
 			tfd.text = text;
 			tfd.addEventListener(Event.ADDED_TO_STAGE,handler);
 			function handler(e:Event):void{
 				var tfde:TextField = e.currentTarget as TextField;
-				trace("handler.color:",color);
 				var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
 				tft.color = color;
 				tft.size = size;
