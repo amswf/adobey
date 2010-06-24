@@ -1,4 +1,6 @@
 package com.snsoft.tvc2.dataObject{
+	 
+	import com.snsoft.tvc2.map.MapView;
 	import com.snsoft.util.HashVector;
 
 	public class BizDO{
@@ -19,6 +21,8 @@ package com.snsoft.tvc2.dataObject{
 		private var _mediasHv:HashVector = null;
 		
 		private var _type:String = null;
+		
+		private var _mapView:MapView = null;
 		
 		public function BizDO()
 		{
@@ -83,5 +87,16 @@ package com.snsoft.tvc2.dataObject{
 		{
 			_type = value;
 		}
+
+		public function get mapView():MapView
+		{
+			return _mapView;
+		}
+
+		public function set mapView(value:MapView):void
+		{
+			_mapView = value;
+		}
+
 	}
 }

@@ -64,6 +64,8 @@
 		
 		public static const TAG_DISTRIBUTE:String = "distribute";
 		
+		public static const TAG_DISTRIBUTE_AREA:String = "distributeArea";
+		
 		public static const TAG_BROADCAST:String = "broadcast";
 		
 		public static const TAG_LIST:String = "list";
@@ -242,7 +244,7 @@
 				bizDO.varDOHv = this.parseVarsXML(varsXMLList);
 				
 				var bizAtr:HashVector = getXMLAttributes(bizXML);
-				bizDO.type = bizAtr.findByName("type") as String;
+				bizDO.type = bizAtr.findByName(ATT_TYPE) as String;
 				
 				//解析 data 数据
 				var dataXMLList:XMLList = bizXML.elements(TAG_DATA);
@@ -473,8 +475,8 @@
 					var vdoName:String = String(varXML.attribute(VarDO.NAME));
 					var varAttributeHv:HashVector = getXMLAttributes(varXML);
 					for(var k:int = 0;k < varAttributeHv.length;k++){
-						var name:String = varAttributeHv.findNameByIndex(i);
-						var value:String = varAttributeHv.findByIndex(i) as String;
+						var name:String = varAttributeHv.findNameByIndex(k);
+						var value:String = varAttributeHv.findByIndex(k) as String;
 						vdo.setAttribute(name,value);
 					}
 					v.put(vdoName,vdo);
