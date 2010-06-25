@@ -21,8 +21,6 @@ package com.snsoft.tvc2.media{
 		//当前播放序号
 		private var playNum:int;
 		
-		 
-		
 		public function Mp3Player(soundList:Vector.<Sound>,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0){
 			super();
 			this._soundList = soundList;
@@ -38,6 +36,11 @@ package com.snsoft.tvc2.media{
 		 * 
 		 */
 		override protected function play():void{
+			playNextMp3();
+		}
+		
+		private function playNextMp3():void{
+			trace("Mp3Player.play()");
 			if(this.soundList != null ){
 				if(this.playNum < this.soundList.length){
 					sound = this.soundList[this.playNum];
@@ -75,7 +78,7 @@ package com.snsoft.tvc2.media{
 		private function handlerPlayComplete(e:Event):void{
 			soundChannel.removeEventListener(Event.SOUND_COMPLETE,handlerPlayComplete);
 			this.playNum ++;
-			this.play();
+			this.playNextMp3();
 		}
 		
 		public function get soundList():Vector.<Sound>{

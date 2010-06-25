@@ -35,6 +35,9 @@ package com.snsoft.tvc2{
 		//超时计时
 		protected var timeOutFrameTimer:FrameTimer;
 		
+		//是否已经播放
+		protected var isPlay:Boolean;
+		
 		public function Business(){
 			super();
 			this.addEventListener(Event.ADDED_TO_STAGE,handlerAddedToStage);
@@ -71,7 +74,10 @@ package com.snsoft.tvc2{
 				timeOutFrameTimer.timer();
 				timeOutFrameTimer.addEventListener(Event.COMPLETE,handlerTimeOut);
 			}
-			this.play();
+			if(!isPlay){
+				isPlay = true;
+				this.play();
+			}
 		}
 		
 		/**
