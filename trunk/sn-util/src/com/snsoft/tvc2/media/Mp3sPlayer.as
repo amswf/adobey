@@ -12,6 +12,8 @@ package com.snsoft.tvc2.media{
 		//当前播放序号
 		private var playNum:int;
 		
+		private var mp3Player:Mp3Player;
+		
 		public function Mp3sPlayer(soundsDO:SoundsDO){
 			super();
 			this.soundsDO = soundsDO;
@@ -29,10 +31,14 @@ package com.snsoft.tvc2.media{
 		}
 		
 		private function playNextMp3s():void{
+			
 			if(soundsDO != null && soundsDO.soundDOHv != null){
 				if(playNum < soundsDO.soundDOHv.length){
+					if(mp3Player != null){
+						this.removeChild(mp3Player);
+					}
 					var soundDO:SoundDO = soundsDO.soundDOHv[playNum];
-					var mp3Player:Mp3Player = new Mp3Player(soundDO.soundList,soundDO.timeOffset,soundDO.timeLength,soundDO.timeout);
+					mp3Player = new Mp3Player(soundDO.soundList,soundDO.timeOffset,soundDO.timeLength,soundDO.timeout);
 					mp3Player.addEventListener(Event.COMPLETE,handlerMp3PlayerCMP);
 					this.addChild(mp3Player);
 				}
