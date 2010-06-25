@@ -282,7 +282,7 @@
 				var soundsDO:SoundsDO = new SoundsDO();
 				var soundv:Vector.<SoundDO> = new Vector.<SoundDO>();
 				for(var j:int = 0;j<soundXMLList.length();j++){
-					var soundXML:XML = soundXMLList[i];
+					var soundXML:XML = soundXMLList[j];
 					var soundDO:SoundDO = new SoundDO();
 					var soundAttributeHv:HashVector = this.getXMLAttributes(soundXML);
 					soundDO.name = soundAttributeHv.findByName(ATT_NAME)as String;

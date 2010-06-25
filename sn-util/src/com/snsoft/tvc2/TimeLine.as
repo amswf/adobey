@@ -49,8 +49,6 @@ package com.snsoft.tvc2{
 				var bizDO:BizDO = bizHv.findByIndex(bizIndex) as BizDO;
 				if(bizDO != null){
 					var biz:Biz = new Biz(bizDO,marketMainDO);
-					biz.x = 80;
-					biz.y = 80;
 					biz.addEventListener(Event.COMPLETE,handlerBizComplete);
 					this.addChild(biz);
 					biz.drawNow();

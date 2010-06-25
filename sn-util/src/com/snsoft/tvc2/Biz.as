@@ -16,6 +16,7 @@
 	import com.snsoft.tvc2.map.PriceMapArea;
 	import com.snsoft.tvc2.media.MediaPlayer;
 	import com.snsoft.tvc2.media.Mp3Player;
+	import com.snsoft.tvc2.media.Mp3sPlayer;
 	import com.snsoft.tvc2.media.TextPlayer;
 	import com.snsoft.tvc2.util.Counter;
 	import com.snsoft.tvc2.util.StringUtil;
@@ -96,18 +97,12 @@
 				var soundsHv:HashVector = bizDO.soundsHv;
 				if(soundsHv != null){
 					for(var ii:int = 0;ii < soundsHv.length;ii ++){
+						
 						var soundsDO:SoundsDO = soundsHv.findByIndex(ii) as SoundsDO;
-						var soundDOHv:Vector.<SoundDO> = soundsDO.soundDOHv;
-						for(var jj:int = 0;jj < soundDOHv.length;jj ++){
-							var soundDO:SoundDO = soundDOHv[jj];
-							var soundList:Vector.<Sound> = soundDO.soundList;
-							if(soundList != null && soundList.length > 0){
-								var mp3Player:Mp3Player = new Mp3Player(soundList,soundDO.timeOffset,soundDO.timeLength,soundDO.timeout);
-								mp3Player.addEventListener(Event.COMPLETE,handlerCmp);
-								counter.plus();
-								stage.addChild(mediaPlayer);
-							}
-						}
+						var mp3sPlayer:Mp3sPlayer = new Mp3sPlayer(soundsDO);
+						counter.plus();
+						mp3sPlayer.addEventListener(Event.COMPLETE,handlerCmp);
+						this.addChild(mp3sPlayer); 
 					}
 				}
 				
@@ -165,12 +160,14 @@
 						uilcs = new PriceMapArea(dataDO, bizDO.mapView);
 					}
 					
-					uilcs.addEventListener(Event.COMPLETE,handlerCmp);
-					uilcs.width = 450;
-					uilcs.height = 300;
-					counter.plus();
-					this.addChild(uilcs);
-					uilcs.drawNow();
+					if(uilcs != null){
+						uilcs.addEventListener(Event.COMPLETE,handlerCmp);
+						uilcs.width = 450;
+						uilcs.height = 300;
+						counter.plus();
+						this.addChild(uilcs);
+						uilcs.drawNow();
+					}
 				}
 				
 			}
