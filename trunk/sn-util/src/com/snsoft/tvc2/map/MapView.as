@@ -49,6 +49,8 @@ package com.snsoft.tvc2.map{
 		
 		private var areaDrawCount:int = 0;
 		
+		private var isDrawCmp:Boolean = false;
+		
 		public function MapView(){
 			super();
 		}
@@ -70,7 +72,7 @@ package com.snsoft.tvc2.map{
 		public static function getStyleDefinition():Object { 
 			return UIComponent.mergeStyles(UIComponent.getStyleDefinition(), defaultStyles);
 		}
-	
+		
 		/**
 		 *  
 		 * 
@@ -91,54 +93,55 @@ package com.snsoft.tvc2.map{
 		 * 
 		 */		
 		override protected function draw():void{
-			
-			MapUtil.deleteAllChild(this);
-			MapUtil.deleteAllChild(backLayer);
-			MapUtil.deleteAllChild(areaBtnsLayer);
-			MapUtil.deleteAllChild(mapLinesLayer);
-			MapUtil.deleteAllChild(lightShapesLayer);
-			
-			this.addChild(backLayer);
-			this.addChild(mapLinesLayer);
-			this.addChild(areaBtnsLayer);
-			this.addChild(lightShapesLayer);
-			
-			mapAreaViewHv = new HashVector();
-			
-			
-			var wsdo:WorkSpaceDO = this.workSpaceDO;
-			if(wsdo != null){
-				var madohv:HashVector = wsdo.mapAreaDOHashArray;
-				areaDrawCount = madohv.length;
-				for(var i:int = 0;i<madohv.length;i ++){
-					var mado:MapAreaDO = madohv.findByIndex(i) as MapAreaDO;
-					if(mado != null){
-						var av:AreaView = new AreaView();
-						av.setStyle(TEXT_FORMAT,this.getStyleValue(TEXT_FORMAT));
-						av.addEventListener(Event.COMPLETE,handlerAreaViewDrawCmp);
-						av.mapAreaDO = mado;
-						av.drawNow();
-						areaBtnsLayer.addChild(av);
-						mapAreaViewHv.put(mado.areaName,av);
+			if(!isDrawCmp){
+				isDrawCmp = true;
+				
+				MapUtil.deleteAllChild(this);
+				MapUtil.deleteAllChild(backLayer);
+				MapUtil.deleteAllChild(areaBtnsLayer);
+				MapUtil.deleteAllChild(mapLinesLayer);
+				MapUtil.deleteAllChild(lightShapesLayer);
+				
+				this.addChild(backLayer);
+				this.addChild(mapLinesLayer);
+				this.addChild(areaBtnsLayer);
+				this.addChild(lightShapesLayer);
+				
+				mapAreaViewHv = new HashVector();
+				var wsdo:WorkSpaceDO = this.workSpaceDO;
+				if(wsdo != null){
+					var madohv:HashVector = wsdo.mapAreaDOHashArray;
+					areaDrawCount = madohv.length;
+					for(var i:int = 0;i<madohv.length;i ++){
+						var mado:MapAreaDO = madohv.findByIndex(i) as MapAreaDO;
+						if(mado != null){
+							var av:AreaView = new AreaView();
+							av.setStyle(TEXT_FORMAT,this.getStyleValue(TEXT_FORMAT));
+							av.addEventListener(Event.COMPLETE,handlerAreaViewDrawCmp);
+							av.mapAreaDO = mado;
+							av.drawNow();
+							areaBtnsLayer.addChild(av);
+							mapAreaViewHv.put(mado.areaName,av);
+						}
 					}
+					
+					var maplinesSprite:Sprite = this.drawMapLines(wsdo);
+					var dsFilter:DropShadowFilter = new DropShadowFilter(0,0,0x000000,1,4,4);
+					var filterAry:Array = new Array();
+					filterAry.push(dsFilter);
+					maplinesSprite.filters = filterAry;
+					this.mapLinesLayer.addChild(maplinesSprite);
+					
+					var backMask:Sprite = this.drawBackMask(wsdo);
+					this.backLayer.addChild(backMask);
+					
+					_backMaskRec = backMask.getRect(this.backLayer);
+					var sizep:Point = new Point(_backMaskRec.width,_backMaskRec.height);
+					var placep:Point = new Point(_backMaskRec.x,_backMaskRec.y);
 				}
-				
-				var maplinesSprite:Sprite = this.drawMapLines(wsdo);
-				var dsFilter:DropShadowFilter = new DropShadowFilter(0,0,0x000000,1,4,4);
-				var filterAry:Array = new Array();
-				filterAry.push(dsFilter);
-				maplinesSprite.filters = filterAry;
-				this.mapLinesLayer.addChild(maplinesSprite);
-				
-				var backMask:Sprite = this.drawBackMask(wsdo);
-				this.backLayer.addChild(backMask);
-				
-				_backMaskRec = backMask.getRect(this.backLayer);
-				var sizep:Point = new Point(_backMaskRec.width,_backMaskRec.height);
-				var placep:Point = new Point(_backMaskRec.x,_backMaskRec.y);
-			}
-			else{
-				trace("WorkSpaceDO:"+WorkSpaceDO);
+				else{
+					trace("WorkSpaceDO:"+WorkSpaceDO);
+				}
 			}
 		}
 		
@@ -229,7 +232,7 @@ package com.snsoft.tvc2.map{
 			areaCenterP.x = areaRect.x + areaRect.width / 2 + mado.areaNamePlace.x;
 			areaCenterP.y = areaRect.y + areaRect.height / 2 + mado.areaNamePlace.y;
 			
-			 
+			
 		}
 		
 		public function get workSpaceDO():WorkSpaceDO
@@ -241,22 +244,22 @@ package com.snsoft.tvc2.map{
 		{
 			_workSpaceDO = value;
 		}
-
+		
 		public function get backMaskRec():Rectangle
 		{
 			return _backMaskRec;
 		}
-
+		
 		public function get doubleClickAreaView():AreaView
 		{
 			return _doubleClickAreaView;
 		}
-
+		
 		public function set doubleClickAreaView(value:AreaView):void
 		{
 			_doubleClickAreaView = value;
 		}
-
-
+		
+		
 	}
 }

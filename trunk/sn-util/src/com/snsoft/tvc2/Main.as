@@ -85,6 +85,7 @@
 		 * 
 		 */		
 		private function play():void{
+			trace("main.play()");
 			if(mainDO != null){
 				var timeLineDOHv:HashVector = mainDO.timeLineDOHv;
 				if(timeLineDOHv != null){
@@ -114,8 +115,6 @@
 			var parse:XMLParse = new XMLParse();
 			marketMainDO = parse.parseMarketCoordsMain(xml);
 		}
-		
-		
 		
 		private function mainDOSourceLoad(mainDO:MainDO):void{
 			if(mainDO != null){
