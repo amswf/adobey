@@ -30,6 +30,7 @@ package com.snsoft.tvc2.map{
 		
 		private var areaNameLayer:Sprite = new Sprite();
 		
+		private var isDrawCmp:Boolean = false;
 		/**
 		 * 
 		 * 
@@ -76,29 +77,32 @@ package com.snsoft.tvc2.map{
 		 * 
 		 */		
 		override protected function draw():void{
-			MapUtil.deleteAllChild(this);
-			MapUtil.deleteAllChild(areaBtnLayer);
-			MapUtil.deleteAllChild(areaNameLayer);
-			this.addChild(areaBtnLayer);
-			this.addChild(areaNameLayer);
-			
-			var mado:MapAreaDO = this.mapAreaDO;
-			if(mado != null){
-				var pointAry:Array = mado.pointArray.toArray();
-				var cl:Shape = MapViewDraw.drawFill(0xffffff,0x000000,1,1,pointAry);
-				areaBtnLayer.addChild(cl);
-				setAreaColor(0xcccccc);
-				var dobj:Rectangle = cl.getRect(this);
-				var tft:TextFormat = this.getStyleValue(TEXT_FORMAT) as TextFormat;
-				var tfd:TextField = EffectText.creatShadowTextField(mado.areaName,tft);
-				tfd.x =dobj.x + (dobj.width - tfd.width) * 0.5 + mado.areaNamePlace.x;
-				tfd.y =dobj.y + (dobj.height - tfd.height) * 0.5 + mado.areaNamePlace.y;
-				areaNameLayer.addChild(tfd);
+			if(!isDrawCmp){
+				isDrawCmp = true;
+				MapUtil.deleteAllChild(this);
+				MapUtil.deleteAllChild(areaBtnLayer);
+				MapUtil.deleteAllChild(areaNameLayer);
+				this.addChild(areaBtnLayer);
+				this.addChild(areaNameLayer);
+				
+				var mado:MapAreaDO = this.mapAreaDO;
+				if(mado != null){
+					var pointAry:Array = mado.pointArray.toArray();
+					var cl:Shape = MapViewDraw.drawFill(0xffffff,0x000000,1,1,pointAry);
+					areaBtnLayer.addChild(cl);
+					setAreaColor(0xcccccc);
+					var dobj:Rectangle = cl.getRect(this);
+					var tft:TextFormat = this.getStyleValue(TEXT_FORMAT) as TextFormat;
+					var tfd:TextField = EffectText.creatShadowTextField(mado.areaName,tft);
+					tfd.x =dobj.x + (dobj.width - tfd.width) * 0.5 + mado.areaNamePlace.x;
+					tfd.y =dobj.y + (dobj.height - tfd.height) * 0.5 + mado.areaNamePlace.y;
+					areaNameLayer.addChild(tfd);
+				}
+				else{
+					trace("mapAreaDO:"+mapAreaDO);
+				}
+				this.dispatchEvent(new Event(Event.COMPLETE));
 			}
-			else{
-				trace("mapAreaDO:"+mapAreaDO);
-			}
-			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
 		
 		public function setAreaColor(color:uint,alpha:Number = 1):void{
@@ -110,11 +114,11 @@ package com.snsoft.tvc2.map{
 		{
 			return _mapAreaDO;
 		}
-
+		
 		public function set mapAreaDO(value:MapAreaDO):void
 		{
 			_mapAreaDO = value;
 		}
-
+		
 	}
 }

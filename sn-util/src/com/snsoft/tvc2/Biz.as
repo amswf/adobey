@@ -162,7 +162,7 @@
 						uilcs = new PriceDistribute(dataDO,marketMainDO,marketMap);
 					}
 					else if(type == BIZ_TYPE_DISTRIBUTE_AREA){
-						uilcs = new PriceMapArea(bizDO.mapView);
+						uilcs = new PriceMapArea(dataDO, bizDO.mapView);
 					}
 					
 					uilcs.addEventListener(Event.COMPLETE,handlerCmp);

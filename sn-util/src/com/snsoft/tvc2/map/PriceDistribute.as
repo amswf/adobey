@@ -276,7 +276,8 @@
 				timer.start();
 			}
 			else{
-				this.dispatchEvent(new Event(Event.COMPLETE));
+				this.isPlayCmp = true;
+				dispatchEventState();
 			}
 		}
 		
