@@ -15,6 +15,7 @@
 	import com.snsoft.tvc2.map.PriceDistribute;
 	import com.snsoft.tvc2.map.PriceMapArea;
 	import com.snsoft.tvc2.media.MediaPlayer;
+	import com.snsoft.tvc2.media.MediasPlayer;
 	import com.snsoft.tvc2.media.Mp3Player;
 	import com.snsoft.tvc2.media.Mp3sPlayer;
 	import com.snsoft.tvc2.media.TextPlayer;
@@ -80,17 +81,11 @@
 				if(mediasHv != null){
 					for(var i:int = 0;i < mediasHv.length;i ++){
 						var mediasDO:MediasDO = mediasHv.findByIndex(i) as MediasDO;
-						var mediaDOHv:Vector.<MediaDO> = mediasDO.mediaDOHv;
-						for(var j:int = 0;j < mediaDOHv.length;j ++){
-							var mediaDO:MediaDO = mediaDOHv[j];
-							var mediaList:Vector.<DisplayObject> = mediaDO.mediaList;
-							if(mediaList != null && mediaList.length > 0){
-								var mediaPlayer:MediaPlayer = new MediaPlayer(mediaList,mediaDO.timeOffset,mediaDO.timeLength,mediaDO.timeout);
-								mediaPlayer.addEventListener(Event.COMPLETE,handlerCmp);
-								counter.plus();
-								this.addChild(mediaPlayer);
-							}
-						}
+						var mediasPlayer:MediasPlayer = new MediasPlayer(mediasDO);
+						counter.plus();
+						mediasPlayer.addEventListener(Event.COMPLETE,handlerCmp);
+						this.addChild(mediasPlayer);
+						
 					}
 				}
 				
