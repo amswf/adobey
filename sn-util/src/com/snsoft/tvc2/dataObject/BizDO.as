@@ -2,6 +2,8 @@ package com.snsoft.tvc2.dataObject{
 	 
 	import com.snsoft.tvc2.map.MapView;
 	import com.snsoft.util.HashVector;
+	
+	import flash.display.DisplayObject;
 
 	public class BizDO{
 		
@@ -23,6 +25,8 @@ package com.snsoft.tvc2.dataObject{
 		private var _type:String = null;
 		
 		private var _mapView:MapView = null;
+		
+		private var _distributeMap:DisplayObject = null;
 		
 		public function BizDO()
 		{
@@ -97,6 +101,17 @@ package com.snsoft.tvc2.dataObject{
 		{
 			_mapView = value;
 		}
+
+		public function get distributeMap():DisplayObject
+		{
+			return _distributeMap;
+		}
+
+		public function set distributeMap(value:DisplayObject):void
+		{
+			_distributeMap = value;
+		}
+
 
 	}
 }
