@@ -148,18 +148,15 @@ package com.snsoft.tvc2.map{
 		private function handlerAreaViewDrawCmp(e:Event):void{
 			
 			areaDrawCount --;
-			trace("handlerAreaViewDrawCmp",areaDrawCount);
 			if(areaDrawCount == 0){
 				this.dispatchEvent(new Event(Event.COMPLETE));
 			}
 		}
 		
 		public function setMapAreaColor(areaName:String,color:uint,alpha:Number = 1):void{
-			trace("setMapAreaColor",areaName);
 			if(mapAreaViewHv != null){
 				var av:AreaView = mapAreaViewHv.findByName(areaName) as AreaView;
 				if(av != null){
-					trace("setMapAreaColor",color);
 					av.setAreaColor(color,alpha);	
 				}
 			}
