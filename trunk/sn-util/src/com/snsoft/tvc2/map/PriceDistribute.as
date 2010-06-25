@@ -7,6 +7,7 @@
 	import com.snsoft.tvc2.dataObject.MarketMainDO;
 	import com.snsoft.tvc2.dataObject.MarketMap;
 	import com.snsoft.tvc2.dataObject.TextPointDO;
+	import com.snsoft.tvc2.text.EffectText;
 	import com.snsoft.util.ColorTransformUtil;
 	import com.snsoft.util.HashVector;
 	import com.snsoft.util.TextFieldUtil;
@@ -20,6 +21,7 @@
 	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.utils.Timer;
@@ -55,11 +57,16 @@
 		
 		private var currentBroadcastListMC:Sprite;
 		
-		public function PriceDistribute(dataDO:DataDO,marketMainDO:MarketMainDO,marketMap:MarketMap,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0)	{
+		private var distributeMap:DisplayObject;
+		
+		private var cutLine:Sprite;
+		
+		public function PriceDistribute(dataDO:DataDO,marketMainDO:MarketMainDO,marketMap:MarketMap,distributeMap:DisplayObject,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0)	{
 			super();
 			this.dataDO = dataDO;
 			this.marketMainDO = marketMainDO;
 			this.marketMap = marketMap;
+			this.distributeMap = distributeMap;
 			this.delayTime = delayTime;
 			this.timeLength = timeLength;
 			this.timeOut = timeOut;
@@ -83,7 +90,7 @@
 			small_point_default_skin:"SmallPoint_default_skin",
 			priceback_default_skin:"PriceBack_default_skin",
 			pricepointer_default_skin:"PricePointer_default_skin",
-			myTextFormat:new TextFormat("宋体",13,0x000000)
+			myTextFormat:new TextFormat("宋体",18,0x000000)
 		};
 		
 		/**
@@ -130,12 +137,54 @@
 		}
 		
 		override protected function play():void {
+			
+			this.addChild(distributeMap);
 			var marketCoordsDOHV:HashVector = marketMainDO.marketCoordsDOHV;
 			this.marketCoordsDO = marketCoordsDOHV.findByName(MAP_NAME) as MarketCoordsDO;
 			this.listDOV = dataDO.data;
 			this.broadcastListDOV = dataDO.broadcast;
 			this.listSmallCount = 0;
 			this.broadcastListCount = 0;
+			
+			cutLine = new Sprite();
+			var rect:Rectangle = this.distributeMap.getRect(this);
+			cutLine.x = rect.x + rect.width;
+			cutLine.y = rect.y + rect.height;
+			this.addChild(cutLine);
+			for(var i:int = 0;i< listDOV.length;i++){
+				var color:uint = 0x000000;
+				if(i == 0){
+					color = 0x000099;
+				}
+				else if(i == 1){
+					color = 0x999900;
+				}
+				else if(i == 2){
+					color = 0x009900; 
+				}
+				else if(i == 3){
+					color = 0x990000; 
+				}
+				var listDO:ListDO = listDOV[i];
+				
+				
+				var cutLineMC:MovieClip = getDisplayObjectInstance(getStyleValue(SMALL_POINT_DEFAULT_SKIN)) as MovieClip;
+				cutLineMC.y = - cutLineMC.height - cutLine.height;
+				cutLineMC.x = cutLineMC.width / 2 + 10;
+				ColorTransformUtil.setColor(cutLineMC,color);
+
+				var name:String = listDO.name;
+				var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
+				tft.color = color;
+				var tfd:TextField = EffectText.creatShadowTextField(name,tft);
+				tfd.x = cutLineMC.x + cutLineMC.width ;
+				tfd.y = cutLineMC.y - tfd.height / 2;
+				tfd.selectable = false;
+				
+				cutLine.addChild(cutLineMC);
+				cutLine.addChild(tfd);
+			}
+			
 			playSmallPoint();
 		}
 		
@@ -246,7 +295,8 @@
 				pbdobj.height = 50;
 				
 				priceMC.x = pbBaseX;
-				priceMC.y = pbBaseY - broadcastNum * (pbdobj.height + 10);
+				
+				priceMC.y = cutLine.y -cutLine.height - broadcastNum * (pbdobj.height + 10);
 				priceMC.addChild(pbdobj);
 				
 				bpdobj.x = (marketCoordDO.x - this.marketMap.x) * this.marketMap.s;

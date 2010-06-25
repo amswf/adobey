@@ -40,7 +40,9 @@
 		
 		private var sourceCount:int = 0;
 		
-		private var AREA_MAP_NAME:String = "areaMapName";
+		private var VAR_AREA_MAP_NAME:String = "areaMapName";
+		
+		private var VAR_DISTRIBUTE_MAP_NAME:String = "distributeMapName";
 		
 		
 		
@@ -130,7 +132,7 @@
 									
 									var varDOHv:HashVector = bizDO.varDOHv;
 									if(varDOHv != null && varDOHv.length > 0){
-										var areaMapNameVarDO:VarDO = varDOHv.findByName(AREA_MAP_NAME) as VarDO;
+										var areaMapNameVarDO:VarDO = varDOHv.findByName(VAR_AREA_MAP_NAME) as VarDO;
 										if(areaMapNameVarDO != null){
 											var areaMapName:String = areaMapNameVarDO.getAttribute(XMLParse.ATT_VALUE) as String;
 											if(StringUtil.isEffective(areaMapName)){
@@ -139,6 +141,20 @@
 												aml.load();
 												aml.addEventListener(Event.COMPLETE,handlerLoadAreaMapComplete);
 												aml.addEventListener(IOErrorEvent.IO_ERROR,handlerLoadIOError);
+											}
+										}
+										
+										var distributeMapNameVarDO:VarDO = varDOHv.findByName(VAR_DISTRIBUTE_MAP_NAME) as VarDO;
+										if(distributeMapNameVarDO != null){
+											var distributeMapName:String = distributeMapNameVarDO.getAttribute(XMLParse.ATT_VALUE) as String;
+											if(StringUtil.isEffective(distributeMapName)){
+												var distributeMediaLoader:MediaLoader = new MediaLoader(bizDO);
+												var distributeUrlV:Vector.<String> = new Vector.<String>();
+												distributeUrlV.push(distributeMapName);
+												plusSourceCount();
+												distributeMediaLoader.addEventListener(Event.COMPLETE,handlerDistributeMediaLoaderComplete);
+												distributeMediaLoader.loadList(distributeUrlV);
+												
 											}
 										}
 									}
@@ -156,9 +172,9 @@
 													mediaUrlV.push(mediaDO.url);
 												}
 												if(mediaUrlV.length > 0){
-													mediaLoader.loadList(mediaUrlV);
 													plusSourceCount();
 													mediaLoader.addEventListener(Event.COMPLETE,handlerMediaLoaderComplete);
+													mediaLoader.loadList(mediaUrlV);
 												}
 											}
 										}
@@ -230,6 +246,14 @@
 			mediaDO.mediaList = mediaLoader.mediaList;
 			subSourceCount();
 		}
+		
+		private function handlerDistributeMediaLoaderComplete(e:Event):void{
+			var mediaLoader:MediaLoader = e.currentTarget as MediaLoader;
+			var bizDO:BizDO = mediaLoader.data as BizDO;
+			bizDO.distributeMap = mediaLoader.mediaList[0];
+			subSourceCount();
+		}
+		
 		
 		private function handlerSoundLoaderComplete(e:Event):void{
 			var mediaLoader:Mp3Loader = e.currentTarget as Mp3Loader;

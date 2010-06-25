@@ -5,18 +5,26 @@ package com.snsoft.tvc2.map{
 	import com.snsoft.tvc2.dataObject.DataDO;
 	import com.snsoft.tvc2.dataObject.ListDO;
 	import com.snsoft.tvc2.dataObject.TextPointDO;
+	import com.snsoft.tvc2.text.EffectText;
 	import com.snsoft.tvc2.util.StringUtil;
+	import com.snsoft.util.ColorTransformUtil;
 	
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
 	
+	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.TimerEvent;
+	import flash.geom.Rectangle;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
+	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.utils.Timer;
+	
+	[Style(name="cutline_default_skin", type="Class")]
 	
 	[Style(name="myTextFormat", type="Class")]
 	
@@ -39,12 +47,15 @@ package com.snsoft.tvc2.map{
 			this.timeOut = timeOut;
 		}
 		
+		public static const CUTLINE_DEFAULT_SKIN:String = "cutline_default_skin";
+		
 		public static const TEXT_FORMAT:String = "myTextFormat";
 		
 		/**
 		 * 
 		 */		
 		private static var defaultStyles:Object = {
+			cutline_default_skin:"Cutline_default_skin",
 			myTextFormat:new TextFormat("宋体",18,0x000000)
 		};
 		
@@ -81,6 +92,40 @@ package com.snsoft.tvc2.map{
 			this.addChild(mapView);
 			this.listDOV = dataDO.data;
 			this.listCount = 0;
+			var cutLine:Sprite = new Sprite();
+			var rect:Rectangle = mapView.getRect(this);
+			cutLine.x = rect.x + rect.width;
+			cutLine.y = rect.y + rect.height;
+			this.addChild(cutLine);
+			
+			for(var i:int = 0;i< listDOV.length;i++){
+				var color:uint = 0x000000;
+				if(i == 0){
+					color = 0x000099;
+				}
+				else if(i == 1){
+					color = 0x999900;
+				}
+				else if(i == 2){
+					color = 0x009900; 
+				}
+				else if(i == 3){
+					color = 0x990000; 
+				}
+				var listDO:ListDO = listDOV[i];
+				
+				
+				var cutLineMC:MovieClip = getDisplayObjectInstance(getStyleValue(CUTLINE_DEFAULT_SKIN)) as MovieClip;
+				cutLineMC.y = - cutLineMC.height - cutLine.height;
+				ColorTransformUtil.setColor(cutLineMC,color);
+				cutLine.addChild(cutLineMC);
+				var name:String = listDO.name;
+				var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
+				tft.color = color;
+				var tfd:TextField = EffectText.creatShadowTextField(name,tft);
+				tfd.y = - tfd.height - cutLine.height;
+				cutLine.addChild(tfd);
+			}
 			playAreaView();
 			
 		} 

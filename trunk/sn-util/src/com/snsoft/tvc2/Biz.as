@@ -159,7 +159,7 @@
 						marketMap.y = marketMapY;
 						marketMap.s = marketMapS;
 						
-						uilcs = new PriceDistribute(dataDO,marketMainDO,marketMap);
+						uilcs = new PriceDistribute(dataDO,marketMainDO,marketMap,bizDO.distributeMap);
 					}
 					else if(type == BIZ_TYPE_DISTRIBUTE_AREA){
 						uilcs = new PriceMapArea(dataDO, bizDO.mapView);
