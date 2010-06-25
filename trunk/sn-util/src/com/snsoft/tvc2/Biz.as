@@ -19,6 +19,7 @@
 	import com.snsoft.tvc2.media.Mp3Player;
 	import com.snsoft.tvc2.media.Mp3sPlayer;
 	import com.snsoft.tvc2.media.TextPlayer;
+	import com.snsoft.tvc2.media.TextsPlayer;
 	import com.snsoft.tvc2.util.Counter;
 	import com.snsoft.tvc2.util.StringUtil;
 	import com.snsoft.util.HashVector;
@@ -105,18 +106,10 @@
 				if(textOutsHv != null){
 					for(var i3:int = 0;i3 < textOutsHv.length;i3 ++){
 						var textOutsDO:TextOutsDO = textOutsHv.findByIndex(i3) as TextOutsDO;
-						var textOutDOHv:Vector.<TextOutDO> = textOutsDO.textOutDOHv;
-						for(var j3:int = 0;j3 < textOutDOHv.length;j3 ++){
-							var textOutDO:TextOutDO = textOutDOHv[j3];
-							var text:String = textOutDO.text;
-							if(StringUtil.isEffective(text)){
-								var tft:TextFormat = new TextFormat();//需要实现此文本格式对象
-								var textPlayer:TextPlayer = new TextPlayer(text,tft,textOutDO.timeOffset,textOutDO.timeLength,textOutDO.timeout);
-								textPlayer.addEventListener(Event.COMPLETE,handlerCmp);
-								counter.plus();
-								this.addChild(textPlayer);
-							}
-						}
+						var textsPlayer:TextsPlayer = new TextsPlayer(textOutsDO);
+						counter.plus();
+						textsPlayer.addEventListener(Event.COMPLETE,handlerCmp);
+						this.addChild(textsPlayer);
 					}
 				}
 				

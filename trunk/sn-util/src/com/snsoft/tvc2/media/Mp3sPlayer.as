@@ -25,7 +25,6 @@ package com.snsoft.tvc2.media{
 		 * 
 		 */
 		override protected function play():void{
-			var soundDOHv:Vector.<SoundDO> = soundsDO.soundDOHv;
 			playNum = 0;
 			playNextMp3s();
 		}

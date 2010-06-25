@@ -25,7 +25,6 @@ package com.snsoft.tvc2.media{
 		 * 
 		 */
 		override protected function play():void{
-			var mediaDOHv:Vector.<MediaDO> = mediasDO.mediaDOHv;
 			playNum = 0;
 			playNextMedias();
 		}
@@ -38,7 +37,7 @@ package com.snsoft.tvc2.media{
 					}
 					var mediaDO:MediaDO = mediasDO.mediaDOHv[playNum];
 					mediaPlayer = new MediaPlayer(mediaDO.mediaList,mediaDO.timeOffset,mediaDO.timeLength,mediaDO.timeout);
-					mediaPlayer.addEventListener(Event.COMPLETE,handlerMp3PlayerCMP);
+					mediaPlayer.addEventListener(Event.COMPLETE,handlerMediaPlayerCMP);
 					this.addChild(mediaPlayer);
 				}
 				else{
@@ -48,7 +47,7 @@ package com.snsoft.tvc2.media{
 			}
 		}
 		
-		private function handlerMp3PlayerCMP(e:Event):void{
+		private function handlerMediaPlayerCMP(e:Event):void{
 			playNum ++;
 			playNextMedias();
 		}
