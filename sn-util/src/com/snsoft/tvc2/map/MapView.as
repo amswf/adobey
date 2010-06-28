@@ -55,12 +55,15 @@ package com.snsoft.tvc2.map{
 			super();
 		}
 		
+		public static const MAP_BACK_SKIN:String = "mapBackSkin";
+		
 		public static const TEXT_FORMAT:String = "myTextFormat";
 		
 		/**
 		 * 
 		 */		
 		private static var defaultStyles:Object = {
+			mapBackSkin:"Map_backskin",
 			myTextFormat:new TextFormat("宋体",13,0x000000)
 		};
 		
@@ -138,6 +141,12 @@ package com.snsoft.tvc2.map{
 					_backMaskRec = backMask.getRect(this.backLayer);
 					var sizep:Point = new Point(_backMaskRec.width,_backMaskRec.height);
 					var placep:Point = new Point(_backMaskRec.x,_backMaskRec.y);
+					
+					var back:DisplayObject = getDisplayObjectInstance(getStyleValue(MAP_BACK_SKIN));
+					back.mask = backMask;
+					MapUtil.setSpriteSize(back,sizep);
+					MapUtil.setSpritePlace(back,placep);
+					this.backLayer.addChild(back);
 				}
 				else{
 					trace("WorkSpaceDO:"+WorkSpaceDO);
