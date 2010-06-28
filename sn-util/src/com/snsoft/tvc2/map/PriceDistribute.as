@@ -139,6 +139,8 @@
 		override protected function play():void {
 			
 			this.addChild(mapView);
+			mapView.width = 490;
+			mapView.height = 410;
 			var marketCoordsDOHV:HashVector = marketMainDO.marketCoordsDOHV;
 			this.marketCoordsDO = marketCoordsDOHV.findByName(MAP_NAME) as MarketCoordsDO;
 			this.listDOV = dataDO.data;
