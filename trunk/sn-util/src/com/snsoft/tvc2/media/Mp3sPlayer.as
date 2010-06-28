@@ -42,7 +42,6 @@ package com.snsoft.tvc2.media{
 					this.addChild(mp3Player);
 				}
 				else{
-					this.isPlayCmp = true;
 					this.dispatchEventState();
 				}
 			}
@@ -54,17 +53,7 @@ package com.snsoft.tvc2.media{
 		}
 		
 		override protected function dispatchEventState():void{
-			var sign:Boolean = false;
-			if(this.isPlayCmp && this.isTimeLen){
-				sign = true;
-			}
-			else if(this.isTimeOut){
-				sign = true;
-			}
-			
-			if(sign){
-				this.dispatchEvent(new Event(Event.COMPLETE));
-			}
+			this.dispatchEvent(new Event(Event.COMPLETE));	 
 		}
 	}
 }

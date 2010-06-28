@@ -18,7 +18,7 @@ package com.snsoft.tvc2.media{
 		//当前播放序号
 		private var playNum:int;
 		
-		 
+		
 		
 		public function MediaPlayer(mediaList:Vector.<DisplayObject>,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0){
 			super();
@@ -29,7 +29,7 @@ package com.snsoft.tvc2.media{
 			this.playNum = 0;
 		}
 		
-		 
+		
 		
 		/**
 		 * 播放
@@ -89,28 +89,31 @@ package com.snsoft.tvc2.media{
 			}
 		}
 		
-		 
+		
 		
 		/**
 		 * 
 		 * 
 		 */		
 		override protected function dispatchEventState():void{
-			var sign:Boolean = false;
-			if(this.isPlayCmp && this.isTimeLen){
-				sign = true;
-			}
-			else if(this.isTimeOut){
-				sign = true;
-			}
-			
-			if(sign){
-				if(playingMedia is MovieClip){
-					var mc:MovieClip = playingMedia as MovieClip;
-					mc.soundTransform.volume = 0;
-					mc.stop();
+			if(!isDispatchEvent){
+				var sign:Boolean = false;
+				if(this.isPlayCmp && this.isTimeLen){
+					sign = true;
 				}
-				this.dispatchEvent(new Event(Event.COMPLETE));
+				else if(this.isTimeOut){
+					sign = true;
+				}
+				
+				if(sign){
+					if(playingMedia is MovieClip){
+						var mc:MovieClip = playingMedia as MovieClip;
+						mc.soundTransform.volume = 0;
+						mc.stop();
+					}
+					isDispatchEvent = true;
+					this.dispatchEvent(new Event(Event.COMPLETE));
+				}
 			}
 		}
 		
