@@ -55,18 +55,8 @@ package com.snsoft.tvc2.media{
 			playNextMp3s();
 		}
 		
-		override protected function dispatchEventState():void{
-			var sign:Boolean = false;
-			if(this.isPlayCmp && this.isTimeLen){
-				sign = true;
-			}
-			else if(this.isTimeOut){
-				sign = true;
-			}
-			
-			if(sign){
-				this.dispatchEvent(new Event(Event.COMPLETE));
-			}
+		override protected function dispatchEventState():void{ 
+			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
 	}
 }

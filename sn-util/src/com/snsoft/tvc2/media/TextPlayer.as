@@ -43,16 +43,19 @@ package com.snsoft.tvc2.media{
 		 * 
 		 */		
 		override protected function dispatchEventState():void{
-			var sign:Boolean = false;
-			if(this.isTimeLen){
-				sign = true;
-			}
-			else if(this.isTimeOut){
-				sign = true;
-			}
-			
-			if(sign){
-				this.dispatchEvent(new Event(Event.COMPLETE));
+			if(!isDispatchEvent){
+				var sign:Boolean = false;
+				if(this.isPlayCmp && this.isTimeLen){
+					sign = true;
+				}
+				else if(this.isTimeOut){
+					sign = true;
+				}
+				
+				if(sign){
+					isDispatchEvent = true;
+					this.dispatchEvent(new Event(Event.COMPLETE));
+				}
 			}
 		}
 		

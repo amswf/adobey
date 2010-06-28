@@ -38,6 +38,9 @@ package com.snsoft.tvc2{
 		//是否已经播放
 		protected var isPlay:Boolean;
 		
+		//是否已经完成
+		protected var isDispatchEvent:Boolean;
+		
 		public function Business(){
 			super();
 			this.addEventListener(Event.ADDED_TO_STAGE,handlerAddedToStage);

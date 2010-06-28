@@ -7,12 +7,14 @@ package com.snsoft.tvc2.util{
 		{
 		}
 		
-		public function plus():void{
-			count ++;
+		public function plus(i:int = 1):void{
+			count += i;
+			trace("Counter.plus",count);
 		}
 		
 		public function sub():void{
 			count --;
+			trace("Counter.sub",count);
 		}
 
 		public function get count():int

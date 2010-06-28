@@ -78,48 +78,28 @@
 		private function play():void{
 			SpriteUtil.deleteAllChild(this);
 			if(bizDO != null){
+				
 				var mediasHv:HashVector = bizDO.mediasHv;
-				if(mediasHv != null){
-					for(var i:int = 0;i < mediasHv.length;i ++){
-						var mediasDO:MediasDO = mediasHv.findByIndex(i) as MediasDO;
-						var mediasPlayer:MediasPlayer = new MediasPlayer(mediasDO);
-						counter.plus();
-						mediasPlayer.addEventListener(Event.COMPLETE,handlerCmp);
-						this.addChild(mediasPlayer);
-						
-					}
+				if(mediasHv != null){ 
+					counter.plus(mediasHv.length);
 				}
 				
 				var soundsHv:HashVector = bizDO.soundsHv;
-				if(soundsHv != null){
-					for(var ii:int = 0;ii < soundsHv.length;ii ++){
-						
-						var soundsDO:SoundsDO = soundsHv.findByIndex(ii) as SoundsDO;
-						var mp3sPlayer:Mp3sPlayer = new Mp3sPlayer(soundsDO);
-						counter.plus();
-						mp3sPlayer.addEventListener(Event.COMPLETE,handlerCmp);
-						this.addChild(mp3sPlayer); 
-					}
+				if(soundsHv != null){ 
+					counter.plus(soundsHv.length);
 				}
 				
 				var textOutsHv:HashVector = bizDO.textOutsHv;
 				if(textOutsHv != null){
-					for(var i3:int = 0;i3 < textOutsHv.length;i3 ++){
-						var textOutsDO:TextOutsDO = textOutsHv.findByIndex(i3) as TextOutsDO;
-						var textsPlayer:TextsPlayer = new TextsPlayer(textOutsDO);
-						counter.plus();
-						textsPlayer.addEventListener(Event.COMPLETE,handlerCmp);
-						this.addChild(textsPlayer);
-					}
+					counter.plus(textOutsHv.length);
 				}
 				
 				var dataDO:DataDO = bizDO.dataDO;
 				var type:String = bizDO.type;
+				var uilcs:UIComponent = null;
 				if(dataDO != null){
-					var uilcs:UIComponent;
 					if(type == BIZ_TYPE_POLYLINES){
 						uilcs = new UILineCharts(dataDO);
-						
 					}
 					else if(type == BIZ_TYPE_PILLAR){
 						uilcs = new UIPillarCharts(dataDO);
@@ -153,26 +133,56 @@
 						uilcs.width = 450;
 						uilcs.height = 300;
 						counter.plus();
-						this.addChild(uilcs);
-						uilcs.drawNow();
 					}
 				}
 				
+				if(mediasHv != null){
+					for(var i:int = 0;i < mediasHv.length;i ++){
+						var mediasDO:MediasDO = mediasHv.findByIndex(i) as MediasDO;
+						var mediasPlayer:MediasPlayer = new MediasPlayer(mediasDO);
+						mediasPlayer.addEventListener(Event.COMPLETE,handlerCmp);
+						this.addChild(mediasPlayer);
+						
+					}
+				}
+				
+				if(soundsHv != null){
+					for(var ii:int = 0;ii < soundsHv.length;ii ++){
+						var soundsDO:SoundsDO = soundsHv.findByIndex(ii) as SoundsDO;
+						var mp3sPlayer:Mp3sPlayer = new Mp3sPlayer(soundsDO);
+						mp3sPlayer.addEventListener(Event.COMPLETE,handlerCmp);
+						this.addChild(mp3sPlayer); 
+					}
+				}
+				
+				if(textOutsHv != null){
+					for(var i3:int = 0;i3 < textOutsHv.length;i3 ++){
+						var textOutsDO:TextOutsDO = textOutsHv.findByIndex(i3) as TextOutsDO;
+						var textsPlayer:TextsPlayer = new TextsPlayer(textOutsDO);
+						textsPlayer.addEventListener(Event.COMPLETE,handlerCmp);
+						this.addChild(textsPlayer);
+					}
+				}
+			
+				if(uilcs != null){
+					this.addChild(uilcs);
+					uilcs.drawNow();
+				}
 			}
 		}
 		
 		private function handlerCmp(e:Event):void{
+			trace (e.currentTarget);
 			counter.sub();
 			dispatchAllEvent();
 		}
 		
 		private function dispatchAllEvent():void{
-			trace(counter.count);
+			trace("Biz.counter.count",counter.count);
 			if(counter.count == 0){
 				trace("dispatchAllEvent");
 				this.dispatchEvent(new Event(Event.COMPLETE));
 			}
 		}
-		
 	}
 }
