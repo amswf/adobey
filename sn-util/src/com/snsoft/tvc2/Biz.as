@@ -81,16 +81,19 @@
 				
 				var mediasHv:HashVector = bizDO.mediasHv;
 				if(mediasHv != null){ 
+					trace("mediasHv.length",mediasHv.length);
 					counter.plus(mediasHv.length);
 				}
 				
 				var soundsHv:HashVector = bizDO.soundsHv;
 				if(soundsHv != null){ 
+					trace("soundsHv.length",soundsHv.length);
 					counter.plus(soundsHv.length);
 				}
 				
 				var textOutsHv:HashVector = bizDO.textOutsHv;
 				if(textOutsHv != null){
+					trace("textOutsHv.length",textOutsHv.length);
 					counter.plus(textOutsHv.length);
 				}
 				
@@ -122,17 +125,20 @@
 						marketMap.y = marketMapY;
 						marketMap.s = marketMapS;
 						
-						uilcs = new PriceDistribute(dataDO,marketMainDO,marketMap,bizDO.distributeMap);
+						uilcs = new PriceDistribute(dataDO,marketMainDO,marketMap,bizDO.mapView);
 					}
 					else if(type == BIZ_TYPE_DISTRIBUTE_AREA){
 						uilcs = new PriceMapArea(dataDO, bizDO.mapView);
 					}
 					
 					if(uilcs != null){
+						trace("uilcs");
+						counter.plus();
 						uilcs.addEventListener(Event.COMPLETE,handlerCmp);
 						uilcs.width = 450;
 						uilcs.height = 300;
-						counter.plus();
+						uilcs.x = 80;
+						uilcs.y = 120;
 					}
 				}
 				
@@ -172,7 +178,7 @@
 		}
 		
 		private function handlerCmp(e:Event):void{
-			trace (e.currentTarget);
+			trace(e.currentTarget);
 			counter.sub();
 			dispatchAllEvent();
 		}

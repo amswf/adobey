@@ -57,16 +57,16 @@
 		
 		private var currentBroadcastListMC:Sprite;
 		
-		private var distributeMap:DisplayObject;
+		private var mapView:MapView;
 		
 		private var cutLine:Sprite;
 		
-		public function PriceDistribute(dataDO:DataDO,marketMainDO:MarketMainDO,marketMap:MarketMap,distributeMap:DisplayObject,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0)	{
+		public function PriceDistribute(dataDO:DataDO,marketMainDO:MarketMainDO,marketMap:MarketMap,mapView:MapView,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0)	{
 			super();
 			this.dataDO = dataDO;
 			this.marketMainDO = marketMainDO;
 			this.marketMap = marketMap;
-			this.distributeMap = distributeMap;
+			this.mapView = mapView;
 			this.delayTime = delayTime;
 			this.timeLength = timeLength;
 			this.timeOut = timeOut;
@@ -138,7 +138,7 @@
 		
 		override protected function play():void {
 			
-			this.addChild(distributeMap);
+			this.addChild(mapView);
 			var marketCoordsDOHV:HashVector = marketMainDO.marketCoordsDOHV;
 			this.marketCoordsDO = marketCoordsDOHV.findByName(MAP_NAME) as MarketCoordsDO;
 			this.listDOV = dataDO.data;
@@ -147,7 +147,7 @@
 			this.broadcastListCount = 0;
 			
 			cutLine = new Sprite();
-			var rect:Rectangle = this.distributeMap.getRect(this);
+			var rect:Rectangle = this.mapView.getRect(this);
 			cutLine.x = rect.x + rect.width;
 			cutLine.y = rect.y + rect.height;
 			this.addChild(cutLine);
