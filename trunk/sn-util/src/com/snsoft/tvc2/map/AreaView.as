@@ -90,7 +90,7 @@ package com.snsoft.tvc2.map{
 					var pointAry:Array = mado.pointArray.toArray();
 					var cl:Shape = MapViewDraw.drawFill(0xffffff,0x000000,1,1,pointAry);
 					areaBtnLayer.addChild(cl);
-					setAreaColor(0xcccccc);
+					setAreaColor(0xcccccc,0);
 					var dobj:Rectangle = cl.getRect(this);
 					
 //					var tft:TextFormat = this.getStyleValue(TEXT_FORMAT) as TextFormat;
