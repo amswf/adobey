@@ -92,11 +92,12 @@ package com.snsoft.tvc2.map{
 					areaBtnLayer.addChild(cl);
 					setAreaColor(0xcccccc);
 					var dobj:Rectangle = cl.getRect(this);
-					var tft:TextFormat = this.getStyleValue(TEXT_FORMAT) as TextFormat;
-					var tfd:TextField = EffectText.creatShadowTextField(mado.areaName,tft);
-					tfd.x =dobj.x + (dobj.width - tfd.width) * 0.5 + mado.areaNamePlace.x;
-					tfd.y =dobj.y + (dobj.height - tfd.height) * 0.5 + mado.areaNamePlace.y;
-					areaNameLayer.addChild(tfd);
+					
+//					var tft:TextFormat = this.getStyleValue(TEXT_FORMAT) as TextFormat;
+//					var tfd:TextField = EffectText.creatShadowTextField(mado.areaName,tft);
+//					tfd.x =dobj.x + (dobj.width - tfd.width) * 0.5 + mado.areaNamePlace.x;
+//					tfd.y =dobj.y + (dobj.height - tfd.height) * 0.5 + mado.areaNamePlace.y;
+//					areaNameLayer.addChild(tfd);
 				}
 				else{
 					trace("mapAreaDO:"+mapAreaDO);
