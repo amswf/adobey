@@ -15,6 +15,7 @@
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.filters.DropShadowFilter;
+	import flash.geom.ColorTransform;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
@@ -188,17 +189,30 @@
 					uil.setStyle(POINT_DEFAULT_SKIN,this.getStyleValue(POINT_DEFAULT_SKIN));
 					uil.setStyle(TEXT_FORMAT,this.getStyleValue(TEXT_FORMAT));
 					uilv.push(uil);
+					var color4:uint = 0x000000;
+					//var ctf:ColorTransform = new ColorTransform();
+					var lineSkin:String = "Line_default_skin";
+					var pointSkin:String = "Point_default_skin";
 					if(i4 == 0){
-						uil.transformColor = 0x990000;
+						color4 = 0xFF7F00;
+						lineSkin = "Line_yello_skin";
+						pointSkin = "Point_yello_skin";
 					}
-					if(i4 == 1){
-						uil.transformColor = 0x009900;
+					else if(i4 == 1){
+						color4 = 0x007F00;
+						lineSkin = "Line_green_skin";
+						pointSkin = "Point_green_skin";
 					}
-					if(i4 == 2){
-						uil.transformColor = 0x000099; 
+					else if(i4 == 2){
+						color4 = 0x7F0000; 
+						lineSkin = "Line_red_skin";
+						pointSkin = "Point_red_skin";
 					}
-					ColorTransformUtil.setColor(uil,uil.transformColor);
-					
+					//ColorTransformUtil.setColor(uil,uil.transformColor);
+					//uil.transform.colorTransform = ctf;
+					uil.transformColor = color4;
+					uil.setStyle(UILine.LINE_DEFAULT_SKIN,lineSkin);
+					uil.setStyle(UILine.POINT_DEFAULT_SKIN,pointSkin);
 					//图例
 					var ldo:ListDO = ldv[i4];
 					var cutlineText:TextField = new TextField();
@@ -212,9 +226,9 @@
 					TextFieldUtil.fitSize(cutlineText);
 					
 					
-					var l:MovieClip = getDisplayObjectInstance(getStyleValue(LINE_DEFAULT_SKIN)) as MovieClip;
-					var s:MovieClip = getDisplayObjectInstance(getStyleValue(POINT_DEFAULT_SKIN)) as MovieClip;
-					var e:MovieClip = getDisplayObjectInstance(getStyleValue(POINT_DEFAULT_SKIN)) as MovieClip;
+					var l:MovieClip = getDisplayObjectInstance(lineSkin) as MovieClip;
+					var s:MovieClip = getDisplayObjectInstance(pointSkin) as MovieClip;
+					var e:MovieClip = getDisplayObjectInstance(pointSkin) as MovieClip;
 					var clspr:Sprite = new Sprite();
 					clspr.addChild(l);
 					clspr.addChild(s);
