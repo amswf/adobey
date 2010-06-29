@@ -15,6 +15,7 @@
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.filters.DropShadowFilter;
+	import flash.geom.ColorTransform;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
@@ -194,15 +195,25 @@
 				
 				//图例
 				for(var i6:int = 0;i6<ldv.length;i6++){
-					var color:uint = 0x000000;
+					var color6:uint = 0x000000;
+					var ctf6:ColorTransform = new ColorTransform();
 					if(i6 == 0){
-						color = 0x990000;
+						color6 = 0xFF7F00;
+						ctf6.redOffset = 255;
+						ctf6.greenOffset = 0;
+						ctf6.blueOffset = -255;
 					}
-					if(i6 == 1){
-						color = 0x009900;
+					else if(i6 == 1){
+						color6 = 0x007F00;
+						ctf6.redOffset = -255;
+						ctf6.greenOffset = 0;
+						ctf6.blueOffset = -255;
 					}
-					if(i6 == 2){
-						color = 0x000099; 
+					else if(i6 == 2){
+						color6 = 0x7F0000; 
+						ctf6.redOffset = 0;
+						ctf6.greenOffset = -255;
+						ctf6.blueOffset = -255;
 					}
 					var ldo:ListDO = ldv[i6];
 					var cutlineText:TextField = new TextField();
@@ -211,7 +222,7 @@
 					cutlineText.text = ldo.text;
 					cutlineText.selectable = false;
 					var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
-					tft.color = color;
+					tft.color = color6;
 					cutlineText.setTextFormat(tft);
 					TextFieldUtil.fitSize(cutlineText);
 					
@@ -222,7 +233,8 @@
 					var px:Number = pillar.width / 2;
 					var py:Number = pillar.height;
 					clspr.y = cutlineSprite.height + py;
-					ColorTransformUtil.setColor(clspr,color);
+					//ColorTransformUtil.setColor(clspr,color);
+					clspr.transform.colorTransform = ctf6;
 					cutlineSprite.addChild(clspr);
 				}
 				
@@ -248,16 +260,27 @@
 								
 								uip.x = uip.width * pillarNum + xbl;
 								var color4:uint = 0x000000;
+								var ctf:ColorTransform = new ColorTransform();
 								if(i4 == 0){
-									color4 = 0x990000;
+									color4 = 0xFF7F00;
+									ctf.redOffset = 255;
+									ctf.greenOffset = 0;
+									ctf.blueOffset = -255;
 								}
-								if(i4 == 1){
-									color4 = 0x009900;
+								else if(i4 == 1){
+									color4 = 0x007F00;
+									ctf.redOffset = -255;
+									ctf.greenOffset = 0;
+									ctf.blueOffset = -255;
 								}
-								if(i4 == 2){
-									color4 = 0x000099; 
+								else if(i4 == 2){
+									color4 = 0x7F0000; 
+									ctf.redOffset = 0;
+									ctf.greenOffset = -255;
+									ctf.blueOffset = -255;
 								}
-								ColorTransformUtil.setColor(uip,color4);
+								//ColorTransformUtil.setColor(uip,color4);
+								uip.transform.colorTransform = ctf;
 								uip.transformColor = color4;
 								lineNum ++;
 								this.lineSprite.addChild(uip);
