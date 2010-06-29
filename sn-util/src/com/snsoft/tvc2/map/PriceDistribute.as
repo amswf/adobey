@@ -215,6 +215,7 @@
 					var name:String = tpdo.name;
 					var marketCoordDO:MarketCoordDO = marketCoordsDO.getRealCoordMarketCoordDO(name);
 					var spdobj:MovieClip = getDisplayObjectInstance(getStyleValue(SMALL_POINT_DEFAULT_SKIN)) as MovieClip;
+					trace("(marketCoordDO.x - this.marketMap.x) * this.marketMap.s;");
 					spdobj.x = (marketCoordDO.x - this.marketMap.x) * this.marketMap.s;
 					spdobj.y = (marketCoordDO.y - this.marketMap.y) * this.marketMap.s;
 					listMC.addChild(spdobj);

@@ -1,36 +1,30 @@
 ﻿package com.snsoft.tvc2{
-	import com.snsoft.tvc2.chart.UICoorChartBase;
 	import com.snsoft.tvc2.chart.UILineCharts;
 	import com.snsoft.tvc2.chart.UIPillarCharts;
 	import com.snsoft.tvc2.dataObject.BizDO;
 	import com.snsoft.tvc2.dataObject.DataDO;
 	import com.snsoft.tvc2.dataObject.MarketMainDO;
 	import com.snsoft.tvc2.dataObject.MarketMap;
-	import com.snsoft.tvc2.dataObject.MediaDO;
 	import com.snsoft.tvc2.dataObject.MediasDO;
-	import com.snsoft.tvc2.dataObject.SoundDO;
 	import com.snsoft.tvc2.dataObject.SoundsDO;
-	import com.snsoft.tvc2.dataObject.TextOutDO;
 	import com.snsoft.tvc2.dataObject.TextOutsDO;
+	import com.snsoft.tvc2.dataObject.VarDO;
 	import com.snsoft.tvc2.map.PriceDistribute;
 	import com.snsoft.tvc2.map.PriceMapArea;
-	import com.snsoft.tvc2.media.MediaPlayer;
 	import com.snsoft.tvc2.media.MediasPlayer;
-	import com.snsoft.tvc2.media.Mp3Player;
 	import com.snsoft.tvc2.media.Mp3sPlayer;
-	import com.snsoft.tvc2.media.TextPlayer;
 	import com.snsoft.tvc2.media.TextsPlayer;
+	import com.snsoft.tvc2.text.EffectText;
+	import com.snsoft.tvc2.text.TextStyles;
 	import com.snsoft.tvc2.util.Counter;
-	import com.snsoft.tvc2.util.StringUtil;
 	import com.snsoft.util.HashVector;
 	import com.snsoft.util.SpriteUtil;
 	
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
 	
-	import flash.display.DisplayObject;
 	import flash.events.Event;
-	import flash.media.Sound;
+	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
 	public class Biz extends UIComponent{
@@ -174,6 +168,28 @@
 					this.addChild(uilcs);
 					uilcs.drawNow();
 				}
+				
+				var titleVDO:VarDO = bizDO.varDOHv.findByName("title") as VarDO;
+				var titleVar:String = String(titleVDO.getAttribute("text"));
+				var titleTfd:TextField = EffectText.creatTextByStyleName(titleVar,TextStyles.STYLE_TITLE);
+				titleTfd.y = 42;
+				titleTfd.x = ( SystemConfig.stageSize.x - titleTfd.width ) / 2
+				
+				var goodsVDO:VarDO = bizDO.varDOHv.findByName("goods") as VarDO;
+				var goodsVar:String = String(goodsVDO.getAttribute("text"));
+				var goodsTfd:TextField = EffectText.creatTextByStyleName(goodsVar,TextStyles.STYLE_GOODS);
+				goodsTfd.x = ( SystemConfig.stageSize.x - goodsTfd.width ) / 2
+				goodsTfd.y = titleTfd.getRect(this).bottom + 10;	
+				
+				var dateTextVDO:VarDO = bizDO.varDOHv.findByName("dateText") as VarDO;
+				var dateTextVar:String = String(dateTextVDO.getAttribute("text"));
+				var dateTextTfd:TextField = EffectText.creatTextByStyleName(dateTextVar,TextStyles.STYLE_DATE_TEXT);
+				dateTextTfd.x = ( SystemConfig.stageSize.x - dateTextTfd.width ) / 2
+				dateTextTfd.y = goodsTfd.getRect(this).bottom + 10;
+				
+				this.addChild(titleTfd);
+				this.addChild(goodsTfd);
+				this.addChild(dateTextTfd);
 			}
 		}
 		
