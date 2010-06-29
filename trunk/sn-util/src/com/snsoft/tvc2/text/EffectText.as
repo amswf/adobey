@@ -34,5 +34,14 @@ package com.snsoft.tvc2.text{
 			tfd.filters = filterAry;
 			return tfd;
 		}
+		
+		public static function creatTextByStyle(text:String,textStyle:TextStyle):TextField{
+			var tfd:TextField = creatShadowTextField(text,textStyle.textFormat,textStyle.inSColor,textStyle.outSColor,textStyle.isEmbedFont);
+			return tfd;
+		}
+		public static function creatTextByStyleName(text:String,styleName:String):TextField{
+			var tfd:TextField = creatTextByStyle(text,TextStyles.getTextStyle(styleName));
+			return tfd;
+		}
 	}
 }

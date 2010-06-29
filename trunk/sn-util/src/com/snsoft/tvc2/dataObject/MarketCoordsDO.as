@@ -46,6 +46,7 @@ package com.snsoft.tvc2.dataObject{
 			var mcdo:MarketCoordDO = findMarketCoordDO(marketCoordName);
 			if(mcdo != null){
 				mcdo.x = (mcdo.x - this.x) * this.s;
+				mcdo.y = (mcdo.y - this.y) * this.s;
 			}
 			return mcdo;
 		}

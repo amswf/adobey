@@ -18,6 +18,7 @@ package com.snsoft.tvc2.text{
 			if(embedFontName != null && embedFontName.length > 0){
 				textFormat.font = embedFontName;
 			}
+			tfd.selectable = false;
 			tfd.setTextFormat(textFormat);
 			TextFieldUtil.fitSize(tfd);
 			tfd.addEventListener(Event.ADDED_TO_STAGE,handler);
