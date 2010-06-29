@@ -8,6 +8,8 @@ package com.snsoft.tvc2{
 	import fl.core.UIComponent;
 	
 	import flash.events.Event;
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	
 	public class TimeLine extends UIComponent{
 		
@@ -16,6 +18,24 @@ package com.snsoft.tvc2{
 		private var bizIndex:int = 0;
 		
 		private var marketMainDO:MarketMainDO;
+		
+		private var forwardBiz:Biz;
+		
+		private var currentBiz:Biz;
+		
+		private var switchAddTimer:Timer;
+		
+		private var switchRemoveTimer:Timer;
+		
+		private var switchTimerDelay:int = 20;
+		
+		private var switchTimerRepeatCount:int = 10;
+		
+		private var switchTimerCmp:Boolean = false;
+		
+		private var bizCmp:Boolean = false;
+		
+		private var switchMoveLenth:Number = 100;
 		
 		public function TimeLine(timeLineDO:TimeLineDO,marketMainDO:MarketMainDO){
 			super();
@@ -48,21 +68,69 @@ package com.snsoft.tvc2{
 			if(bizHv != null && bizIndex < bizHv.length){
 				var bizDO:BizDO = bizHv.findByIndex(bizIndex) as BizDO;
 				if(bizDO != null){
-					var biz:Biz = new Biz(bizDO,marketMainDO);
-					biz.addEventListener(Event.COMPLETE,handlerBizComplete);
-					this.addChild(biz);
-					biz.drawNow();
+					currentBiz = new Biz(bizDO,marketMainDO);
+					currentBiz.alpha = 0;
+					currentBiz.x = currentBiz.x + switchMoveLenth;
+					currentBiz.addEventListener(Event.COMPLETE,handlerBizComplete);
+					this.addChild(currentBiz);
+					currentBiz.drawNow();
+					
+					switchAddTimer = new Timer(switchTimerDelay,switchTimerRepeatCount);
+					switchTimerCmp = false;
+					switchAddTimer.addEventListener(TimerEvent.TIMER,handlerSwitchAddTimer);
+					switchAddTimer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerSwitchAddTimerCmp);
+					switchAddTimer.start();
 				}
 			}
 		}
 		
+		private function handlerSwitchAddTimer(e:Event):void{
+			var palpha:Number = 1 / switchTimerRepeatCount;
+			
+			var px:Number = switchMoveLenth / switchTimerRepeatCount;
+			
+			currentBiz.alpha += palpha;
+			currentBiz.x -= px;
+		}
+		
+		private function handlerSwitchAddTimerCmp(e:Event):void{
+			switchTimerCmp = true;
+			playNextBiz();
+		}
+		
 		private function handlerBizComplete(e:Event):void{
-			var biz:Biz = e.currentTarget as Biz;
-			if(biz != null){
-				this.removeChild(biz);
+			bizCmp = true;
+			playNextBiz();
+		}
+		
+		private function playNextBiz():void{
+			if(bizCmp && switchTimerCmp){
+				bizCmp = false;
+				switchTimerCmp = false;
+				forwardBiz = currentBiz;
+				switchRemoveTimer = new Timer(switchTimerDelay,switchTimerRepeatCount);
+				switchRemoveTimer.addEventListener(TimerEvent.TIMER,handlerSwitchRemoveTimer);
+				switchRemoveTimer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerSwitchRemoveTimerCmp);
+				switchRemoveTimer.start();
 				bizIndex ++;
 				play();
 			}
 		}
+		
+		private function handlerSwitchRemoveTimer(e:Event):void{
+			var palpha:Number = 1 / switchTimerRepeatCount;
+			var px:Number = switchMoveLenth / switchTimerRepeatCount;
+			if(forwardBiz != null){
+				forwardBiz.alpha -= palpha;
+				forwardBiz.x -= px;
+			} 
+		}
+		
+		private function handlerSwitchRemoveTimerCmp(e:Event):void{
+			switchRemoveTimer.removeEventListener(TimerEvent.TIMER,handlerSwitchRemoveTimerCmp);
+			switchRemoveTimer.removeEventListener(TimerEvent.TIMER_COMPLETE,handlerSwitchRemoveTimer);
+			this.removeChild(forwardBiz);
+		}
+		
 	}
 }
