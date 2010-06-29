@@ -196,24 +196,19 @@
 				//图例
 				for(var i6:int = 0;i6<ldv.length;i6++){
 					var color6:uint = 0x000000;
-					var ctf6:ColorTransform = new ColorTransform();
+					//var ctf6:ColorTransform = new ColorTransform();
+					var pillarSkin:String = "Pillar_default_skin";
 					if(i6 == 0){
 						color6 = 0xFF7F00;
-						ctf6.redOffset = 255;
-						ctf6.greenOffset = 0;
-						ctf6.blueOffset = -255;
+						pillarSkin = "Pillar_yello_skin";
 					}
 					else if(i6 == 1){
 						color6 = 0x007F00;
-						ctf6.redOffset = -255;
-						ctf6.greenOffset = 0;
-						ctf6.blueOffset = -255;
+						pillarSkin = "Pillar_green_skin";
 					}
 					else if(i6 == 2){
 						color6 = 0x7F0000; 
-						ctf6.redOffset = 0;
-						ctf6.greenOffset = -255;
-						ctf6.blueOffset = -255;
+						pillarSkin = "Pillar_red_skin";
 					}
 					var ldo:ListDO = ldv[i6];
 					var cutlineText:TextField = new TextField();
@@ -226,7 +221,7 @@
 					cutlineText.setTextFormat(tft);
 					TextFieldUtil.fitSize(cutlineText);
 					
-					var pillar:MovieClip = getDisplayObjectInstance(getStyleValue(PILLAR_DEFAULT_SKIN)) as MovieClip;
+					var pillar:MovieClip = getDisplayObjectInstance(pillarSkin) as MovieClip;
 					pillar.height = 20;
 					var clspr:Sprite = new Sprite();
 					clspr.addChild(pillar);
@@ -234,7 +229,7 @@
 					var py:Number = pillar.height;
 					clspr.y = cutlineSprite.height + py;
 					//ColorTransformUtil.setColor(clspr,color);
-					clspr.transform.colorTransform = ctf6;
+					//clspr.transform.colorTransform = ctf6;
 					cutlineSprite.addChild(clspr);
 				}
 				
@@ -260,27 +255,23 @@
 								
 								uip.x = uip.width * pillarNum + xbl;
 								var color4:uint = 0x000000;
-								var ctf:ColorTransform = new ColorTransform();
+								//var ctf:ColorTransform = new ColorTransform();
+								var pillarSkin4:String = "Pillar_default_skin";
 								if(i4 == 0){
 									color4 = 0xFF7F00;
-									ctf.redOffset = 255;
-									ctf.greenOffset = 0;
-									ctf.blueOffset = -255;
+									pillarSkin4 = "Pillar_yello_skin";
 								}
 								else if(i4 == 1){
 									color4 = 0x007F00;
-									ctf.redOffset = -255;
-									ctf.greenOffset = 0;
-									ctf.blueOffset = -255;
+									pillarSkin4 = "Pillar_green_skin";
 								}
 								else if(i4 == 2){
 									color4 = 0x7F0000; 
-									ctf.redOffset = 0;
-									ctf.greenOffset = -255;
-									ctf.blueOffset = -255;
+									pillarSkin4 = "Pillar_red_skin";
 								}
 								//ColorTransformUtil.setColor(uip,color4);
-								uip.transform.colorTransform = ctf;
+								//uip.transform.colorTransform = ctf;
+								uip.setStyle(UIPillar.PILLAR_DEFAULT_SKIN,pillarSkin4);
 								uip.transformColor = color4;
 								lineNum ++;
 								this.lineSprite.addChild(uip);
