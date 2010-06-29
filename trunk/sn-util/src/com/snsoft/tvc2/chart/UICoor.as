@@ -27,6 +27,8 @@ package com.snsoft.tvc2.chart{
 	
 	[Style(name="graduationY_default_skin", type="Class")]
 	
+	[Style(name="coorback_default_skin", type="Class")]
+	
 	[Style(name="myTextFormat", type="Class")]
 	
 	
@@ -88,6 +90,8 @@ package com.snsoft.tvc2.chart{
 		
 		public static const GRADUATION_Y_DEFAULT_SKIN:String = "graduationY_default_skin";
 		
+		public static const COORBACK_DEFAULT_SKIN:String = "coorback_default_skin";
+		
 		public static const TEXT_FORMAT:String = "myTextFormat";
 		
 		
@@ -101,6 +105,7 @@ package com.snsoft.tvc2.chart{
 			graduationLineY_default_skin:"GraduationLineY_default_skin",
 			graduationX_default_skin:"GraduationX_default_skin",
 			graduationY_default_skin:"GraduationY_default_skin",
+			coorback_default_skin:"CoorBack_default_skin",
 			myTextFormat:new TextFormat("宋体",13,0x000000)
 		};
 		
@@ -147,14 +152,17 @@ package com.snsoft.tvc2.chart{
 					this.coorSprite = new Sprite();
 					this.addChild(this.coorSprite);
 					
+					var coorBakYSkin:MovieClip = getDisplayObjectInstance(getStyleValue(COORBACK_DEFAULT_SKIN)) as MovieClip;
+					coorBakYSkin.width = coorWidth;
+					coorBakYSkin.height = coorHeight;
+					coorBakYSkin.y = - coorHeight;
+					this.coorSprite.addChild(coorBakYSkin);
+					
 					//添加坐标轴
 					var axesXSkin:MovieClip = getDisplayObjectInstance(getStyleValue(COOR_AXES_X_DEFAULT_SKIN)) as MovieClip;
 					var axesYSkin:MovieClip = getDisplayObjectInstance(getStyleValue(COOR_AXES_Y_DEFAULT_SKIN)) as MovieClip;
 					
 					axesXSkin.width = coorWidth;
-					axesXSkin.height = 8;
-					
-					axesYSkin.width = 8;
 					axesYSkin.height = coorHeight;			
 					
 					this.coorSprite.addChild(axesYSkin);
@@ -191,7 +199,15 @@ package com.snsoft.tvc2.chart{
 					for(var i:int = 0;i < this.xGradNum;i++){
 						var gradXSkin:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_X_DEFAULT_SKIN)) as MovieClip;
 						gradXSkin.x = i * xlen;
-						this.coorSprite.addChild(gradXSkin);					
+						this.coorSprite.addChild(gradXSkin);
+						
+						if(i > 0){
+							var gradLineXSkin:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_LINE_X_DEFAULT_SKIN)) as MovieClip;
+							gradLineXSkin.x = i * xlen;;
+							gradLineXSkin.height = coorHeight;
+							gradLineXSkin.y = - coorHeight;
+							this.coorSprite.addChild(gradLineXSkin);
+						}
 					}
 					
 					//y刻度
