@@ -198,12 +198,14 @@ package com.snsoft.tvc2.chart{
 					
 					for(var i:int = 0;i < this.xGradNum;i++){
 						var gradXSkin:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_X_DEFAULT_SKIN)) as MovieClip;
-						gradXSkin.x = i * xlen;
+						
+						var gx:int = int(i * xlen);
+						gradXSkin.x = gx;
 						this.coorSprite.addChild(gradXSkin);
 						
 						if(i > 0){
 							var gradLineXSkin:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_LINE_X_DEFAULT_SKIN)) as MovieClip;
-							gradLineXSkin.x = i * xlen;;
+							gradLineXSkin.x = gx;
 							gradLineXSkin.height = coorHeight;
 							gradLineXSkin.y = - coorHeight;
 							this.coorSprite.addChild(gradLineXSkin);
@@ -213,12 +215,14 @@ package com.snsoft.tvc2.chart{
 					//y刻度
 					for(var j:int = 0;j < this.yGradNum;j++){
 						var gradYSkin:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_Y_DEFAULT_SKIN)) as MovieClip;
-						gradYSkin.y = - j * ylen;
+						
+						var gy:int = int(- j * ylen);
+						gradYSkin.y = gy;
 						this.coorSprite.addChild(gradYSkin);
 						
 						if(j > 0){
 							var gradLineYSkin:MovieClip = getDisplayObjectInstance(getStyleValue(GRADUATION_LINE_Y_DEFAULT_SKIN)) as MovieClip;
-							gradLineYSkin.y = - j * ylen;
+							gradLineYSkin.y = gy;
 							gradLineYSkin.width = coorWidth;
 							this.coorSprite.addChild(gradLineYSkin);
 						}
