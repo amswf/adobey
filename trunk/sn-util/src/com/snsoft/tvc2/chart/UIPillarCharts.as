@@ -3,6 +3,7 @@
 	import com.snsoft.tvc2.dataObject.DataDO;
 	import com.snsoft.tvc2.dataObject.ListDO;
 	import com.snsoft.tvc2.dataObject.TextPointDO;
+	import com.snsoft.tvc2.text.EffectText;
 	import com.snsoft.tvc2.util.NumberUtil;
 	import com.snsoft.util.ColorTransformUtil;
 	import com.snsoft.util.StringUtil;
@@ -211,15 +212,11 @@
 						pillarSkin = "Pillar_red_skin";
 					}
 					var ldo:ListDO = ldv[i6];
-					var cutlineText:TextField = new TextField();
-					cutlineText.y = cutlineSprite.height;
-					cutlineSprite.addChild(cutlineText);
-					cutlineText.text = ldo.text;
-					cutlineText.selectable = false;
 					var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
 					tft.color = color6;
-					cutlineText.setTextFormat(tft);
-					TextFieldUtil.fitSize(cutlineText);
+					var cutlineText:TextField = EffectText.creatShadowTextField(ldo.text,tft);
+					cutlineText.y = cutlineSprite.height;
+					cutlineSprite.addChild(cutlineText);
 					
 					var pillar:MovieClip = getDisplayObjectInstance(pillarSkin) as MovieClip;
 					pillar.height = 20;
