@@ -3,6 +3,7 @@
 	import com.snsoft.tvc2.dataObject.DataDO;
 	import com.snsoft.tvc2.dataObject.ListDO;
 	import com.snsoft.tvc2.dataObject.TextPointDO;
+	import com.snsoft.tvc2.text.EffectText;
 	import com.snsoft.tvc2.util.NumberUtil;
 	import com.snsoft.util.ColorTransformUtil;
 	import com.snsoft.util.StringUtil;
@@ -215,16 +216,11 @@
 					uil.setStyle(UILine.POINT_DEFAULT_SKIN,pointSkin);
 					//图例
 					var ldo:ListDO = ldv[i4];
-					var cutlineText:TextField = new TextField();
-					cutlineText.y = cutlineSprite.height;
-					cutlineSprite.addChild(cutlineText);
-					cutlineText.text = ldo.text;
-					cutlineText.selectable = false;
 					var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
-					tft.color = uil.transformColor;
-					cutlineText.setTextFormat(tft);
-					TextFieldUtil.fitSize(cutlineText);
-					
+					tft.color = color4;
+					var cutlineText:TextField = EffectText.creatShadowTextField(ldo.text,tft);;
+					cutlineText.y = cutlineSprite.height;
+					cutlineSprite.addChild(cutlineText);					
 					
 					var l:MovieClip = getDisplayObjectInstance(lineSkin) as MovieClip;
 					var s:MovieClip = getDisplayObjectInstance(pointSkin) as MovieClip;
