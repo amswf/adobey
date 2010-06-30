@@ -172,7 +172,7 @@
 				
 				var cutLineMC:MovieClip = getDisplayObjectInstance(getStyleValue(SMALL_POINT_DEFAULT_SKIN)) as MovieClip;
 				cutLineMC.y = - cutLineMC.height - cutLine.height;
-				cutLineMC.x = cutLineMC.width / 2 + 10;
+				cutLineMC.x = cutLineMC.width / 2;
 				ColorTransformUtil.setColor(cutLineMC,color);
 
 				var name:String = listDO.name;
@@ -215,7 +215,6 @@
 					var name:String = tpdo.name;
 					var marketCoordDO:MarketCoordDO = marketCoordsDO.getRealCoordMarketCoordDO(name);
 					var spdobj:MovieClip = getDisplayObjectInstance(getStyleValue(SMALL_POINT_DEFAULT_SKIN)) as MovieClip;
-					trace("(marketCoordDO.x - this.marketMap.x) * this.marketMap.s;");
 					spdobj.x = (marketCoordDO.x - this.marketMap.x) * this.marketMap.s;
 					spdobj.y = (marketCoordDO.y - this.marketMap.y) * this.marketMap.s;
 					listMC.addChild(spdobj);
@@ -291,14 +290,12 @@
 				var bpdobj:MovieClip = getDisplayObjectInstance(getStyleValue(BIG_POINT_DEFAULT_SKIN)) as MovieClip;
 				var pbdobj:MovieClip = getDisplayObjectInstance(getStyleValue(PRICEBACK_DEFAULT_SKIN)) as MovieClip;
 				
-				var pbBaseY:Number = 400;
-				var pbBaseX:Number = 500;
-				
+				var rect:Rectangle = this.mapView.getRect(this);
+
 				pbdobj.width = 100;
 				pbdobj.height = 50;
 				
-				priceMC.x = pbBaseX;
-				
+				priceMC.x = rect.x + rect.width;
 				priceMC.y = cutLine.y -cutLine.height - broadcastNum * (pbdobj.height + 10);
 				priceMC.addChild(pbdobj);
 				
@@ -315,8 +312,11 @@
 				
 				var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
 				var marketName:TextField = EffectText.creatShadowTextField(marketCoordDO.text,tft);
+				marketName.x = 4;
+				marketName.y = 4;
 				var marketPrice:TextField = EffectText.creatShadowTextField(tpdo.value,tft);
-				marketPrice.y = marketName.x + 20;
+				marketPrice.x = marketName.x;
+				marketPrice.y = marketName.y + marketName.height;
 				priceMC.addChild(marketName);
 				priceMC.addChild(marketPrice);
 				this.addChild(priceMC);
