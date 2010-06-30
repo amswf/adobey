@@ -133,7 +133,7 @@
 						uilcs.width = 450;
 						uilcs.height = 300;
 						uilcs.x = 80;
-						uilcs.y = 120;
+						uilcs.y = 150;
 					}
 				}
 				
@@ -171,13 +171,16 @@
 				}
 				
 				var titleVDO:VarDO = bizDO.varDOHv.findByName("title") as VarDO;
+				var baseY:Number = 35;
 				if(titleVDO != null){
 					var titleVar:String = String(titleVDO.getAttribute("text"));
 					if(StringUtil.isEffective(titleVar)){
 						var titleTfd:TextField = EffectText.creatTextByStyleName(titleVar,TextStyles.STYLE_TITLE);
 						titleTfd.x = ( SystemConfig.stageSize.x - titleTfd.width ) / 2;
-						titleTfd.y = 42;
+						titleTfd.y = baseY;
 						this.addChild(titleTfd);
+						
+						baseY = titleTfd.getRect(this).bottom;
 					}
 				}
 				
@@ -187,8 +190,10 @@
 					if(StringUtil.isEffective(goodsVar)){
 						var goodsTfd:TextField = EffectText.creatTextByStyleName(goodsVar,TextStyles.STYLE_GOODS);
 						goodsTfd.x = ( SystemConfig.stageSize.x - goodsTfd.width ) / 2;
-						goodsTfd.y = titleTfd.getRect(this).bottom + 10;
+						goodsTfd.y = baseY + 10;
 						this.addChild(goodsTfd);
+						
+						baseY = goodsTfd.getRect(this).bottom;
 					}
 				}
 				
@@ -198,7 +203,7 @@
 					if(StringUtil.isEffective(dateTextVar)){
 						var dateTextTfd:TextField = EffectText.creatTextByStyleName(dateTextVar,TextStyles.STYLE_DATE_TEXT);
 						dateTextTfd.x = ( SystemConfig.stageSize.x - dateTextTfd.width ) / 2;
-						dateTextTfd.y = goodsTfd.getRect(this).bottom + 10;
+						dateTextTfd.y = baseY;
 						this.addChild(dateTextTfd);
 					}
 				}
