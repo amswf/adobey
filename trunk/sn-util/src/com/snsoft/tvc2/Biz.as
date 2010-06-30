@@ -104,18 +104,34 @@
 					}
 					else if(type == BIZ_TYPE_DISTRIBUTE){
 						var marketMap:MarketMap = new MarketMap();
-						var marketMapX:Number = Number(bizDO.varDOHv.findByName("marketMapX"));
-						if(isNaN(marketMapX)){
-							marketMapX = 0;
+						
+						var marketMapXVDO:VarDO = bizDO.varDOHv.findByName("marketMapX") as VarDO;
+						var marketMapX:Number = 0;
+						if(marketMapXVDO != null){
+							var xv:Number = Number(marketMapXVDO.getAttribute("value"));
+							if(isNaN(xv)){
+								marketMapX = xv;
+							}
 						}
-						var marketMapY:Number = Number(bizDO.varDOHv.findByName("marketMapY"));
-						if(isNaN(marketMapY)){
-							marketMapY = 0;
+						
+						var marketMapYVDO:VarDO = bizDO.varDOHv.findByName("marketMapY") as VarDO;
+						var marketMapY:Number = 0;
+						if(marketMapYVDO != null){
+							var yv:Number = Number(marketMapYVDO.getAttribute("value"));
+							if(isNaN(xv)){
+								marketMapY = yv;
+							}
 						}
-						var marketMapS:Number = Number(bizDO.varDOHv.findByName("marketMapS"));
-						if(isNaN(marketMapS) || marketMapS <= 0){
-							marketMapS = 1;
+						
+						var marketMapSVDO:VarDO = bizDO.varDOHv.findByName("marketMapS") as VarDO;
+						var marketMapS:Number = 1;
+						if(marketMapSVDO != null){
+							var sv:Number = Number(marketMapSVDO.getAttribute("value"));
+							if(isNaN(xv)){
+								marketMapS = sv;
+							}
 						}
+						
 						marketMap.x = marketMapX;
 						marketMap.y = marketMapY;
 						marketMap.s = marketMapS;
