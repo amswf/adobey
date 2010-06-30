@@ -1,5 +1,6 @@
 ﻿package com.snsoft.tvc2.chart{
 	import com.snsoft.tvc2.Business;
+	import com.snsoft.tvc2.text.EffectText;
 	import com.snsoft.util.TextFieldUtil;
 	
 	import fl.core.InvalidationType;
@@ -228,26 +229,15 @@
 		 */		
 		private function drawLineText(index:int):void{	
 			if(lineTextSprite != null){
-				var p:Point = this.getCurrentPoint(index);
 				var pt:String = this.getCurrentPointText(index);
 				var ptp:Point = this.getCurrentPointTextPlace(index);
-				var dsf:DropShadowFilter = new DropShadowFilter(0,45,0xffffff,1,3,3,1000,1);
-				var dsf2:DropShadowFilter = new DropShadowFilter(0,45,0x000000,1,5,5,1,1);
-				var filterAry:Array = new Array();
-				filterAry.push(dsf,dsf2);
 				
 				var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
 				tft.color = this.transformColor;
-				var tfd:TextField = new TextField();
-				tfd.text = pt;
-				tfd.selectable = false;
-				
+				var tfd:TextField = EffectText.creatShadowTextField(pt,tft);
 				tfd.x = ptp.x;
 				tfd.y = ptp.y;
 				lineTextSprite.addChild(tfd);
-				tfd.setTextFormat(tft);
-				tfd.filters = filterAry;
-				TextFieldUtil.fitSize(tfd);
 			}
 		}
 		

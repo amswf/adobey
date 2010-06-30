@@ -114,7 +114,6 @@ package com.snsoft.tvc2.map{
 				}
 				var listDO:ListDO = listDOV[i];
 				
-				
 				var cutLineMC:MovieClip = getDisplayObjectInstance(getStyleValue(CUTLINE_DEFAULT_SKIN)) as MovieClip;
 				cutLineMC.y = - cutLineMC.height - cutLine.height;
 				ColorTransformUtil.setColor(cutLineMC,color);
@@ -123,7 +122,8 @@ package com.snsoft.tvc2.map{
 				var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
 				tft.color = color;
 				var tfd:TextField = EffectText.creatShadowTextField(name,tft);
-				tfd.y = - tfd.height - cutLine.height;
+				tfd.x = cutLineMC.x + cutLineMC.width ;
+				tfd.y = cutLineMC.y - tfd.height / 2;
 				cutLine.addChild(tfd);
 			}
 			playAreaView();

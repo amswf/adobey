@@ -313,10 +313,9 @@
 				ColorTransformUtil.setColor(ppdobj,color);
 				this.addChild(ppdobj);
 				
-				var marketName:TextField = new TextField();
-				creatTextFormat(marketName,marketCoordDO.text,color,18);
-				var marketPrice:TextField = new TextField();
-				creatTextFormat(marketPrice,tpdo.value,color,18);
+				var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
+				var marketName:TextField = EffectText.creatShadowTextField(marketCoordDO.text,tft);
+				var marketPrice:TextField = EffectText.creatShadowTextField(tpdo.value,tft);
 				marketPrice.y = marketName.x + 20;
 				priceMC.addChild(marketName);
 				priceMC.addChild(marketPrice);
@@ -331,19 +330,6 @@
 			else{
 				this.isPlayCmp = true;
 				dispatchEventState();
-			}
-		}
-		
-		private function creatTextFormat(tfd:TextField,text:String,color:uint,size:int):void{
-			tfd.text = text;
-			tfd.addEventListener(Event.ADDED_TO_STAGE,handler);
-			function handler(e:Event):void{
-				var tfde:TextField = e.currentTarget as TextField;
-				var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
-				tft.color = color;
-				tft.size = size;
-				tfde.setTextFormat(tft);
-				TextFieldUtil.fitSize(tfde);
 			}
 		}
 		
