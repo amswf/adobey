@@ -175,10 +175,10 @@
 				cutLineMC.x = cutLineMC.width / 2;
 				ColorTransformUtil.setColor(cutLineMC,color);
 
-				var name:String = listDO.name;
+				var text:String = listDO.text;
 				var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
 				tft.color = color;
-				var tfd:TextField = EffectText.creatShadowTextField(name,tft);
+				var tfd:TextField = EffectText.creatShadowTextField(text,tft);
 				tfd.x = cutLineMC.x + cutLineMC.width ;
 				tfd.y = cutLineMC.y - tfd.height / 2;
 				tfd.selectable = false;

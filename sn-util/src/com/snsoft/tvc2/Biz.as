@@ -148,8 +148,8 @@
 						uilcs.addEventListener(Event.COMPLETE,handlerCmp);
 						uilcs.width = 450;
 						uilcs.height = 300;
-						uilcs.x = 80;
-						uilcs.y = 150;
+						uilcs.x = 60;
+						uilcs.y = 130;
 					}
 				}
 				
