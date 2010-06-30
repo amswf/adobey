@@ -164,7 +164,7 @@ package com.snsoft.tvc2.map{
 			for(var i:int =0;i<tpdoHv.length;i++){
 				var tpdo:TextPointDO = tpdoHv[i];
 				if(tpdo != null){
-					var name:String = tpdo.name;
+					var name:String = tpdo.text;
 					if(StringUtil.isEffective(name)){
 						mapView.setMapAreaColor(name,color,alpha);
 					}
