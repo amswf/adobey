@@ -1,4 +1,6 @@
 package com.snsoft.tvc2.chart{
+	import com.snsoft.tvc2.text.EffectText;
+	import com.snsoft.tvc2.text.TextStyles;
 	import com.snsoft.util.SpriteUtil;
 	import com.snsoft.util.TextFieldUtil;
 	
@@ -239,13 +241,8 @@ package com.snsoft.tvc2.chart{
 					
 					//x刻度文字
 					for(var ii:int = 0;ii < xgn;ii++){
-						var tfd:TextField = new TextField();
-						var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
-						tfd.text = this.xGradVector[ii];
-						tfd.selectable = false;
+						var tfd:TextField = EffectText.creatTextByStyleName(this.xGradVector[ii],TextStyles.STYLE_COOR_TEXT);
 						this.coorSprite.addChild(tfd);
-						tfd.setTextFormat(tft);
-						TextFieldUtil.fitSize(tfd);
 						tfd.x = ii * xlen - tfd.width * 0.5 + xTextX * 0.5;
 						tfd.y = gradXSkinH.height;
 						
@@ -253,14 +250,8 @@ package com.snsoft.tvc2.chart{
 					
 					//y刻度文字
 					for(var jj:int = 0;jj < ygn;jj++){
-						var tfdy:TextField = new TextField();
-						var tfty:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
-						tfdy.text = this.yGradVector[jj];
-						tfdy.selectable = false;
-						
+						var tfdy:TextField = EffectText.creatTextByStyleName(this.yGradVector[jj],TextStyles.STYLE_COOR_TEXT);
 						this.coorSprite.addChild(tfdy);
-						tfdy.setTextFormat(tfty);
-						TextFieldUtil.fitSize(tfdy);
 						tfdy.x = - tfdy.width - gradYSkinW.width;
 						tfdy.y = - jj * ylen - tfdy.height * 0.5 - yTextY * 0.5;
 					}

@@ -4,6 +4,7 @@
 	import com.snsoft.tvc2.dataObject.ListDO;
 	import com.snsoft.tvc2.dataObject.TextPointDO;
 	import com.snsoft.tvc2.text.EffectText;
+	import com.snsoft.tvc2.text.TextStyles;
 	import com.snsoft.tvc2.util.NumberUtil;
 	import com.snsoft.util.ColorTransformUtil;
 	import com.snsoft.util.StringUtil;
@@ -218,7 +219,7 @@
 					var ldo:ListDO = ldv[i4];
 					var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
 					tft.color = color4;
-					var cutlineText:TextField = EffectText.creatShadowTextField(ldo.text,tft);;
+					var cutlineText:TextField = EffectText.creatTextByStyleName(ldo.text,TextStyles.STYLE_CUTLINE_TEXT,color4);
 					cutlineText.y = cutlineSprite.height;
 					cutlineSprite.addChild(cutlineText);					
 					

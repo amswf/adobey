@@ -1,4 +1,6 @@
 ﻿package com.snsoft.tvc2{
+	import com.snsoft.font.EmbedFonts;
+	import com.snsoft.font.EmbedFontsEvent;
 	import com.snsoft.map.WorkSpaceDO;
 	import com.snsoft.mapview.util.MapViewXMLLoader;
 	import com.snsoft.tvc2.dataObject.BizDO;
@@ -68,18 +70,59 @@
 		 * 
 		 */		
 		override protected function draw():void{
+			//首先 loadEmbedFonts() 然后是 loadMarketXML() 和 loadMainXML();
+			loadEmbedFonts();
+		}
+		
+		private function loadMainXML():void{
 			if(mainXmlUrl != null){				
 				var req:URLRequest = new URLRequest(mainXmlUrl);
 				var loader:URLLoader = new URLLoader();
 				loader.load(req);
 				loader.addEventListener(Event.COMPLETE,handlerLoaderCMP);
 			}
+		}
+		
+		private function loadMarketXML():void{
 			if(marketXmlUrl != null){
 				var reqm:URLRequest = new URLRequest(marketXmlUrl);
 				var loaderm:URLLoader = new URLLoader();
 				loaderm.load(reqm);
 				loaderm.addEventListener(Event.COMPLETE,handlerLoaderMarketXmlCMP);
 			}
+		}
+		
+		private function loadEmbedFonts():void{
+			var ef:EmbedFonts = new EmbedFonts("SimHei","HZGBYS","MicrosoftYaHei");
+			ef.loadFontSwf();
+			ef.addEventListener(Event.COMPLETE,handlerEmbedFontsCmp);
+			ef.addEventListener(EmbedFontsEvent.IO_ERROR,handlerIOError);
+		}
+		
+		
+		private function handlerEmbedFontsCmp(e:Event):void{
+			loadMarketXML();
+		}
+		
+		private function handlerIOError(e:EmbedFontsEvent):void{
+			trace("ioerror");
+		}
+		
+		private function handlerLoaderCMP(e:Event):void{
+			var loader:URLLoader = e.currentTarget as URLLoader;
+			var xml:XML = new XML(loader.data);
+			var parse:XMLParse = new XMLParse();
+			mainDO = parse.parseTvcMainXML(xml);
+			mainDOSourceLoad(mainDO);
+		}
+		
+		private function handlerLoaderMarketXmlCMP(e:Event):void{
+			var loader:URLLoader = e.currentTarget as URLLoader;
+			var xml:XML = new XML(loader.data);
+			var parse:XMLParse = new XMLParse();
+			marketMainDO = parse.parseMarketCoordsMain(xml);
+			
+			loadMainXML();
 		}
 		
 		/**
@@ -102,21 +145,7 @@
 			}
 		}
 		
-		private function handlerLoaderCMP(e:Event):void{
-			var loader:URLLoader = e.currentTarget as URLLoader;
-			var xml:XML = new XML(loader.data);
-			var parse:XMLParse = new XMLParse();
-			mainDO = parse.parseTvcMainXML(xml);
-			mainDOSourceLoad(mainDO);
-			
-		}
 		
-		private function handlerLoaderMarketXmlCMP(e:Event):void{
-			var loader:URLLoader = e.currentTarget as URLLoader;
-			var xml:XML = new XML(loader.data);
-			var parse:XMLParse = new XMLParse();
-			marketMainDO = parse.parseMarketCoordsMain(xml);
-		}
 		
 		private function mainDOSourceLoad(mainDO:MainDO):void{
 			if(mainDO != null){

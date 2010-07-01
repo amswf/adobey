@@ -8,6 +8,7 @@
 	import com.snsoft.tvc2.dataObject.MarketMap;
 	import com.snsoft.tvc2.dataObject.TextPointDO;
 	import com.snsoft.tvc2.text.EffectText;
+	import com.snsoft.tvc2.text.TextStyles;
 	import com.snsoft.util.ColorTransformUtil;
 	import com.snsoft.util.HashVector;
 	import com.snsoft.util.SpriteMove;
@@ -193,12 +194,9 @@
 				ColorTransformUtil.setColor(cutLineMC,color);
 
 				var text:String = listDO.text;
-				var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
-				tft.color = color;
-				var tfd:TextField = EffectText.creatShadowTextField(text,tft);
+				var tfd:TextField = EffectText.creatTextByStyleName(text,TextStyles.STYLE_CUTLINE_TEXT,color);
 				tfd.x = cutLineMC.x + cutLineMC.width ;
 				tfd.y = cutLineMC.y - tfd.height / 2;
-				tfd.selectable = false;
 				
 				cutLine.addChild(cutLineMC);
 				cutLine.addChild(tfd);
@@ -225,11 +223,8 @@
 				
 				var rect:Rectangle = this.mapView.getRect(this);
 				
-				var lname:String = listDO.name;
-				var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
-				tft.color = color;
-				
-				currentText = EffectText.creatShadowTextField(lname,tft);
+				var lname:String = listDO.name;				
+				currentText = EffectText.creatTextByStyleName(lname,TextStyles.STYLE_LIST_TYPE_TEXT,color);;
 				currentText.x = rect.width / 2 + switchMoveLenth;
 				this.addChild(currentText);
 				
@@ -337,11 +332,9 @@
 				var rect:Rectangle = this.mapView.getRect(this);
 				
 				var lname:String = listDO.name;
-				var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
-				tft.color = color;
+				 
 				if(broadcastCount == 0){
-					
-					currentText = EffectText.creatShadowTextField(lname,tft);
+					currentText = EffectText.creatTextByStyleName(lname,TextStyles.STYLE_LIST_TYPE_TEXT,color);;
 					currentText.x = rect.width / 2 + switchMoveLenth;
 					this.addChild(currentText);
 					switchAddTimer = new Timer(switchTimerDelay,switchTimerRepeatCount);
@@ -390,10 +383,10 @@
 				ColorTransformUtil.setColor(ppdobj,color);
 				this.addChild(ppdobj);
 				
-				var marketName:TextField = EffectText.creatShadowTextField(marketCoordDO.text,tft);
+				var marketName:TextField = EffectText.creatTextByStyleName(marketCoordDO.text,TextStyles.STYLE_DATA_TEXT,color);
 				marketName.x = 4;
 				marketName.y = 4;
-				var marketPrice:TextField = EffectText.creatShadowTextField(tpdo.value,tft);
+				var marketPrice:TextField = EffectText.creatTextByStyleName(tpdo.value,TextStyles.STYLE_DATA_TEXT,color);
 				marketPrice.x = marketName.x;
 				marketPrice.y = marketName.y + marketName.height;
 				priceMC.addChild(marketName);
