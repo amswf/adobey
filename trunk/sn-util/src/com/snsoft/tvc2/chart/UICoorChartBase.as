@@ -55,7 +55,7 @@ package com.snsoft.tvc2.chart{
 										var epv:Vector.<CharPointDO> = cpdovvClone[ek];
 										var ep:Point = epv[i].point;
 										if(p.y < ep.y){
-											orderpv.push(j);
+											orderpv.splice(k + 1,0,j);
 											break;
 										}
 									}
