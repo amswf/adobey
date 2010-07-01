@@ -10,6 +10,7 @@
 	import com.snsoft.tvc2.text.EffectText;
 	import com.snsoft.util.ColorTransformUtil;
 	import com.snsoft.util.HashVector;
+	import com.snsoft.util.SpriteMove;
 	import com.snsoft.util.TextFieldUtil;
 	
 	import fl.core.InvalidationType;
@@ -60,6 +61,22 @@
 		private var mapView:MapView;
 		
 		private var cutLine:Sprite;
+		
+		private var forwardText:TextField;
+		
+		private var currentText:TextField;
+		
+		private var switchAddTimer:Timer;
+		
+		private var switchRemoveTimer:Timer;
+		
+		private var switchTimerDelay:int = 20;
+		
+		private var switchTimerRepeatCount:int = 10;
+		
+		private var switchMoveLenth:Number = 100;
+		
+		private var switchBigPointSign:Boolean = false;
 		
 		public function PriceDistribute(dataDO:DataDO,marketMainDO:MarketMainDO,marketMap:MarketMap,mapView:MapView,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0)	{
 			super();
@@ -187,7 +204,7 @@
 				cutLine.addChild(tfd);
 			}
 			
-			playSmallPoint();
+			playBigPoint();
 		}
 		
 		private function playSmallPoint():void{
@@ -205,6 +222,20 @@
 				if(index == 2){
 					color = 0x990000; 
 				}
+				
+				var rect:Rectangle = this.mapView.getRect(this);
+				
+				var lname:String = listDO.name;
+				var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
+				tft.color = color;
+				
+				currentText = EffectText.creatShadowTextField(lname,tft);
+				currentText.x = rect.width / 2 + switchMoveLenth;
+				this.addChild(currentText);
+				
+				switchAddTimer = new Timer(switchTimerDelay,switchTimerRepeatCount);
+				switchAddTimer.addEventListener(TimerEvent.TIMER,handlerSwitchAdd);
+				switchAddTimer.start();
 				
 				var listMC:Sprite = new Sprite();
 				ColorTransformUtil.setColor(listMC,color);
@@ -228,6 +259,31 @@
 			else {
 				playBigPoint();
 			}
+		}
+		
+		private function handlerSwitchAdd(e:Event):void{
+			var palpha:Number = 1 / switchTimerRepeatCount;
+			var px:Number = switchMoveLenth / switchTimerRepeatCount;
+			if(currentText != null){
+				currentText.alpha += palpha;
+				currentText.x -= px;
+			} 
+		}
+		
+		private function handlerSwitchRemove(e:Event):void{
+			var palpha:Number = 1 / switchTimerRepeatCount;
+			var px:Number = switchMoveLenth / switchTimerRepeatCount;
+			if(forwardText != null){
+				forwardText.alpha -= palpha;
+				forwardText.x -= px;
+			} 
+		}
+		
+		private function handlerSwitchRemoveCmp(e:Event):void{
+			forwardText.removeEventListener(TimerEvent.TIMER,handlerSwitchAdd);
+			forwardText.removeEventListener(TimerEvent.TIMER,handlerSwitchRemove);
+			forwardText.removeEventListener(TimerEvent.TIMER_COMPLETE,handlerSwitchRemoveCmp);
+			this.removeChild(forwardText);
 		}
 		
 		private function handlerListSmallStartTimerCMP(e:Event):void{
@@ -255,6 +311,13 @@
 		}
 		
 		private function handlerListSmallEndTimerCMP(e:Event):void{
+			forwardText = currentText;
+			if(forwardText != null){
+				switchRemoveTimer = new Timer(switchTimerDelay,switchTimerRepeatCount);
+				switchRemoveTimer.addEventListener(TimerEvent.TIMER,handlerSwitchRemove);
+				switchRemoveTimer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerSwitchRemoveCmp);
+				switchRemoveTimer.start();
+			}
 			playSmallPoint();
 		}
 		
@@ -271,6 +334,21 @@
 					color = 0x990000; 
 				}
 				
+				var rect:Rectangle = this.mapView.getRect(this);
+				
+				var lname:String = listDO.name;
+				var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
+				tft.color = color;
+				if(broadcastCount == 0){
+					
+					currentText = EffectText.creatShadowTextField(lname,tft);
+					currentText.x = rect.width / 2 + switchMoveLenth;
+					this.addChild(currentText);
+					switchAddTimer = new Timer(switchTimerDelay,switchTimerRepeatCount);
+					switchAddTimer.addEventListener(TimerEvent.TIMER,handlerSwitchAdd);
+					switchAddTimer.start();
+				}
+				
 				var listMC:Sprite = new Sprite();
 				var priceMC:Sprite = new Sprite();
 				
@@ -280,8 +358,12 @@
 				broadcastCount ++;
 				broadcastNum ++;
 				if(broadcastCount >= tpdov.length){
+					switchBigPointSign = true;
 					broadcastCount = 0;
 					this.broadcastListCount ++;
+				}
+				else {
+					switchBigPointSign = false;
 				}
 				var tpdo:TextPointDO = tpdov[jj];
 				var name:String = tpdo.name;
@@ -289,8 +371,6 @@
 				var ppdobj:MovieClip = getDisplayObjectInstance(getStyleValue(PRICEPOINTER_DEFAULT_SKIN)) as MovieClip;
 				var bpdobj:MovieClip = getDisplayObjectInstance(getStyleValue(BIG_POINT_DEFAULT_SKIN)) as MovieClip;
 				var pbdobj:MovieClip = getDisplayObjectInstance(getStyleValue(PRICEBACK_DEFAULT_SKIN)) as MovieClip;
-				
-				var rect:Rectangle = this.mapView.getRect(this);
 
 				pbdobj.width = 100;
 				pbdobj.height = 50;
@@ -310,7 +390,6 @@
 				ColorTransformUtil.setColor(ppdobj,color);
 				this.addChild(ppdobj);
 				
-				var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
 				var marketName:TextField = EffectText.creatShadowTextField(marketCoordDO.text,tft);
 				marketName.x = 4;
 				marketName.y = 4;
@@ -358,6 +437,13 @@
 		}
 		
 		private function handlerListBigEndTimerCMP(e:Event):void{
+			forwardText = currentText;
+			if(switchBigPointSign && forwardText != null){
+				switchRemoveTimer = new Timer(switchTimerDelay,switchTimerRepeatCount);
+				switchRemoveTimer.addEventListener(TimerEvent.TIMER,handlerSwitchRemove);
+				switchRemoveTimer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerSwitchRemoveCmp);
+				switchRemoveTimer.start();
+			}
 			playBigPoint();
 		}
 		

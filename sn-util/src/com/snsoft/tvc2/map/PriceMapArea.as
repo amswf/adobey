@@ -8,6 +8,7 @@ package com.snsoft.tvc2.map{
 	import com.snsoft.tvc2.text.EffectText;
 	import com.snsoft.tvc2.util.StringUtil;
 	import com.snsoft.util.ColorTransformUtil;
+	import com.snsoft.util.HashVector;
 	
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
@@ -37,6 +38,20 @@ package com.snsoft.tvc2.map{
 		private var listDOV:Vector.<ListDO>;
 		
 		private var listCount:int = 0;
+		
+		private var forwardText:TextField;
+		
+		private var currentText:TextField;
+		
+		private var switchAddTimer:Timer;
+		
+		private var switchRemoveTimer:Timer;
+		
+		private var switchTimerDelay:int = 20;
+		
+		private var switchTimerRepeatCount:int = 10;
+		
+		private var switchMoveLenth:Number = 100;
 		
 		public function PriceMapArea(dataDO:DataDO,mapView:MapView,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0){
 			super();
@@ -98,6 +113,8 @@ package com.snsoft.tvc2.map{
 			cutLine.y = rect.y + rect.height;
 			this.addChild(cutLine);
 			
+			
+			
 			for(var i:int = 0;i< listDOV.length;i++){
 				var color:uint = 0x000000;
 				if(i == 0){
@@ -130,9 +147,53 @@ package com.snsoft.tvc2.map{
 			
 		} 
 		
+		private function handlerSwitchAdd(e:Event):void{
+			var palpha:Number = 1 / switchTimerRepeatCount;
+			var px:Number = switchMoveLenth / switchTimerRepeatCount;
+			if(currentText != null){
+				currentText.alpha += palpha;
+				currentText.x -= px;
+			} 
+		}
+		
+		private function handlerSwitchRemove(e:Event):void{
+			var palpha:Number = 1 / switchTimerRepeatCount;
+			var px:Number = switchMoveLenth / switchTimerRepeatCount;
+			if(forwardText != null){
+				forwardText.alpha -= palpha;
+				forwardText.x -= px;
+			} 
+		}
+		
+		private function handlerSwitchRemoveCmp(e:Event):void{
+			forwardText.removeEventListener(TimerEvent.TIMER,handlerSwitchAdd);
+			forwardText.removeEventListener(TimerEvent.TIMER,handlerSwitchRemove);
+			forwardText.removeEventListener(TimerEvent.TIMER_COMPLETE,handlerSwitchRemoveCmp);
+			this.removeChild(forwardText);
+		}
+		
 		private function playAreaView():void{
 			if(listDOV != null && listCount >= 0 && listCount < listDOV.length){
 				var index:int = listCount;
+				var color:uint = getColor(index);
+				
+				var listDO:ListDO = listDOV[index];
+				
+				var rect:Rectangle = mapView.getRect(this);
+				
+				var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
+				tft.color = color;
+				var lname:String = listDO.name;
+				currentText = EffectText.creatShadowTextField(lname,tft);
+				currentText.x = rect.width / 2 + switchMoveLenth;
+				this.addChild(currentText);
+				
+				switchAddTimer = new Timer(switchTimerDelay,switchTimerRepeatCount);
+				switchAddTimer.addEventListener(TimerEvent.TIMER,handlerSwitchAdd);
+				switchAddTimer.start();
+				
+				var tpdoHv:Vector.<TextPointDO> = listDO.listHv;
+				
 				setAreaColor(index,1);
 				var timer:Timer = new Timer(2000,1);
 				timer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerTimer);
@@ -147,19 +208,7 @@ package com.snsoft.tvc2.map{
 		private function setAreaColor(index:int,alpha:Number):void{
 			var listDO:ListDO = listDOV[index];
 			var tpdoHv:Vector.<TextPointDO> = listDO.listHv;
-			var color:uint = 0x000000;
-			if(index == 0){
-				color = 0x000099;
-			}
-			else if(index == 1){
-				color = 0x999900;
-			}
-			else if(index == 2){
-				color = 0x009900; 
-			}
-			else if(index == 3){
-				color = 0x990000; 
-			}
+			var color:uint = getColor(index);
 			
 			for(var i:int =0;i<tpdoHv.length;i++){
 				var tpdo:TextPointDO = tpdoHv[i];
@@ -197,6 +246,14 @@ package com.snsoft.tvc2.map{
 		}
 		
 		private function handlerListBigEndTimerCMP(e:Event):void{
+			forwardText = currentText;
+			if(forwardText != null){
+				switchRemoveTimer = new Timer(switchTimerDelay,switchTimerRepeatCount);
+				switchRemoveTimer.addEventListener(TimerEvent.TIMER,handlerSwitchRemove);
+				switchRemoveTimer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerSwitchRemoveCmp);
+				switchRemoveTimer.start();
+			}
+			
 			listCount ++;
 			playAreaView();
 		}
@@ -217,6 +274,23 @@ package com.snsoft.tvc2.map{
 			if(sign){
 				this.dispatchEvent(new Event(Event.COMPLETE));
 			}
+		}
+		
+		private function getColor(i:int):uint{
+			var color:uint = 0x000000;
+			if(i == 0){
+				color = 0x000099;
+			}
+			else if(i == 1){
+				color = 0x999900;
+			}
+			else if(i == 2){
+				color = 0x009900; 
+			}
+			else if(i == 3){
+				color = 0x990000; 
+			}
+			return color;
 		}
 	}
 }
