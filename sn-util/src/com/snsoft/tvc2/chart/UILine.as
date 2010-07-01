@@ -1,6 +1,7 @@
 ﻿package com.snsoft.tvc2.chart{
 	import com.snsoft.tvc2.Business;
 	import com.snsoft.tvc2.text.EffectText;
+	import com.snsoft.tvc2.text.TextStyles;
 	import com.snsoft.util.TextFieldUtil;
 	
 	import fl.core.InvalidationType;
@@ -231,10 +232,8 @@
 			if(lineTextSprite != null){
 				var pt:String = this.getCurrentPointText(index);
 				var ptp:Point = this.getCurrentPointTextPlace(index);
-				
-				var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
-				tft.color = this.transformColor;
-				var tfd:TextField = EffectText.creatShadowTextField(pt,tft);
+		
+				var tfd:TextField =  EffectText.creatTextByStyleName(pt,TextStyles.STYLE_DATA_TEXT,this.transformColor);
 				tfd.x = ptp.x;
 				tfd.y = ptp.y;
 				lineTextSprite.addChild(tfd);

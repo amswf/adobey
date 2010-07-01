@@ -3,26 +3,47 @@ package com.snsoft.tvc2.text{
 
 	public class TextStyles{
 		
-		public static const SONGTI:String = "宋体";
+		public static const HZGBYS:String = "HZGBYS";
 		
-		public static const HEITI:String = "黑体";
+		public static const SIMHEI:String = "SimHei";
+		
+		public static const MICROSOFTYAHEI:String = "MicrosoftYaHei";
 		
 		private static var ts:TextStyles = new TextStyles();
 		
 		private static var styleHV:HashVector;
 		
+		//业务标题
 		public static const STYLE_TITLE:String = "title";
 		
+		//业务农产品名称
 		public static const STYLE_GOODS:String = "goods";
 		
+		//业务日期
 		public static const STYLE_DATE_TEXT:String = "dateText";
+		
+		//坐标系文字
+		public static const STYLE_COOR_TEXT:String = "coorText";
+		
+		//图例文字
+		public static const STYLE_CUTLINE_TEXT:String = "cutLineText";
+		
+		//显示数值文字
+		public static const STYLE_DATA_TEXT:String = "dataText";
+		
+		//显示类型文字
+		public static const STYLE_LIST_TYPE_TEXT:String = "listTypeText";
 		
 		
 		public function TextStyles(){
 			styleHV = new HashVector();
-			styleHV.put(STYLE_TITLE,new TextStyle(HEITI,28,0xC33137));
-			styleHV.put(STYLE_GOODS,new TextStyle(HEITI,20,0x131313));	
-			styleHV.put(STYLE_DATE_TEXT,new TextStyle(HEITI,20,0x131313));
+			styleHV.put(STYLE_TITLE,new TextStyle(HZGBYS,28,0xC33137,0xffffff,0x000000,true));
+			styleHV.put(STYLE_GOODS,new TextStyle(SIMHEI,20,0x131313,0xffffff,0x000000,true));	
+			styleHV.put(STYLE_DATE_TEXT,new TextStyle(SIMHEI,20,0x131313,0xffffff,0x000000,true));
+			styleHV.put(STYLE_COOR_TEXT,new TextStyle(SIMHEI,18,0x131313,0xffffff,0x000000,true));
+			styleHV.put(STYLE_CUTLINE_TEXT,new TextStyle(SIMHEI,18,0x131313,0xffffff,0x000000,true));
+			styleHV.put(STYLE_DATA_TEXT,new TextStyle(SIMHEI,18,0x131313,0xffffff,0x000000,true));
+			styleHV.put(STYLE_LIST_TYPE_TEXT,new TextStyle(SIMHEI,20,0x131313,0xffffff,0x000000,true));
 		}
 		
 		public static function getTextStyle(name:String):TextStyle{

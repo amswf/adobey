@@ -1,6 +1,7 @@
 ﻿package com.snsoft.tvc2.chart{
 	import com.snsoft.tvc2.Business;
 	import com.snsoft.tvc2.text.EffectText;
+	import com.snsoft.tvc2.text.TextStyles;
 	import com.snsoft.util.TextFieldUtil;
 	
 	import fl.core.InvalidationType;
@@ -154,10 +155,7 @@
 			if(pillarTextSprite != null){
 				var pt:String = charPointDO.pointText;
 				var ptp:Point = charPointDO.pointTextPlace;
-				
-				var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
-				tft.color = this.transformColor;
-				var tfd:TextField = EffectText.creatShadowTextField(pt,tft);
+				var tfd:TextField = EffectText.creatTextByStyleName(pt,TextStyles.STYLE_DATA_TEXT,this.transformColor);;
 				tfd.x = ptp.x + this.x;
 				tfd.y = ptp.y;
 				pillarTextSprite.addChild(tfd);

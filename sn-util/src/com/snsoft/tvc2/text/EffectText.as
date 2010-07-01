@@ -25,8 +25,8 @@ package com.snsoft.tvc2.text{
 		 * 
 		 */		
 		public static function creatShadowTextField(text:String,textFormat:TextFormat,inSColor:uint = 0xffffff,outSColor:uint = 0x000000,isEmbedFont:Boolean = false):TextField{
-			var dsf:DropShadowFilter = new DropShadowFilter(0,45,inSColor,1,3,3,1000,1);
-			var dsf2:DropShadowFilter = new DropShadowFilter(0,45,outSColor,1,5,5,1,1);
+			var dsf:DropShadowFilter = new DropShadowFilter(0,45,inSColor,1,2,2,8,3);
+			var dsf2:DropShadowFilter = new DropShadowFilter(0,45,outSColor,1,5,5,1,3);
 			
 			var tfd:TextField = Text.creatTextField(text,textFormat,isEmbedFont);
 			var filterAry:Array = new Array();
@@ -35,12 +35,16 @@ package com.snsoft.tvc2.text{
 			return tfd;
 		}
 		
-		public static function creatTextByStyle(text:String,textStyle:TextStyle):TextField{
-			var tfd:TextField = creatShadowTextField(text,textStyle.textFormat,textStyle.inSColor,textStyle.outSColor,textStyle.isEmbedFont);
+		public static function creatTextByStyle(text:String,textStyle:TextStyle,color:uint = 0x000000):TextField{
+			var tft:TextFormat = textStyle.textFormat;
+			if(color > 0){
+				tft.color = color;
+			}
+			var tfd:TextField = creatShadowTextField(text,tft,textStyle.inSColor,textStyle.outSColor,textStyle.isEmbedFont);
 			return tfd;
 		}
-		public static function creatTextByStyleName(text:String,styleName:String):TextField{
-			var tfd:TextField = creatTextByStyle(text,TextStyles.getTextStyle(styleName));
+		public static function creatTextByStyleName(text:String,styleName:String,color:uint = 0x000000):TextField{
+			var tfd:TextField = creatTextByStyle(text,TextStyles.getTextStyle(styleName),color);
 			return tfd;
 		}
 	}

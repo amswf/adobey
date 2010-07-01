@@ -6,6 +6,7 @@ package com.snsoft.tvc2.map{
 	import com.snsoft.tvc2.dataObject.ListDO;
 	import com.snsoft.tvc2.dataObject.TextPointDO;
 	import com.snsoft.tvc2.text.EffectText;
+	import com.snsoft.tvc2.text.TextStyles;
 	import com.snsoft.tvc2.util.StringUtil;
 	import com.snsoft.util.ColorTransformUtil;
 	import com.snsoft.util.HashVector;
@@ -125,9 +126,7 @@ package com.snsoft.tvc2.map{
 				ColorTransformUtil.setColor(cutLineMC,color);
 				cutLine.addChild(cutLineMC);
 				var name:String = listDO.name;
-				var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
-				tft.color = color;
-				var tfd:TextField = EffectText.creatShadowTextField(name,tft);
+				var tfd:TextField = EffectText.creatTextByStyleName(name,TextStyles.STYLE_CUTLINE_TEXT,color);
 				tfd.x = cutLineMC.x + cutLineMC.width ;
 				tfd.y = cutLineMC.y - tfd.height / 2;
 				cutLine.addChild(tfd);
@@ -170,10 +169,8 @@ package com.snsoft.tvc2.map{
 				
 				var rect:Rectangle = mapView.getRect(this);
 				
-				var tft:TextFormat = getStyleValue(TEXT_FORMAT) as TextFormat;
-				tft.color = color;
 				var lname:String = listDO.name;
-				currentText = EffectText.creatShadowTextField(lname,tft);
+				currentText = EffectText.creatTextByStyleName(lname,TextStyles.STYLE_LIST_TYPE_TEXT,color);
 				currentText.x = rect.width / 2 + switchMoveLenth;
 				this.addChild(currentText);
 				
