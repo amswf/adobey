@@ -98,9 +98,17 @@
 				if(dataDO != null){
 					if(type == BIZ_TYPE_POLYLINES){
 						uilcs = new UILineCharts(dataDO);
+						uilcs.width = 400;
+						uilcs.height = 260;
+						uilcs.x = 120;
+						uilcs.y = 160;
 					}
 					else if(type == BIZ_TYPE_PILLAR){
 						uilcs = new UIPillarCharts(dataDO);
+						uilcs.width = 400;
+						uilcs.height = 260;
+						uilcs.x = 120;
+						uilcs.y = 160;
 					}
 					else if(type == BIZ_TYPE_DISTRIBUTE){
 						var marketMap:MarketMap = new MarketMap();
@@ -137,19 +145,24 @@
 						marketMap.s = marketMapS;
 						
 						uilcs = new PriceDistribute(dataDO,marketMainDO,marketMap,bizDO.mapView);
+						uilcs.width = 400;
+						uilcs.height = 260;
+						uilcs.x = 60;
+						uilcs.y = 130;
+						
 					}
 					else if(type == BIZ_TYPE_DISTRIBUTE_AREA){
 						uilcs = new PriceMapArea(dataDO, bizDO.mapView);
+						uilcs.width = 400;
+						uilcs.height = 260;
+						uilcs.x = 60;
+						uilcs.y = 130;
 					}
 					
 					if(uilcs != null){
 						trace("uilcs");
 						counter.plus();
 						uilcs.addEventListener(Event.COMPLETE,handlerCmp);
-						uilcs.width = 450;
-						uilcs.height = 300;
-						uilcs.x = 60;
-						uilcs.y = 130;
 					}
 				}
 				
