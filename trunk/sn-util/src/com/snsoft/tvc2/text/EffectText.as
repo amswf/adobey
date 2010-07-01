@@ -35,7 +35,7 @@ package com.snsoft.tvc2.text{
 			return tfd;
 		}
 		
-		public static function creatTextByStyle(text:String,textStyle:TextStyle,color:uint = 0xfffffffffffff):TextField{
+		public static function creatTextByStyle(text:String,textStyle:TextStyle,color:uint = 0xffffffff):TextField{
 			var tft:TextFormat = textStyle.textFormat;
 			if(color <= 0xffffff){
 				tft.color = color;
@@ -43,7 +43,7 @@ package com.snsoft.tvc2.text{
 			var tfd:TextField = creatShadowTextField(text,tft,textStyle.inSColor,textStyle.outSColor,textStyle.isEmbedFont);
 			return tfd;
 		}
-		public static function creatTextByStyleName(text:String,styleName:String,color:uint = 0xfffffffffffff):TextField{
+		public static function creatTextByStyleName(text:String,styleName:String,color:uint = 0xffffffff):TextField{
 			var tfd:TextField = creatTextByStyle(text,TextStyles.getTextStyle(styleName),color);
 			return tfd;
 		}
