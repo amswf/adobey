@@ -13,6 +13,9 @@ package com.snsoft.tvc2.text{
 		
 		private static var styleHV:HashVector;
 		
+		//主标题
+		public static const STYLE_MAIN_TITLE:String = "mainTitle";
+		
 		//业务标题
 		public static const STYLE_TITLE:String = "title";
 		
@@ -37,6 +40,7 @@ package com.snsoft.tvc2.text{
 		
 		public function TextStyles(){
 			styleHV = new HashVector();
+			styleHV.put(STYLE_MAIN_TITLE,new TextStyle(HZGBYS,40,0xC33137,0xffffff,0x000000,true));
 			styleHV.put(STYLE_TITLE,new TextStyle(HZGBYS,28,0xC33137,0xffffff,0x000000,true));
 			styleHV.put(STYLE_GOODS,new TextStyle(SIMHEI,20,0x131313,0xffffff,0x000000,true));	
 			styleHV.put(STYLE_DATE_TEXT,new TextStyle(SIMHEI,20,0x131313,0xffffff,0x000000,true));

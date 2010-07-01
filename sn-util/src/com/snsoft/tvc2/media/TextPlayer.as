@@ -1,5 +1,7 @@
 package com.snsoft.tvc2.media{
 	import com.snsoft.tvc2.Business;
+	import com.snsoft.tvc2.dataObject.TextOutDO;
+	import com.snsoft.tvc2.text.EffectText;
 	import com.snsoft.tvc2.util.FrameTimer;
 	
 	import flash.display.Sprite;
@@ -15,25 +17,27 @@ package com.snsoft.tvc2.media{
 		//显示文字
 		private var text:String;
 		
-		//文字格式
-		private var textFormat:TextFormat;
+
+		private var textOutDO:TextOutDO;
 		
 		
-		public function TextPlayer(text:String,textFormat:TextFormat,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0){
+		public function TextPlayer(textOutDO:TextOutDO){
 			super();
 			this.text = text;
-			this.textFormat = textFormat;
-			this.delayTime = delayTime;
-			this.timeLength = timeLength;
-			this.timeOut = timeOut;			
+			this.textOutDO = textOutDO;
+			 
+			if(textOutDO != null){
+				this.delayTime = textOutDO.timeOffset;
+				this.timeLength = textOutDO.timeLength;
+				this.timeOut = textOutDO.timeout;
+			}
 		}
 		
 		override protected function play():void{
-			this.textField = new TextField();
-			if(this.textFormat != null){
-				this.textField.setTextFormat(this.textFormat);
-			}
-			this.textField.text = this.text;
+			this.textField = EffectText.creatTextByStyleName(textOutDO.text,textOutDO.style);
+			this.textField.text = textOutDO.text;
+			this.textField.x = textOutDO.place.x;
+			this.textField.y = textOutDO.place.y;
 			this.addChild(this.textField);
 			
 		}
