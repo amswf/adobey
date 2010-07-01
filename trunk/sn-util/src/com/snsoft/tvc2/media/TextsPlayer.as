@@ -38,8 +38,8 @@ package com.snsoft.tvc2.media{
 						this.removeChild(textPlayer);
 					}
 					var textOutDO:TextOutDO = textOutsDO.textOutDOHv[playNum];
-					var tft:TextFormat = new TextFormat();//需要实现此文本格式对象
-					textPlayer = new TextPlayer(textOutDO.text,tft,textOutDO.timeOffset,textOutDO.timeLength,textOutDO.timeout);
+					 
+					textPlayer = new TextPlayer(textOutDO);
 					textPlayer.addEventListener(Event.COMPLETE,handlerTextsPlayerCMP);
 					this.addChild(textPlayer);
 				}
