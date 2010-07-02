@@ -6,6 +6,7 @@
 	import com.snsoft.tvc2.text.EffectText;
 	import com.snsoft.tvc2.text.TextStyles;
 	import com.snsoft.tvc2.util.NumberUtil;
+	import com.snsoft.tvc2.util.StringUtil;
 	import com.snsoft.util.ColorTransformUtil;
 	import com.snsoft.util.StringUtil;
 	import com.snsoft.util.TextFieldUtil;
@@ -144,7 +145,15 @@
 				}
 				
 				//画坐标系
-				var uic:UICoor = new UICoor(xgv,ygv);
+				var unitX:String = this.dataDo.unitX;
+				var unitY:String = this.dataDo.unitY;
+				if(!com.snsoft.tvc2.util.StringUtil.isEffective(unitX)){
+					unitX = "";
+				}
+				if(!com.snsoft.tvc2.util.StringUtil.isEffective(unitY)){
+					unitY = "";
+				}
+				var uic:UICoor = new UICoor(xgv,ygv,unitX,unitY);
 				uic.width = this.width;
 				uic.height = this.height;
 			    uic.setStyle(TEXT_FORMAT,this.getStyleValue(TEXT_FORMAT));

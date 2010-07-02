@@ -17,6 +17,7 @@
 	import com.snsoft.tvc2.dataObject.TextPointDO;
 	import com.snsoft.tvc2.dataObject.TimeLineDO;
 	import com.snsoft.tvc2.dataObject.VarDO;
+	import com.snsoft.tvc2.util.StringUtil;
 	import com.snsoft.util.HashVector;
 	
 	import flash.geom.Point;
@@ -109,6 +110,11 @@
 		public static const ATT_TIMEOUT:String = "timeout";
 		
 		public static const ATT_STYLE:String = "style";
+		
+		public static const ATT_UNIT_X:String = "unitX";
+		
+		public static const ATT_UNIT_Y:String = "unitY";
+		
 		
 		public function XMLParse(){
 			
@@ -384,17 +390,26 @@
 				var dataXML:XML = datasXMLList[i];
 				var dataXMLList:XMLList;
 				var listsXMLList:XMLList;
+				
 				var disXMLList:XMLList = dataXML.elements(TAG_DISTRIBUTE);
 				if(disXMLList != null && disXMLList.length() > 0){
 					dataXMLList = disXMLList;
 					dataDO.type = TAG_DISTRIBUTE;
 				}
-				
 				var chrXMLList:XMLList = dataXML.elements(TAG_CHART);
 				if(chrXMLList != null && chrXMLList.length() > 0){
+					var chrXML:XML = chrXMLList[0];
+					var chrAttrHv:HashVector = getXMLAttributes(chrXML);
+					var unitX:String = String(chrAttrHv.findByName(ATT_UNIT_X));
+					var unitY:String = String(chrAttrHv.findByName(ATT_UNIT_Y));
 					dataXMLList = chrXMLList;
 					dataDO.type = TAG_CHART;
+					dataDO.unitX = unitX;
+					dataDO.unitY = unitY;
+					trace("unitX",unitX,"unitY",unitY);
+					trace("unitX",dataDO.unitX,"unitY",dataDO.unitY,"-----------------------------------------------------------------------------");
 				}
+				
 				if(dataXMLList != null && dataXMLList.length() > 0){
 					listsXMLList = dataXMLList.elements(TAG_LIST);
 					dataDO.data = this.parseListsXML(listsXMLList);

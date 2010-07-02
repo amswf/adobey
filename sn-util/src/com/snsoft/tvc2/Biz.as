@@ -93,6 +93,7 @@
 				}
 				
 				var dataDO:DataDO = bizDO.dataDO;
+				trace("unitX",dataDO.unitX,"unitY",dataDO.unitY);
 				var type:String = bizDO.type;
 				var uilcs:UIComponent = null;
 				var delayTime:int = 2000;
