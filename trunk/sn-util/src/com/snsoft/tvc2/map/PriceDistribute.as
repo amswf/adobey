@@ -79,6 +79,12 @@
 		
 		private var switchBigPointSign:Boolean = false;
 		
+		private var smallPointsMC:Sprite = new Sprite();
+		
+		private var pricePointersMC:Sprite = new Sprite();
+		
+		private var priceBigPointsMC:Sprite = new Sprite();
+		
 		private var priceMask:MovieClip;
 		
 		private var priceMaskTimerDelay:int = 20;
@@ -88,6 +94,7 @@
 		private var priceMaskMoveCmp:Boolean = false;
 		
 		private var bigPointPlayCmp:Boolean = false;
+		
 		
 		public function PriceDistribute(dataDO:DataDO,marketMainDO:MarketMainDO,marketMap:MarketMap,mapView:MapView,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0)	{
 			super();
@@ -142,7 +149,8 @@
 			this.invalidate(InvalidationType.SIZE,true);
 			this.width = 400;
 			this.height = 300;
-			super.configUI();	
+			super.configUI();
+			
 		}
 		
 		/**
@@ -217,6 +225,9 @@
 				cutLine.addChild(cutLineMC);
 				cutLine.addChild(tfd);
 			}
+			this.addChild(smallPointsMC);
+			this.addChild(pricePointersMC);
+			this.addChild(priceBigPointsMC);
 			
 			playSmallPoint();
 			//playBigPoint();
@@ -263,7 +274,7 @@
 					listMC.addChild(spdobj);
 				}
 				currentListMC = listMC;
-				this.addChild(listMC);
+				smallPointsMC.addChild(listMC);
 				var timer:Timer = new Timer(2000,1);
 				timer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerListSmallStartTimerCMP);
 				timer.start();
@@ -358,10 +369,7 @@
 					switchAddTimer.addEventListener(TimerEvent.TIMER,handlerSwitchAdd);
 					switchAddTimer.start();
 				}
-				
 				var listMC:Sprite = new Sprite();
-				var priceMC:Sprite = new Sprite();
-				
 				ColorTransformUtil.setColor(listMC,color);
 				var tpdov:Vector.<TextPointDO> = listDO.listHv;
 				var jj:int = broadcastCount;
@@ -386,6 +394,8 @@
 				pbdobj.width = 100;
 				pbdobj.height = 50;
 				
+				var priceMC:Sprite = new Sprite();
+				this.addChild(priceMC);
 				priceMC.x = rect.x + rect.width;
 				priceMC.y = cutLine.y -cutLine.height - broadcastNum * (pbdobj.height + 5);
 				priceMC.addChild(pbdobj);
@@ -410,7 +420,7 @@
 				ppdobj.width = this.lineLength(new Point(bpdobj.x,bpdobj.y),new Point(priceMC.x,priceMC.y + pbdobj.height / 2));
 				ppdobj.rotation = this.lineRate(new Point(bpdobj.x,bpdobj.y),new Point(priceMC.x,priceMC.y + pbdobj.height / 2));
 				ColorTransformUtil.setColor(ppdobj,color);
-				this.addChild(ppdobj);
+				pricePointersMC.addChild(ppdobj);
 				
 				var marketName:TextField = EffectText.creatTextByStyleName(marketCoordDO.text,TextStyles.STYLE_DATA_TEXT,color);
 				marketName.x = 4;
@@ -420,11 +430,12 @@
 				marketPrice.y = marketName.y + marketName.height;
 				priceMC.addChild(marketName);
 				priceMC.addChild(marketPrice);
-				this.addChild(priceMC);
+				
 				this.addChild(pmdobj);
 				listMC.addChild(bpdobj);
+				priceBigPointsMC.addChild(listMC);
 				currentBroadcastListMC = listMC;
-				this.addChild(listMC);
+	
 				var timer:Timer = new Timer(2000,1);
 				bigPointPlayCmp = false;
 				timer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerListBigStartTimerCMP);
