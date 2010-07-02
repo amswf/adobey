@@ -406,8 +406,6 @@
 					dataDO.type = TAG_CHART;
 					dataDO.unitX = unitX;
 					dataDO.unitY = unitY;
-					trace("unitX",unitX,"unitY",unitY);
-					trace("unitX",dataDO.unitX,"unitY",dataDO.unitY,"-----------------------------------------------------------------------------");
 				}
 				
 				if(dataXMLList != null && dataXMLList.length() > 0){
