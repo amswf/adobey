@@ -95,16 +95,17 @@
 				var dataDO:DataDO = bizDO.dataDO;
 				var type:String = bizDO.type;
 				var uilcs:UIComponent = null;
+				var delayTime:int = 2000;
 				if(dataDO != null){
 					if(type == BIZ_TYPE_POLYLINES){
-						uilcs = new UILineCharts(dataDO);
+						uilcs = new UILineCharts(dataDO,delayTime);
 						uilcs.width = 400;
 						uilcs.height = 260;
 						uilcs.x = 120;
 						uilcs.y = 160;
 					}
 					else if(type == BIZ_TYPE_PILLAR){
-						uilcs = new UIPillarCharts(dataDO);
+						uilcs = new UIPillarCharts(dataDO,delayTime);
 						uilcs.width = 400;
 						uilcs.height = 260;
 						uilcs.x = 120;
@@ -144,7 +145,7 @@
 						marketMap.y = marketMapY;
 						marketMap.s = marketMapS;
 						
-						uilcs = new PriceDistribute(dataDO,marketMainDO,marketMap,bizDO.mapView);
+						uilcs = new PriceDistribute(dataDO,marketMainDO,marketMap,bizDO.mapView,delayTime);
 						uilcs.width = 400;
 						uilcs.height = 260;
 						uilcs.x = 60;
@@ -152,7 +153,7 @@
 						
 					}
 					else if(type == BIZ_TYPE_DISTRIBUTE_AREA){
-						uilcs = new PriceMapArea(dataDO, bizDO.mapView);
+						uilcs = new PriceMapArea(dataDO, bizDO.mapView,delayTime);
 						uilcs.width = 400;
 						uilcs.height = 260;
 						uilcs.x = 60;

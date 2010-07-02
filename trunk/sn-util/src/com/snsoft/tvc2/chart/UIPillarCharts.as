@@ -245,7 +245,7 @@
 							var cpdo4:CharPointDO = charPointDOV[j4];
 							var valuey:Number = cpdo4.point.y;
 							if(!isNaN(valuey)){
-								var uip:UIPillar = new UIPillar(cpdo4,false,0,0,0,this.lineTextSprite);
+								var uip:UIPillar = new UIPillar(cpdo4,false,this.delayTime,this.timeLength,this.timeOut,this.lineTextSprite);
 								uip.setStyle(TEXT_FORMAT,this.getStyleValue(TEXT_FORMAT));
 								uip.height = this.height;
 								uip.width = xw;

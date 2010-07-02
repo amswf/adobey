@@ -99,13 +99,16 @@ package com.snsoft.tvc2.map{
 		override protected function draw():void {
 		}
 		
+		override protected function initPlay():void {
+			trace("drawMapView");
+			this.addChild(mapView);
+		}
+		
 		/**
 		 * 
 		 * 
 		 */		
 		override protected function play():void {
-			trace("drawMapView");
-			this.addChild(mapView);
 			this.listDOV = dataDO.data;
 			this.listCount = 0;
 			var cutLine:Sprite = new Sprite();

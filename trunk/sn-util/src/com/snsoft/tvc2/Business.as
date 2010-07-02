@@ -53,6 +53,7 @@ package com.snsoft.tvc2{
 		 */		
 		private function handlerAddedToStage(e:Event):void{
 			this.removeEventListener(Event.ADDED_TO_STAGE,handlerAddedToStage);
+			initPlay();
 			if(this.stage != null){
 				delayFrameTimer = new FrameTimer(this.stage.frameRate,this.delayTime,this);
 				delayFrameTimer.timer();
@@ -105,6 +106,14 @@ package com.snsoft.tvc2{
 			timeOutFrameTimer.removeEventListener(Event.COMPLETE,handlerTimeOut);
 			this.isTimeOut = true;
 			this.dispatchEventState();
+		}
+		
+		/**
+		 * 
+		 * 
+		 */		
+		protected function initPlay():void{
+			trace("需要 override Business.initPlay()");
 		}
 		
 		/**
