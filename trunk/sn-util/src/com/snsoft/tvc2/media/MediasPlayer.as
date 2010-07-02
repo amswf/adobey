@@ -38,6 +38,8 @@ package com.snsoft.tvc2.media{
 					var mediaDO:MediaDO = mediasDO.mediaDOHv[playNum];
 					mediaPlayer = new MediaPlayer(mediaDO.mediaList,mediaDO.timeOffset,mediaDO.timeLength,mediaDO.timeout);
 					mediaPlayer.addEventListener(Event.COMPLETE,handlerMediaPlayerCMP);
+					mediaPlayer.x = mediaDO.place.x;
+					mediaPlayer.y = mediaDO.place.y;
 					this.addChild(mediaPlayer);
 				}
 				else{
