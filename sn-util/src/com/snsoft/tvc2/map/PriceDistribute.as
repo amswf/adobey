@@ -205,7 +205,7 @@
 				cutLine.addChild(tfd);
 			}
 			
-			playBigPoint();
+			playSmallPoint();
 		}
 		
 		private function playSmallPoint():void{

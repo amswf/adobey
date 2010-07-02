@@ -105,15 +105,18 @@ package com.snsoft.tvc2{
 		
 		private function playNextBiz():void{
 			if(bizCmp && switchTimerCmp){
-				bizCmp = false;
-				switchTimerCmp = false;
-				forwardBiz = currentBiz;
-				switchRemoveTimer = new Timer(switchTimerDelay,switchTimerRepeatCount);
-				switchRemoveTimer.addEventListener(TimerEvent.TIMER,handlerSwitchRemoveTimer);
-				switchRemoveTimer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerSwitchRemoveTimerCmp);
-				switchRemoveTimer.start();
-				bizIndex ++;
-				play();
+				var bizHv:HashVector = this.timeLineDO.bizDOHv;
+				if(bizHv != null && bizIndex < bizHv.length -1){
+					bizCmp = false;
+					switchTimerCmp = false;
+					forwardBiz = currentBiz;
+					switchRemoveTimer = new Timer(switchTimerDelay,switchTimerRepeatCount);
+					switchRemoveTimer.addEventListener(TimerEvent.TIMER,handlerSwitchRemoveTimer);
+					switchRemoveTimer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerSwitchRemoveTimerCmp);
+					switchRemoveTimer.start();
+					bizIndex ++;
+					play();
+				}
 			}
 		}
 		
