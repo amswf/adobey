@@ -58,6 +58,10 @@ package com.snsoft.tvc2.chart{
 		
 		public static const GRAD_TYPE_AREA:String = "AREA";
 		
+		private var unitX:String;
+		
+		private var unitY:String;
+		
 		/**
 		 * 
 		 * @param xGradNum x 轴刻度个数
@@ -66,13 +70,15 @@ package com.snsoft.tvc2.chart{
 		 * @param yGradValue y 轴单位刻度代表的坐标值
 		 * 
 		 */		
-		public function UICoor(xGradVector:Vector.<String> = null,yGradVector:Vector.<String> = null,xGradType:String = "POINT" ,yGradType:String = "POINT"){
+		public function UICoor(xGradVector:Vector.<String> = null,yGradVector:Vector.<String> = null,unitX:String="",unitY:String="",xGradType:String = "POINT" ,yGradType:String = "POINT"){
 			super();
 			if(xGradVector != null && yGradVector != null){
 				this.xGradVector = xGradVector;
 				this.yGradVector = yGradVector;
 				this._xGradNum = this.xGradVector.length;
 				this._yGradNum = this.yGradVector.length;
+				this.unitX = unitX;
+				this.unitY = unitY;
 			}
 			
 			this.xGradType = xGradType;
@@ -248,6 +254,10 @@ package com.snsoft.tvc2.chart{
 						
 					}
 					
+					var tfdUnitX:TextField = EffectText.creatTextByStyleName(this.unitX,TextStyles.STYLE_COOR_TEXT);
+					tfdUnitX.x = coorWidth;
+					tfdUnitX.y = - tfdUnitX.height;
+					this.coorSprite.addChild(tfdUnitX);
 					//y刻度文字
 					for(var jj:int = 0;jj < ygn;jj++){
 						var tfdy:TextField = EffectText.creatTextByStyleName(this.yGradVector[jj],TextStyles.STYLE_COOR_TEXT);
@@ -255,6 +265,10 @@ package com.snsoft.tvc2.chart{
 						tfdy.x = - tfdy.width - gradYSkinW.width;
 						tfdy.y = - jj * ylen - tfdy.height * 0.5 - yTextY * 0.5;
 					}
+					var tfdUnitY:TextField = EffectText.creatTextByStyleName(this.unitY,TextStyles.STYLE_COOR_TEXT);
+					tfdUnitY.x = - tfdUnitY.width;
+					tfdUnitY.y = - coorHeight - tfdUnitY.height - tfdUnitY.height / 2;
+					this.coorSprite.addChild(tfdUnitY);
 				}
 			}
 		}

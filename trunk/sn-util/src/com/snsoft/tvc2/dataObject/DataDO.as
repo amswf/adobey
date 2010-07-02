@@ -17,6 +17,10 @@ package com.snsoft.tvc2.dataObject{
 		
 		private var _broadcast:Vector.<ListDO> = null;
 		
+		private var _unitX:String;
+		
+		private var _unitY:String;
+		
 		public function DataDO()
 		{
 		}
@@ -69,6 +73,26 @@ package com.snsoft.tvc2.dataObject{
 		public function set broadcast(value:Vector.<ListDO>):void
 		{
 			_broadcast = value;
+		}
+
+		public function get unitX():String
+		{
+			return _unitX;
+		}
+
+		public function set unitX(value:String):void
+		{
+			_unitX = value;
+		}
+
+		public function get unitY():String
+		{
+			return _unitY;
+		}
+
+		public function set unitY(value:String):void
+		{
+			_unitY = value;
 		}
 
 		 
