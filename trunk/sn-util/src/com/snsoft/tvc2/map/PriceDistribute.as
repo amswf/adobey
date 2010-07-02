@@ -218,8 +218,8 @@
 				cutLine.addChild(tfd);
 			}
 			
-			//playSmallPoint();
-			playBigPoint();
+			playSmallPoint();
+			//playBigPoint();
 		}
 		
 		private function playSmallPoint():void{
