@@ -154,11 +154,14 @@
 			
 		}
 		
-		override protected function play():void {
-			
+		
+		override protected function initPlay():void {
 			this.addChild(mapView);
 			mapView.width = 490;
 			mapView.height = 410;
+		}
+		
+		override protected function play():void {
 			var marketCoordsDOHV:HashVector = marketMainDO.marketCoordsDOHV;
 			this.marketCoordsDO = marketCoordsDOHV.findByName(MAP_NAME) as MarketCoordsDO;
 			this.listDOV = dataDO.data;
