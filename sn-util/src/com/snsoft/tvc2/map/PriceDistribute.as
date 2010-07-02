@@ -79,6 +79,16 @@
 		
 		private var switchBigPointSign:Boolean = false;
 		
+		private var priceMask:MovieClip;
+		
+		private var priceMaskTimerDelay:int = 20;
+		
+		private var priceMaskTimerRepeatCount:int = 20;
+		
+		private var priceMaskMoveCmp:Boolean = false;
+		
+		private var bigPointPlayCmp:Boolean = false;
+		
 		public function PriceDistribute(dataDO:DataDO,marketMainDO:MarketMainDO,marketMap:MarketMap,mapView:MapView,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0)	{
 			super();
 			this.dataDO = dataDO;
@@ -96,6 +106,8 @@
 		
 		public static const PRICEBACK_DEFAULT_SKIN:String = "priceback_default_skin";
 		
+		public static const PRICEMASK_DEFAULT_SKIN:String = "pricemask_default_skin";
+		
 		public static const PRICEPOINTER_DEFAULT_SKIN:String = "pricepointer_default_skin";
 		
 		public static const TEXT_FORMAT:String = "myTextFormat";
@@ -107,6 +119,7 @@
 			big_point_default_skin:"BigPoint_default_skin",
 			small_point_default_skin:"SmallPoint_default_skin",
 			priceback_default_skin:"PriceBack_default_skin",
+			pricemask_default_skin:"PriceMask_default_skin",
 			pricepointer_default_skin:"PricePointer_default_skin",
 			myTextFormat:new TextFormat("宋体",18,0x000000)
 		};
@@ -205,7 +218,8 @@
 				cutLine.addChild(tfd);
 			}
 			
-			playSmallPoint();
+			//playSmallPoint();
+			playBigPoint();
 		}
 		
 		private function playSmallPoint():void{
@@ -367,13 +381,25 @@
 				var ppdobj:MovieClip = getDisplayObjectInstance(getStyleValue(PRICEPOINTER_DEFAULT_SKIN)) as MovieClip;
 				var bpdobj:MovieClip = getDisplayObjectInstance(getStyleValue(BIG_POINT_DEFAULT_SKIN)) as MovieClip;
 				var pbdobj:MovieClip = getDisplayObjectInstance(getStyleValue(PRICEBACK_DEFAULT_SKIN)) as MovieClip;
+				var pmdobj:MovieClip = getDisplayObjectInstance(getStyleValue(PRICEMASK_DEFAULT_SKIN)) as MovieClip;
 
 				pbdobj.width = 100;
 				pbdobj.height = 50;
 				
 				priceMC.x = rect.x + rect.width;
-				priceMC.y = cutLine.y -cutLine.height - broadcastNum * (pbdobj.height + 10);
+				priceMC.y = cutLine.y -cutLine.height - broadcastNum * (pbdobj.height + 5);
 				priceMC.addChild(pbdobj);
+				
+				pmdobj.x = rect.x + rect.width - pmdobj.width;
+				pmdobj.y = cutLine.y -cutLine.height - broadcastNum * (pbdobj.height + 5);;
+				priceMC.mask = pmdobj;
+				priceMask = pmdobj;
+				
+				priceMaskMoveCmp = false;
+				var pmtimer:Timer = new Timer(priceMaskTimerDelay,priceMaskTimerRepeatCount);
+				pmtimer.addEventListener(TimerEvent.TIMER,handlerPriceMaskTimer);
+				pmtimer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerPriceMaskTimerCmp);
+				pmtimer.start();
 				
 				bpdobj.x = (marketCoordDO.x - this.marketMap.x) * this.marketMap.s;
 				bpdobj.y = (marketCoordDO.y - this.marketMap.y) * this.marketMap.s;
@@ -395,17 +421,33 @@
 				priceMC.addChild(marketName);
 				priceMC.addChild(marketPrice);
 				this.addChild(priceMC);
+				this.addChild(pmdobj);
 				listMC.addChild(bpdobj);
 				currentBroadcastListMC = listMC;
 				this.addChild(listMC);
 				var timer:Timer = new Timer(2000,1);
+				bigPointPlayCmp = false;
 				timer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerListBigStartTimerCMP);
 				timer.start();
+				
+				
 			}
 			else{
 				this.isPlayCmp = true;
 				dispatchEventState();
 			}
+		}
+		
+		private function handlerPriceMaskTimer(e:Event):void{
+			priceMask.x += priceMask.width / priceMaskTimerRepeatCount;
+		}
+		
+		private function handlerPriceMaskTimerCmp(e:Event):void{
+			var pmtimer:Timer = e.currentTarget as Timer;
+			pmtimer.removeEventListener(TimerEvent.TIMER,handlerPriceMaskTimer);
+			pmtimer.removeEventListener(TimerEvent.TIMER_COMPLETE,handlerPriceMaskTimerCmp);
+			priceMaskMoveCmp = true;
+			playNextBigPoint();
 		}
 		
 		private function handlerListBigStartTimerCMP(e:Event):void{
@@ -440,7 +482,14 @@
 				switchRemoveTimer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerSwitchRemoveCmp);
 				switchRemoveTimer.start();
 			}
-			playBigPoint();
+			bigPointPlayCmp = true;
+			playNextBigPoint();
+		}
+		
+		private function playNextBigPoint():void{
+			if(priceMaskMoveCmp && bigPointPlayCmp){
+				playBigPoint();
+			}
 		}
 		
 		/**
