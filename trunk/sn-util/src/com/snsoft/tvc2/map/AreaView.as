@@ -99,9 +99,6 @@ package com.snsoft.tvc2.map{
 //					tfd.y =dobj.y + (dobj.height - tfd.height) * 0.5 + mado.areaNamePlace.y;
 //					areaNameLayer.addChild(tfd);
 				}
-				else{
-					trace("mapAreaDO:"+mapAreaDO);
-				}
 				this.dispatchEvent(new Event(Event.COMPLETE));
 			}
 		}

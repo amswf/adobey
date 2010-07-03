@@ -60,7 +60,7 @@ package com.snsoft.tvc2{
 		 */		
 		override protected function draw():void{
 			play();
-			trace("tlPlay");
+			trace("TimeLine.play()");
 		}
 		
 		private function play():void{

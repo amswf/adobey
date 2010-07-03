@@ -180,7 +180,7 @@
 				var marketCoordXMLList:XMLList = marketCoordsXML.elements(TAG_MARKET_COORD);
 				var mcdoHv:HashVector = parseMarketCoord(marketCoordXMLList);
 				marketCoordsDO.marketCoordDOHV = mcdoHv;
-				trace("marketCoordsDO.name",marketCoordsDO.name);
+				//trace("marketCoordsDO.name",marketCoordsDO.name);
 				hv.put(marketCoordsDO.name,marketCoordsDO);
 			}
 			return hv;
@@ -205,7 +205,7 @@
 				marketCoordDO.y = Number(mcaHv.findByName(ATT_Y));
 				marketCoordDO.z = Number(mcaHv.findByName(ATT_Z));
 				marketCoordDO.s = Number(mcaHv.findByName(ATT_S));
-				trace("marketCoordDO.name",marketCoordDO.name);
+				//trace("marketCoordDO.name",marketCoordDO.name);
 				hv.put(marketCoordDO.name,marketCoordDO);
 			}
 			return hv;
@@ -314,7 +314,7 @@
 		 * 
 		 */		
 		private function parseTextOutsXML(textOutsXMLList:XMLList):HashVector{
-			trace("parseTextOutsXML");
+			//trace("parseTextOutsXML");
 			var ssv:HashVector = new HashVector();
 			for(var i:int = 0;i<textOutsXMLList.length();i++){
 				var textOutsXML:XML = textOutsXMLList[i];
@@ -351,7 +351,7 @@
 		 * 
 		 */		
 		private function parseMediasXML(mediasXMLList:XMLList):HashVector{
-			trace("parseMediasXML");
+			//trace("parseMediasXML");
 			var msv:HashVector = new HashVector();
 			for(var i:int = 0;i<mediasXMLList.length();i++){
 				var mediasXML:XML = mediasXMLList[i];
@@ -361,7 +361,7 @@
 				for(var j:int = 0;j<mediaXMLList.length();j++){
 					var mediaXML:XML = mediaXMLList[j];
 					var mediaDO:MediaDO = new MediaDO();
-					trace(mediaXML);
+					//trace(mediaXML);
 					var mediaAttributeHv:HashVector = this.getXMLAttributes(mediaXML);
 					mediaDO.name = mediaAttributeHv.findByName(ATT_NAME)as String;
 					mediaDO.text = mediaAttributeHv.findByName(ATT_TEXT)as String;
@@ -388,7 +388,7 @@
 		 * 
 		 */		
 		private function parseDataXML(datasXMLList:XMLList):DataDO{
-			trace("parseDataXML");
+			//trace("parseDataXML");
 			var dataDO:DataDO = new DataDO();
 			for(var i:int = 0;i<datasXMLList.length();i++){
 				var dataXML:XML = datasXMLList[i];
@@ -447,7 +447,7 @@
 		 * 
 		 */		
 		private function parseListsXML(listsXMLList:XMLList):Vector.<ListDO>{
-			trace("parseListsXML");
+			//trace("parseListsXML");
 			var lv:Vector.<ListDO> = new Vector.<ListDO>();
 			for(var i:int = 0;i<listsXMLList.length();i++){
 				var listXML:XML = listsXMLList[i];
@@ -456,7 +456,7 @@
 				listDO.name = listAttrHv.findByName(ATT_NAME) as String;
 				listDO.text = listAttrHv.findByName(ATT_TEXT) as String;
 				listDO.style = listAttrHv.findByName(ATT_STYLE) as String;
-				trace(listDO.name);
+				//trace(listDO.name);
 				var tpv:Vector.<TextPointDO> = new Vector.<TextPointDO>();
 				var textPointsXMLList:XMLList = listXML.elements(TAG_TEXTPOINT);
 				for(var j:int = 0;j<textPointsXMLList.length();j++){
@@ -466,7 +466,7 @@
 					textPointDO.name = texPointHv.findByName(ATT_NAME) as String;
 					textPointDO.text = texPointHv.findByName(ATT_TEXT) as String;
 					textPointDO.value = texPointHv.findByName(ATT_VALUE) as String;
-					trace("textPointDO:",textPointDO.name,textPointDO.text,textPointDO.value);
+					//trace("textPointDO:",textPointDO.name,textPointDO.text,textPointDO.value);
 					tpv.push(textPointDO);
 				}
 				listDO.listHv = tpv;
@@ -499,7 +499,7 @@
 					v.put(vdoName,vdo);
 				}
 			}
-			trace(v.length);
+			//trace(v.length);
 			return v;
 		}
 		
@@ -516,7 +516,7 @@
 				var varAttributeXML:XML = attributeXMLList[i];
 				var name:String = varAttributeXML.name();
 				var value:String = varAttributeXML.toString();
-				trace(name,value,isTextInvalid(name));
+				//trace(name,value,isTextInvalid(name));
 				if(isTextInvalid(name)){
 					hv.put(name,value);
 				}

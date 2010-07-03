@@ -97,8 +97,6 @@
 				columnSkin = COLUMN_LEFT_SKIN;
 			}
 			column = getDisplayObjectInstance(getStyleValue(columnSkin)) as MovieClip;
-			trace(columnSkin,column,getStyleValue(columnSkin));
-			
 			column.width = this.width;
 			column.height = this.height;
 			this.addChild(column);
