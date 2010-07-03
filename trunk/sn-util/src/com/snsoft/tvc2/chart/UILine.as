@@ -138,7 +138,9 @@
 			}
 			
 			if(sign){
-				timer.stop();
+				if(timer != null){
+					timer.stop();
+				}
 				this.dispatchEvent(new Event(Event.COMPLETE));
 			}
 		}
@@ -154,43 +156,48 @@
 			if(charPointDOV != null && currentIndex < charPointDOV.length - 1){
 				var p1:Point = null;
 				this.currentIndex = findNextEffectiveIndex(charPointDOV,currentIndex);
-				if(this.currentIndex >= 0){
+				if(this.currentIndex >= 0 && this.currentIndex < charPointDOV.length){
 					p1 = charPointDOV[this.currentIndex].point;
 				}
 				var index2:int = findNextEffectiveIndex(charPointDOV,currentIndex + 1);
 				
 				var p2:Point = null;
-				if(this.currentIndex >= 0){
+				if(index2 >= 0 && index2 < charPointDOV.length){
 					p2 = charPointDOV[index2].point;
 				}
-				
-				if(!isNaN(p1.y) && !isNaN(p2.y)){
-					this.currentLineLength = lineLength(p1,p2);
-					var l:MovieClip = getDisplayObjectInstance(getStyleValue(LINE_DEFAULT_SKIN)) as MovieClip;
-					var lr:MovieClip = new MovieClip;
-					lr.addChild(l);
-					currentLine = l;
-					this.currentLineParent.addChild(lr);
-					drawLineText(currentIndex);
-					
-					var s:MovieClip = getDisplayObjectInstance(getStyleValue(POINT_DEFAULT_SKIN)) as MovieClip;
-					s.x = p1.x;
-					s.y = p1.y;
-					this.currentLineParent.addChild(s);
-					
-					l.width = 0;
-					lr.x = p1.x;
-					lr.y = p1.y;
-					
-					var rate:Number = lineRate(p1,p2);
-					
-					lr.rotation = rate;
-					
-					perLen = PERLEN_BASE / Math.abs(Math.cos(rate * Math.PI / 180));
-					timer = new Timer(20,0);
-					timer.addEventListener(TimerEvent.TIMER,handlerTimer);
-					timer.start();
-					currentIndex = index2;//可能由于this.dispatchEvent(new Event(EVENT_POINT_CMP)); 执行慢了会出错。
+				else {
+					this.isPlayCmp = true;
+					dispatchEventState();
+				}
+				if(p1 != null && p2 != null){
+					if(!isNaN(p1.y) && !isNaN(p2.y)){
+						this.currentLineLength = lineLength(p1,p2);
+						var l:MovieClip = getDisplayObjectInstance(getStyleValue(LINE_DEFAULT_SKIN)) as MovieClip;
+						var lr:MovieClip = new MovieClip;
+						lr.addChild(l);
+						currentLine = l;
+						this.currentLineParent.addChild(lr);
+						drawLineText(currentIndex);
+						
+						var s:MovieClip = getDisplayObjectInstance(getStyleValue(POINT_DEFAULT_SKIN)) as MovieClip;
+						s.x = p1.x;
+						s.y = p1.y;
+						this.currentLineParent.addChild(s);
+						
+						l.width = 0;
+						lr.x = p1.x;
+						lr.y = p1.y;
+						
+						var rate:Number = lineRate(p1,p2);
+						
+						lr.rotation = rate;
+						
+						perLen = PERLEN_BASE / Math.abs(Math.cos(rate * Math.PI / 180));
+						timer = new Timer(20,0);
+						timer.addEventListener(TimerEvent.TIMER,handlerTimer);
+						timer.start();
+						currentIndex = index2;//可能由于this.dispatchEvent(new Event(EVENT_POINT_CMP)); 执行慢了会出错。
+					}
 				}
 			}
 		}
@@ -232,7 +239,7 @@
 			if(lineTextSprite != null){
 				var pt:String = this.getCurrentPointText(index);
 				var ptp:Point = this.getCurrentPointTextPlace(index);
-		
+				
 				var tfd:TextField =  EffectText.creatTextByStyleName(pt,TextStyles.STYLE_DATA_TEXT,this.transformColor);
 				tfd.x = ptp.x;
 				tfd.y = ptp.y;
