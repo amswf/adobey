@@ -161,15 +161,11 @@
 				}
 				var index2:int = findNextEffectiveIndex(charPointDOV,currentIndex + 1);
 				
-				var p2:Point = null;
+				var p2:Point = p1;
 				if(index2 >= 0 && index2 < charPointDOV.length){
 					p2 = charPointDOV[index2].point;
 				}
-				else {
-					this.isPlayCmp = true;
-					dispatchEventState();
-				}
-				if(p1 != null && p2 != null){
+				if(p1 != null){
 					if(!isNaN(p1.y) && !isNaN(p2.y)){
 						this.currentLineLength = lineLength(p1,p2);
 						var l:MovieClip = getDisplayObjectInstance(getStyleValue(LINE_DEFAULT_SKIN)) as MovieClip;
@@ -199,11 +195,16 @@
 						currentIndex = index2;//可能由于this.dispatchEvent(new Event(EVENT_POINT_CMP)); 执行慢了会出错。
 					}
 				}
+				else {
+					this.isPlayCmp = true;
+					dispatchEventState();
+				}
 			}
 		}
 		
 		private function handlerTimer(e:Event):void{
-			if(charPointDOV != null &&　currentIndex < charPointDOV.length){
+			var cmp:Boolean = false;
+			if(charPointDOV != null && currentIndex >=0 && currentIndex < charPointDOV.length){
 				
 				currentLine.width += perLen;
 				if((this.currentLineLength - currentLine.width) <= perLen){
@@ -219,11 +220,19 @@
 					}
 					else {
 						drawLineText(currentIndex);
-						this.isPlayCmp = true;
-						dispatchEventState();
+						cmp = true;
 					}
 				}
-			}	
+			}
+			else {
+				cmp = true;
+			}
+			
+			trace(cmp);
+			if(cmp){
+				this.isPlayCmp = true;
+				dispatchEventState();
+			}
 		}
 		
 		private function drawLines(points:Vector.<Point>):void{

@@ -250,7 +250,7 @@
 		private function dispatchAllEvent():void{
 			trace("Biz.counter.count",counter.count);
 			if(counter.count == 0){
-				trace("dispatchAllEvent");
+				trace("dispatchBizCmp");
 				this.dispatchEvent(new Event(Event.COMPLETE));
 			}
 		}
