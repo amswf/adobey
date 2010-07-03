@@ -156,11 +156,11 @@
 						if(timeLineDO != null){
 							var bizDOHv:HashVector = timeLineDO.bizDOHv;
 							if(bizDOHv != null){
+								var signLoad:Boolean = false;
 								for(var j:int = 0;j < bizDOHv.length;j ++){
 									var bizDO:BizDO = bizDOHv.findByIndex(j) as BizDO;
-									
 									var varDOHv:HashVector = bizDO.varDOHv;
-									var signLoad:Boolean = false;
+									
 									if(varDOHv != null && varDOHv.length > 0){
 										var areaMapNameVarDO:VarDO = varDOHv.findByName(VAR_AREA_MAP_NAME) as VarDO;
 										if(areaMapNameVarDO != null){
@@ -243,11 +243,10 @@
 											}
 										}
 									}
-									
-									if(!signLoad){
-										play();
-									}
 								}
+							}
+							if(!signLoad){
+								play();
 							}
 						}
 					}	

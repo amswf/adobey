@@ -228,7 +228,6 @@
 				cmp = true;
 			}
 			
-			trace(cmp);
 			if(cmp){
 				this.isPlayCmp = true;
 				dispatchEventState();
