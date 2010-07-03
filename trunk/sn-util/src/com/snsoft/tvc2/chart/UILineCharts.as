@@ -261,7 +261,6 @@
 		
 		private function handlerUILinePlayCmp(e:Event):void{
 			lineCmpNum ++;
-			trace(lineCmpNum,lineNum);
 			if(lineCmpNum == lineNum){
 				this.dispatchEvent(new Event(Event.COMPLETE));
 			}
