@@ -19,7 +19,6 @@ package com.snsoft.tvc2.util{
 				sprite.addEventListener(Business.EVENT_PLAYED,handlerAddToStage);
 			}
 			function handlerAddToStage(e:Event):void{				
-				trace("setSpritePlace",sprite.width,sprite.height);
 				var rect:Rectangle = sprite.getRect(sprite.parent);
 				
 				if(type =="tl"){

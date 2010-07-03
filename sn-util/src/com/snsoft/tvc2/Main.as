@@ -256,19 +256,16 @@
 		
 		private function plusSourceCount():void{
 			sourceCount ++;
-			trace(sourceCount);
 		}
 		
 		private function subSourceCount():void{
 			sourceCount --;
-			trace(sourceCount);
 			if(sourceCount == 0){
 				play();
 			}
 		}
 		
 		private function handlerLoadAreaMapComplete(e:Event):void{
-			trace("handlerLoadAreaMapComplete");
 			subSourceCount();
 		}
 		

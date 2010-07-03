@@ -128,7 +128,7 @@
 				}
 				this._gradValue = cali;
 				this._gradeBaseValue = cali * minIndex;
-				trace("max - min: ",maxIndex,minIndex);
+				//trace("max - min: ",maxIndex,minIndex);
 				this._differenceValue = cali*(maxIndex - minIndex);
 				this._gradeNum = maxIndex - minIndex + 1;
 				this._calibrationVct = caliList;

@@ -76,24 +76,23 @@
 				
 				var mediasHv:HashVector = bizDO.mediasHv;
 				if(mediasHv != null){ 
-					trace("mediasHv.length",mediasHv.length);
+					//trace("mediasHv.length",mediasHv.length);
 					counter.plus(mediasHv.length);
 				}
 				
 				var soundsHv:HashVector = bizDO.soundsHv;
 				if(soundsHv != null){ 
-					trace("soundsHv.length",soundsHv.length);
+					//trace("soundsHv.length",soundsHv.length);
 					counter.plus(soundsHv.length);
 				}
 				
 				var textOutsHv:HashVector = bizDO.textOutsHv;
 				if(textOutsHv != null){
-					trace("textOutsHv.length",textOutsHv.length);
+					//trace("textOutsHv.length",textOutsHv.length);
 					counter.plus(textOutsHv.length);
 				}
 				
 				var dataDO:DataDO = bizDO.dataDO;
-				trace("unitX",dataDO.unitX,"unitY",dataDO.unitY);
 				var type:String = bizDO.type;
 				var uilcs:UIComponent = null;
 				var delayTime:int = 2000;
@@ -162,7 +161,6 @@
 					}
 					
 					if(uilcs != null){
-						trace("uilcs");
 						counter.plus();
 						uilcs.addEventListener(Event.COMPLETE,handlerCmp);
 					}
@@ -242,15 +240,12 @@
 		}
 		
 		private function handlerCmp(e:Event):void{
-			trace(e.currentTarget);
 			counter.sub();
 			dispatchAllEvent();
 		}
 		
 		private function dispatchAllEvent():void{
-			trace("Biz.counter.count",counter.count);
 			if(counter.count == 0){
-				trace("dispatchBizCmp");
 				this.dispatchEvent(new Event(Event.COMPLETE));
 			}
 		}

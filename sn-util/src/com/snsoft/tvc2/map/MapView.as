@@ -148,9 +148,6 @@ package com.snsoft.tvc2.map{
 					MapUtil.setSpritePlace(back,placep);
 					this.backLayer.addChild(back);
 				}
-				else{
-					trace("WorkSpaceDO:"+WorkSpaceDO);
-				}
 			}
 		}
 		

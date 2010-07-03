@@ -100,7 +100,6 @@ package com.snsoft.tvc2.map{
 		}
 		
 		override protected function initPlay():void {
-			trace("drawMapView");
 			this.addChild(mapView);
 		}
 		

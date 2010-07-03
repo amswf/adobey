@@ -84,7 +84,7 @@ package com.snsoft.tvc2.chart{
 							var pvf:Vector.<CharPointDO> = cpdovvClone[orderFrontIndex];
 							if(i < pvf.length){
 								var pf:Point = pvf[i].pointTextPlace;
-								trace(pf.y,ptp.y);
+								//trace(pf.y,ptp.y);
 								if(ptp.y > pf.y - yMin){
 									ptp.y = pf.y - yMin;  
 								}
@@ -92,7 +92,7 @@ package com.snsoft.tvc2.chart{
 						}
 						else {
 							ptp.y -= yMin;
-							trace(ptp.y);
+							//trace(ptp.y);
 						}
 					}
 				}
