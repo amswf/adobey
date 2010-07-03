@@ -134,7 +134,7 @@
 				
 				//计算值坐标刻度个数和分度值
 				var ycd:Coordinate = new Coordinate(cdpv,true);
-				var ygv:Vector.<String> = Vector.<String>(ycd.calibrationVct);
+				var ygv:Vector.<String> = new Vector.<String>();
 				var xgv:Vector.<String> = new Vector.<String>();
 				var xglv:Vector.<ListDO> = this.dataDo.xGraduationText;
 				var xgldo:ListDO = xglv[0];
@@ -142,6 +142,11 @@
 				for(var ii:int = 0;ii < xgtpv.length;ii ++){
 					var xgtp:TextPointDO = xgtpv[ii];
 					xgv.push(xgtp.value);
+				}
+				
+				for(var i6:int =0;i6< ycd.calibrationVct.length;i6++){
+					var yc:Number = ycd.calibrationVct[i6];
+					ygv.push(yc.toFixed(2));
 				}
 				
 				//画坐标系
