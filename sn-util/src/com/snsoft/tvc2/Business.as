@@ -7,6 +7,7 @@ package com.snsoft.tvc2{
 	
 	public class Business extends UIComponent{
 		
+		public static var EVENT_PLAYED:String = "EVENT_PLAYED";
 		
 		//开始播放时间
 		protected var delayTime:Number;

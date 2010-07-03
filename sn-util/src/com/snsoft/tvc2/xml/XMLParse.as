@@ -99,6 +99,8 @@
 		
 		public static const ATT_S:String = "s";
 		
+	    public static const ATT_PLACE_TYPE:String = "placeType";
+		
 		public static const ATT_SCALEX:String = "scaleX";
 		
 		public static const ATT_SCALEY:String = "scaleY";
@@ -332,6 +334,7 @@
 					var x:int = int(textOutAttributeHv.findByName(ATT_X)as String);
 					var y:int = int(textOutAttributeHv.findByName(ATT_Y)as String);
 					textOutDO.place = new Point(x,y);
+					textOutDO.placeType = textOutAttributeHv.findByName(ATT_PLACE_TYPE)as String;
 					textOutDO.style = textOutAttributeHv.findByName(ATT_STYLE)as String;
 					textOutv.push(textOutDO);
 				}
@@ -368,6 +371,7 @@
 					var x:int = int(mediaAttributeHv.findByName(ATT_X)as String);
 					var y:int = int(mediaAttributeHv.findByName(ATT_Y)as String);
 					mediaDO.place = new Point(x,y);
+					mediaDO.placeType = mediaAttributeHv.findByName(ATT_PLACE_TYPE)as String;
 					mediaDO.url = mediaAttributeHv.findByName(ATT_URL)as String
 					mediav.push(mediaDO);
 				}

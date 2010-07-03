@@ -18,6 +18,8 @@ package com.snsoft.tvc2.dataObject{
 		
 		private var _place:Point;
 		
+		private var _placeType:String;
+		
 		private var _mediaList:Vector.<DisplayObject>;
 		
 		public function MediaDO()
@@ -102,6 +104,16 @@ package com.snsoft.tvc2.dataObject{
 		public function set mediaList(value:Vector.<DisplayObject>):void
 		{
 			_mediaList = value;
+		}
+
+		public function get placeType():String
+		{
+			return _placeType;
+		}
+
+		public function set placeType(value:String):void
+		{
+			_placeType = value;
 		}
 
 

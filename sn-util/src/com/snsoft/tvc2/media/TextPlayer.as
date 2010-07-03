@@ -36,10 +36,8 @@ package com.snsoft.tvc2.media{
 		override protected function play():void{
 			this.textField = EffectText.creatTextByStyleName(textOutDO.text,textOutDO.style);
 			this.textField.text = textOutDO.text;
-			this.textField.x = textOutDO.place.x;
-			this.textField.y = textOutDO.place.y;
 			this.addChild(this.textField);
-			
+			this.dispatchEvent(new Event(EVENT_PLAYED));
 		}
 		
 		/**

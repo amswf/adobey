@@ -1,7 +1,10 @@
 package com.snsoft.tvc2.media{
 	import com.snsoft.tvc2.Business;
+	import com.snsoft.tvc2.SystemConfig;
 	import com.snsoft.tvc2.dataObject.MediaDO;
 	import com.snsoft.tvc2.dataObject.MediasDO;
+	import com.snsoft.tvc2.util.PlaceType;
+	import com.snsoft.tvc2.util.StringUtil;
 	
 	import flash.events.Event;
 	
@@ -38,9 +41,16 @@ package com.snsoft.tvc2.media{
 					var mediaDO:MediaDO = mediasDO.mediaDOHv[playNum];
 					mediaPlayer = new MediaPlayer(mediaDO.mediaList,mediaDO.timeOffset,mediaDO.timeLength,mediaDO.timeout);
 					mediaPlayer.addEventListener(Event.COMPLETE,handlerMediaPlayerCMP);
+					
 					mediaPlayer.x = mediaDO.place.x;
 					mediaPlayer.y = mediaDO.place.y;
+					
+					var placeType:String = mediaDO.placeType;
+					if(StringUtil.isEffective(placeType)){
+						PlaceType.setSpritePlace(mediaPlayer,SystemConfig.stageSize,placeType);
+					}
 					this.addChild(mediaPlayer);
+					this.dispatchEvent(new Event(EVENT_PLAYED));
 				}
 				else{
 					this.isPlayCmp = true;
