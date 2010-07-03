@@ -160,6 +160,7 @@
 									var bizDO:BizDO = bizDOHv.findByIndex(j) as BizDO;
 									
 									var varDOHv:HashVector = bizDO.varDOHv;
+									var signLoad:Boolean = false;
 									if(varDOHv != null && varDOHv.length > 0){
 										var areaMapNameVarDO:VarDO = varDOHv.findByName(VAR_AREA_MAP_NAME) as VarDO;
 										if(areaMapNameVarDO != null){
@@ -168,6 +169,7 @@
 												var aml:AreaMapLoader = new AreaMapLoader(areaMapName,bizDO);
 												plusSourceCount();
 												aml.load();
+												signLoad = true;
 												aml.addEventListener(Event.COMPLETE,handlerLoadAreaMapComplete);
 												aml.addEventListener(IOErrorEvent.IO_ERROR,handlerLoadIOError);
 											}
@@ -181,6 +183,7 @@
 												var distributeUrlV:Vector.<String> = new Vector.<String>();
 												distributeUrlV.push(distributeMapName);
 												plusSourceCount();
+												signLoad = true;
 												distributeMediaLoader.addEventListener(Event.COMPLETE,handlerDistributeMediaLoaderComplete);
 												distributeMediaLoader.loadList(distributeUrlV);
 												
@@ -202,6 +205,7 @@
 												}
 												if(mediaUrlV.length > 0){
 													plusSourceCount();
+													signLoad = true;
 													mediaLoader.addEventListener(Event.COMPLETE,handlerMediaLoaderComplete);
 													mediaLoader.loadList(mediaUrlV);
 												}
@@ -233,10 +237,15 @@
 												if(soundUrlV != null && soundUrlV.length > 0){
 													soundLoader.loadList(soundUrlV);
 													plusSourceCount();
+													signLoad = true;
 													soundLoader.addEventListener(Event.COMPLETE,handlerSoundLoaderComplete);
 												}
 											}
 										}
+									}
+									
+									if(!signLoad){
+										play();
 									}
 								}
 							}
