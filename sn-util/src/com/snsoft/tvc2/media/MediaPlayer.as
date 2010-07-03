@@ -1,5 +1,6 @@
 package com.snsoft.tvc2.media{
 	import com.snsoft.tvc2.Business;
+	import com.snsoft.tvc2.SystemConfig;
 	import com.snsoft.tvc2.util.FrameTimer;
 	
 	import flash.display.Bitmap;
@@ -51,7 +52,7 @@ package com.snsoft.tvc2.media{
 						playingMedia.addEventListener(Event.EXIT_FRAME,handlerMovieClipPlayExitFrame);
 					}
 					else if(playingMedia is Bitmap){
-						var ft:FrameTimer = new FrameTimer(this.stage.frameRate,1000,this);
+						var ft:FrameTimer = new FrameTimer(SystemConfig.stageFrameRate,1000,this);
 						ft.timer();
 						ft.addEventListener(Event.COMPLETE,handlerBitmapPlayComplete);
 					}

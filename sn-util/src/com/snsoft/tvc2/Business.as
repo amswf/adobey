@@ -56,7 +56,7 @@ package com.snsoft.tvc2{
 			this.removeEventListener(Event.ADDED_TO_STAGE,handlerAddedToStage);
 			initPlay();
 			if(this.stage != null){
-				delayFrameTimer = new FrameTimer(this.stage.frameRate,this.delayTime,this);
+				delayFrameTimer = new FrameTimer(SystemConfig.stageFrameRate,this.delayTime,this);
 				delayFrameTimer.timer();
 				delayFrameTimer.addEventListener(Event.COMPLETE,handlerDelayFrameTimer);
 			}
@@ -66,7 +66,7 @@ package com.snsoft.tvc2{
 			delayFrameTimer.removeEventListener(Event.COMPLETE,handlerDelayFrameTimer);
 			trace("handlerDelayFrameTimer",this.timeLength,this.timeOut);
 			if(this.timeLength > 0 && this.stage != null){
-				timeLengthFrameTimer = new FrameTimer(this.stage.frameRate,this.timeLength,this);
+				timeLengthFrameTimer = new FrameTimer(SystemConfig.stageFrameRate,this.timeLength,this);
 				timeLengthFrameTimer.timer();
 				timeLengthFrameTimer.addEventListener(Event.COMPLETE,handlerTimeLength);
 			}
@@ -75,7 +75,7 @@ package com.snsoft.tvc2{
 			}
 			
 			if(this.timeOut > 0 && this.stage != null){
-				timeOutFrameTimer = new FrameTimer(this.stage.frameRate,this.timeOut,this);
+				timeOutFrameTimer = new FrameTimer(SystemConfig.stageFrameRate,this.timeOut,this);
 				timeOutFrameTimer.timer();
 				timeOutFrameTimer.addEventListener(Event.COMPLETE,handlerTimeOut);
 			}
