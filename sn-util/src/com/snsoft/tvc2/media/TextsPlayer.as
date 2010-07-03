@@ -42,12 +42,14 @@ package com.snsoft.tvc2.media{
 					}
 					var textOutDO:TextOutDO = textOutsDO.textOutDOHv[playNum];
 					textPlayer = new TextPlayer(textOutDO);
+					textPlayer.x = textOutDO.place.x;
+					textPlayer.y = textOutDO.place.y;
+					
 					var placeType:String = textOutDO.placeType;
 					if(StringUtil.isEffective(placeType)){
 						PlaceType.setSpritePlace(textPlayer,SystemConfig.stageSize,placeType);
 					}
-					textPlayer.x = textOutDO.place.x;
-					textPlayer.y = textOutDO.place.y;
+					
 					textPlayer.addEventListener(Event.COMPLETE,handlerTextsPlayerCMP);
 					this.addChild(textPlayer);
 				}
