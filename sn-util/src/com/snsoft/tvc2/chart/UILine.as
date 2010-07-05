@@ -47,7 +47,7 @@
 		
 		private var charPointDOV:Vector.<CharPointDO>;
 		
-		public function UILine(charPointDOV:Vector.<CharPointDO> = null,isAnimation:Boolean = true,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0,lineTextSprite:Sprite = null,transformColor:uint = 0x000000){
+		public function UILine(charPointDOV:Vector.<CharPointDO> = null,isAnimation:Boolean = true,lineTextSprite:Sprite = null,transformColor:uint = 0x000000,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0){
 			super();
 			this.delayTime = delayTime;
 			this.timeLength = timeLength;

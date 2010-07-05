@@ -44,11 +44,15 @@
 		
 		private var marketMainDO:MarketMainDO;
 		
+		//是否已经播放
+		protected var isPlay:Boolean;
+		
 		public function Biz(bizDO:BizDO,marketMainDO:MarketMainDO){
 			super();
 			this.bizDO = bizDO;
 			this.marketMainDO = marketMainDO;
 			counter = new Counter();
+			isPlay = false;
 		}
 		
 		/**
@@ -66,174 +70,176 @@
 		 * 
 		 */		
 		override protected function draw():void{
-			trace("bizPlay");
 			play();
 		}
 		
 		private function play():void{
-			SpriteUtil.deleteAllChild(this);
-			if(bizDO != null){
-				
-				var mediasHv:HashVector = bizDO.mediasHv;
-				if(mediasHv != null){ 
-					//trace("mediasHv.length",mediasHv.length);
-					counter.plus(mediasHv.length);
-				}
-				
-				var soundsHv:HashVector = bizDO.soundsHv;
-				if(soundsHv != null){ 
-					//trace("soundsHv.length",soundsHv.length);
-					counter.plus(soundsHv.length);
-				}
-				
-				var textOutsHv:HashVector = bizDO.textOutsHv;
-				if(textOutsHv != null){
-					//trace("textOutsHv.length",textOutsHv.length);
-					counter.plus(textOutsHv.length);
-				}
-				
-				var dataDO:DataDO = bizDO.dataDO;
-				var type:String = bizDO.type;
-				var uilcs:UIComponent = null;
-				var delayTime:int = 2000;
-				if(dataDO != null){
-					if(type == BIZ_TYPE_POLYLINES){
-						uilcs = new UILineCharts(dataDO,delayTime,6000);
-						uilcs.width = 400;
-						uilcs.height = 260;
-						uilcs.x = 120;
-						uilcs.y = 180;
+			if(!isPlay){
+				trace("bizPlay");
+				isPlay = true;
+				SpriteUtil.deleteAllChild(this);
+				if(bizDO != null){
+					
+					var mediasHv:HashVector = bizDO.mediasHv;
+					if(mediasHv != null){ 
+						//trace("mediasHv.length",mediasHv.length);
+						counter.plus(mediasHv.length);
 					}
-					else if(type == BIZ_TYPE_PILLAR){
-						uilcs = new UIPillarCharts(dataDO,delayTime,6000);
-						uilcs.width = 400;
-						uilcs.height = 260;
-						uilcs.x = 120;
-						uilcs.y = 180;
+					
+					var soundsHv:HashVector = bizDO.soundsHv;
+					if(soundsHv != null){ 
+						//trace("soundsHv.length",soundsHv.length);
+						counter.plus(soundsHv.length);
 					}
-					else if(type == BIZ_TYPE_DISTRIBUTE){
-						var marketMap:MarketMap = new MarketMap();
-						
-						var marketMapXVDO:VarDO = bizDO.varDOHv.findByName("marketMapX") as VarDO;
-						var marketMapX:Number = 0;
-						if(marketMapXVDO != null){
-							var xv:Number = Number(marketMapXVDO.getAttribute("value"));
-							if(isNaN(xv)){
-								marketMapX = xv;
+					
+					var textOutsHv:HashVector = bizDO.textOutsHv;
+					if(textOutsHv != null){
+						//trace("textOutsHv.length",textOutsHv.length);
+						counter.plus(textOutsHv.length);
+					}
+					
+					var dataDO:DataDO = bizDO.dataDO;
+					var type:String = bizDO.type;
+					var uilcs:Business = null;
+					var delayTime:int = 2000;
+					if(dataDO != null){
+						if(type == BIZ_TYPE_POLYLINES){
+							uilcs = new UILineCharts(dataDO,delayTime,6000);
+							uilcs.width = 400;
+							uilcs.height = 260;
+							uilcs.x = 120;
+							uilcs.y = 180;
+						}
+						else if(type == BIZ_TYPE_PILLAR){
+							uilcs = new UIPillarCharts(dataDO,delayTime,6000);
+							uilcs.width = 400;
+							uilcs.height = 260;
+							uilcs.x = 120;
+							uilcs.y = 180;
+						}
+						else if(type == BIZ_TYPE_DISTRIBUTE){
+							var marketMap:MarketMap = new MarketMap();
+							
+							var marketMapXVDO:VarDO = bizDO.varDOHv.findByName("marketMapX") as VarDO;
+							var marketMapX:Number = 0;
+							if(marketMapXVDO != null){
+								var xv:Number = Number(marketMapXVDO.getAttribute("value"));
+								if(isNaN(xv)){
+									marketMapX = xv;
+								}
 							}
+							
+							var marketMapYVDO:VarDO = bizDO.varDOHv.findByName("marketMapY") as VarDO;
+							var marketMapY:Number = 0;
+							if(marketMapYVDO != null){
+								var yv:Number = Number(marketMapYVDO.getAttribute("value"));
+								if(isNaN(xv)){
+									marketMapY = yv;
+								}
+							}
+							
+							var marketMapSVDO:VarDO = bizDO.varDOHv.findByName("marketMapS") as VarDO;
+							var marketMapS:Number = 1;
+							if(marketMapSVDO != null){
+								var sv:Number = Number(marketMapSVDO.getAttribute("value"));
+								if(isNaN(xv)){
+									marketMapS = sv;
+								}
+							}
+							
+							marketMap.x = marketMapX;
+							marketMap.y = marketMapY;
+							marketMap.s = marketMapS;
+							
+							uilcs = new PriceDistribute(dataDO,marketMainDO,marketMap,bizDO.mapView,delayTime);
+							uilcs.width = 400;
+							uilcs.height = 260;
+							uilcs.x = 60;
+							uilcs.y = 130;
+							
+						}
+						else if(type == BIZ_TYPE_DISTRIBUTE_AREA){
+							uilcs = new PriceMapArea(dataDO, bizDO.mapView,delayTime);
+							uilcs.width = 400;
+							uilcs.height = 260;
+							uilcs.x = 60;
+							uilcs.y = 130;
 						}
 						
-						var marketMapYVDO:VarDO = bizDO.varDOHv.findByName("marketMapY") as VarDO;
-						var marketMapY:Number = 0;
-						if(marketMapYVDO != null){
-							var yv:Number = Number(marketMapYVDO.getAttribute("value"));
-							if(isNaN(xv)){
-								marketMapY = yv;
-							}
+						if(uilcs != null){
+							counter.plus();
+							uilcs.addEventListener(Event.COMPLETE,handlerCmp);
 						}
-						
-						var marketMapSVDO:VarDO = bizDO.varDOHv.findByName("marketMapS") as VarDO;
-						var marketMapS:Number = 1;
-						if(marketMapSVDO != null){
-							var sv:Number = Number(marketMapSVDO.getAttribute("value"));
-							if(isNaN(xv)){
-								marketMapS = sv;
-							}
-						}
-						
-						marketMap.x = marketMapX;
-						marketMap.y = marketMapY;
-						marketMap.s = marketMapS;
-						
-						uilcs = new PriceDistribute(dataDO,marketMainDO,marketMap,bizDO.mapView,delayTime);
-						uilcs.width = 400;
-						uilcs.height = 260;
-						uilcs.x = 60;
-						uilcs.y = 130;
-						
 					}
-					else if(type == BIZ_TYPE_DISTRIBUTE_AREA){
-						uilcs = new PriceMapArea(dataDO, bizDO.mapView,delayTime);
-						uilcs.width = 400;
-						uilcs.height = 260;
-						uilcs.x = 60;
-						uilcs.y = 130;
+					
+					if(mediasHv != null){
+						for(var i:int = 0;i < mediasHv.length;i ++){
+							var mediasDO:MediasDO = mediasHv.findByIndex(i) as MediasDO;
+							var mediasPlayer:MediasPlayer = new MediasPlayer(mediasDO);
+							mediasPlayer.addEventListener(Event.COMPLETE,handlerCmp);
+							this.addChild(mediasPlayer);
+							
+						}
+					}
+					
+					if(soundsHv != null){
+						for(var ii:int = 0;ii < soundsHv.length;ii ++){
+							var soundsDO:SoundsDO = soundsHv.findByIndex(ii) as SoundsDO;
+							var mp3sPlayer:Mp3sPlayer = new Mp3sPlayer(soundsDO);
+							mp3sPlayer.addEventListener(Event.COMPLETE,handlerCmp);
+							this.addChild(mp3sPlayer); 
+						}
+					}
+					
+					if(textOutsHv != null){
+						for(var i3:int = 0;i3 < textOutsHv.length;i3 ++){
+							var textOutsDO:TextOutsDO = textOutsHv.findByIndex(i3) as TextOutsDO;
+							var textsPlayer:TextsPlayer = new TextsPlayer(textOutsDO);
+							textsPlayer.addEventListener(Event.COMPLETE,handlerCmp);
+							this.addChild(textsPlayer);
+						}
 					}
 					
 					if(uilcs != null){
-						counter.plus();
-						uilcs.addEventListener(Event.COMPLETE,handlerCmp);
+						this.addChild(uilcs);
 					}
-				}
-				
-				if(mediasHv != null){
-					for(var i:int = 0;i < mediasHv.length;i ++){
-						var mediasDO:MediasDO = mediasHv.findByIndex(i) as MediasDO;
-						var mediasPlayer:MediasPlayer = new MediasPlayer(mediasDO);
-						mediasPlayer.addEventListener(Event.COMPLETE,handlerCmp);
-						this.addChild(mediasPlayer);
-						
+					
+					var titleVDO:VarDO = bizDO.varDOHv.findByName("title") as VarDO;
+					var baseY:Number = 35;
+					if(titleVDO != null){
+						var titleVar:String = String(titleVDO.getAttribute("text"));
+						if(StringUtil.isEffective(titleVar)){
+							var titleTfd:TextField = EffectText.creatTextByStyleName(titleVar,TextStyles.STYLE_TITLE);
+							titleTfd.x = ( SystemConfig.stageSize.x - titleTfd.width ) / 2;
+							titleTfd.y = baseY;
+							this.addChild(titleTfd);
+							
+							baseY = titleTfd.getRect(this).bottom;
+						}
 					}
-				}
-				
-				if(soundsHv != null){
-					for(var ii:int = 0;ii < soundsHv.length;ii ++){
-						var soundsDO:SoundsDO = soundsHv.findByIndex(ii) as SoundsDO;
-						var mp3sPlayer:Mp3sPlayer = new Mp3sPlayer(soundsDO);
-						mp3sPlayer.addEventListener(Event.COMPLETE,handlerCmp);
-						this.addChild(mp3sPlayer); 
+					
+					var goodsVDO:VarDO = bizDO.varDOHv.findByName("goods") as VarDO;
+					if(goodsVDO != null){
+						var goodsVar:String = String(goodsVDO.getAttribute("text"));
+						if(StringUtil.isEffective(goodsVar)){
+							var goodsTfd:TextField = EffectText.creatTextByStyleName(goodsVar,TextStyles.STYLE_GOODS);
+							goodsTfd.x = ( SystemConfig.stageSize.x - goodsTfd.width ) / 2;
+							goodsTfd.y = baseY + 10;
+							this.addChild(goodsTfd);
+							
+							baseY = goodsTfd.getRect(this).bottom;
+						}
 					}
-				}
-				
-				if(textOutsHv != null){
-					for(var i3:int = 0;i3 < textOutsHv.length;i3 ++){
-						var textOutsDO:TextOutsDO = textOutsHv.findByIndex(i3) as TextOutsDO;
-						var textsPlayer:TextsPlayer = new TextsPlayer(textOutsDO);
-						textsPlayer.addEventListener(Event.COMPLETE,handlerCmp);
-						this.addChild(textsPlayer);
-					}
-				}
-				
-				if(uilcs != null){
-					this.addChild(uilcs);
-					uilcs.drawNow();
-				}
-				
-				var titleVDO:VarDO = bizDO.varDOHv.findByName("title") as VarDO;
-				var baseY:Number = 35;
-				if(titleVDO != null){
-					var titleVar:String = String(titleVDO.getAttribute("text"));
-					if(StringUtil.isEffective(titleVar)){
-						var titleTfd:TextField = EffectText.creatTextByStyleName(titleVar,TextStyles.STYLE_TITLE);
-						titleTfd.x = ( SystemConfig.stageSize.x - titleTfd.width ) / 2;
-						titleTfd.y = baseY;
-						this.addChild(titleTfd);
-						
-						baseY = titleTfd.getRect(this).bottom;
-					}
-				}
-				
-				var goodsVDO:VarDO = bizDO.varDOHv.findByName("goods") as VarDO;
-				if(goodsVDO != null){
-					var goodsVar:String = String(goodsVDO.getAttribute("text"));
-					if(StringUtil.isEffective(goodsVar)){
-						var goodsTfd:TextField = EffectText.creatTextByStyleName(goodsVar,TextStyles.STYLE_GOODS);
-						goodsTfd.x = ( SystemConfig.stageSize.x - goodsTfd.width ) / 2;
-						goodsTfd.y = baseY + 10;
-						this.addChild(goodsTfd);
-						
-						baseY = goodsTfd.getRect(this).bottom;
-					}
-				}
-				
-				var dateTextVDO:VarDO = bizDO.varDOHv.findByName("dateText") as VarDO;
-				if(dateTextVDO != null){
-					var dateTextVar:String = String(dateTextVDO.getAttribute("text"));
-					if(StringUtil.isEffective(dateTextVar)){
-						var dateTextTfd:TextField = EffectText.creatTextByStyleName(dateTextVar,TextStyles.STYLE_DATE_TEXT);
-						dateTextTfd.x = ( SystemConfig.stageSize.x - dateTextTfd.width ) / 2;
-						dateTextTfd.y = baseY;
-						this.addChild(dateTextTfd);
+					
+					var dateTextVDO:VarDO = bizDO.varDOHv.findByName("dateText") as VarDO;
+					if(dateTextVDO != null){
+						var dateTextVar:String = String(dateTextVDO.getAttribute("text"));
+						if(StringUtil.isEffective(dateTextVar)){
+							var dateTextTfd:TextField = EffectText.creatTextByStyleName(dateTextVar,TextStyles.STYLE_DATE_TEXT);
+							dateTextTfd.x = ( SystemConfig.stageSize.x - dateTextTfd.width ) / 2;
+							dateTextTfd.y = baseY;
+							this.addChild(dateTextTfd);
+						}
 					}
 				}
 			}
@@ -245,6 +251,7 @@
 		}
 		
 		private function dispatchAllEvent():void{
+			trace("dispatchEventState:Event.COMPLETE",counter.count);
 			if(counter.count == 0){
 				this.dispatchEvent(new Event(Event.COMPLETE));
 			}

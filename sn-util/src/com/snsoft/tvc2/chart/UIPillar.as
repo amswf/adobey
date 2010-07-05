@@ -44,7 +44,7 @@
 		
 		private var charPointDO:CharPointDO;
 		
-		public function UIPillar(charPointDO:CharPointDO,isAnimation:Boolean = true,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0,pillarTextSprite:Sprite = null,transformColor:uint = 0x000000)	{
+		public function UIPillar(charPointDO:CharPointDO,isAnimation:Boolean = true,pillarTextSprite:Sprite = null,transformColor:uint = 0x000000,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0)	{
 			super();
 			this.delayTime = delayTime;
 			this.timeLength = timeLength;
