@@ -110,9 +110,13 @@
 				//caliList
 				var minIndex:int = int(minNum / cali);
 				var minMod:int = minNum >= 0 ? 0 : 1;
-				//trace("minNum,minMod:",minNum,minMod);
+				trace("minNum,minMod:",minNum,minMod);
 				minIndex -= minMod;
 				
+				//当最小值和基值相同时，刻度要减一，防止某些数据在0上。
+				if(minNum % cali == 0){
+					minIndex  -= 1;
+				}
 				
 				//当 mod 值不为0时  modNum = 1 当mod 值为0时 modNum = 0
 				
