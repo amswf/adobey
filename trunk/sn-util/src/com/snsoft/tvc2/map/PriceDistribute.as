@@ -196,21 +196,8 @@
 			cutLine.y = rect.y + rect.height;
 			this.addChild(cutLine);
 			for(var i:int = 0;i< listDOV.length;i++){
-				var color:uint = 0x000000;
-				if(i == 0){
-					color = 0x000099;
-				}
-				else if(i == 1){
-					color = 0x999900;
-				}
-				else if(i == 2){
-					color = 0x009900; 
-				}
-				else if(i == 3){
-					color = 0x990000; 
-				}
+				var color:uint = getColor(i);
 				var listDO:ListDO = listDOV[i];
-				
 				
 				var cutLineMC:MovieClip = getDisplayObjectInstance(getStyleValue(SMALL_POINT_DEFAULT_SKIN)) as MovieClip;
 				cutLineMC.y = - cutLineMC.height - cutLine.height;
@@ -238,16 +225,7 @@
 			this.listSmallCount ++;
 			if(index < listDOV.length){
 				var listDO:ListDO = listDOV[index];
-				var color:uint = 0x000000;
-				if(index == 0){
-					color = 0x000000;
-				}
-				if(index == 1){
-					color = 0x009900;
-				}
-				if(index == 2){
-					color = 0x990000; 
-				}
+				var color:uint = getColor(index);
 				
 				var rect:Rectangle = this.mapView.getRect(this);
 				
@@ -531,6 +509,23 @@
 				rate = Math.atan((p2.y - p1.y) / (p2.x - p1.x)) * 180 / Math.PI;
 			}
 			return rate;
+		}
+		
+		private function getColor(i:int):uint{
+			var color:uint = 0x000000;
+			if(i == 0){
+				color = 0x000099;
+			}
+			else if(i == 1){
+				color = 0x999900;
+			}
+			else if(i == 2){
+				color = 0x009900; 
+			}
+			else if(i == 3){
+				color = 0x990000; 
+			}
+			return color;
 		}
 		
 		public function get dataDO():DataDO

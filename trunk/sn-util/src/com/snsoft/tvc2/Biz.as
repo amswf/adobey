@@ -98,18 +98,18 @@
 				var delayTime:int = 2000;
 				if(dataDO != null){
 					if(type == BIZ_TYPE_POLYLINES){
-						uilcs = new UILineCharts(dataDO,delayTime);
+						uilcs = new UILineCharts(dataDO,delayTime,6000);
 						uilcs.width = 400;
 						uilcs.height = 260;
 						uilcs.x = 120;
-						uilcs.y = 160;
+						uilcs.y = 180;
 					}
 					else if(type == BIZ_TYPE_PILLAR){
-						uilcs = new UIPillarCharts(dataDO,delayTime);
+						uilcs = new UIPillarCharts(dataDO,delayTime,6000);
 						uilcs.width = 400;
 						uilcs.height = 260;
 						uilcs.x = 120;
-						uilcs.y = 160;
+						uilcs.y = 180;
 					}
 					else if(type == BIZ_TYPE_DISTRIBUTE){
 						var marketMap:MarketMap = new MarketMap();

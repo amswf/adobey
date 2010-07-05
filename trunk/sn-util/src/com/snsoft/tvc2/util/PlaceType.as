@@ -20,42 +20,26 @@ package com.snsoft.tvc2.util{
 			}
 			function handlerAddToStage(e:Event):void{				
 				var rect:Rectangle = sprite.getRect(sprite.parent);
-				
-				if(type =="tl"){
-					sprite.x = 0;
-					sprite.y = 0;
-				}
-				else if(type =="tc"){
-					sprite.x = (stageSize.x - rect.width) / 2;
-					sprite.y = 0;
-				}
-				else if(type =="tr"){
-					sprite.x = (stageSize.x - rect.width);
-					sprite.y = 0;
-				}
-				else if(type =="ml"){
-					sprite.x = 0;
-					sprite.y = (stageSize.y - rect.height) / 2;
-				}
-				else if(type =="mc"){
-					sprite.x = (stageSize.x - rect.width) / 2;
-					sprite.y = (stageSize.y - rect.height) / 2;
-				}
-				else if(type =="mr"){
-					sprite.x = (stageSize.x - rect.width);
-					sprite.y = (stageSize.y - rect.height) / 2;
-				}
-				else if(type =="bl"){
-					sprite.x = 0;
-					sprite.y = (stageSize.y - rect.height);
-				}
-				else if(type =="bc"){
-					sprite.x = (stageSize.x - rect.width) / 2;
-					sprite.y = (stageSize.y - rect.height);
-				}
-				else if(type =="br"){
-					sprite.x = (stageSize.x - rect.width);
-					sprite.y = (stageSize.y - rect.height);
+				if(type != null){
+					if(type.indexOf("t") >= 0){
+						sprite.y = 0;
+					}
+					else if(type.indexOf("m") >= 0){
+						sprite.y = (stageSize.y - rect.height) / 2;
+					}
+					else if(type.indexOf("b") >= 0){
+						sprite.y = (stageSize.y - rect.height);
+					}
+					
+					if(type.indexOf("l") >= 0){
+						sprite.x = 0;
+					}
+					else if(type.indexOf("c") >= 0){
+						sprite.x = (stageSize.x - rect.width) / 2;
+					}
+					else if(type.indexOf("r") >= 0){
+						sprite.x = (stageSize.x - rect.width);
+					}
 				}
 			}
 		}
