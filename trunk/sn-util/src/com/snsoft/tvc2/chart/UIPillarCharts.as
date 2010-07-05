@@ -136,7 +136,7 @@
 				}
 				
 				//计算值坐标刻度个数和分度值
-				var ycd:Coordinate = new Coordinate(cdpv);
+				var ycd:Coordinate = new Coordinate(cdpv,true);
 				var ygv:Vector.<String> = Vector.<String>(ycd.calibrationVct);
 				var xgv:Vector.<String> = new Vector.<String>();
 				var xglv:Vector.<ListDO> = this.dataDo.xGraduationText;
