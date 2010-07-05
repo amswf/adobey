@@ -26,15 +26,6 @@
 	
 	public class UILineCharts extends UICoorChartBase{
 		
-		//开始播放时间
-		private var delayTime:Number;
-		
-		//最小播放时长
-		private var timeLength:Number;
-		
-		//最大播放时长
-		private var timeOut:Number;
-		
 		//点列表的列表
 		private var dataDo:DataDO;
 		
@@ -51,6 +42,8 @@
 		private var lineNum:int = 0;
 		
 		private var lineCmpNum:int = 0;
+		
+		private var uiLineV:Vector.<UILine>;
 		
 		public function UILineCharts(dataDo:DataDO = null,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0){
 			super();
@@ -96,11 +89,11 @@
 			super.configUI();	
 		}
 		
-		/**
-		 * 
-		 * 
-		 */		
-		override protected function draw():void{
+		override protected function draw():void {
+			
+		}
+		
+		override protected function initPlay():void {
 			if(this.dataDo != null){
 				
 				coorSprite = new Sprite();
@@ -161,11 +154,11 @@
 				var uic:UICoor = new UICoor(xgv,ygv,unitX,unitY);
 				uic.width = this.width;
 				uic.height = this.height;
-			    uic.setStyle(TEXT_FORMAT,this.getStyleValue(TEXT_FORMAT));
+				uic.setStyle(TEXT_FORMAT,this.getStyleValue(TEXT_FORMAT));
 				coorSprite.addChild(uic);
 				uic.drawNow();
 				
-				var uilv:Vector.<UILine> = new Vector.<UILine>();
+				uiLineV = new Vector.<UILine>();
 				
 				var charPointDOVV:Vector.<Vector.<CharPointDO>> = new Vector.<Vector.<CharPointDO>>();
 				
@@ -200,11 +193,11 @@
 				var cpdotpvv:Vector.<Vector.<CharPointDO>> = this.calculatePointTextPlace(charPointDOVV,20);
 				for(var i4:int;i4<charPointDOVV.length;i4++){
 					var charPointDOV:Vector.<CharPointDO> = cpdotpvv[i4];
-					var uil:UILine = new UILine(charPointDOV,false,this.delayTime,this.timeLength,this.timeOut,lineTextSprite);
+					var uil:UILine = new UILine(charPointDOV,false,lineTextSprite);
 					uil.setStyle(LINE_DEFAULT_SKIN,this.getStyleValue(LINE_DEFAULT_SKIN));
 					uil.setStyle(POINT_DEFAULT_SKIN,this.getStyleValue(POINT_DEFAULT_SKIN));
 					uil.setStyle(TEXT_FORMAT,this.getStyleValue(TEXT_FORMAT));
-					uilv.push(uil);
+					uiLineV.push(uil);
 					var color4:uint = 0x000000;
 					//var ctf:ColorTransform = new ColorTransform();
 					var lineSkin:String = "Line_default_skin";
@@ -254,20 +247,47 @@
 					ColorTransformUtil.setColor(clspr,uil.transformColor);
 					cutlineSprite.addChild(clspr);
 				}
-				
 				lineNum = charPointDOVV.length;
-				for(var i5:int;i5<charPointDOVV.length;i5++){
-					var uil5:UILine = uilv[i5]
-					lineSprite.addChild(uil5);
-					uil5.addEventListener(Event.COMPLETE,handlerUILinePlayCmp);
-				}
 			}
 		}
+		
+		/**
+		 * 
+		 * 
+		 */		
+		override protected function play():void {
+			for(var i5:int;i5<uiLineV.length;i5++){
+				var uil5:UILine = uiLineV[i5]
+				lineSprite.addChild(uil5);
+				uil5.addEventListener(Event.COMPLETE,handlerUILinePlayCmp);
+			}
+		}
+		
+		/**
+		 * 
+		 * 
+		 */		
+		override protected function dispatchEventState():void{
+			var sign:Boolean = false;
+			if(this.isPlayCmp && this.isTimeLen){
+				sign = true;
+			}
+			else if(this.isTimeOut){
+				sign = true;
+			}
+			
+			if(sign){
+				this.dispatchEvent(new Event(Event.COMPLETE));
+			}
+		}
+		
+		
 		
 		private function handlerUILinePlayCmp(e:Event):void{
 			lineCmpNum ++;
 			if(lineCmpNum == lineNum){
-				this.dispatchEvent(new Event(Event.COMPLETE));
+				this.isPlayCmp = true;
+				this.dispatchEventState();
 			}
 		}
 	}

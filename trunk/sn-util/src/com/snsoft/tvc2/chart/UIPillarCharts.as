@@ -30,15 +30,6 @@
 	
 	public class UIPillarCharts extends UICoorChartBase{
 		
-		//开始播放时间
-		private var delayTime:Number;
-		
-		//最小播放时长
-		private var timeLength:Number;
-		
-		//最大播放时长
-		private var timeOut:Number;
-		
 		//点列表的列表
 		private var dataDo:DataDO;
 		
@@ -55,6 +46,18 @@
 		private var lineNum:int = 0;
 		
 		private var lineCmpNum:int = 0;
+		
+		private var maxpvLen:int = 0;
+		
+		private var charPointDOTextVV:Vector.<Vector.<CharPointDO>>;
+		
+		private var currentIndex:int;
+		
+		private var xgp:Number = 0.2;
+		
+		private var xbl:Number;//起点坐标
+		
+		private var xw:Number;//宽度
 		
 		public function UIPillarCharts(dataDo:DataDO = null,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0){
 			super();
@@ -97,11 +100,10 @@
 			super.configUI();	
 		}
 		
-		/**
-		 * 
-		 * 
-		 */		
-		override protected function draw():void{
+		override protected function draw():void {
+		}
+		
+		override protected function initPlay():void {
 			if(this.dataDo != null){
 				
 				coorSprite = new Sprite();
@@ -195,7 +197,8 @@
 				
 				var cpdotpvv:Vector.<Vector.<CharPointDO>> = this.calculatePointTextPlace(charPointDOVV,20);
 				
-				var maxpvLen:int = 0;
+				charPointDOTextVV = cpdotpvv;
+				
 				for(var iMax:int =0;iMax<cpdotpvv.length;iMax++){
 					var mpv:Vector.<CharPointDO> = cpdotpvv[iMax];
 					if(mpv.length > maxpvLen){
@@ -240,58 +243,93 @@
 				
 				//计算每组柱的起点坐标和宽度
 				var xlen:Number = uic.xGradLength;
-				var xgp:Number = 0.2;
-				var xbl:Number = int(xlen * xgp);//起点坐标
-				var xw:Number = int((xlen *(1 - xgp * 2)) / cpdotpvv.length);//宽度
-				
-				//组织柱状显示
-				for(var j4:int = 0;j4<maxpvLen;j4 ++){
-					var pillarNum:int = 0;
-					for(var i4:int = 0;i4<cpdotpvv.length;i4++){
-						var charPointDOV:Vector.<CharPointDO> = cpdotpvv[i4];
-						if(j4 < charPointDOV.length){
-							var cpdo4:CharPointDO = charPointDOV[j4];
-							var valuey:Number = cpdo4.point.y;
-							if(!isNaN(valuey)){
-								var uip:UIPillar = new UIPillar(cpdo4,false,this.delayTime,this.timeLength,this.timeOut,this.lineTextSprite);
-								uip.setStyle(TEXT_FORMAT,this.getStyleValue(TEXT_FORMAT));
-								uip.height = this.height;
-								uip.width = xw;
-								
-								uip.x = uip.width * pillarNum + xbl;
-								var color4:uint = 0x000000;
-								//var ctf:ColorTransform = new ColorTransform();
-								var pillarSkin4:String = "Pillar_default_skin";
-								if(i4 == 0){
-									color4 = 0xFF7F00;
-									pillarSkin4 = "Pillar_yello_skin";
-								}
-								else if(i4 == 1){
-									color4 = 0x007F00;
-									pillarSkin4 = "Pillar_green_skin";
-								}
-								else if(i4 == 2){
-									color4 = 0x7F0000; 
-									pillarSkin4 = "Pillar_red_skin";
-								}
-								//ColorTransformUtil.setColor(uip,color4);
-								//uip.transform.colorTransform = ctf;
-								uip.setStyle(UIPillar.PILLAR_DEFAULT_SKIN,pillarSkin4);
-								uip.transformColor = color4;
-								lineNum ++;
-								this.lineSprite.addChild(uip);
-								uip.addEventListener(Event.COMPLETE,handlerUIPillarPlayCmp);
-								pillarNum ++;
+				xbl = int(xlen * xgp);//起点坐标
+				xw = int((xlen *(1 - xgp * 2)) / cpdotpvv.length);//宽度
+				currentIndex = 0;
+			}
+		}
+		
+		/**
+		 * 
+		 * 
+		 */		
+		override protected function play():void {
+			playNext();
+		}
+		
+		private function playNext():void{
+			//组织柱状显示
+			var j4:int = currentIndex;
+			currentIndex ++;
+			if(j4 < maxpvLen && maxpvLen > 0){
+				var pillarNum:int = 0;
+				for(var i4:int = 0;i4<charPointDOTextVV.length;i4++){
+					var charPointDOV:Vector.<CharPointDO> = charPointDOTextVV[i4];
+					if(j4 < charPointDOV.length){
+						var cpdo4:CharPointDO = charPointDOV[j4];
+						var valuey:Number = cpdo4.point.y;
+						if(!isNaN(valuey)){
+							var uip:UIPillar = new UIPillar(cpdo4,false,this.lineTextSprite);
+							uip.setStyle(TEXT_FORMAT,this.getStyleValue(TEXT_FORMAT));
+							uip.height = this.height;
+							uip.width = xw;
+							
+							uip.x = uip.width * pillarNum + xbl;
+							var color4:uint = 0x000000;
+							//var ctf:ColorTransform = new ColorTransform();
+							var pillarSkin4:String = "Pillar_default_skin";
+							if(i4 == 0){
+								color4 = 0xFF7F00;
+								pillarSkin4 = "Pillar_yello_skin";
 							}
+							else if(i4 == 1){
+								color4 = 0x007F00;
+								pillarSkin4 = "Pillar_green_skin";
+							}
+							else if(i4 == 2){
+								color4 = 0x7F0000; 
+								pillarSkin4 = "Pillar_red_skin";
+							}
+							//ColorTransformUtil.setColor(uip,color4);
+							//uip.transform.colorTransform = ctf;
+							uip.setStyle(UIPillar.PILLAR_DEFAULT_SKIN,pillarSkin4);
+							uip.transformColor = color4;
+							lineNum ++;
+							this.lineSprite.addChild(uip);
+							uip.addEventListener(Event.COMPLETE,handlerUIPillarPlayCmp);
+							pillarNum ++;
 						}
 					}
 				}
+			}
+			else {
+				this.isPlayCmp = true;
+				this.dispatchEventState();
 			}
 		}
 		
 		private function handlerUIPillarPlayCmp(e:Event):void{
 			lineCmpNum ++;
 			if(lineCmpNum == lineNum){
+				playNext();
+				
+			}
+		}
+		
+		/**
+		 * 
+		 * 
+		 */		
+		override protected function dispatchEventState():void{
+			var sign:Boolean = false;
+			if(this.isPlayCmp && this.isTimeLen){
+				sign = true;
+			}
+			else if(this.isTimeOut){
+				sign = true;
+			}
+			
+			if(sign){
 				this.dispatchEvent(new Event(Event.COMPLETE));
 			}
 		}

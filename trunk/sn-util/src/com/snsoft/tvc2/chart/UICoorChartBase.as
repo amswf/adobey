@@ -1,9 +1,11 @@
 package com.snsoft.tvc2.chart{
+	import com.snsoft.tvc2.Business;
+	
 	import fl.core.UIComponent;
 	
 	import flash.geom.Point;
 	
-	public class UICoorChartBase extends UIComponent{
+	public class UICoorChartBase extends Business{
 		public function UICoorChartBase()
 		{
 			super();
