@@ -95,6 +95,8 @@
 		
 		private var bigPointPlayCmp:Boolean = false;
 		
+		private var priceCardOrder:Vector.<int>;
+		
 		
 		public function PriceDistribute(dataDO:DataDO,marketMainDO:MarketMainDO,marketMap:MarketMap,mapView:MapView,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0)	{
 			super();
@@ -190,20 +192,42 @@
 			this.listSmallCount = 0;
 			this.broadcastListCount = 0;
 			
+			priceCardOrder = new Vector.<int>();
+			var yv:Vector.<Number> = new Vector.<Number>;
+			if(broadcastListDOV != null){
+				for(var i:int = 0;i< broadcastListDOV.length;i++){
+					var brListDO:ListDO = broadcastListDOV[i];
+					var tpdov:Vector.<TextPointDO> = brListDO.listHv;
+					if(tpdov != null){
+						for(var j:int = 0;j< tpdov.length;j++){
+							var tpdo:TextPointDO = tpdov[j];
+							var name:String = tpdo.name;
+							var marketCoordDO:MarketCoordDO = marketCoordsDO.getRealCoordMarketCoordDO(name);
+							var my:Number = marketCoordDO.y;
+							yv.push(my);
+						}
+					}
+				}
+			}	
+			
+			trace(yv);
+			priceCardOrder = getOrderVector(yv);
+			trace(priceCardOrder);
+			
 			cutLine = new Sprite();
 			var rect:Rectangle = this.mapView.getRect(this);
 			cutLine.x = rect.x + rect.width;
 			cutLine.y = rect.y + rect.height;
 			this.addChild(cutLine);
-			for(var i:int = 0;i< listDOV.length;i++){
-				var color:uint = getColor(i);
-				var listDO:ListDO = listDOV[i];
+			for(var i2:int = 0;i2< listDOV.length;i2++){
+				var color:uint = getColor(i2);
+				var listDO:ListDO = listDOV[i2];
 				
 				var cutLineMC:MovieClip = getDisplayObjectInstance(getStyleValue(SMALL_POINT_DEFAULT_SKIN)) as MovieClip;
 				cutLineMC.y = - cutLineMC.height - cutLine.height;
 				cutLineMC.x = cutLineMC.width / 2;
 				ColorTransformUtil.setColor(cutLineMC,color);
-
+				
 				var text:String = listDO.text;
 				var tfd:TextField = EffectText.creatTextByStyleName(text,TextStyles.STYLE_CUTLINE_TEXT,color);
 				tfd.x = cutLineMC.x + cutLineMC.width ;
@@ -216,8 +240,38 @@
 			this.addChild(pricePointersMC);
 			this.addChild(priceBigPointsMC);
 			
-			playSmallPoint();
-			//playBigPoint();
+			//playSmallPoint();
+			playBigPoint();
+		}
+		
+		private function getOrderVector(vv:Vector.<Number>):Vector.<int>{
+			var ov:Vector.<int> = new Vector.<int>();
+			var cpvv:Vector.<Number> = new Vector.<Number>();
+			for(var ic:int = 0;ic< vv.length;ic++){
+				cpvv.push(vv[ic]);
+				ov.push(ic);
+			}
+			
+			for(var i:int = vv.length - 1;i >= 0;i --){
+				for(var j:int = i;j< vv.length - 1;j++){
+					if(cpvv[j] > cpvv[j + 1]){
+						var v:Number = cpvv[j];
+						cpvv[j] = cpvv[j + 1];
+						cpvv[j + 1] = v;
+						
+						var o:Number = ov[j];
+						ov[j] = ov[j + 1];
+						ov[j + 1] = o;
+					}
+				}
+			}
+			
+			var rv:Vector.<int> = new Vector.<int>(vv.length);
+			for(var ir:int = 0;ir< ov.length;ir++){
+				var o2:int = ov[ir];
+				rv[o2] = ir;
+			}
+			return rv;
 		}
 		
 		private function playSmallPoint():void{
@@ -338,7 +392,7 @@
 				var rect:Rectangle = this.mapView.getRect(this);
 				
 				var lname:String = listDO.name;
-				 
+				
 				if(broadcastCount == 0){
 					currentText = EffectText.creatTextByStyleName(lname,TextStyles.STYLE_LIST_TYPE_TEXT,color);;
 					currentText.x = rect.width / 2 + switchMoveLenth;
@@ -352,7 +406,7 @@
 				var tpdov:Vector.<TextPointDO> = listDO.listHv;
 				var jj:int = broadcastCount;
 				broadcastCount ++;
-				broadcastNum ++;
+				
 				if(broadcastCount >= tpdov.length){
 					switchBigPointSign = true;
 					broadcastCount = 0;
@@ -368,18 +422,21 @@
 				var bpdobj:MovieClip = getDisplayObjectInstance(getStyleValue(BIG_POINT_DEFAULT_SKIN)) as MovieClip;
 				var pbdobj:MovieClip = getDisplayObjectInstance(getStyleValue(PRICEBACK_DEFAULT_SKIN)) as MovieClip;
 				var pmdobj:MovieClip = getDisplayObjectInstance(getStyleValue(PRICEMASK_DEFAULT_SKIN)) as MovieClip;
-
+				
 				pbdobj.width = 100;
 				pbdobj.height = 50;
 				
+				
+				var n:int = priceCardOrder[broadcastNum];
+				broadcastNum ++;
 				var priceMC:Sprite = new Sprite();
 				this.addChild(priceMC);
 				priceMC.x = rect.x + rect.width;
-				priceMC.y = cutLine.y -cutLine.height - broadcastNum * (pbdobj.height + 5);
+				priceMC.y = n * (pbdobj.height + 5);
 				priceMC.addChild(pbdobj);
 				
 				pmdobj.x = rect.x + rect.width - pmdobj.width;
-				pmdobj.y = cutLine.y -cutLine.height - broadcastNum * (pbdobj.height + 5);;
+				pmdobj.y = n * (pbdobj.height + 5);
 				priceMC.mask = pmdobj;
 				priceMask = pmdobj;
 				
@@ -413,7 +470,7 @@
 				listMC.addChild(bpdobj);
 				priceBigPointsMC.addChild(listMC);
 				currentBroadcastListMC = listMC;
-	
+				
 				var timer:Timer = new Timer(2000,1);
 				bigPointPlayCmp = false;
 				timer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerListBigStartTimerCMP);
