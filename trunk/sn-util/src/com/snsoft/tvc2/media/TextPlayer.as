@@ -38,6 +38,8 @@ package com.snsoft.tvc2.media{
 			this.textField.text = textOutDO.text;
 			this.addChild(this.textField);
 			this.dispatchEvent(new Event(EVENT_PLAYED));
+			this.isPlayCmp = true;
+			this.dispatchEventState();
 		}
 		
 		/**
@@ -45,6 +47,7 @@ package com.snsoft.tvc2.media{
 		 * 
 		 */		
 		override protected function dispatchEventState():void{
+			trace("textPlayer.dispatchEventState");
 			if(!isDispatchEvent){
 				var sign:Boolean = false;
 				if(this.isPlayCmp && this.isTimeLen){
