@@ -240,8 +240,8 @@
 			this.addChild(pricePointersMC);
 			this.addChild(priceBigPointsMC);
 			
-			//playSmallPoint();
-			playBigPoint();
+			playSmallPoint();
+			//playBigPoint();
 		}
 		
 		private function getOrderVector(vv:Vector.<Number>):Vector.<int>{
