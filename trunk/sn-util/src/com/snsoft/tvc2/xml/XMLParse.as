@@ -59,6 +59,8 @@
 		
 		public static const TAG_CHART:String = "chart";
 		
+		public static const TAG_EXPONENTIAL:String = "exponential";
+		
 		public static const X_GRADUATION_TEXT:String = "xGraduationText";
 		
 		public static const Y_GRADUATION_TEXT:String = "yGraduationText";
@@ -410,6 +412,18 @@
 					dataDO.type = TAG_CHART;
 					dataDO.unitX = unitX;
 					dataDO.unitY = unitY;
+				}
+				
+				var expXMLList:XMLList = dataXML.elements(TAG_EXPONENTIAL);
+				if(expXMLList != null && expXMLList.length() > 0){
+					var expXML:XML = expXMLList[0];
+					var expAttrHv:HashVector = getXMLAttributes(expXML);
+					var expUnitX:String = String(expAttrHv.findByName(ATT_UNIT_X));
+					var expUnitY:String = String(expAttrHv.findByName(ATT_UNIT_Y));
+					dataXMLList = expXMLList;
+					dataDO.type = TAG_EXPONENTIAL;
+					dataDO.unitX = expUnitX;
+					dataDO.unitY = expUnitY;
 				}
 				
 				if(dataXMLList != null && dataXMLList.length() > 0){

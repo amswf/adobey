@@ -264,160 +264,24 @@
 									}
 									
 									var dataDO:DataDO = bizDO.dataDO;
-									if(dataDO != null && ( bizDO.type == Biz.BIZ_TYPE_PILLAR || bizDO.type == Biz.BIZ_TYPE_POLYLINES)){
+									if(dataDO != null){
 										var type:String = dataDO.type;
-										var xgtListDOV:Vector.<ListDO> = dataDO.xGraduationText;
-										if(type == XMLParse.TAG_CHART){
-											var xgtName:String = xgtListDOV[0].name;//<list name="week" text="X 坐标刻度文字" style="">
-											var listDOV:Vector.<ListDO> = dataDO.data;
-											var historyListDO:ListDO = null;
-											var currentListDO:ListDO = null;
-											var forecastListDO:ListDO = null;
-											for(var ci:int = 0;ci < listDOV.length;ci ++){
-												var listDO:ListDO = listDOV[ci];
-												var name:String = listDO.name;
-												if(name.indexOf(LIST_NAME_TYPE_HISTORY) >=0){
-													historyListDO = listDO;
-												}
-												else if(name.indexOf(LIST_NAME_TYPE_CURRENT) >=0){
-													currentListDO = listDO;
-												}
-												else if(name.indexOf(LIST_NAME_TYPE_FORECAST) >=0){
-													forecastListDO = listDO;
-												}
+										if(type == XMLParse.TAG_CHART || type == XMLParse.TAG_EXPONENTIAL){
+											var urlv:Vector.<String> = null;
+											if(type == XMLParse.TAG_CHART){
+												urlv= bizPriceSoundLoad(bizDO);
 											}
-											
-											if(currentListDO != null){
-												var currentIndex:int = -1;
-												
-												var currentValue:int = 0;
-												var latestValue:int = 0;
-												
-												var tpdoHv:Vector.<TextPointDO> = currentListDO.listHv;
-												var highPrice:Number = 0;
-												var lowPrice:Number = 10000;
-												
-												
-												for(var i2:int = tpdoHv.length -1;i2 >= 0;i2 --){
-													var tpdo:TextPointDO = tpdoHv[i2];
-													var tpvalue:Number = Number(tpdo.value); 
-													if(tpvalue > 0){
-														currentIndex = i2;
-														currentValue = tpvalue;
-														break;
-													}
-													 
-												}
-												
-												for(var i21:int = tpdoHv.length -1;i21 >= 0;i21 --){
-													var tpdo21:TextPointDO = tpdoHv[i21];
-													var tpvalue21:Number = Number(tpdo21.value); 
-													if(tpvalue21 > 0 && i21 < currentIndex){
-														latestValue = tpvalue21;
-														break;
-													}
-												}
-												
-												for(var i22:int = tpdoHv.length -1;i22 >= 0;i22 --){
-													var tpdo22:TextPointDO = tpdoHv[i22];
-													var tpvalue22:Number = Number(tpdo22.value); 
-													
-													if(tpvalue22 > highPrice){
-														highPrice = tpvalue22;
-													}
-													
-													if(tpvalue22 < lowPrice){
-														lowPrice = tpvalue22;
-													}
-												}
-												
-												var priceTrend:int = 0;
-												priceTrend = getTrend(currentValue,latestValue);
-												
-												var gndo:VarDO = varDOHv.findByName(VAR_GOODS) as VarDO;
-												var gName:String = gndo.getAttribute(XMLParse.ATT_VALUE) as String;
-												
-												var mndo:VarDO = varDOHv.findByName(VAR_MARKET) as VarDO;
-												var mName:String = mndo.getAttribute(XMLParse.ATT_VALUE) as String;
-												
-												
-												
-												
-												var historyContrastPrice:Number = 0;
-												var historyPrice:Number = 0;
-												if(historyListDO != null){
-													var htpdoHv:Vector.<TextPointDO> = historyListDO.listHv;
-													if(currentIndex < htpdoHv.length){
-														var htpdo:TextPointDO = htpdoHv[currentIndex];
-														var htpvalue:Number = Number(htpdo.value); 
-														if(htpvalue > 0){
-															historyPrice = htpvalue;
-															historyContrastPrice = currentValue - htpvalue;
-														}
-													}
-												}
-												var historyNextPrice:Number = 0;
-												if(historyListDO != null){
-													var hntpdoHv:Vector.<TextPointDO> = historyListDO.listHv;
-													if(currentIndex + 1 < hntpdoHv.length){
-														var hrtpdo:TextPointDO = hntpdoHv[currentIndex + 1];
-														var hrtpvalue:Number = Number(hrtpdo.value); 
-														if(hrtpvalue > 0){
-															historyNextPrice = hrtpvalue;
-														}
-													}
-												}
-												
-												var forecastContrastPrice:Number = 0;
-												
-												if(forecastListDO != null){
-													var ftpdoHv:Vector.<TextPointDO> = forecastListDO.listHv;
-													var forecastTrend:int = 0;
-													var forecastPrice:Number = 0.00;
-													if(currentIndex + 1 < ftpdoHv.length){
-														var ftpdo:TextPointDO = ftpdoHv[currentIndex + 1];
-														var ftpvalue:Number = Number(ftpdo.value); 
-														if(ftpvalue > 0){
-															forecastContrastPrice = ftpvalue - historyNextPrice;
-															trace("ftpvalue - historyPrice",ftpvalue,historyNextPrice,forecastContrastPrice);
-															forecastPrice = ftpvalue;
-															forecastTrend = getTrend(ftpvalue,historyNextPrice);
-														}
-													}
-												}
-												
-												var csdo:ChartSoundsDO = new ChartSoundsDO();
-												csdo.dateType = xgtName;
-												csdo.goodsCode = gName;
-												csdo.areaCode = mName;
-												csdo.priceTrend = priceTrend;
-												csdo.highPrice = highPrice;
-												csdo.lowPrice = lowPrice;
-												
-												if(forecastListDO != null && historyListDO == null){
-													csdo.forecastTrend = forecastTrend;
-													csdo.forecastPrice = forecastPrice;
-												}
-												
-												if(historyListDO != null){
-													csdo.historyContrastPrice = historyContrastPrice;
-												}
-												
-												if(forecastListDO != null && historyListDO != null){
-													csdo.forecastContrastPrice = forecastContrastPrice;
-												}
-												
-												var csm:ChartSoundsManager = new ChartSoundsManager();
-												var urlv:Vector.<String> = csm.creatPriceSoundUrlList(csdo);
-												
+											else if(type == XMLParse.TAG_EXPONENTIAL){
+												urlv = bizExponentialSoundLoad(bizDO);
+											}
+											if(urlv != null && urlv.length > 0){
 												var bizSoundLoader:Mp3Loader = new Mp3Loader(dataDO);
 												plusSourceCount();
 												bizSoundLoader.loadList(urlv);
 												bizSoundLoader.addEventListener(Event.COMPLETE,handlerBizSoundCmp);
-												
 											}
-											
 										}
+										 
 									}
 								}
 							}
@@ -428,6 +292,255 @@
 					}	
 				}
 			}
+		}
+		
+		/**
+		 *  
+		 * @param bizDO
+		 * 
+		 */		
+		private function bizExponentialSoundLoad(bizDO:BizDO):Vector.<String>{
+			var dataDO:DataDO = bizDO.dataDO;
+			var varDOHv:HashVector = bizDO.varDOHv;
+			var type:String = dataDO.type;
+			var xgtListDOV:Vector.<ListDO> = dataDO.xGraduationText;
+			if(varDOHv != null){
+				var xgtName:String = xgtListDOV[0].name;//<list name="week" text="X 坐标刻度文字" style="">
+				var listDOV:Vector.<ListDO> = dataDO.data;
+				
+				var currentListDO:ListDO = null;
+				var forecastListDO:ListDO = null;
+				for(var ci:int = 0;ci < listDOV.length;ci ++){
+					var listDO:ListDO = listDOV[ci];
+					var name:String = listDO.name;
+					
+					if(name.indexOf(LIST_NAME_TYPE_CURRENT) >=0){
+						currentListDO = listDO;
+					}
+					else if(name.indexOf(LIST_NAME_TYPE_FORECAST) >=0){
+						forecastListDO = listDO;
+					}
+				}
+				
+				if(currentListDO != null){
+					var currentIndex:int = -1;
+					var currentValue:int = 0;
+					var latestValue:int = 0;
+					
+					var tpdoHv:Vector.<TextPointDO> = currentListDO.listHv;
+					for(var i2:int = tpdoHv.length -1;i2 >= 0;i2 --){
+						var tpdo:TextPointDO = tpdoHv[i2];
+						var tpvalue:Number = Number(tpdo.value); 
+						if(tpvalue > 0){
+							currentIndex = i2;
+							currentValue = tpvalue;
+							break;
+						}
+						
+					}
+					
+					for(var i21:int = tpdoHv.length -1;i21 >= 0;i21 --){
+						var tpdo21:TextPointDO = tpdoHv[i21];
+						var tpvalue21:Number = Number(tpdo21.value); 
+						if(tpvalue21 > 0 && i21 < currentIndex){
+							latestValue = tpvalue21;
+							break;
+						}
+					}
+					
+					
+					var priceExponentialTrend:int = 0;
+					priceExponentialTrend = getTrend(currentValue,latestValue);
+					
+					var gndo:VarDO = varDOHv.findByName(VAR_GOODS) as VarDO;
+					var gName:String = gndo.getAttribute(XMLParse.ATT_VALUE) as String;
+					
+					var forecastContrastPrice:Number = 0;
+					
+					var forecastTrend:int = NaN;
+					if(forecastListDO != null){
+						var ftpdoHv:Vector.<TextPointDO> = forecastListDO.listHv;
+						
+						if(currentIndex + 1 < ftpdoHv.length){
+							var ftpdo:TextPointDO = ftpdoHv[currentIndex + 1];
+							var ftpvalue:Number = Number(ftpdo.value); 
+							if(ftpvalue > 0){
+								forecastTrend = getTrend(ftpvalue,currentValue);
+							}
+						}
+					}
+					
+					var csdo:ChartSoundsDO = new ChartSoundsDO();
+					csdo.dateType = xgtName;
+					csdo.goodsCode = gName;
+					if(forecastListDO != null){
+						csdo.priceExponentialTrend = priceExponentialTrend;
+						csdo.forecastPriceExponentialTrend = forecastTrend;
+					}
+					
+					var csm:ChartSoundsManager = new ChartSoundsManager();
+					var urlv:Vector.<String> = csm.creatExponentialSoundUrlList(csdo);
+					
+					return urlv;
+				}
+			}
+			return null;
+		}
+		
+		/**
+		 *  
+		 * @param bizDO
+		 * 
+		 */		
+		private function bizPriceSoundLoad(bizDO:BizDO):Vector.<String>{
+			var dataDO:DataDO = bizDO.dataDO;
+			var varDOHv:HashVector = bizDO.varDOHv;
+			var type:String = dataDO.type;
+			var xgtListDOV:Vector.<ListDO> = dataDO.xGraduationText;
+			if(varDOHv != null){
+				var xgtName:String = xgtListDOV[0].name;//<list name="week" text="X 坐标刻度文字" style="">
+				var listDOV:Vector.<ListDO> = dataDO.data;
+				var historyListDO:ListDO = null;
+				var currentListDO:ListDO = null;
+				var forecastListDO:ListDO = null;
+				for(var ci:int = 0;ci < listDOV.length;ci ++){
+					var listDO:ListDO = listDOV[ci];
+					var name:String = listDO.name;
+					if(name.indexOf(LIST_NAME_TYPE_HISTORY) >=0){
+						historyListDO = listDO;
+					}
+					else if(name.indexOf(LIST_NAME_TYPE_CURRENT) >=0){
+						currentListDO = listDO;
+					}
+					else if(name.indexOf(LIST_NAME_TYPE_FORECAST) >=0){
+						forecastListDO = listDO;
+					}
+				}
+				
+				if(currentListDO != null){
+					var currentIndex:int = -1;
+					
+					var currentValue:int = 0;
+					var latestValue:int = 0;
+					
+					var tpdoHv:Vector.<TextPointDO> = currentListDO.listHv;
+					var highPrice:Number = 0;
+					var lowPrice:Number = 10000;
+					
+					
+					for(var i2:int = tpdoHv.length -1;i2 >= 0;i2 --){
+						var tpdo:TextPointDO = tpdoHv[i2];
+						var tpvalue:Number = Number(tpdo.value); 
+						if(tpvalue > 0){
+							currentIndex = i2;
+							currentValue = tpvalue;
+							break;
+						}
+						
+					}
+					
+					for(var i21:int = tpdoHv.length -1;i21 >= 0;i21 --){
+						var tpdo21:TextPointDO = tpdoHv[i21];
+						var tpvalue21:Number = Number(tpdo21.value); 
+						if(tpvalue21 > 0 && i21 < currentIndex){
+							latestValue = tpvalue21;
+							break;
+						}
+					}
+					
+					for(var i22:int = tpdoHv.length -1;i22 >= 0;i22 --){
+						var tpdo22:TextPointDO = tpdoHv[i22];
+						var tpvalue22:Number = Number(tpdo22.value); 
+						
+						if(tpvalue22 > highPrice){
+							highPrice = tpvalue22;
+						}
+						
+						if(tpvalue22 < lowPrice){
+							lowPrice = tpvalue22;
+						}
+					}
+					
+					var priceTrend:int = 0;
+					priceTrend = getTrend(currentValue,latestValue);
+					
+					var gndo:VarDO = varDOHv.findByName(VAR_GOODS) as VarDO;
+					var gName:String = gndo.getAttribute(XMLParse.ATT_VALUE) as String;
+					
+					var mndo:VarDO = varDOHv.findByName(VAR_MARKET) as VarDO;
+					var mName:String = mndo.getAttribute(XMLParse.ATT_VALUE) as String;
+					
+					var historyContrastPrice:Number = 0;
+					var historyPrice:Number = 0;
+					if(historyListDO != null){
+						var htpdoHv:Vector.<TextPointDO> = historyListDO.listHv;
+						if(currentIndex < htpdoHv.length){
+							var htpdo:TextPointDO = htpdoHv[currentIndex];
+							var htpvalue:Number = Number(htpdo.value); 
+							if(htpvalue > 0){
+								historyPrice = htpvalue;
+								historyContrastPrice = currentValue - htpvalue;
+							}
+						}
+					}
+					var historyNextPrice:Number = 0;
+					if(historyListDO != null){
+						var hntpdoHv:Vector.<TextPointDO> = historyListDO.listHv;
+						if(currentIndex + 1 < hntpdoHv.length){
+							var hrtpdo:TextPointDO = hntpdoHv[currentIndex + 1];
+							var hrtpvalue:Number = Number(hrtpdo.value); 
+							if(hrtpvalue > 0){
+								historyNextPrice = hrtpvalue;
+							}
+						}
+					}
+					
+					var forecastContrastPrice:Number = 0;
+					
+					var forecastPrice:Number = NaN;
+					var forecastTrend:int = NaN;
+					
+					if(forecastListDO != null){
+						var ftpdoHv:Vector.<TextPointDO> = forecastListDO.listHv;
+						if(currentIndex + 1 < ftpdoHv.length){
+							var ftpdo:TextPointDO = ftpdoHv[currentIndex + 1];
+							var ftpvalue:Number = Number(ftpdo.value); 
+							if(ftpvalue > 0){
+								forecastContrastPrice = ftpvalue - historyNextPrice;
+								forecastPrice = ftpvalue;
+								forecastTrend = getTrend(ftpvalue,historyNextPrice);
+							}
+						}
+					}
+					
+					var csdo:ChartSoundsDO = new ChartSoundsDO();
+					csdo.dateType = xgtName;
+					csdo.goodsCode = gName;
+					csdo.areaCode = mName;
+					csdo.priceTrend = priceTrend;
+					csdo.highPrice = highPrice;
+					csdo.lowPrice = lowPrice;
+					
+					if(forecastListDO != null && historyListDO == null){
+						csdo.forecastTrend = forecastTrend;
+						csdo.forecastPrice = forecastPrice;
+					}
+					
+					if(historyListDO != null){
+						csdo.historyContrastPrice = historyContrastPrice;
+					}
+					
+					if(forecastListDO != null && historyListDO != null){
+						csdo.forecastContrastPrice = forecastContrastPrice;
+					}
+					
+					var csm:ChartSoundsManager = new ChartSoundsManager();
+					var urlv:Vector.<String> = csm.creatPriceSoundUrlList(csdo);
+					
+					return urlv;
+				}
+			}
+			return null;
 		}
 		
 		private function handlerBizSoundCmp(e:Event):void{
