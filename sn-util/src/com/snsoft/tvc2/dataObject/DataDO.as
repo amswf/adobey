@@ -1,4 +1,5 @@
 package com.snsoft.tvc2.dataObject{
+	import flash.media.Sound;
 	
 	/**
 	 * 
@@ -20,6 +21,8 @@ package com.snsoft.tvc2.dataObject{
 		private var _unitX:String;
 		
 		private var _unitY:String;
+		
+		private var _bizSoundList:Vector.<Sound> = null;
 		
 		public function DataDO()
 		{
@@ -93,6 +96,16 @@ package com.snsoft.tvc2.dataObject{
 		public function set unitY(value:String):void
 		{
 			_unitY = value;
+		}
+
+		public function get bizSoundList():Vector.<Sound>
+		{
+			return _bizSoundList;
+		}
+
+		public function set bizSoundList(value:Vector.<Sound>):void
+		{
+			_bizSoundList = value;
 		}
 
 		 

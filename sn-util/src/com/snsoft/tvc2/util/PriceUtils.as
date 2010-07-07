@@ -22,7 +22,7 @@
 			
 		}   
 		
-		 
+		
 		/**
 		 * 把数字转换成语音文件序列 
 		 * @param num 要转换的数字
@@ -32,29 +32,32 @@
 		 */		
 		public static function toCNUpper( num:Number,fixed:int = 2 ):Vector.<String>   
 		{   
-			if( num == 0 )   
-				return NUM_CN[0];   
-			
-			var count:int = getUnitCount( num );   
-			var numStr:String = num.toFixed(fixed);   
-			var pos:int = numStr.indexOf(".");   
-			var dotLeft:String = pos == -1 ? numStr : numStr.substring(0, pos);   
-			var dotRight:String = pos == -1 ? "" : numStr.substring(pos + 1, numStr.length); 
-			
-			if( dotLeft.length > 16 )   
-				throw new Error("数字太大，无法处理！");   
-			
-			var integerVector:Vector.<String> = convertIntegerStr(dotLeft);
-			var decimalVector:Vector.<String> = convertDecimalStr(dotRight);
 			var moneyVector:Vector.<String> = new Vector.<String>();
-			
-			for(var i:int;i<integerVector.length;i++){
-				moneyVector.push(integerVector[i]);
+			if( num == 0 ){   
+				moneyVector.push(NUM_CN[0]);   
 			}
-			for(var j:int;j<decimalVector.length;j++){
-				moneyVector.push(decimalVector[j]);
+			else {
+				var count:int = getUnitCount( num );   
+				var numStr:String = num.toFixed(fixed);   
+				var pos:int = numStr.indexOf(".");   
+				var dotLeft:String = pos == -1 ? numStr : numStr.substring(0, pos);   
+				var dotRight:String = pos == -1 ? "" : numStr.substring(pos + 1, numStr.length); 
+				
+				if( dotLeft.length > 16 )   
+					throw new Error("数字太大，无法处理！");   
+				
+				var integerVector:Vector.<String> = convertIntegerStr(dotLeft);
+				var decimalVector:Vector.<String> = convertDecimalStr(dotRight);
+				
+				
+				for(var i:int;i<integerVector.length;i++){
+					moneyVector.push(integerVector[i]);
+				}
+				for(var j:int;j<decimalVector.length;j++){
+					moneyVector.push(decimalVector[j]);
+				}
 			}
-			moneyVector.push(YUAN);   
+			moneyVector.push(YUAN);
 			return moneyVector;   
 		}   
 		

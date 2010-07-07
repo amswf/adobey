@@ -4,6 +4,7 @@ package com.snsoft.tvc2.dataObject{
 	import com.snsoft.util.HashVector;
 	
 	import flash.display.DisplayObject;
+	import flash.media.Sound;
 
 	public class BizDO{
 		
@@ -111,7 +112,5 @@ package com.snsoft.tvc2.dataObject{
 		{
 			_distributeMap = value;
 		}
-
-
 	}
 }

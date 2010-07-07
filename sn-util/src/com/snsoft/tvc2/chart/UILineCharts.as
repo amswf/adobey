@@ -3,6 +3,7 @@
 	import com.snsoft.tvc2.dataObject.DataDO;
 	import com.snsoft.tvc2.dataObject.ListDO;
 	import com.snsoft.tvc2.dataObject.TextPointDO;
+	import com.snsoft.tvc2.media.Mp3Player;
 	import com.snsoft.tvc2.text.EffectText;
 	import com.snsoft.tvc2.text.TextStyles;
 	import com.snsoft.tvc2.util.NumberUtil;
@@ -21,6 +22,7 @@
 	import flash.geom.ColorTransform;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.media.Sound;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
@@ -44,6 +46,8 @@
 		private var lineCmpNum:int = 0;
 		
 		private var uiLineV:Vector.<UILine>;
+		
+		private var isBizSoundCmp:Boolean = false;
 		
 		public function UILineCharts(dataDo:DataDO = null,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0){
 			super();
@@ -261,6 +265,27 @@
 				lineSprite.addChild(uil5);
 				uil5.addEventListener(Event.COMPLETE,handlerUILinePlayCmp);
 			}
+			playSounds();
+		}
+		
+		private function playSounds():void{
+			if(this.dataDo != null){
+				var bizSoundList:Vector.<Sound> = dataDo.bizSoundList;
+				if(bizSoundList != null){
+					var bizSound:Mp3Player = new Mp3Player(bizSoundList);
+					bizSound.addEventListener(Event.COMPLETE,handlerBizSoundCmp);
+					this.addChild(bizSound); 
+				}
+				else {
+					isBizSoundCmp = true;	
+					dispatchEventState();
+				}
+			}
+		}
+		
+		private function handlerBizSoundCmp(e:Event):void{
+			isBizSoundCmp = true;	
+			dispatchEventState();
 		}
 		
 		/**
@@ -269,7 +294,7 @@
 		 */		
 		override protected function dispatchEventState():void{
 			var sign:Boolean = false;
-			if(this.isPlayCmp && this.isTimeLen){
+			if(this.isPlayCmp && this.isTimeLen && this.isBizSoundCmp){
 				sign = true;
 			}
 			else if(this.isTimeOut){

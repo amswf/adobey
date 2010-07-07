@@ -11,9 +11,9 @@ package com.snsoft.tvc2.media{
 
 	public class Mp3Loader extends EventDispatcher{
 		
-		public function Mp3Loader(soundDO:SoundDO,target:IEventDispatcher = null){
+		public function Mp3Loader(dataObj:Object,target:IEventDispatcher = null){
 			super(target);
-			this.soundDO = soundDO;
+			this.dataObj = dataObj;
 		}
 		
 		//声音列表 Sound 对象
@@ -25,7 +25,7 @@ package com.snsoft.tvc2.media{
 		//已经加载的声音个数
 		private var _loadedNum:int;
 		
-		private var _soundDO:SoundDO;
+		private var _dataObj:Object;
 		/**
 		 * 加载声音列表
 		 * @param list
@@ -89,14 +89,14 @@ package com.snsoft.tvc2.media{
 			return _loadedNum;
 		}
 
-		public function get soundDO():SoundDO
+		public function get dataObj():Object
 		{
-			return _soundDO;
+			return _dataObj;
 		}
 
-		public function set soundDO(value:SoundDO):void
+		public function set dataObj(value:Object):void
 		{
-			_soundDO = value;
+			_dataObj = value;
 		}
 
 		
