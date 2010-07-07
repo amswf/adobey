@@ -32,13 +32,13 @@
 		
 		private var bizDO:BizDO;
 		
-		private var BIZ_TYPE_POLYLINES:String = "polylines";
+		public static const BIZ_TYPE_POLYLINES:String = "polylines";
 		
-		private var BIZ_TYPE_PILLAR:String = "pillar";
+		public static const BIZ_TYPE_PILLAR:String = "pillar";
 		
-		private var BIZ_TYPE_DISTRIBUTE:String = "distribute";
+		public static const BIZ_TYPE_DISTRIBUTE:String = "distribute";
 		
-		private var BIZ_TYPE_DISTRIBUTE_AREA:String = "distributeArea";
+		public static const BIZ_TYPE_DISTRIBUTE_AREA:String = "distributeArea";
 		
 		private var counter:Counter;
 		

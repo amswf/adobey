@@ -264,7 +264,7 @@
 									}
 									
 									var dataDO:DataDO = bizDO.dataDO;
-									if(dataDO != null){
+									if(dataDO != null && ( bizDO.type == Biz.BIZ_TYPE_PILLAR || bizDO.type == Biz.BIZ_TYPE_POLYLINES)){
 										var type:String = dataDO.type;
 										var xgtListDOV:Vector.<ListDO> = dataDO.xGraduationText;
 										if(type == XMLParse.TAG_CHART){
@@ -408,7 +408,7 @@
 												}
 												
 												var csm:ChartSoundsManager = new ChartSoundsManager();
-												var urlv:Vector.<String> = csm.creatSoundUrlList(csdo);
+												var urlv:Vector.<String> = csm.creatPriceSoundUrlList(csdo);
 												
 												var bizSoundLoader:Mp3Loader = new Mp3Loader(dataDO);
 												plusSourceCount();
