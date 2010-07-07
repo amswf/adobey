@@ -27,6 +27,10 @@ package com.snsoft.tvc2.bizSounds{
 		
 		private var _forecastContrastPrice:Number = NaN;//预测相差价格
 		
+		private var _priceExponentialTrend:int = 0;
+		
+		private var _forecastPriceExponentialTrend:int = NaN;
+		
 		public function ChartSoundsDO()
 		{
 		}
@@ -129,6 +133,26 @@ package com.snsoft.tvc2.bizSounds{
 		public function set forecastContrastPrice(value:Number):void
 		{
 			_forecastContrastPrice = value;
+		}
+
+		public function get priceExponentialTrend():int
+		{
+			return _priceExponentialTrend;
+		}
+
+		public function set priceExponentialTrend(value:int):void
+		{
+			_priceExponentialTrend = value;
+		}
+
+		public function get forecastPriceExponentialTrend():int
+		{
+			return _forecastPriceExponentialTrend;
+		}
+
+		public function set forecastPriceExponentialTrend(value:int):void
+		{
+			_forecastPriceExponentialTrend = value;
 		}
 
 

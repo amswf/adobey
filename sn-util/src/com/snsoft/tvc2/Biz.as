@@ -218,18 +218,6 @@
 						}
 					}
 					
-					var goodsVDO:VarDO = bizDO.varDOHv.findByName("goods") as VarDO;
-					if(goodsVDO != null){
-						var goodsVar:String = String(goodsVDO.getAttribute("text"));
-						if(StringUtil.isEffective(goodsVar)){
-							var goodsTfd:TextField = EffectText.creatTextByStyleName(goodsVar,TextStyles.STYLE_GOODS);
-							goodsTfd.x = ( SystemConfig.stageSize.x - goodsTfd.width ) / 2;
-							goodsTfd.y = baseY + 10;
-							this.addChild(goodsTfd);
-							
-							baseY = goodsTfd.getRect(this).bottom;
-						}
-					}
 					
 					var dateTextVDO:VarDO = bizDO.varDOHv.findByName("dateText") as VarDO;
 					if(dateTextVDO != null){
@@ -239,6 +227,35 @@
 							dateTextTfd.x = ( SystemConfig.stageSize.x - dateTextTfd.width ) / 2;
 							dateTextTfd.y = baseY;
 							this.addChild(dateTextTfd);
+							baseY = dateTextTfd.getRect(this).bottom;
+						}
+					}
+					
+					
+					
+					var marketVDO:VarDO = bizDO.varDOHv.findByName("market") as VarDO;
+					if(marketVDO != null){
+						var marketVar:String = String(marketVDO.getAttribute("text"));
+						if(StringUtil.isEffective(marketVar)){
+							var marketTfd:TextField = EffectText.creatTextByStyleName(marketVar,TextStyles.STYLE_GOODS);
+							marketTfd.x = ( SystemConfig.stageSize.x - marketTfd.width ) / 2;
+							marketTfd.y = baseY;
+							this.addChild(marketTfd);
+							
+							baseY = marketTfd.getRect(this).bottom;
+						}
+					}
+					
+					var goodsVDO:VarDO = bizDO.varDOHv.findByName("goods") as VarDO;
+					if(goodsVDO != null){
+						var goodsVar:String = String(goodsVDO.getAttribute("text"));
+						if(StringUtil.isEffective(goodsVar)){
+							var goodsTfd:TextField = EffectText.creatTextByStyleName(goodsVar,TextStyles.STYLE_GOODS);
+							goodsTfd.x = ( SystemConfig.stageSize.x - goodsTfd.width ) / 2;
+							goodsTfd.y = baseY;
+							this.addChild(goodsTfd);
+							
+							baseY = goodsTfd.getRect(this).bottom;
 						}
 					}
 				}

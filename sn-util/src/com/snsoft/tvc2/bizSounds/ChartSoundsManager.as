@@ -42,7 +42,7 @@ package com.snsoft.tvc2.bizSounds{
 			urlv.push(baseUrl+chartSoundsDO.goodsCode + ".mp3");
 			
 			//的价格
-			//urlv.push(baseUrl+"dejiage.mp3");
+			urlv.push(baseUrl+"jiage.mp3");
 			
 			//呈现下降趋势/呈现上升趋势/趋于平稳
 			pushTrend(urlv,chartSoundsDO.priceTrend);
@@ -104,77 +104,39 @@ package com.snsoft.tvc2.bizSounds{
 		public function creatExponentialSoundUrlList(chartSoundsDO:ChartSoundsDO):Vector.<String>{
 			var urlv:Vector.<String> = new Vector.<String>();
 			
+			var currentDate:String = "";
+			var nextDate:String = "";
+			
 			//今天
 			if(chartSoundsDO.dateType == ChartSoundsDO.DATE_TYPE_DAY){
-				urlv.push(baseUrl+"jintian.mp3");
+				currentDate = "jintian.mp3";
+				nextDate = "mingtianjiageyuji.mp3";
 			}
 			else if(chartSoundsDO.dateType == ChartSoundsDO.DATE_TYPE_WEEK){//本周
-				urlv.push(baseUrl+"benzhou.mp3");
+				currentDate = "benzhou.mp3";
+				nextDate = "xiazhoujiageyuji.mp3";
 			}
 			else if(chartSoundsDO.dateType == ChartSoundsDO.DATE_TYPE_MONTH){//本月
-				urlv.push(baseUrl+"benyue.mp3");
+				currentDate = "benyue.mp3";
+				nextDate = "xiageyuejiageyuji.mp3";
 			}
 			else {
-				urlv.push(baseUrl+"benzhou.mp3");
+				currentDate = "benzhou.mp3";
+				nextDate = "xiazhoujiageyuji.mp3";
 			}
 			
-			//xx地区
-			urlv.push(baseUrl+chartSoundsDO.areaCode + ".mp3");
-			
-			//农产品名称
-			urlv.push(baseUrl+chartSoundsDO.goodsCode + ".mp3");
-			
-			//的价格
-			//urlv.push(baseUrl+"dejiage.mp3");
-			
-			//呈现下降趋势/呈现上升趋势/趋于平稳
-			pushTrend(urlv,chartSoundsDO.priceTrend);
-			
-			//最高价格
-			urlv.push(baseUrl+"zuigaojiage.mp3");
-			
-			//每公斤
-			urlv.push(baseUrl+"meigongjin.mp3");
-			
-			//xxxx元
-			pushPriceUrls(urlv,chartSoundsDO.highPrice);
-			
-			//最低价格
-			urlv.push(baseUrl+"zuidijiage.mp3");
-			
-			//每公斤
-			urlv.push(baseUrl+"meigongjin.mp3");
-			
-			//xxxx元
-			pushPriceUrls(urlv,chartSoundsDO.lowPrice);
-			
-			//有预测价格没有历史价格时：
-			if(!isNaN(chartSoundsDO.forecastPrice) && isNaN(chartSoundsDO.historyContrastPrice)){
-				urlv.push(baseUrl+"xiazhoujiageyuji.mp3");//下周价格预计
-				pushTrend(urlv,chartSoundsDO.forecastTrend);//预测走势
-				urlv.push(baseUrl+"meigongjin.mp3");//每公斤
-				//xxxx元
-				pushPriceUrls(urlv,chartSoundsDO.forecastPrice);
-				//urlv.push(baseUrl+"zuoyou.mp3");//左右
+			urlv.push(baseUrl + "womenlaikanyixia.mp3"); 
+			urlv.push(baseUrl + chartSoundsDO.goodsCode + ".mp3"); 
+			urlv.push(baseUrl + "jiagezhishubianhuaqingkuang.mp3");
+			urlv.push(baseUrl + currentDate);
+			urlv.push(baseUrl + "jiagezhishu.mp3");
+			pushTrend(urlv,chartSoundsDO.priceExponentialTrend);
+			if(!isNaN(chartSoundsDO.forecastPriceExponentialTrend)){
+				urlv.push(baseUrl + nextDate);
+				urlv.push(baseUrl + "jiagezhishu.mp3");
+				pushTrend(urlv,chartSoundsDO.forecastPriceExponentialTrend);
 			}
 			
-			//有历史价格时：
-			if(!isNaN(chartSoundsDO.historyContrastPrice)){
-				urlv.push(baseUrl+"yuqunian.mp3");//与去年同期对比，本周实际价格每公斤
-				pushTrend2(urlv,Math.abs(chartSoundsDO.historyContrastPrice));//上升/下降
-				pushPriceUrls(urlv,chartSoundsDO.historyContrastPrice);//
-			}
-			
-			//有历史和预测时：
-			
-			if(!isNaN(chartSoundsDO.forecastContrastPrice) && !isNaN(chartSoundsDO.historyContrastPrice)){
-				urlv.push(baseUrl+"xiazhoujiageyuji.mp3");//下周价格预计
-				urlv.push(baseUrl+"meigongjin.mp3");//每公斤
-				pushTrend2(urlv,chartSoundsDO.forecastContrastPrice);//上升/下降
-				//xxxx元
-				pushPriceUrls(urlv,Math.abs(chartSoundsDO.forecastContrastPrice));
-				//urlv.push(baseUrl+"zuoyou.mp3");//左右
-			}			
 			return urlv;
 		}
 		
