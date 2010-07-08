@@ -298,7 +298,6 @@
 												vvs.push(vs);
 												var mp3Loader:Mp3Loader = new Mp3Loader(vs);
 												plusSourceCount();
-												trace("disurlv",disurlv,disurlv.length);
 												mp3Loader.loadList(disurlv);
 												mp3Loader.addEventListener(Event.COMPLETE,handlerBizSoundCmp);
 											}
@@ -624,7 +623,6 @@
 		}
 		
 		private function handlerBizSoundCmp(e:Event):void{
-			trace("handlerBizSoundCmp");
 			var mp3Loader:Mp3Loader = e.currentTarget as Mp3Loader;
 			var vs:Vector.<Sound> = mp3Loader.dataObj as Vector.<Sound>;
 			var sl:Vector.<Sound> = mp3Loader.soundList;
@@ -634,7 +632,6 @@
 				}
 			}
 			subSourceCount();
-			trace(sourceCount);
 		}
 		
 		private function getTrend(value:Number,baseValue:Number):int{

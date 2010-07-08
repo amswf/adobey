@@ -47,7 +47,6 @@ package com.snsoft.tvc2.media{
 		 * 
 		 */		
 		override protected function dispatchEventState():void{
-			trace("textPlayer.dispatchEventState");
 			if(!isDispatchEvent){
 				var sign:Boolean = false;
 				if(this.isPlayCmp && this.isTimeLen){

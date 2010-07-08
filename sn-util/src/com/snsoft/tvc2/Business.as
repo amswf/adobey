@@ -64,7 +64,7 @@ package com.snsoft.tvc2{
 		
 		private function handlerDelayFrameTimer(e:Event):void{
 			delayFrameTimer.removeEventListener(Event.COMPLETE,handlerDelayFrameTimer);
-			trace("handlerDelayFrameTimer",this.timeLength,this.timeOut);
+			trace("handlerDelayFrameTimer");
 			if(this.timeLength > 0 && this.stage != null){
 				timeLengthFrameTimer = new FrameTimer(SystemConfig.stageFrameRate,this.timeLength,this);
 				timeLengthFrameTimer.timer();

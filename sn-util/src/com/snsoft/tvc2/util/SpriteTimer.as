@@ -65,7 +65,6 @@ package com.snsoft.tvc2.util{
 		private function handlerTimer(e:Event):void{
 			sprite.y += px * Math.sin(currentRate);
 			sprite.x += px * Math.cos(currentRate);
-			trace(sprite.x,sprite.y);
 		}
 		
 		private function handlerTimerCmp(e:Event):void{
