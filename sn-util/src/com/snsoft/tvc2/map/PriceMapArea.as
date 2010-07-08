@@ -5,6 +5,7 @@ package com.snsoft.tvc2.map{
 	import com.snsoft.tvc2.dataObject.DataDO;
 	import com.snsoft.tvc2.dataObject.ListDO;
 	import com.snsoft.tvc2.dataObject.TextPointDO;
+	import com.snsoft.tvc2.media.Mp3Player;
 	import com.snsoft.tvc2.text.EffectText;
 	import com.snsoft.tvc2.text.TextStyles;
 	import com.snsoft.tvc2.util.StringUtil;
@@ -20,6 +21,7 @@ package com.snsoft.tvc2.map{
 	import flash.events.IOErrorEvent;
 	import flash.events.TimerEvent;
 	import flash.geom.Rectangle;
+	import flash.media.Sound;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.text.TextField;
@@ -53,6 +55,12 @@ package com.snsoft.tvc2.map{
 		private var switchTimerRepeatCount:int = 10;
 		
 		private var switchMoveLenth:Number = 100;
+		
+		private var soundsCmp:Boolean = false;
+		
+		private var areasCmp:Boolean = false;
+		
+		private var bizSoundIndex:int = 0;
 		
 		public function PriceMapArea(dataDO:DataDO,mapView:MapView,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0){
 			super();
@@ -133,9 +141,15 @@ package com.snsoft.tvc2.map{
 				tfd.y = cutLineMC.y - tfd.height / 2;
 				cutLine.addChild(tfd);
 			}
-			playAreaView();
 			
+			playBizSound(dataDO.bizSoundList,1,handlerBeforePlayArea);
 		} 
+		
+		private function handlerBeforePlayArea(e:Event):void{
+			soundsCmp = true;
+			areasCmp = true;
+			playAreaView();
+		}
 		
 		private function handlerSwitchAdd(e:Event):void{
 			var palpha:Number = 1 / switchTimerRepeatCount;
@@ -163,34 +177,67 @@ package com.snsoft.tvc2.map{
 		}
 		
 		private function playAreaView():void{
-			if(listDOV != null && listCount >= 0 && listCount < listDOV.length){
-				var index:int = listCount;
-				var color:uint = getColor(index);
+			var sign:Boolean = false;
+			if(soundsCmp && areasCmp){
+				soundsCmp = false;
+				areasCmp = false;
 				
-				var listDO:ListDO = listDOV[index];
-				
-				var rect:Rectangle = mapView.getRect(this);
-				
-				var lname:String = listDO.name;
-				currentText = EffectText.creatTextByStyleName(lname,TextStyles.STYLE_LIST_TYPE_TEXT,color);
-				currentText.x = rect.width / 2 + switchMoveLenth;
-				this.addChild(currentText);
-				
-				switchAddTimer = new Timer(switchTimerDelay,switchTimerRepeatCount);
-				switchAddTimer.addEventListener(TimerEvent.TIMER,handlerSwitchAdd);
-				switchAddTimer.start();
-				
-				var tpdoHv:Vector.<TextPointDO> = listDO.listHv;
-				
-				setAreaColor(index,1);
-				var timer:Timer = new Timer(2000,1);
-				timer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerTimer);
-				timer.start();
+				if(listDOV != null && listCount >= 0 && listCount < listDOV.length){
+					var index:int = listCount;
+					var color:uint = getColor(index);
+					
+					var listDO:ListDO = listDOV[index];
+					
+					var rect:Rectangle = mapView.getRect(this);
+					
+					var lname:String = listDO.name;
+					currentText = EffectText.creatTextByStyleName(lname,TextStyles.STYLE_LIST_TYPE_TEXT,color);
+					currentText.x = rect.width / 2 + switchMoveLenth;
+					this.addChild(currentText);
+					
+					switchAddTimer = new Timer(switchTimerDelay,switchTimerRepeatCount);
+					switchAddTimer.addEventListener(TimerEvent.TIMER,handlerSwitchAdd);
+					switchAddTimer.start();
+					
+					var tpdoHv:Vector.<TextPointDO> = listDO.listHv;
+					
+					setAreaColor(index,1);
+					
+					playBizSound(dataDO.bizSoundList,1,handlerPlayAreaCmp);
+					
+					var timer:Timer = new Timer(2000,1);
+					timer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerTimer);
+					timer.start();
+					sign = true;
+				}
 			}
-			else{
+			
+			if(!sign){
 				this.isPlayCmp = true;
 				dispatchEventState();
 			}
+		}
+		
+		private function handlerPlayAreaCmp(e:Event):void{
+			soundsCmp = true;
+			playAreaView();
+		}
+		
+		private function playBizSound(bizSoundV:Vector.<Vector.<Sound>>,length:int,fun:Function):void{
+			var cbs:Vector.<Sound> = new Vector.<Sound>();
+			var startIndex:int = bizSoundIndex;
+			for(var i:int = startIndex;i< startIndex + length;i++){
+				if(i >= 0 && i < bizSoundV.length){
+					var cBizSoundList:Vector.<Sound> = bizSoundV[i];
+					for(var j:int;j<cBizSoundList.length;j++){
+						cbs.push(cBizSoundList[j]);
+					}
+					bizSoundIndex ++;
+				}
+			}
+			var mp:Mp3Player = new Mp3Player(cbs);
+			mp.addEventListener(Event.COMPLETE,fun);
+			this.addChild(mp);
 		}
 		
 		private function setAreaColor(index:int,alpha:Number):void{
@@ -243,6 +290,7 @@ package com.snsoft.tvc2.map{
 			}
 			
 			listCount ++;
+			areasCmp = true;
 			playAreaView();
 		}
 		

@@ -5,6 +5,8 @@
 	import com.snsoft.mapview.util.MapViewXMLLoader;
 	import com.snsoft.tvc2.bizSounds.ChartSoundsDO;
 	import com.snsoft.tvc2.bizSounds.ChartSoundsManager;
+	import com.snsoft.tvc2.bizSounds.DistributeAreaSoundsDO;
+	import com.snsoft.tvc2.bizSounds.DistributeAreaSoundsManager;
 	import com.snsoft.tvc2.bizSounds.DistributeSoundsDO;
 	import com.snsoft.tvc2.bizSounds.DistributeSoundsManager;
 	import com.snsoft.tvc2.dataObject.BizDO;
@@ -283,6 +285,9 @@
 										else if(type == XMLParse.TAG_DISTRIBUTE){
 											urlvv = bizDistributeSoundLoad(bizDO);
 										}
+										else if(type == XMLParse.TAG_DISTRIBUTE_AREA){
+											urlvv = bizDistributeAreaSoundLoad(bizDO);
+										}
 										
 										var vvs:Vector.<Vector.<Sound>> = new Vector.<Vector.<Sound>>();
 										dataDO.bizSoundList = vvs;
@@ -291,10 +296,11 @@
 												var disurlv:Vector.<String> = urlvv[k3];
 												var vs:Vector.<Sound> = new Vector.<Sound>();
 												vvs.push(vs);
-												var disBizSoundLoader:Mp3Loader = new Mp3Loader(vs);
+												var mp3Loader:Mp3Loader = new Mp3Loader(vs);
 												plusSourceCount();
-												disBizSoundLoader.loadList(disurlv);
-												disBizSoundLoader.addEventListener(Event.COMPLETE,handlerBizSoundCmp);
+												trace("disurlv",disurlv,disurlv.length);
+												mp3Loader.loadList(disurlv);
+												mp3Loader.addEventListener(Event.COMPLETE,handlerBizSoundCmp);
 											}
 										}
 									}
@@ -309,6 +315,25 @@
 			}
 		}
 		
+		
+		private function bizDistributeAreaSoundLoad(bizDO:BizDO):Vector.<Vector.<String>>{
+			var dataDO:DataDO = bizDO.dataDO;
+			var varDOHv:HashVector = bizDO.varDOHv;
+			var type:String = dataDO.type;
+
+			if(varDOHv != null){
+				var gndo:VarDO = varDOHv.findByName(VAR_GOODS) as VarDO;
+				var gName:String = gndo.getAttribute(XMLParse.ATT_VALUE) as String;
+				var forecastContrastPrice:Number = 0;		
+				var dasdo:DistributeAreaSoundsDO = new DistributeAreaSoundsDO();
+				dasdo.goodsCode = gName;
+				
+				var dasm:DistributeAreaSoundsManager = new DistributeAreaSoundsManager();
+				var urlvv:Vector.<Vector.<String>> = dasm.creatDistributeAreaUrlList(dasdo);
+				return urlvv;
+			}
+			return null;
+		}
 		/**
 		 *  
 		 * @param bizDO
@@ -599,15 +624,17 @@
 		}
 		
 		private function handlerBizSoundCmp(e:Event):void{
-			var bizSoundLoader:Mp3Loader = e.currentTarget as Mp3Loader;
-			var vs:Vector.<Sound> = bizSoundLoader.dataObj as Vector.<Sound>;
-			var sl:Vector.<Sound> = bizSoundLoader.soundList;
+			trace("handlerBizSoundCmp");
+			var mp3Loader:Mp3Loader = e.currentTarget as Mp3Loader;
+			var vs:Vector.<Sound> = mp3Loader.dataObj as Vector.<Sound>;
+			var sl:Vector.<Sound> = mp3Loader.soundList;
 			if(sl != null){
 				for(var i:int =0;i <sl.length;i++ ){
 					vs.push(sl[i]);
 				}
 			}
 			subSourceCount();
+			trace(sourceCount);
 		}
 		
 		private function getTrend(value:Number,baseValue:Number):int{
