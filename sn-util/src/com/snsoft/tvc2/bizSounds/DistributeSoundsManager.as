@@ -12,76 +12,110 @@ package com.snsoft.tvc2.bizSounds{
 		{
 		}
 		
-		public function creatPriceSoundUrlList(distributeSoundsDO:DistributeSoundsDO):Vector.<Vector.<String>>{
+		public function creatPriceSoundUrlList(distributeSoundsDO:DistributeSoundsDO):BizSoundDO{
 			var currentDate:String = "";
 			var nextDate:String = "";
+			
+			var currentDateText:String = "";
+			var nextDateText:String = "";
 			
 			//今天
 			if(distributeSoundsDO.dateType == DistributeSoundsDO.DATE_TYPE_DAY){
 				currentDate = "jintian.mp3";
 				nextDate = "mingtianjiageyuji.mp3";
+				currentDateText = "今天，";
+				nextDateText = "明天，";
 			}
 			else if(distributeSoundsDO.dateType == DistributeSoundsDO.DATE_TYPE_WEEK){//本周
 				currentDate = "benzhou.mp3";
 				nextDate = "xiazhoujiageyuji.mp3";
+				currentDateText = "本周，";
+				nextDateText = "下周，";
 			}
 			else if(distributeSoundsDO.dateType == DistributeSoundsDO.DATE_TYPE_MONTH){//本月
 				currentDate = "benyue.mp3";
 				nextDate = "xiageyuejiageyuji.mp3";
+				currentDateText = "本月，";
+				nextDateText = "下个月，";
 			}
 			else {
 				currentDate = "benzhou.mp3";
 				nextDate = "xiazhoujiageyuji.mp3";
+				currentDateText = "本周，";
+				nextDateText = "下周，";
 			}
 			
 			var urlvv:Vector.<Vector.<String>> = new Vector.<Vector.<String>>();
+			var textvv:Vector.<Vector.<String>> = new Vector.<Vector.<String>>();
 			
 			var curlv1:Vector.<String> = new Vector.<String>();
+			var curlTextv1:Vector.<String> = new Vector.<String>();
 			
 			//下面我们来看一下
 			curlv1.push(baseUrl + "xiamianwomenlaikanyixia.mp3");
+			curlTextv1.push("下面我们来看一下");
 			
 			//今天/本周/本月
 			curlv1.push(baseUrl + currentDate);
+			curlTextv1.push(currentDateText);
 			
 			//农产品名称
 			curlv1.push(baseUrl + distributeSoundsDO.goodsCode + ".mp3");
+			curlTextv1.push(distributeSoundsDO.goodsText);
 			
 			//价格市场的分布情况
 			curlv1.push(baseUrl + "jiageshichangdefenbuqingkuang.mp3");
-			urlvv.push(curlv1);
+			curlTextv1.push("价格市场的分布情况，");
 			
+			urlvv.push(curlv1);
+			textvv.push(curlTextv1);
 			
 			//较低价格
 			var curlv21:Vector.<String> = new Vector.<String>();
+			var curlTextv21:Vector.<String> = new Vector.<String>();
 			curlv21.push(baseUrl + "fenbu0.mp3");
+			curlTextv21.push("较低价格，");
 			urlvv.push(curlv21);
+			textvv.push(curlTextv21);
 			
 			//中间价格
 			var curlv22:Vector.<String> = new Vector.<String>();
+			var curlTextv22:Vector.<String> = new Vector.<String>();
 			curlv22.push(baseUrl + "fenbu1.mp3");
+			curlTextv22.push("中间价格，");
 			urlvv.push(curlv22);
+			textvv.push(curlTextv22);
 			
 			//较高价格
 			var curlv23:Vector.<String> = new Vector.<String>();
+			var curlTextv23:Vector.<String> = new Vector.<String>();
 			curlv23.push(baseUrl + "fenbu2.mp3");
+			curlTextv23.push("较高价格。");
 			urlvv.push(curlv23);
+			textvv.push(curlTextv23);
 			
 			var curlv3:Vector.<String> = new Vector.<String>();
+			var curlTextv3:Vector.<String> = new Vector.<String>();
 			
 			//最低价格分布
 			curlv3.push(baseUrl + "zuidijiagefenbu.mp3");
 			
 			//主要市场为
 			curlv3.push(baseUrl + "zhuyaoshichangwei.mp3");
+			curlTextv3.push("最低价格分布，主要市场为，");
+			
 			urlvv.push(curlv3);
+			textvv.push(curlTextv3);
 			
 			var lowDisV:Vector.<TextPointDO> = distributeSoundsDO.lowDisV;
 			
 			//市场名称 + 价格
 			pushPriceCard(urlvv,lowDisV);
+			pushPriceTextCard(textvv,lowDisV);
+			
 			
 			var curlv4:Vector.<String> = new Vector.<String>();
+			var curlTextv4:Vector.<String> = new Vector.<String>();
 			
 			//最高价格分布
 			curlv4.push(baseUrl + "zuigaojiagefenbu.mp3");
@@ -90,13 +124,19 @@ package com.snsoft.tvc2.bizSounds{
 			curlv4.push(baseUrl + "zhuyaoshichangwei.mp3");
 			
 			urlvv.push(curlv4);
+			curlTextv4.push("最高价格分布，主要市场为，");
+			textvv.push(curlTextv4);
 			
 			var highDisV:Vector.<TextPointDO> = distributeSoundsDO.highDisV;
 			
 			//市场名称 + 价格
 			pushPriceCard(urlvv,highDisV);
+			pushPriceTextCard(textvv,highDisV);
 			
-			return urlvv;
+			var bizSoundDO:BizSoundDO = new BizSoundDO();
+			bizSoundDO.urlVV = urlvv;
+			bizSoundDO.textVV = textvv;
+			return bizSoundDO;
 		}
 		
 		private function pushPriceCard(urls:Vector.<Vector.<String>>,lowDisV:Vector.<TextPointDO>):void{
@@ -114,6 +154,34 @@ package com.snsoft.tvc2.bizSounds{
 							curlv.push(baseUrl + lname + ".mp3");
 							pushPriceUrls(curlv,lv);
 							urls.push(curlv);
+						}
+					}
+				}
+			}
+		}
+		
+		private function pushPriceTextCard(texts:Vector.<Vector.<String>>,lowDisV:Vector.<TextPointDO>):void{
+			
+			if(lowDisV != null){
+				for(var i:int =0;i<lowDisV.length;i++){
+					var tpdo:TextPointDO = lowDisV[i];
+					var ltext:String = tpdo.text;
+					var lvalue:String = tpdo.value;
+					if(StringUtil.isEffective(ltext,lvalue)){
+						
+						var lv:Number = Number(lvalue);
+						if(lv > 0){
+							var curlv:Vector.<String> = new Vector.<String>();
+							curlv.push(ltext);
+							curlv.push(lv.toFixed(2)+ "元");
+							if(i == lowDisV.length - 1){
+								curlv.push("。");
+							}
+							else{
+								curlv.push("，");
+							}
+							
+							texts.push(curlv);
 						}
 					}
 				}

@@ -24,6 +24,8 @@ package com.snsoft.tvc2.dataObject{
 		
 		private var _bizSoundList:Vector.<Vector.<Sound>> = null;
 		
+		private var _bizSoundTextList:Vector.<Vector.<String>> = null;
+		
 		public function DataDO()
 		{
 		}
@@ -106,6 +108,16 @@ package com.snsoft.tvc2.dataObject{
 		public function set bizSoundList(value:Vector.<Vector.<Sound>>):void
 		{
 			_bizSoundList = value;
+		}
+
+		public function get bizSoundTextList():Vector.<Vector.<String>>
+		{
+			return _bizSoundTextList;
+		}
+
+		public function set bizSoundTextList(value:Vector.<Vector.<String>>):void
+		{
+			_bizSoundTextList = value;
 		}
 
 		 

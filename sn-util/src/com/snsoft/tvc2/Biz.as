@@ -102,6 +102,8 @@
 					var type:String = bizDO.type;
 					var uilcs:Business = null;
 					var delayTime:int = 2000;
+					
+					trace(creatSoundText(dataDO));
 					if(dataDO != null){
 						if(type == BIZ_TYPE_POLYLINES){
 							uilcs = new UILineCharts(dataDO,delayTime,6000);
@@ -260,6 +262,25 @@
 					}
 				}
 			}
+		}
+		
+		private function creatSoundText(dataDO:DataDO):String{
+			var str:String = "";
+			if(dataDO != null){
+				var stvv:Vector.<Vector.<String>> = dataDO.bizSoundTextList;
+				if(stvv != null){
+					for(var i:int = 0;i < stvv.length;i ++){
+						var stv:Vector.<String> = stvv[i];
+						if(stv != null){
+							for(var j:int = 0;j < stv.length;j ++){
+								str += stv[j];
+							}
+						}
+					}
+				}
+				
+			}
+			return str;
 		}
 		
 		private function handlerCmp(e:Event):void{

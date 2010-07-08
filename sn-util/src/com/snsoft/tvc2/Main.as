@@ -3,6 +3,7 @@
 	import com.snsoft.font.EmbedFontsEvent;
 	import com.snsoft.map.WorkSpaceDO;
 	import com.snsoft.mapview.util.MapViewXMLLoader;
+	import com.snsoft.tvc2.bizSounds.BizSoundDO;
 	import com.snsoft.tvc2.bizSounds.ChartSoundsDO;
 	import com.snsoft.tvc2.bizSounds.ChartSoundsManager;
 	import com.snsoft.tvc2.bizSounds.DistributeAreaSoundsDO;
@@ -39,6 +40,8 @@
 	import flash.media.Sound;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
+	
+	import mx.messaging.management.Attribute;
 	
 	
 	public class Main extends UIComponent{
@@ -276,31 +279,39 @@
 									if(dataDO != null){
 										var type:String = dataDO.type;
 										
-										var urlvv:Vector.<Vector.<String>> = new Vector.<Vector.<String>>();
+										
+										
+										var bizSoundDO:BizSoundDO = null;
 										if(type == XMLParse.TAG_CHART){
-											urlvv = bizPriceSoundLoad(bizDO);
+											bizSoundDO = bizPriceSoundLoad(bizDO);
 										}
 										else if(type == XMLParse.TAG_EXPONENTIAL){
-											urlvv = bizExponentialSoundLoad(bizDO);
+											bizSoundDO = bizExponentialSoundLoad(bizDO);
 										}
 										else if(type == XMLParse.TAG_DISTRIBUTE){
-											urlvv = bizDistributeSoundLoad(bizDO);
+											bizSoundDO = bizDistributeSoundLoad(bizDO);
 										}
 										else if(type == XMLParse.TAG_DISTRIBUTE_AREA){
-											urlvv = bizDistributeAreaSoundLoad(bizDO);
+											bizSoundDO = bizDistributeAreaSoundLoad(bizDO);
 										}
-										
-										var vvs:Vector.<Vector.<Sound>> = new Vector.<Vector.<Sound>>();
-										dataDO.bizSoundList = vvs;
-										if(urlvv != null){
-											for(var k3:int = 0;k3<urlvv.length;k3++){
-												var disurlv:Vector.<String> = urlvv[k3];
-												var vs:Vector.<Sound> = new Vector.<Sound>();
-												vvs.push(vs);
-												var mp3Loader:Mp3Loader = new Mp3Loader(vs);
-												plusSourceCount();
-												mp3Loader.loadList(disurlv);
-												mp3Loader.addEventListener(Event.COMPLETE,handlerBizSoundCmp);
+										if(bizSoundDO != null){
+											var urlvv:Vector.<Vector.<String>> = bizSoundDO.urlVV;
+											var textVV:Vector.<Vector.<String>> = bizSoundDO.textVV;
+											var vvs:Vector.<Vector.<Sound>> = new Vector.<Vector.<Sound>>();
+											dataDO.bizSoundList = vvs;
+											if(urlvv != null){
+												for(var k3:int = 0;k3<urlvv.length;k3++){
+													var disurlv:Vector.<String> = urlvv[k3];
+													var vs:Vector.<Sound> = new Vector.<Sound>();
+													vvs.push(vs);
+													var mp3Loader:Mp3Loader = new Mp3Loader(vs);
+													plusSourceCount();
+													mp3Loader.loadList(disurlv);
+													mp3Loader.addEventListener(Event.COMPLETE,handlerBizSoundCmp);
+												}
+											}
+											if(textVV != null){
+												dataDO.bizSoundTextList = textVV;
 											}
 										}
 									}
@@ -316,20 +327,22 @@
 		}
 		
 		
-		private function bizDistributeAreaSoundLoad(bizDO:BizDO):Vector.<Vector.<String>>{
+		private function bizDistributeAreaSoundLoad(bizDO:BizDO):BizSoundDO{
 			var dataDO:DataDO = bizDO.dataDO;
 			var varDOHv:HashVector = bizDO.varDOHv;
 			var type:String = dataDO.type;
-
+			
 			if(varDOHv != null){
 				var gName:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_VALUE);
+				var gText:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_TEXT);
 				var dateType:String = getVarAttribute(varDOHv,VAR_DATE_TYPE,XMLParse.ATT_VALUE);
 				
 				var dasdo:DistributeAreaSoundsDO = new DistributeAreaSoundsDO();
 				dasdo.goodsCode = gName;
+				dasdo.goodsText = gText;
 				dasdo.dateType = dateType;
 				var dasm:DistributeAreaSoundsManager = new DistributeAreaSoundsManager();
-				var urlvv:Vector.<Vector.<String>> = dasm.creatDistributeAreaUrlList(dasdo);
+				var urlvv:BizSoundDO = dasm.creatDistributeAreaUrlList(dasdo);
 				return urlvv;
 			}
 			return null;
@@ -339,7 +352,7 @@
 		 * @param bizDO
 		 * 
 		 */		
-		private function bizExponentialSoundLoad(bizDO:BizDO):Vector.<Vector.<String>>{
+		private function bizExponentialSoundLoad(bizDO:BizDO):BizSoundDO{
 			var dataDO:DataDO = bizDO.dataDO;
 			var varDOHv:HashVector = bizDO.varDOHv;
 			var type:String = dataDO.type;
@@ -393,6 +406,7 @@
 					priceExponentialTrend = getTrend(currentValue,latestValue);
 					
 					var gName:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_VALUE);
+					var gText:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_TEXT);
 					var dateType:String = getVarAttribute(varDOHv,VAR_DATE_TYPE,XMLParse.ATT_VALUE);
 					
 					var forecastContrastPrice:Number = 0;
@@ -413,13 +427,14 @@
 					var csdo:ChartSoundsDO = new ChartSoundsDO();
 					csdo.dateType = dateType;
 					csdo.goodsCode = gName;
+					csdo.goodsText = gText;
 					if(forecastListDO != null){
 						csdo.priceExponentialTrend = priceExponentialTrend;
 						csdo.forecastPriceExponentialTrend = forecastTrend;
 					}
 					
 					var csm:ChartSoundsManager = new ChartSoundsManager();
-					var urlvv:Vector.<Vector.<String>> = csm.creatExponentialSoundUrlList(csdo);
+					var urlvv:BizSoundDO = csm.creatExponentialSoundUrlList(csdo);
 					
 					return urlvv;
 				}
@@ -427,7 +442,7 @@
 			return null;
 		}
 		
-		private function bizDistributeSoundLoad(bizDO:BizDO):Vector.<Vector.<String>>{
+		private function bizDistributeSoundLoad(bizDO:BizDO):BizSoundDO{
 			var dataDO:DataDO = bizDO.dataDO;
 			var varDOHv:HashVector = bizDO.varDOHv;
 			var type:String = dataDO.type;
@@ -452,19 +467,21 @@
 					}
 				}
 				
-				 
+				
 				var gName:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_VALUE);
+				var gText:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_TEXT);
 				var dateType:String = getVarAttribute(varDOHv,VAR_DATE_TYPE,XMLParse.ATT_VALUE);
 				
 				var forecastContrastPrice:Number = 0;		
 				var dsdo:DistributeSoundsDO = new DistributeSoundsDO();
 				dsdo.dateType = dateType;
 				dsdo.goodsCode = gName;
+				dsdo.goodsText = gText;
 				dsdo.lowDisV = lowDisV;
 				dsdo.highDisV = highDisV;
 				
 				var dsm:DistributeSoundsManager = new DistributeSoundsManager();
-				var urlvv:Vector.<Vector.<String>> = dsm.creatPriceSoundUrlList(dsdo);
+				var urlvv:BizSoundDO = dsm.creatPriceSoundUrlList(dsdo);
 				return urlvv;
 			}
 			return null;
@@ -486,13 +503,13 @@
 		 * @param bizDO
 		 * 
 		 */		
-		private function bizPriceSoundLoad(bizDO:BizDO):Vector.<Vector.<String>>{
+		private function bizPriceSoundLoad(bizDO:BizDO):BizSoundDO {
 			var dataDO:DataDO = bizDO.dataDO;
 			var varDOHv:HashVector = bizDO.varDOHv;
 			var type:String = dataDO.type;
 			var xgtListDOV:Vector.<ListDO> = dataDO.xGraduationText;
 			if(varDOHv != null){
-				 
+				
 				var listDOV:Vector.<ListDO> = dataDO.data;
 				var historyListDO:ListDO = null;
 				var currentListDO:ListDO = null;
@@ -559,8 +576,10 @@
 					priceTrend = getTrend(currentValue,latestValue);
 					
 					var gName:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_VALUE);
+					var gText:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_TEXT);
 					var dateType:String = getVarAttribute(varDOHv,VAR_DATE_TYPE,XMLParse.ATT_VALUE);
 					var mName:String = getVarAttribute(varDOHv,VAR_MARKET,XMLParse.ATT_VALUE);
+					var mText:String = getVarAttribute(varDOHv,VAR_MARKET,XMLParse.ATT_TEXT);
 					
 					var historyContrastPrice:Number = 0;
 					var historyPrice:Number = 0;
@@ -608,7 +627,9 @@
 					var csdo:ChartSoundsDO = new ChartSoundsDO();
 					csdo.dateType = dateType;
 					csdo.goodsCode = gName;
+					csdo.goodsText = gText;
 					csdo.areaCode = mName;
+					csdo.areaText = mText;
 					csdo.priceTrend = priceTrend;
 					csdo.highPrice = highPrice;
 					csdo.lowPrice = lowPrice;
@@ -627,7 +648,7 @@
 					}
 					
 					var csm:ChartSoundsManager = new ChartSoundsManager();
-					var urlvv:Vector.<Vector.<String>> = csm.creatPriceSoundUrlList(csdo);
+					var urlvv:BizSoundDO = csm.creatPriceSoundUrlList(csdo);
 					
 					return urlvv;
 				}

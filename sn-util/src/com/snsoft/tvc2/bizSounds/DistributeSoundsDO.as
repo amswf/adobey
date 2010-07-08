@@ -13,6 +13,8 @@ package com.snsoft.tvc2.bizSounds{
 		
 		private var _goodsCode:String = null;//产品编号
 		
+		private var _goodsText:String = null;//产品名称
+		
 		private var _lowDisV:Vector.<TextPointDO>;//低价格分布点
 		
 		private var _highDisV:Vector.<TextPointDO>;//高价格分布点
@@ -58,6 +60,16 @@ package com.snsoft.tvc2.bizSounds{
 		public function set dateType(value:String):void
 		{
 			_dateType = value;
+		}
+
+		public function get goodsText():String
+		{
+			return _goodsText;
+		}
+
+		public function set goodsText(value:String):void
+		{
+			_goodsText = value;
 		}
 
 

@@ -11,6 +11,8 @@ package com.snsoft.tvc2.bizSounds{
 		
 		private var _goodsCode:String = null;//产品编号
 		
+		private var _goodsText:String = null;//产品名称
+		
 		public function DistributeAreaSoundsDO()
 		{
 		}
@@ -33,6 +35,16 @@ package com.snsoft.tvc2.bizSounds{
 		public function set goodsCode(value:String):void
 		{
 			_goodsCode = value;
+		}
+
+		public function get goodsText():String
+		{
+			return _goodsText;
+		}
+
+		public function set goodsText(value:String):void
+		{
+			_goodsText = value;
 		}
 
 
