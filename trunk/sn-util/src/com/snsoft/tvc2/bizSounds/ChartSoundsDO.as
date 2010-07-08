@@ -11,7 +11,11 @@ package com.snsoft.tvc2.bizSounds{
 		
 		private var _areaCode:String = null;//地区编号
 		
+		private var _areaText:String = null;//地区名称
+		
 		private var _goodsCode:String = null;//产品编号
+		
+		private var _goodsText:String = null;//产品名称
 		
 		private var _priceTrend:int = 0; //价格走势  1 上升  0 持平  -1 下降
 		
@@ -153,6 +157,26 @@ package com.snsoft.tvc2.bizSounds{
 		public function set forecastPriceExponentialTrend(value:int):void
 		{
 			_forecastPriceExponentialTrend = value;
+		}
+
+		public function get areaText():String
+		{
+			return _areaText;
+		}
+
+		public function set areaText(value:String):void
+		{
+			_areaText = value;
+		}
+
+		public function get goodsText():String
+		{
+			return _goodsText;
+		}
+
+		public function set goodsText(value:String):void
+		{
+			_goodsText = value;
 		}
 
 
