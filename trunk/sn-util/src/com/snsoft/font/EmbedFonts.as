@@ -47,9 +47,9 @@
 	 */
 	public class EmbedFonts extends EventDispatcher {
 
-		private static var SWF_EXT_NAME = ".swf";
+		private static var SWF_EXT_NAME:String = ".swf";
 
-		private static var SWF_FONT_ROOT_PATH = "font/";
+		private static var SWF_FONT_ROOT_PATH:String = "font/";
 		
 		/**
 		 * 加载字体swf文件得到的结果信息列表 LoaderInfo 数组
@@ -126,7 +126,7 @@
 		 * @param e
 		 * 
 		 */		
-		function handlerLoadFontSwfIoError(e:Event):void{
+		private function handlerLoadFontSwfIoError(e:Event):void{
 			trace("找不到字体swf文件:" + currentLoadSwfName +" [EmbedFontsEvent.IO_ERROR]");
 			this.dispatchEvent(new EmbedFontsEvent(EmbedFontsEvent.IO_ERROR));
 		}
@@ -137,7 +137,7 @@
 		 * @param event
 		 * 
 		 */		
-		function handlerLoadFontSwfComplete(event:Event):void {
+		private function handlerLoadFontSwfComplete(event:Event):void {
 			trace("成功加载字体swf:" + currentLoadSwfName);
 			var info:LoaderInfo = event.currentTarget as LoaderInfo;
 			var domain:ApplicationDomain = info.applicationDomain;
