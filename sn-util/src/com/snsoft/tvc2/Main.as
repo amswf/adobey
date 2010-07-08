@@ -273,7 +273,7 @@
 									if(dataDO != null){
 										var type:String = dataDO.type;
 										
-										var urlvv:Vector.<Vector.<String>> = null;
+										var urlvv:Vector.<Vector.<String>> = new Vector.<Vector.<String>>();
 										if(type == XMLParse.TAG_CHART){
 											var urlv:Vector.<String> = bizPriceSoundLoad(bizDO);
 											urlvv.push(urlv);
