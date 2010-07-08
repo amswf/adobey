@@ -278,12 +278,10 @@
 										
 										var urlvv:Vector.<Vector.<String>> = new Vector.<Vector.<String>>();
 										if(type == XMLParse.TAG_CHART){
-											var urlv:Vector.<String> = bizPriceSoundLoad(bizDO);
-											urlvv.push(urlv);
+											urlvv = bizPriceSoundLoad(bizDO);
 										}
 										else if(type == XMLParse.TAG_EXPONENTIAL){
-											var eurlv:Vector.<String> = bizExponentialSoundLoad(bizDO);
-											urlvv.push(eurlv);
+											urlvv = bizExponentialSoundLoad(bizDO);
 										}
 										else if(type == XMLParse.TAG_DISTRIBUTE){
 											urlvv = bizDistributeSoundLoad(bizDO);
@@ -341,7 +339,7 @@
 		 * @param bizDO
 		 * 
 		 */		
-		private function bizExponentialSoundLoad(bizDO:BizDO):Vector.<String>{
+		private function bizExponentialSoundLoad(bizDO:BizDO):Vector.<Vector.<String>>{
 			var dataDO:DataDO = bizDO.dataDO;
 			var varDOHv:HashVector = bizDO.varDOHv;
 			var type:String = dataDO.type;
@@ -421,9 +419,9 @@
 					}
 					
 					var csm:ChartSoundsManager = new ChartSoundsManager();
-					var urlv:Vector.<String> = csm.creatExponentialSoundUrlList(csdo);
+					var urlvv:Vector.<Vector.<String>> = csm.creatExponentialSoundUrlList(csdo);
 					
-					return urlv;
+					return urlvv;
 				}
 			}
 			return null;
@@ -488,7 +486,7 @@
 		 * @param bizDO
 		 * 
 		 */		
-		private function bizPriceSoundLoad(bizDO:BizDO):Vector.<String>{
+		private function bizPriceSoundLoad(bizDO:BizDO):Vector.<Vector.<String>>{
 			var dataDO:DataDO = bizDO.dataDO;
 			var varDOHv:HashVector = bizDO.varDOHv;
 			var type:String = dataDO.type;
@@ -629,9 +627,9 @@
 					}
 					
 					var csm:ChartSoundsManager = new ChartSoundsManager();
-					var urlv:Vector.<String> = csm.creatPriceSoundUrlList(csdo);
+					var urlvv:Vector.<Vector.<String>> = csm.creatPriceSoundUrlList(csdo);
 					
-					return urlv;
+					return urlvv;
 				}
 			}
 			return null;

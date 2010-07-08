@@ -8,7 +8,7 @@ package com.snsoft.tvc2.bizSounds{
 		public function ChartSoundsManager(){
 		}
 		
-		public function creatPriceSoundUrlList(chartSoundsDO:ChartSoundsDO):Vector.<String>{
+		public function creatPriceSoundUrlList(chartSoundsDO:ChartSoundsDO):Vector.<Vector.<String>>{
 			var urlv:Vector.<String> = new Vector.<String>();
 			
 			
@@ -91,8 +91,10 @@ package com.snsoft.tvc2.bizSounds{
 				//xxxx元
 				pushPriceUrls(urlv,Math.abs(chartSoundsDO.forecastContrastPrice));
 				//urlv.push(baseUrl+"zuoyou.mp3");//左右
-			}			
-			return urlv;
+			}	
+			var urlvv:Vector.<Vector.<String>> = new Vector.<Vector.<String>>();
+			urlvv.push(urlv);
+			return urlvv;
 		}
 		
 		/**
@@ -101,7 +103,7 @@ package com.snsoft.tvc2.bizSounds{
 		 * @return 
 		 * 
 		 */		
-		public function creatExponentialSoundUrlList(chartSoundsDO:ChartSoundsDO):Vector.<String>{
+		public function creatExponentialSoundUrlList(chartSoundsDO:ChartSoundsDO):Vector.<Vector.<String>>{
 			var urlv:Vector.<String> = new Vector.<String>();
 			
 			var currentDate:String = "";
@@ -137,7 +139,9 @@ package com.snsoft.tvc2.bizSounds{
 				pushTrend(urlv,chartSoundsDO.forecastPriceExponentialTrend);
 			}
 			
-			return urlv;
+			var urlvv:Vector.<Vector.<String>> = new Vector.<Vector.<String>>();
+			urlvv.push(urlv);
+			return urlvv;
 		}
 		
 		/**
