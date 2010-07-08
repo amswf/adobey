@@ -210,12 +210,13 @@ package com.snsoft.tvc2.map{
 					timer.start();
 					sign = true;
 				}
+				else {
+					this.isPlayCmp = true;
+					dispatchEventState();
+				}
 			}
 			
-			if(!sign){
-				this.isPlayCmp = true;
-				dispatchEventState();
-			}
+			
 		}
 		
 		private function handlerPlayAreaCmp(e:Event):void{

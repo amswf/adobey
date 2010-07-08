@@ -458,7 +458,6 @@
 						switchAddTimer = new Timer(switchTimerDelay,switchTimerRepeatCount);
 						switchAddTimer.addEventListener(TimerEvent.TIMER,handlerSwitchAdd);
 						switchAddTimer.start();
-						trace("playBeforBigPoint---------------------------------------------------------------");
 						playBizSound(dataDO.bizSoundList,1,handlerBeforeBigBizPlay);
 					}
 					else {
@@ -585,7 +584,6 @@
 		}
 		
 		private function handlerListBigStartTimerCMP(e:Event):void{
-			trace("bigPointPriceCard---------------------------------------------------------------------------------");
 			playBizSound(dataDO.bizSoundList,1,handlerBigBizPlay);
 			listSmallTimer = new Timer(200,7);
 			listSmallTimer.start();
