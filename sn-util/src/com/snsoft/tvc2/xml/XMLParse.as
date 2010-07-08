@@ -402,6 +402,12 @@
 					dataXMLList = disXMLList;
 					dataDO.type = TAG_DISTRIBUTE;
 				}
+				
+				var disarXMLList:XMLList = dataXML.elements(TAG_DISTRIBUTE_AREA);
+				if(disarXMLList != null && disarXMLList.length() > 0){
+					dataXMLList = disarXMLList;
+					dataDO.type = TAG_DISTRIBUTE_AREA;
+				}
 				var chrXMLList:XMLList = dataXML.elements(TAG_CHART);
 				if(chrXMLList != null && chrXMLList.length() > 0){
 					var chrXML:XML = chrXMLList[0];

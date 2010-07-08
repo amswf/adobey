@@ -270,9 +270,10 @@
 		
 		private function playSounds():void{
 			if(this.dataDo != null){
-				var bizSoundList:Vector.<Sound> = dataDo.bizSoundList;
+				var bizSoundList:Vector.<Vector.<Sound>> = dataDo.bizSoundList;
 				if(bizSoundList != null){
-					var bizSound:Mp3Player = new Mp3Player(bizSoundList);
+					var cBizSoundList:Vector.<Sound> = bizSoundList[0];
+					var bizSound:Mp3Player = new Mp3Player(cBizSoundList);
 					bizSound.addEventListener(Event.COMPLETE,handlerBizSoundCmp);
 					this.addChild(bizSound); 
 				}

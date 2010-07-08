@@ -22,7 +22,7 @@ package com.snsoft.tvc2.dataObject{
 		
 		private var _unitY:String;
 		
-		private var _bizSoundList:Vector.<Sound> = null;
+		private var _bizSoundList:Vector.<Vector.<Sound>> = null;
 		
 		public function DataDO()
 		{
@@ -98,12 +98,12 @@ package com.snsoft.tvc2.dataObject{
 			_unitY = value;
 		}
 
-		public function get bizSoundList():Vector.<Sound>
+		public function get bizSoundList():Vector.<Vector.<Sound>>
 		{
 			return _bizSoundList;
 		}
 
-		public function set bizSoundList(value:Vector.<Sound>):void
+		public function set bizSoundList(value:Vector.<Vector.<Sound>>):void
 		{
 			_bizSoundList = value;
 		}

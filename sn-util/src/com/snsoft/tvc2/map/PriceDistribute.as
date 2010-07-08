@@ -7,6 +7,7 @@
 	import com.snsoft.tvc2.dataObject.MarketMainDO;
 	import com.snsoft.tvc2.dataObject.MarketMap;
 	import com.snsoft.tvc2.dataObject.TextPointDO;
+	import com.snsoft.tvc2.media.Mp3Player;
 	import com.snsoft.tvc2.text.EffectText;
 	import com.snsoft.tvc2.text.TextStyles;
 	import com.snsoft.util.ColorTransformUtil;
@@ -24,6 +25,7 @@
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.media.Sound;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.utils.Timer;
@@ -93,10 +95,17 @@
 		
 		private var priceMaskMoveCmp:Boolean = false;
 		
-		private var bigPointPlayCmp:Boolean = false;
-		
 		private var priceCardOrder:Vector.<int>;
 		
+		private var smallPlayCmp:Boolean = false;
+		
+		private var smallSoundsCmp:Boolean = false;
+		
+		private var bigPlayCmp:Boolean = false;
+		
+		private var bigSoundsCmp:Boolean = false;
+		
+		private var bizSoundIndex:int = 0;
 		
 		public function PriceDistribute(dataDO:DataDO,marketMainDO:MarketMainDO,marketMap:MarketMap,mapView:MapView,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0)	{
 			super();
@@ -240,8 +249,33 @@
 			this.addChild(pricePointersMC);
 			this.addChild(priceBigPointsMC);
 			
+			//bizSoundIndex = 4;
+			//playBigs();
+			
+			playBizSound(dataDO.bizSoundList,1,handlerbeforeSmallBizPlay);
+		}
+		
+		private function handlerbeforeSmallBizPlay(e:Event):void{
+			smallPlayCmp = true;
+			smallSoundsCmp = true;
 			playSmallPoint();
-			//playBigPoint();
+		}
+		
+		private function playBizSound(bizSoundV:Vector.<Vector.<Sound>>,length:int,fun:Function):void{
+			var cbs:Vector.<Sound> = new Vector.<Sound>();
+			var startIndex:int = bizSoundIndex;
+			for(var i:int = startIndex;i< startIndex + length;i++){
+				if(i >= 0 && i < bizSoundV.length){
+					var cBizSoundList:Vector.<Sound> = bizSoundV[i];
+					for(var j:int;j<cBizSoundList.length;j++){
+						cbs.push(cBizSoundList[j]);
+					}
+					bizSoundIndex ++;
+				}
+			}
+			var mp:Mp3Player = new Mp3Player(cbs);
+			mp.addEventListener(Event.COMPLETE,fun);
+			this.addChild(mp);
 		}
 		
 		private function getOrderVector(vv:Vector.<Number>):Vector.<int>{
@@ -275,45 +309,62 @@
 		}
 		
 		private function playSmallPoint():void{
-			var index:int = this.listSmallCount;
-			this.listSmallCount ++;
-			if(index < listDOV.length){
-				var listDO:ListDO = listDOV[index];
-				var color:uint = getColor(index);
-				
-				var rect:Rectangle = this.mapView.getRect(this);
-				
-				var lname:String = listDO.name;				
-				currentText = EffectText.creatTextByStyleName(lname,TextStyles.STYLE_LIST_TYPE_TEXT,color);;
-				currentText.x = rect.width / 2 + switchMoveLenth;
-				this.addChild(currentText);
-				
-				switchAddTimer = new Timer(switchTimerDelay,switchTimerRepeatCount);
-				switchAddTimer.addEventListener(TimerEvent.TIMER,handlerSwitchAdd);
-				switchAddTimer.start();
-				
-				var listMC:Sprite = new Sprite();
-				ColorTransformUtil.setColor(listMC,color);
-				
-				var tpdov:Vector.<TextPointDO> = listDO.listHv;
-				for(var jj:int = 0;jj<tpdov.length;jj++){
-					var tpdo:TextPointDO = tpdov[jj];
-					var name:String = tpdo.name;
-					var marketCoordDO:MarketCoordDO = marketCoordsDO.getRealCoordMarketCoordDO(name);
-					var spdobj:MovieClip = getDisplayObjectInstance(getStyleValue(SMALL_POINT_DEFAULT_SKIN)) as MovieClip;
-					spdobj.x = (marketCoordDO.x - this.marketMap.x) * this.marketMap.s;
-					spdobj.y = (marketCoordDO.y - this.marketMap.y) * this.marketMap.s;
-					listMC.addChild(spdobj);
+			if(smallPlayCmp && smallSoundsCmp){
+				smallPlayCmp = false;
+				smallSoundsCmp = false;
+				var index:int = this.listSmallCount;
+				if(index < listDOV.length){
+					this.listSmallCount ++;
+					playBizSound(dataDO.bizSoundList,1,handlerSmallSoundCmp);
+					var listDO:ListDO = listDOV[index];
+					var color:uint = getColor(index);
+					
+					var rect:Rectangle = this.mapView.getRect(this);
+					
+					var lname:String = listDO.name;				
+					currentText = EffectText.creatTextByStyleName(lname,TextStyles.STYLE_LIST_TYPE_TEXT,color);;
+					currentText.x = rect.width / 2 + switchMoveLenth;
+					this.addChild(currentText);
+					
+					switchAddTimer = new Timer(switchTimerDelay,switchTimerRepeatCount);
+					switchAddTimer.addEventListener(TimerEvent.TIMER,handlerSwitchAdd);
+					switchAddTimer.start();
+					
+					var listMC:Sprite = new Sprite();
+					ColorTransformUtil.setColor(listMC,color);
+					
+					var tpdov:Vector.<TextPointDO> = listDO.listHv;
+					for(var jj:int = 0;jj<tpdov.length;jj++){
+						var tpdo:TextPointDO = tpdov[jj];
+						var name:String = tpdo.name;
+						var marketCoordDO:MarketCoordDO = marketCoordsDO.getRealCoordMarketCoordDO(name);
+						var spdobj:MovieClip = getDisplayObjectInstance(getStyleValue(SMALL_POINT_DEFAULT_SKIN)) as MovieClip;
+						spdobj.x = (marketCoordDO.x - this.marketMap.x) * this.marketMap.s;
+						spdobj.y = (marketCoordDO.y - this.marketMap.y) * this.marketMap.s;
+						listMC.addChild(spdobj);
+					}
+					currentListMC = listMC;
+					smallPointsMC.addChild(listMC);
+					var timer:Timer = new Timer(2000,1);
+					timer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerListSmallStartTimerCMP);
+					timer.start();
 				}
-				currentListMC = listMC;
-				smallPointsMC.addChild(listMC);
-				var timer:Timer = new Timer(2000,1);
-				timer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerListSmallStartTimerCMP);
-				timer.start();
+				else {
+					playBigs();
+				}
 			}
-			else {
-				playBigPoint();
-			}
+		}
+		
+		private function playBigs():void{
+			bigPlayCmp = true;
+			bigSoundsCmp = true;
+			priceMaskMoveCmp = true;
+			playStartBigGroupPoint();
+		}
+		
+		private function handlerSmallSoundCmp(e:Event):void{
+			smallSoundsCmp = true;
+			playSmallPoint();
 		}
 		
 		private function handlerSwitchAdd(e:Event):void{
@@ -348,6 +399,7 @@
 			listSmallTimer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerListSmallTimerCMP);
 		}
 		
+		
 		private function handlerListSmallTimer(e:Event):void{
 			var timer:Timer = e.currentTarget as Timer;
 			var state:int = timer.currentCount % 2;
@@ -359,11 +411,13 @@
 			}
 		}
 		
+		
 		private function handlerListSmallTimerCMP(e:Event):void{
 			var timer:Timer = new Timer(5000,1);
 			timer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerListSmallEndTimerCMP);
 			timer.start();
 		}
+		
 		
 		private function handlerListSmallEndTimerCMP(e:Event):void{
 			forwardText = currentText;
@@ -373,7 +427,53 @@
 				switchRemoveTimer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerSwitchRemoveCmp);
 				switchRemoveTimer.start();
 			}
+			smallPlayCmp = true;
 			playSmallPoint();
+		}
+		
+
+		private function playStartBigGroupPoint():void{
+			if(priceMaskMoveCmp && bigPlayCmp && bigSoundsCmp){
+				bigPlayCmp = false;
+				bigSoundsCmp = false;
+				priceMaskMoveCmp = false;
+				var index:int = this.broadcastListCount;
+				if(index < broadcastListDOV.length){
+					if(broadcastCount == 0){
+						var listDO:ListDO = broadcastListDOV[index];
+						var color:uint = 0x000000;
+						if(index == 0){
+							color = 0x000000;
+						}
+						if(index == 1){
+							color = 0x990000; 
+						}
+						
+						var rect:Rectangle = this.mapView.getRect(this);
+						
+						var lname:String = listDO.name;
+						currentText = EffectText.creatTextByStyleName(lname,TextStyles.STYLE_LIST_TYPE_TEXT,color);;
+						currentText.x = rect.width / 2 + switchMoveLenth;
+						this.addChild(currentText);
+						switchAddTimer = new Timer(switchTimerDelay,switchTimerRepeatCount);
+						switchAddTimer.addEventListener(TimerEvent.TIMER,handlerSwitchAdd);
+						switchAddTimer.start();
+						trace("playBeforBigPoint---------------------------------------------------------------");
+						playBizSound(dataDO.bizSoundList,1,handlerBeforeBigBizPlay);
+					}
+					else {
+						playBigPoint();
+					}
+				}
+				else {
+					this.isPlayCmp = true;
+					dispatchEventState();
+				}
+			}
+		}
+		
+		private function handlerBeforeBigBizPlay(e:Event):void{
+			playBigPoint();
 		}
 		
 		private function playBigPoint():void{
@@ -390,17 +490,8 @@
 				}
 				
 				var rect:Rectangle = this.mapView.getRect(this);
-				
 				var lname:String = listDO.name;
 				
-				if(broadcastCount == 0){
-					currentText = EffectText.creatTextByStyleName(lname,TextStyles.STYLE_LIST_TYPE_TEXT,color);;
-					currentText.x = rect.width / 2 + switchMoveLenth;
-					this.addChild(currentText);
-					switchAddTimer = new Timer(switchTimerDelay,switchTimerRepeatCount);
-					switchAddTimer.addEventListener(TimerEvent.TIMER,handlerSwitchAdd);
-					switchAddTimer.start();
-				}
 				var listMC:Sprite = new Sprite();
 				ColorTransformUtil.setColor(listMC,color);
 				var tpdov:Vector.<TextPointDO> = listDO.listHv;
@@ -425,7 +516,6 @@
 				
 				pbdobj.width = 100;
 				pbdobj.height = 50;
-				
 				
 				var n:int = priceCardOrder[broadcastNum];
 				broadcastNum ++;
@@ -472,16 +562,14 @@
 				currentBroadcastListMC = listMC;
 				
 				var timer:Timer = new Timer(2000,1);
-				bigPointPlayCmp = false;
 				timer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerListBigStartTimerCMP);
 				timer.start();
-				
-				
 			}
-			else{
-				this.isPlayCmp = true;
-				dispatchEventState();
-			}
+		}
+		
+		private function handlerBigBizPlay(e:Event):void{
+			bigSoundsCmp = true;
+			playStartBigGroupPoint();
 		}
 		
 		private function handlerPriceMaskTimer(e:Event):void{
@@ -493,10 +581,12 @@
 			pmtimer.removeEventListener(TimerEvent.TIMER,handlerPriceMaskTimer);
 			pmtimer.removeEventListener(TimerEvent.TIMER_COMPLETE,handlerPriceMaskTimerCmp);
 			priceMaskMoveCmp = true;
-			playNextBigPoint();
+			playStartBigGroupPoint();
 		}
 		
 		private function handlerListBigStartTimerCMP(e:Event):void{
+			trace("bigPointPriceCard---------------------------------------------------------------------------------");
+			playBizSound(dataDO.bizSoundList,1,handlerBigBizPlay);
 			listSmallTimer = new Timer(200,7);
 			listSmallTimer.start();
 			listSmallTimer.addEventListener(TimerEvent.TIMER,handlerListBigTimer);
@@ -528,14 +618,8 @@
 				switchRemoveTimer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerSwitchRemoveCmp);
 				switchRemoveTimer.start();
 			}
-			bigPointPlayCmp = true;
-			playNextBigPoint();
-		}
-		
-		private function playNextBigPoint():void{
-			if(priceMaskMoveCmp && bigPointPlayCmp){
-				playBigPoint();
-			}
+			bigPlayCmp = true;
+			playStartBigGroupPoint();
 		}
 		
 		/**

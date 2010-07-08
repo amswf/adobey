@@ -6,10 +6,19 @@ package com.snsoft.tvc2.util{
 		{
 		}
 		
-		public static function isEffective(str:String):Boolean{
+		public static function isEffective(...str):Boolean{
 			if(str != null){
-				if(StringUtilities.trim(str).length > 0){
-					return true;
+				if(str.length > 0){
+					var n:int = 0;
+					for(var i:int = 0;i < str.length;i++){
+						var s:String = String(str[i]);
+						if(StringUtilities.trim(s).length > 0){
+							n ++;
+						}
+					}
+					if(n == str.length){
+						return true;
+					}
 				}
 			} 
 			return false;

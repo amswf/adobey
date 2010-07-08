@@ -5,6 +5,8 @@
 	import com.snsoft.mapview.util.MapViewXMLLoader;
 	import com.snsoft.tvc2.bizSounds.ChartSoundsDO;
 	import com.snsoft.tvc2.bizSounds.ChartSoundsManager;
+	import com.snsoft.tvc2.bizSounds.DistributeSoundsDO;
+	import com.snsoft.tvc2.bizSounds.DistributeSoundsManager;
 	import com.snsoft.tvc2.dataObject.BizDO;
 	import com.snsoft.tvc2.dataObject.DataDO;
 	import com.snsoft.tvc2.dataObject.ListDO;
@@ -32,8 +34,10 @@
 	
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.media.Sound;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
+	
 	
 	public class Main extends UIComponent{
 		
@@ -168,8 +172,8 @@
 						var timeLineDO:TimeLineDO = timeLineDOHv.findByIndex(i) as TimeLineDO;
 						if(timeLineDO != null){
 							var bizDOHv:HashVector = timeLineDO.bizDOHv;
+							var signLoad:Boolean = false;
 							if(bizDOHv != null){
-								var signLoad:Boolean = false;
 								for(var j:int = 0;j < bizDOHv.length;j ++){
 									var bizDO:BizDO = bizDOHv.findByIndex(j) as BizDO;
 									var varDOHv:HashVector = bizDO.varDOHv;
@@ -266,22 +270,33 @@
 									var dataDO:DataDO = bizDO.dataDO;
 									if(dataDO != null){
 										var type:String = dataDO.type;
-										if(type == XMLParse.TAG_CHART || type == XMLParse.TAG_EXPONENTIAL){
-											var urlv:Vector.<String> = null;
-											if(type == XMLParse.TAG_CHART){
-												urlv= bizPriceSoundLoad(bizDO);
-											}
-											else if(type == XMLParse.TAG_EXPONENTIAL){
-												urlv = bizExponentialSoundLoad(bizDO);
-											}
-											if(urlv != null && urlv.length > 0){
-												var bizSoundLoader:Mp3Loader = new Mp3Loader(dataDO);
+										
+										var urlvv:Vector.<Vector.<String>> = null;
+										if(type == XMLParse.TAG_CHART){
+											var urlv:Vector.<String> = bizPriceSoundLoad(bizDO);
+											urlvv.push(urlv);
+										}
+										else if(type == XMLParse.TAG_EXPONENTIAL){
+											var eurlv:Vector.<String> = bizExponentialSoundLoad(bizDO);
+											urlvv.push(eurlv);
+										}
+										else if(type == XMLParse.TAG_DISTRIBUTE){
+											urlvv = bizDistributeSoundLoad(bizDO);
+										}
+										
+										var vvs:Vector.<Vector.<Sound>> = new Vector.<Vector.<Sound>>();
+										dataDO.bizSoundList = vvs;
+										if(urlvv != null){
+											for(var k3:int = 0;k3<urlvv.length;k3++){
+												var disurlv:Vector.<String> = urlvv[k3];
+												var vs:Vector.<Sound> = new Vector.<Sound>();
+												vvs.push(vs);
+												var disBizSoundLoader:Mp3Loader = new Mp3Loader(vs);
 												plusSourceCount();
-												bizSoundLoader.loadList(urlv);
-												bizSoundLoader.addEventListener(Event.COMPLETE,handlerBizSoundCmp);
+												disBizSoundLoader.loadList(disurlv);
+												disBizSoundLoader.addEventListener(Event.COMPLETE,handlerBizSoundCmp);
 											}
 										}
-										 
 									}
 								}
 							}
@@ -383,6 +398,46 @@
 					
 					return urlv;
 				}
+			}
+			return null;
+		}
+		
+		private function bizDistributeSoundLoad(bizDO:BizDO):Vector.<Vector.<String>>{
+			var dataDO:DataDO = bizDO.dataDO;
+			var varDOHv:HashVector = bizDO.varDOHv;
+			var type:String = dataDO.type;
+			var xgtListDOV:Vector.<ListDO> = dataDO.xGraduationText;
+			if(varDOHv != null){
+				var listDOV:Vector.<ListDO> = dataDO.broadcast;	
+				var lowListDO:ListDO = null;
+				var highListDO:ListDO = null;
+				
+				var lowDisV:Vector.<TextPointDO> = null;
+				var highDisV:Vector.<TextPointDO> = null;
+				if(listDOV.length > 0){
+					lowListDO = listDOV[0];
+					if(lowListDO != null){
+						lowDisV = lowListDO.listHv;
+					}
+				}
+				if(listDOV.length > 0){
+					highListDO = listDOV[1];
+					if(highListDO != null){
+						highDisV = highListDO.listHv;
+					}
+				}
+				
+				var gndo:VarDO = varDOHv.findByName(VAR_GOODS) as VarDO;
+				var gName:String = gndo.getAttribute(XMLParse.ATT_VALUE) as String;
+				var forecastContrastPrice:Number = 0;		
+				var dsdo:DistributeSoundsDO = new DistributeSoundsDO();
+				dsdo.goodsCode = gName;
+				dsdo.lowDisV = lowDisV;
+				dsdo.highDisV = highDisV;
+				
+				var dsm:DistributeSoundsManager = new DistributeSoundsManager();
+				var urlvv:Vector.<Vector.<String>> = dsm.creatPriceSoundUrlList(dsdo);
+				return urlvv;
 			}
 			return null;
 		}
@@ -545,8 +600,13 @@
 		
 		private function handlerBizSoundCmp(e:Event):void{
 			var bizSoundLoader:Mp3Loader = e.currentTarget as Mp3Loader;
-			var dataDO:DataDO = bizSoundLoader.dataObj as DataDO;
-			dataDO.bizSoundList = bizSoundLoader.soundList;
+			var vs:Vector.<Sound> = bizSoundLoader.dataObj as Vector.<Sound>;
+			var sl:Vector.<Sound> = bizSoundLoader.soundList;
+			if(sl != null){
+				for(var i:int =0;i <sl.length;i++ ){
+					vs.push(sl[i]);
+				}
+			}
 			subSourceCount();
 		}
 		
