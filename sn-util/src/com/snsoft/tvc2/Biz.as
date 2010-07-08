@@ -103,7 +103,17 @@
 					var uilcs:Business = null;
 					var delayTime:int = 2000;
 					
-					trace(creatSoundText(dataDO));
+					var soundText:String = creatSoundText(dataDO);
+					
+					var soundTfd:TextField = EffectText.creatTextByStyleName(soundText,TextStyles.STYLE_SOUND_TEXT);
+					soundTfd.x = 10;
+					soundTfd.y = SystemConfig.stageSize.y + 10;
+					soundTfd.wordWrap = true;
+					this.addChild(soundTfd);
+					soundTfd.width = SystemConfig.stageSize.x - 20;
+					
+					soundTfd.height = 90;
+					
 					if(dataDO != null){
 						if(type == BIZ_TYPE_POLYLINES){
 							uilcs = new UILineCharts(dataDO,delayTime,6000);
