@@ -67,6 +67,8 @@
 		
 		private var VAR_MARKET:String = "market";
 		
+		private var VAR_DATE_TYPE:String = "dateType";
+		
 		public function Main(mainXmlUrl:String,marketXmlUrl:String){
 			super();
 			
@@ -179,7 +181,8 @@
 								for(var j:int = 0;j < bizDOHv.length;j ++){
 									var bizDO:BizDO = bizDOHv.findByIndex(j) as BizDO;
 									var varDOHv:HashVector = bizDO.varDOHv;
-									
+									//var dateType:String = getVarAttribute(varDOHv,VAR_DATE_TYPE,XMLParse.ATT_VALUE);
+									//trace(dateType);
 									if(varDOHv != null && varDOHv.length > 0){
 										var gvdo:VarDO = varDOHv.findByName(VAR_GOODS) as VarDO;
 										if(gvdo != null){
@@ -321,12 +324,12 @@
 			var type:String = dataDO.type;
 
 			if(varDOHv != null){
-				var gndo:VarDO = varDOHv.findByName(VAR_GOODS) as VarDO;
-				var gName:String = gndo.getAttribute(XMLParse.ATT_VALUE) as String;
-				var forecastContrastPrice:Number = 0;		
+				var gName:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_VALUE);
+				var dateType:String = getVarAttribute(varDOHv,VAR_DATE_TYPE,XMLParse.ATT_VALUE);
+				
 				var dasdo:DistributeAreaSoundsDO = new DistributeAreaSoundsDO();
 				dasdo.goodsCode = gName;
-				
+				dasdo.dateType = dateType;
 				var dasm:DistributeAreaSoundsManager = new DistributeAreaSoundsManager();
 				var urlvv:Vector.<Vector.<String>> = dasm.creatDistributeAreaUrlList(dasdo);
 				return urlvv;
@@ -344,7 +347,7 @@
 			var type:String = dataDO.type;
 			var xgtListDOV:Vector.<ListDO> = dataDO.xGraduationText;
 			if(varDOHv != null){
-				var xgtName:String = xgtListDOV[0].name;//<list name="week" text="X 坐标刻度文字" style="">
+				//var xgtName:String = xgtListDOV[0].name;//<list name="week" text="X 坐标刻度文字" style="">
 				var listDOV:Vector.<ListDO> = dataDO.data;
 				
 				var currentListDO:ListDO = null;
@@ -391,8 +394,8 @@
 					var priceExponentialTrend:int = 0;
 					priceExponentialTrend = getTrend(currentValue,latestValue);
 					
-					var gndo:VarDO = varDOHv.findByName(VAR_GOODS) as VarDO;
-					var gName:String = gndo.getAttribute(XMLParse.ATT_VALUE) as String;
+					var gName:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_VALUE);
+					var dateType:String = getVarAttribute(varDOHv,VAR_DATE_TYPE,XMLParse.ATT_VALUE);
 					
 					var forecastContrastPrice:Number = 0;
 					
@@ -410,7 +413,7 @@
 					}
 					
 					var csdo:ChartSoundsDO = new ChartSoundsDO();
-					csdo.dateType = xgtName;
+					csdo.dateType = dateType;
 					csdo.goodsCode = gName;
 					if(forecastListDO != null){
 						csdo.priceExponentialTrend = priceExponentialTrend;
@@ -451,10 +454,13 @@
 					}
 				}
 				
-				var gndo:VarDO = varDOHv.findByName(VAR_GOODS) as VarDO;
-				var gName:String = gndo.getAttribute(XMLParse.ATT_VALUE) as String;
+				 
+				var gName:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_VALUE);
+				var dateType:String = getVarAttribute(varDOHv,VAR_DATE_TYPE,XMLParse.ATT_VALUE);
+				
 				var forecastContrastPrice:Number = 0;		
 				var dsdo:DistributeSoundsDO = new DistributeSoundsDO();
+				dsdo.dateType = dateType;
 				dsdo.goodsCode = gName;
 				dsdo.lowDisV = lowDisV;
 				dsdo.highDisV = highDisV;
@@ -464,6 +470,17 @@
 				return urlvv;
 			}
 			return null;
+		}
+		
+		public function getVarAttribute(varDOHV:HashVector,varName:String,attributeName:String):String{
+			var att:String = null;
+			if(varDOHV != null){
+				var varDO:VarDO = varDOHV.findByName(varName) as VarDO;
+				if(varDO != null){
+					att = varDO.getAttribute(attributeName) as String;
+				}
+			}
+			return att;
 		}
 		
 		/**
@@ -477,7 +494,7 @@
 			var type:String = dataDO.type;
 			var xgtListDOV:Vector.<ListDO> = dataDO.xGraduationText;
 			if(varDOHv != null){
-				var xgtName:String = xgtListDOV[0].name;//<list name="week" text="X 坐标刻度文字" style="">
+				 
 				var listDOV:Vector.<ListDO> = dataDO.data;
 				var historyListDO:ListDO = null;
 				var currentListDO:ListDO = null;
@@ -543,11 +560,9 @@
 					var priceTrend:int = 0;
 					priceTrend = getTrend(currentValue,latestValue);
 					
-					var gndo:VarDO = varDOHv.findByName(VAR_GOODS) as VarDO;
-					var gName:String = gndo.getAttribute(XMLParse.ATT_VALUE) as String;
-					
-					var mndo:VarDO = varDOHv.findByName(VAR_MARKET) as VarDO;
-					var mName:String = mndo.getAttribute(XMLParse.ATT_VALUE) as String;
+					var gName:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_VALUE);
+					var dateType:String = getVarAttribute(varDOHv,VAR_DATE_TYPE,XMLParse.ATT_VALUE);
+					var mName:String = getVarAttribute(varDOHv,VAR_MARKET,XMLParse.ATT_VALUE);
 					
 					var historyContrastPrice:Number = 0;
 					var historyPrice:Number = 0;
@@ -593,7 +608,7 @@
 					}
 					
 					var csdo:ChartSoundsDO = new ChartSoundsDO();
-					csdo.dateType = xgtName;
+					csdo.dateType = dateType;
 					csdo.goodsCode = gName;
 					csdo.areaCode = mName;
 					csdo.priceTrend = priceTrend;

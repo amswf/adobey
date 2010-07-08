@@ -3,7 +3,13 @@ package com.snsoft.tvc2.bizSounds{
 
 	public class DistributeSoundsDO{
 		
-		 
+		public static const DATE_TYPE_DAY:String = "day";
+		
+		public static const DATE_TYPE_WEEK:String = "week";
+		
+		public static const DATE_TYPE_MONTH:String = "month";
+		
+		private var _dateType:String = "week";//本周 /今天/本月 
 		
 		private var _goodsCode:String = null;//产品编号
 		
@@ -42,6 +48,16 @@ package com.snsoft.tvc2.bizSounds{
 		public function set highDisV(value:Vector.<TextPointDO>):void
 		{
 			_highDisV = value;
+		}
+
+		public function get dateType():String
+		{
+			return _dateType;
+		}
+
+		public function set dateType(value:String):void
+		{
+			_dateType = value;
 		}
 
 

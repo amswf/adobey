@@ -13,12 +13,36 @@ package com.snsoft.tvc2.bizSounds{
 		}
 		
 		public function creatPriceSoundUrlList(distributeSoundsDO:DistributeSoundsDO):Vector.<Vector.<String>>{
+			var currentDate:String = "";
+			var nextDate:String = "";
+			
+			//今天
+			if(distributeSoundsDO.dateType == DistributeSoundsDO.DATE_TYPE_DAY){
+				currentDate = "jintian.mp3";
+				nextDate = "mingtianjiageyuji.mp3";
+			}
+			else if(distributeSoundsDO.dateType == DistributeSoundsDO.DATE_TYPE_WEEK){//本周
+				currentDate = "benzhou.mp3";
+				nextDate = "xiazhoujiageyuji.mp3";
+			}
+			else if(distributeSoundsDO.dateType == DistributeSoundsDO.DATE_TYPE_MONTH){//本月
+				currentDate = "benyue.mp3";
+				nextDate = "xiageyuejiageyuji.mp3";
+			}
+			else {
+				currentDate = "benzhou.mp3";
+				nextDate = "xiazhoujiageyuji.mp3";
+			}
+			
 			var urlvv:Vector.<Vector.<String>> = new Vector.<Vector.<String>>();
 			
 			var curlv1:Vector.<String> = new Vector.<String>();
 			
 			//下面我们来看一下
 			curlv1.push(baseUrl + "xiamianwomenlaikanyixia.mp3");
+			
+			//今天/本周/本月
+			curlv1.push(baseUrl + currentDate);
 			
 			//农产品名称
 			curlv1.push(baseUrl + distributeSoundsDO.goodsCode + ".mp3");

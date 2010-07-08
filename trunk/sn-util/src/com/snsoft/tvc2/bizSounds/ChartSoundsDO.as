@@ -7,7 +7,7 @@ package com.snsoft.tvc2.bizSounds{
 		
 		public static const DATE_TYPE_MONTH:String = "month";
 		
-		private var _dateType:String = "周";//本周 /今天/本月
+		private var _dateType:String = "week";//本周 /今天/本月
 		
 		private var _areaCode:String = null;//地区编号
 		
