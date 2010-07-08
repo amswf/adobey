@@ -40,7 +40,6 @@ package com.snsoft.tvc2.media{
 		}
 		
 		private function playNextMp3():void{
-			trace("Mp3Player.play()");
 			if(this.soundList != null ){
 				if(this.playNum < this.soundList.length){
 					sound = this.soundList[this.playNum];

@@ -219,9 +219,9 @@
 				}
 			}	
 			
-			trace(yv);
+			//trace(yv);
 			priceCardOrder = getOrderVector(yv);
-			trace(priceCardOrder);
+			//trace(priceCardOrder);
 			
 			cutLine = new Sprite();
 			var rect:Rectangle = this.mapView.getRect(this);
