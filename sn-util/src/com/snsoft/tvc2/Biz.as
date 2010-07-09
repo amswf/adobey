@@ -163,7 +163,7 @@
 							marketMap.y = marketMapY;
 							marketMap.s = marketMapS;
 							
-							uilcs = new PriceDistribute(dataDO,marketMainDO,marketMap,bizDO.mapView,delayTime);
+							uilcs = new PriceDistribute(dataDO,bizDO.mapName,marketMainDO,marketMap,bizDO.mapView,delayTime);
 							uilcs.width = 400;
 							uilcs.height = 260;
 							uilcs.x = 60;

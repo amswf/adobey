@@ -107,7 +107,7 @@
 		
 		private var bizSoundIndex:int = 0;
 		
-		public function PriceDistribute(dataDO:DataDO,marketMainDO:MarketMainDO,marketMap:MarketMap,mapView:MapView,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0)	{
+		public function PriceDistribute(dataDO:DataDO,mapName:String,marketMainDO:MarketMainDO,marketMap:MarketMap,mapView:MapView,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0)	{
 			super();
 			this.dataDO = dataDO;
 			this.marketMainDO = marketMainDO;
