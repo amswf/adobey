@@ -299,7 +299,7 @@
 		}
 		
 		private function dispatchAllEvent():void{
-			trace("dispatchEventState:Event.COMPLETE",counter.count);
+			trace("biz.dispatchEventState:Event.COMPLETE",counter.count);
 			if(counter.count == 0){
 				this.dispatchEvent(new Event(Event.COMPLETE));
 			}

@@ -75,6 +75,10 @@
 		
 		private var VAR_MAP_NAME:String = "mapName";
 		
+		private var timeLineNum:int = 0;
+		
+		private var timeLinePlayCmpNum:int = 0;
+		
 		public function Main(mainXmlUrl:String,marketXmlUrl:String){
 			super();
 			
@@ -164,7 +168,9 @@
 					for(var i:int = 0;i < timeLineDOHv.length;i ++){
 						var timeLineDO:TimeLineDO = timeLineDOHv.findByIndex(i) as TimeLineDO;
 						if(timeLineDO != null){
+							timeLineNum ++;
 							var timeLine:TimeLine = new TimeLine(timeLineDO,marketMainDO);
+							timeLine.addEventListener(Event.COMPLETE,handlerTimeLinePlayCmp);
 							this.addChild(timeLine);
 						}
 					}	
@@ -172,7 +178,12 @@
 			}
 		}
 		
-		
+		private function handlerTimeLinePlayCmp(e:Event):void{
+			timeLinePlayCmpNum ++;
+			if(timeLineNum == timeLinePlayCmpNum){
+				this.dispatchEvent(new Event(Event.COMPLETE));
+			}
+		}
 		
 		private function mainDOSourceLoad(mainDO:MainDO):void{
 			if(mainDO != null){
