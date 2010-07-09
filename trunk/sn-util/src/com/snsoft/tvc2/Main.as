@@ -33,11 +33,15 @@
 	import com.snsoft.tvc2.xml.XMLParse;
 	import com.snsoft.util.HashVector;
 	
+	import fl.controls.Button;
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
 	
+	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.events.MouseEvent;
+	import flash.external.ExternalInterface;
 	import flash.media.Sound;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
@@ -79,11 +83,14 @@
 		
 		private var timeLinePlayCmpNum:int = 0;
 		
-		public function Main(mainXmlUrl:String,marketXmlUrl:String){
+		private var playBtn:Button;
+		
+		public function Main(mainXmlUrl:String,marketXmlUrl:String,playBtn:Button){
 			super();
 			
 			this.mainXmlUrl = mainXmlUrl;
 			this.marketXmlUrl = marketXmlUrl;
+			this.playBtn = playBtn;
 		}
 		
 		/**
@@ -174,6 +181,24 @@
 							this.addChild(timeLine);
 						}
 					}	
+				}
+			}
+			
+			if(playBtn != null){
+				playBtn.addEventListener(MouseEvent.CLICK,handerPlayBtnClick);
+				ExternalInterface.addCallback("pausePlay",pausePlay);
+			}
+		}
+		
+		private function handerPlayBtnClick(e:Event):void{
+			pausePlay();
+		}
+		
+		private function pausePlay():void{
+			for(var i:int = 0;i < this.numChildren;i++){
+				var timeLine:TimeLine = this.getChildAt(i) as TimeLine;
+				if(timeLine != null){
+					timeLine.pausePlay();
 				}
 			}
 		}
