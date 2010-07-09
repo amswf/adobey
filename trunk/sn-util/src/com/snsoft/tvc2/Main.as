@@ -57,7 +57,7 @@
 		
 		private var sourceCount:int = 0;
 		
-		private var VAR_AREA_MAP_NAME:String = "areaMapName";
+		private var VAR_MAP_File_NAME:String = "mapFileName";
 		
 		private var VAR_DISTRIBUTE_MAP_NAME:String = "distributeMapName";
 		
@@ -73,7 +73,7 @@
 		
 		private var VAR_DATE_TYPE:String = "dateType";
 		
-		private var VAR_COORDS_NAME:String = "coordsName";
+		private var VAR_MAP_NAME:String = "mapName";
 		
 		public function Main(mainXmlUrl:String,marketXmlUrl:String){
 			super();
@@ -190,18 +190,16 @@
 									//var dateType:String = getVarAttribute(varDOHv,VAR_DATE_TYPE,XMLParse.ATT_VALUE);
 									//trace(dateType);
 									if(varDOHv != null && varDOHv.length > 0){
-										var gvdo:VarDO = varDOHv.findByName(VAR_GOODS) as VarDO;
-										if(gvdo != null){
-											var gvalue:String = String(gvdo.getAttribute(XMLParse.ATT_VALUE));
-										}
+										 
+										var gvalue:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_VALUE);
 										
-										var mapName:String = getVarAttribute(varDOHv,VAR_COORDS_NAME,XMLParse.ATT_VALUE);
+										var mapName:String = getVarAttribute(varDOHv,VAR_MAP_NAME,XMLParse.ATT_VALUE);
 										bizDO.mapName = mapName;
 										
-										var areaMapName:String = getVarAttribute(varDOHv,VAR_AREA_MAP_NAME,XMLParse.ATT_VALUE);
-										trace(StringUtil.isEffective(areaMapName));
-										if(StringUtil.isEffective(areaMapName)){
-											var aml:AreaMapLoader = new AreaMapLoader(areaMapName,bizDO);
+										var mapFileName:String = getVarAttribute(varDOHv,VAR_MAP_File_NAME,XMLParse.ATT_VALUE);
+										trace(StringUtil.isEffective(mapFileName));
+										if(StringUtil.isEffective(mapFileName)){
+											var aml:AreaMapLoader = new AreaMapLoader(mapFileName,bizDO);
 											plusSourceCount();
 											aml.load();
 											signLoad = true;
