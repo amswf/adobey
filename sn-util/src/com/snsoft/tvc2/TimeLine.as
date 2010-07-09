@@ -39,6 +39,8 @@ package com.snsoft.tvc2{
 		
 		private var isStop:Boolean = false;
 		
+		private var playTimer:Timer;
+		
 		public function TimeLine(timeLineDO:TimeLineDO,marketMainDO:MarketMainDO){
 			super();
 			
@@ -66,18 +68,33 @@ package com.snsoft.tvc2{
 		}
 		
 		public function pausePlay():void{
-			if(isStop){
-				isStop = false;
-			}
-			else {
-				isStop = true;
-				var timer:Timer = new Timer(20,0);
-				timer.addEventListener(TimerEvent.TIMER,handlerPauseTimer);
-				timer.start();
+			var sign:Boolean = true;
+			if(sign){
+				sign = false;
+				if(isStop){
+					isStop = false;
+					if(playTimer != null){
+						playTimer.stop();
+						playTimer.removeEventListener(TimerEvent.TIMER,handlerPauseTimer);
+					}
+					playNextBiz();
+				}
+				else {
+					isStop = true;
+					if(playTimer != null){
+						playTimer.stop();
+						playTimer.removeEventListener(TimerEvent.TIMER,handlerPauseTimer);
+					}
+					playTimer = new Timer(20,0);
+					playTimer.addEventListener(TimerEvent.TIMER,handlerPauseTimer);
+					playTimer.start();
+				}
+				sign = true;
 			}
 		}
 		
 		private function handlerPauseTimer(e:Event):void{
+			trace(handlerPauseTimer);
 			if(!isStop){
 				var timer:Timer = e.currentTarget as Timer;
 				timer.removeEventListener(TimerEvent.TIMER,handlerPauseTimer);
