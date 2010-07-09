@@ -37,6 +37,8 @@ package com.snsoft.tvc2{
 		
 		private var switchMoveLenth:Number = 100;
 		
+		private var isStop:Boolean = false;
+		
 		public function TimeLine(timeLineDO:TimeLineDO,marketMainDO:MarketMainDO){
 			super();
 			
@@ -61,6 +63,26 @@ package com.snsoft.tvc2{
 		override protected function draw():void{
 			play();
 			trace("TimeLine.play()");
+		}
+		
+		public function pausePlay():void{
+			if(isStop){
+				isStop = false;
+			}
+			else {
+				isStop = true;
+				var timer:Timer = new Timer(20,0);
+				timer.addEventListener(TimerEvent.TIMER,handlerPauseTimer);
+				timer.start();
+			}
+		}
+		
+		private function handlerPauseTimer(e:Event):void{
+			if(!isStop){
+				var timer:Timer = e.currentTarget as Timer;
+				timer.removeEventListener(TimerEvent.TIMER,handlerPauseTimer);
+				playNextBiz();	
+			}
 		}
 		
 		private function play():void{
@@ -107,7 +129,7 @@ package com.snsoft.tvc2{
 		}
 		
 		private function playNextBiz():void{
-			if(bizCmp && switchTimerCmp){
+			if(bizCmp && switchTimerCmp && !isStop){
 				var bizHv:HashVector = this.timeLineDO.bizDOHv;
 				if(bizHv != null && bizIndex < bizHv.length -1){
 					bizCmp = false;
