@@ -9,6 +9,7 @@ package com.snsoft.tvc2.bizSounds{
 		}
 		
 		public function creatPriceSoundUrlList(chartSoundsDO:ChartSoundsDO):BizSoundDO{
+			trace(chartSoundsDO.forecastPrice);
 			var urlv:Vector.<String> = new Vector.<String>();
 			var textv:Vector.<String> = new Vector.<String>();
 			
@@ -90,7 +91,8 @@ package com.snsoft.tvc2.bizSounds{
 			textv.push(chartSoundsDO.lowPrice.toFixed(2) + "元。");
 			
 			//有预测价格没有历史价格时：
-			if(!isNaN(chartSoundsDO.forecastPrice) && isNaN(chartSoundsDO.historyContrastPrice)){
+			
+			if(chartSoundsDO.forecastPrice > 0 &&  chartSoundsDO.historyContrastPrice == 0){
 				urlv.push(baseUrl+nextDate);//下周价格预计
 				textv.push(nextDateText);
 				textv.push("价格预计");
@@ -110,7 +112,7 @@ package com.snsoft.tvc2.bizSounds{
 			}
 			
 			//有历史价格时：
-			if(!isNaN(chartSoundsDO.historyContrastPrice)){
+			if(chartSoundsDO.historyContrastPrice > 0){
 				urlv.push(baseUrl+"yuqunian.mp3");//与去年同期对比，本周实际价格每公斤
 				textv.push("与去年同期对比，本周实际价格每公斤");
 				
@@ -123,7 +125,7 @@ package com.snsoft.tvc2.bizSounds{
 			
 			//有历史和预测时：
 			
-			if(!isNaN(chartSoundsDO.forecastContrastPrice) && !isNaN(chartSoundsDO.historyContrastPrice)){
+			if(chartSoundsDO.forecastContrastPrice > 0 && chartSoundsDO.historyContrastPrice > 0){
 				urlv.push(baseUrl+nextDate);//下周价格预计
 				urlv.push(baseUrl+"meigongjin.mp3");//每公斤
 				textv.push("下周价格预计，每公斤");
@@ -208,7 +210,7 @@ package com.snsoft.tvc2.bizSounds{
 			pushTrendText(textv,chartSoundsDO.priceExponentialTrend);
 			textv.push("。");
 			
-			if(!isNaN(chartSoundsDO.forecastPriceExponentialTrend)){
+			if(chartSoundsDO.forecastPriceExponentialTrend > 0){
 				urlv.push(baseUrl + nextDate);
 				textv.push(nextDateText);
 				

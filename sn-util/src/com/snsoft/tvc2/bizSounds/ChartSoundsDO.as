@@ -23,7 +23,7 @@ package com.snsoft.tvc2.bizSounds{
 		
 		private var _lowPrice:Number=0.00;//实况最低价格
 		
-		private var _forecastTrend:int = 0;//预测走势  1 上升  0 持平  -1 下降
+		private var _forecastTrend:int = NaN;//预测走势  1 上升  0 持平  -1 下降
 		
 		private var _forecastPrice:int = NaN;//预测价格
 		
@@ -31,7 +31,7 @@ package com.snsoft.tvc2.bizSounds{
 		
 		private var _forecastContrastPrice:Number = NaN;//预测相差价格
 		
-		private var _priceExponentialTrend:int = 0;
+		private var _priceExponentialTrend:int = NaN;
 		
 		private var _forecastPriceExponentialTrend:int = NaN;
 		
