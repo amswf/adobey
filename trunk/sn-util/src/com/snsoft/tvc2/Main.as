@@ -51,6 +51,8 @@
 	
 	public class Main extends UIComponent{
 		
+		private static const isExternaledInterface:Boolean = true;
+		
 		private var mainXmlUrl:String;
 		
 		private var marketXmlUrl:String;
@@ -183,10 +185,15 @@
 					}	
 				}
 			}
-			
+			playBtnExternalInterface();
+		}
+		
+		private function playBtnExternalInterface():void{
 			if(playBtn != null){
-				playBtn.addEventListener(MouseEvent.CLICK,handerPlayBtnClick);
-				ExternalInterface.addCallback("pausePlay",pausePlay);
+				if(isExternaledInterface){
+					playBtn.addEventListener(MouseEvent.CLICK,handerPlayBtnClick);
+					ExternalInterface.addCallback("pausePlay",pausePlay);
+				}
 			}
 		}
 		
