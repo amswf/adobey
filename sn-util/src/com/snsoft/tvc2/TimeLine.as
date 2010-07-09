@@ -82,6 +82,9 @@ package com.snsoft.tvc2{
 					switchAddTimer.start();
 				}
 			}
+			else {
+				this.dispatchEvent(new Event(Event.COMPLETE));
+			}
 		}
 		
 		private function handlerSwitchAddTimer(e:Event):void{
@@ -114,9 +117,9 @@ package com.snsoft.tvc2{
 					switchRemoveTimer.addEventListener(TimerEvent.TIMER,handlerSwitchRemoveTimer);
 					switchRemoveTimer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerSwitchRemoveTimerCmp);
 					switchRemoveTimer.start();
-					bizIndex ++;
-					play();
 				}
+				bizIndex ++;
+				play();
 			}
 		}
 		
