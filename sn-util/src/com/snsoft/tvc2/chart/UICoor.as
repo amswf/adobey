@@ -247,6 +247,7 @@ package com.snsoft.tvc2.chart{
 					
 					//x刻度文字
 					for(var ii:int = 0;ii < xgn;ii++){
+						
 						var tfd:TextField = EffectText.creatTextByStyleName(this.xGradVector[ii],TextStyles.STYLE_COOR_TEXT);
 						this.coorSprite.addChild(tfd);
 						tfd.x = ii * xlen - tfd.width * 0.5 + xTextX * 0.5;
