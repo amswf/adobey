@@ -234,7 +234,7 @@
 									//var dateType:String = getVarAttribute(varDOHv,VAR_DATE_TYPE,XMLParse.ATT_VALUE);
 									//trace(dateType);
 									if(varDOHv != null && varDOHv.length > 0){
-										 
+										
 										var gvalue:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_VALUE);
 										
 										var mapName:String = getVarAttribute(varDOHv,VAR_MAP_NAME,XMLParse.ATT_VALUE);
@@ -449,7 +449,7 @@
 					}
 					
 					
-					var priceExponentialTrend:int = 0;
+					var priceExponentialTrend:int = NaN;
 					priceExponentialTrend = getTrend(currentValue,latestValue);
 					
 					var gName:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_VALUE);
@@ -653,7 +653,7 @@
 					var mName:String = getVarAttribute(varDOHv,VAR_MARKET,XMLParse.ATT_VALUE);
 					var mText:String = getVarAttribute(varDOHv,VAR_MARKET,XMLParse.ATT_TEXT);
 					
-					var historyContrastPrice:Number = 0;
+					var historyContrastPrice:Number = NaN;
 					var historyPrice:Number = 0;
 					if(historyListDO != null){
 						var htpdoHv:Vector.<TextPointDO> = historyListDO.listHv;
@@ -678,7 +678,7 @@
 						}
 					}
 					
-					var forecastContrastPrice:Number = 0;
+					var forecastContrastPrice:Number = NaN;
 					
 					var forecastPrice:Number = NaN;
 					var forecastTrend:int = NaN;
@@ -706,6 +706,8 @@
 					csdo.highPrice = highPrice;
 					csdo.lowPrice = lowPrice;
 					
+					trace("forecastPrice",forecastPrice);
+					trace("csdo",csdo.forecastPrice);
 					if(forecastListDO != null && historyListDO == null){
 						csdo.forecastTrend = forecastTrend;
 						csdo.forecastPrice = forecastPrice;
