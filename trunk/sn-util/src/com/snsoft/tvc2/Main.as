@@ -680,7 +680,7 @@
 							if(ftpvalue > 0){
 								forecastContrastPrice = ftpvalue - historyNextPrice;
 								forecastPrice = ftpvalue;
-								forecastTrend = getTrend(ftpvalue,historyNextPrice);
+								forecastTrend = getTrend(ftpvalue,currentValue);
 							}
 						}
 					}

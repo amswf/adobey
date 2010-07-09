@@ -93,6 +93,7 @@ package com.snsoft.tvc2.bizSounds{
 			if(!isNaN(chartSoundsDO.forecastPrice) && isNaN(chartSoundsDO.historyContrastPrice)){
 				urlv.push(baseUrl+nextDate);//下周价格预计
 				textv.push(nextDateText);
+				textv.push("价格预计");
 				
 				pushTrend(urlv,chartSoundsDO.forecastTrend);//预测走势
 				pushTrendText(textv,chartSoundsDO.forecastTrend);
