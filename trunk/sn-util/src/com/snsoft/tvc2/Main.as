@@ -415,8 +415,8 @@
 				
 				if(currentListDO != null){
 					var currentIndex:int = -1;
-					var currentValue:int = 0;
-					var latestValue:int = 0;
+					var currentValue:Number = 0;
+					var latestValue:Number = 0;
 					
 					var tpdoHv:Vector.<TextPointDO> = currentListDO.listHv;
 					for(var i2:int = tpdoHv.length -1;i2 >= 0;i2 --){
@@ -592,8 +592,8 @@
 				if(currentListDO != null){
 					var currentIndex:int = -1;
 					
-					var currentValue:int = 0;
-					var latestValue:int = 0;
+					var currentValue:Number = 0;
+					var latestValue:Number = 0;
 					
 					var tpdoHv:Vector.<TextPointDO> = currentListDO.listHv;
 					var highPrice:Number = 0;
@@ -634,6 +634,8 @@
 					}
 					
 					var priceTrend:int = 0;
+					
+					trace("currentValue,latestValue",currentValue,latestValue);
 					priceTrend = getTrend(currentValue,latestValue);
 					
 					var gName:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_VALUE);
