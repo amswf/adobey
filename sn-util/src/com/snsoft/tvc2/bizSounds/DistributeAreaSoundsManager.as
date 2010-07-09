@@ -73,14 +73,14 @@ package com.snsoft.tvc2.bizSounds{
 			var curlv22:Vector.<String> = new Vector.<String>();
 			var curlTextv22:Vector.<String> = new Vector.<String>();
 			curlv22.push(baseUrl + "channeng1.mp3");
-			curlTextv22.push("中低能地区，");
+			curlTextv22.push("中低产能地区，");
 			urlvv.push(curlv22);
 			textvv.push(curlTextv22);
 			
 			var curlv23:Vector.<String> = new Vector.<String>();
 			var curlTextv23:Vector.<String> = new Vector.<String>();
 			curlv23.push(baseUrl + "channeng2.mp3");
-			curlTextv23.push("中高能地区，");
+			curlTextv23.push("中高产能地区，");
 			urlvv.push(curlv23);
 			textvv.push(curlTextv23);
 			
