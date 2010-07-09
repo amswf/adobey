@@ -220,12 +220,13 @@
 		private function mainDOSourceLoad(mainDO:MainDO):void{
 			if(mainDO != null){
 				var timeLineDOHv:HashVector = mainDO.timeLineDOHv;
+				var signLoad:Boolean = false;
 				if(timeLineDOHv != null){
 					for(var i:int = 0;i < timeLineDOHv.length;i ++){
 						var timeLineDO:TimeLineDO = timeLineDOHv.findByIndex(i) as TimeLineDO;
 						if(timeLineDO != null){
 							var bizDOHv:HashVector = timeLineDO.bizDOHv;
-							var signLoad:Boolean = false;
+							
 							if(bizDOHv != null){
 								for(var j:int = 0;j < bizDOHv.length;j ++){
 									var bizDO:BizDO = bizDOHv.findByIndex(j) as BizDO;
@@ -361,12 +362,13 @@
 										}
 									}
 								}
-							}
-							if(!signLoad){
-								play();
-							}
+							}	
 						}
 					}	
+				}
+				if(!signLoad){
+					trace("signLoad");
+					play();
 				}
 			}
 		}

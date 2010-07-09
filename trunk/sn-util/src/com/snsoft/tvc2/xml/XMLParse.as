@@ -479,6 +479,7 @@
 				//trace(listDO.name);
 				var tpv:Vector.<TextPointDO> = new Vector.<TextPointDO>();
 				var textPointsXMLList:XMLList = listXML.elements(TAG_TEXTPOINT);
+				var sign:Boolean = false;
 				for(var j:int = 0;j<textPointsXMLList.length();j++){
 					var textPointXML:XML = textPointsXMLList[j];
 					var textPointDO:TextPointDO = new TextPointDO();
@@ -486,11 +487,19 @@
 					textPointDO.name = texPointHv.findByName(ATT_NAME) as String;
 					textPointDO.text = texPointHv.findByName(ATT_TEXT) as String;
 					textPointDO.value = texPointHv.findByName(ATT_VALUE) as String;
-					//trace("textPointDO:",textPointDO.name,textPointDO.text,textPointDO.value);
+					
+					if(StringUtil.isEffective(textPointDO.name) 
+						|| StringUtil.isEffective(textPointDO.text)
+						|| StringUtil.isEffective(textPointDO.value)){
+						sign = true;	
+					}
+					
 					tpv.push(textPointDO);
 				}
 				listDO.listHv = tpv;
-				lv.push(listDO);
+				if(sign){
+					lv.push(listDO);
+				}
 			}
 			return lv;
 		}
