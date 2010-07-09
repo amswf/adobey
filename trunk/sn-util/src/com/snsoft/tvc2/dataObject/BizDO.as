@@ -29,6 +29,8 @@ package com.snsoft.tvc2.dataObject{
 		
 		private var _distributeMap:DisplayObject = null;
 		
+		private var _mapName:String = null;
+		
 		public function BizDO()
 		{
 		}
@@ -112,5 +114,16 @@ package com.snsoft.tvc2.dataObject{
 		{
 			_distributeMap = value;
 		}
+
+		public function get mapName():String
+		{
+			return _mapName;
+		}
+
+		public function set mapName(value:String):void
+		{
+			_mapName = value;
+		}
+
 	}
 }

@@ -14,6 +14,7 @@
 	import com.snsoft.tvc2.dataObject.DataDO;
 	import com.snsoft.tvc2.dataObject.ListDO;
 	import com.snsoft.tvc2.dataObject.MainDO;
+	import com.snsoft.tvc2.dataObject.MarketCoordDO;
 	import com.snsoft.tvc2.dataObject.MarketCoordsDO;
 	import com.snsoft.tvc2.dataObject.MarketMainDO;
 	import com.snsoft.tvc2.dataObject.MediaDO;
@@ -71,6 +72,8 @@
 		private var VAR_MARKET:String = "market";
 		
 		private var VAR_DATE_TYPE:String = "dateType";
+		
+		private var VAR_COORDS_NAME:String = "coordsName";
 		
 		public function Main(mainXmlUrl:String,marketXmlUrl:String){
 			super();
@@ -192,19 +195,20 @@
 											var gvalue:String = String(gvdo.getAttribute(XMLParse.ATT_VALUE));
 										}
 										
+										var mapName:String = getVarAttribute(varDOHv,VAR_COORDS_NAME,XMLParse.ATT_VALUE);
+										bizDO.mapName = mapName;
 										
-										var areaMapNameVarDO:VarDO = varDOHv.findByName(VAR_AREA_MAP_NAME) as VarDO;
-										if(areaMapNameVarDO != null){
-											var areaMapName:String = areaMapNameVarDO.getAttribute(XMLParse.ATT_VALUE) as String;
-											if(StringUtil.isEffective(areaMapName)){
-												var aml:AreaMapLoader = new AreaMapLoader(areaMapName,bizDO);
-												plusSourceCount();
-												aml.load();
-												signLoad = true;
-												aml.addEventListener(Event.COMPLETE,handlerLoadAreaMapComplete);
-												aml.addEventListener(IOErrorEvent.IO_ERROR,handlerLoadIOError);
-											}
+										var areaMapName:String = getVarAttribute(varDOHv,VAR_AREA_MAP_NAME,XMLParse.ATT_VALUE);
+										trace(StringUtil.isEffective(areaMapName));
+										if(StringUtil.isEffective(areaMapName)){
+											var aml:AreaMapLoader = new AreaMapLoader(areaMapName,bizDO);
+											plusSourceCount();
+											aml.load();
+											signLoad = true;
+											aml.addEventListener(Event.COMPLETE,handlerLoadAreaMapComplete);
+											aml.addEventListener(IOErrorEvent.IO_ERROR,handlerLoadIOError);
 										}
+										
 										
 										var distributeMapNameVarDO:VarDO = varDOHv.findByName(VAR_DISTRIBUTE_MAP_NAME) as VarDO;
 										if(distributeMapNameVarDO != null){
@@ -449,6 +453,9 @@
 			var xgtListDOV:Vector.<ListDO> = dataDO.xGraduationText;
 			if(varDOHv != null){
 				var listDOV:Vector.<ListDO> = dataDO.broadcast;	
+				if(listDOV != null && marketMainDO != null && bizDO.mapName != null){
+					setMarketsName(listDOV,marketMainDO,bizDO.mapName);
+				}
 				var lowListDO:ListDO = null;
 				var highListDO:ListDO = null;
 				
@@ -485,6 +492,26 @@
 				return urlvv;
 			}
 			return null;
+		}
+		
+		public function setMarketsName(listDOV:Vector.<ListDO>,marketMainDO:MarketMainDO,coordsName:String):void{
+			for(var i:int = 0;i<listDOV.length;i++){
+				var listDO:ListDO = listDOV[i];
+				var tpdov:Vector.<TextPointDO> = listDO.listHv;
+				for(var j:int = 0;j<tpdov.length;j++){
+					var tpdo:TextPointDO = tpdov[j];
+					var coordName:String = tpdo.name;
+					
+					var mcsdo:MarketCoordsDO = marketMainDO.findMarketCoordsDO(coordsName);
+					if(mcsdo != null){
+						var mcdo:MarketCoordDO = mcsdo.findMarketCoordDO(coordName);
+						if(mcdo != null){
+							tpdo.text = mcdo.text;
+							trace(mcdo.text);
+						}
+					}
+				}
+			}
 		}
 		
 		public function getVarAttribute(varDOHV:HashVector,varName:String,attributeName:String):String{

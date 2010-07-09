@@ -11,8 +11,8 @@ package com.snsoft.tvc2.util{
 				if(str.length > 0){
 					var n:int = 0;
 					for(var i:int = 0;i < str.length;i++){
-						var s:String = String(str[i]);
-						if(StringUtilities.trim(s).length > 0){
+						var s:Object = str[i];
+						if(s != null && StringUtilities.trim(String(s)).length > 0){
 							n ++;
 						}
 					}

@@ -17,25 +17,25 @@ package com.snsoft.tvc2.bizSounds{
 			//今天
 			if(distributeAreaSoundsDO.dateType == DistributeAreaSoundsDO.DATE_TYPE_DAY){
 				currentDate = "jintian.mp3";
-				nextDate = "mingtianjiageyuji.mp3";
+				nextDate = "mingtian.mp3";
 				currentDateText = "今天，";
 				nextDateText = "明天，";
 			}
 			else if(distributeAreaSoundsDO.dateType == DistributeAreaSoundsDO.DATE_TYPE_WEEK){//本周
 				currentDate = "benzhou.mp3";
-				nextDate = "xiazhoujiageyuji.mp3";
+				nextDate = "xiazhou.mp3";
 				currentDateText = "本周，";
 				nextDateText = "下周，";
 			}
 			else if(distributeAreaSoundsDO.dateType == DistributeAreaSoundsDO.DATE_TYPE_MONTH){//本月
 				currentDate = "benyue.mp3";
-				nextDate = "xiageyuejiageyuji.mp3";
+				nextDate = "xiageyue.mp3";
 				currentDateText = "本月，";
 				nextDateText = "下个月，";
 			}
 			else {
 				currentDate = "benzhou.mp3";
-				nextDate = "xiazhoujiageyuji.mp3";
+				nextDate = "xiazhou.mp3";
 				currentDateText = "本周，";
 				nextDateText = "下周，";
 			}
@@ -52,6 +52,10 @@ package com.snsoft.tvc2.bizSounds{
 			
 			curlv1.push(baseUrl + currentDate);
 			curlTextv1.push(currentDateText);
+				
+			//农产品名称
+			curlv1.push(baseUrl + distributeAreaSoundsDO.goodsCode + ".mp3");
+			curlTextv1.push(distributeAreaSoundsDO.goodsText +"的");
 			
 			curlv1.push(baseUrl + "shengchannenglifenbuqingkuang.mp3");
 			curlTextv1.push("的生产能力分布情况：");
