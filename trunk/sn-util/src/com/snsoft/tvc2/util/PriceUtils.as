@@ -58,6 +58,11 @@
 				}
 			}
 			moneyVector.push(YUAN);
+			if(moneyVector.length > 0){
+				if(moneyVector[0] == POINT){
+					moneyVector.splice(0,0,NUM_CN[0]);
+				}
+			}
 			return moneyVector;   
 		}   
 		
