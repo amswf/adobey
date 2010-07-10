@@ -6,8 +6,11 @@ package com.snsoft.tvc2.media{
 	import flash.events.Event;
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
+	import flash.media.SoundTransform;
 	
 	public class Mp3Player extends Business{
+		
+		public static var sound_Volume:Number = 1;
 		
 		//当前播放的声音
 		private var sound:Sound;
@@ -41,9 +44,12 @@ package com.snsoft.tvc2.media{
 		
 		private function playNextMp3():void{
 			if(this.soundList != null ){
+				var stf:SoundTransform = new SoundTransform(sound_Volume);
 				if(this.playNum < this.soundList.length){
 					sound = this.soundList[this.playNum];
 					soundChannel = sound.play();
+					soundChannel.soundTransform = stf;
+
 					soundChannel.removeEventListener(Event.SOUND_COMPLETE,handlerPlayComplete); 
 					soundChannel.addEventListener(Event.SOUND_COMPLETE,handlerPlayComplete); 
 				}
