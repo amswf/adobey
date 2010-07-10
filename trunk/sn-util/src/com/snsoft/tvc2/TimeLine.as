@@ -63,8 +63,10 @@ package com.snsoft.tvc2{
 		 * 
 		 */		
 		override protected function draw():void{
-			play();
 			trace("TimeLine.play()");
+			bizCmp = true
+			switchTimerCmp = true;
+			play();
 		}
 		
 		public function pausePlay():void{
@@ -77,7 +79,7 @@ package com.snsoft.tvc2{
 						playTimer.stop();
 						playTimer.removeEventListener(TimerEvent.TIMER,handlerPauseTimer);
 					}
-					playNextBiz();
+					play();
 				}
 				else {
 					isStop = true;
@@ -98,36 +100,54 @@ package com.snsoft.tvc2{
 			if(!isStop){
 				var timer:Timer = e.currentTarget as Timer;
 				timer.removeEventListener(TimerEvent.TIMER,handlerPauseTimer);
-				playNextBiz();	
+				play();	
 			}
 		}
 		
 		private function play():void{
-			var bizHv:HashVector = this.timeLineDO.bizDOHv;
-			if(bizHv != null && bizIndex < bizHv.length){
-				var bizDO:BizDO = bizHv.findByIndex(bizIndex) as BizDO;
-				if(bizDO != null){
-					currentBiz = new Biz(bizDO,marketMainDO);
-					currentBiz.alpha = 0;
-					currentBiz.x = currentBiz.x + switchMoveLenth;
-					currentBiz.addEventListener(Event.COMPLETE,handlerBizComplete);
-					this.addChild(currentBiz);
-					currentBiz.drawNow();
+			if(bizCmp && switchTimerCmp && !isStop){
+				var bizHv:HashVector = this.timeLineDO.bizDOHv;
+				if(bizHv != null && bizIndex < bizHv.length){
 					
-					switchAddTimer = new Timer(switchTimerDelay,switchTimerRepeatCount);
+					bizCmp = false;
 					switchTimerCmp = false;
-					switchAddTimer.addEventListener(TimerEvent.TIMER,handlerSwitchAddTimer);
-					switchAddTimer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerSwitchAddTimerCmp);
-					switchAddTimer.start();
+					
+					
+					
+					var bizDO:BizDO = bizHv.findByIndex(bizIndex) as BizDO;
+					if(bizDO != null){
+						
+						if( currentBiz != null){
+							forwardBiz = currentBiz;
+							switchRemoveTimer = new Timer(switchTimerDelay,switchTimerRepeatCount);
+							switchRemoveTimer.addEventListener(TimerEvent.TIMER,handlerSwitchRemoveTimer);
+							switchRemoveTimer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerSwitchRemoveTimerCmp);
+							switchRemoveTimer.start();
+						}
+						
+						currentBiz = new Biz(bizDO,marketMainDO);
+						currentBiz.alpha = 0;
+						currentBiz.x = currentBiz.x + switchMoveLenth;
+						currentBiz.addEventListener(Event.COMPLETE,handlerBizComplete);
+						this.addChild(currentBiz);
+						currentBiz.drawNow();
+						
+						switchAddTimer = new Timer(switchTimerDelay,switchTimerRepeatCount);
+						switchTimerCmp = false;
+						switchAddTimer.addEventListener(TimerEvent.TIMER,handlerSwitchAddTimer);
+						switchAddTimer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerSwitchAddTimerCmp);
+						switchAddTimer.start();
+					}
+					bizIndex ++;
 				}
-			}
-			else {
-				trace("TimeLine.play.dispatchEventState:Event.COMPLETE",bizIndex,"<",bizHv.length);
-				this.dispatchEvent(new Event(Event.COMPLETE));
+				else {
+					trace("TimeLine.play.dispatchEventState:Event.COMPLETE",bizIndex,"<",bizHv.length);
+					this.dispatchEvent(new Event(Event.COMPLETE));
+				}
 			}
 		}
 		
-		private function playNextBiz():void{
+		private function playNextBizs():void{
 			if(bizCmp && switchTimerCmp && !isStop){
 				var bizHv:HashVector = this.timeLineDO.bizDOHv;
 				if(bizHv != null && bizIndex < bizHv.length -1){
@@ -159,12 +179,12 @@ package com.snsoft.tvc2{
 		
 		private function handlerSwitchAddTimerCmp(e:Event):void{
 			switchTimerCmp = true;
-			playNextBiz();
+			play();
 		}
 		
 		private function handlerBizComplete(e:Event):void{
 			bizCmp = true;
-			playNextBiz();
+			play();
 		}
 		
 		private function handlerSwitchRemoveTimer(e:Event):void{
