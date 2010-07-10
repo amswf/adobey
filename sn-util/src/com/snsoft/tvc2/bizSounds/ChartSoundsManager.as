@@ -92,7 +92,7 @@ package com.snsoft.tvc2.bizSounds{
 			
 			//有预测价格没有历史价格时：
 			
-			if(chartSoundsDO.forecastPrice > 0 &&  chartSoundsDO.historyContrastPrice == 0){
+			if(chartSoundsDO.hasForecast && !chartSoundsDO.hasHistory){
 				urlv.push(baseUrl+nextDate);//下周价格预计
 				textv.push(nextDateText);
 				textv.push("价格预计");
@@ -112,7 +112,7 @@ package com.snsoft.tvc2.bizSounds{
 			}
 			
 			//有历史价格时：
-			if(chartSoundsDO.historyContrastPrice > 0){
+			if(chartSoundsDO.hasHistory){
 				urlv.push(baseUrl+"yuqunian.mp3");//与去年同期对比，本周实际价格每公斤
 				textv.push("与去年同期对比，本周实际价格每公斤");
 				
@@ -125,7 +125,7 @@ package com.snsoft.tvc2.bizSounds{
 			
 			//有历史和预测时：
 			
-			if(chartSoundsDO.forecastContrastPrice > 0 && chartSoundsDO.historyContrastPrice > 0){
+			if(chartSoundsDO.hasForecast && chartSoundsDO.hasHistory){
 				urlv.push(baseUrl+nextDate);//下周价格预计
 				urlv.push(baseUrl+"meigongjin.mp3");//每公斤
 				textv.push("下周价格预计，每公斤");
@@ -210,12 +210,13 @@ package com.snsoft.tvc2.bizSounds{
 			pushTrendText(textv,chartSoundsDO.priceExponentialTrend);
 			textv.push("。");
 			
-			if(chartSoundsDO.forecastPriceExponentialTrend > 0){
+			if(chartSoundsDO.hasForecast){
 				urlv.push(baseUrl + nextDate);
 				textv.push(nextDateText);
 				
 				urlv.push(baseUrl + "jiagezhishu.mp3");
-				textv.push("价格指数，");
+				urlv.push(baseUrl + "yuji.mp3");
+				textv.push("价格指数预计，");
 				
 				pushTrend(urlv,chartSoundsDO.forecastPriceExponentialTrend);
 				pushTrendText(textv,chartSoundsDO.forecastPriceExponentialTrend);

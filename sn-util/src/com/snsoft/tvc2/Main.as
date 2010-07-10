@@ -476,6 +476,7 @@
 					csdo.goodsCode = gName;
 					csdo.goodsText = gText;
 					if(forecastListDO != null){
+						csdo.hasForecast = true;
 						csdo.priceExponentialTrend = priceExponentialTrend;
 						csdo.forecastPriceExponentialTrend = forecastTrend;
 					}
@@ -689,7 +690,9 @@
 							var ftpdo:TextPointDO = ftpdoHv[currentIndex + 1];
 							var ftpvalue:Number = Number(ftpdo.value); 
 							if(ftpvalue > 0){
-								forecastContrastPrice = ftpvalue - historyNextPrice;
+								if(historyListDO != null){
+									forecastContrastPrice = ftpvalue - historyNextPrice;
+								}
 								forecastPrice = ftpvalue;
 								forecastTrend = getTrend(ftpvalue,currentValue);
 							}
@@ -709,15 +712,20 @@
 					trace("forecastPrice",forecastPrice);
 					trace("csdo",csdo.forecastPrice);
 					if(forecastListDO != null && historyListDO == null){
+						csdo.hasForecast = true;
+						csdo.hasHistory = false;
 						csdo.forecastTrend = forecastTrend;
 						csdo.forecastPrice = forecastPrice;
 					}
 					
 					if(historyListDO != null){
+						csdo.hasHistory = true;
 						csdo.historyContrastPrice = historyContrastPrice;
 					}
 					
 					if(forecastListDO != null && historyListDO != null){
+						csdo.hasForecast = true;
+						csdo.hasHistory = true;
 						csdo.forecastContrastPrice = forecastContrastPrice;
 					}
 					
