@@ -171,7 +171,7 @@
 							
 						}
 						else if(type == BIZ_TYPE_DISTRIBUTE_AREA){
-							uilcs = new PriceMapArea(dataDO, bizDO.mapView,delayTime);
+							uilcs = new PriceMapArea(dataDO,bizDO.mapName ,marketMainDO, bizDO.mapView,delayTime);
 							uilcs.width = 400;
 							uilcs.height = 260;
 							uilcs.x = 60;

@@ -38,9 +38,7 @@
 		private var marketMainDO:MarketMainDO;
 		
 		private var marketMap:MarketMap;
-		
-		private var MAP_NAME:String = "china";
-		
+				
 		private var listSmallCount:int = 0;
 		
 		private var broadcastListCount:int = 0;
@@ -107,6 +105,8 @@
 		
 		private var bizSoundIndex:int = 0;
 		
+		private var mapName:String;
+		
 		public function PriceDistribute(dataDO:DataDO,mapName:String,marketMainDO:MarketMainDO,marketMap:MarketMap,mapView:MapView,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0)	{
 			super();
 			this.dataDO = dataDO;
@@ -116,6 +116,7 @@
 			this.delayTime = delayTime;
 			this.timeLength = timeLength;
 			this.timeOut = timeOut;
+			this.mapName = mapName;
 		}
 		
 		public static const BIG_POINT_DEFAULT_SKIN:String = "big_point_default_skin";
@@ -195,7 +196,7 @@
 		
 		override protected function play():void {
 			var marketCoordsDOHV:HashVector = marketMainDO.marketCoordsDOHV;
-			this.marketCoordsDO = marketCoordsDOHV.findByName(MAP_NAME) as MarketCoordsDO;
+			this.marketCoordsDO = marketCoordsDOHV.findByName(this.mapName) as MarketCoordsDO;
 			this.listDOV = dataDO.data;
 			this.broadcastListDOV = dataDO.broadcast;
 			this.listSmallCount = 0;

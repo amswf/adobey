@@ -4,6 +4,9 @@ package com.snsoft.tvc2.map{
 	import com.snsoft.tvc2.Business;
 	import com.snsoft.tvc2.dataObject.DataDO;
 	import com.snsoft.tvc2.dataObject.ListDO;
+	import com.snsoft.tvc2.dataObject.MarketCoordDO;
+	import com.snsoft.tvc2.dataObject.MarketCoordsDO;
+	import com.snsoft.tvc2.dataObject.MarketMainDO;
 	import com.snsoft.tvc2.dataObject.TextPointDO;
 	import com.snsoft.tvc2.media.Mp3Player;
 	import com.snsoft.tvc2.text.EffectText;
@@ -62,13 +65,21 @@ package com.snsoft.tvc2.map{
 		
 		private var bizSoundIndex:int = 0;
 		
-		public function PriceMapArea(dataDO:DataDO,mapView:MapView,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0){
+		private var mapName:String;
+		
+		private var marketCoordsDO:MarketCoordsDO;
+		
+		private var marketMainDO:MarketMainDO;
+		
+		public function PriceMapArea(dataDO:DataDO ,mapName:String ,marketMainDO:MarketMainDO,mapView:MapView,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0){
 			super();
 			this.dataDO = dataDO;
 			this.mapView = mapView;
 			this.delayTime = delayTime;
 			this.timeLength = timeLength;
 			this.timeOut = timeOut;
+			this.mapName = mapName;
+			this.marketMainDO = marketMainDO;
 		}
 		
 		public static const CUTLINE_DEFAULT_SKIN:String = "cutline_default_skin";
@@ -116,6 +127,8 @@ package com.snsoft.tvc2.map{
 		 * 
 		 */		
 		override protected function play():void {
+			var marketCoordsDOHV:HashVector = marketMainDO.marketCoordsDOHV;
+			this.marketCoordsDO = marketCoordsDOHV.findByName(this.mapName) as MarketCoordsDO;
 			this.listDOV = dataDO.data;
 			this.listCount = 0;
 			var cutLine:Sprite = new Sprite();
@@ -249,9 +262,16 @@ package com.snsoft.tvc2.map{
 			for(var i:int =0;i<tpdoHv.length;i++){
 				var tpdo:TextPointDO = tpdoHv[i];
 				if(tpdo != null){
-					var name:String = tpdo.text;
+					var name:String = tpdo.name;
 					if(StringUtil.isEffective(name)){
 						mapView.setMapAreaColor(name,color,alpha);
+						//如果从市场描述表中读取    北京   则用下面代码
+						//<marketCoord name="m01" value="" text="北京" x="365" y="158" z="" s="1" />
+//						var marketCoordDO:MarketCoordDO = marketCoordsDO.getRealCoordMarketCoordDO(name);
+//						if(marketCoordDO != null){
+//							var areaName:String = marketCoordDO.text;
+//							mapView.setMapAreaColor(areaName,color,alpha);
+//						}
 					}
 				}
 			}
