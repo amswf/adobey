@@ -84,17 +84,11 @@
 		
 		private var timeLinePlayCmpNum:int = 0;
 		
-		private var playBtn:Button;
-		
-		private var soundBtn:Button;
-		
-		public function Main(mainXmlUrl:String,marketXmlUrl:String,playBtn:Button,soundBtn:Button){
+		public function Main(mainXmlUrl:String,marketXmlUrl:String){
 			super();
 			
 			this.mainXmlUrl = mainXmlUrl;
 			this.marketXmlUrl = marketXmlUrl;
-			this.playBtn = playBtn;
-			this.soundBtn = soundBtn;
 		}
 		
 		/**
@@ -187,60 +181,9 @@
 					}	
 				}
 			}
-			playBtnExternalInterface();
-			stopSoundBtnExternalInterface();
 		}
 		
-		private function stopSoundBtnExternalInterface():void{
-			try{
-				ExternalInterface.addCallback("stopSound",stopSound);
-				if(soundBtn != null){
-					soundBtn.addEventListener(MouseEvent.CLICK,handerSoundBtnClick);
-				}
-			}
-			catch(e:Error){
-				
-			}
-		}
 		
-		private function playBtnExternalInterface():void{
-			try{
-				ExternalInterface.addCallback("pausePlay",pausePlay);
-				if(playBtn != null){
-					playBtn.addEventListener(MouseEvent.CLICK,handerPlayBtnClick);
-				}
-			}
-			catch(e:Error){
-				
-			}
-		}
-		
-		private function handerPlayBtnClick(e:Event):void{
-			pausePlay();
-		}
-		
-		private function pausePlay():void{
-			for(var i:int = 0;i < this.numChildren;i++){
-				var timeLine:TimeLine = this.getChildAt(i) as TimeLine;
-				if(timeLine != null){
-					timeLine.pausePlay();
-				}
-			}
-		}
-		
-		private function handerSoundBtnClick(e:Event):void{
-			stopSound();
-		}
-		
-		private function stopSound():void{
-			trace(Mp3Player.sound_Volume);
-			if(Mp3Player.sound_Volume == 0){
-				Mp3Player.sound_Volume = 1;
-			}
-			else if(Mp3Player.sound_Volume == 1){
-				Mp3Player.sound_Volume = 0;
-			}
-		}
 		
 		private function handlerTimeLinePlayCmp(e:Event):void{
 			timeLinePlayCmpNum ++;
