@@ -120,14 +120,14 @@
 							uilcs.width = 400;
 							uilcs.height = 260;
 							uilcs.x = 120;
-							uilcs.y = 180;
+							uilcs.y = 220;
 						}
 						else if(type == BIZ_TYPE_PILLAR){
 							uilcs = new UIPillarCharts(dataDO,delayTime,6000);
 							uilcs.width = 400;
 							uilcs.height = 260;
 							uilcs.x = 120;
-							uilcs.y = 180;
+							uilcs.y = 220;
 						}
 						else if(type == BIZ_TYPE_DISTRIBUTE){
 							var marketMap:MarketMap = new MarketMap();
