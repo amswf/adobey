@@ -27,6 +27,7 @@
 	import com.snsoft.tvc2.map.MapView;
 	import com.snsoft.tvc2.media.MediaLoader;
 	import com.snsoft.tvc2.media.Mp3Loader;
+	import com.snsoft.tvc2.media.Mp3Player;
 	import com.snsoft.tvc2.source.AreaMapLoader;
 	import com.snsoft.tvc2.util.PriceUtils;
 	import com.snsoft.tvc2.util.StringUtil;
@@ -50,8 +51,6 @@
 	
 	
 	public class Main extends UIComponent{
-		
-		private static const isExternaledInterface:Boolean = true;
 		
 		private var mainXmlUrl:String;
 		
@@ -87,12 +86,15 @@
 		
 		private var playBtn:Button;
 		
-		public function Main(mainXmlUrl:String,marketXmlUrl:String,playBtn:Button){
+		private var soundBtn:Button;
+		
+		public function Main(mainXmlUrl:String,marketXmlUrl:String,playBtn:Button,soundBtn:Button){
 			super();
 			
 			this.mainXmlUrl = mainXmlUrl;
 			this.marketXmlUrl = marketXmlUrl;
 			this.playBtn = playBtn;
+			this.soundBtn = soundBtn;
 		}
 		
 		/**
@@ -186,20 +188,30 @@
 				}
 			}
 			playBtnExternalInterface();
+			stopSoundBtnExternalInterface();
+		}
+		
+		private function stopSoundBtnExternalInterface():void{
+			try{
+				ExternalInterface.addCallback("stopSound",stopSound);
+				if(soundBtn != null){
+					soundBtn.addEventListener(MouseEvent.CLICK,handerSoundBtnClick);
+				}
+			}
+			catch(e:Error){
+				
+			}
 		}
 		
 		private function playBtnExternalInterface():void{
-			if(playBtn != null){
-				if(isExternaledInterface){
-					
-					try{
-						ExternalInterface.addCallback("pausePlay",pausePlay);
-						playBtn.addEventListener(MouseEvent.CLICK,handerPlayBtnClick);
-					}
-					catch(e:Error){
-						
-					}
+			try{
+				ExternalInterface.addCallback("pausePlay",pausePlay);
+				if(playBtn != null){
+					playBtn.addEventListener(MouseEvent.CLICK,handerPlayBtnClick);
 				}
+			}
+			catch(e:Error){
+				
 			}
 		}
 		
@@ -213,6 +225,20 @@
 				if(timeLine != null){
 					timeLine.pausePlay();
 				}
+			}
+		}
+		
+		private function handerSoundBtnClick(e:Event):void{
+			stopSound();
+		}
+		
+		private function stopSound():void{
+			trace(Mp3Player.sound_Volume);
+			if(Mp3Player.sound_Volume == 0){
+				Mp3Player.sound_Volume = 1;
+			}
+			else if(Mp3Player.sound_Volume == 1){
+				Mp3Player.sound_Volume = 0;
 			}
 		}
 		
