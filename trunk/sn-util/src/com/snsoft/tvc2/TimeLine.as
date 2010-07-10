@@ -122,6 +122,7 @@ package com.snsoft.tvc2{
 				}
 			}
 			else {
+				trace("timeLineCmp");
 				this.dispatchEvent(new Event(Event.COMPLETE));
 			}
 		}
@@ -156,9 +157,9 @@ package com.snsoft.tvc2{
 					switchRemoveTimer.addEventListener(TimerEvent.TIMER,handlerSwitchRemoveTimer);
 					switchRemoveTimer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerSwitchRemoveTimerCmp);
 					switchRemoveTimer.start();
+					bizIndex ++;
+					play();
 				}
-				bizIndex ++;
-				play();
 			}
 		}
 		

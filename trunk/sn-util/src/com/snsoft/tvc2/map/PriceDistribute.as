@@ -549,7 +549,8 @@
 				var marketName:TextField = EffectText.creatTextByStyleName(marketCoordDO.text,TextStyles.STYLE_DATA_TEXT,color);
 				marketName.x = 4;
 				marketName.y = 4;
-				var marketPrice:TextField = EffectText.creatTextByStyleName(tpdo.value,TextStyles.STYLE_DATA_TEXT,color);
+				var value:String = String(Number(tpdo.value).toFixed(2)) + "元";
+				var marketPrice:TextField = EffectText.creatTextByStyleName(value,TextStyles.STYLE_DATA_TEXT,color);
 				marketPrice.x = marketName.x;
 				marketPrice.y = marketName.y + marketName.height;
 				priceMC.addChild(marketName);
