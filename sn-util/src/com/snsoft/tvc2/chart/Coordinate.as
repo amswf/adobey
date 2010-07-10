@@ -1,4 +1,5 @@
 ﻿package com.snsoft.tvc2.chart{
+	import com.snsoft.tvc2.SystemConfig;
 	
 	/**
 	 * 坐标系
@@ -114,7 +115,7 @@
 				minIndex -= minMod;
 				
 				//当最小值和基值相同时，刻度要减一，防止某些数据在0上。
-				if(minNum % cali == 0){
+				if(Math.abs(minNum - cali * minIndex) <= SystemConfig.NUMBER_CORRECT){
 					minIndex  -= 1;
 				}
 				
