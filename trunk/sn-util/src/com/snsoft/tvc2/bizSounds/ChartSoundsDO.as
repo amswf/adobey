@@ -25,7 +25,7 @@ package com.snsoft.tvc2.bizSounds{
 		
 		private var _forecastTrend:int = NaN;//预测走势  1 上升  0 持平  -1 下降
 		
-		private var _forecastPrice:int = NaN;//预测价格
+		private var _forecastPrice:Number = NaN;//预测价格
 		
 		private var _historyContrastPrice:Number = NaN;//历史相差价格
 		
@@ -34,6 +34,10 @@ package com.snsoft.tvc2.bizSounds{
 		private var _priceExponentialTrend:int = NaN;
 		
 		private var _forecastPriceExponentialTrend:int = NaN;
+		
+		private var _hasHistory:Boolean = false;
+		
+		private var _hasForecast:Boolean = false;
 		
 		public function ChartSoundsDO()
 		{
@@ -109,12 +113,12 @@ package com.snsoft.tvc2.bizSounds{
 			_forecastTrend = value;
 		}
 
-		public function get forecastPrice():int
+		public function get forecastPrice():Number
 		{
 			return _forecastPrice;
 		}
 
-		public function set forecastPrice(value:int):void
+		public function set forecastPrice(value:Number):void
 		{
 			_forecastPrice = value;
 		}
@@ -177,6 +181,26 @@ package com.snsoft.tvc2.bizSounds{
 		public function set goodsText(value:String):void
 		{
 			_goodsText = value;
+		}
+
+		public function get hasHistory():Boolean
+		{
+			return _hasHistory;
+		}
+
+		public function set hasHistory(value:Boolean):void
+		{
+			_hasHistory = value;
+		}
+
+		public function get hasForecast():Boolean
+		{
+			return _hasForecast;
+		}
+
+		public function set hasForecast(value:Boolean):void
+		{
+			_hasForecast = value;
 		}
 
 
