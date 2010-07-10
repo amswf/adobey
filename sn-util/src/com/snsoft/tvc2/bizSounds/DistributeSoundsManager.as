@@ -180,7 +180,7 @@ package com.snsoft.tvc2.bizSounds{
 							else{
 								curlv.push("，");
 							}
-							
+							trace(curlv);
 							texts.push(curlv);
 						}
 					}

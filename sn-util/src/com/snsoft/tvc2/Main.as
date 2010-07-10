@@ -191,8 +191,14 @@
 		private function playBtnExternalInterface():void{
 			if(playBtn != null){
 				if(isExternaledInterface){
-					playBtn.addEventListener(MouseEvent.CLICK,handerPlayBtnClick);
-					ExternalInterface.addCallback("pausePlay",pausePlay);
+					
+					try{
+						ExternalInterface.addCallback("pausePlay",pausePlay);
+						playBtn.addEventListener(MouseEvent.CLICK,handerPlayBtnClick);
+					}
+					catch(e:Error){
+						
+					}
 				}
 			}
 		}
