@@ -493,7 +493,26 @@
 					}
 				}
 				
+				var lowDesListDO:ListDO = null;
+				var highDesListDO:ListDO = null;
 				
+				var lowDesV:Vector.<TextPointDO> = null;
+				var highDesV:Vector.<TextPointDO> = null;
+				
+				var deslv:Vector.<ListDO> = dataDO.des;
+				if(deslv.length > 0){
+					lowDesListDO = deslv[0];
+					if(lowDesListDO != null){
+						lowDesV = lowDesListDO.listHv;
+					}
+				}
+				if(deslv.length > 0){
+					highDesListDO = deslv[1];
+					if(highDesListDO != null){
+						highDesV = highDesListDO.listHv;
+					}
+				}
+	
 				var gName:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_VALUE);
 				var gText:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_TEXT);
 				var dateType:String = getVarAttribute(varDOHv,VAR_DATE_TYPE,XMLParse.ATT_VALUE);
@@ -505,6 +524,8 @@
 				dsdo.goodsText = gText;
 				dsdo.lowDisV = lowDisV;
 				dsdo.highDisV = highDisV;
+				dsdo.lowDesV = lowDesV;
+				dsdo.highDesV = highDesV;
 				
 				var dsm:DistributeSoundsManager = new DistributeSoundsManager();
 				var urlvv:BizSoundDO = dsm.creatPriceSoundUrlList(dsdo);

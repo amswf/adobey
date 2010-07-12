@@ -67,6 +67,8 @@
 		
 		public static const TAG_DISTRIBUTE:String = "distribute";
 		
+		public static const TAG_DISTRIBUTE_DES:String = "distributeDes";
+		
 		public static const TAG_DISTRIBUTE_AREA:String = "distributeArea";
 		
 		public static const TAG_BROADCAST:String = "broadcast";
@@ -455,6 +457,17 @@
 				if(broadcastList != null && broadcastList.length() > 0){
 					var broadcastXMLList:XMLList = broadcastList.elements(TAG_LIST);
 					dataDO.broadcast = this.parseListsXML(broadcastXMLList);
+				}
+				
+				var desList:XMLList;
+				var desXMLList:XMLList = dataXML.elements(TAG_DISTRIBUTE_DES);
+				if(desXMLList != null && desXMLList.length() > 0){
+					desList = desXMLList;
+				}
+				if(desList != null){
+					var desListXMLList:XMLList = desList.elements(TAG_LIST);
+					dataDO.des = this.parseListsXML(desListXMLList);
+					trace(dataDO.des);
 				}
 			}
 			return dataDO;

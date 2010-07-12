@@ -351,9 +351,13 @@
 					timer.start();
 				}
 				else {
-					playBigs();
+					playBizSound(dataDO.bizSoundList,1,handlerSmallSoundAllCmp);
 				}
 			}
+		}
+		
+		private function handlerSmallSoundAllCmp(e:Event):void{
+			playBigs();
 		}
 		
 		private function playBigs():void{

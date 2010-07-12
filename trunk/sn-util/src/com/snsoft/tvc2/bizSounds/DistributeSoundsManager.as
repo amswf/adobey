@@ -53,7 +53,7 @@ package com.snsoft.tvc2.bizSounds{
 			
 			//下面我们来看一下
 			curlv1.push(baseUrl + "xiamianwomenlaikanyixia.mp3");
-			curlTextv1.push("下面我们来看一下");
+			curlTextv1.push("下面我们来看一下，");
 			
 			//今天/本周/本月
 			curlv1.push(baseUrl + currentDate);
@@ -93,6 +93,62 @@ package com.snsoft.tvc2.bizSounds{
 			curlTextv23.push("较高价格。");
 			urlvv.push(curlv23);
 			textvv.push(curlTextv23);
+			
+			
+			var descurlv:Vector.<String> = new Vector.<String>();
+			var descurlTextv:Vector.<String> = new Vector.<String>();
+			
+			var lowDesV:Vector.<TextPointDO> = distributeSoundsDO.lowDesV;
+			var highDesV:Vector.<TextPointDO> = distributeSoundsDO.highDesV;
+			
+			if(lowDesV != null && highDesV != null){
+				if(lowDesV.length > 0 && highDesV.length > 0){
+					descurlv.push(baseUrl + "congquyushangkan.mp3");
+					descurlv.push(baseUrl + "gaojiaweijizhongzai.mp3");
+					descurlTextv.push("从区域上看，高价位地区集中在");
+					
+					for(var i:int =0;i< highDesV.length;i++){
+						var htpdo:TextPointDO = highDesV[i];
+						var hname:String = htpdo.name;
+						var htext:String = htpdo.text;
+						descurlv.push(baseUrl + hname +".mp3");
+						descurlTextv.push(htext);
+						if(i < highDesV.length - 1){
+							descurlTextv.push("、");
+						}
+						else {
+							descurlv.push(baseUrl + "diqu.mp3");
+							descurlTextv.push("地区，");
+						}
+					}
+					
+					descurlv.push(baseUrl + "dijiaweidiquzai.mp3");
+					descurlTextv.push("低价位地区在");
+					
+					for(var i2:int =0;i2< lowDesV.length;i2++){
+						var ltpdo:TextPointDO = lowDesV[i2];
+						var lname:String = ltpdo.name;
+						var ltext:String = ltpdo.text;
+						descurlv.push(baseUrl + lname +".mp3");
+						descurlTextv.push(ltpdo.text);
+						if(i < lowDesV.length - 1){
+							descurlTextv.push("、");
+						}
+						else {
+							descurlv.push(baseUrl + "diqu.mp3");
+							descurlTextv.push("地区，");
+						}
+					}
+					
+					descurlv.push(baseUrl + "qitadiqu.mp3");
+					descurlTextv.push("其他地区价格处于中间水平。");
+					
+					urlvv.push(descurlv);
+					textvv.push(descurlTextv);
+				}
+			}
+			
+			
 			
 			var curlv3:Vector.<String> = new Vector.<String>();
 			var curlTextv3:Vector.<String> = new Vector.<String>();

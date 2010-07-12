@@ -19,6 +19,10 @@ package com.snsoft.tvc2.bizSounds{
 		
 		private var _highDisV:Vector.<TextPointDO>;//高价格分布点
 		
+		private var _lowDesV:Vector.<TextPointDO>;//低价格分布介绍
+		
+		private var _highDesV:Vector.<TextPointDO>;//高价格分布介绍
+		
 		public function DistributeSoundsDO(){
 		}
 		
@@ -70,6 +74,26 @@ package com.snsoft.tvc2.bizSounds{
 		public function set goodsText(value:String):void
 		{
 			_goodsText = value;
+		}
+
+		public function get lowDesV():Vector.<TextPointDO>
+		{
+			return _lowDesV;
+		}
+
+		public function set lowDesV(value:Vector.<TextPointDO>):void
+		{
+			_lowDesV = value;
+		}
+
+		public function get highDesV():Vector.<TextPointDO>
+		{
+			return _highDesV;
+		}
+
+		public function set highDesV(value:Vector.<TextPointDO>):void
+		{
+			_highDesV = value;
 		}
 
 
