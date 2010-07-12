@@ -262,17 +262,22 @@ package com.snsoft.tvc2.map{
 			for(var i:int =0;i<tpdoHv.length;i++){
 				var tpdo:TextPointDO = tpdoHv[i];
 				if(tpdo != null){
-					var name:String = tpdo.name;
-					if(StringUtil.isEffective(name)){
-						mapView.setMapAreaColor(name,color,alpha);
-						//如果从市场描述表中读取    北京   则用下面代码
-						//<marketCoord name="m01" value="" text="北京" x="365" y="158" z="" s="1" />
+					var text:String = tpdo.text;
+					if(StringUtil.isEffective(text)){
+						mapView.setMapAreaColor(text,color,alpha);
+					}
+					
+					//如果从市场描述表中读取    北京   则用下面代码
+					//<marketCoord name="m01" value="" text="北京" x="365" y="158" z="" s="1" />
+//					var name:String = tpdo.name;
+//					if(StringUtil.isEffective(name)){
+//						mapView.setMapAreaColor(name,color,alpha);
 //						var marketCoordDO:MarketCoordDO = marketCoordsDO.getRealCoordMarketCoordDO(name);
 //						if(marketCoordDO != null){
 //							var areaName:String = marketCoordDO.text;
 //							mapView.setMapAreaColor(areaName,color,alpha);
 //						}
-					}
+//					}
 				}
 			}
 		}
