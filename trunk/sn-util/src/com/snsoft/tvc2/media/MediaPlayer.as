@@ -46,6 +46,7 @@ package com.snsoft.tvc2.media{
 					}
 					playingMedia = this.mediaList[this.playNum];
 					this.addChild(playingMedia);
+					this.dispatchEvent(new Event(EVENT_PLAYED));
 					if(playingMedia is MovieClip){
 						var mc:MovieClip = playingMedia as MovieClip;
 						mc.play();
