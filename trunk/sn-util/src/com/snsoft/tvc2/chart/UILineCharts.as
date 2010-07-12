@@ -248,7 +248,7 @@
 					e.x = pw;
 					clspr.y = cutlineSprite.height + py;
 					clspr.x = px;
-					ColorTransformUtil.setColor(clspr,uil.transformColor);
+					//ColorTransformUtil.setColor(clspr,uil.transformColor);
 					cutlineSprite.addChild(clspr);
 				}
 				lineNum = charPointDOVV.length;
