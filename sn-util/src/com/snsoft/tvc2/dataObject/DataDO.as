@@ -18,6 +18,8 @@ package com.snsoft.tvc2.dataObject{
 		
 		private var _broadcast:Vector.<ListDO> = null;
 		
+		private var _des:Vector.<ListDO> = null;
+		
 		private var _unitX:String;
 		
 		private var _unitY:String;
@@ -118,6 +120,16 @@ package com.snsoft.tvc2.dataObject{
 		public function set bizSoundTextList(value:Vector.<Vector.<String>>):void
 		{
 			_bizSoundTextList = value;
+		}
+
+		public function get des():Vector.<ListDO>
+		{
+			return _des;
+		}
+
+		public function set des(value:Vector.<ListDO>):void
+		{
+			_des = value;
 		}
 
 		 
