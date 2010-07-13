@@ -328,7 +328,6 @@
 				for(var j:int = 0;j<textOutXMLList.length();j++){
 					var textOutXML:XML = textOutXMLList[j];
 					var textOutDO:TextOutDO = new TextOutDO();
-					trace(textOutXML);
 					var textOutAttributeHv:HashVector = this.getXMLAttributes(textOutXML);
 					textOutDO.name = textOutAttributeHv.findByName(ATT_NAME)as String;
 					textOutDO.text = textOutAttributeHv.findByName(ATT_TEXT)as String;
@@ -467,7 +466,6 @@
 				if(desList != null){
 					var desListXMLList:XMLList = desList.elements(TAG_LIST);
 					dataDO.des = this.parseListsXML(desListXMLList);
-					trace(dataDO.des);
 				}
 			}
 			return dataDO;

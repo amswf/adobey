@@ -9,7 +9,6 @@ package com.snsoft.tvc2.bizSounds{
 		}
 		
 		public function creatPriceSoundUrlList(chartSoundsDO:ChartSoundsDO):BizSoundDO{
-			trace(chartSoundsDO.forecastPrice);
 			var urlv:Vector.<String> = new Vector.<String>();
 			var textv:Vector.<String> = new Vector.<String>();
 			

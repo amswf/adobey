@@ -206,8 +206,7 @@
 								for(var j:int = 0;j < bizDOHv.length;j ++){
 									var bizDO:BizDO = bizDOHv.findByIndex(j) as BizDO;
 									var varDOHv:HashVector = bizDO.varDOHv;
-									//var dateType:String = getVarAttribute(varDOHv,VAR_DATE_TYPE,XMLParse.ATT_VALUE);
-									//trace(dateType);
+		
 									if(varDOHv != null && varDOHv.length > 0){
 										
 										var gvalue:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_VALUE);
@@ -216,7 +215,6 @@
 										bizDO.mapName = mapName;
 										
 										var mapFileName:String = getVarAttribute(varDOHv,VAR_MAP_File_NAME,XMLParse.ATT_VALUE);
-										trace(StringUtil.isEffective(mapFileName));
 										if(StringUtil.isEffective(mapFileName)){
 											var aml:AreaMapLoader = new AreaMapLoader(mapFileName,bizDO);
 											plusSourceCount();
@@ -342,7 +340,6 @@
 					}	
 				}
 				if(!signLoad){
-					trace("signLoad");
 					play();
 				}
 			}
@@ -547,7 +544,6 @@
 						var mcdo:MarketCoordDO = mcsdo.findMarketCoordDO(coordName);
 						if(mcdo != null){
 							tpdo.text = mcdo.text;
-							trace(mcdo.text);
 						}
 					}
 				}
@@ -641,7 +637,6 @@
 					
 					var priceTrend:int = 0;
 					
-					trace("currentValue,latestValue",currentValue,latestValue);
 					priceTrend = getTrend(currentValue,latestValue);
 					
 					var gName:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_VALUE);
@@ -705,8 +700,6 @@
 					csdo.highPrice = highPrice;
 					csdo.lowPrice = lowPrice;
 					
-					trace("forecastPrice",forecastPrice);
-					trace("csdo",csdo.forecastPrice);
 					if(forecastListDO != null && historyListDO == null){
 						csdo.hasForecast = true;
 						csdo.hasHistory = false;
