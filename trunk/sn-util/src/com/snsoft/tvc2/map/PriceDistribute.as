@@ -344,6 +344,19 @@
 						spdobj.y = (marketCoordDO.y - this.marketMap.y) * this.marketMap.s;
 						listMC.addChild(spdobj);
 					}
+					
+					//测试显示大量元件时性能
+					/*
+					for (var i:int =0; i < 10; i++) {
+						for (var j:int =0; j < 10; j++) {
+							var spdobj2:MovieClip = getDisplayObjectInstance(getStyleValue(SMALL_POINT_DEFAULT_SKIN)) as MovieClip;
+							spdobj2.x = (100 + 5 * i);
+							spdobj2.y = (100 + 5 * j);
+							listMC.addChild(spdobj2);
+						}
+					}
+					*/
+					
 					currentListMC = listMC;
 					smallPointsMC.addChild(listMC);
 					var timer:Timer = new Timer(2000,1);
