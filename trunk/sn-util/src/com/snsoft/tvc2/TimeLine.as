@@ -96,7 +96,6 @@ package com.snsoft.tvc2{
 		}
 		
 		private function handlerPauseTimer(e:Event):void{
-			trace(handlerPauseTimer);
 			if(!isStop){
 				var timer:Timer = e.currentTarget as Timer;
 				timer.removeEventListener(TimerEvent.TIMER,handlerPauseTimer);
