@@ -23,6 +23,26 @@
 		}   
 		
 		
+		private static function toCNUpper30(num:Number):Vector.<String>{
+			var v:Vector.<String> = new Vector.<String>();
+			if(!isNaN(num)){
+				if(0 <= num && num <= 30.00){
+					var sn:String = String(num.toFixed(2));	
+					var len:int = sn.length;
+					var su:String = sn.substring(0,len - 3);
+					var ss:String = sn.substring(len -2,len);
+					
+					var mp3u:String = "mp3/num/i" + su + ".mp3";
+					var mp3s:String = "mp3/num/s" + ss + ".mp3";
+					
+					v.push(mp3u);
+					v.push(mp3s);
+					v.push(YUAN);
+				}
+			}
+			return v;
+		}
+		
 		/**
 		 * 把数字转换成语音文件序列 
 		 * @param num 要转换的数字
@@ -31,36 +51,42 @@
 		 * 
 		 */		
 		public static function toCNUpper( num:Number,fixed:int = 2 ):Vector.<String>   
-		{   
+		{ 
 			var moneyVector:Vector.<String> = new Vector.<String>();
-			if( num == 0 ){   
-				moneyVector.push(NUM_CN[0]);   
+			if(0 <= num && num <= 30.00){
+				moneyVector = toCNUpper30(num);
 			}
 			else {
-				var count:int = getUnitCount( num );   
-				var numStr:String = num.toFixed(fixed);   
-				var pos:int = numStr.indexOf(".");   
-				var dotLeft:String = pos == -1 ? numStr : numStr.substring(0, pos);   
-				var dotRight:String = pos == -1 ? "" : numStr.substring(pos + 1, numStr.length); 
 				
-				if( dotLeft.length > 16 )   
-					throw new Error("数字太大，无法处理！");   
-				
-				var integerVector:Vector.<String> = convertIntegerStr(dotLeft);
-				var decimalVector:Vector.<String> = convertDecimalStr(dotRight);
-				
-				
-				for(var i:int;i<integerVector.length;i++){
-					moneyVector.push(integerVector[i]);
+				if( num == 0 ){   
+					moneyVector.push(NUM_CN[0]);   
 				}
-				for(var j:int;j<decimalVector.length;j++){
-					moneyVector.push(decimalVector[j]);
+				else {
+					var count:int = getUnitCount( num );   
+					var numStr:String = num.toFixed(fixed);   
+					var pos:int = numStr.indexOf(".");   
+					var dotLeft:String = pos == -1 ? numStr : numStr.substring(0, pos);   
+					var dotRight:String = pos == -1 ? "" : numStr.substring(pos + 1, numStr.length); 
+					
+					if( dotLeft.length > 16 )   
+						throw new Error("数字太大，无法处理！");   
+					
+					var integerVector:Vector.<String> = convertIntegerStr(dotLeft);
+					var decimalVector:Vector.<String> = convertDecimalStr(dotRight);
+					
+					
+					for(var i:int;i<integerVector.length;i++){
+						moneyVector.push(integerVector[i]);
+					}
+					for(var j:int;j<decimalVector.length;j++){
+						moneyVector.push(decimalVector[j]);
+					}
 				}
-			}
-			moneyVector.push(YUAN);
-			if(moneyVector.length > 0){
-				if(moneyVector[0] == POINT){
-					moneyVector.splice(0,0,NUM_CN[0]);
+				moneyVector.push(YUAN);
+				if(moneyVector.length > 0){
+					if(moneyVector[0] == POINT){
+						moneyVector.splice(0,0,NUM_CN[0]);
+					}
 				}
 			}
 			return moneyVector;   
