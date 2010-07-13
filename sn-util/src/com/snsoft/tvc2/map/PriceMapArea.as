@@ -301,7 +301,7 @@ package com.snsoft.tvc2.map{
 		}
 		
 		private function handlerListSmallTimerCMP(e:Event):void{
-			var timer:Timer = new Timer(5000,1);
+			var timer:Timer = new Timer(2000,1);
 			timer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerListBigEndTimerCMP);
 			timer.start();
 		}

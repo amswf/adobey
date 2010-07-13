@@ -13,6 +13,7 @@
 	import com.snsoft.util.ColorTransformUtil;
 	import com.snsoft.util.HashVector;
 	import com.snsoft.util.SpriteMove;
+	import com.snsoft.util.SpriteUtil;
 	import com.snsoft.util.TextFieldUtil;
 	
 	import fl.core.InvalidationType;
@@ -179,6 +180,7 @@
 			}
 			
 			if(sign){
+				SpriteUtil.deleteAllChild(smallPointsMC);//点显示太多了会很慢，先清除点，再抛完成事件。
 				this.dispatchEvent(new Event(Event.COMPLETE));
 			}
 		}
@@ -347,8 +349,8 @@
 					
 					//测试显示大量元件时性能
 					/*
-					for (var i:int =0; i < 10; i++) {
-						for (var j:int =0; j < 10; j++) {
+					for (var i:int =0; i < 20; i++) {
+						for (var j:int =0; j < 20; j++) {
 							var spdobj2:MovieClip = getDisplayObjectInstance(getStyleValue(SMALL_POINT_DEFAULT_SKIN)) as MovieClip;
 							spdobj2.x = (100 + 5 * i);
 							spdobj2.y = (100 + 5 * j);
@@ -359,7 +361,7 @@
 					
 					currentListMC = listMC;
 					smallPointsMC.addChild(listMC);
-					var timer:Timer = new Timer(2000,1);
+					var timer:Timer = new Timer(500,1);
 					timer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerListSmallStartTimerCMP);
 					timer.start();
 				}
@@ -431,7 +433,7 @@
 		
 		
 		private function handlerListSmallTimerCMP(e:Event):void{
-			var timer:Timer = new Timer(5000,1);
+			var timer:Timer = new Timer(2000,1);
 			timer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerListSmallEndTimerCMP);
 			timer.start();
 		}
@@ -579,7 +581,7 @@
 				priceBigPointsMC.addChild(listMC);
 				currentBroadcastListMC = listMC;
 				
-				var timer:Timer = new Timer(2000,1);
+				var timer:Timer = new Timer(500,1);
 				timer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerListBigStartTimerCMP);
 				timer.start();
 			}
@@ -622,7 +624,7 @@
 		}
 		
 		private function handlerListBigTimerCMP(e:Event):void{
-			var timer:Timer = new Timer(5000,1);
+			var timer:Timer = new Timer(2000,1);
 			timer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerListBigEndTimerCMP);
 			timer.start();
 		}
