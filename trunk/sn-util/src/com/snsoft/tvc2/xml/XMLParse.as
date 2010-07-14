@@ -247,10 +247,11 @@
 		 */		
 		private function parseBizsXML(bizsXMLList:XMLList):HashVector{
 			var bizDOHv:HashVector = new HashVector();
-			var sign:Boolean = false;
+			
 			for(var i:int = 0;i<bizsXMLList.length();i++){
 				var bizXML:XML = bizsXMLList[i];
 				var bizDO:BizDO = new BizDO();
+				var sign:Boolean = false;
 				
 				//解析  biz 的  var 变量
 				var varsXMLList:XMLList = bizXML.elements(TAG_VARS);
