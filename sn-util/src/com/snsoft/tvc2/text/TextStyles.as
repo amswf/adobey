@@ -16,6 +16,9 @@ package com.snsoft.tvc2.text{
 		//主标题
 		public static const STYLE_MAIN_TITLE:String = "mainTitle";
 		
+		//底部文字
+		public static const STYLE_MAIN_BOTTOM:String = "mainBottom";
+		
 		//业务标题
 		public static const STYLE_TITLE:String = "title";
 		
@@ -43,7 +46,8 @@ package com.snsoft.tvc2.text{
 		
 		public function TextStyles(){
 			styleHV = new HashVector();
-			styleHV.put(STYLE_MAIN_TITLE,new TextStyle(HZGBYS,40,0xC33137,0xffffff,0x000000,true));
+			styleHV.put(STYLE_MAIN_TITLE,new TextStyle(HZGBYS,40,0xC33137,0xffffff,0x000000,true,0,120));
+			styleHV.put(STYLE_MAIN_BOTTOM,new TextStyle(HZGBYS,18,0x000000,0xffffff,0x000000,true,30,-50));
 			styleHV.put(STYLE_TITLE,new TextStyle(HZGBYS,28,0xC33137,0xffffff,0x000000,true));
 			styleHV.put(STYLE_GOODS,new TextStyle(SIMHEI,20,0x000000,0xffffff,0x000000,true));	
 			styleHV.put(STYLE_DATE_TEXT,new TextStyle(SIMHEI,20,0x000000,0xffffff,0x000000,true));

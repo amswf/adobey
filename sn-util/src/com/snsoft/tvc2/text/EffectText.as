@@ -41,6 +41,8 @@ package com.snsoft.tvc2.text{
 				tft.color = color;
 			}
 			var tfd:TextField = creatShadowTextField(text,tft,textStyle.inSColor,textStyle.outSColor,textStyle.isEmbedFont);
+			tfd.x = textStyle.x;
+			tfd.y = textStyle.y;
 			return tfd;
 		}
 		public static function creatTextByStyleName(text:String,styleName:String,color:uint = 0xffffffff):TextField{

@@ -23,7 +23,7 @@
 		}   
 		
 		
-		private static function toCNUpper30(num:Number):Vector.<String>{
+		private static function toCNUpper30p00(num:Number):Vector.<String>{
 			var v:Vector.<String> = new Vector.<String>();
 			if(!isNaN(num)){
 				if(0 <= num && num <= 30.00){
@@ -53,8 +53,8 @@
 		public static function toCNUpper( num:Number,fixed:int = 2 ):Vector.<String>   
 		{ 
 			var moneyVector:Vector.<String> = new Vector.<String>();
-			if(0 <= num && num <= 30.00){
-				moneyVector = toCNUpper30(num);
+			if(0 <= num && num <= 30.00 && fixed == 2){
+				moneyVector = toCNUpper30p00(num);
 			}
 			else {
 				
