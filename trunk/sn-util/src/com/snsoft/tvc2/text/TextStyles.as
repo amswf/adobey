@@ -51,7 +51,7 @@ package com.snsoft.tvc2.text{
 			styleHV.put(STYLE_CUTLINE_TEXT,new TextStyle(SIMHEI,18,0x000000,0xffffff,0x000000,true));
 			styleHV.put(STYLE_DATA_TEXT,new TextStyle(SIMHEI,18,0x000000,0xffffff,0x000000,true));
 			styleHV.put(STYLE_LIST_TYPE_TEXT,new TextStyle(SIMHEI,20,0x000000,0xffffff,0x000000,true));
-			styleHV.put(STYLE_SOUND_TEXT,new TextStyle(SIMHEI,18,0x000000,0xffffff,0x000000,true));
+			styleHV.put(STYLE_SOUND_TEXT,new TextStyle(SIMHEI,14,0x000000,0xffffff,0x000000,true));
 		}
 		
 		public static function getTextStyle(name:String):TextStyle{
