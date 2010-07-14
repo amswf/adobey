@@ -14,7 +14,6 @@ package com.snsoft.tvc2.util{
 		}
 		
 		public static function setSpritePlace(sprite:Business,stageSize:Point,type:String = null):void{
-			
 			if(sprite != null && stageSize != null){
 				sprite.addEventListener(Business.EVENT_PLAYED,handlerAddToStage);
 			}
@@ -25,7 +24,7 @@ package com.snsoft.tvc2.util{
 						sprite.y = 0;
 					}
 					else if(type.indexOf("m") >= 0){
-						sprite.y = (stageSize.y - rect.height) / 2;
+						sprite.y = (stageSize.y - rect.height) / 2 - rect.y;
 					}
 					else if(type.indexOf("b") >= 0){
 						sprite.y = (stageSize.y - rect.height);
@@ -35,7 +34,7 @@ package com.snsoft.tvc2.util{
 						sprite.x = 0;
 					}
 					else if(type.indexOf("c") >= 0){
-						sprite.x = (stageSize.x - rect.width) / 2;
+						sprite.x = (stageSize.x - rect.width) / 2 - rect.x;
 					}
 					else if(type.indexOf("r") >= 0){
 						sprite.x = (stageSize.x - rect.width);
