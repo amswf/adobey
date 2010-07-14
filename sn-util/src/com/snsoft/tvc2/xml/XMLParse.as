@@ -22,7 +22,7 @@
 	
 	import flash.geom.Point;
 	
-	 
+	
 	
 	/**
 	 * xml解析 
@@ -103,7 +103,7 @@
 		
 		public static const ATT_S:String = "s";
 		
-	    public static const ATT_PLACE_TYPE:String = "placeType";
+		public static const ATT_PLACE_TYPE:String = "placeType";
 		
 		public static const ATT_SCALEX:String = "scaleX";
 		
@@ -247,6 +247,7 @@
 		 */		
 		private function parseBizsXML(bizsXMLList:XMLList):HashVector{
 			var bizDOHv:HashVector = new HashVector();
+			var sign:Boolean = false;
 			for(var i:int = 0;i<bizsXMLList.length();i++){
 				var bizXML:XML = bizsXMLList[i];
 				var bizDO:BizDO = new BizDO();
@@ -262,20 +263,34 @@
 				var dataXMLList:XMLList = bizXML.elements(TAG_DATA);
 				var dataDO:DataDO = this.parseDataXML(dataXMLList);
 				bizDO.dataDO = dataDO;
-				
+				if(bizDO.dataDO != null && bizDO.dataDO.data != null && bizDO.dataDO.data.length > 0){
+					sign = true;		
+				}
 				
 				//解析声音
 				var soundsXMLList:XMLList = bizXML.elements(TAG_SOUNDS);
 				bizDO.soundsHv = this.parseSoundsXML(soundsXMLList);
+				if(bizDO.soundsHv != null && bizDO.soundsHv.length > 0){
+					sign = true;
+				}
 				
 				//解析输出文字
 				var textOutsXMLList:XMLList = bizXML.elements(TAG_TEXTOUTS);
 				bizDO.textOutsHv = this.parseTextOutsXML(textOutsXMLList);
+				if(bizDO.textOutsHv != null && bizDO.textOutsHv.length > 0){
+					sign = true;
+				}
 				
 				//解析媒体文件，图片、flash
 				var mediasXMLList:XMLList = bizXML.elements(TAG_MEDIAS);
 				bizDO.mediasHv = this.parseMediasXML(mediasXMLList);
-				bizDOHv.put(String(i),bizDO);
+				if(bizDO.mediasHv != null && bizDO.mediasHv.length > 0){
+					sign = true;
+				}
+				
+				if(sign){
+					bizDOHv.put(String(i),bizDO);
+				}
 			}
 			return bizDOHv;
 		}
@@ -305,8 +320,10 @@
 					soundDO.url = soundAttributeHv.findByName(ATT_URL)as String;
 					soundv.push(soundDO);
 				}
-				soundsDO.soundDOHv = soundv;
-				ssv.put(String(i),soundsDO);
+				if(soundv.length > 0){
+					soundsDO.soundDOHv = soundv;
+					ssv.put(String(i),soundsDO);
+				}
 			}
 			return ssv;
 		}
@@ -341,8 +358,11 @@
 					textOutDO.style = textOutAttributeHv.findByName(ATT_STYLE)as String;
 					textOutv.push(textOutDO);
 				}
-				textOutsDO.textOutDOHv = textOutv;
-				ssv.put(String(i),textOutsDO);
+				
+				if(textOutv.length > 0){
+					textOutsDO.textOutDOHv = textOutv;
+					ssv.put(String(i),textOutsDO);
+				}
 			}
 			return ssv;
 		}
@@ -378,8 +398,11 @@
 					mediaDO.url = mediaAttributeHv.findByName(ATT_URL)as String
 					mediav.push(mediaDO);
 				}
-				mediasDO.mediaDOHv = mediav;
-				msv.put(String(i),mediasDO);
+				
+				if(mediav.length > 0){
+					mediasDO.mediaDOHv = mediav;
+					msv.put(String(i),mediasDO);
+				}
 			}
 			return msv;
 		}
