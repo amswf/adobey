@@ -17,8 +17,13 @@
 	import com.snsoft.tvc2.dataObject.TextPointDO;
 	import com.snsoft.tvc2.dataObject.TimeLineDO;
 	import com.snsoft.tvc2.dataObject.VarDO;
+	import com.snsoft.tvc2.text.TextStyle;
+	import com.snsoft.tvc2.text.TextStyles;
 	import com.snsoft.tvc2.util.StringUtil;
 	import com.snsoft.util.HashVector;
+	import com.snsoft.xmldom.Node;
+	import com.snsoft.xmldom.NodeList;
+	import com.snsoft.xmldom.XMLDom;
 	
 	import flash.geom.Point;
 	
@@ -81,6 +86,10 @@
 		
 		public static const TAG_MARKET_COORD:String = "marketCoord";
 		
+		public static const TAG_STYLES:String = "styles";
+		
+		public static const TAG_STYLE:String = "style";
+		
 		/**
 		 * Attribute name 
 		 */
@@ -121,10 +130,52 @@
 		
 		public static const ATT_UNIT_Y:String = "unitY";
 		
+		public static const ATT_FONT:String = "font";
+		
+		public static const ATT_SIZE:String = "size";
+		
+		public static const ATT_COLOR:String = "color";
+		
+		public static const ATT_INSCOLOR:String = "inSColor";
+		
+		public static const ATT_OUTSCOLOR:String = "outSColor";
+		
+		public static const ATT_ISEMBEDFONT:String = "isEmbedFont";
 		
 		public function XMLParse(){
 			
 		}
+		
+		/**
+		 * 解析样式XML，并且初始化样式到类TextStyles的静态属性中
+		 * @param xml
+		 * 
+		 */		
+		public function parseStyles(xml:XML):void{
+			var styles:Vector.<TextStyle> = new Vector.<TextStyle>();
+			var xc:XMLDom = new XMLDom(xml);
+			var node:Node = xc.parse();
+			var nodeList:NodeList = node.getNodeList(TAG_STYLES);
+			for(var i:int = 0;i<nodeList.length();i++){
+				var cnode:Node = nodeList.getNode(i);
+				var cnodeList:NodeList = cnode.getNodeList(TAG_STYLE);
+				for(var j:int = 0;j<cnodeList.length();j++){
+					var ccnode:Node = cnodeList.getNode(j);
+					var name:String = ccnode.getAttributeByName(ATT_NAME);
+					var font:String = ccnode.getAttributeByName(ATT_FONT);
+					var color:uint = uint(ccnode.getAttributeByName(ATT_COLOR));
+					var size:uint = uint(ccnode.getAttributeByName(ATT_SIZE));
+					var inSColor:uint = uint(ccnode.getAttributeByName(ATT_INSCOLOR));
+					var outSColor:uint = uint(ccnode.getAttributeByName(ATT_OUTSCOLOR));
+					var isEmbedFont:Boolean = Boolean(ccnode.getAttributeByName(ATT_ISEMBEDFONT));
+					var x:int = int(ccnode.getAttributeByName(ATT_X));
+					var y:int = int(ccnode.getAttributeByName(ATT_Y));
+					var textStyle:TextStyle = new TextStyle(font,size,color,inSColor,outSColor,isEmbedFont,x,y);
+					TextStyles.pushTextStyle(name,textStyle);
+				}
+			}
+		}
+		
 		
 		/**
 		 * 解析主数据XML 
