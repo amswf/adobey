@@ -44,22 +44,20 @@ package com.snsoft.tvc2.text{
 		public static const STYLE_SOUND_TEXT:String = "soundText";
 		
 		
+		/**
+		 * 此类不能  new 创建 
+		 * 
+		 */		
 		public function TextStyles(){
 			styleHV = new HashVector();
-			styleHV.put(STYLE_MAIN_TITLE,new TextStyle(HZGBYS,40,0xC33137,0xffffff,0x000000,true,0,120));
-			styleHV.put(STYLE_MAIN_BOTTOM,new TextStyle(HZGBYS,18,0x000000,0xffffff,0x000000,true,30,-50));
-			styleHV.put(STYLE_TITLE,new TextStyle(HZGBYS,28,0xC33137,0xffffff,0x000000,true));
-			styleHV.put(STYLE_GOODS,new TextStyle(SIMHEI,20,0x000000,0xffffff,0x000000,true));	
-			styleHV.put(STYLE_DATE_TEXT,new TextStyle(SIMHEI,20,0x000000,0xffffff,0x000000,true));
-			styleHV.put(STYLE_COOR_TEXT,new TextStyle(SIMHEI,18,0x000000,0xffffff,0x000000,true));
-			styleHV.put(STYLE_CUTLINE_TEXT,new TextStyle(SIMHEI,18,0x000000,0xffffff,0x000000,true));
-			styleHV.put(STYLE_DATA_TEXT,new TextStyle(SIMHEI,18,0x000000,0xffffff,0x000000,true));
-			styleHV.put(STYLE_LIST_TYPE_TEXT,new TextStyle(SIMHEI,20,0x000000,0xffffff,0x000000,true));
-			styleHV.put(STYLE_SOUND_TEXT,new TextStyle(SIMHEI,14,0x000000,0xffffff,0x000000,true));
 		}
 		
 		public static function getTextStyle(name:String):TextStyle{
 			return styleHV.findByName(name) as TextStyle;
+		}
+		
+		public static function pushTextStyle(name:String,textStyle:TextStyle):void{
+			styleHV.put(name,textStyle);
 		}
 	}
 }

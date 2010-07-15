@@ -56,6 +56,8 @@
 		
 		private var marketXmlUrl:String;
 		
+		private var styleXmlUrl:String;
+		
 		private var mainDO:MainDO;
 		
 		private var marketMainDO:MarketMainDO;
@@ -84,11 +86,12 @@
 		
 		private var timeLinePlayCmpNum:int = 0;
 		
-		public function Main(mainXmlUrl:String,marketXmlUrl:String){
+		public function Main(mainXmlUrl:String,marketXmlUrl:String,styleXmlUrl:String){
 			super();
 			
 			this.mainXmlUrl = mainXmlUrl;
 			this.marketXmlUrl = marketXmlUrl;
+			this.styleXmlUrl = styleXmlUrl;
 		}
 		
 		/**
@@ -108,6 +111,15 @@
 		override protected function draw():void{
 			//首先 loadEmbedFonts() 然后是 loadMarketXML() 和 loadMainXML();
 			loadEmbedFonts();
+		}
+		
+		private function loadStylesXML():void{
+			if(styleXmlUrl != null){				
+				var req:URLRequest = new URLRequest(styleXmlUrl);
+				var loader:URLLoader = new URLLoader();
+				loader.load(req);
+				loader.addEventListener(Event.COMPLETE,handlerLoadStyleCmp);
+			}
 		}
 		
 		private function loadMainXML():void{
@@ -137,6 +149,14 @@
 		
 		
 		private function handlerEmbedFontsCmp(e:Event):void{
+			loadStylesXML();
+		}
+		
+		private function handlerLoadStyleCmp(e:Event):void{
+			var loader:URLLoader = e.currentTarget as URLLoader;
+			var xml:XML = new XML(loader.data);
+			var parse:XMLParse = new XMLParse();
+			parse.parseStyles(xml);
 			loadMarketXML();
 		}
 		
