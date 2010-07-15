@@ -1,0 +1,128 @@
+package com.snsoft.xmldom{
+	import ascb.util.StringUtilities;
+	
+	import com.snsoft.util.HashVector;
+	import com.snsoft.xmldom.Attributes;
+	
+	import mx.messaging.channels.StreamingAMFChannel;
+	
+	/**
+	 * 解析XML为基本树
+	 *  
+	 * @author Administrator
+	 * 
+	 */	
+	public class XMLDom{
+		
+		private var xml:XML
+		
+		public function XMLDom(xml:XML){
+			this.xml = xml;
+		}
+		
+		/**
+		 * 解析XML为树对象 
+		 * @return 
+		 * 
+		 */		
+		public function parse():Node{
+			
+			var xdNode:Node = new Node();
+			var childNodeLists:HashVector = parseXMLList(xml);
+			xdNode.childNodeLists = childNodeLists;
+			return xdNode;
+		}
+		
+		/**
+		 * 解析结点下的子结点 
+		 * @param xml
+		 * @return 
+		 * 
+		 */		
+		private function parseXMLList(xml:XML):HashVector{
+			
+			var childNodeLists:HashVector = new HashVector();
+			var xmlChildNames:HashVector = new HashVector();
+			
+			var xmlChildren:XMLList = xml.children();
+			for(var i:int = 0;i<xmlChildren.length();i++){
+				var xmlChild:XML = xmlChildren[i];
+				var name:String = xmlChild.name();
+				if(xmlChildNames.findByName(name) == null){
+					xmlChildNames.put(name,name);
+				}
+			}
+			
+			for(var i2:int = 0;i2<xmlChildNames.length;i2++){
+				var nodeList:NodeList = new NodeList();
+				var childName:String = xmlChildNames.findByIndex(i2) as String;
+				var xmlElements:XMLList = xml.elements(childName);
+				for(var j2:int = 0;j2<xmlElements.length();j2++){
+					var xml:XML = xmlElements[j2];
+					var node:Node = parseXML(xml);
+					nodeList.pushNode(node);
+				}
+				childNodeLists.put(childName,nodeList);
+			}
+			return childNodeLists;
+		}
+		
+		/**
+		 * 解析获得结点 
+		 * @param xml
+		 * @return 
+		 * 
+		 */		
+		private function parseXML(xml:XML):Node{
+			var node:Node = new Node();
+			var atts:HashVector = getXMLAttributes(xml);
+			for(var i:int = 0;i<atts.length;i++){
+				var name:String = atts.findNameByIndex(i);
+				var value:String = atts.findByIndex(i) as String;
+				node.pushAttribute(name,value);
+			}
+			var childNodeLists:HashVector = parseXMLList(xml);
+			node.childNodeLists = childNodeLists;
+			return node;
+		}
+		
+		/**
+		 * 获得属性结点列表
+		 * @param xml
+		 * @return 
+		 * 
+		 */		
+		private function getXMLAttributes(xml:XML):HashVector{
+			var hv:HashVector = new HashVector();
+			var attributeXMLList:XMLList = xml.attributes();
+			for(var i:int = 0;i < attributeXMLList.length();i++){
+				var varAttributeXML:XML = attributeXMLList[i];
+				var name:String = varAttributeXML.name();
+				var value:String = varAttributeXML.toString();
+				if(isTextInvalid(name)){
+					hv.put(name,value);
+				}
+			}
+			return hv;
+		}
+		
+		/**
+		 * 检测标签文本是否为有效文本
+		 * @param value
+		 * 
+		 */		
+		private function isTextInvalid(...value):Boolean{
+			var values:Array = value;
+			if(values == null && values.length == 0){
+				return false;
+			}
+			for(var i:int = 0;i<values.length;i++){
+				var vl:String = values[i];	
+				if(vl == null || vl == "NaN" || StringUtilities.trim(vl).length == 0){
+					return false;
+				}
+			}
+			return true;
+		}
+	}
+}
