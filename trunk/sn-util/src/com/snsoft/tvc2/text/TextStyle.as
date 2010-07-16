@@ -1,6 +1,11 @@
 package com.snsoft.tvc2.text{
 	import flash.text.TextFormat;
 	
+	/**
+	 * 文本样式 
+	 * @author Administrator
+	 * 
+	 */	
 	public class TextStyle{
 		
 		//文字格式

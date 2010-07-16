@@ -1,4 +1,10 @@
 package com.snsoft.tvc2.bizSounds{
+	
+	/**
+	 * 图表语音合成数据对象 
+	 * @author Administrator
+	 * 
+	 */	
 	public class ChartSoundsDO{
 		
 		public static const DATE_TYPE_DAY:String = "day";
@@ -31,13 +37,13 @@ package com.snsoft.tvc2.bizSounds{
 		
 		private var _forecastContrastPrice:Number = NaN;//预测相差价格
 		
-		private var _priceExponentialTrend:int = NaN;
+		private var _priceExponentialTrend:int = NaN;//价格指数差值
 		
-		private var _forecastPriceExponentialTrend:int = NaN;
+		private var _forecastPriceExponentialTrend:int = NaN;//预测价格指数差值
 		
-		private var _hasHistory:Boolean = false;
+		private var _hasHistory:Boolean = false;//是否有历史数据
 		
-		private var _hasForecast:Boolean = false;
+		private var _hasForecast:Boolean = false;//是否有预测数据
 		
 		public function ChartSoundsDO()
 		{

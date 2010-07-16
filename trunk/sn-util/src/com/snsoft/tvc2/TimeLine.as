@@ -11,34 +11,53 @@ package com.snsoft.tvc2{
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
+	/**
+	 * 时间线 
+	 * @author Administrator
+	 * 
+	 */	
 	public class TimeLine extends UIComponent{
 		
+		//时间线数据对象
 		private var timeLineDO:TimeLineDO = new TimeLineDO();
 		
+		//当前播放业务下标
 		private var bizIndex:int = 0;
 		
+		//市场数据主对象
 		private var marketMainDO:MarketMainDO;
 		
+		//切换业务效果时，上一个业务
 		private var forwardBiz:Biz;
 		
+		//切换业务效果时，当前一个业务
 		private var currentBiz:Biz;
 		
+		//切换业务，添加计时器
 		private var switchAddTimer:Timer;
 		
+		//切换业务，移除计时器
 		private var switchRemoveTimer:Timer;
 		
+		//切换业务，计时器延时时长
 		private var switchTimerDelay:int = 20;
 		
+		//切换业务，计时器计数个数
 		private var switchTimerRepeatCount:int = 10;
 		
+		//切换业务，切换完成标记
 		private var switchTimerCmp:Boolean = false;
 		
+		//业务完成标记
 		private var bizCmp:Boolean = false;
 		
+		//切换业务，移动距离
 		private var switchMoveLenth:Number = 100;
 		
+		//时间线是否停止状态
 		private var isStop:Boolean = false;
 		
+		//时间线暂停计时器，暂停后计时器启动，等待时间线播放状态时播放下一个业务
 		private var playTimer:Timer;
 		
 		public function TimeLine(timeLineDO:TimeLineDO,marketMainDO:MarketMainDO){

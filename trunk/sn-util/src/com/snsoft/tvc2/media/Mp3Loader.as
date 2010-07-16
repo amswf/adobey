@@ -8,7 +8,12 @@ package com.snsoft.tvc2.media{
 	import flash.events.IOErrorEvent;
 	import flash.media.Sound;
 	import flash.net.URLRequest;
-
+	
+	/**
+	 * mp3加载工具 
+	 * @author Administrator
+	 * 
+	 */	
 	public class Mp3Loader extends EventDispatcher{
 		
 		public function Mp3Loader(dataObj:Object,target:IEventDispatcher = null){

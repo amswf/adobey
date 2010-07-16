@@ -22,6 +22,11 @@
 	
 	[Style(name="myTextFormat", type="Class")]
 	
+	/**
+	 * 柱体类 
+	 * @author Administrator
+	 * 
+	 */	
 	public class UIPillar extends Business{
 		
 		private var currentPillar:MovieClip;

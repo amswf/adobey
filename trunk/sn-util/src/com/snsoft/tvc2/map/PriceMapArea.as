@@ -37,38 +37,55 @@ package com.snsoft.tvc2.map{
 	
 	public class PriceMapArea extends Business{
 		
+		//背影地图
 		private var mapView:MapView;
 		
+		//主数据对象
 		private var dataDO:DataDO;
 		
+		//主数据对象数据列表
 		private var listDOV:Vector.<ListDO>;
 		
+		//主数据对象数据列表
 		private var listCount:int = 0;
 		
+		//上一个切换标题
 		private var forwardText:TextField;
 		
+		//下一个切换标题
 		private var currentText:TextField;
 		
+		//切换标题添加计时器
 		private var switchAddTimer:Timer;
 		
+		//切换标题移除计时器
 		private var switchRemoveTimer:Timer;
 		
+		//切换标题计时器延时时长
 		private var switchTimerDelay:int = 20;
 		
+		//切换标题计数次数
 		private var switchTimerRepeatCount:int = 10;
 		
+		//切换标题移动距离
 		private var switchMoveLenth:Number = 100;
 		
+		//声音播放完成
 		private var soundsCmp:Boolean = false;
 		
+		//地图块播放完成
 		private var areasCmp:Boolean = false;
 		
+		//语音当前播放下标
 		private var bizSoundIndex:int = 0;
 		
+		//地图名称
 		private var mapName:String;
 		
+		//市场信息组
 		private var marketCoordsDO:MarketCoordsDO;
 		
+		//市场信息主对象
 		private var marketMainDO:MarketMainDO;
 		
 		public function PriceMapArea(dataDO:DataDO ,mapName:String ,marketMainDO:MarketMainDO,mapView:MapView,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0){
@@ -189,6 +206,10 @@ package com.snsoft.tvc2.map{
 			this.removeChild(forwardText);
 		}
 		
+		/**
+		 * 播放地图块 
+		 * 
+		 */		
 		private function playAreaView():void{
 			var sign:Boolean = false;
 			if(soundsCmp && areasCmp){
@@ -237,6 +258,13 @@ package com.snsoft.tvc2.map{
 			playAreaView();
 		}
 		
+		/**
+		 * 播放音频 
+		 * @param bizSoundV
+		 * @param length
+		 * @param fun
+		 * 
+		 */		
 		private function playBizSound(bizSoundV:Vector.<Vector.<Sound>>,length:int,fun:Function):void{
 			var cbs:Vector.<Sound> = new Vector.<Sound>();
 			var startIndex:int = bizSoundIndex;
@@ -254,6 +282,12 @@ package com.snsoft.tvc2.map{
 			this.addChild(mp);
 		}
 		
+		/**
+		 * 设置地图块颜色 
+		 * @param index
+		 * @param alpha
+		 * 
+		 */		
 		private function setAreaColor(index:int,alpha:Number):void{
 			var listDO:ListDO = listDOV[index];
 			var tpdoHv:Vector.<TextPointDO> = listDO.listHv;
@@ -338,6 +372,12 @@ package com.snsoft.tvc2.map{
 			}
 		}
 		
+		/**
+		 * 样式颜色，以后需要外部配置 
+		 * @param i
+		 * @return 
+		 * 
+		 */		
 		private function getColor(i:int):uint{
 			var color:uint = 0x000000;
 			if(i == 0){

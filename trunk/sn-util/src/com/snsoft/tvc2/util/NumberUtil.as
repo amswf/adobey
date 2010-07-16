@@ -1,6 +1,11 @@
 package com.snsoft.tvc2.util{
 	import ascb.util.StringUtilities;
 
+	/**
+	 * 小数工具 
+	 * @author Administrator
+	 * 
+	 */	
 	public class NumberUtil{
 		public function NumberUtil()
 		{

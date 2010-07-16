@@ -1,12 +1,22 @@
 package com.snsoft.tvc2.dataObject{
+	
+	/**
+	 * 市场分布背景地图属性信息 
+	 * @author Administrator
+	 * 
+	 */	
 	public class MarketMap{
 		
+		//显示坐标 X
 		private var _x:Number;
 		
+		//显示坐标 Y
 		private var _y:Number;
 		
+		//显示坐标 Z
 		private var _z:Number;
 		
+		//缩放比率
 		private var _s:Number;
 		
 		public function MarketMap()

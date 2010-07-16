@@ -49,7 +49,16 @@
 	
 	import mx.messaging.management.Attribute;
 	
-	
+	/**
+	 * 主入口类 
+	 * 
+	 * 调用其它类对象，加载解析XML数据，加载XML数据对应的声音、图片、swf动画。
+	 * 
+	 * 启动控制业务播放。
+	 * 
+	 * @author Administrator
+	 * 
+	 */	
 	public class Main extends UIComponent{
 		
 		private var mainXmlUrl:String;

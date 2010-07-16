@@ -30,6 +30,11 @@
 	
 	[Style(name="myTextFormat", type="Class")]
 	
+	/**
+	 * 柱状图业务 
+	 * @author Administrator
+	 * 
+	 */	
 	public class UIPillarCharts extends UICoorChartBase{
 		
 		//点列表的列表

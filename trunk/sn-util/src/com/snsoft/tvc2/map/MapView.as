@@ -29,26 +29,36 @@ package com.snsoft.tvc2.map{
 		
 		public static const AREA_DOUBLE_CLICK_EVENT:String = "AREA_DOUBLE_CLICK_EVENT";
 		
+		//双击操作地图块
 		private var _doubleClickAreaView:AreaView;
 		
+		//地图数据对象
 		private var _workSpaceDO:WorkSpaceDO = null;
 		
+		//地图块按钮层
 		private var areaBtnsLayer:Sprite = new Sprite();
 		
+		//地图边线层
 		private var mapLinesLayer:Sprite = new Sprite();
 		
+		//背景层
 		private var backLayer:Sprite = new Sprite();
 		
+		//地图块信息标签光影效果层
 		private var lightShapesLayer:Sprite = new Sprite();
 		
 		private var LIGHT_SPACE:Number = 40;
 		
+		//背景遮罩四边形区域
 		private var _backMaskRec:Rectangle = null;
 		
+		//地图块列表
 		private var mapAreaViewHv:HashVector;
 		
+		//地图块显示完成个数
 		private var areaDrawCount:int = 0;
 		
+		//地图块是否全部显示完成
 		private var isDrawCmp:Boolean = false;
 		
 		public function MapView(){

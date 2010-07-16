@@ -1,12 +1,20 @@
 package com.snsoft.tvc2.dataObject{
 	import com.snsoft.util.HashVector;
 
+	/**
+	 * 时间线数据对象 
+	 * @author Administrator
+	 * 
+	 */
 	public class TimeLineDO{
 		
+		//名称
 		private var _name:String;
 		
+		//文本
 		private var _text:String;
 		
+		//业务数据对象列表
 		private var _bizDOHv:HashVector;
 		
 		public function TimeLineDO()

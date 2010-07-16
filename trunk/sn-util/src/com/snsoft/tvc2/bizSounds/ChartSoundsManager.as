@@ -1,6 +1,11 @@
 package com.snsoft.tvc2.bizSounds{
 	import com.snsoft.tvc2.util.PriceUtils;
 
+	/**
+	 * 图表数据语音合成类 
+	 * @author Administrator
+	 * 
+	 */	
 	public class ChartSoundsManager{
 		
 		private var baseUrl:String = "mp3/biz/";
@@ -8,6 +13,12 @@ package com.snsoft.tvc2.bizSounds{
 		public function ChartSoundsManager(){
 		}
 		
+		/**
+		 * 价格语音 
+		 * @param chartSoundsDO
+		 * @return 
+		 * 
+		 */		
 		public function creatPriceSoundUrlList(chartSoundsDO:ChartSoundsDO):BizSoundDO{
 			var urlv:Vector.<String> = new Vector.<String>();
 			var textv:Vector.<String> = new Vector.<String>();
@@ -149,7 +160,7 @@ package com.snsoft.tvc2.bizSounds{
 		}
 		
 		/**
-		 * 价格指数 
+		 * 价格指数语音
 		 * @param chartSoundsDO
 		 * @return 
 		 * 

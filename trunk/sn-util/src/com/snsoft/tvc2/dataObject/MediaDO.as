@@ -2,24 +2,38 @@ package com.snsoft.tvc2.dataObject{
 	import flash.display.DisplayObject;
 	import flash.geom.Point;
 
+	/**
+	 * 多媒体（图片、动画）数据对象 
+	 * @author Administrator
+	 * 
+	 */	
 	public class MediaDO{
 		
+		//名称
 		private var _name:String;
 		
+		//延时播放的时间（多长时间后开始播放）
 		private var _timeOffset:int;
 		
+		//最小播放时长
 		private var _timeLength:int;
 		
+		//最大播放时长
 		private var _timeout:int;
 		
+		//文本
 		private var _text:String;
 		
+		//文件地址
 		private var _url:String;
 		
+		//显示位置
 		private var _place:Point;
 		
+		//位置类型，参考PlaceType类
 		private var _placeType:String;
 		
+		//图片、动画列表
 		private var _mediaList:Vector.<DisplayObject>;
 		
 		public function MediaDO()

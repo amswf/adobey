@@ -33,7 +33,11 @@ package com.snsoft.tvc2.chart{
 	
 	[Style(name="myTextFormat", type="Class")]
 	
-	
+	/**
+	 * 坐标系显示组件 
+	 * @author Administrator
+	 * 
+	 */	
 	public class UICoor extends UIComponent{
 		
 		private var coorSprite:Sprite;
@@ -60,14 +64,16 @@ package com.snsoft.tvc2.chart{
 		
 		private var unitX:String;
 		
-		private var unitY:String;
+		private var unitY:String;	
 		
 		/**
 		 * 
-		 * @param xGradNum x 轴刻度个数
-		 * @param yGradNum y 轴刻度个数
-		 * @param xGradValue x 轴单位刻度代表的坐标值
-		 * @param yGradValue y 轴单位刻度代表的坐标值
+		 * @param xGradVector x 轴刻度显示文字列表
+		 * @param yGradVector y 轴刻度显示文字列表
+		 * @param unitX X坐标单位
+		 * @param unitY Y坐标单位
+ 		 * @param xGradType X 坐标显示类型 刻度/区间 显示刻度文字
+		 * @param yGradType Y 坐标显示类型 刻度/区间 显示刻度文字
 		 * 
 		 */		
 		public function UICoor(xGradVector:Vector.<String> = null,yGradVector:Vector.<String> = null,unitX:String="",unitY:String="",xGradType:String = "POINT" ,yGradType:String = "POINT"){

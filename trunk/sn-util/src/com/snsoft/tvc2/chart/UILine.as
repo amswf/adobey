@@ -23,6 +23,11 @@
 	
 	[Style(name="myTextFormat", type="Class")]
 	
+	/**
+	 * 折线类 
+	 * @author Administrator
+	 * 
+	 */	
 	public class UILine extends Business{
 		
 		private var currentLine:MovieClip;

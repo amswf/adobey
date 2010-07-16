@@ -12,6 +12,11 @@ package com.snsoft.tvc2.media{
 	import flash.net.URLRequest;
 	import flash.system.LoaderContext;
 	
+	/**
+	 * 多媒体（图片、动画）加载工具 
+	 * @author Administrator
+	 * 
+	 */	
 	public class MediaLoader extends EventDispatcher{
 		
 		//媒体文件列表	

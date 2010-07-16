@@ -5,13 +5,24 @@ package com.snsoft.tvc2.chart{
 	
 	import flash.geom.Point;
 	
+	/**
+	 * 图表业务基类 
+	 * @author Administrator
+	 * 
+	 */	
 	public class UICoorChartBase extends Business{
 		public function UICoorChartBase()
 		{
 			super();
 		}
 		
-		//计算出显示数值显示位置，保证Y坐标不重合
+		/**
+		 * 计算出显示数值显示位置，保证Y坐标不重合
+		 * @param charPointDOVV
+		 * @param yMin
+		 * @return 
+		 * 
+		 */		
 		protected function calculatePointTextPlace(charPointDOVV:Vector.<Vector.<CharPointDO>>,yMin:Number):Vector.<Vector.<CharPointDO>>{
 			var maxpvLen:int = 0;
 			for(var iMax:int =0;iMax<charPointDOVV.length;iMax++){

@@ -1,4 +1,9 @@
 package com.snsoft.tvc2.util{
+	/**
+	 * 计数器 
+	 * @author Administrator
+	 * 
+	 */	
 	public class Counter{
 		
 		private var _count:int = 0;

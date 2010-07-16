@@ -22,14 +22,23 @@ package com.snsoft.tvc2.map{
 	
 	[Style(name="myTextFormat", type="Class")]
 	
+	/**
+	 * 显示地图分块 
+	 * @author Administrator
+	 * 
+	 */	
 	public class AreaView extends UIComponent{
 		
+		//地图块数据对象
 		private var _mapAreaDO:MapAreaDO = null;
 		
+		//地图块按钮层
 		private var areaBtnLayer:Sprite = new Sprite();
 		
+		//地图块名称层
 		private var areaNameLayer:Sprite = new Sprite();
 		
+		//标记是否显示完成
 		private var isDrawCmp:Boolean = false;
 		/**
 		 * 

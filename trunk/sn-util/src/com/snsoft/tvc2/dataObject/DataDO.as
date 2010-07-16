@@ -2,30 +2,40 @@ package com.snsoft.tvc2.dataObject{
 	import flash.media.Sound;
 	
 	/**
-	 * 
+	 * 业务主数据对象
 	 * @author Administrator
 	 * 
 	 */	
 	public class DataDO{
 		
+		//类型
 		private var _type:String = null;
 		
+		//主数据
 		private var _data:Vector.<ListDO> = null;
 		
+		//x 坐标刻度文本
 		private var _xGraduationText:Vector.<ListDO> = null;
 		
+		//y 坐标刻度文本
 		private var _yGraduationText:Vector.<ListDO> = null;
 		
+		//价格分布业务价格播报数据列表
 		private var _broadcast:Vector.<ListDO> = null;
 		
+		//价格分析集中地区信息列表
 		private var _des:Vector.<ListDO> = null;
 		
+		//x 轴数值单位
 		private var _unitX:String;
 		
+		//y 轴数据单位
 		private var _unitY:String;
 		
+		//业务语音列表
 		private var _bizSoundList:Vector.<Vector.<Sound>> = null;
 		
+		//业务语音文本列表
 		private var _bizSoundTextList:Vector.<Vector.<String>> = null;
 		
 		public function DataDO()

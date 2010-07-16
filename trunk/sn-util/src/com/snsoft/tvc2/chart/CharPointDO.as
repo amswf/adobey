@@ -1,13 +1,18 @@
 package com.snsoft.tvc2.chart{
 	import flash.geom.Point;
 
+	/**
+	 * 图表显示数据对象 
+	 * @author Administrator
+	 * 
+	 */	
 	public class CharPointDO{
 		
-		private var _point:Point;
+		private var _point:Point;//图型显示坐标
 		
-		private var _pointText:String;
+		private var _pointText:String;//显示的文本值
 		
-		private var _pointTextPlace:Point;
+		private var _pointTextPlace:Point;//显示文本的位置
 		
 		public function CharPointDO()
 		{

@@ -26,6 +26,11 @@
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
+	/**
+	 * 折线图业务 
+	 * @author Administrator
+	 * 
+	 */	
 	public class UILineCharts extends UICoorChartBase{
 		
 		//点列表的列表

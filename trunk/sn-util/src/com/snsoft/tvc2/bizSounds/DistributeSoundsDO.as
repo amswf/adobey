@@ -1,6 +1,11 @@
 package com.snsoft.tvc2.bizSounds{
 	import com.snsoft.tvc2.dataObject.TextPointDO;
 
+	/**
+	 * 价格分布语音合成数据对象
+	 * @author Administrator
+	 * 
+	 */	
 	public class DistributeSoundsDO{
 		
 		public static const DATE_TYPE_DAY:String = "day";

@@ -5,6 +5,11 @@ package com.snsoft.tvc2.media{
 	
 	import flash.events.Event;
 	
+	/**
+	 * mp3 组播放 
+	 * @author Administrator
+	 * 
+	 */	
 	public class Mp3sPlayer extends Business{
 		
 		private var soundsDO:SoundsDO;

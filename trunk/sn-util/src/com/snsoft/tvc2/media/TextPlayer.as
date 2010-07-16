@@ -9,6 +9,11 @@ package com.snsoft.tvc2.media{
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
+	/**
+	 * 文本播放 
+	 * @author Administrator
+	 * 
+	 */	
 	public class TextPlayer extends Business{
 		
 		//声音列表 Sound 对象
