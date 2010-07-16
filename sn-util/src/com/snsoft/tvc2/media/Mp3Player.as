@@ -8,6 +8,11 @@ package com.snsoft.tvc2.media{
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
 	
+	/**
+	 * mp3播放 
+	 * @author Administrator
+	 * 
+	 */	
 	public class Mp3Player extends Business{
 		
 		public static var sound_Volume:Number = 1;

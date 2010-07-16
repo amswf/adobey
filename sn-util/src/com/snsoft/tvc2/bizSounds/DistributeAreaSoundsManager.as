@@ -1,4 +1,10 @@
 package com.snsoft.tvc2.bizSounds{
+	
+	/**
+	 * 区域分布语音合成类 
+	 * @author Administrator
+	 * 
+	 */	
 	public class DistributeAreaSoundsManager{
 		
 		private var baseUrl:String = "mp3/biz/";
@@ -7,6 +13,12 @@ package com.snsoft.tvc2.bizSounds{
 		{
 		}
 		
+		/**
+		 * 价格区域分布语音合成 
+		 * @param distributeAreaSoundsDO
+		 * @return 
+		 * 
+		 */		
 		public function creatDistributeAreaUrlList(distributeAreaSoundsDO:DistributeAreaSoundsDO):BizSoundDO{
 			var currentDate:String = "";
 			var nextDate:String = "";

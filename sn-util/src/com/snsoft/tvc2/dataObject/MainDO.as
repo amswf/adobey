@@ -1,12 +1,18 @@
 package com.snsoft.tvc2.dataObject{
 	import com.snsoft.util.HashVector;
 
+	
+	/**
+	 * 系统主数据对象（数据xml解析结果对象）
+	 * @author Administrator
+	 * 
+	 */	
 	public class MainDO{
 		
-		// vars
+		//主数据变量 VarDO 列表
 		private var _mainVarDOHv:HashVector = new HashVector();
 		
-		// timeLines
+		//时间线 TimeLinesDO 列表
 		private var _timeLineDOHv:HashVector = new HashVector();
 		
 		public function MainDO()	{

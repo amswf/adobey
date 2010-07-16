@@ -3,8 +3,14 @@ package com.snsoft.tvc2.dataObject{
 	
 	import com.snsoft.util.HashVector;
 	
+	/**
+	 * 市场主数据对象 
+	 * @author Administrator
+	 * 
+	 */	
 	public class MarketMainDO{
 		
+		//市场组列表
 		private var _marketCoordsDOHV:HashVector;
 		
 		

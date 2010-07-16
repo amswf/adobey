@@ -6,29 +6,38 @@ package com.snsoft.tvc2.dataObject{
 	import flash.display.DisplayObject;
 	import flash.media.Sound;
 
+	/**
+	 * 业务类数据对象 
+	 * @author Administrator
+	 * 
+	 */	
 	public class BizDO{
 		
-		// vars
+		// 变量      VarDO 列表
 		private var _varDOHv:HashVector = null;
 		
-		//data DO
+		// 业务主数据
 		private var _dataDO:DataDO = null;
 		
-		//sounds
+		//声音 SoundsDO 列表
 		private var _soundsHv:HashVector = null;
 		
-		//textOuts
+		//文本 TextOutsDO 列表
 		private var _textOutsHv:HashVector = null;
 		
-		//medias
+		//图片/动画 MediasDO 列表
 		private var _mediasHv:HashVector = null;
 		
+		//业务数据类型
 		private var _type:String = null;
 		
+		//xml生成的地图
 		private var _mapView:MapView = null;
 		
+		//图片或动画地图
 		private var _distributeMap:DisplayObject = null;
 		
+		//地图名称
 		private var _mapName:String = null;
 		
 		public function BizDO()

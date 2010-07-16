@@ -9,6 +9,11 @@ package com.snsoft.tvc2.media{
 	import flash.display.Sprite;
 	import flash.events.Event;
 	
+	/**
+	 * 多媒体（图片、动画）播放 
+	 * @author Administrator
+	 * 
+	 */	
 	public class MediaPlayer extends Business{
 		
 		private var playingMedia:DisplayObject;

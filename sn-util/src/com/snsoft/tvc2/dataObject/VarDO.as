@@ -1,12 +1,16 @@
 package com.snsoft.tvc2.dataObject{
 	import com.snsoft.util.HashVector;
-
+	
+	/**
+	 * 变量对象
+	 * @author Administrator
+	 * 
+	 */
 	public class VarDO{
 		
 		public static const NAME:String = "name";
-		/**
-		 * 参数对像 
-		 */		
+		
+		//变量属性和值列表
 		private var hv:HashVector = new HashVector();
 		
 		public function VarDO(){

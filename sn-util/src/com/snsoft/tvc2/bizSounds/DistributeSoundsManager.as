@@ -4,6 +4,11 @@ package com.snsoft.tvc2.bizSounds{
 	import com.snsoft.tvc2.util.PriceUtils;
 	import com.snsoft.tvc2.util.StringUtil;
 	
+	/**
+	 * 价格分布语音合成类 
+	 * @author Administrator
+	 * 
+	 */	
 	public class DistributeSoundsManager{
 		
 		private var baseUrl:String = "mp3/biz/";
@@ -12,6 +17,12 @@ package com.snsoft.tvc2.bizSounds{
 		{
 		}
 		
+		/**
+		 * 价格分布语音合成 
+		 * @param distributeSoundsDO
+		 * @return 
+		 * 
+		 */		
 		public function creatPriceSoundUrlList(distributeSoundsDO:DistributeSoundsDO):BizSoundDO{
 			var currentDate:String = "";
 			var nextDate:String = "";

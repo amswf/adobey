@@ -28,6 +28,14 @@
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
+	/**
+	 * 业务类
+	 * 
+	 * 播放业务，播放声音组，播放媒体组，播放文本组。
+	 *  
+	 * @author Administrator
+	 * 
+	 */	
 	public class Biz extends UIComponent{
 		
 		private var bizDO:BizDO;

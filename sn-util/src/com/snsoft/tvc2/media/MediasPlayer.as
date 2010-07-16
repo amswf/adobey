@@ -8,6 +8,11 @@ package com.snsoft.tvc2.media{
 	
 	import flash.events.Event;
 	
+	/**
+	 *  多媒体（图片、动画）组播放 
+	 * @author Administrator
+	 * 
+	 */	
 	public class MediasPlayer extends Business{
 		
 		private var mediasDO:MediasDO;

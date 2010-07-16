@@ -1,6 +1,11 @@
 package com.snsoft.tvc2.text{
 	import com.snsoft.util.HashVector;
 
+	/**
+	 * 文本样式管理 
+	 * @author Administrator
+	 * 
+	 */	
 	public class TextStyles{
 		
 		public static const HZGBYS:String = "HZGBYS";
@@ -52,10 +57,22 @@ package com.snsoft.tvc2.text{
 			styleHV = new HashVector();
 		}
 		
+		/**
+		 * 获得样式  
+		 * @param name 样式名称
+		 * @return 
+		 * 
+		 */		
 		public static function getTextStyle(name:String):TextStyle{
 			return styleHV.findByName(name) as TextStyle;
 		}
 		
+		/**
+		 * 设置样式 
+		 * @param name 样式名称
+		 * @param textStyle 样式对象
+		 * 
+		 */		
 		public static function pushTextStyle(name:String,textStyle:TextStyle):void{
 			styleHV.put(name,textStyle);
 		}

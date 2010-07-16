@@ -9,6 +9,11 @@ package com.snsoft.tvc2.media{
 	import flash.events.Event;
 	import flash.text.TextFormat;
 	
+	/**
+	 * 文本组播放 
+	 * @author Administrator
+	 * 
+	 */	
 	public class TextsPlayer extends Business{
 		
 		private var textOutsDO:TextOutsDO;

@@ -12,6 +12,11 @@ package com.snsoft.tvc2.source{
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	
+	/**
+	 * 背影地图加载 
+	 * @author Administrator
+	 * 
+	 */	
 	public class AreaMapLoader extends EventDispatcher{
 		
 		private var areaMapName:String;

@@ -4,6 +4,11 @@ package com.snsoft.tvc2.util{
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	
+	/**
+	 * 帧率计时器 
+	 * @author Administrator
+	 * 
+	 */	
 	public class FrameTimer extends EventDispatcher{
 		
 		//帧时间 ，播放一帧需要的时间

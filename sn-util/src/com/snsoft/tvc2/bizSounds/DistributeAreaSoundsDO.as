@@ -1,4 +1,10 @@
 package com.snsoft.tvc2.bizSounds{
+	
+	/**
+	 * 价格区域分布语音合成数据对象
+	 * @author Administrator
+	 * 
+	 */	
 	public class DistributeAreaSoundsDO{
 		
 		public static const DATE_TYPE_DAY:String = "day";

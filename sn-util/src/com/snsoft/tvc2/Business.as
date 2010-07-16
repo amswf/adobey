@@ -5,6 +5,16 @@ package com.snsoft.tvc2{
 	
 	import flash.events.Event;
 	
+	/**
+	 * 业务播放基类
+	 * 
+	 * 此类实现了控制开始延时，最小播放时长，最大播放时长
+	 * 
+	 * 子类继承此方法，重写initPlay() play() dispatchEventState();
+	 *  
+	 * @author Administrator
+	 * 
+	 */	
 	public class Business extends UIComponent{
 		
 		public static var EVENT_PLAYED:String = "EVENT_PLAYED";

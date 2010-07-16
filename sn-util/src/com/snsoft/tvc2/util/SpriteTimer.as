@@ -7,6 +7,11 @@ package com.snsoft.tvc2.util{
 	import flash.geom.Point;
 	import flash.utils.Timer;
 	
+	/**
+	 * 显示对象控制移动 
+	 * @author Administrator
+	 * 
+	 */	
 	public class SpriteTimer extends EventDispatcher{
 		
 		private var px:uint;

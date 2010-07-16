@@ -1,10 +1,19 @@
 package com.snsoft.tvc2.dataObject{
+	
+	/**
+	 * 业务主数据单元 
+	 * @author Administrator
+	 * 
+	 */	
 	public class TextPointDO{
 		
+		//名称
 		private var _name:String;
 		
+		//文本
 		private var _text:String;
 		
+		//值
 		private var _value:String;
 		
 		public function TextPointDO()

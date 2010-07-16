@@ -5,24 +5,38 @@ package com.snsoft.tvc2.dataObject{
 	
 	import flash.display.DisplayObject;
 
+	/**
+	 * 市场信息组 
+	 * @author Administrator
+	 * 
+	 */	
 	public class MarketCoordsDO{
 		
+		//名称
 		private var _name:String;
 		
+		//值
 		private var _value:String;
 		
+		//文本
 		private var _text:String;
 		
+		//显示坐标 X
 		private var _x:Number;
 		
+		//显示坐标 Y
 		private var _y:Number;
 		
+		//显示坐标 Z
 		private var _z:Number;
 		
+		//缩放比率
 		private var _s:Number;
 		
+		//市场信息单元列表
 		private var _marketCoordDOHV:HashVector;
 		
+		//市场背景地图图片列表
 		private var _imageList:Vector.<DisplayObject>;
 		
 		public function MarketCoordsDO()

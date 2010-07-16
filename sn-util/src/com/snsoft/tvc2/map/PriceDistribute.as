@@ -31,81 +31,125 @@
 	import flash.text.TextFormat;
 	import flash.utils.Timer;
 	
+	/**
+	 * 价格分布业务实现 
+	 * 
+	 * 先显示市场价格分布，再对某几个特殊市场价格播报
+	 * 
+	 * @author Administrator
+	 * 
+	 */	
 	public class PriceDistribute extends Business{
 		
 		//点列表的列表
 		private var _dataDO:DataDO;
 		
+		//市场信息主数据对象
 		private var marketMainDO:MarketMainDO;
 		
+		//市场分布背景地图
 		private var marketMap:MarketMap;
 				
+		//市场价格分布点个数
 		private var listSmallCount:int = 0;
 		
+		//市场价格播报个数
 		private var broadcastListCount:int = 0;
-		
+
+		//市场价格播报计数
 		private var broadcastCount:int = 0;
 		
+		//市场价格播报列表当前播报市场下标
 		private var broadcastNum:int = 0;
 		
+		//市场价格分布数据列表
 		private var listDOV:Vector.<ListDO>;
 		
+		//市场价格播报数据列表
 		private var broadcastListDOV:Vector.<ListDO>;
 		
+		//市场信息组对象
 		private var marketCoordsDO:MarketCoordsDO;
 		
+		//市场价格分布点闪动效果计时器
 		private var listSmallTimer:Timer;
 		
+		//当前市场价格分布点列表显示父MC
 		private var currentListMC:Sprite;
 		
+		//当前市场价格播报列表显示父MC
 		private var currentBroadcastListMC:Sprite;
 		
+		//市场价格分布背景地图
 		private var mapView:MapView;
 		
+		//图例所在的MC
 		private var cutLine:Sprite;
 		
+		//上一个市场价格播报、市场价格分布每组信息的标题
 		private var forwardText:TextField;
 		
+		//当前市场价格播报、市场价格分布每组信息的标题
 		private var currentText:TextField;
 		
+		//添加信息的标题计时器
 		private var switchAddTimer:Timer;
 		
+		//移除切换信息的标题计时器
 		private var switchRemoveTimer:Timer;
 		
+		//切换信息的标题计时器延时时长
 		private var switchTimerDelay:int = 20;
 		
+		//切换信息的标题计时器计数次数
 		private var switchTimerRepeatCount:int = 10;
 		
+		//信息的标题切换时移动距离
 		private var switchMoveLenth:Number = 100;
 		
+		//标记是否需要信息的标题
 		private var switchBigPointSign:Boolean = false;
 		
+		//市场价格分布点父MC
 		private var smallPointsMC:Sprite = new Sprite();
 		
+		//价格播报市场指示元件的父MC
 		private var pricePointersMC:Sprite = new Sprite();
 		
+		//价格播报市场点元件的父MC
 		private var priceBigPointsMC:Sprite = new Sprite();
 		
+		//价格标签动画效果遮罩
 		private var priceMask:MovieClip;
 		
+		//价格标签动画效果遮罩计时器延时时长
 		private var priceMaskTimerDelay:int = 20;
 		
+		//价格标签动画效果遮罩计时器计数次数
 		private var priceMaskTimerRepeatCount:int = 20;
 		
+		//价格标签动画效果遮罩效果完成
 		private var priceMaskMoveCmp:Boolean = false;
 		
+		//价格标签排序列表
 		private var priceCardOrder:Vector.<int>;
 		
+		//价格分布播放完成
 		private var smallPlayCmp:Boolean = false;
 		
+		//价格分布语音播放完成
 		private var smallSoundsCmp:Boolean = false;
 		
+		//价格播报播放完成
 		private var bigPlayCmp:Boolean = false;
 		
+		//价格播报语音播放完成
 		private var bigSoundsCmp:Boolean = false;
 		
+		//语音列表下标
 		private var bizSoundIndex:int = 0;
 		
+		//价格分布背景地图名称
 		private var mapName:String;
 		
 		public function PriceDistribute(dataDO:DataDO,mapName:String,marketMainDO:MarketMainDO,marketMap:MarketMap,mapView:MapView,delayTime:Number = 0,timeLength:Number = 0,timeOut:Number = 0)	{
@@ -204,6 +248,7 @@
 			this.listSmallCount = 0;
 			this.broadcastListCount = 0;
 			
+			//价格标签 y 坐标方向排序序号，防止指示线交插
 			priceCardOrder = new Vector.<int>();
 			var yv:Vector.<Number> = new Vector.<Number>;
 			if(broadcastListDOV != null){
@@ -226,6 +271,7 @@
 			priceCardOrder = getOrderVector(yv);
 			//trace(priceCardOrder);
 			
+			//生成图例
 			cutLine = new Sprite();
 			var rect:Rectangle = this.mapView.getRect(this);
 			cutLine.x = rect.x + rect.width;
@@ -264,6 +310,7 @@
 			playSmallPoint();
 		}
 		
+		//播放语音
 		private function playBizSound(bizSoundV:Vector.<Vector.<Sound>>,length:int,fun:Function):void{
 			var cbs:Vector.<Sound> = new Vector.<Sound>();
 			var startIndex:int = bizSoundIndex;
@@ -281,6 +328,12 @@
 			this.addChild(mp);
 		}
 		
+		/**
+		 * 计算价格标签排序 
+		 * @param vv
+		 * @return 
+		 * 
+		 */		
 		private function getOrderVector(vv:Vector.<Number>):Vector.<int>{
 			var ov:Vector.<int> = new Vector.<int>();
 			var cpvv:Vector.<Number> = new Vector.<Number>();
@@ -311,6 +364,10 @@
 			return rv;
 		}
 		
+		/**
+		 * 显示市场分布点 
+		 * 
+		 */		
 		private function playSmallPoint():void{
 			if(smallPlayCmp && smallSoundsCmp){
 				smallPlayCmp = false;
@@ -387,6 +444,7 @@
 			playSmallPoint();
 		}
 		
+		
 		private function handlerSwitchAdd(e:Event):void{
 			var palpha:Number = 1 / switchTimerRepeatCount;
 			var px:Number = switchMoveLenth / switchTimerRepeatCount;
@@ -451,7 +509,10 @@
 			playSmallPoint();
 		}
 		
-
+		/**
+		 *开始播报某几个市场的价格信息 
+		 * 
+		 */		
 		private function playStartBigGroupPoint():void{
 			if(priceMaskMoveCmp && bigPlayCmp && bigSoundsCmp){
 				bigPlayCmp = false;
@@ -495,6 +556,10 @@
 			playBigPoint();
 		}
 		
+		/**
+		 * 播报某几个市场的价格信息 
+		 * 
+		 */		
 		private function playBigPoint():void{
 			var index:int = this.broadcastListCount;
 			
@@ -671,6 +736,12 @@
 			return rate;
 		}
 		
+		/**
+		 * 样式颜色，以后需外部配置 
+		 * @param i
+		 * @return 
+		 * 
+		 */		
 		private function getColor(i:int):uint{
 			var color:uint = 0x000000;
 			if(i == 0){

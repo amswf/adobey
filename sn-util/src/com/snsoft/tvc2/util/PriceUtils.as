@@ -4,7 +4,7 @@
 	
 	
 	/**  
-	 * 主要功能把阿拉伯数字单位转换成中文大写  
+	 * 把阿拉伯数字单位转换成语音文件序列
 	 * @author marcoLee  
 	 */    
 	public class PriceUtils   
@@ -22,7 +22,13 @@
 			
 		}   
 		
-		
+		/**
+		 * 小于30的小数，用此优化算法，声音会好听点。
+		 * 可增加语音文件，使本方法支持更大数值。 
+		 * @param num
+		 * @return 
+		 * 
+		 */		
 		private static function toCNUpper30p00(num:Number):Vector.<String>{
 			var v:Vector.<String> = new Vector.<String>();
 			if(!isNaN(num)){
