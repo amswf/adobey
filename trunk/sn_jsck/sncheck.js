@@ -179,7 +179,7 @@ var SnJsckForm = function(formId) {
 						sign = sign && false;
 					}
 				}
-				else if (!isNaN(maxlen) && maxlen >= 0) {
+			 	if (!isNaN(maxlen) && maxlen >= 0) {
 					if (eleValueLen > maxlen) {
 						alertMsg(nele, cmsgStr + "　:" + "长度不能大于" + maxlen);
 						sign = sign && false;
