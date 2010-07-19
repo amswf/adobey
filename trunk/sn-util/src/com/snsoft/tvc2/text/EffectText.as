@@ -35,6 +35,14 @@ package com.snsoft.tvc2.text{
 			return tfd;
 		}
 		
+		/**
+		 * 通过样式创建文本
+		 * @param text 显示文字
+		 * @param textStyle 文本样式
+		 * @param color 文本颜色
+		 * @return 
+		 * 
+		 */		
 		public static function creatTextByStyle(text:String,textStyle:TextStyle,color:uint = 0xffffffff):TextField{
 			var tft:TextFormat = textStyle.textFormat;
 			if(color <= 0xffffff){
@@ -45,6 +53,15 @@ package com.snsoft.tvc2.text{
 			tfd.y = textStyle.y;
 			return tfd;
 		}
+		
+		/**
+		 * 通过样式名称创建文本 
+		 * @param text 显示文字
+		 * @param styleName 文本样式名称
+		 * @param color 文本颜色
+		 * @return 
+		 * 
+		 */		
 		public static function creatTextByStyleName(text:String,styleName:String,color:uint = 0xffffffff):TextField{
 			var tfd:TextField = creatTextByStyle(text,TextStyles.getTextStyle(styleName),color);
 			return tfd;
