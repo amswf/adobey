@@ -28,6 +28,7 @@
 			import com.snsoft.tvc2.util.PriceUtils;
 			import com.snsoft.tvc2.xml.XMLParse;
 			import com.snsoft.util.ColorTransformUtil;
+			import com.snsoft.util.SpriteMove;
 			import com.snsoft.xmldom.XMLDom;
 			private function init():void{
 				var parse:XMLParse = new XMLParse();
@@ -54,6 +55,7 @@
 				var priceMapArea:PriceMapArea;
 				//parse.parseTvcMainXML(xml);
 				var xd:XMLDom;
+				var spriteMove:SpriteMove;
 			}
 		]]>
 	</fx:Script>
