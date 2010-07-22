@@ -22,8 +22,7 @@ package com.snsoft.tvc2{
 		 */		
 		public static const stageFrameRate:int = 24;
 		
-		public function SystemConfig()
-		{
+		public function SystemConfig(){
 		}
 	}
 }
