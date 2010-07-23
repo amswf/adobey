@@ -650,7 +650,7 @@
 							break;
 						}
 					}
-					
+
 					for(var i22:int = tpdoHv.length -1;i22 >= 0;i22 --){
 						var tpdo22:TextPointDO = tpdoHv[i22];
 						var tpvalue22:Number = Number(tpdo22.value); 
@@ -659,7 +659,7 @@
 							highPrice = tpvalue22;
 						}
 						
-						if(tpvalue22 < lowPrice){
+						if(tpvalue22 < lowPrice && tpvalue22 > 0){
 							lowPrice = tpvalue22;
 						}
 					}
