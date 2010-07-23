@@ -227,8 +227,9 @@
 					var titleVDO:VarDO = bizDO.varDOHv.findByName("title") as VarDO;
 					var baseY:Number = 35;
 					if(titleVDO != null){
-						var titleVar:String = String(titleVDO.getAttribute("text"));
+						var titleVar:String = titleVDO.getAttribute("text") as String;
 						if(StringUtil.isEffective(titleVar)){
+							trace("titleVar",titleVar);
 							var titleTfd:TextField = EffectText.creatTextByStyleName(titleVar,TextStyles.STYLE_TITLE);
 							titleTfd.x = ( SystemConfig.stageSize.x - titleTfd.width ) / 2;
 							titleTfd.y = baseY;
@@ -241,7 +242,7 @@
 					
 					var dateTextVDO:VarDO = bizDO.varDOHv.findByName("dateText") as VarDO;
 					if(dateTextVDO != null){
-						var dateTextVar:String = String(dateTextVDO.getAttribute("text"));
+						var dateTextVar:String = dateTextVDO.getAttribute("text")as String;
 						if(StringUtil.isEffective(dateTextVar)){
 							var dateTextTfd:TextField = EffectText.creatTextByStyleName(dateTextVar,TextStyles.STYLE_DATE_TEXT);
 							dateTextTfd.x = ( SystemConfig.stageSize.x - dateTextTfd.width ) / 2;
@@ -255,7 +256,7 @@
 					
 					var marketVDO:VarDO = bizDO.varDOHv.findByName("market") as VarDO;
 					if(marketVDO != null){
-						var marketVar:String = String(marketVDO.getAttribute("text"));
+						var marketVar:String = marketVDO.getAttribute("text") as String;
 						if(StringUtil.isEffective(marketVar)){
 							var marketTfd:TextField = EffectText.creatTextByStyleName(marketVar,TextStyles.STYLE_GOODS);
 							marketTfd.x = ( SystemConfig.stageSize.x - marketTfd.width ) / 2;

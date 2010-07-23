@@ -579,7 +579,6 @@
 						|| StringUtil.isEffective(textPointDO.value)){
 						sign = true;	
 					}
-					
 					tpv.push(textPointDO);
 				}
 				listDO.listHv = tpv;
@@ -627,35 +626,21 @@
 		private function getXMLAttributes(xml:XML):HashVector{
 			var hv:HashVector = new HashVector();
 			var attributeXMLList:XMLList = xml.attributes();
+			//trace("XMLAttributes:");
 			for(var i:int = 0;i < attributeXMLList.length();i++){
 				var varAttributeXML:XML = attributeXMLList[i];
 				var name:String = varAttributeXML.name();
 				var value:String = varAttributeXML.toString();
-				//trace(name,value,isTextInvalid(name));
-				if(isTextInvalid(name)){
+				//trace(StringUtil.isEffective(value));
+				if(StringUtil.isEffective(value)){
+					//trace(name,value);
 					hv.put(name,value);
 				}
 			}
+			//trace("hv.length",hv.length);
 			return hv;
 		}
 		
-		/**
-		 * 检测标签文本是否为有效文本
-		 * @param value
-		 * 
-		 */		
-		private function isTextInvalid(...value):Boolean{
-			var values:Array = value;
-			if(values == null && values.length == 0){
-				return false;
-			}
-			for(var i:int = 0;i<values.length;i++){
-				var vl:String = values[i];	
-				if(vl == null || vl == "NaN" || StringUtilities.trim(vl).length == 0){
-					return false;
-				}
-			}
-			return true;
-		}
+		 
 	}
 }
