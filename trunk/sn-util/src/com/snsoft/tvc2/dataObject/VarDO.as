@@ -24,7 +24,7 @@ package com.snsoft.tvc2.dataObject{
 		 * 
 		 */		
 		public function setAttribute(name:String,value:Object):void{
-			hv.put(name,value);
+			hv.push(value,name);
 		}
 		
 		/**

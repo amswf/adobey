@@ -258,7 +258,7 @@
 				ma.refresh();
 				var hv:HashVector = ma.mapAreaDO.pointArray;
 				var name:String = MapPointsManager.creatHashArrayHashName(hv);
-				this.manager.mapAreaDOAry.put(name,ma.mapAreaDO);
+				this.manager.mapAreaDOAry.push(ma.mapAreaDO,name);
 				this.dispatchEvent(new Event(EVENT_MAP_AREA_UPDATE));
 			}
 		}

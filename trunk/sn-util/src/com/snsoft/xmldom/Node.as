@@ -73,7 +73,7 @@ package com.snsoft.xmldom{
 		 * 
 		 */		
 		public function pushNodeList(name:String,nodeList:NodeList):void{
-			childNodeLists.put(name,nodeList);
+			childNodeLists.push(nodeList,name);
 		}
 
 		/**

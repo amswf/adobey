@@ -76,7 +76,7 @@ package com.snsoft.mapview.util{
 										if (px.text() != null && py.text() != null) {
 											p = new Point(Number(px.text()),Number(py.text()));
 											var name:String = MapPointsManager.createPointHashName(p);
-											pha.put(name,p);
+											pha.push(p,name);
 										}
 									}
 								}
@@ -84,7 +84,7 @@ package com.snsoft.mapview.util{
 						}
 						mado.pointArray = pha;
 						var haName:String = MapPointsManager.creatHashArrayHashName(pha);
-						madoha.put(haName,mado);
+						madoha.push(mado,haName);
 					}
 				}
 			}

@@ -6,6 +6,7 @@
 		<![CDATA[
 			import ascb.util.DateFormat;
 			
+			import com.snsoft.map.MapMain;
 			import com.snsoft.tvc2.Business;
 			import com.snsoft.tvc2.Main;
 			import com.snsoft.tvc2.TimeLine;
@@ -56,6 +57,7 @@
 				//parse.parseTvcMainXML(xml);
 				var xd:XMLDom;
 				var spriteMove:SpriteMove;
+				var mm:MapMain;
 			}
 		]]>
 	</fx:Script>
