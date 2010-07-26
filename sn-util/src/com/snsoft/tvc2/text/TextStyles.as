@@ -74,7 +74,7 @@ package com.snsoft.tvc2.text{
 		 * 
 		 */		
 		public static function pushTextStyle(name:String,textStyle:TextStyle):void{
-			styleHV.put(name,textStyle);
+			styleHV.push(textStyle,name);
 		}
 	}
 }

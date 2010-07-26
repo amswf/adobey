@@ -47,7 +47,7 @@ package com.snsoft.tvc2.dataObject{
 			if(marketCoordDO != null){
 				var name:String = marketCoordDO.name;
 				if(name != null && StringUtilities.trim(name).length > 0){
-					marketCoordDOHV.put(name,marketCoordDO);
+					marketCoordDOHV.push(marketCoordDO,name);
 				}
 			}
 		}

@@ -192,7 +192,7 @@
 			var loader:URLLoader = e.currentTarget as URLLoader;
 			var xml:XML = new XML(loader.data);
 			var wsdo:WorkSpaceDO = MapViewXMLLoader.creatWorkSpaceDO(xml,this.mapXmlName);
-			this.wsdoCatchHv.put(wsdo.wsName,wsdo);
+			this.wsdoCatchHv.push(wsdo,wsdo.wsName);
 			this.refreshMapView(wsdo);
 		}
 		

@@ -236,7 +236,7 @@
 				var mcdoHv:HashVector = parseMarketCoord(marketCoordXMLList);
 				marketCoordsDO.marketCoordDOHV = mcdoHv;
 				//trace("marketCoordsDO.name",marketCoordsDO.name);
-				hv.put(marketCoordsDO.name,marketCoordsDO);
+				hv.push(marketCoordsDO,marketCoordsDO.name);
 			}
 			return hv;
 		}
@@ -261,7 +261,7 @@
 				marketCoordDO.z = Number(mcaHv.findByName(ATT_Z));
 				marketCoordDO.s = Number(mcaHv.findByName(ATT_S));
 				//trace("marketCoordDO.name",marketCoordDO.name);
-				hv.put(marketCoordDO.name,marketCoordDO);
+				hv.push(marketCoordDO,marketCoordDO.name);
 			}
 			return hv;
 		}
@@ -285,7 +285,7 @@
 				//解析业务列表
 				var bizsXMLList:XMLList = timeLineXML.elements(TAG_BIZ);
 				timeLineDO.bizDOHv = this.parseBizsXML(bizsXMLList);
-				timeLinesDOHv.put(String(i),timeLineDO);
+				timeLinesDOHv.push(timeLineDO);
 			}
 			return timeLinesDOHv;
 		}
@@ -341,7 +341,7 @@
 				}
 				
 				if(sign){
-					bizDOHv.put(String(i),bizDO);
+					bizDOHv.push(bizDO);
 				}
 			}
 			return bizDOHv;
@@ -374,7 +374,7 @@
 				}
 				if(soundv.length > 0){
 					soundsDO.soundDOHv = soundv;
-					ssv.put(String(i),soundsDO);
+					ssv.push(soundsDO);
 				}
 			}
 			return ssv;
@@ -413,7 +413,7 @@
 				
 				if(textOutv.length > 0){
 					textOutsDO.textOutDOHv = textOutv;
-					ssv.put(String(i),textOutsDO);
+					ssv.push(textOutsDO);
 				}
 			}
 			return ssv;
@@ -453,7 +453,7 @@
 				
 				if(mediav.length > 0){
 					mediasDO.mediaDOHv = mediav;
-					msv.put(String(i),mediasDO);
+					msv.push(mediasDO);
 				}
 			}
 			return msv;
@@ -610,7 +610,7 @@
 						var value:String = varAttributeHv.findByIndex(k) as String;
 						vdo.setAttribute(name,value);
 					}
-					v.put(vdoName,vdo);
+					v.push(vdo,vdoName);
 				}
 			}
 			//trace(v.length);
@@ -634,7 +634,7 @@
 				//trace(StringUtil.isEffective(value));
 				if(StringUtil.isEffective(value)){
 					//trace(name,value);
-					hv.put(name,value);
+					hv.push(value,name);
 				}
 			}
 			//trace("hv.length",hv.length);

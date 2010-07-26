@@ -20,7 +20,7 @@ package com.snsoft.xmldom{
 		 * 
 		 */		
 		public function push(name:String,value:String):void{
-			hv.put(name,value);
+			hv.push(value,name);
 		}
 		
 		/**

@@ -134,7 +134,7 @@ package com.snsoft.tvc2.map{
 							av.mapAreaDO = mado;
 							av.drawNow();
 							areaBtnsLayer.addChild(av);
-							mapAreaViewHv.put(mado.areaName,av);
+							mapAreaViewHv.push(av,mado.areaName);
 						}
 					}
 					

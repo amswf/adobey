@@ -32,13 +32,13 @@
 				var mdfm:MapDataFileManager = new MapDataFileManager();
 				
 				var hv:HashVector = new HashVector();
-				hv.put("a",1);
+				hv.push(1,"a");
 				trace(hv.toArray());
-				hv.put("b",2);
+				hv.push(2,"b");
 				trace(hv.toArray());
 				hv.removeByName("a");
 				trace(hv.toArray());
-				hv.put("c",3);
+				hv.push(3,"c");
 				trace(hv.toArray());
 				hv.removeByName("b");
 				trace(hv.toArray());

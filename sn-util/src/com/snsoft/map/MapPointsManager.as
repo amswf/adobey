@@ -144,7 +144,7 @@
 												}
 												var fp:Point = pa.findByIndex(startIndex) as Point;
 												var fpname:String = MapPointsManager.createPointHashName(fp);
-												fastPointArray.put(fpname,fp);
+												fastPointArray.push(fp,fpname);
 												if(startIndex == indexp) break;
 											}
 										}
@@ -274,7 +274,7 @@
 		private function addPointToCpaAndHt(point:Point):void{
 			//添加到当前链中
 			var name:String = MapPointsManager.createPointHashName(point);
-			this.currentPointAry.put(name,point);
+			this.currentPointAry.push(point,name);
 			//注册碰撞检测
 			this.hitTest.addPoint(point);
 		}
@@ -288,7 +288,7 @@
 			var doa:MapAreaDO = new MapAreaDO();
 			doa.pointArray = cpa;
 			var hn:String = MapPointsManager.creatHashArrayHashName(cpa);
-			this.mapAreaDOAry.put(hn,doa);
+			this.mapAreaDOAry.push(doa,hn);
 			this._currentPointAry = new HashVector();
 		}
 		

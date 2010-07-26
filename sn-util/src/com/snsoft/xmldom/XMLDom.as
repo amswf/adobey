@@ -52,7 +52,7 @@ package com.snsoft.xmldom{
 				var xmlChild:XML = xmlChildren[i];
 				var name:String = xmlChild.name();
 				if(xmlChildNames.findByName(name) == null){
-					xmlChildNames.put(name,name);
+					xmlChildNames.push(name,name);
 				}
 			}
 			
@@ -65,7 +65,7 @@ package com.snsoft.xmldom{
 					var node:Node = parseXML(xml);
 					nodeList.pushNode(node);
 				}
-				childNodeLists.put(childName,nodeList);
+				childNodeLists.push(nodeList,childName);
 			}
 			return childNodeLists;
 		}
@@ -105,7 +105,7 @@ package com.snsoft.xmldom{
 				var name:String = varAttributeXML.name();
 				var value:String = varAttributeXML.toString();
 				if(StringUtil.isEffective(name)){
-					hv.put(name,value);
+					hv.push(value,name);
 				}
 			}
 			return hv;

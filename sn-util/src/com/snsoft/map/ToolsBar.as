@@ -62,7 +62,7 @@ package com.snsoft.map
 			btn.x = this.toolSpacePoint.x;
 			btn.y = (this.toolSpacePoint.y + btn.height) * this.toolBtnHashArray.length;
 			this.addChild(btn);
-			this.toolBtnHashArray.put(toolBtn.toolEventType,btn);
+			this.toolBtnHashArray.push(btn,toolBtn.toolEventType);
 			btn.addEventListener(MouseEvent.CLICK,handlerToolBtnClick);
 		}
 		

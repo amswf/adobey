@@ -63,7 +63,7 @@ package com.snsoft.map.tree
 		 * 
 		 */		
 		public function put(name:String,btn:TreeNodeButton):void{
-			this.v.put(name,btn);
+			this.v.push(btn,name);
 			btn.name = name;
 			btn.addEventListener(TreeNodeButton.TREE_CLICK,handlerMskMouseClick);
 			this.drawNow();

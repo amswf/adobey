@@ -1,7 +1,9 @@
 package com.snsoft.util{
 	
 	/**
-	 * 查找的速度最优处理，添加，删除时慢，为的是碰撞点检测点过多时，保持效率。 
+	 * 自定义的哈稀列表
+	 * 
+	 * 查找的速度最优处理，添加，删除时稍慢，保持效率。 
 	 * @author Administrator
 	 * 
 	 */	
@@ -26,7 +28,10 @@ package com.snsoft.util{
 		 * @param value
 		 * 
 		 */		
-		public function put(name:String,value:Object):void{
+		public function push(value:Object,name:String = null):void{
+			if(name == null){
+				name = String(this.length + 1);
+			}
 			var i:int = this.findIndexByName(name);
 			if(i>=0){
 				valueVec[i] = value;

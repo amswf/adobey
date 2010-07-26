@@ -170,7 +170,7 @@
 			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_ADD,handlerMapAreaChange);
 			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_DELETE,handlerMapAreaChange);
 			ws.addEventListener(WorkSpace.EVENT_MAP_AREA_UPDATE,handlerMapAreaChange);
-			this.workSpaceHashVector.put(wsName,ws);
+			this.workSpaceHashVector.push(ws,wsName);
 		}
 		
 		
@@ -295,7 +295,7 @@
 				var ws:WorkSpace = new WorkSpace(new Point(this.wsw,this.wsh));
 				ws.initFromSaveData(wsdo);
 				ws.wsName = wsName;
-				this.workSpaceHashVector.put(wsName,ws);
+				this.workSpaceHashVector.push(ws,wsName);
 			}
 			var rootWsName:String = MapDataFileManager.MAP_FILE_DEFAULT_NAME;
 			var rootWs:WorkSpace = this.workSpaceHashVector.findByName(rootWsName) as WorkSpace; 
@@ -340,7 +340,7 @@
 			areaAttribute.setareaName(an);
 			areaAttribute.setareaNameX(String(mado.areaNamePlace.x));
 			areaAttribute.setareaNameY(String(mado.areaNamePlace.y));
-			this.workSpaceHashVector.put(this.ws.wsName,this.ws);
+			this.workSpaceHashVector.push(this.ws,this.ws.wsName);
 		}
 		
 		
@@ -448,7 +448,7 @@
 				
 				//相关联属性设置
 				this.wsAttribute.refreshMapAreaListBtn(null);
-				this.workSpaceHashVector.put(wsName,ws);
+				this.workSpaceHashVector.push(ws,wsName);
 				this.ws.dispatchEvent(new Event(WorkSpace.EVENT_MAP_AREA_ADD));
 			}
 		}
