@@ -18,6 +18,10 @@ package com.snsoft.xmldom{
 		 */		
 		private var _childNodeLists:HashVector = new HashVector();
 		
+		private var _name:String;
+		
+		private var _text:String;
+		
 		public function Node()
 		{
 		}
@@ -89,6 +93,27 @@ package com.snsoft.xmldom{
 		{
 			_childNodeLists = value;
 		}
+
+		public function get name():String
+		{
+			return _name;
+		}
+
+		public function set name(value:String):void
+		{
+			_name = value;
+		}
+
+		public function get text():String
+		{
+			return _text;
+		}
+
+		public function set text(value:String):void
+		{
+			_text = value;
+		}
+
 
 	}
 }

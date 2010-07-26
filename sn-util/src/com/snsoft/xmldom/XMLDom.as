@@ -1,6 +1,7 @@
 package com.snsoft.xmldom{
 	import ascb.util.StringUtilities;
 	
+	import com.snsoft.tvc2.util.StringUtil;
 	import com.snsoft.util.HashVector;
 	import com.snsoft.xmldom.Attributes;
 	
@@ -28,6 +29,8 @@ package com.snsoft.xmldom{
 		public function parse():Node{
 			
 			var xdNode:Node = new Node();
+			xdNode.name = xml.name();
+			xdNode.text = xml.text();
 			var childNodeLists:HashVector = parseXMLList(xml);
 			xdNode.childNodeLists = childNodeLists;
 			return xdNode;
@@ -75,6 +78,8 @@ package com.snsoft.xmldom{
 		 */		
 		private function parseXML(xml:XML):Node{
 			var node:Node = new Node();
+			node.name = xml.name();
+			node.text = xml.text();
 			var atts:HashVector = getXMLAttributes(xml);
 			for(var i:int = 0;i<atts.length;i++){
 				var name:String = atts.findNameByIndex(i);
@@ -99,30 +104,11 @@ package com.snsoft.xmldom{
 				var varAttributeXML:XML = attributeXMLList[i];
 				var name:String = varAttributeXML.name();
 				var value:String = varAttributeXML.toString();
-				if(isTextInvalid(name)){
+				if(StringUtil.isEffective(name)){
 					hv.put(name,value);
 				}
 			}
 			return hv;
-		}
-		
-		/**
-		 * 检测标签文本是否为有效文本
-		 * @param value
-		 * 
-		 */		
-		private function isTextInvalid(...value):Boolean{
-			var values:Array = value;
-			if(values == null && values.length == 0){
-				return false;
-			}
-			for(var i:int = 0;i<values.length;i++){
-				var vl:String = values[i];	
-				if(vl == null || vl == "NaN" || StringUtilities.trim(vl).length == 0){
-					return false;
-				}
-			}
-			return true;
 		}
 	}
 }
