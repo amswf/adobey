@@ -1,4 +1,4 @@
-package com.snsoft.util
+package com.snsoft.relative
 {
 	import flash.display.Sprite;
 	

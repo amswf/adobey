@@ -2,7 +2,7 @@
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
 	<mx:Script>
 		<![CDATA[
-			import com.snsoft.util.RelativePlace;
+			import com.snsoft.relative.RelativePlace;
 			public function init():void{
 				
 				var rp:RelativePlace = new RelativePlace(stage);

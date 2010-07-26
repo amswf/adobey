@@ -3,7 +3,7 @@
 	<mx:Script>
 		<![CDATA[
 			
-			import com.snsoft.util.RelativePoint;
+			import com.snsoft.relative.RelativePoint;
 	
 			import flash.display.Sprite;
 			
