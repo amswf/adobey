@@ -23,14 +23,14 @@ package com.snsoft.util{
 		}
 		
 		/**
-		 * 添加
-		 * @param name
-		 * @param value
+		 * 添加 
+		 * @param name 名字为空时，自动生成一个名字，但名字不对外使用
+		 * @param value 值
 		 * 
 		 */		
 		public function push(value:Object,name:String = null):void{
 			if(name == null){
-				name = String(this.length + 1);
+				name = String(new Date().getTime()) + "_" + String(this.length + 1);
 			}
 			var i:int = this.findIndexByName(name);
 			if(i>=0){
