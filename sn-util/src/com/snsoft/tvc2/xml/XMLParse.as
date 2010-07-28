@@ -151,7 +151,8 @@
 		 * @param xml
 		 * 
 		 */		
-		public function parseStyles(xml:XML):void{
+		public function parseStyles(xml:XML):HashVector{
+			var hv:HashVector = new HashVector();
 			var styles:Vector.<TextStyle> = new Vector.<TextStyle>();
 			var xc:XMLDom = new XMLDom(xml);
 			var node:Node = xc.parse();
@@ -171,9 +172,10 @@
 					var x:int = int(ccnode.getAttributeByName(ATT_X));
 					var y:int = int(ccnode.getAttributeByName(ATT_Y));
 					var textStyle:TextStyle = new TextStyle(font,size,color,inSColor,outSColor,isEmbedFont,x,y);
-					TextStyles.pushTextStyle(name,textStyle);
+					hv.push(textStyle,name);
 				}
 			}
+			return hv;
 		}
 		
 		
