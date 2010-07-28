@@ -92,10 +92,14 @@
 			if (ary != null) {
 				for (var i:int =0; i<ary.length; i++) {
 					var name:String = ary[i] as String;
-					if (name != null && name.length > 0) {
-						this.fontNameAry.push(name);
-					}
+					addFontName(name);
 				}
+			}
+		}
+		
+		public function addFontName(fontName:String):void{
+			if (fontName != null && fontName.length > 0) {
+				this.fontNameAry.push(fontName);
 			}
 		}
 

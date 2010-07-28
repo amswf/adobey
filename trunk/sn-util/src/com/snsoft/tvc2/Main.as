@@ -29,10 +29,14 @@
 	import com.snsoft.tvc2.media.Mp3Loader;
 	import com.snsoft.tvc2.media.Mp3Player;
 	import com.snsoft.tvc2.source.AreaMapLoader;
+	import com.snsoft.tvc2.text.TextStyle;
+	import com.snsoft.tvc2.text.TextStyles;
 	import com.snsoft.tvc2.util.PriceUtils;
 	import com.snsoft.tvc2.util.StringUtil;
 	import com.snsoft.tvc2.xml.XMLParse;
 	import com.snsoft.util.HashVector;
+	import com.snsoft.xmldom.Node;
+	import com.snsoft.xmldom.XMLDom;
 	
 	import fl.controls.Button;
 	import fl.core.InvalidationType;
@@ -46,6 +50,7 @@
 	import flash.media.Sound;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
+	import flash.text.TextFormat;
 	
 	import mx.messaging.management.Attribute;
 	
@@ -118,8 +123,8 @@
 		 * 
 		 */		
 		override protected function draw():void{
-			//首先 loadEmbedFonts() 然后是 loadMarketXML() 和 loadMainXML();
-			loadEmbedFonts();
+			//首先 loadStylesXML 然后loadEmbedFonts() 然后是 loadMarketXML() 和 loadMainXML();
+			loadStylesXML();
 		}
 		
 		private function loadStylesXML():void{
@@ -149,24 +154,46 @@
 			}
 		}
 		
-		private function loadEmbedFonts():void{
-			var ef:EmbedFonts = new EmbedFonts("SimHei","HZGBYS","MicrosoftYaHei");
-			ef.loadFontSwf();
-			ef.addEventListener(Event.COMPLETE,handlerEmbedFontsCmp);
-			ef.addEventListener(EmbedFontsEvent.IO_ERROR,handlerIOError);
+		private function loadEmbedFonts(fontNameV:Vector.<String>):void{
+			if(fontNameV != null && fontNameV.length > 0){
+				var ef:EmbedFonts = new EmbedFonts();
+				for(var i:int =0;i<fontNameV.length;i++){
+					ef.addFontName(fontNameV[i]);
+				}
+				ef.loadFontSwf();
+				ef.addEventListener(Event.COMPLETE,handlerEmbedFontsCmp);
+				ef.addEventListener(EmbedFontsEvent.IO_ERROR,handlerIOError);
+			}
 		}
 		
 		
 		private function handlerEmbedFontsCmp(e:Event):void{
-			loadStylesXML();
+			loadMarketXML();
 		}
 		
 		private function handlerLoadStyleCmp(e:Event):void{
 			var loader:URLLoader = e.currentTarget as URLLoader;
 			var xml:XML = new XML(loader.data);
 			var parse:XMLParse = new XMLParse();
-			parse.parseStyles(xml);
-			loadMarketXML();
+			var hv:HashVector = parse.parseStyles(xml);
+			var fontNameV:Vector.<String> = new Vector.<String>();
+			var fontNameHv:HashVector = new HashVector();
+			for(var i:int =0;i<hv.length;i++){
+				var name:String = hv.findNameByIndex(i);
+				var textStyle:TextStyle = hv.findByIndex(i) as TextStyle;
+				TextStyles.pushTextStyle(name,textStyle);
+				var textFormat:TextFormat = textStyle.textFormat;
+				if(textFormat != null){
+					var font:String = textFormat.font;
+					if(StringUtil.isEffective(font)){
+						fontNameHv.push(font,font);
+					}
+				}
+			}
+			for(var i2:int =0;i2<fontNameHv.length;i2++){
+				fontNameV.push(fontNameHv.findByIndex(i2) as String);
+			}
+			loadEmbedFonts(fontNameV);
 		}
 		
 		private function handlerIOError(e:EmbedFontsEvent):void{
@@ -235,7 +262,7 @@
 								for(var j:int = 0;j < bizDOHv.length;j ++){
 									var bizDO:BizDO = bizDOHv.findByIndex(j) as BizDO;
 									var varDOHv:HashVector = bizDO.varDOHv;
-		
+									
 									if(varDOHv != null && varDOHv.length > 0){
 										
 										var gvalue:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_VALUE);
@@ -538,7 +565,7 @@
 						highDesV = highDesListDO.listHv;
 					}
 				}
-	
+				
 				var gName:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_VALUE);
 				var gText:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_TEXT);
 				var dateType:String = getVarAttribute(varDOHv,VAR_DATE_TYPE,XMLParse.ATT_VALUE);
@@ -650,7 +677,7 @@
 							break;
 						}
 					}
-
+					
 					for(var i22:int = tpdoHv.length -1;i22 >= 0;i22 --){
 						var tpdo22:TextPointDO = tpdoHv[i22];
 						var tpvalue22:Number = Number(tpdo22.value); 
