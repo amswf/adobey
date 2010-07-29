@@ -76,5 +76,9 @@ package com.snsoft.tvc2.text{
 		public static function pushTextStyle(name:String,textStyle:TextStyle):void{
 			styleHV.push(textStyle,name);
 		}
+		
+		public static function getStyles():HashVector{
+			return styleHV;
+		}
 	}
 }
