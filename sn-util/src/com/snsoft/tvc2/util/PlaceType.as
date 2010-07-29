@@ -31,28 +31,41 @@ package com.snsoft.tvc2.util{
 			}
 			function handlerAddToStage(e:Event):void{				
 				var rect:Rectangle = sprite.getRect(sprite.parent);
-				if(type != null){
-					if(type.indexOf("t") >= 0){
-						sprite.y = 0;
-					}
-					else if(type.indexOf("m") >= 0){
-						sprite.y = (stageSize.y - rect.height) / 2 - rect.y;
-					}
-					else if(type.indexOf("b") >= 0){
-						sprite.y = (stageSize.y - rect.height);
-					}
-					
-					if(type.indexOf("l") >= 0){
-						sprite.x = 0;
-					}
-					else if(type.indexOf("c") >= 0){
-						sprite.x = (stageSize.x - rect.width) / 2 - rect.x;
-					}
-					else if(type.indexOf("r") >= 0){
-						sprite.x = (stageSize.x - rect.width);
-					}
+				setSpritePlaceByRect(sprite,rect,stageSize,type);
+			}
+		}
+		
+		/**
+		 * 
+		 * @param sprite 要设置的显示对象
+		 * @param rect 元件矩形边界
+		 * @param stageSize 场景宽高
+		 * @param type 位置类型 ，水平：无 / 左 l /中 c / 右 r ，垂直：无 / 上 t / 中 m / 下 l
+		 * 
+		 */		
+		public static function setSpritePlaceByRect(sprite:Sprite,rect:Rectangle,stageSize:Point,type:String = null):void{
+			if(type != null){
+				if(type.indexOf("t") >= 0){
+					sprite.y = 0;
+				}
+				else if(type.indexOf("m") >= 0){
+					sprite.y = (stageSize.y - rect.height) / 2 - rect.y;
+				}
+				else if(type.indexOf("b") >= 0){
+					sprite.y = (stageSize.y - rect.height);
+				}
+				
+				if(type.indexOf("l") >= 0){
+					sprite.x = 0;
+				}
+				else if(type.indexOf("c") >= 0){
+					sprite.x = (stageSize.x - rect.width) / 2 - rect.x;
+				}
+				else if(type.indexOf("r") >= 0){
+					sprite.x = (stageSize.x - rect.width);
 				}
 			}
 		}
+		
 	}
 }
