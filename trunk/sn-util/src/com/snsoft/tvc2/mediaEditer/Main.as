@@ -15,13 +15,15 @@ package com.snsoft.tvc2.mediaEditer{
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.external.ExternalInterface;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
+	import flash.system.fscommand;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
-
+	
 	public class Main extends MovieClip{
 		
 		private var styleXmlUrl:String = "tvc.text.style.xml";
@@ -93,7 +95,38 @@ package com.snsoft.tvc2.mediaEditer{
 			this.addChild(mediaAttributes);
 			mediaAttributes.addEventListener(MediaAttributes.ATTRIBUTES_CHANGE_EVENT,handlerAttributeChange);
 			
-			this.addEffectText("哈哈哈",new Point(),"mc","mainTitle");
+			this.addEffectText("哈哈哈",0,0,"mc","mainTitle");
+			
+			
+			initComplete();
+			
+		}
+		
+		private function initComplete():void {
+			try {
+				trace("fscommand(\"initComplete\")");
+				fscommand("initComplete");
+			} catch (e:Error) {
+				
+			}
+			try {
+				ExternalInterface.addCallback("addEffectText",addEffectText);
+			} catch (e:Error) {
+				
+			}
+		}
+		
+		private function callBackMediaAttribute():void{
+			var media:Media = mediaAttributes.media
+			if(media != null){
+				var style:String = "<style name=\""+media.style+"\" placeType=\""+media.placeType+"\" x=\""+media.x+"\" y=\""+media.y+"\" />";
+				try {
+					trace("fscommand(\"callBackMediaAttribute\")",style);
+					fscommand("callBackMediaAttribute",style);
+				} catch (e:Error) {
+					
+				}
+			}
 		}
 		
 		private function handlerAttributeChange(e:Event):void{
@@ -105,27 +138,20 @@ package com.snsoft.tvc2.mediaEditer{
 			media.x = mediaAttributes.place.x;
 			media.y = mediaAttributes.place.y;
 			
-			trace("");
-			trace("media:");
-			trace(mediaAttributes.place.x,mediaAttributes.place.y);
-			trace(mediaAttributes.placeType);
-			trace(media.x,media.y);
-			
 			var rect:Rectangle = media.tfd.getRect(media);
-			
-			trace(rect.x,rect.y,rect.width,rect.height);
-			
 			PlaceType.setSpritePlaceByRect(media,rect,SystemConfig.stageSize,mediaAttributes.placeType);
-			
-			trace(media.x,media.y);
+			callBackMediaAttribute();
 		}
 		
-		private function addEffectText(text:String,place:Point,placeType:String,style:String):void {
+		private function addEffectText(text:String,x:Number,y:Number,placeType:String,style:String):void {
 			var tfd:TextField = EffectText.creatTextByStyleName(text,style);
 			tfd.name = text;
 			var media:Media = new Media(text,placeType,style);
 			this.addChild(media);
 			media.drawNow();
+			
+			media.x = x;
+			media.y = y;
 			PlaceType.setSpritePlaceByRect(media,media.getRect(this),SystemConfig.stageSize,placeType);
 			media.mouseEnabled = true;
 			media.buttonMode = true;
@@ -145,6 +171,8 @@ package com.snsoft.tvc2.mediaEditer{
 			place.x = rect.x - media.tfd.x;
 			place.y = rect.y - media.tfd.y;
 			this.mediaAttributes.setAttributes(media,place,media.placeType,media.style);
+			
+			callBackMediaAttribute();
 		}
 		
 		private function handlerMouseDown(e:Event):void {
@@ -158,6 +186,7 @@ package com.snsoft.tvc2.mediaEditer{
 			var rect:Rectangle = sprite.getRect(this);
 			sprite.x = rect.x - sprite.tfd.x;
 			sprite.y = rect.y - sprite.tfd.y;
+			
 		}
 	}
 }
