@@ -7,6 +7,9 @@
 			import ascb.util.DateFormat;
 			
 			import com.snsoft.map.MapMain;
+			import com.snsoft.room3d.Menu;
+			import com.snsoft.room3d.MyCube;
+			import com.snsoft.room3d.XMLLoader;
 			import com.snsoft.tvc2.Business;
 			import com.snsoft.tvc2.Main;
 			import com.snsoft.tvc2.TimeLine;
@@ -60,6 +63,9 @@
 				var spriteMove:SpriteMove;
 				var mm:MapMain;
 				var mains:com.snsoft.tvc2.mediaEditer.Main;
+				var myc:MyCube;
+				var menu:Menu;
+				var xl:XMLLoader;
 			}
 		]]>
 	</fx:Script>
