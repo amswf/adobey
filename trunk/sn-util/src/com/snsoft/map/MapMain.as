@@ -395,7 +395,7 @@
 		 * @param parentWsName
 		 * 
 		 */		
-		private function initWorkSpaceByName(wsName:String = "ws_1"):void{
+		private function initWorkSpaceByName(wsName:String = MapDataFileManager.MAP_FILE_DEFAULT_NAME):void{
 			var newWs:WorkSpace = null;
 			var wshv:HashVector = this.workSpaceHashVector;
 			var hvWs:WorkSpace = wshv.findByName(wsName) as WorkSpace;

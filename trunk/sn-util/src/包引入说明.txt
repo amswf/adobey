@@ -1,0 +1,1 @@
+fl\src下的fl包，新建flex library project  项目名称为fl，然后从svn上把fl包down下来，然后 build project，生成一个fl.swc。本sn_util项目引入此库文件。

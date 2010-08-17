@@ -146,7 +146,6 @@ package com.snsoft.room3d
 				btnStepP.x = 0;
 				btnStepP.y = 0;
 				zoomp = -1;
-				
 			}
 		}
 		
