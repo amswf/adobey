@@ -1,4 +1,4 @@
-package com.snsoft.tvc2.text{
+package com.snsoft.util.text{
 	import com.snsoft.font.EmbedFonts;
 	import com.snsoft.util.TextFieldUtil;
 	

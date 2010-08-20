@@ -3,9 +3,9 @@ package com.snsoft.tvc2.mediaEditer{
 	import com.snsoft.font.EmbedFontsEvent;
 	import com.snsoft.tvc2.Business;
 	import com.snsoft.tvc2.SystemConfig;
-	import com.snsoft.tvc2.text.EffectText;
-	import com.snsoft.tvc2.text.TextStyle;
-	import com.snsoft.tvc2.text.TextStyles;
+	import com.snsoft.util.text.EffectText;
+	import com.snsoft.util.text.TextStyle;
+	import com.snsoft.util.text.TextStyles;
 	import com.snsoft.tvc2.util.PlaceType;
 	import com.snsoft.tvc2.util.StringUtil;
 	import com.snsoft.tvc2.xml.XMLParse;

@@ -17,8 +17,8 @@
 	import com.snsoft.tvc2.dataObject.TextPointDO;
 	import com.snsoft.tvc2.dataObject.TimeLineDO;
 	import com.snsoft.tvc2.dataObject.VarDO;
-	import com.snsoft.tvc2.text.TextStyle;
-	import com.snsoft.tvc2.text.TextStyles;
+	import com.snsoft.util.text.TextStyle;
+	import com.snsoft.util.text.TextStyles;
 	import com.snsoft.tvc2.util.StringUtil;
 	import com.snsoft.util.HashVector;
 	import com.snsoft.xmldom.Node;

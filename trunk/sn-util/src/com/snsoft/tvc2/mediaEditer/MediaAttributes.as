@@ -1,6 +1,6 @@
 ﻿package com.snsoft.tvc2.mediaEditer{
-	import com.snsoft.tvc2.text.TextStyle;
-	import com.snsoft.tvc2.text.TextStyles;
+	import com.snsoft.util.text.TextStyle;
+	import com.snsoft.util.text.TextStyles;
 	import com.snsoft.util.HashVector;
 	
 	import fl.controls.Button;

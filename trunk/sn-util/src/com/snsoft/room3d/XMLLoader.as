@@ -16,13 +16,14 @@ package com.snsoft.room3d{
 		//XML数据
 		private var xml:XML;
 		
+		//XML数据对象
+		private var _xmlNode:Node;
+		
 		public function XMLLoader(xmlUrl:String){
-			this.xmlUrl = xmlUrl;
-			loadXML();
-			
+			this.xmlUrl = xmlUrl;			
 		}
 		
-		private function loadXML():void{
+		public function loadXML():void{
 			var request:URLRequest = new URLRequest(xmlUrl);
 			var loader:URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE,handlerLoadXMLCmp);
@@ -32,8 +33,8 @@ package com.snsoft.room3d{
 		
 		private function parseXML():void{
 			var xdom:XMLDom = new XMLDom(xml);
-			var node:Node = xdom.parse();
-			trace(node.name);
+			xmlNode = xdom.parse();
+			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
 		
 		
@@ -46,6 +47,17 @@ package com.snsoft.room3d{
 		private function handlerLoadXMLIOError(e:Event):void{
 			trace("加载XML出错："+xmlUrl);
 		}
+
+		public function get xmlNode():Node
+		{
+			return _xmlNode;
+		}
+
+		public function set xmlNode(value:Node):void
+		{
+			_xmlNode = value;
+		}
+
 		
 	}
 }

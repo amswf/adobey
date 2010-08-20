@@ -9,8 +9,8 @@ package com.snsoft.tvc2.map{
 	import com.snsoft.tvc2.dataObject.MarketMainDO;
 	import com.snsoft.tvc2.dataObject.TextPointDO;
 	import com.snsoft.tvc2.media.Mp3Player;
-	import com.snsoft.tvc2.text.EffectText;
-	import com.snsoft.tvc2.text.TextStyles;
+	import com.snsoft.util.text.EffectText;
+	import com.snsoft.util.text.TextStyles;
 	import com.snsoft.tvc2.util.StringUtil;
 	import com.snsoft.util.ColorTransformUtil;
 	import com.snsoft.util.HashVector;
