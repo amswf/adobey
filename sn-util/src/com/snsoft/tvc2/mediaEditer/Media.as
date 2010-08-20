@@ -1,6 +1,6 @@
 package com.snsoft.tvc2.mediaEditer{
 	import com.snsoft.tvc2.Business;
-	import com.snsoft.tvc2.text.EffectText;
+	import com.snsoft.util.text.EffectText;
 	import com.snsoft.util.SpriteUtil;
 	
 	import fl.core.InvalidationType;

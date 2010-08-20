@@ -1,7 +1,7 @@
 package com.snsoft.util
 {
 	import flash.utils.ByteArray;
-
+	
 	public class StringUtil
 	{
 		public function StringUtil()
@@ -16,11 +16,42 @@ package com.snsoft.util
 		public static function getByteLen(str:String ):int {
 			var len:int = -1;
 			if(str != null){
-			var ba:ByteArray =new ByteArray;
-			ba.writeMultiByte (str,"");
-			len = ba.length;
+				var ba:ByteArray =new ByteArray;
+				ba.writeMultiByte (str,"");
+				len = ba.length;
 			}
 			return len;
+		}
+		
+		/**
+		 * 截取中文字符串，按照字节长度截取，汉字双字节截取，截取后长度可能小于指定长度一位。 
+		 * @param str
+		 * @param byteLength
+		 * @return 
+		 * 
+		 */		
+		public static function subCNStr(str:String,byteLength:int):String {
+			var n:int = 0;
+			
+			var subStr:String = null;
+			if(str != null){
+				subStr = "";
+				for(var i:int =0;i<byteLength;i++){
+					var code:int = str.charCodeAt(i);
+					if(code >= 256 && n + 2 <= byteLength){
+						n += 2;
+						subStr += str.charAt(i);
+					}
+					else if(code < 256 && n + 1 <= byteLength)  {
+						n += 1;
+						subStr += str.charAt(i);
+					}
+					else {
+						break;
+					}
+				}
+			}
+			return subStr;
 		}
 		
 		/**

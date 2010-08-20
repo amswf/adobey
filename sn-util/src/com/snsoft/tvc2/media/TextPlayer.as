@@ -1,7 +1,7 @@
 package com.snsoft.tvc2.media{
 	import com.snsoft.tvc2.Business;
 	import com.snsoft.tvc2.dataObject.TextOutDO;
-	import com.snsoft.tvc2.text.EffectText;
+	import com.snsoft.util.text.EffectText;
 	import com.snsoft.tvc2.util.FrameTimer;
 	
 	import flash.display.Sprite;

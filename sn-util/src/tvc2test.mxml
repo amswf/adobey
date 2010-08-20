@@ -7,6 +7,7 @@
 			import ascb.util.DateFormat;
 			
 			import com.snsoft.map.MapMain;
+			import com.snsoft.room3d.Main;
 			import com.snsoft.room3d.Menu;
 			import com.snsoft.room3d.MyCube;
 			import com.snsoft.room3d.XMLLoader;
@@ -66,6 +67,7 @@
 				var myc:MyCube;
 				var menu:Menu;
 				var xl:XMLLoader;
+				var main3d:com.snsoft.room3d.Main;
 			}
 		]]>
 	</fx:Script>

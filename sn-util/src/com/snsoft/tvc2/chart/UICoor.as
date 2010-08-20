@@ -1,6 +1,6 @@
 package com.snsoft.tvc2.chart{
-	import com.snsoft.tvc2.text.EffectText;
-	import com.snsoft.tvc2.text.TextStyles;
+	import com.snsoft.util.text.EffectText;
+	import com.snsoft.util.text.TextStyles;
 	import com.snsoft.util.SpriteUtil;
 	import com.snsoft.util.TextFieldUtil;
 	

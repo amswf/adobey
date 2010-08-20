@@ -1,4 +1,4 @@
-package com.snsoft.tvc2.text{
+package com.snsoft.util.text{
 	import flash.filters.DropShadowFilter;
 	import flash.text.TextField;
 	import flash.text.TextFormat;

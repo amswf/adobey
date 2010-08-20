@@ -14,8 +14,8 @@
 	import com.snsoft.tvc2.media.MediasPlayer;
 	import com.snsoft.tvc2.media.Mp3sPlayer;
 	import com.snsoft.tvc2.media.TextsPlayer;
-	import com.snsoft.tvc2.text.EffectText;
-	import com.snsoft.tvc2.text.TextStyles;
+	import com.snsoft.util.text.EffectText;
+	import com.snsoft.util.text.TextStyles;
 	import com.snsoft.tvc2.util.Counter;
 	import com.snsoft.tvc2.util.StringUtil;
 	import com.snsoft.util.HashVector;

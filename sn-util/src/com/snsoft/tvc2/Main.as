@@ -29,8 +29,8 @@
 	import com.snsoft.tvc2.media.Mp3Loader;
 	import com.snsoft.tvc2.media.Mp3Player;
 	import com.snsoft.tvc2.source.AreaMapLoader;
-	import com.snsoft.tvc2.text.TextStyle;
-	import com.snsoft.tvc2.text.TextStyles;
+	import com.snsoft.util.text.TextStyle;
+	import com.snsoft.util.text.TextStyles;
 	import com.snsoft.tvc2.util.PriceUtils;
 	import com.snsoft.tvc2.util.StringUtil;
 	import com.snsoft.tvc2.xml.XMLParse;
