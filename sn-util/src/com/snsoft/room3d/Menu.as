@@ -23,7 +23,6 @@
 		
 		private function setButtonEvent(btnName:String):void{
 			var btn:MovieClip = this.getChildByName(btnName) as MovieClip;
-			trace(btn);
 			btn.buttonMode = true;
 			btn.mouseEnabled = true;
 			btn.mouseChildren = false;
