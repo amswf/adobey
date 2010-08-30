@@ -67,8 +67,9 @@ package com.snsoft.room3d{
 		 * 
 		 */		
 		override protected function draw():void{
-			trace("draw");
+			trace("RoomMap draw");
 			if(!isDraw){
+				trace("RoomMap draw false");
 				isDraw = true;
 				loadBgImg();
 			}
@@ -99,8 +100,11 @@ package com.snsoft.room3d{
 			var placeHV:HashVector = this.room.placeHV;
 			
 			if(placeHV.length > 0){
+				trace("creat visualAngle");
 				var seatDefaultDO:SeatDO = placeHV.findByIndex(0) as SeatDO;
 				this.visualAngle = getDisplayObjectInstance(getStyleValue("visualAngleSkin")) as MovieClip;
+				
+				trace("creat visualAngle",this.visualAngle);
 				this.visualAngle.x = seatDefaultDO.place.x;
 				this.visualAngle.y = seatDefaultDO.place.y;
 				sourceSpr.addChild(this.visualAngle);
