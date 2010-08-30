@@ -165,7 +165,10 @@
 			
 		}
 		
-		public function saveWorkSpace(parentWsName:String = MapDataFileManager.MAP_FILE_BASE_NAME):void{
+		public function saveWorkSpace(parentWsName:String = null):void{
+			if(parentWsName == null){
+				parentWsName = MapDataFileManager.MAP_FILE_BASE_NAME;
+			}
 			var mdfio:MapDataFileManager = new MapDataFileManager();
 			var fullPath:String = mdfio.creatFileFullPath(parentWsName);
 			mdfio.save(this,fullPath);
