@@ -9,6 +9,9 @@
 	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import flash.display.StageAlign;
+	import flash.display.StageDisplayState;
+	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.external.ExternalInterface;
@@ -69,22 +72,52 @@
 		
 		private var seatScrollPane:ScrollPane;
 		
+		private static const SEAT_SCROLL_PANE_DEFAULT_RECT:Rectangle = new Rectangle(630,180,260,310);
+		
 		private var menu:Menu;
+		
+		private static const MENU_DEFAULT_RECT:Rectangle = new Rectangle(630,10);
 		
 		private var roomMap:RoomMap;
 		
+		private var currentSeat3D:Seat3D;
+		
+		private var seat3DBack:MovieClip;
+		
+		private static const SEAT3D_DEFAULT_RECT:Rectangle = new Rectangle(170,40,450,450);
+		
+		private var currentStageDisplayStateSign:Boolean = true;
+		
+		private var isStageResize:Boolean = false;
+		
 		public function Main(){
 			super();
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.align = StageAlign.TOP_LEFT;
 			this.addEventListener(Event.ENTER_FRAME,handlerEnterFrame);
 		}
 		
 		private function handlerEnterFrame(e:Event):void{
 			this.removeEventListener(Event.ENTER_FRAME,handlerEnterFrame);
+			
+			
+			stage.addEventListener(Event.RESIZE,handlerStageResize);
+			
+			var btn:MovieClip = this.getChildByName("btnMC") as MovieClip;
+			
 			var url:String = loaderInfo.parameters["url"];
 			if(url != null){
 				this.dataUrl = url;
 			}
 			loadXML();
+		}
+		
+		private function handlerStageResize(e:Event):void{
+			isStageResize = true;
+			if(isStageResize){
+				isStageResize = false;
+				setMainDisplayState();
+			}
 		}
 		
 		private function loadXML():void{
@@ -178,16 +211,21 @@
 			scrollPane.source = roomCards;
 			this.addChild(scrollPane);
 			
+			
+			seat3DBack = SkinsUtil.createSkinByName("Seat3DBack") as MovieClip;
+			seat3DBack.visible = false;
+			 
 			this.addChild(this.roomMapLayer);
 			this.addChild(this.roomLayer);
+			this.addChild(seat3DBack);
 			this.addChild(this.seat3dLayer);
 			this.addChild(this.roomTextLayer);
 			
 			seatScrollPane = new ScrollPane();
-			seatScrollPane.width = 260;
-			seatScrollPane.height = 310;
-			seatScrollPane.x = 630;
-			seatScrollPane.y = 180;
+			seatScrollPane.width = SEAT_SCROLL_PANE_DEFAULT_RECT.width;
+			seatScrollPane.height = SEAT_SCROLL_PANE_DEFAULT_RECT.height;
+			seatScrollPane.x = SEAT_SCROLL_PANE_DEFAULT_RECT.x;
+			seatScrollPane.y = SEAT_SCROLL_PANE_DEFAULT_RECT.y;
 			seatScrollPane.scrollDrag = true;
 			this.addChild(seatScrollPane);
 			
@@ -196,8 +234,8 @@
 			refreshRoomMap(roomDefault);
 			
 			this.menu = new Menu();
-			menu.x = 630;
-			menu.y = 10;
+			menu.x = MENU_DEFAULT_RECT.x;
+			menu.y = MENU_DEFAULT_RECT.y;
 			this.addChild(menu);
 		}
 		
@@ -220,7 +258,7 @@
 		private function refreshRoomMap(room:RoomDO):void{
 			trace("refreshRoomMap");
 			SpriteUtil.deleteAllChild(roomMapLayer);
-			 
+			
 			roomMap = new RoomMap(room);
 			
 			roomMapLayer.addChild(roomMap);
@@ -247,13 +285,95 @@
 		 */		
 		private function creatSeat3D(roomMap:RoomMap):void{
 			trace("creatSeat3D");
-			var seatDO:SeatDO = roomMap.currentSeatDO;
-			var s3d:Seat3D = new Seat3D(this.menu,roomMap.currentSeatDO);
+			if(currentSeat3D != null){
+				currentSeat3D.removeEventListener(Seat3D.CAMERA_ROTATION_EVENT,handlerCameraRotation);
+				currentSeat3D.removeEventListener(MouseEvent.DOUBLE_CLICK,handlerCurrentSeatDOMouseDoubleClick);
+			}
 			SpriteUtil.deleteAllChild(this.seat3dLayer);
 			
+			var seatDO:SeatDO = roomMap.currentSeatDO;
+			var s3d:Seat3D = new Seat3D(this.menu,roomMap.currentSeatDO,SEAT3D_DEFAULT_RECT.width,SEAT3D_DEFAULT_RECT.width);
+			s3d.x = SEAT3D_DEFAULT_RECT.x;
+			s3d.y = SEAT3D_DEFAULT_RECT.y;
+			currentSeat3D = s3d;
 			this.seat3dLayer.addChild(s3d);
+			s3d.drawNow();
 			this.roomMap.setVisualAngleRotation(0);
 			s3d.addEventListener(Seat3D.CAMERA_ROTATION_EVENT,handlerCameraRotation);
+			s3d.addEventListener(MouseEvent.DOUBLE_CLICK,handlerCurrentSeatDOMouseDoubleClick);
+			s3d.doubleClickEnabled = true;
+			s3d.addEventListener(Seat3D.SEAT3D_CMP_EVENT,handlerSeat3DCmp);
+		}
+		
+		private function handlerSeat3DCmp(e:Event):void{
+			setMainDisplayState();
+		}
+		
+		private function handlerCurrentSeatDOMouseDoubleClick(e:Event):void{
+			if(stage.displayState != StageDisplayState.FULL_SCREEN){
+				stage.displayState = StageDisplayState.FULL_SCREEN;
+			}
+			else {
+				stage.displayState = StageDisplayState.NORMAL;
+			}
+		}
+		
+		private function setMainDisplayState():void{
+			if(currentStageDisplayStateSign){
+				currentStageDisplayStateSign = false;
+				
+				if(stage.displayState == StageDisplayState.FULL_SCREEN){
+					seat3DBack.visible = true;
+					seat3DBack.width = stage.fullScreenWidth;
+					seat3DBack.height = stage.fullScreenHeight;
+					
+					if(currentSeat3D != null){						
+						var scaleX:Number = stage.fullScreenWidth / SEAT3D_DEFAULT_RECT.width;
+						var scaleY:Number = stage.fullScreenHeight / SEAT3D_DEFAULT_RECT.height;
+						
+						var scale:Number = scaleX > scaleY ? scaleY:scaleX;
+						
+						
+						var viewportWidth:Number = SEAT3D_DEFAULT_RECT.width;
+						var viewportHeight:Number = SEAT3D_DEFAULT_RECT.height;
+						if(scale == scaleY){
+							viewportWidth = stage.fullScreenWidth / scale;
+						}
+						else if(scale == scaleX){
+							viewportHeight = stage.fullScreenHeight / scale;
+						}
+						
+						currentSeat3D.setViewport3DSize(scale,scale,viewportWidth,viewportHeight);
+						currentSeat3D.x = 0;
+						currentSeat3D.y = 0;
+						
+						menu.x = (stage.fullScreenWidth - menu.getRect(this).width) / 2;
+						menu.y = stage.fullScreenHeight - menu.getRect(this).height - placeSpace;
+						
+						seatScrollPane.x = stage.fullScreenWidth - SEAT_SCROLL_PANE_DEFAULT_RECT.width - placeSpace;
+						seatScrollPane.y = placeSpace;
+					}
+				}
+				else {
+					seat3DBack.visible = false;
+					if(currentSeat3D != null){
+						currentSeat3D.setViewport3DSize(1,1,SEAT3D_DEFAULT_RECT.width,SEAT3D_DEFAULT_RECT.height);
+						currentSeat3D.x = SEAT3D_DEFAULT_RECT.x;
+						currentSeat3D.y = SEAT3D_DEFAULT_RECT.y;
+						
+						menu.x = MENU_DEFAULT_RECT.x;
+						menu.y = MENU_DEFAULT_RECT.y;
+						
+						seatScrollPane.x = SEAT_SCROLL_PANE_DEFAULT_RECT.x;
+						seatScrollPane.y = SEAT_SCROLL_PANE_DEFAULT_RECT.y;
+					}
+				}
+				
+				
+				
+				currentStageDisplayStateSign = true;
+			}
+			
 		}
 		
 		/**
@@ -285,6 +405,6 @@
 			
 			creatSeat3D(roomMap);
 		}
-		 
+		
 	}
 }
