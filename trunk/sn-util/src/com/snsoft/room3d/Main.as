@@ -7,6 +7,7 @@
 	
 	import fl.containers.ScrollPane;
 	
+	import flash.display.LoaderInfo;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
@@ -95,15 +96,15 @@
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			this.addEventListener(Event.ENTER_FRAME,handlerEnterFrame);
+			
 		}
 		
 		private function handlerEnterFrame(e:Event):void{
+			trace("handlerEnterFrame");
 			this.removeEventListener(Event.ENTER_FRAME,handlerEnterFrame);
 			
 			
 			stage.addEventListener(Event.RESIZE,handlerStageResize);
-			
-			var btn:MovieClip = this.getChildByName("btnMC") as MovieClip;
 			
 			var url:String = loaderInfo.parameters["url"];
 			if(url != null){
@@ -113,11 +114,8 @@
 		}
 		
 		private function handlerStageResize(e:Event):void{
-			isStageResize = true;
-			if(isStageResize){
-				isStageResize = false;
-				setMainDisplayState();
-			}
+			trace("handlerStageResize",stage.stageHeight,stage.stageWidth);
+			setMainDisplayState();
 		}
 		
 		private function loadXML():void{
@@ -186,7 +184,6 @@
 					seatDO.place = p;
 					placeHV.push(seatDO);
 				}
-				trace(placeHV.length);
 				room.placeHV = placeHV;
 				roomHV.push(room);
 				
@@ -214,7 +211,7 @@
 			
 			seat3DBack = SkinsUtil.createSkinByName("Seat3DBack") as MovieClip;
 			seat3DBack.visible = false;
-			 
+			
 			this.addChild(this.roomMapLayer);
 			this.addChild(this.roomLayer);
 			this.addChild(seat3DBack);
@@ -230,7 +227,6 @@
 			this.addChild(seatScrollPane);
 			
 			var roomDefault:RoomDO = roomHV.findByIndex(0) as RoomDO;
-			trace("initData");
 			refreshRoomMap(roomDefault);
 			
 			this.menu = new Menu();
@@ -320,6 +316,7 @@
 		
 		private function setMainDisplayState():void{
 			if(currentStageDisplayStateSign){
+				trace("setMainDisplayState");
 				currentStageDisplayStateSign = false;
 				
 				if(stage.displayState == StageDisplayState.FULL_SCREEN){

@@ -27,7 +27,7 @@ package com.snsoft.xmldom{
 		 * 
 		 */		
 		public function parse():Node{
-			
+			//trace("parse",xml);
 			var xdNode:Node = new Node();
 			xdNode.name = xml.name();
 			xdNode.text = xml.text();
@@ -43,7 +43,7 @@ package com.snsoft.xmldom{
 		 * 
 		 */		
 		private function parseXMLList(xml:XML):HashVector{
-			
+			//trace("parseXMLList",xml);
 			var childNodeLists:HashVector = new HashVector();
 			var xmlChildNames:HashVector = new HashVector();
 			
@@ -60,9 +60,11 @@ package com.snsoft.xmldom{
 				var nodeList:NodeList = new NodeList();
 				var childName:String = xmlChildNames.findByIndex(i2) as String;
 				var xmlElements:XMLList = xml.elements(childName);
-				for(var j2:int = 0;j2<xmlElements.length();j2++){
-					var xml:XML = xmlElements[j2];
-					var node:Node = parseXML(xml);
+				//trace(xmlElements.length(),childName,xmlElements);
+				for(var j2:int = 0;j2 < xmlElements.length();j2++){
+					var cxml:XML = xmlElements[j2];
+					
+					var node:Node = parseXML(cxml);
 					nodeList.pushNode(node);
 				}
 				childNodeLists.push(nodeList,childName);
@@ -77,6 +79,7 @@ package com.snsoft.xmldom{
 		 * 
 		 */		
 		private function parseXML(xml:XML):Node{
+			//trace("parseXML",xml);
 			var node:Node = new Node();
 			node.name = xml.name();
 			node.text = xml.text();
@@ -98,6 +101,7 @@ package com.snsoft.xmldom{
 		 * 
 		 */		
 		private function getXMLAttributes(xml:XML):HashVector{
+			//trace("getXMLAttributes",xml);
 			var hv:HashVector = new HashVector();
 			var attributeXMLList:XMLList = xml.attributes();
 			for(var i:int = 0;i < attributeXMLList.length();i++){
