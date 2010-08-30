@@ -1,4 +1,6 @@
 package com.snsoft.util.ui{
+	import fl.core.InvalidationType;
+	import fl.core.UIComponent;
 	
 	[Style(name="backSkin", type="Class")]
 	
@@ -7,7 +9,7 @@ package com.snsoft.util.ui{
 	 * @author Administrator
 	 * 
 	 */	
-	public class UIDynamicList{
+	public class UIDynamicList extends UIComponent{
 		public function UIDynamicList(){
 		}
 		

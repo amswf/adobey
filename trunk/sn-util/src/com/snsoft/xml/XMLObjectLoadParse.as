@@ -44,8 +44,8 @@ package com.snsoft.xml
 				var obj:Object = new Object();
 				var xml:XML = new XML(urlLoader.data);
 				var xmlList:XMLList = xml.children();
-				for(var i = 0;i<xmlList.length();i++){
-					var cxml:XML = xmlList[i];
+				for(var i:int = 0;i<xmlList.length();i++){
+					var cxml:XMLList = xmlList[i];
 					var nodeName:String = cxml.name();
 					if(nodeName != null && nodeName.length > 0){
 						nodeName = nodeName.toLowerCase();

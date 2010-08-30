@@ -56,6 +56,5 @@ package com.snsoft.xml
 			return null;
 		}
 		
-		public 
 	}
 }
