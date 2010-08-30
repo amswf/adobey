@@ -4,6 +4,11 @@
 	import com.snsoft.xmldom.XMLDom;
 	import flash.utils.describeType;
 
+	/**
+	 * 获得一个类对象的属性名称，包括动态属性名称和静态属性名称 
+	 * @author Administrator
+	 * 
+	 */	
 	public class ObjectProperty{
 		
 		private var _propertyNames:Vector.<String>;
@@ -12,6 +17,11 @@
 		{
 		}
 		
+		/**
+		 * 创建对象后，调用此方法，获得某个对象的属性 
+		 * @param obj
+		 * 
+		 */		
 		public function getPropertys(obj:Object):void{
 			this.propertyNames = new Vector.<String>();
 			
