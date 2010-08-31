@@ -2,6 +2,7 @@
 	import com.snsoft.xmldom.Node;
 	import com.snsoft.xmldom.NodeList;
 	import com.snsoft.xmldom.XMLDom;
+	
 	import flash.utils.describeType;
 
 	/**
@@ -12,6 +13,10 @@
 	public class ObjectProperty{
 		
 		private var _propertyNames:Vector.<String>;
+		
+		public static const DESCRIBE_TAG_ACCESSOR:String = "accessor";
+		
+		public static const DESCRIBE_TAG_NAME:String = "name";
 		
 		public function ObjectProperty()
 		{
@@ -31,13 +36,13 @@
 			}
 			
 			var xml:XML = describeType(obj);
-			trace(xml);
+			//trace(xml);
 			var xmldom:XMLDom = new XMLDom(xml);
 			var node:Node = xmldom.parse();
-			var nodeList:NodeList = node.getNodeList("accessor");
+			var nodeList:NodeList = node.getNodeList(DESCRIBE_TAG_ACCESSOR);
 			for(var i:int = 0;i < nodeList.length();i ++){
 				var cnode:Node = nodeList.getNode(i);
-				var sname:String = cnode.getAttributeByName("name");
+				var sname:String = cnode.getAttributeByName(DESCRIBE_TAG_NAME);
 				this.propertyNames.push(sname);
 			}
 		}
