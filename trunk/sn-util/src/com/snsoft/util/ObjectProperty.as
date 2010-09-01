@@ -24,7 +24,7 @@
 		
 		/**
 		 * 创建对象后，调用此方法，获得某个对象的属性 
-		 * @param obj
+		 * @param obj 要获得属性的对象
 		 * 
 		 */		
 		public function getPropertys(obj:Object):void{
