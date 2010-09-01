@@ -38,6 +38,10 @@ package com.snsoft.room3d{
 		
 		public static const SEAT3D_CMP_EVENT:String = "SEAT3D_CMP_EVENT";
 		
+		private static const ROTATION_STEP:Number = 0.1;
+		
+		private static const MOUSE_MIN_MOVE:Number = 20;
+		
 		public function Seat3D(menu:Menu,seatDO:SeatDO,seat3DWidth:Number,seat3DHeight:Number){
 			this.menu = menu;
 			this.seatDO = seatDO;
@@ -176,8 +180,10 @@ package com.snsoft.room3d{
 		}
 		
 		private function handlerMenuMouseEvent(e:Event):void{
+			
+			trace("handlerMenuMouseEvent");
 			isBtnDown = true;
-			var p:Number = 20;
+			var p:Number = MOUSE_MIN_MOVE;
 			if(e.type == "left_DOWN"){
 				btnStepP.x = p;
 				btnStepP.y = 0;
@@ -337,24 +343,35 @@ package com.snsoft.room3d{
 			
 			if(AUTO_MOVE_COUNT_MAX == this.autoMoveCount){
 				
-				if(Math.abs(camera.rotationX) <= 0.1){
+				if(Math.abs(camera.rotationX) <= ROTATION_STEP){
 					camera.rotationX = 0;
 				}
 				else if(camera.rotationX > 0){
-					camera.rotationX -= 0.1;
+					camera.rotationX -= ROTATION_STEP;
 				}
 				else if(camera.rotationX < 0){
-					camera.rotationX += 0.1;
+					camera.rotationX += ROTATION_STEP;
 				}
 				
-				camera.rotationY += 0.1;
+				camera.rotationY += ROTATION_STEP;
 				this.cameraRotationY = camera.rotationY;
 				this.dispatchEvent(new Event(CAMERA_ROTATION_EVENT));
 				renderer.renderScene(scene,camera,viewport);
 			}
 			
 			if(isMouseDown || isBtnDown){
-				var ry:Number = camera.rotationX - int(py/20)* 50 /camera.zoom;
+				
+				var rpy:Number = 0
+				if(py >= MOUSE_MIN_MOVE || py <= - MOUSE_MIN_MOVE){
+					rpy = py /camera.zoom;
+				}
+				if(rpy > 3){
+					rpy = 3;
+				}
+				else if(rpy < -3){
+					rpy = -3;
+				}
+				var ry:Number = camera.rotationX - rpy;
 				if(ry > 90){
 					ry = 90;
 				}
@@ -363,7 +380,17 @@ package com.snsoft.room3d{
 				}
 				camera.rotationX = ry;
 				
-				var rx:Number = camera.rotationY - int(px/20) * 50 /camera.zoom;
+				var rpx:Number = 0;
+				if(px >= MOUSE_MIN_MOVE || px <= - MOUSE_MIN_MOVE){
+					rpx = px /camera.zoom;
+				}
+				if(rpx > 3){
+					rpx = 3;
+				}
+				else if(rpx < -3){
+					rpx = -3;
+				}
+				var rx:Number = camera.rotationY - rpx;
 				if(rx > 360){
 					rx -= 360;
 				}
