@@ -1,11 +1,6 @@
 package com.snsoft.xmldom{
-	import ascb.util.StringUtilities;
-	
 	import com.snsoft.tvc2.util.StringUtil;
 	import com.snsoft.util.HashVector;
-	import com.snsoft.xmldom.Attributes;
-	
-	import mx.messaging.channels.StreamingAMFChannel;
 	
 	/**
 	 * 解析XML为基本树

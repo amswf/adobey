@@ -49,6 +49,8 @@
 		
 		private static const XML_ATT_Y:String = "y";
 		
+		private static const XML_ATT_BALLIMG:String = "ballImg";
+		
 		private static const XML_ATT_FRONTIMG:String = "frontImg";
 		
 		private static const XML_ATT_BACKIMG:String = "backImg";
@@ -161,6 +163,7 @@
 					var nameStr:String = placeNode.getAttributeByName(XML_ATT_NAME);
 					var valueStr:String = placeNode.getAttributeByName(XML_ATT_VALUE);
 					var textStr:String = placeNode.getAttributeByName(XML_ATT_TEXT);
+					var ballImgUrl:String = placeNode.getAttributeByName(XML_ATT_BALLIMG);
 					var frontImgUrl:String = placeNode.getAttributeByName(XML_ATT_FRONTIMG);
 					var backImgUrl:String = placeNode.getAttributeByName(XML_ATT_BACKIMG);
 					var topImgUrl:String = placeNode.getAttributeByName(XML_ATT_TOPIMG);
@@ -171,10 +174,13 @@
 					var yStr:String = placeNode.getAttributeByName(XML_ATT_Y);
 					var p:Point = new Point(Number(xStr),Number(yStr));
 					
+					trace(ballImgUrl);
+					
 					var seatDO:SeatDO = new SeatDO();
 					seatDO.nameStr = nameStr;
 					seatDO.valueStr = valueStr;
 					seatDO.textStr = textStr;
+					seatDO.ballImageUrl = ballImgUrl;
 					seatDO.imageUrlHV.push(frontImgUrl,SeatDO.FRONT);
 					seatDO.imageUrlHV.push(backImgUrl,SeatDO.BACK);
 					seatDO.imageUrlHV.push(leftImgUrl,SeatDO.LEFT);

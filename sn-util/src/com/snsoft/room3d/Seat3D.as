@@ -5,6 +5,7 @@ package com.snsoft.room3d{
 	import flash.display.BitmapData;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.geom.Matrix;
 	import flash.geom.Point;
 	
 	import org.papervision3d.cameras.Camera3D;
@@ -14,13 +15,14 @@ package com.snsoft.room3d{
 	import org.papervision3d.materials.BitmapMaterial;
 	import org.papervision3d.materials.utils.MaterialsList;
 	import org.papervision3d.objects.primitives.Cube;
+	import org.papervision3d.objects.primitives.Sphere;
 	import org.papervision3d.render.BasicRenderEngine;
 	import org.papervision3d.scenes.Scene3D;
 	import org.papervision3d.view.Viewport3D;
 	
 	public class Seat3D extends UIComponent{
 		
-		 
+		
 		
 		private static const AUTO_MOVE_COUNT_MAX:int = 150;
 		
@@ -61,6 +63,7 @@ package com.snsoft.room3d{
 		private var scene     :Scene3D;
 		private var camera    :Camera3D;
 		private var cube      :Cube;
+		private var ball:Sphere;
 		
 		private var mouseDownPlace:Point;
 		
@@ -239,31 +242,38 @@ package com.snsoft.room3d{
 			var quality :Number = 20;
 			
 			// Materials
-			var materials:MaterialsList = new MaterialsList(
-				{
-					//all:
-					front:  creatBitMap(seatDO,SeatDO.FRONT),
-					back:   creatBitMap(seatDO,SeatDO.BACK),
-					right:  creatBitMap(seatDO,SeatDO.RIGHT),
-					left:   creatBitMap(seatDO,SeatDO.LEFT),
-					top:    creatBitMap(seatDO,SeatDO.TOP),
-					bottom: creatBitMap(seatDO,SeatDO.BOTTOM)
-				} );
-			
+			//			var materials:MaterialsList = new MaterialsList(
+			//				{
+			//					//all:
+			//					front:  creatBitMap(seatDO,SeatDO.FRONT),
+			//					back:   creatBitMap(seatDO,SeatDO.BACK),
+			//					right:  creatBitMap(seatDO,SeatDO.RIGHT),
+			//					left:   creatBitMap(seatDO,SeatDO.LEFT),
+			//					top:    creatBitMap(seatDO,SeatDO.TOP),
+			//					bottom: creatBitMap(seatDO,SeatDO.BOTTOM)
+			//				} );
+			//			
 			// Cube face settings
 			// You can add or sustract faces to your selection. For examples: Cube.FRONT+Cube.BACK or Cube.ALL-Cube.Top.
 			
 			// On single sided materials, all faces will be visible from the inside.
-			var insideFaces  :int = Cube.ALL;
+			//var insideFaces  :int = Cube.ALL;
 			
 			// Front and back cube faces will not be created.
-			var excludeFaces :int = Cube.NONE;
+			//var excludeFaces :int = Cube.NONE;
 			
 			// Create the cube.
-			cube = new Cube( materials, size, size, size, quality, quality, quality, insideFaces, excludeFaces );
-			cube.z = -1000;
+			//			cube = new Cube( materials, size, size, size, quality, quality, quality, insideFaces, excludeFaces );
+			//			cube.z = -1000;
+			//			
+			//			scene.addChild( cube, "Cube" );
 			
-			scene.addChild( cube, "Cube" );
+			var material:MaterialObject3D = creatBitMap(seatDO,SeatDO.BALL); 
+			material.doubleSided = true;
+			material.smooth = true;
+			ball = new Sphere(material,2000,100,50);
+			ball.z = -1500;
+			scene.addChild(ball);
 			
 			this.addEventListener(MouseEvent.MOUSE_WHEEL, handlerMouseWheel);
 			this.addEventListener(MouseEvent.MOUSE_DOWN,handlerMouseDown);
@@ -276,26 +286,49 @@ package com.snsoft.room3d{
 			
 			var material:MaterialObject3D;
 			if(seatDO != null && fileType != null && fileType.length > 0){
-				
-				var bitMapData:BitmapData = seatDO.imageBitMapData.findByName(fileType) as BitmapData;
-				if(bitMapData == null){
-					var url:String = seatDO.imageUrlHV.findByName(fileType) as String;
-					material = new BitmapFileMaterial(url);
-					material.addEventListener(FileLoadEvent.LOAD_COMPLETE,handlerLoadImgCmp);
-					function handlerLoadImgCmp(e:Event):void{
-						seatDO.imageBitMapData.push(material.bitmap,fileType);
+				if(fileType == SeatDO.BALL){
+					if(seatDO.ballImageBitMapData == null){
+						var burl:String = seatDO.ballImageUrl;
+						var catchBitmapData:BitmapData = ImgCatch.imgHV.findByName(burl) as BitmapData;
+						
+						if(catchBitmapData != null){
+							seatDO.ballImageBitMapData = catchBitmapData;
+							material = new BitmapMaterial(seatDO.ballImageBitMapData);
+						}
+						else {
+							material = new BitmapFileMaterial(burl);
+							material.addEventListener(FileLoadEvent.LOAD_COMPLETE,handlerLoadBallImgCmp);
+							
+							function handlerLoadBallImgCmp(e:Event):void{
+								var bitmapData:BitmapData = new BitmapData(material.bitmap.width,material.bitmap.height);
+								bitmapData.draw( material.bitmap,new Matrix(-1,0,0,1, material.bitmap.width,0));
+								ImgCatch.imgHV.push(bitmapData,burl);
+								material.bitmap = bitmapData;
+								seatDO.ballImageBitMapData = material.bitmap;
+							}
+						}	
+					}
+					else {
+						material = new BitmapMaterial(seatDO.ballImageBitMapData);
 					}
 				}
 				else {
-					material = new BitmapMaterial(bitMapData);
+					var bitMapData:BitmapData = seatDO.imageBitMapData.findByName(fileType) as BitmapData;
+					if(bitMapData == null){
+						var url:String = seatDO.imageUrlHV.findByName(fileType) as String;
+						material = new BitmapFileMaterial(url);
+						material.addEventListener(FileLoadEvent.LOAD_COMPLETE,handlerLoadImgCmp);
+						function handlerLoadImgCmp(e:Event):void{
+							seatDO.imageBitMapData.push(material.bitmap,fileType);
+						}
+					}
+					else {
+						material = new BitmapMaterial(bitMapData);
+					}
+					
 				}
-				
-				
 			}
 			return material;
-			
-			
-			
 		}
 		
 		
@@ -304,16 +337,6 @@ package com.snsoft.room3d{
 		private function loop(event:Event):void
 		{
 			renderer.renderScene(scene,camera,viewport);
-		}
-		
-		
-		private function update3D():void
-		{
-			cube.rotationY = viewport.mouseX / 2;
-			cube.rotationX = viewport.mouseY / 2;
-			
-			// Render
-			
 		}
 		
 		private function handlerMouseDown(e:Event):void{
