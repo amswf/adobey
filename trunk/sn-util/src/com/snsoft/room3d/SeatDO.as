@@ -4,6 +4,7 @@ package com.snsoft.room3d{
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
 	
+	import flash.display.BitmapData;
 	import flash.geom.Point;
 
 	public class SeatDO{
@@ -26,9 +27,15 @@ package com.snsoft.room3d{
 		
 		public static const RIGHT:String = "right";
 		
+		public static const BALL:String = "ball";
+		
 		private var _imageUrlHV:HashVector = new HashVector;
 		
 		private var _imageBitMapData:HashVector = new HashVector;
+		
+		private var _ballImageUrl:String;
+		
+		private var _ballImageBitMapData:BitmapData;
 		
 		private var _place:Point = null;
 		
@@ -95,6 +102,26 @@ package com.snsoft.room3d{
 		public function set imageBitMapData(value:HashVector):void
 		{
 			_imageBitMapData = value;
+		}
+
+		public function get ballImageUrl():String
+		{
+			return _ballImageUrl;
+		}
+
+		public function set ballImageUrl(value:String):void
+		{
+			_ballImageUrl = value;
+		}
+
+		public function get ballImageBitMapData():BitmapData
+		{
+			return _ballImageBitMapData;
+		}
+
+		public function set ballImageBitMapData(value:BitmapData):void
+		{
+			_ballImageBitMapData = value;
 		}
 
 
