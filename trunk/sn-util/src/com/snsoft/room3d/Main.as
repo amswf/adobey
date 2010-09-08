@@ -294,7 +294,7 @@
 			SpriteUtil.deleteAllChild(this.seat3dLayer);
 			
 			var seatDO:SeatDO = roomMap.currentSeatDO;
-			var s3d:Seat3D = new Seat3D(this.menu,roomMap.currentSeatDO,SEAT3D_DEFAULT_RECT.width,SEAT3D_DEFAULT_RECT.width);
+			var s3d:Seat3D = new Seat3D(this.menu,roomMap.currentSeatDO,SEAT3D_DEFAULT_RECT.width,SEAT3D_DEFAULT_RECT.height);
 			s3d.x = SEAT3D_DEFAULT_RECT.x;
 			s3d.y = SEAT3D_DEFAULT_RECT.y;
 			currentSeat3D = s3d;
