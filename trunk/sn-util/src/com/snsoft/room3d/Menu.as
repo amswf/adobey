@@ -1,5 +1,6 @@
 ﻿package com.snsoft.room3d{
 	import flash.display.MovieClip;
+	import flash.display.SimpleButton;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
@@ -19,13 +20,10 @@
 			this.setButtonEvent("def");
 			this.setButtonEvent("zoomIn");
 			this.setButtonEvent("zoomOut");
-		}
+		}	
 		
 		private function setButtonEvent(btnName:String):void{
-			var btn:MovieClip = this.getChildByName(btnName) as MovieClip;
-			btn.buttonMode = true;
-			btn.mouseEnabled = true;
-			btn.mouseChildren = false;
+			var btn:SimpleButton = this.getChildByName(btnName) as SimpleButton;
 			btn.addEventListener(MouseEvent.MOUSE_DOWN,handlerMouseDown);
 			btn.addEventListener(MouseEvent.MOUSE_UP,handlerMouseUp);
 			btn.addEventListener(MouseEvent.MOUSE_OUT,handlerMouseUp);
