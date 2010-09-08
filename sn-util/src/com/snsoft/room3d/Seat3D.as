@@ -3,6 +3,7 @@ package com.snsoft.room3d{
 	import fl.core.UIComponent;
 	
 	import flash.display.BitmapData;
+	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
@@ -13,7 +14,6 @@ package com.snsoft.room3d{
 	import org.papervision3d.events.FileLoadEvent;
 	import org.papervision3d.materials.BitmapFileMaterial;
 	import org.papervision3d.materials.BitmapMaterial;
-	import org.papervision3d.materials.utils.MaterialsList;
 	import org.papervision3d.objects.primitives.Cube;
 	import org.papervision3d.objects.primitives.Sphere;
 	import org.papervision3d.render.BasicRenderEngine;
@@ -85,7 +85,8 @@ package com.snsoft.room3d{
 		 * 
 		 */			
 		private static var defaultStyles:Object = {
-			seatPointSkin:"SeatPoint_Skin"
+			seatPointSkin:"SeatPoint_Skin",
+			seat3DFrameSkin:"Seat3D_frameSkin"
 		};
 		
 		/**
@@ -132,7 +133,11 @@ package com.snsoft.room3d{
 			viewport.y = 0;
 			addChild( viewport );
 			
-			
+					
+			var frame:MovieClip = getDisplayObjectInstance(getStyleValue("seat3DFrameSkin")) as MovieClip;
+			frame.width = seat3DWidth;
+			frame.height = seat3DHeight;
+			this.addChild(frame);
 			
 			menu.addEventListener("left_DOWN",handlerMenuMouseEvent);
 			menu.addEventListener("right_DOWN",handlerMenuMouseEvent);
