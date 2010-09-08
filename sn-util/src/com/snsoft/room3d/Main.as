@@ -75,11 +75,11 @@
 		
 		private var seatScrollPane:ScrollPane;
 		
-		private static const SEAT_SCROLL_PANE_DEFAULT_RECT:Rectangle = new Rectangle(630,180,260,310);
+		private static const SEAT_SCROLL_PANE_DEFAULT_RECT:Rectangle = new Rectangle(630,20,260,300);
 		
 		private var menu:Menu;
 		
-		private static const MENU_DEFAULT_RECT:Rectangle = new Rectangle(630,10);
+		private static const MENU_DEFAULT_RECT:Rectangle = new Rectangle(630,320);
 		
 		private var roomMap:RoomMap;
 		
@@ -87,7 +87,7 @@
 		
 		private var seat3DBack:MovieClip;
 		
-		private static const SEAT3D_DEFAULT_RECT:Rectangle = new Rectangle(170,40,450,450);
+		private static const SEAT3D_DEFAULT_RECT:Rectangle = new Rectangle(170,20,450,460);
 		
 		private var currentStageDisplayStateSign:Boolean = true;
 		
@@ -208,9 +208,9 @@
 			
 			var scrollPane:ScrollPane = new ScrollPane();
 			scrollPane.x = placeSpace;
-			scrollPane.y = placeSpace;
+			scrollPane.y = placeSpace * 2;
 			scrollPane.width = 150;
-			scrollPane.height = 480;
+			scrollPane.height = 460;
 			scrollPane.source = roomCards;
 			this.addChild(scrollPane);
 			
