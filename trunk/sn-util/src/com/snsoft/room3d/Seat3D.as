@@ -8,6 +8,7 @@ package com.snsoft.room3d{
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
+	import flash.ui.Mouse;
 	
 	import org.papervision3d.cameras.Camera3D;
 	import org.papervision3d.core.proto.MaterialObject3D;
@@ -21,8 +22,6 @@ package com.snsoft.room3d{
 	import org.papervision3d.view.Viewport3D;
 	
 	public class Seat3D extends UIComponent{
-		
-		
 		
 		private static const AUTO_MOVE_COUNT_MAX:int = 150;
 		
@@ -75,7 +74,8 @@ package com.snsoft.room3d{
 		
 		private var zoomp:Number = 0;
 		
-		
+		private var downMouse:MovieClip;
+		private var downMoveMouse:MovieClip;
 		
 		private var autoMoveCount:int = AUTO_MOVE_COUNT_MAX;
 		
@@ -86,7 +86,9 @@ package com.snsoft.room3d{
 		 */			
 		private static var defaultStyles:Object = {
 			seatPointSkin:"SeatPoint_Skin",
-			seat3DFrameSkin:"Seat3D_frameSkin"
+			seat3DFrameSkin:"Seat3D_frameSkin",
+			seat3DMouseDownMoveSkin:"Seat3DMouse_downMoveSkin",
+			seat3DMouseDownSkin:"Seat3DMouse_downSkin"
 		};
 		
 		/**
@@ -120,8 +122,18 @@ package com.snsoft.room3d{
 				
 				this.addEventListener( Event.ENTER_FRAME, loop );
 				this.addEventListener(Event.REMOVED_FROM_STAGE,handlerRemoveThis);
+				
+				downMouse = getDisplayObjectInstance(getStyleValue("seat3DMouseDownSkin")) as MovieClip;
+				downMoveMouse = getDisplayObjectInstance(getStyleValue("seat3DMouseDownMoveSkin")) as MovieClip;
+				this.addChild(downMouse);
+				this.addChild(downMoveMouse);
+				downMouse.mouseEnabled = false;
+				downMoveMouse.mouseEnabled = false;
+				downMouse.visible = false;
+				downMoveMouse.visible = false;
+				
 			}
-		}		
+		}
 		
 		// ___________________________________________________________________ Init3D
 		
@@ -283,6 +295,7 @@ package com.snsoft.room3d{
 			this.addEventListener(MouseEvent.MOUSE_WHEEL, handlerMouseWheel);
 			this.addEventListener(MouseEvent.MOUSE_DOWN,handlerMouseDown);
 			this.addEventListener(MouseEvent.MOUSE_UP,handlerMouseUp);
+			this.addEventListener(MouseEvent.MOUSE_MOVE,handlerMouseMove);
 			this.addEventListener(Event.ENTER_FRAME,handlerEnterFrame);
 			this.dispatchEvent(new Event(SEAT3D_CMP_EVENT));
 		}
@@ -347,10 +360,41 @@ package com.snsoft.room3d{
 		private function handlerMouseDown(e:Event):void{
 			mouseDownPlace = new Point(this.mouseX,this.mouseY);
 			isMouseDown = true;
+			Mouse.hide();
+			downMouse.visible = true;
+		}
+		
+		private function handlerMouseMove(e:Event):void{
+			
+			var mx:Number = this.mouseX;
+			var my:Number = this.mouseY;
+			
+			if(mx < 0){
+				mx == 0;
+			}
+			else if(mx > this.seat3DWidth){
+				mx = this.seat3DWidth;
+			}
+			
+			if(my < 0){
+				my == 0;
+			}
+			else if(my > this.seat3DHeight){
+				my = this.seat3DHeight;
+			}
+			
+			downMouse.x = mx;
+			downMouse.y = my;
+			
+			downMoveMouse.x = mx;
+			downMoveMouse.y = my;
 		}
 		
 		private function handlerMouseUp(e:Event):void{
 			isMouseDown = false;
+			Mouse.show();
+			downMouse.visible = false;
+			downMoveMouse.visible = false;
 		}
 		
 		private function handlerEnterFrame(e:Event):void{
@@ -389,9 +433,20 @@ package com.snsoft.room3d{
 			
 			if(isMouseDown || isBtnDown){
 				
+				var roteX:Number =0;
+				var roteY:Number =0;
+				var roteRate:Number = 0;
+				
 				var rpy:Number = 0
 				if(py >= MOUSE_MIN_MOVE || py <= - MOUSE_MIN_MOVE){
 					rpy = py /camera.zoom;
+					
+					if(py >= MOUSE_MIN_MOVE){
+						roteY = 1;
+					}
+					else if(py <= -MOUSE_MIN_MOVE){
+						roteY = -1;
+					}
 				}
 				if(rpy > 3){
 					rpy = 3;
@@ -411,6 +466,13 @@ package com.snsoft.room3d{
 				var rpx:Number = 0;
 				if(px >= MOUSE_MIN_MOVE || px <= - MOUSE_MIN_MOVE){
 					rpx = px /camera.zoom;
+					
+					if(px >= MOUSE_MIN_MOVE){
+						roteX = 1;
+					}
+					else if(px <= -MOUSE_MIN_MOVE){
+						roteX = -1;
+					}
 				}
 				if(rpx > 3){
 					rpx = 3;
@@ -429,6 +491,53 @@ package com.snsoft.room3d{
 				this.cameraRotationY = rx;
 				this.dispatchEvent(new Event(CAMERA_ROTATION_EVENT));
 				renderer.renderScene(scene,camera,viewport);
+				
+				if(isMouseDown){
+					if(roteX == 0){
+						if(roteY == 0){
+							roteRate = 0;
+						}
+						else if(roteY == 1){
+							roteRate = -90;
+						}
+						else if(roteY == -1){
+							roteRate = 90;
+						}
+					}
+					if(roteX == 1){
+						if(roteY == 0){
+							roteRate = 180;
+						}
+						else if(roteY == 1){
+							roteRate = -135;
+						}
+						else if(roteY == -1){
+							roteRate = 135;
+						}
+					}
+					if(roteX == -1){
+						if(roteY == 0){
+							roteRate = 0;
+						}
+						else if(roteY == 1){
+							roteRate = -45;
+						}
+						else if(roteY == -1){
+							roteRate = 45;
+						}
+					}
+					//trace(roteX,roteY);
+					if(roteX != 0 || roteY != 0){
+						//trace("downMoveMouse");
+						this.downMouse.visible = false;
+						this.downMoveMouse.visible = true;
+						this.downMoveMouse.rotation = roteRate;
+					}
+					else{
+						this.downMouse.visible = true;
+						this.downMoveMouse.visible = false;
+					}
+				}
 			}
 			else {
 				var b:Boolean = addAutoMoveCount();

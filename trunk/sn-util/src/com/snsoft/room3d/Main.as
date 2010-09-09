@@ -65,6 +65,8 @@
 		
 		private static const placeSpace:Number = 10;
 		
+		private static const PLACE_SPACE_2:Number = 2;
+		
 		private var roomMapLayer:MovieClip = new MovieClip();
 		
 		private var roomLayer:MovieClip = new MovieClip();
@@ -196,7 +198,7 @@
 				var roomCard:RoomCard = new RoomCard(room);
 				roomCard.width = 120;
 				roomCard.height = 100;
-				roomCard.x = placeSpace;
+				roomCard.x = placeSpace -2;
 				roomCard.y = (100 + placeSpace / 2) * i + placeSpace;
 				
 				roomCard.addEventListener(MouseEvent.CLICK,handlerRoomCardMouseClick);
@@ -399,6 +401,10 @@
 			var roomMap:RoomMap = e.currentTarget as RoomMap;
 			var rcBak:MovieClip = SkinsUtil.createSkinByName("MainRoomCardsBak") as MovieClip;
 			var rect:Rectangle = roomMap.getRect(roomMapLayer);
+			rcBak.width = rect.width + PLACE_SPACE_2;
+			rcBak.height = rect.height + PLACE_SPACE_2;
+			roomMap.x = PLACE_SPACE_2;
+			roomMap.y = PLACE_SPACE_2;
 			roomMapLayer.addChild(rcBak);
 			roomMapLayer.swapChildren(roomMap,rcBak);
 			seatScrollPane.source= roomMapLayer;
