@@ -75,11 +75,14 @@ package com.snsoft.room3d{
 		private var zoomp:Number = 0;
 		
 		private var downMouse:MovieClip;
+		
 		private var downMoveMouse:MovieClip;
 		
 		private var autoMoveCount:int = AUTO_MOVE_COUNT_MAX;
 		
 		private var isDraw:Boolean = false;
+		
+		private var frame:MovieClip;
 		
 		/**
 		 * 
@@ -145,8 +148,8 @@ package com.snsoft.room3d{
 			viewport.y = 0;
 			addChild( viewport );
 			
-					
-			var frame:MovieClip = getDisplayObjectInstance(getStyleValue("seat3DFrameSkin")) as MovieClip;
+			
+			frame = getDisplayObjectInstance(getStyleValue("seat3DFrameSkin")) as MovieClip;
 			frame.width = seat3DWidth;
 			frame.height = seat3DHeight;
 			this.addChild(frame);
@@ -295,7 +298,7 @@ package com.snsoft.room3d{
 			this.addEventListener(MouseEvent.MOUSE_WHEEL, handlerMouseWheel);
 			this.addEventListener(MouseEvent.MOUSE_DOWN,handlerMouseDown);
 			this.addEventListener(MouseEvent.MOUSE_UP,handlerMouseUp);
-			this.addEventListener(MouseEvent.MOUSE_MOVE,handlerMouseMove);
+			//this.addEventListener(MouseEvent.MOUSE_MOVE,handlerMouseMove);
 			this.addEventListener(Event.ENTER_FRAME,handlerEnterFrame);
 			this.dispatchEvent(new Event(SEAT3D_CMP_EVENT));
 		}
@@ -366,28 +369,7 @@ package com.snsoft.room3d{
 		
 		private function handlerMouseMove(e:Event):void{
 			
-			var mx:Number = this.mouseX;
-			var my:Number = this.mouseY;
 			
-			if(mx < 0){
-				mx == 0;
-			}
-			else if(mx > this.seat3DWidth){
-				mx = this.seat3DWidth;
-			}
-			
-			if(my < 0){
-				my == 0;
-			}
-			else if(my > this.seat3DHeight){
-				my = this.seat3DHeight;
-			}
-			
-			downMouse.x = mx;
-			downMouse.y = my;
-			
-			downMoveMouse.x = mx;
-			downMoveMouse.y = my;
 		}
 		
 		private function handlerMouseUp(e:Event):void{
@@ -405,6 +387,31 @@ package com.snsoft.room3d{
 				px = mouseDownPlace.x - currenMousePlace.x;
 				py = mouseDownPlace.y - currenMousePlace.y;
 				this.autoMoveCount = 0;
+				
+				var mx:Number = this.mouseX;
+				var my:Number = this.mouseY;
+				
+				var downXY:Number = 15;
+				
+				if(mx < downXY){
+					mx = downXY;
+				}
+				else if(mx > this.viewport.viewportWidth * this.viewport.scaleX - downXY){
+					mx = this.seat3DWidth - downXY;
+				}
+				
+				if(my < downXY){
+					my = downXY;
+				}
+				else if(my > this.viewport.viewportHeight * this.viewport.scaleY - downXY){
+					my = this.seat3DHeight - downXY;
+				}
+				
+				downMouse.x = mx;
+				downMouse.y = my;
+				
+				downMoveMouse.x = mx;
+				downMoveMouse.y = my;
 			}
 			
 			if(isBtnDown){
@@ -582,11 +589,16 @@ package com.snsoft.room3d{
 		}
 		
 		public function setViewport3DSize(scaleX:Number,scaleY:Number,width:Number,height:Number):void{
-			
-			this.viewport.viewportWidth = width;
-			this.viewport.viewportHeight = height;
-			this.viewport.scaleX = scaleX;
-			this.viewport.scaleY = scaleY;
+			if(viewport != null && frame != null){
+				this.viewport.viewportWidth = width;
+				this.viewport.viewportHeight = height;
+				
+				frame.width = width * scaleX;
+				frame.height = height * scaleY;
+				
+				this.viewport.scaleX = scaleX;
+				this.viewport.scaleY = scaleY;
+			}
 		}
 		
 		public function get cameraRotationY():Number
