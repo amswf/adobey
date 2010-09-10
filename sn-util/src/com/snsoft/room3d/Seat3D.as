@@ -291,14 +291,13 @@ package com.snsoft.room3d{
 			var material:MaterialObject3D = creatBitMap(seatDO,SeatDO.BALL); 
 			material.doubleSided = true;
 			material.smooth = true;
-			ball = new Sphere(material,2000,100,50);
+			ball = new Sphere(material,2000,60,40);
 			ball.z = -1500;
 			scene.addChild(ball);
 			
 			this.addEventListener(MouseEvent.MOUSE_WHEEL, handlerMouseWheel);
 			this.addEventListener(MouseEvent.MOUSE_DOWN,handlerMouseDown);
 			this.addEventListener(MouseEvent.MOUSE_UP,handlerMouseUp);
-			//this.addEventListener(MouseEvent.MOUSE_MOVE,handlerMouseMove);
 			this.addEventListener(Event.ENTER_FRAME,handlerEnterFrame);
 			this.dispatchEvent(new Event(SEAT3D_CMP_EVENT));
 		}
@@ -365,11 +364,6 @@ package com.snsoft.room3d{
 			isMouseDown = true;
 			Mouse.hide();
 			downMouse.visible = true;
-		}
-		
-		private function handlerMouseMove(e:Event):void{
-			
-			
 		}
 		
 		private function handlerMouseUp(e:Event):void{
