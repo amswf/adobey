@@ -393,18 +393,20 @@ package com.snsoft.room3d{
 				
 				var downXY:Number = 15;
 				
+				var maxX:Number = ( this.viewport.viewportWidth) * this.viewport.scaleX  - downXY
 				if(mx < downXY){
 					mx = downXY;
 				}
-				else if(mx > this.viewport.viewportWidth * this.viewport.scaleX - downXY){
-					mx = this.seat3DWidth - downXY;
+				else if(mx > maxX){
+					mx = maxX;
 				}
 				
+				var maxY:Number = (this.viewport.viewportHeight ) * this.viewport.scaleY  - downXY;
 				if(my < downXY){
 					my = downXY;
 				}
-				else if(my > this.viewport.viewportHeight * this.viewport.scaleY - downXY){
-					my = this.seat3DHeight - downXY;
+				else if(my > maxY){
+					my = maxY;
 				}
 				
 				downMouse.x = mx;
