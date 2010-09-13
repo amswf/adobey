@@ -27,6 +27,8 @@ package com.snsoft.room3d{
 		
 		private var menu:Menu;
 		
+		private var autoMove:Boolean;
+		
 		private var seatDO:SeatDO;
 		
 		private var _cameraRotationY:Number;
@@ -35,11 +37,15 @@ package com.snsoft.room3d{
 		
 		private var seat3DHeight:Number;
 		
+		private var currentMoveDirection:String = "";
+		
 		public static const CAMERA_ROTATION_EVENT:String = "CAMERA_ROTATION_EVENT";
 		
 		public static const SEAT3D_CMP_EVENT:String = "SEAT3D_CMP_EVENT";
 		
 		private static const ROTATION_STEP:Number = 0.1;
+		
+		private static const AUTO_ROTATION_STEP:Number = 0.2;
 		
 		private static const MOUSE_MIN_MOVE:Number = 20;
 		
@@ -170,6 +176,8 @@ package com.snsoft.room3d{
 			menu.addEventListener("zoomIn_UP",handlerMenuMouseUp);
 			menu.addEventListener("zoomOut_UP",handlerMenuMouseUp);
 			
+			menu.addEventListener("auto_DOWN",handlerMenuMouseAutoClick);
+			
 			renderer = new BasicRenderEngine();
 			
 			// Create scene
@@ -178,6 +186,8 @@ package com.snsoft.room3d{
 			// Create camera
 			camera = new Camera3D();
 		}
+		
+		
 		
 		private function handlerRemoveThis(e:Event):void{
 			menu.removeEventListener("left_DOWN",handlerMenuMouseEvent);
@@ -196,10 +206,17 @@ package com.snsoft.room3d{
 			menu.removeEventListener("zoomIn_UP",handlerMenuMouseUp);
 			menu.removeEventListener("zoomOut_UP",handlerMenuMouseUp);
 			
+			menu.removeEventListener("auto_DOWN",handlerMenuMouseAutoClick);
+			
 			this.removeEventListener(MouseEvent.MOUSE_WHEEL, handlerMouseWheel);
 			this.removeEventListener(MouseEvent.MOUSE_DOWN,handlerMouseDown);
 			this.removeEventListener(MouseEvent.MOUSE_UP,handlerMouseUp);
 			this.removeEventListener(Event.ENTER_FRAME,handlerEnterFrame);
+		}
+		
+		private function handlerMenuMouseAutoClick(e:Event):void{
+			currentMoveDirection = "";
+			autoMove = menu.autoMove;
 		}
 		
 		private function handlerMenuMouseEvent(e:Event):void{
@@ -211,21 +228,29 @@ package com.snsoft.room3d{
 				btnStepP.x = p;
 				btnStepP.y = 0;
 				zoomp = 0;
+				currentMoveDirection = "left_DOWN";
+				autoMove = menu.autoMove;
 			}
 			else if(e.type == "right_DOWN"){
 				btnStepP.x = -p;
 				btnStepP.y = 0;
 				zoomp = 0;
+				currentMoveDirection = "right_DOWN";
+				autoMove = menu.autoMove;
 			}
 			else if(e.type == "up_DOWN"){
 				btnStepP.x = 0;
 				btnStepP.y = p;
 				zoomp = 0;
+				currentMoveDirection = "up_DOWN";
+				autoMove = menu.autoMove;
 			}
 			else if(e.type == "down_DOWN"){
 				btnStepP.x = 0;
 				btnStepP.y = -p;
 				zoomp = 0;
+				currentMoveDirection = "down_DOWN";
+				autoMove = menu.autoMove;
 			}
 			else if(e.type == "def_DOWN"){
 				btnStepP.x = 0;
@@ -377,6 +402,7 @@ package com.snsoft.room3d{
 			var px:Number;
 			var py:Number;
 			if(isMouseDown){
+				autoMove = false;
 				var currenMousePlace:Point = new Point(this.mouseX,this.mouseY);
 				px = mouseDownPlace.x - currenMousePlace.x;
 				py = mouseDownPlace.y - currenMousePlace.y;
@@ -434,7 +460,26 @@ package com.snsoft.room3d{
 				renderer.renderScene(scene,camera,viewport);
 			}
 			
-			if(isMouseDown || isBtnDown){
+			else if(autoMove){
+				if(currentMoveDirection == "left_DOWN"){
+					camera.rotationY -= AUTO_ROTATION_STEP;  
+				}
+				else if(currentMoveDirection == "right_DOWN"){
+					camera.rotationY += AUTO_ROTATION_STEP;
+				}
+				else if(currentMoveDirection == "up_DOWN"){
+					camera.rotationX -= AUTO_ROTATION_STEP; 
+				}
+				else if(currentMoveDirection == "down_DOWN"){
+					camera.rotationX += AUTO_ROTATION_STEP; 
+				}
+				
+				this.autoMoveCount = 0;
+				this.cameraRotationY = camera.rotationY;
+				this.dispatchEvent(new Event(CAMERA_ROTATION_EVENT));
+				renderer.renderScene(scene,camera,viewport);
+			}
+			else if(isMouseDown || isBtnDown){
 				
 				var roteX:Number =0;
 				var roteY:Number =0;
