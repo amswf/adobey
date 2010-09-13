@@ -5,6 +5,13 @@
 	import flash.events.MouseEvent;
 	
 	public class Menu extends MovieClip{
+		
+		private var _autoMove:Boolean = true;
+		
+		private var autoBtn:SimpleButton;
+		
+		private var manuBtn:SimpleButton;
+		
 		public function Menu()
 		{
 			super();
@@ -20,7 +27,26 @@
 			this.setButtonEvent("def");
 			this.setButtonEvent("zoomIn");
 			this.setButtonEvent("zoomOut");
+			
+			autoBtn = this.getChildByName("auto") as SimpleButton;
+			autoBtn.addEventListener(MouseEvent.CLICK,handlerAutoMouseClick);
+			
+			manuBtn = this.getChildByName("manu") as SimpleButton;
+			manuBtn.addEventListener(MouseEvent.CLICK,handlerAutoMouseClick);
+			manuBtn.visible = false;
 		}	
+		
+		private function handlerAutoMouseClick(e:Event):void{
+			if(autoMove){
+				autoMove = false;
+			}
+			else{
+				autoMove = true;
+			}
+			manuBtn.visible = !autoMove;
+			autoBtn.visible = autoMove;
+			dispatchEvents("auto_DOWN");
+		}
 		
 		private function setButtonEvent(btnName:String):void{
 			var btn:SimpleButton = this.getChildByName(btnName) as SimpleButton;
@@ -40,5 +66,16 @@
 		private function dispatchEvents(eventName:String):void{
 			this.dispatchEvent(new Event(eventName));
 		}
+
+		public function get autoMove():Boolean
+		{
+			return _autoMove;
+		}
+
+		public function set autoMove(value:Boolean):void
+		{
+			_autoMove = value;
+		}
+
 	}
 }
