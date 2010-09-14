@@ -1,4 +1,4 @@
-package com.snsoft.room3d{
+﻿package com.snsoft.room3d{
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
 	
@@ -317,7 +317,7 @@ package com.snsoft.room3d{
 			material.doubleSided = true;
 			material.smooth = true;
 			ball = new Sphere(material,2000,60,40);
-			ball.z = -1500;
+			ball.z = -1000;
 			scene.addChild(ball);
 			
 			this.addEventListener(MouseEvent.MOUSE_WHEEL, handlerMouseWheel);
@@ -473,7 +473,12 @@ package com.snsoft.room3d{
 				else if(currentMoveDirection == "down_DOWN"){
 					camera.rotationX += AUTO_ROTATION_STEP; 
 				}
-				
+				if(camera.rotationX > 90){
+					camera.rotationX = 90;
+				}
+				else if(camera.rotationX < -90){
+					camera.rotationX = -90;
+				}
 				this.autoMoveCount = 0;
 				this.cameraRotationY = camera.rotationY;
 				this.dispatchEvent(new Event(CAMERA_ROTATION_EVENT));
