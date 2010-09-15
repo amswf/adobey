@@ -15,6 +15,7 @@
 	import org.papervision3d.events.FileLoadEvent;
 	import org.papervision3d.materials.BitmapFileMaterial;
 	import org.papervision3d.materials.BitmapMaterial;
+	import org.papervision3d.materials.utils.MaterialsList;
 	import org.papervision3d.objects.primitives.Cube;
 	import org.papervision3d.objects.primitives.Sphere;
 	import org.papervision3d.render.BasicRenderEngine;
@@ -58,16 +59,22 @@
 		}
 		// ___________________________________________________________________ Static
 		
-		static public var SCREEN_WIDTH  :int = 1024;
-		static public var SCREEN_HEIGHT :int = 768;
+		static public var SCREEN_WIDTH:int = 1024;
+		
+		static public var SCREEN_HEIGHT:int = 768;
 		
 		// ___________________________________________________________________ 3D vars
 		
-		private var viewport   :Viewport3D;
-		private var renderer  :BasicRenderEngine;
-		private var scene     :Scene3D;
-		private var camera    :Camera3D;
-		private var cube      :Cube;
+		private var viewport:Viewport3D;
+		
+		private var renderer:BasicRenderEngine;
+		
+		private var scene:Scene3D;
+		
+		private var camera:Camera3D;
+		
+		private var cube:Cube;
+		
 		private var ball:Sphere;
 		
 		private var mouseDownPlace:Point;
@@ -212,6 +219,15 @@
 			this.removeEventListener(MouseEvent.MOUSE_DOWN,handlerMouseDown);
 			this.removeEventListener(MouseEvent.MOUSE_UP,handlerMouseUp);
 			this.removeEventListener(Event.ENTER_FRAME,handlerEnterFrame);
+			if(renderer != null){
+				renderer.destroy();
+			}
+			if(viewport != null){
+				viewport.destroy();
+			}
+			if(cube != null){
+				cube.destroy();
+			}
 		}
 		
 		private function handlerMenuMouseAutoClick(e:Event):void{
@@ -284,41 +300,35 @@
 		{
 			// Attributes
 			var size :Number = 1000;
-			var quality :Number = 20;
+			var quality :Number = 16;
 			
-			// Materials
-			//			var materials:MaterialsList = new MaterialsList(
-			//				{
-			//					//all:
-			//					front:  creatBitMap(seatDO,SeatDO.FRONT),
-			//					back:   creatBitMap(seatDO,SeatDO.BACK),
-			//					right:  creatBitMap(seatDO,SeatDO.RIGHT),
-			//					left:   creatBitMap(seatDO,SeatDO.LEFT),
-			//					top:    creatBitMap(seatDO,SeatDO.TOP),
-			//					bottom: creatBitMap(seatDO,SeatDO.BOTTOM)
-			//				} );
-			//			
-			// Cube face settings
-			// You can add or sustract faces to your selection. For examples: Cube.FRONT+Cube.BACK or Cube.ALL-Cube.Top.
+			//cube
+			var materials:MaterialsList = new MaterialsList(
+				{
+					//all:
+					front:  creatBitMap(seatDO,SeatDO.FRONT),
+					back:   creatBitMap(seatDO,SeatDO.BACK),
+					right:  creatBitMap(seatDO,SeatDO.RIGHT),
+					left:   creatBitMap(seatDO,SeatDO.LEFT),
+					top:    creatBitMap(seatDO,SeatDO.TOP),
+					bottom: creatBitMap(seatDO,SeatDO.BOTTOM)
+				} );
+			var insideFaces  :int = Cube.ALL;
+			var excludeFaces :int = Cube.NONE;
+			cube = new Cube( materials, size, size, size, quality, quality, quality, insideFaces, excludeFaces );
+			cube.z = -1000;
 			
-			// On single sided materials, all faces will be visible from the inside.
-			//var insideFaces  :int = Cube.ALL;
+			scene.addChild( cube, "Cube" );
 			
-			// Front and back cube faces will not be created.
-			//var excludeFaces :int = Cube.NONE;
-			
-			// Create the cube.
-			//			cube = new Cube( materials, size, size, size, quality, quality, quality, insideFaces, excludeFaces );
-			//			cube.z = -1000;
-			//			
-			//			scene.addChild( cube, "Cube" );
-			
+			//Sphere
+			/*
 			var material:MaterialObject3D = creatBitMap(seatDO,SeatDO.BALL); 
 			material.doubleSided = true;
 			material.smooth = true;
 			ball = new Sphere(material,2000,60,40);
 			ball.z = -1000;
 			scene.addChild(ball);
+			*/
 			
 			this.addEventListener(MouseEvent.MOUSE_WHEEL, handlerMouseWheel);
 			this.addEventListener(MouseEvent.MOUSE_DOWN,handlerMouseDown);
@@ -331,48 +341,46 @@
 			
 			var material:MaterialObject3D;
 			if(seatDO != null && fileType != null && fileType.length > 0){
-				if(fileType == SeatDO.BALL){
-					if(seatDO.ballImageBitMapData == null){
-						var burl:String = seatDO.ballImageUrl;
-						var catchBitmapData:BitmapData = ImgCatch.imgHV.findByName(burl) as BitmapData;
-						
-						if(catchBitmapData != null){
-							seatDO.ballImageBitMapData = catchBitmapData;
-							material = new BitmapMaterial(seatDO.ballImageBitMapData);
-						}
-						else {
-							material = new BitmapFileMaterial(burl);
-							material.addEventListener(FileLoadEvent.LOAD_COMPLETE,handlerLoadBallImgCmp);
-							
-							function handlerLoadBallImgCmp(e:Event):void{
-								var bitmapData:BitmapData = new BitmapData(material.bitmap.width,material.bitmap.height);
-								bitmapData.draw( material.bitmap,new Matrix(-1,0,0,1, material.bitmap.width,0));
-								ImgCatch.imgHV.push(bitmapData,burl);
-								material.bitmap = bitmapData;
-								seatDO.ballImageBitMapData = material.bitmap;
-							}
-						}	
+				var bitMapData:BitmapData = seatDO.imageBitMapData.findByName(fileType) as BitmapData;
+				if(bitMapData == null){
+					var burl:String = seatDO.imageUrlHV.findByName(fileType) as String;;
+					var catchBitmapData:BitmapData = ImgCatch.imgHV.findByName(burl) as BitmapData;
+					
+					if(catchBitmapData != null){
+						material = new BitmapMaterial(catchBitmapData);
 					}
 					else {
-						material = new BitmapMaterial(seatDO.ballImageBitMapData);
-					}
-				}
-				else {
-					var bitMapData:BitmapData = seatDO.imageBitMapData.findByName(fileType) as BitmapData;
-					if(bitMapData == null){
-						var url:String = seatDO.imageUrlHV.findByName(fileType) as String;
-						material = new BitmapFileMaterial(url);
-						material.addEventListener(FileLoadEvent.LOAD_COMPLETE,handlerLoadImgCmp);
-						function handlerLoadImgCmp(e:Event):void{
+						material = new BitmapFileMaterial(burl);
+						material.addEventListener(FileLoadEvent.LOAD_COMPLETE,handlerLoadBallImgCmp);
+						
+						function handlerLoadBallImgCmp(e:Event):void{
+							material.removeEventListener(FileLoadEvent.LOAD_COMPLETE,handlerLoadBallImgCmp);
+							var bitmapData:BitmapData = new BitmapData(material.bitmap.width,material.bitmap.height);
+							var matrix:Matrix = null;
+							if(fileType == SeatDO.BALL){
+								matrix = new Matrix(-1,0,0,1, material.bitmap.width,0);
+							}
+							else if(fileType == SeatDO.TOP){
+								matrix = new Matrix(-1,0,0,-1,material.bitmap.width,material.bitmap.height);
+							}
+							else{
+								matrix = new Matrix(1,0,0,1,0,0);
+							}
+							bitmapData.draw( material.bitmap,matrix);
+							ImgCatch.imgHV.push(bitmapData,burl);
+							material.bitmap = bitmapData;
 							seatDO.imageBitMapData.push(material.bitmap,fileType);
 						}
-					}
-					else {
-						material = new BitmapMaterial(bitMapData);
-					}
-					
+					}	
+				}
+				else {
+					material = new BitmapMaterial(bitMapData);
 				}
 			}
+			if(material != null){
+				material.smooth = true;
+			}
+			
 			return material;
 		}
 		
@@ -381,7 +389,9 @@
 		
 		private function loop(event:Event):void
 		{
-			renderer.renderScene(scene,camera,viewport);
+			if(renderer != null){
+				renderer.renderScene(scene,camera,viewport);
+			}
 		}
 		
 		private function handlerMouseDown(e:Event):void{
@@ -459,7 +469,7 @@
 				this.dispatchEvent(new Event(CAMERA_ROTATION_EVENT));
 				renderer.renderScene(scene,camera,viewport);
 			}
-			
+				
 			else if(autoMove){
 				if(currentMoveDirection == "left_DOWN"){
 					camera.rotationY -= AUTO_ROTATION_STEP;  
