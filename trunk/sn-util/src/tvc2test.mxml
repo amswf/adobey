@@ -9,7 +9,6 @@
 			import com.snsoft.map.MapMain;
 			import com.snsoft.room3d.Main;
 			import com.snsoft.room3d.Menu;
-			import com.snsoft.room3d.MyCube;
 			import com.snsoft.room3d.XMLLoader;
 			import com.snsoft.tvc2.Business;
 			import com.snsoft.tvc2.Main;
@@ -64,7 +63,6 @@
 				var spriteMove:SpriteMove;
 				var mm:MapMain;
 				var mains:com.snsoft.tvc2.mediaEditer.Main;
-				var myc:MyCube;
 				var menu:Menu;
 				var xl:XMLLoader;
 				var main3d:com.snsoft.room3d.Main;
