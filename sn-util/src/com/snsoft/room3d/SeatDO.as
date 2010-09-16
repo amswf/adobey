@@ -7,36 +7,86 @@ package com.snsoft.room3d{
 	import flash.display.BitmapData;
 	import flash.geom.Point;
 
+	/**
+	 * 3D显示数据对象
+	 * @author Administrator
+	 * 
+	 */	
 	public class SeatDO{
 		
+		/**
+		 * name XML标签属性  
+		 */		
 		private var _nameStr:String = null;
 		
+		/**
+		 * value XML标签属性  
+		 */		
 		private var _valueStr:String = null;
 		
+		/**
+		 * text XML标签属性  
+		 */		
 		private var _textStr:String = null;
 		
+		/**
+		 * 正方体前面 
+		 */		
 		public static const FRONT:String = "front";
 		
+		/**
+		 * 正方体后面 
+		 */		
 		public static const BACK:String = "back";
 		
+		/**
+		 * 正方体顶面 
+		 */		
 		public static const TOP:String = "top";
 		
+		/**
+		 *正方体底面 
+		 */		
 		public static const BOTTOM:String = "bottom";
 		
+		/**
+		 * 正方体左面 
+		 */	
 		public static const LEFT:String = "left";
 		
+		/**
+		 * 正方体右面 
+		 */			
 		public static const RIGHT:String = "right";
 		
+		/**
+		 * 球面 
+		 */	
 		public static const BALL:String = "ball";
 		
+		/**
+		 *图片地址列表 
+		 */		
 		private var _imageUrlHV:HashVector = new HashVector;
 		
+		/**
+		 * 图片位图对象列表 
+		 */		
 		private var _imageBitMapData:HashVector = new HashVector;
 		
+		/**
+		 * 球面图片地址 
+		 */		
 		private var _ballImageUrl:String;
 		
+		/**
+		 * 球面位图对象 
+		 */		
 		private var _ballImageBitMapData:BitmapData;
 		
+		/**
+		 * 当前观察点在房间平面图上的位置 
+		 */		
 		private var _place:Point = null;
 		
 		public function SeatDO()

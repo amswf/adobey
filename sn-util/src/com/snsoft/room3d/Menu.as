@@ -6,10 +6,19 @@
 	
 	public class Menu extends MovieClip{
 		
+		/**
+		 * 是否自动步进旋转 
+		 */		
 		private var _autoMove:Boolean = true;
 		
+		/**
+		 * 自动步进/手动步进一对按钮之一，显示当前是否自动步进状态
+		 */		
 		private var autoBtn:SimpleButton;
 		
+		/**
+		 * 自动步进/手动步进一对按钮之一，显示当前是否自动步进状态
+		 */		
 		private var manuBtn:SimpleButton;
 		
 		public function Menu()
@@ -18,6 +27,11 @@
 			this.addEventListener(Event.ENTER_FRAME,handlerEnterFrame);
 		}
 		
+		/**
+		 * 按钮元键进入下一帧时，初始化显示对象，及属性信息 
+		 * @param e
+		 * 
+		 */		
 		private function handlerEnterFrame(e:Event):void{
 			this.removeEventListener(Event.ENTER_FRAME,handlerEnterFrame);			
 			this.setButtonEvent("left");
@@ -36,6 +50,11 @@
 			manuBtn.visible = false;
 		}	
 		
+		/**
+		 * 自动步进按钮点击事件 
+		 * @param e
+		 * 
+		 */		
 		private function handlerAutoMouseClick(e:Event):void{
 			if(autoMove){
 				autoMove = false;
@@ -48,6 +67,11 @@
 			dispatchEvents("auto_DOWN");
 		}
 		
+		/**
+		 * 给按钮注册事件 
+		 * @param btnName
+		 * 
+		 */		
 		private function setButtonEvent(btnName:String):void{
 			var btn:SimpleButton = this.getChildByName(btnName) as SimpleButton;
 			btn.addEventListener(MouseEvent.MOUSE_DOWN,handlerMouseDown);
@@ -63,6 +87,11 @@
 			}
 		}
 		
+		/**
+		 * 抛出事件 
+		 * @param eventName
+		 * 
+		 */		
 		private function dispatchEvents(eventName:String):void{
 			this.dispatchEvent(new Event(eventName));
 		}

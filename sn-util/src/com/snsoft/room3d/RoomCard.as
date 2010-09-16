@@ -22,6 +22,11 @@ package com.snsoft.room3d{
 	
 	[Style(name="roomCardTitleBakSkin", type="Class")]
 	
+	/**
+	 * 房间卡，左侧显示列表，点击房间，右侧显示对应的平面图及观察点 
+	 * @author Administrator
+	 * 
+	 */	
 	public class RoomCard extends UIComponent{
 		
 		private var _roomDO:RoomDO;
@@ -106,6 +111,10 @@ package com.snsoft.room3d{
 			
 		}
 		
+		/**
+		 * 加载标题图片 
+		 * 
+		 */		
 		public function loadTitleImg():void{
 			if(roomDO.titleImgBitmap == null && roomDO.titleImgUrl != null){
 				var imgl:ImageLoader = new ImageLoader();
@@ -114,6 +123,11 @@ package com.snsoft.room3d{
 			}
 		}
 		
+		/**
+		 *加载标题图片完成事件 
+		 * @param e
+		 * 
+		 */		
 		private function handlerLoaderTitleImgCmp(e:Event):void{
 			var imgl:ImageLoader = e.currentTarget as ImageLoader;
 			roomDO.titleImgBitmap = imgl.bitmapData;
@@ -133,10 +147,20 @@ package com.snsoft.room3d{
 			this.addEventListener(MouseEvent.MOUSE_OUT,handlerMouseOut);
 		}
 		
+		/**
+		 * 显示特效，鼠标移上，标题图片变亮 
+		 * @param e
+		 * 
+		 */		
 		private function handlerMouseOver(e:Event):void{
 			imgMask.alpha = 0;
 		}
 		
+		/**
+		 * 显示特效，鼠标移上，标题图片变亮暗 
+		 * @param e
+		 * 
+		 */		
 		private function handlerMouseOut(e:Event):void{
 			imgMask.alpha = 1;
 		}
