@@ -221,20 +221,23 @@
 				trace("Seat3D draw false");
 				init3D();
 				create3DDisplayObject();
-				
-				this.addEventListener( Event.ENTER_FRAME, loop );
-				this.addEventListener(Event.REMOVED_FROM_STAGE,handlerRemoveThis);
-				
-				downMouse = getDisplayObjectInstance(getStyleValue("seat3DMouseDownSkin")) as MovieClip;
-				downMoveMouse = getDisplayObjectInstance(getStyleValue("seat3DMouseDownMoveSkin")) as MovieClip;
-				this.addChild(downMouse);
-				this.addChild(downMoveMouse);
-				downMouse.mouseEnabled = false;
-				downMoveMouse.mouseEnabled = false;
-				downMouse.visible = false;
-				downMoveMouse.visible = false;
-				
+				creatDownMouse();
 			}
+		}
+		
+		/**
+		 *创建鼠标按下皮肤 
+		 * 
+		 */		
+		private function creatDownMouse():void{
+			downMouse = getDisplayObjectInstance(getStyleValue("seat3DMouseDownSkin")) as MovieClip;
+			downMoveMouse = getDisplayObjectInstance(getStyleValue("seat3DMouseDownMoveSkin")) as MovieClip;
+			this.addChild(downMouse);
+			this.addChild(downMoveMouse);
+			downMouse.mouseEnabled = false;
+			downMoveMouse.mouseEnabled = false;
+			downMouse.visible = false;
+			downMoveMouse.visible = false;
 		}
 		
 		
@@ -281,6 +284,8 @@
 			
 			// Create camera
 			camera = new Camera3D();
+			
+			this.addEventListener(Event.REMOVED_FROM_STAGE,handlerRemoveThis);
 		}
 		
 		/**
@@ -503,20 +508,6 @@
 			return material;
 		}
 		
-		
-		 
-		/**
-		 * 初始渲染3D场景 
-		 * @param event
-		 * 
-		 */		
-		private function loop(event:Event):void
-		{
-			if(renderer != null){
-				renderer.renderScene(scene,camera,viewport);
-			}
-		}
-		
 		/**
 		 * 鼠标按下事件，获得按下时坐标，改变鼠标显示样式 
 		 * @param e
@@ -634,7 +625,6 @@
 				this.autoMoveCount = 0;
 				this.cameraRotationY = camera.rotationY;
 				this.dispatchEvent(new Event(CAMERA_ROTATION_EVENT));
-				renderer.renderScene(scene,camera,viewport);
 			}
 			else if(isMouseDown || isBtnDown){
 				
@@ -695,7 +685,6 @@
 				camera.rotationY = rx;
 				this.cameraRotationY = rx;
 				this.dispatchEvent(new Event(CAMERA_ROTATION_EVENT));
-				renderer.renderScene(scene,camera,viewport);
 				
 				if(isMouseDown){
 					if(roteX == 0){
@@ -753,6 +742,7 @@
 					zoom(zoomp);
 				}
 			}
+			renderer.renderScene(scene,camera,viewport);
 		}
 		
 		/**
