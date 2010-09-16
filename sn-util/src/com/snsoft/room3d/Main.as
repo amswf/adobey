@@ -2,6 +2,8 @@
 	import com.snsoft.util.HashVector;
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.SpriteUtil;
+	import com.snsoft.util.StringUtil;
+	import com.snsoft.util.text.Text;
 	import com.snsoft.xmldom.Node;
 	import com.snsoft.xmldom.NodeList;
 	
@@ -19,6 +21,8 @@
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
+	import flash.text.TextFormat;
+	import flash.text.TextFormatAlign;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.setInterval;
 	import flash.utils.setTimeout;
@@ -171,7 +175,9 @@
 		
 		private var seat3DBack:MovieClip;
 		
-		private static const SEAT3D_DEFAULT_RECT:Rectangle = new Rectangle(170,20,450,460);
+		private static const ROOM_TEXT_RECT:Rectangle = new Rectangle(170,20,450,20);
+		
+		private static const SEAT3D_DEFAULT_RECT:Rectangle = new Rectangle(170,50,450,430);
 		
 		private var currentStageDisplayStateSign:Boolean = true;
 		
@@ -233,12 +239,12 @@
 				var value:String = roomNode.getAttributeByName(XML_ATT_VALUE);
 				var text:String = roomNode.getAttributeByName(XML_ATT_TEXT);
 				
-				var room:RoomDO = new RoomDO();
-				room.bgImgUrl = bgImg;
-				room.titleImgUrl = titleImg;
-				room.nameStr = name;
-				room.valueStr = value;
-				room.textStr = text;
+				var roomDO:RoomDO = new RoomDO();
+				roomDO.bgImgUrl = bgImg;
+				roomDO.titleImgUrl = titleImg;
+				roomDO.nameStr = name;
+				roomDO.valueStr = value;
+				roomDO.textStr = text;
 				
 				var placeHV:HashVector = new HashVector();
 				var placeList:NodeList = roomNode.getNodeList(XML_TAG_PLACE);
@@ -274,10 +280,10 @@
 					seatDO.place = p;
 					placeHV.push(seatDO);
 				}
-				room.placeHV = placeHV;
-				roomHV.push(room);
+				roomDO.placeHV = placeHV;
+				roomHV.push(roomDO);
 				
-				var roomCard:RoomCard = new RoomCard(room);
+				var roomCard:RoomCard = new RoomCard(roomDO);
 				roomCard.width = 120;
 				roomCard.height = 100;
 				roomCard.x = placeSpace -2;
@@ -304,9 +310,10 @@
 			
 			this.addChild(this.roomMapLayer);
 			this.addChild(this.roomLayer);
+			this.addChild(this.roomTextLayer);
 			this.addChild(seat3DBack);
 			this.addChild(this.seat3dLayer);
-			this.addChild(this.roomTextLayer);
+			
 			
 			seatScrollPane = new ScrollPane();
 			seatScrollPane.width = SEAT_SCROLL_PANE_DEFAULT_RECT.width;
@@ -334,6 +341,8 @@
 			trace("handlerRoomCardMouseClick");
 			var roomCard:RoomCard = e.currentTarget as RoomCard;
 			refreshRoomMap(roomCard.roomDO); 
+			
+			
 		}
 		
 		/**
@@ -341,14 +350,31 @@
 		 * @param room
 		 * 
 		 */		
-		private function refreshRoomMap(room:RoomDO):void{
+		private function refreshRoomMap(roomDO:RoomDO):void{
 			trace("refreshRoomMap");
+			
+			
+			SpriteUtil.deleteAllChild(this.roomTextLayer);
+			var tft:TextFormat = new TextFormat();
+			tft.size = 18;
+			tft.color = 0x19C3F7;
+			tft.align = TextFormatAlign.CENTER;
+			
+			var n:int = int((ROOM_TEXT_RECT.width - 6) * 2 / int(tft.size));
+			var txt:String = roomDO.textStr;
+			if(StringUtil.getByteLen(txt) > n){
+				txt = StringUtil.subCNStr(txt,n - 1)+"...";
+			}
+		 
+			var tfd:TextField = Text.creatTextField(txt,tft,false);
+			tfd.x = ROOM_TEXT_RECT.x;
+			tfd.y = ROOM_TEXT_RECT.y;
+			tfd.width = ROOM_TEXT_RECT.width;
+			this.roomTextLayer.addChild(tfd);
+			
 			SpriteUtil.deleteAllChild(roomMapLayer);
-			
-			roomMap = new RoomMap(room);
-			
+			roomMap = new RoomMap(roomDO);
 			roomMapLayer.addChild(roomMap);
-			
 			roomMap.addEventListener(RoomMap.EVENT_ROOM_MAP_COMPLETE,handlerLoadBigImgCmp);
 			roomMap.addEventListener(RoomMap.EVENT_SEAT_POINT_MOUSE_CLICK,handlerSeatClick);
 		}
