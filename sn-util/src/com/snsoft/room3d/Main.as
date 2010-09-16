@@ -25,59 +25,141 @@
 	
 	public class Main extends MovieClip{
 		
+		/**
+		 * 默认的数据文件 
+		 */		
 		private var dataUrl:String = "data.xml";
 		
+		/**
+		 * XML加载
+		 */		
 		private var xmlLoader:XMLLoader; 
 		
+		/**
+		 * 房间列表 
+		 */		
 		private var roomHV:HashVector;
 		
+		/**
+		 * xml数据标签名称 
+		 */		
 		private static const XML_TAG_ROOM:String = "room";
 		
+		/**
+		 * xml数据标签名称 
+		 */
 		private static const XML_TAG_PLACE:String = "place";
 		
+		/**
+		 * xml数据标签属性 
+		 */
 		private static const XML_ATT_BGIMG:String = "bgImg";
 		
+		/**
+		 * xml数据标签属性 
+		 */
 		private static const XML_ATT_TITLEIMG:String = "titleImg";
 		
+		/**
+		 * xml数据标签属性 
+		 */
 		private static const XML_ATT_NAME:String = "name";
 		
+		/**
+		 * xml数据标签属性 
+		 */
 		private static const XML_ATT_VALUE:String = "value";
 		
+		/**
+		 * xml数据标签属性 
+		 */
 		private static const XML_ATT_TEXT:String = "text";
 		
+		/**
+		 * xml数据标签属性 
+		 */
 		private static const XML_ATT_X:String = "x";
 		
+		/**
+		 * xml数据标签属性 
+		 */
 		private static const XML_ATT_Y:String = "y";
 		
+		/**
+		 * xml数据标签属性 
+		 */
 		private static const XML_ATT_BALLIMG:String = "ballImg";
 		
+		/**
+		 * xml数据标签属性 
+		 */
 		private static const XML_ATT_FRONTIMG:String = "frontImg";
 		
+		/**
+		 * xml数据标签属性 
+		 */
 		private static const XML_ATT_BACKIMG:String = "backImg";
 		
+		/**
+		 * xml数据标签属性 
+		 */
 		private static const XML_ATT_TOPIMG:String = "topImg";
 		
+		/**
+		 * xml数据标签属性 
+		 */
 		private static const XML_ATT_BOTTOMIMG:String = "bottomImg";
 		
+		/**
+		 * xml数据标签属性 
+		 */
 		private static const XML_ATT_LEFTIMG:String = "leftImg";
 		
+		/**
+		 * xml数据标签属性 
+		 */
 		private static const XML_ATT_RIGHTIMG:String = "rightImg";
 		
+		/**
+		 * xml数据标签属性 
+		 */
 		private static const placeSpace:Number = 10;
 		
+		/**
+		 * xml数据标签属性 
+		 */
 		private static const PLACE_SPACE_2:Number = 2;
 		
+		/**
+		 *房间平面图所在的层 
+		 */		
 		private var roomMapLayer:MovieClip = new MovieClip();
 		
+		/**
+		 * 房间所在的层 
+		 */		
 		private var roomLayer:MovieClip = new MovieClip();
 		
+		/**
+		 * 房间文字层 
+		 */		
 		private var roomTextLayer:MovieClip = new MovieClip();
 		
+		/**
+		 * 3d全景对象
+		 */		
 		private var seat3dLayer:MovieClip = new MovieClip();
 		
+		/**
+		 * 房间平面图滚动条 
+		 */		
 		private var seatScrollPane:ScrollPane;
 		
+		/**
+		 * 房间平面图滚动条默认尺寸和宽高 
+		 */		
 		private static const SEAT_SCROLL_PANE_DEFAULT_RECT:Rectangle = new Rectangle(630,20,260,300);
+		
 		
 		private var menu:Menu;
 		
