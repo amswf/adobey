@@ -22,33 +22,157 @@
 	import org.papervision3d.scenes.Scene3D;
 	import org.papervision3d.view.Viewport3D;
 	
+	/**
+	 * 3D展现对象，把图片帖图到3D图形上，并且按钮控制3显示 
+	 * @author Administrator
+	 * 
+	 */	
 	public class Seat3D extends UIComponent{
 		
+		/**
+		 *等待一段时间后，自动播放计数器最大计数 
+		 */		
 		private static const AUTO_MOVE_COUNT_MAX:int = 150;
 		
+		/**
+		 *控制按钮对象 
+		 */		
 		private var menu:Menu;
 		
+		/**
+		 *是否自动播放 
+		 */		
 		private var autoMove:Boolean;
 		
+		/**
+		 * 3D展现对象数据
+		 */		
 		private var seatDO:SeatDO;
 		
+		/**
+		 * 摄像机水平旋转角度 
+		 */		
 		private var _cameraRotationY:Number;
 		
+		/**
+		 * 3D展现宽度 
+		 */		
 		private var seat3DWidth:Number;
 		
+		/**
+		 * 3D展现高度 
+		 */		
 		private var seat3DHeight:Number;
 		
+		/**
+		 * 当前自动播放的方向 
+		 */		
 		private var currentMoveDirection:String = "";
 		
+		/**
+		 * 摄像机旋转事件类型 
+		 */		
 		public static const CAMERA_ROTATION_EVENT:String = "CAMERA_ROTATION_EVENT";
 		
+		/**
+		 * 3D展现初始化完成事件类型
+		 */		
 		public static const SEAT3D_CMP_EVENT:String = "SEAT3D_CMP_EVENT";
 		
+		/**
+		 * 等待一段时间后，摄像头步进角度值 
+		 */		
 		private static const ROTATION_STEP:Number = 0.1;
 		
+		/**
+		 * 方向键控制自动旋转时，摄像头步进角度值  
+		 */		
 		private static const AUTO_ROTATION_STEP:Number = 0.2;
 		
+		/**
+		 *鼠标拖动旋转时，最小拖动响应阈值 
+		 */		
 		private static const MOUSE_MIN_MOVE:Number = 20;
+		
+		/**
+		 * 3D视窗 
+		 */		
+		private var viewport:Viewport3D;
+		
+		/**
+		 * 3D渲染器
+		 */		
+		private var renderer:BasicRenderEngine;
+		
+		/**
+		 * 3D场景 
+		 */		
+		private var scene:Scene3D;
+		
+		/**
+		 * 摄像机 
+		 */		
+		private var camera:Camera3D;
+		
+		/**
+		 * 正方体全景显示对象 
+		 */		
+		private var cube:Cube;
+		
+		/**
+		 *球体全景显示对象 
+		 */		
+		private var ball:Sphere;
+		
+		/**
+		 * 鼠标拖动时，按下时的坐标 
+		 */		
+		private var mouseDownPlace:Point;
+		
+		/**
+		 * 是否鼠标按下的标记 
+		 */		
+		private var isMouseDown:Boolean = false;
+		
+		/**
+		 *是否按钮按下的标记 
+		 */		
+		private var isBtnDown:Boolean = false;
+		
+		/**
+		 *按钮点击时，摄像机X轴，Y轴旋转步进值 
+		 */		
+		private var btnStepP:Point = new Point();
+		
+		/**
+		 * 摄像机放大倍数 
+		 */		
+		private var zoomp:Number = 0;
+		
+		/**
+		 * 鼠标点按下时，显示的鼠标皮肤样式 
+		 */		
+		private var downMouse:MovieClip;
+		
+		/**
+		 * 鼠标点按下并拖动时，显示的鼠标皮肤样式
+		 */		
+		private var downMoveMouse:MovieClip;
+		
+		/**
+		 * 等待一段时间后，自动播放计数
+		 */		
+		private var autoMoveCount:int = AUTO_MOVE_COUNT_MAX;
+		
+		/**
+		 * 当前组件是否已经绘制完成 
+		 */		
+		private var isDraw:Boolean = false;
+		
+		/**
+		 * 显示边框 
+		 */		
+		private var frame:MovieClip;
 		
 		public function Seat3D(menu:Menu,seatDO:SeatDO,seat3DWidth:Number,seat3DHeight:Number){
 			this.menu = menu;
@@ -57,45 +181,7 @@
 			this.seat3DHeight = seat3DHeight;
 			super();
 		}
-		// ___________________________________________________________________ Static
 		
-		static public var SCREEN_WIDTH:int = 1024;
-		
-		static public var SCREEN_HEIGHT:int = 768;
-		
-		// ___________________________________________________________________ 3D vars
-		
-		private var viewport:Viewport3D;
-		
-		private var renderer:BasicRenderEngine;
-		
-		private var scene:Scene3D;
-		
-		private var camera:Camera3D;
-		
-		private var cube:Cube;
-		
-		private var ball:Sphere;
-		
-		private var mouseDownPlace:Point;
-		
-		private var isMouseDown:Boolean = false;
-		
-		private var isBtnDown:Boolean = false;
-		
-		private var btnStepP:Point = new Point();
-		
-		private var zoomp:Number = 0;
-		
-		private var downMouse:MovieClip;
-		
-		private var downMoveMouse:MovieClip;
-		
-		private var autoMoveCount:int = AUTO_MOVE_COUNT_MAX;
-		
-		private var isDraw:Boolean = false;
-		
-		private var frame:MovieClip;
 		
 		/**
 		 * 
@@ -127,14 +213,14 @@
 		
 		/**
 		 * 
-		 * 
+		 * 绘制组件显示
 		 */		
 		override protected function draw():void{
 			trace("Seat3D draw");
 			if(!isDraw){
 				trace("Seat3D draw false");
 				init3D();
-				createCube();
+				create3DDisplayObject();
 				
 				this.addEventListener( Event.ENTER_FRAME, loop );
 				this.addEventListener(Event.REMOVED_FROM_STAGE,handlerRemoveThis);
@@ -151,8 +237,11 @@
 			}
 		}
 		
-		// ___________________________________________________________________ Init3D
 		
+		/**
+		 * 初始化3D显示对象 
+		 * 
+		 */		
 		private function init3D():void
 		{
 			// Create container sprite and center it in the stage
@@ -194,8 +283,11 @@
 			camera = new Camera3D();
 		}
 		
-		
-		
+		/**
+		 * 当前组件被删除出场景时的事件，把注册的侦听器全部释放 
+		 * @param e
+		 * 
+		 */		
 		private function handlerRemoveThis(e:Event):void{
 			menu.removeEventListener("left_DOWN",handlerMenuMouseEvent);
 			menu.removeEventListener("right_DOWN",handlerMenuMouseEvent);
@@ -230,11 +322,21 @@
 			}
 		}
 		
+		/**
+		 * 自动步进按钮点击事件 
+		 * @param e
+		 * 
+		 */		
 		private function handlerMenuMouseAutoClick(e:Event):void{
 			currentMoveDirection = "";
 			autoMove = menu.autoMove;
 		}
 		
+		/**
+		 * 控制按钮，点击事件 
+		 * @param e
+		 * 
+		 */		
 		private function handlerMenuMouseEvent(e:Event):void{
 			
 			trace("handlerMenuMouseEvent");
@@ -290,14 +392,20 @@
 			}
 		}
 		
+		/**
+		 * 控制按钮鼠标弹起事件，标记按钮状态为没有按下 
+		 * @param e
+		 * 
+		 */		
 		private function handlerMenuMouseUp(e:Event):void{
 			isBtnDown = false;
 		}
 		
-		
-		// ___________________________________________________________________ Create Cube
-		
-		private function createCube():void
+		/**
+		 * 创建3D显示物体
+		 * 
+		 */		
+		private function create3DDisplayObject():void
 		{
 			// Attributes
 			var size :Number = 1000;
@@ -338,6 +446,13 @@
 			this.dispatchEvent(new Event(SEAT3D_CMP_EVENT));
 		}
 		
+		/**
+		 * 创建贴图 
+		 * @param seatDO
+		 * @param fileType
+		 * @return 
+		 * 
+		 */		
 		private function creatBitMap(seatDO:SeatDO,fileType:String):MaterialObject3D{
 			
 			var material:MaterialObject3D;
@@ -389,8 +504,12 @@
 		}
 		
 		
-		// ___________________________________________________________________ Loop
-		
+		 
+		/**
+		 * 初始渲染3D场景 
+		 * @param event
+		 * 
+		 */		
 		private function loop(event:Event):void
 		{
 			if(renderer != null){
@@ -398,6 +517,11 @@
 			}
 		}
 		
+		/**
+		 * 鼠标按下事件，获得按下时坐标，改变鼠标显示样式 
+		 * @param e
+		 * 
+		 */		
 		private function handlerMouseDown(e:Event):void{
 			mouseDownPlace = new Point(this.mouseX,this.mouseY);
 			isMouseDown = true;
@@ -405,6 +529,11 @@
 			downMouse.visible = true;
 		}
 		
+		/**
+		 * 鼠标弹起事件，获得按下时坐标，改变鼠标显示样式 
+		 * @param e
+		 * 
+		 */	
 		private function handlerMouseUp(e:Event):void{
 			isMouseDown = false;
 			Mouse.show();
@@ -412,9 +541,15 @@
 			downMoveMouse.visible = false;
 		}
 		
+		/**
+		 * 3D场景帧刷新 
+		 * @param e
+		 * 
+		 */		
 		private function handlerEnterFrame(e:Event):void{
 			var px:Number;
 			var py:Number;
+			
 			if(isMouseDown){
 				autoMove = false;
 				var currenMousePlace:Point = new Point(this.mouseX,this.mouseY);
@@ -621,7 +756,7 @@
 		}
 		
 		/**
-		 *  
+		 * 等待一段时间后，自动旋转场景，计数器加1 
 		 * @return 
 		 * 
 		 */		
@@ -635,11 +770,21 @@
 			}
 		}
 		
+		/**
+		 * 鼠标滚轮事件，让摄像机视野放大缩小 
+		 * @param event
+		 * 
+		 */		
 		private function handlerMouseWheel(event:MouseEvent):void{
 			var i:int = event.delta;
 			zoom(i);
 		}
 		
+		/**
+		 * 摄像机视野放大缩小 
+		 * @param i
+		 * 
+		 */		
 		private function zoom(i:Number):void{
 			camera.zoom += i * 5;
 			if(camera.zoom  < 20){
@@ -651,6 +796,14 @@
 			renderer.renderScene(scene,camera,viewport);
 		}
 		
+		/**
+		 * 设置3D视窗尺寸，用于全屏与非全屏显示切换 
+		 * @param scaleX
+		 * @param scaleY
+		 * @param width
+		 * @param height
+		 * 
+		 */		
 		public function setViewport3DSize(scaleX:Number,scaleY:Number,width:Number,height:Number):void{
 			if(viewport != null && frame != null){
 				this.viewport.viewportWidth = width;
