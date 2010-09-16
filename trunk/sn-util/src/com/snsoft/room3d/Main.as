@@ -164,23 +164,49 @@
 		 */		
 		private static const SEAT_SCROLL_PANE_DEFAULT_RECT:Rectangle = new Rectangle(630,20,260,300);
 		
-		
+		/**
+		 *按钮对象 
+		 */		
 		private var menu:Menu;
 		
+		/**
+		 * 按钮默认尺寸位置信息 
+		 */		
 		private static const MENU_DEFAULT_RECT:Rectangle = new Rectangle(630,320);
 		
+		/**
+		 * 房间地图 
+		 */		
 		private var roomMap:RoomMap;
 		
+		/**
+		 *当前3D显示 
+		 */		
 		private var currentSeat3D:Seat3D;
 		
+		/**
+		 * 3D显示背景，用于全屏切换时，挡住其它显示对象 
+		 */		
 		private var seat3DBack:MovieClip;
 		
+		/**
+		 * 房间名称显示尺寸位置 信息
+		 */		
 		private static const ROOM_TEXT_RECT:Rectangle = new Rectangle(170,20,450,20);
 		
+		/**
+		 * 3D全景默认宽高位置信息 
+		 */		
 		private static const SEAT3D_DEFAULT_RECT:Rectangle = new Rectangle(170,50,450,430);
 		
+		/**
+		 * 当前场景的全屏状态 
+		 */		
 		private var currentStageDisplayStateSign:Boolean = true;
 		
+		/**
+		 * 当前场景是否有缩放事件的标记 
+		 */		
 		private var isStageResize:Boolean = false;
 		
 		public function Main(){
@@ -191,6 +217,11 @@
 			
 		}
 		
+		/**
+		 * 场景进入下一帧时，初始化显示对象 
+		 * @param e
+		 * 
+		 */		
 		private function handlerEnterFrame(e:Event):void{
 			trace("handlerEnterFrame");
 			this.removeEventListener(Event.ENTER_FRAME,handlerEnterFrame);
@@ -205,21 +236,40 @@
 			loadXML();
 		}
 		
+		/**
+		 * 全屏非全屏时，设置显示对象的位置和宽高 
+		 * @param e
+		 * 
+		 */		
 		private function handlerStageResize(e:Event):void{
 			trace("handlerStageResize",stage.stageHeight,stage.stageWidth);
 			setMainDisplayState();
 		}
 		
+		/**
+		 * 加载XML数据 
+		 * 
+		 */		
 		private function loadXML():void{
 			xmlLoader = new XMLLoader(dataUrl);
 			xmlLoader.addEventListener(Event.COMPLETE,handlerLoadXMLCmp);
 			xmlLoader.loadXML();
 		}
 		
+		/**
+		 * 加载XML完成事件 
+		 * @param e
+		 * 
+		 */		
 		private function handlerLoadXMLCmp(e:Event):void{
 			initData();
 		}
 		
+		
+		/**
+		 * 初始化信息
+		 * 
+		 */		
 		private function initData():void{
 			var node:Node = xmlLoader.xmlNode;
 			var roomList:NodeList = node.getNodeList(XML_TAG_ROOM);
@@ -333,7 +383,7 @@
 		}
 		
 		/**
-		 * 
+		 * 房间卡片点击事件
 		 * @param e
 		 * 
 		 */		
@@ -346,7 +396,7 @@
 		}
 		
 		/**
-		 * 
+		 * 更新房间显示对象
 		 * @param room
 		 * 
 		 */		
@@ -380,7 +430,7 @@
 		}
 		
 		/**
-		 * 
+		 * 房间内观察点点击事件
 		 * @param e
 		 * 
 		 */		
@@ -391,7 +441,7 @@
 		}
 		
 		/**
-		 * 
+		 * 创建观察点的3d全景显示
 		 * @param roomMap
 		 * 
 		 */		
@@ -417,10 +467,20 @@
 			s3d.addEventListener(Seat3D.SEAT3D_CMP_EVENT,handlerSeat3DCmp);
 		}
 		
+		/**
+		 * 3D全景对象初始化完成 
+		 * @param e
+		 * 
+		 */		
 		private function handlerSeat3DCmp(e:Event):void{
 			setMainDisplayState();
 		}
 		
+		/**
+		 * 3D全景对象鼠标双击全屏/退出全屏事件 
+		 * @param e
+		 * 
+		 */		
 		private function handlerCurrentSeatDOMouseDoubleClick(e:Event):void{
 			if(stage.displayState != StageDisplayState.FULL_SCREEN){
 				stage.displayState = StageDisplayState.FULL_SCREEN;
@@ -430,6 +490,10 @@
 			}
 		}
 		
+		/**
+		 * 设置场景中显示对象的状态及显示属性
+		 * 
+		 */		
 		private function setMainDisplayState():void{
 			if(currentStageDisplayStateSign){
 				trace("setMainDisplayState");
@@ -490,7 +554,7 @@
 		}
 		
 		/**
-		 * 
+		 * 3D全景对象，摄像机旋转事件
 		 * @param e
 		 * 
 		 */		
@@ -500,7 +564,7 @@
 		}
 		
 		/**
-		 * 
+		 * 房间平面图加载完成事件
 		 * @param e
 		 * 
 		 */		

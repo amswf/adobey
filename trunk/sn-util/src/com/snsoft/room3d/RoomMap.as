@@ -16,19 +16,41 @@ package com.snsoft.room3d{
 	
 	[Style(name="visualAngleSkin", type="Class")]
 	
-	
+	/**
+	 * 房间平面图组件 
+	 * @author Administrator
+	 * 
+	 */	
 	public class RoomMap extends UIComponent{
 		
+		/**
+		 * 观察点鼠标点击事件类型 
+		 */		
 		public static const EVENT_SEAT_POINT_MOUSE_CLICK:String = "EVENT_SEAT_POINT_MOUSE_CLICK";
 		
+		/**
+		 * 房间平面图初始化完成事件类型 
+		 */		
 		public static const EVENT_ROOM_MAP_COMPLETE:String = "EVENT_ROOM_MAP_COMPLETE";
 		
+		/**
+		 * 房间数据对象 
+		 */		
 		private var _room:RoomDO;
 		
+		/**
+		 *当前观察点3D显示对象 
+		 */		
 		private var _currentSeatDO:SeatDO;
 		
+		/**
+		 * 当前视角，显示一个扇形
+		 */		
 		private var visualAngle:MovieClip;
 		
+		/**
+		 * 是否绘制完 
+		 */		
 		private var isDraw:Boolean = false;
 		
 		public function RoomMap(room:RoomDO){
@@ -75,6 +97,10 @@ package com.snsoft.room3d{
 			}
 		}
 		
+		/**
+		 * 加载房间平面图 
+		 * 
+		 */		
 		public function loadBgImg():void{
 			if(room.bgImgBitmap == null && room.bgImgUrl != null){
 				var imgl:ImageLoader = new ImageLoader();
@@ -86,12 +112,21 @@ package com.snsoft.room3d{
 			}
 		}
 		
+		/**
+		 * 加载房间平面图，完成事件 
+		 * @param e
+		 * 
+		 */		
 		private function handlerLoaderBgImgCmp(e:Event):void{
 			var imgl:ImageLoader = e.currentTarget as ImageLoader;
 			room.bgImgBitmap = imgl.bitmapData.clone();
 			init();
 		}
 		
+		/**
+		 * 初始化 
+		 * 
+		 */		
 		private function init():void{
 			var sourceSpr:Sprite = new Sprite();
 			
