@@ -275,6 +275,7 @@
 				camera.rotationY = 0;
 				camera.zoom = 40;
 				zoomp = 0;
+				currentMoveDirection = "";
 			}
 			else if(e.type == "zoomIn_DOWN"){
 				btnStepP.x = 0;
@@ -357,10 +358,13 @@
 							material.removeEventListener(FileLoadEvent.LOAD_COMPLETE,handlerLoadBallImgCmp);
 							var bitmapData:BitmapData = new BitmapData(material.bitmap.width,material.bitmap.height);
 							var matrix:Matrix = null;
+							
 							if(fileType == SeatDO.BALL){
+								//当用一张平行柱面给球面做贴图时，因为在球里面看,需要把图水平翻转一下，才能正确显示。
 								matrix = new Matrix(-1,0,0,1, material.bitmap.width,0);
 							}
 							else if(fileType == SeatDO.TOP){
+								//当用正方体展现时，6张贴图用pt Gui 生成后，顶图需要旋转180度，才能正确显示。
 								matrix = new Matrix(-1,0,0,-1,material.bitmap.width,material.bitmap.height);
 							}
 							else{
@@ -452,6 +456,7 @@
 				this.autoMoveCount = 0;
 			}
 			
+			/*
 			if(AUTO_MOVE_COUNT_MAX == this.autoMoveCount){
 				
 				if(Math.abs(camera.rotationX) <= ROTATION_STEP){
@@ -469,8 +474,10 @@
 				this.dispatchEvent(new Event(CAMERA_ROTATION_EVENT));
 				renderer.renderScene(scene,camera,viewport);
 			}
-				
 			else if(autoMove){
+			*/
+				
+			if(autoMove){
 				if(currentMoveDirection == "left_DOWN"){
 					camera.rotationY -= AUTO_ROTATION_STEP;  
 				}
@@ -603,7 +610,7 @@
 				}
 			}
 			else {
-				var b:Boolean = addAutoMoveCount();
+				//var b:Boolean = addAutoMoveCount();
 			}
 			
 			if(isBtnDown){
