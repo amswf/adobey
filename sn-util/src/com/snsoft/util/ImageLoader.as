@@ -14,6 +14,8 @@ package com.snsoft.util
 	{
 		private var _bitmapData:BitmapData = null;
 		
+		private var _url:String;
+		
 		public function ImageLoader(target:IEventDispatcher=null)
 		{
 			super(target);
@@ -26,6 +28,7 @@ package com.snsoft.util
 		 */		
 		public function loadImage(url:String):void {
 			if (url != null) {
+				this.url = url;
 				var req:URLRequest = new URLRequest(url);
 				var loader:Loader = new Loader();
 				loader.load(req);
@@ -61,6 +64,17 @@ package com.snsoft.util
 		{
 			return _bitmapData;
 		}
+
+		public function get url():String
+		{
+			return _url;
+		}
+
+		public function set url(value:String):void
+		{
+			_url = value;
+		}
+
 
 	}
 }

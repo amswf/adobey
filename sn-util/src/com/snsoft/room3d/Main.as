@@ -1,5 +1,6 @@
 ﻿package com.snsoft.room3d{
 	import com.snsoft.util.HashVector;
+	import com.snsoft.util.ImageLoader;
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.SpriteUtil;
 	import com.snsoft.util.StringUtil;
@@ -9,6 +10,7 @@
 	
 	import fl.containers.ScrollPane;
 	
+	import flash.display.Loader;
 	import flash.display.LoaderInfo;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -20,6 +22,8 @@
 	import flash.external.ExternalInterface;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
@@ -27,7 +31,19 @@
 	import flash.utils.setInterval;
 	import flash.utils.setTimeout;
 	
+	import org.papervision3d.materials.MovieAssetMaterial;
+	
 	public class Main extends MovieClip{
+		
+		/**
+		 * <var name="isTsp" value="true"/>
+		 */		
+		private static const IS_TSP:String = "isTsp";
+		
+		/**
+		 * 是否触摸屏使用 
+		 */		
+		private var isTsp:Boolean = false;
 		
 		/**
 		 * 默认的数据文件 
@@ -43,6 +59,16 @@
 		 * 房间列表 
 		 */		
 		private var roomHV:HashVector;
+		
+		/**
+		 * xml数据标签名称 
+		 */		
+		private static const XML_TAG_VARS:String = "vars";
+		
+		/**
+		 * xml数据标签名称 
+		 */		
+		private static const XML_TAG_VAR:String = "var";
 		
 		/**
 		 * xml数据标签名称 
@@ -127,7 +153,7 @@
 		/**
 		 * xml数据标签属性 
 		 */
-		private static const placeSpace:Number = 10;
+		private static const PLACE_SPACE_10:Number = 10;
 		
 		/**
 		 * xml数据标签属性 
@@ -209,6 +235,22 @@
 		 */		
 		private var isStageResize:Boolean = false;
 		
+		
+		/**
+		 * 主背景影片剪辑 
+		 */		
+		private var bakMC:MovieClip;
+		
+		/**
+		 * 房间卡滚动组件 
+		 */		
+		private var roomCardsScrollPane:ScrollPane;
+		
+		/**
+		 * 房间卡滚动组件默认Rect
+		 */		
+		private static const ROOM_CARDS_SCROLLPANE_RECT:Rectangle = new Rectangle(10,20,150,460);
+		
 		public function Main(){
 			super();
 			stage.scaleMode = StageScaleMode.NO_SCALE;
@@ -257,11 +299,28 @@
 		}
 		
 		/**
-		 * 加载XML完成事件 
+		 * 加载XML完成事件，加载logo图片 
 		 * @param e
 		 * 
 		 */		
 		private function handlerLoadXMLCmp(e:Event):void{
+			var url:String = "logo.png";
+			var il:ImageLoader = new ImageLoader();
+			il.loadImage(url);
+			il.addEventListener(Event.COMPLETE,handlerLoaderLogoImgCmp);
+		}
+		
+		/**
+		 * 加载logo图片 完成后，初始化显示对象
+		 * @param e
+		 * 
+		 */		
+		private function handlerLoaderLogoImgCmp(e:Event):void{
+			var il:ImageLoader = e.currentTarget as ImageLoader;
+			il.bitmapData;
+			il.url;
+			ImgCatch.imgHV.push(il.bitmapData.clone(),il.url);
+			
 			initData();
 		}
 		
@@ -272,12 +331,32 @@
 		 */		
 		private function initData():void{
 			var node:Node = xmlLoader.xmlNode;
+			
+			var varsList:NodeList = node.getNodeList(XML_TAG_VARS);
+			for(var iVar:int = 0;iVar < varsList.length();iVar ++){
+				var varsNode:Node = varsList.getNode(iVar);
+				var varList:NodeList = varsNode.getNodeList(XML_TAG_VAR);
+				for(var jVar:int = 0;jVar < varList.length();jVar ++){
+					var varNode:Node = varList.getNode(jVar);
+					var varName:String = varNode.getAttributeByName(XML_ATT_NAME);
+					var varValue:String = varNode.getAttributeByName(XML_ATT_VALUE);
+					if(varName == IS_TSP){
+						if(varValue != null && varValue.toLocaleLowerCase() == "true"){
+							isTsp = true;
+						}
+						else {
+							isTsp = false;
+						}
+					}
+					trace(isTsp);
+				}
+			}
 			var roomList:NodeList = node.getNodeList(XML_TAG_ROOM);
 			roomHV = new HashVector();
 			var roomCards:Sprite = new Sprite();
 			var rcBak:MovieClip = SkinsUtil.createSkinByName("MainRoomCardsBak") as MovieClip;
-			rcBak.width = 120 + placeSpace;
-			rcBak.height = (100 + placeSpace / 2) * roomList.length() + placeSpace + placeSpace;
+			rcBak.width = 120 + PLACE_SPACE_10;
+			rcBak.height = (100 + PLACE_SPACE_10 / 2) * roomList.length() + PLACE_SPACE_10 + PLACE_SPACE_10;
 			roomCards.addChild(rcBak);
 			
 			for(var i:int = 0;i < roomList.length();i ++){
@@ -336,8 +415,8 @@
 				var roomCard:RoomCard = new RoomCard(roomDO);
 				roomCard.width = 120;
 				roomCard.height = 100;
-				roomCard.x = placeSpace -2;
-				roomCard.y = (100 + placeSpace / 2) * i + placeSpace;
+				roomCard.x = PLACE_SPACE_10 -2;
+				roomCard.y = (100 + PLACE_SPACE_10 / 2) * i + PLACE_SPACE_10;
 				
 				roomCard.addEventListener(MouseEvent.CLICK,handlerRoomCardMouseClick);
 				
@@ -346,13 +425,13 @@
 			
 			this.addChild(roomCards);
 			
-			var scrollPane:ScrollPane = new ScrollPane();
-			scrollPane.x = placeSpace;
-			scrollPane.y = placeSpace * 2;
-			scrollPane.width = 150;
-			scrollPane.height = 460;
-			scrollPane.source = roomCards;
-			this.addChild(scrollPane);
+			roomCardsScrollPane = new ScrollPane();
+			roomCardsScrollPane.x = ROOM_CARDS_SCROLLPANE_RECT.x;
+			roomCardsScrollPane.y = ROOM_CARDS_SCROLLPANE_RECT.y;
+			roomCardsScrollPane.width = ROOM_CARDS_SCROLLPANE_RECT.width;
+			roomCardsScrollPane.height = ROOM_CARDS_SCROLLPANE_RECT.height;
+			roomCardsScrollPane.source = roomCards;
+			this.addChild(roomCardsScrollPane);
 			
 			
 			seat3DBack = SkinsUtil.createSkinByName("Seat3DBack") as MovieClip;
@@ -455,16 +534,17 @@
 			
 			var seatDO:SeatDO = roomMap.currentSeatDO;
 			var s3d:Seat3D = new Seat3D(this.menu,roomMap.currentSeatDO,SEAT3D_DEFAULT_RECT.width,SEAT3D_DEFAULT_RECT.height);
+			s3d.addEventListener(Seat3D.CAMERA_ROTATION_EVENT,handlerCameraRotation);
+			s3d.addEventListener(MouseEvent.DOUBLE_CLICK,handlerCurrentSeatDOMouseDoubleClick);
+			s3d.doubleClickEnabled = true;
+			s3d.addEventListener(Seat3D.SEAT3D_CMP_EVENT,handlerSeat3DCmp);
 			s3d.x = SEAT3D_DEFAULT_RECT.x;
 			s3d.y = SEAT3D_DEFAULT_RECT.y;
 			currentSeat3D = s3d;
 			this.seat3dLayer.addChild(s3d);
 			s3d.drawNow();
 			this.roomMap.setVisualAngleRotation(0);
-			s3d.addEventListener(Seat3D.CAMERA_ROTATION_EVENT,handlerCameraRotation);
-			s3d.addEventListener(MouseEvent.DOUBLE_CLICK,handlerCurrentSeatDOMouseDoubleClick);
-			s3d.doubleClickEnabled = true;
-			s3d.addEventListener(Seat3D.SEAT3D_CMP_EVENT,handlerSeat3DCmp);
+			
 		}
 		
 		/**
@@ -486,7 +566,9 @@
 				stage.displayState = StageDisplayState.FULL_SCREEN;
 			}
 			else {
-				stage.displayState = StageDisplayState.NORMAL;
+				if(!isTsp){
+					stage.displayState = StageDisplayState.NORMAL;
+				}
 			}
 		}
 		
@@ -499,36 +581,55 @@
 				trace("setMainDisplayState");
 				currentStageDisplayStateSign = false;
 				
+				bakMC = this.getChildByName("bak") as MovieClip;
+				
+				var seat3DFullScreenRect:Rectangle = new Rectangle();
+				
+				if(isTsp){
+					seat3DFullScreenRect.x = SEAT3D_DEFAULT_RECT.x;
+					seat3DFullScreenRect.y = SEAT3D_DEFAULT_RECT.y;
+				}
+				
 				if(stage.displayState == StageDisplayState.FULL_SCREEN){
 					seat3DBack.visible = true;
-					seat3DBack.width = stage.fullScreenWidth;
+					seat3DBack.width = stage.fullScreenWidth - seat3DFullScreenRect.x;
 					seat3DBack.height = stage.fullScreenHeight;
+					seat3DBack.x = seat3DFullScreenRect.x;
+					seat3DBack.y = seat3DFullScreenRect.y;
 					
 					if(currentSeat3D != null){						
-						var scaleX:Number = stage.fullScreenWidth / SEAT3D_DEFAULT_RECT.width;
-						var scaleY:Number = stage.fullScreenHeight / SEAT3D_DEFAULT_RECT.height;
+						var scaleX:Number = (stage.fullScreenWidth - seat3DFullScreenRect.x) / SEAT3D_DEFAULT_RECT.width;
+						var scaleY:Number = (stage.fullScreenHeight - seat3DFullScreenRect.y) / SEAT3D_DEFAULT_RECT.height;
 						
 						var scale:Number = scaleX > scaleY ? scaleY:scaleX;
 						
+						seat3DFullScreenRect.width = SEAT3D_DEFAULT_RECT.width;
+						seat3DFullScreenRect.height = SEAT3D_DEFAULT_RECT.height;
 						
-						var viewportWidth:Number = SEAT3D_DEFAULT_RECT.width;
-						var viewportHeight:Number = SEAT3D_DEFAULT_RECT.height;
 						if(scale == scaleY){
-							viewportWidth = stage.fullScreenWidth / scale;
+							seat3DFullScreenRect.width = (stage.fullScreenWidth - seat3DFullScreenRect.x) / scale;
 						}
 						else if(scale == scaleX){
-							viewportHeight = stage.fullScreenHeight / scale;
+							seat3DFullScreenRect.height = (stage.fullScreenHeight - seat3DFullScreenRect.y) / scale;
 						}
 						
-						currentSeat3D.setViewport3DSize(scale,scale,viewportWidth,viewportHeight);
-						currentSeat3D.x = 0;
-						currentSeat3D.y = 0;
+						currentSeat3D.setViewport3DSize(scale,scale,seat3DFullScreenRect.width,seat3DFullScreenRect.height);
+						currentSeat3D.x = seat3DFullScreenRect.x;
+						currentSeat3D.y = seat3DFullScreenRect.y;
 						
 						menu.x = (stage.fullScreenWidth - menu.getRect(this).width) / 2;
-						menu.y = stage.fullScreenHeight - menu.getRect(this).height - placeSpace;
+						menu.y = stage.fullScreenHeight - menu.getRect(this).height - PLACE_SPACE_10;
 						
-						seatScrollPane.x = stage.fullScreenWidth - SEAT_SCROLL_PANE_DEFAULT_RECT.width - placeSpace;
-						seatScrollPane.y = placeSpace;
+						seatScrollPane.x = stage.fullScreenWidth - SEAT_SCROLL_PANE_DEFAULT_RECT.width - PLACE_SPACE_10;
+						seatScrollPane.y = PLACE_SPACE_10;
+						
+						if(isTsp){
+							roomCardsScrollPane.height = stage.fullScreenHeight - PLACE_SPACE_10 - PLACE_SPACE_10;
+						}
+						
+						if(bakMC != null){
+							bakMC.visible = false;
+						}
 					}
 				}
 				else {
@@ -543,11 +644,16 @@
 						
 						seatScrollPane.x = SEAT_SCROLL_PANE_DEFAULT_RECT.x;
 						seatScrollPane.y = SEAT_SCROLL_PANE_DEFAULT_RECT.y;
+						
+						if(isTsp){
+							roomCardsScrollPane.height = ROOM_CARDS_SCROLLPANE_RECT.height;
+						}
+						
+						if(bakMC != null){
+							bakMC.visible = true;
+						}
 					}
 				}
-				
-				
-				
 				currentStageDisplayStateSign = true;
 			}
 			

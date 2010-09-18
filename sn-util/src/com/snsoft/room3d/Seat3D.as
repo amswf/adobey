@@ -1,4 +1,6 @@
 ﻿package com.snsoft.room3d{
+	import com.snsoft.util.SkinsUtil;
+	
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
 	
@@ -8,6 +10,7 @@
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.ui.Mouse;
 	
 	import org.papervision3d.cameras.Camera3D;
@@ -222,6 +225,9 @@
 				init3D();
 				create3DDisplayObject();
 				creatDownMouse();
+			}
+			else {
+				this.dispatchEvent(new Event(SEAT3D_CMP_EVENT));
 			}
 		}
 		
@@ -491,6 +497,15 @@
 								matrix = new Matrix(1,0,0,1,0,0);
 							}
 							bitmapData.draw( material.bitmap,matrix);
+							if(fileType == SeatDO.BOTTOM || fileType == SeatDO.TOP){
+								var logo:BitmapData = ImgCatch.imgHV.findByName("logo.png") as BitmapData;
+								var logoRect:Rectangle = new Rectangle();
+								logoRect.x = (bitmapData.width - logo.width) * 0.5;
+								logoRect.y = (bitmapData.height - logo.height) * 0.5;
+								var logoMatrix:Matrix = new Matrix(1,0,0,1,logoRect.x,logoRect.y);
+								bitmapData.draw(logo,logoMatrix);
+							}
+							
 							ImgCatch.imgHV.push(bitmapData,burl);
 							material.bitmap = bitmapData;
 							seatDO.imageBitMapData.push(material.bitmap,fileType);
@@ -804,6 +819,8 @@
 				
 				this.viewport.scaleX = scaleX;
 				this.viewport.scaleY = scaleY;
+				
+				renderer.renderScene(scene,camera,viewport);
 			}
 		}
 		
