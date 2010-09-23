@@ -251,10 +251,13 @@
 		 */		
 		private static const ROOM_CARDS_SCROLLPANE_RECT:Rectangle = new Rectangle(10,20,150,460);
 		
+		private var mainLayer:MovieClip;
+		
 		public function Main(){
 			super();
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
+			stage.showDefaultContextMenu = false;
 			this.addEventListener(Event.ENTER_FRAME,handlerEnterFrame);
 			
 		}
@@ -284,8 +287,10 @@
 		 * 
 		 */		
 		private function handlerStageResize(e:Event):void{
-			trace("handlerStageResize",stage.stageHeight,stage.stageWidth);
-			setMainDisplayState();
+			if(!isTsp){
+				trace("handlerStageResize",stage.stageHeight,stage.stageWidth);
+				setMainDisplayState();
+			}
 		}
 		
 		/**
@@ -330,6 +335,14 @@
 		 * 
 		 */		
 		private function initData():void{
+			
+			bakMC = this.getChildByName("bak") as MovieClip;
+			
+			mainLayer = new MovieClip();
+			mainLayer.x = bakMC.x;
+			mainLayer.y = bakMC.y;
+			this.addChild(mainLayer);
+			
 			var node:Node = xmlLoader.xmlNode;
 			
 			var varsList:NodeList = node.getNodeList(XML_TAG_VARS);
@@ -423,7 +436,7 @@
 				roomCards.addChild(roomCard);
 			}
 			
-			this.addChild(roomCards);
+			mainLayer.addChild(roomCards);
 			
 			roomCardsScrollPane = new ScrollPane();
 			roomCardsScrollPane.x = ROOM_CARDS_SCROLLPANE_RECT.x;
@@ -431,17 +444,17 @@
 			roomCardsScrollPane.width = ROOM_CARDS_SCROLLPANE_RECT.width;
 			roomCardsScrollPane.height = ROOM_CARDS_SCROLLPANE_RECT.height;
 			roomCardsScrollPane.source = roomCards;
-			this.addChild(roomCardsScrollPane);
+			mainLayer.addChild(roomCardsScrollPane);
 			
 			
 			seat3DBack = SkinsUtil.createSkinByName("Seat3DBack") as MovieClip;
 			seat3DBack.visible = false;
 			
-			this.addChild(this.roomMapLayer);
-			this.addChild(this.roomLayer);
-			this.addChild(this.roomTextLayer);
-			this.addChild(seat3DBack);
-			this.addChild(this.seat3dLayer);
+			mainLayer.addChild(this.roomMapLayer);
+			mainLayer.addChild(this.roomLayer);
+			mainLayer.addChild(this.roomTextLayer);
+			mainLayer.addChild(seat3DBack);
+			mainLayer.addChild(this.seat3dLayer);
 			
 			
 			seatScrollPane = new ScrollPane();
@@ -450,7 +463,7 @@
 			seatScrollPane.x = SEAT_SCROLL_PANE_DEFAULT_RECT.x;
 			seatScrollPane.y = SEAT_SCROLL_PANE_DEFAULT_RECT.y;
 			seatScrollPane.scrollDrag = true;
-			this.addChild(seatScrollPane);
+			mainLayer.addChild(seatScrollPane);
 			
 			var roomDefault:RoomDO = roomHV.findByIndex(0) as RoomDO;
 			refreshRoomMap(roomDefault);
@@ -458,7 +471,7 @@
 			this.menu = new Menu();
 			menu.x = MENU_DEFAULT_RECT.x;
 			menu.y = MENU_DEFAULT_RECT.y;
-			this.addChild(menu);
+			mainLayer.addChild(menu);
 		}
 		
 		/**
@@ -494,7 +507,7 @@
 			if(StringUtil.getByteLen(txt) > n){
 				txt = StringUtil.subCNStr(txt,n - 1)+"...";
 			}
-		 
+			
 			var tfd:TextField = Text.creatTextField(txt,tft,false);
 			tfd.x = ROOM_TEXT_RECT.x;
 			tfd.y = ROOM_TEXT_RECT.y;
@@ -562,11 +575,11 @@
 		 * 
 		 */		
 		private function handlerCurrentSeatDOMouseDoubleClick(e:Event):void{
-			if(stage.displayState != StageDisplayState.FULL_SCREEN){
-				stage.displayState = StageDisplayState.FULL_SCREEN;
-			}
-			else {
-				if(!isTsp){
+			if(!isTsp){
+				if(stage.displayState != StageDisplayState.FULL_SCREEN){
+					stage.displayState = StageDisplayState.FULL_SCREEN;
+				}
+				else {
 					stage.displayState = StageDisplayState.NORMAL;
 				}
 			}
@@ -581,14 +594,12 @@
 				trace("setMainDisplayState");
 				currentStageDisplayStateSign = false;
 				
-				bakMC = this.getChildByName("bak") as MovieClip;
-				
 				var seat3DFullScreenRect:Rectangle = new Rectangle();
 				
-				if(isTsp){
-					seat3DFullScreenRect.x = SEAT3D_DEFAULT_RECT.x;
-					seat3DFullScreenRect.y = SEAT3D_DEFAULT_RECT.y;
-				}
+				//				if(isTsp){
+				//					seat3DFullScreenRect.x = SEAT3D_DEFAULT_RECT.x;
+				//					seat3DFullScreenRect.y = SEAT3D_DEFAULT_RECT.y;
+				//				}
 				
 				if(stage.displayState == StageDisplayState.FULL_SCREEN){
 					seat3DBack.visible = true;
@@ -623,9 +634,9 @@
 						seatScrollPane.x = stage.fullScreenWidth - SEAT_SCROLL_PANE_DEFAULT_RECT.width - PLACE_SPACE_10;
 						seatScrollPane.y = PLACE_SPACE_10;
 						
-						if(isTsp){
-							roomCardsScrollPane.height = stage.fullScreenHeight - PLACE_SPACE_10 - PLACE_SPACE_10;
-						}
+						//						if(isTsp){
+						//							roomCardsScrollPane.height = stage.fullScreenHeight - PLACE_SPACE_10 - PLACE_SPACE_10;
+						//						}
 						
 						if(bakMC != null){
 							bakMC.visible = false;
@@ -645,9 +656,9 @@
 						seatScrollPane.x = SEAT_SCROLL_PANE_DEFAULT_RECT.x;
 						seatScrollPane.y = SEAT_SCROLL_PANE_DEFAULT_RECT.y;
 						
-						if(isTsp){
-							roomCardsScrollPane.height = ROOM_CARDS_SCROLLPANE_RECT.height;
-						}
+						//						if(isTsp){
+						//							roomCardsScrollPane.height = ROOM_CARDS_SCROLLPANE_RECT.height;
+						//						}
 						
 						if(bakMC != null){
 							bakMC.visible = true;

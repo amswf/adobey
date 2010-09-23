@@ -32,6 +32,8 @@
 	 */	
 	public class Seat3D extends UIComponent{
 		
+		private var sign:Boolean = true;
+		
 		/**
 		 *等待一段时间后，自动播放计数器最大计数 
 		 */		
@@ -90,7 +92,7 @@
 		/**
 		 * 方向键控制自动旋转时，摄像头步进角度值  
 		 */		
-		private static const AUTO_ROTATION_STEP:Number = 0.2;
+		private static const AUTO_ROTATION_STEP:Number = 0.4;
 		
 		/**
 		 *鼠标拖动旋转时，最小拖动响应阈值 
@@ -419,7 +421,7 @@
 		private function create3DDisplayObject():void
 		{
 			// Attributes
-			var size :Number = 1000;
+			var size :Number = 500;
 			var quality :Number = 16;
 			
 			//cube
@@ -518,8 +520,9 @@
 			}
 			if(material != null){
 				material.smooth = true;
+				material.oneSide = true;
+				//material.opposite = true;
 			}
-			
 			return material;
 		}
 		
@@ -553,211 +556,217 @@
 		 * 
 		 */		
 		private function handlerEnterFrame(e:Event):void{
-			var px:Number;
-			var py:Number;
-			
-			if(isMouseDown){
-				autoMove = false;
-				var currenMousePlace:Point = new Point(this.mouseX,this.mouseY);
-				px = mouseDownPlace.x - currenMousePlace.x;
-				py = mouseDownPlace.y - currenMousePlace.y;
-				this.autoMoveCount = 0;
+			if(sign){
+				sign = false;
 				
-				var mx:Number = this.mouseX;
-				var my:Number = this.mouseY;
 				
-				var downXY:Number = 15;
+				var px:Number;
+				var py:Number;
 				
-				var maxX:Number = ( this.viewport.viewportWidth) * this.viewport.scaleX  - downXY
-				if(mx < downXY){
-					mx = downXY;
+				if(isMouseDown){
+					autoMove = false;
+					var currenMousePlace:Point = new Point(this.mouseX,this.mouseY);
+					px = mouseDownPlace.x - currenMousePlace.x;
+					py = mouseDownPlace.y - currenMousePlace.y;
+					this.autoMoveCount = 0;
+					
+					var mx:Number = this.mouseX;
+					var my:Number = this.mouseY;
+					
+					var downXY:Number = 15;
+					
+					var maxX:Number = ( this.viewport.viewportWidth) * this.viewport.scaleX  - downXY
+					if(mx < downXY){
+						mx = downXY;
+					}
+					else if(mx > maxX){
+						mx = maxX;
+					}
+					
+					var maxY:Number = (this.viewport.viewportHeight ) * this.viewport.scaleY  - downXY;
+					if(my < downXY){
+						my = downXY;
+					}
+					else if(my > maxY){
+						my = maxY;
+					}
+					
+					downMouse.x = mx;
+					downMouse.y = my;
+					
+					downMoveMouse.x = mx;
+					downMoveMouse.y = my;
 				}
-				else if(mx > maxX){
-					mx = maxX;
+				
+				if(isBtnDown){
+					px = btnStepP.x;
+					py = btnStepP.y;
+					this.autoMoveCount = 0;
 				}
 				
-				var maxY:Number = (this.viewport.viewportHeight ) * this.viewport.scaleY  - downXY;
-				if(my < downXY){
-					my = downXY;
-				}
-				else if(my > maxY){
-					my = maxY;
-				}
-				
-				downMouse.x = mx;
-				downMouse.y = my;
-				
-				downMoveMouse.x = mx;
-				downMoveMouse.y = my;
-			}
-			
-			if(isBtnDown){
-				px = btnStepP.x;
-				py = btnStepP.y;
-				this.autoMoveCount = 0;
-			}
-			
-			/*
-			if(AUTO_MOVE_COUNT_MAX == this.autoMoveCount){
+				/*
+				if(AUTO_MOVE_COUNT_MAX == this.autoMoveCount){
 				
 				if(Math.abs(camera.rotationX) <= ROTATION_STEP){
-					camera.rotationX = 0;
+				camera.rotationX = 0;
 				}
 				else if(camera.rotationX > 0){
-					camera.rotationX -= ROTATION_STEP;
+				camera.rotationX -= ROTATION_STEP;
 				}
 				else if(camera.rotationX < 0){
-					camera.rotationX += ROTATION_STEP;
+				camera.rotationX += ROTATION_STEP;
 				}
 				
 				camera.rotationY += ROTATION_STEP;
 				this.cameraRotationY = camera.rotationY;
 				this.dispatchEvent(new Event(CAMERA_ROTATION_EVENT));
 				renderer.renderScene(scene,camera,viewport);
-			}
-			else if(autoMove){
-			*/
+				}
+				else if(autoMove){
+				*/
 				
-			if(autoMove){
-				if(currentMoveDirection == "left_DOWN"){
-					camera.rotationY -= AUTO_ROTATION_STEP;  
+				if(autoMove){
+					if(currentMoveDirection == "left_DOWN"){
+						camera.rotationY -= AUTO_ROTATION_STEP;  
+					}
+					else if(currentMoveDirection == "right_DOWN"){
+						camera.rotationY += AUTO_ROTATION_STEP;
+					}
+					else if(currentMoveDirection == "up_DOWN"){
+						camera.rotationX -= AUTO_ROTATION_STEP; 
+					}
+					else if(currentMoveDirection == "down_DOWN"){
+						camera.rotationX += AUTO_ROTATION_STEP; 
+					}
+					if(camera.rotationX > 90){
+						camera.rotationX = 90;
+					}
+					else if(camera.rotationX < -90){
+						camera.rotationX = -90;
+					}
+					this.autoMoveCount = 0;
+					this.cameraRotationY = camera.rotationY;
+					this.dispatchEvent(new Event(CAMERA_ROTATION_EVENT));
 				}
-				else if(currentMoveDirection == "right_DOWN"){
-					camera.rotationY += AUTO_ROTATION_STEP;
-				}
-				else if(currentMoveDirection == "up_DOWN"){
-					camera.rotationX -= AUTO_ROTATION_STEP; 
-				}
-				else if(currentMoveDirection == "down_DOWN"){
-					camera.rotationX += AUTO_ROTATION_STEP; 
-				}
-				if(camera.rotationX > 90){
-					camera.rotationX = 90;
-				}
-				else if(camera.rotationX < -90){
-					camera.rotationX = -90;
-				}
-				this.autoMoveCount = 0;
-				this.cameraRotationY = camera.rotationY;
-				this.dispatchEvent(new Event(CAMERA_ROTATION_EVENT));
-			}
-			else if(isMouseDown || isBtnDown){
-				
-				var roteX:Number =0;
-				var roteY:Number =0;
-				var roteRate:Number = 0;
-				
-				var rpy:Number = 0
-				if(py >= MOUSE_MIN_MOVE || py <= - MOUSE_MIN_MOVE){
-					rpy = py /camera.zoom;
+				else if(isMouseDown || isBtnDown){
 					
-					if(py >= MOUSE_MIN_MOVE){
-						roteY = 1;
-					}
-					else if(py <= -MOUSE_MIN_MOVE){
-						roteY = -1;
-					}
-				}
-				if(rpy > 3){
-					rpy = 3;
-				}
-				else if(rpy < -3){
-					rpy = -3;
-				}
-				var ry:Number = camera.rotationX - rpy;
-				if(ry > 90){
-					ry = 90;
-				}
-				else if(ry < -90){
-					ry = -90;
-				}
-				camera.rotationX = ry;
-				
-				var rpx:Number = 0;
-				if(px >= MOUSE_MIN_MOVE || px <= - MOUSE_MIN_MOVE){
-					rpx = px /camera.zoom;
+					var roteX:Number =0;
+					var roteY:Number =0;
+					var roteRate:Number = 0;
 					
-					if(px >= MOUSE_MIN_MOVE){
-						roteX = 1;
+					var rpy:Number = 0
+					if(py >= MOUSE_MIN_MOVE || py <= - MOUSE_MIN_MOVE){
+						rpy = py /camera.zoom;
+						
+						if(py >= MOUSE_MIN_MOVE){
+							roteY = 1;
+						}
+						else if(py <= -MOUSE_MIN_MOVE){
+							roteY = -1;
+						}
 					}
-					else if(px <= -MOUSE_MIN_MOVE){
-						roteX = -1;
+					if(rpy > 3){
+						rpy = 3;
+					}
+					else if(rpy < -3){
+						rpy = -3;
+					}
+					var ry:Number = camera.rotationX - rpy;
+					if(ry > 90){
+						ry = 90;
+					}
+					else if(ry < -90){
+						ry = -90;
+					}
+					camera.rotationX = ry;
+					
+					var rpx:Number = 0;
+					if(px >= MOUSE_MIN_MOVE || px <= - MOUSE_MIN_MOVE){
+						rpx = px /camera.zoom;
+						
+						if(px >= MOUSE_MIN_MOVE){
+							roteX = 1;
+						}
+						else if(px <= -MOUSE_MIN_MOVE){
+							roteX = -1;
+						}
+					}
+					if(rpx > 3){
+						rpx = 3;
+					}
+					else if(rpx < -3){
+						rpx = -3;
+					}
+					var rx:Number = camera.rotationY - rpx;
+					if(rx > 360){
+						rx -= 360;
+					}
+					else if(rx < -360){
+						rx += 360;
+					}
+					camera.rotationY = rx;
+					this.cameraRotationY = rx;
+					this.dispatchEvent(new Event(CAMERA_ROTATION_EVENT));
+					
+					if(isMouseDown){
+						if(roteX == 0){
+							if(roteY == 0){
+								roteRate = 0;
+							}
+							else if(roteY == 1){
+								roteRate = -90;
+							}
+							else if(roteY == -1){
+								roteRate = 90;
+							}
+						}
+						if(roteX == 1){
+							if(roteY == 0){
+								roteRate = 180;
+							}
+							else if(roteY == 1){
+								roteRate = -135;
+							}
+							else if(roteY == -1){
+								roteRate = 135;
+							}
+						}
+						if(roteX == -1){
+							if(roteY == 0){
+								roteRate = 0;
+							}
+							else if(roteY == 1){
+								roteRate = -45;
+							}
+							else if(roteY == -1){
+								roteRate = 45;
+							}
+						}
+						//trace(roteX,roteY);
+						if(roteX != 0 || roteY != 0){
+							//trace("downMoveMouse");
+							this.downMouse.visible = false;
+							this.downMoveMouse.visible = true;
+							this.downMoveMouse.rotation = roteRate;
+						}
+						else{
+							this.downMouse.visible = true;
+							this.downMoveMouse.visible = false;
+						}
 					}
 				}
-				if(rpx > 3){
-					rpx = 3;
+				else {
+					//var b:Boolean = addAutoMoveCount();
 				}
-				else if(rpx < -3){
-					rpx = -3;
-				}
-				var rx:Number = camera.rotationY - rpx;
-				if(rx > 360){
-					rx -= 360;
-				}
-				else if(rx < -360){
-					rx += 360;
-				}
-				camera.rotationY = rx;
-				this.cameraRotationY = rx;
-				this.dispatchEvent(new Event(CAMERA_ROTATION_EVENT));
 				
-				if(isMouseDown){
-					if(roteX == 0){
-						if(roteY == 0){
-							roteRate = 0;
-						}
-						else if(roteY == 1){
-							roteRate = -90;
-						}
-						else if(roteY == -1){
-							roteRate = 90;
-						}
-					}
-					if(roteX == 1){
-						if(roteY == 0){
-							roteRate = 180;
-						}
-						else if(roteY == 1){
-							roteRate = -135;
-						}
-						else if(roteY == -1){
-							roteRate = 135;
-						}
-					}
-					if(roteX == -1){
-						if(roteY == 0){
-							roteRate = 0;
-						}
-						else if(roteY == 1){
-							roteRate = -45;
-						}
-						else if(roteY == -1){
-							roteRate = 45;
-						}
-					}
-					//trace(roteX,roteY);
-					if(roteX != 0 || roteY != 0){
-						//trace("downMoveMouse");
-						this.downMouse.visible = false;
-						this.downMoveMouse.visible = true;
-						this.downMoveMouse.rotation = roteRate;
-					}
-					else{
-						this.downMouse.visible = true;
-						this.downMoveMouse.visible = false;
+				if(isBtnDown){
+					if(zoomp != 0){
+						zoom(zoomp);
 					}
 				}
+				renderer.renderScene(scene,camera,viewport);
+				sign = true;
 			}
-			else {
-				//var b:Boolean = addAutoMoveCount();
-			}
-			
-			if(isBtnDown){
-				if(zoomp != 0){
-					zoom(zoomp);
-				}
-			}
-			renderer.renderScene(scene,camera,viewport);
 		}
 		
 		/**
