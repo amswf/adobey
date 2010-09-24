@@ -251,6 +251,9 @@
 		 */		
 		private static const ROOM_CARDS_SCROLLPANE_RECT:Rectangle = new Rectangle(10,20,150,460);
 		
+		/**
+		 * 主显示层 
+		 */		
 		private var mainLayer:MovieClip;
 		
 		public function Main(){
