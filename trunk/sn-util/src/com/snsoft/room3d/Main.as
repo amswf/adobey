@@ -604,7 +604,7 @@
 				//					seat3DFullScreenRect.y = SEAT3D_DEFAULT_RECT.y;
 				//				}
 				
-				if(stage.displayState == StageDisplayState.FULL_SCREEN){
+				if(stage.displayState == StageDisplayState.FULL_SCREEN && !isTsp){
 					seat3DBack.visible = true;
 					seat3DBack.width = stage.fullScreenWidth - seat3DFullScreenRect.x;
 					seat3DBack.height = stage.fullScreenHeight;
@@ -699,9 +699,30 @@
 			roomMap.y = PLACE_SPACE_2;
 			roomMapLayer.addChild(rcBak);
 			roomMapLayer.swapChildren(roomMap,rcBak);
+			
+			var hsp:Number = 0;
+			var vsp:Number = 0;
+			
 			seatScrollPane.source= roomMapLayer;
-			seatScrollPane.horizontalScrollPosition = 0;
-			seatScrollPane.verticalScrollPosition = 0;
+			if(roomMap.room != null && roomMap.room.placeHV != null){
+				var firstSeatDO:SeatDO = roomMap.room.placeHV.findByIndex(0) as SeatDO;
+				hsp = firstSeatDO.place.x - seatScrollPane.width / 2;
+				vsp = firstSeatDO.place.y - seatScrollPane.height / 2;
+				if(hsp > seatScrollPane.maxHorizontalScrollPosition){
+					hsp = seatScrollPane.maxHorizontalScrollPosition;
+				}
+				else if(hsp < 0){
+					hsp = 0;
+				}
+				if(vsp > seatScrollPane.maxVerticalScrollPosition){
+					vsp = seatScrollPane.maxVerticalScrollPosition;
+				}
+				else if(vsp < 0){
+					vsp = 0;
+				}
+			}
+			seatScrollPane.horizontalScrollPosition = hsp;
+			seatScrollPane.verticalScrollPosition = vsp;
 			seatScrollPane.update();
 			
 			creatSeat3D(roomMap);
