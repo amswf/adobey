@@ -34,6 +34,10 @@
 		
 		private var sign:Boolean = true;
 		
+		private static const MAX_REFRESH_WAIT_TIMES:uint = 20;
+		
+		private var refreshWaitTimes:int = MAX_REFRESH_WAIT_TIMES;
+		
 		/**
 		 *等待一段时间后，自动播放计数器最大计数 
 		 */		
@@ -556,9 +560,15 @@
 		 * 
 		 */		
 		private function handlerEnterFrame(e:Event):void{
-			if(sign){
-				sign = false;
+			
+			if(isMouseDown || isBtnDown){
+				refreshWaitTimes = MAX_REFRESH_WAIT_TIMES;
+			}
+			
+			if(sign && refreshWaitTimes > 0){
 				
+				sign = false;
+				refreshWaitTimes --;
 				
 				var px:Number;
 				var py:Number;
