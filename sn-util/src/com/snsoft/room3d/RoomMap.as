@@ -11,6 +11,7 @@ package com.snsoft.room3d{
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.ui.Mouse;
 	
 	[Style(name="seatPointSkin", type="Class")]
 	
@@ -34,6 +35,11 @@ package com.snsoft.room3d{
 		public static const EVENT_ROOM_MAP_COMPLETE:String = "EVENT_ROOM_MAP_COMPLETE";
 		
 		/**
+		 * 旋转视角事件
+		 */			
+		public static const EVENT_VISUAL_ANGLE_ROTATE:String = "EVENT_VISUAL_ANGLE_ROTATE";
+
+		/**
 		 * 房间数据对象 
 		 */		
 		private var _room:RoomDO;
@@ -52,6 +58,21 @@ package com.snsoft.room3d{
 		 * 是否绘制完 
 		 */		
 		private var isDraw:Boolean = false;
+		
+		/**
+		 * 是否按下鼠标可旋转视角 
+		 */		
+		private var isRotation:Boolean = false;
+		
+		/**
+		 * 鼠标按下时相对视角原点的角度 
+		 */		
+		private var mouseDownRotation:Number;
+		
+		/**
+		 * 当前视视角的角度值 
+		 */		
+		private var visualAngleRotation:Number;
 		
 		public function RoomMap(room:RoomDO){
 			this.room = room;
@@ -143,9 +164,13 @@ package com.snsoft.room3d{
 				this.visualAngle.x = seatDefaultDO.place.x;
 				this.visualAngle.y = seatDefaultDO.place.y;
 				sourceSpr.addChild(this.visualAngle);
+				
+				this.visualAngle.addEventListener(MouseEvent.MOUSE_DOWN,handlerVisualAngleMouseDown);
+				this.stage.addEventListener(MouseEvent.MOUSE_MOVE,handlerVisualAngleMouseMove);
+				this.stage.addEventListener(MouseEvent.MOUSE_UP,handlerVisualAngleMouseUp);
 			}
 			
-			 
+			
 			for(var i:int = 0;i<placeHV.length;i++){
 				var seatDO:SeatDO = placeHV.findByIndex(i) as SeatDO;
 				var seatPoint:MovieClip = getDisplayObjectInstance(getStyleValue("seatPointSkin")) as MovieClip;
@@ -168,8 +193,77 @@ package com.snsoft.room3d{
 			
 		}
 		
+		private function handlerVisualAngleMouseDown(e:Event):void{
+			isRotation = true;
+			mouseDownRotation = this.calculateRotation();
+			visualAngleRotation = this.visualAngle.rotation;
+		}
+		
+		private function handlerVisualAngleMouseUp(e:Event):void{
+			isRotation = false;
+		}
+		
+		private function handlerVisualAngleMouseMove(e:Event):void{
+			if(isRotation){
+				var nRotation:Number = this.calculateRotation();
+				this.visualAngle.rotation = visualAngleRotation + nRotation - mouseDownRotation;
+				this.dispatchEvent(new Event(EVENT_VISUAL_ANGLE_ROTATE));
+			}
+		}
+		
+		
+		
+		private function calculateRotation():Number{
+			var rate:Number = 0;
+			
+			var py:Number = this.mouseY - this.visualAngle.y;
+			var px:Number = this.mouseX - this.visualAngle.x;
+			
+			var brate:Number;
+			if(px == 0){
+				if(py > 0){
+					rate = 90;
+				}
+				else if(py < 0){
+					rate = -90;
+				}
+				else if(py == 0){
+					rate = 0;
+				}
+			}
+			else if(px > 0){
+				brate = Math.atan(Math.abs(py/px)) * 180 / Math.PI;
+				if(py > 0){
+					rate = brate;
+				}
+				else if(py < 0){
+					rate = 360 - brate;
+				}
+				else if(py == 0){
+					rate = 0;
+				}
+			}
+			else if(px < 0){
+				brate = Math.atan(Math.abs(py/px)) * 180 / Math.PI;
+				if(py > 0){
+					rate = 180  - brate;
+				}
+				else if(py < 0){
+					rate = 180 + brate;
+				}
+				else if(py == 0){
+					rate = 180;
+				}
+			}
+			return rate;
+		}
+		
 		public function setVisualAngleRotation(rotation:Number):void{
 			this.visualAngle.rotation = rotation;
+		}
+		
+		public function getVisualAngleRotation():Number{
+			return this.visualAngle.rotation;
 		}
 		
 		private function handlerMouseOver(e:Event):void{
@@ -193,23 +287,23 @@ package com.snsoft.room3d{
 			this.dispatchEvent(new Event(EVENT_SEAT_POINT_MOUSE_CLICK));
 		}
 		
-
+		
 		public function get room():RoomDO
 		{
 			return _room;
 		}
-
+		
 		public function set room(value:RoomDO):void
 		{
 			_room = value;
 		}
-
+		
 		public function get currentSeatDO():SeatDO
 		{
 			return _currentSeatDO;
 		}
-
-
+		
+		
 	}
 }
 
