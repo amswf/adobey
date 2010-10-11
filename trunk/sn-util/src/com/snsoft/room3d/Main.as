@@ -465,7 +465,7 @@
 			seatScrollPane.height = SEAT_SCROLL_PANE_DEFAULT_RECT.height;
 			seatScrollPane.x = SEAT_SCROLL_PANE_DEFAULT_RECT.x;
 			seatScrollPane.y = SEAT_SCROLL_PANE_DEFAULT_RECT.y;
-			seatScrollPane.scrollDrag = true;
+			//seatScrollPane.scrollDrag = true;
 			mainLayer.addChild(seatScrollPane);
 			
 			var roomDefault:RoomDO = roomHV.findByIndex(0) as RoomDO;
@@ -522,6 +522,11 @@
 			roomMapLayer.addChild(roomMap);
 			roomMap.addEventListener(RoomMap.EVENT_ROOM_MAP_COMPLETE,handlerLoadBigImgCmp);
 			roomMap.addEventListener(RoomMap.EVENT_SEAT_POINT_MOUSE_CLICK,handlerSeatClick);
+			roomMap.addEventListener(RoomMap.EVENT_VISUAL_ANGLE_ROTATE,handlerVisualAngleRotate);
+		}
+		
+		private function handlerVisualAngleRotate(e:Event):void{
+			currentSeat3D.setCameraRotation(currentSeat3D.rotationX,roomMap.getVisualAngleRotation());
 		}
 		
 		/**

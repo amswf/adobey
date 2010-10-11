@@ -561,7 +561,7 @@
 		 */		
 		private function handlerEnterFrame(e:Event):void{
 			
-			if(isMouseDown || isBtnDown){
+			if(isMouseDown || isBtnDown || autoMove){
 				refreshWaitTimes = MAX_REFRESH_WAIT_TIMES;
 			}
 			
@@ -777,6 +777,19 @@
 				renderer.renderScene(scene,camera,viewport);
 				sign = true;
 			}
+		}
+		
+		/**
+		 * 设置 3D摄像机旋转角度 
+		 * @param rotationX
+		 * @param rotationY
+		 * 
+		 */		
+		public function setCameraRotation(rotationX:Number,rotationY:Number):void{
+			autoMove = false;
+			this.camera.rotationX = rotationX;
+			this.camera.rotationY = rotationY;
+			renderer.renderScene(scene,camera,viewport);
 		}
 		
 		/**
