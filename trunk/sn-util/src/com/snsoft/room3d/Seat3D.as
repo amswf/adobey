@@ -32,10 +32,19 @@
 	 */	
 	public class Seat3D extends UIComponent{
 		
+		/**
+		 * 播放时进入下一帧事件互斥标记 
+		 */		
 		private var sign:Boolean = true;
 		
+		/**
+		 *  无操作时，刷新3D显示最多次数最大 
+		 */		
 		private static const MAX_REFRESH_WAIT_TIMES:uint = 20;
 		
+		/**
+		 * 无操作时最大刷新次数 
+		 */		
 		private var refreshWaitTimes:int = MAX_REFRESH_WAIT_TIMES;
 		
 		/**
