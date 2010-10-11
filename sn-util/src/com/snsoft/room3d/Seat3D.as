@@ -785,9 +785,8 @@
 		 * @param rotationY
 		 * 
 		 */		
-		public function setCameraRotation(rotationX:Number,rotationY:Number):void{
+		public function setCameraRotation(rotationY:Number):void{
 			autoMove = false;
-			this.camera.rotationX = rotationX;
 			this.camera.rotationY = rotationY;
 			renderer.renderScene(scene,camera,viewport);
 		}

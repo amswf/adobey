@@ -526,7 +526,7 @@
 		}
 		
 		private function handlerVisualAngleRotate(e:Event):void{
-			currentSeat3D.setCameraRotation(currentSeat3D.rotationX,roomMap.getVisualAngleRotation());
+			currentSeat3D.setCameraRotation(roomMap.getVisualAngleRotation());
 		}
 		
 		/**
