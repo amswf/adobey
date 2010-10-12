@@ -1484,9 +1484,9 @@
       
       <areaNamePoint>
         
-        <x>-2</x>
+        <x>0</x>
         
-        <y>-3</y>
+        <y>0</y>
       
       </areaNamePoint>
       
@@ -2904,9 +2904,9 @@
       
       <areaNamePoint>
         
-        <x>44</x>
+        <x>34</x>
         
-        <y>19</y>
+        <y>21</y>
       
       </areaNamePoint>
       
@@ -3788,9 +3788,9 @@
       
       <areaNamePoint>
         
-        <x>23</x>
+        <x>11</x>
         
-        <y>12</y>
+        <y>15</y>
       
       </areaNamePoint>
       
@@ -5998,7 +5998,7 @@
         
         <x>0</x>
         
-        <y>-10</y>
+        <y>-3</y>
       
       </areaNamePoint>
       
@@ -6520,9 +6520,9 @@
       
       <areaNamePoint>
         
-        <x>0</x>
+        <x>-2</x>
         
-        <y>16</y>
+        <y>8</y>
       
       </areaNamePoint>
       
@@ -7988,9 +7988,9 @@
       
       <areaNamePoint>
         
-        <x>0</x>
+        <x>1</x>
         
-        <y>0</y>
+        <y>2</y>
       
       </areaNamePoint>
       
@@ -9080,9 +9080,9 @@
       
       <areaNamePoint>
         
-        <x>0</x>
+        <x>3</x>
         
-        <y>0</y>
+        <y>6</y>
       
       </areaNamePoint>
       
@@ -11896,7 +11896,7 @@
       
       <areaId>ws_1_35</areaId>
       
-      <areaName>龙口</areaName>
+      <areaName>山东-龙口</areaName>
       
       <areaNamePoint>
         
