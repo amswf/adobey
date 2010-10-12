@@ -18,9 +18,9 @@ package com.snsoft.mapview{
 		
 		private var _mapAreaDO:MapAreaDO = null;
 		
-		private var areaBtnLayer:Sprite = new Sprite();
+		private var _areaBtnLayer:Sprite = new Sprite();
 		
-		private var areaNameLayer:Sprite = new Sprite();
+		private var _areaNameLayer:Sprite = new Sprite();
 		
 		private var cuntryName:CuntryName = new CuntryName("");
 		
@@ -117,6 +117,17 @@ package com.snsoft.mapview{
 		{
 			_mapAreaDO = value;
 		}
+
+		public function get areaBtnLayer():Sprite
+		{
+			return _areaBtnLayer;
+		}
+
+		public function get areaNameLayer():Sprite
+		{
+			return _areaNameLayer;
+		}
+
 
 	}
 }

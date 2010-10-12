@@ -206,15 +206,26 @@ package com.snsoft.mapview{
 			var mado:MapAreaDO = av.mapAreaDO;
 			cuntyLable.nameStr = mado.areaName;
 			var mapRect:Rectangle = areaBtnsLayer.getRect(this);
-			var areaRect:Rectangle = av.getRect(av.parent);
+			var areaBtnRect:Rectangle = av.areaBtnLayer.getRect(av.parent);
+			var areaNamebRect:Rectangle = av.areaNameLayer.getRect(av.parent);
 			
 			var mapCenterP:Point = new Point();
 			mapCenterP.x = mapRect.x + mapRect.width / 2;
 			mapCenterP.y = mapRect.y + mapRect.height / 2;
 			
 			var areaCenterP:Point = new Point();
-			areaCenterP.x = areaRect.x + areaRect.width / 2 + mado.areaNamePlace.x;
-			areaCenterP.y = areaRect.y + areaRect.height / 2 + mado.areaNamePlace.y;
+			if(areaNamebRect.right < areaBtnRect.left || areaNamebRect.left > areaBtnRect.right){
+				areaCenterP.x = areaBtnRect.x + areaBtnRect.width / 2 ;
+			}
+			else{
+				areaCenterP.x = areaNamebRect.x + areaNamebRect.width / 2 ;
+			}
+			if(areaNamebRect.bottom < areaBtnRect.top || areaNamebRect.top > areaBtnRect.bottom){
+				areaCenterP.y = areaBtnRect.y + areaBtnRect.height / 2 ;
+			}
+			else{
+				areaCenterP.y = areaNamebRect.y + areaNamebRect.height / 2 ;
+			}
 			
 			//cuntyLable的四边形四个顶点中与areaCenterP最近点的相对于 cuntyLable坐标的坐标
 			var np:Point = new Point();
