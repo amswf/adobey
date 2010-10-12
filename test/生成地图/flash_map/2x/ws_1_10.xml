@@ -1,0 +1,4901 @@
+<map>
+  
+  <image>C:\Documents and Settings\Administrator\桌面\test\20.jpg</image>
+  
+  <areas>
+    
+    <area>
+      
+      <areaId>ws_1_10_1</areaId>
+      
+      <areaName>张家口</areaName>
+      
+      <areaNamePoint>
+        
+        <x>0</x>
+        
+        <y>0</y>
+      
+      </areaNamePoint>
+      
+      <areaPoints>
+        
+        <point>
+          
+          <x>203.5</x>
+          
+          <y>156.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>199.5</x>
+          
+          <y>163.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>195</x>
+          
+          <y>172</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>190</x>
+          
+          <y>180.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>186</x>
+          
+          <y>183</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>182</x>
+          
+          <y>182</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>179</x>
+          
+          <y>184.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>175.5</x>
+          
+          <y>183</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>174.5</x>
+          
+          <y>188</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>171.5</x>
+          
+          <y>186</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>168</x>
+          
+          <y>186</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>165</x>
+          
+          <y>189</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>159</x>
+          
+          <y>190.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>154.5</x>
+          
+          <y>185.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>155</x>
+          
+          <y>177</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>149</x>
+          
+          <y>175.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>140.5</x>
+          
+          <y>173.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>137.5</x>
+          
+          <y>169</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>134.5</x>
+          
+          <y>165</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>138.5</x>
+          
+          <y>161.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>142</x>
+          
+          <y>158</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>148</x>
+          
+          <y>154</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>150</x>
+          
+          <y>143.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>156.5</x>
+          
+          <y>140.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>166</x>
+          
+          <y>137</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>162</x>
+          
+          <y>134.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>156</x>
+          
+          <y>130.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>156</x>
+          
+          <y>121</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>152.5</x>
+          
+          <y>116.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>145</x>
+          
+          <y>108.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>146</x>
+          
+          <y>101.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>143</x>
+          
+          <y>99</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>143</x>
+          
+          <y>96</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>140</x>
+          
+          <y>93.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>141.5</x>
+          
+          <y>88</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>146.5</x>
+          
+          <y>86</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>142.5</x>
+          
+          <y>82</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>144</x>
+          
+          <y>78</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>141.5</x>
+          
+          <y>74</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>144</x>
+          
+          <y>69</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>149</x>
+          
+          <y>67</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>155</x>
+          
+          <y>70</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>156</x>
+          
+          <y>64.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>155.5</x>
+          
+          <y>55.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>156</x>
+          
+          <y>50.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>161.5</x>
+          
+          <y>44.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>167</x>
+          
+          <y>45</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>167.5</x>
+          
+          <y>36.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>171.5</x>
+          
+          <y>33.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>176.5</x>
+          
+          <y>36.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>181.5</x>
+          
+          <y>33</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>184.5</x>
+          
+          <y>35.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>182.5</x>
+          
+          <y>40</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>185.5</x>
+          
+          <y>45</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>185.5</x>
+          
+          <y>48.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>186</x>
+          
+          <y>52.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>184.5</x>
+          
+          <y>60</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>184</x>
+          
+          <y>64.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>194</x>
+          
+          <y>63</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>202</x>
+          
+          <y>65.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>202.5</x>
+          
+          <y>62</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>203</x>
+          
+          <y>57.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>211</x>
+          
+          <y>52.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>219.5</x>
+          
+          <y>49</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>224.5</x>
+          
+          <y>45.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>228.5</x>
+          
+          <y>49.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>228.5</x>
+          
+          <y>53</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>231.5</x>
+          
+          <y>55</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>227</x>
+          
+          <y>63</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>227</x>
+          
+          <y>71.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>232.5</x>
+          
+          <y>79.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>234.5</x>
+          
+          <y>83</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>238</x>
+          
+          <y>95</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>241.5</x>
+          
+          <y>100</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>243</x>
+          
+          <y>104</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>246.5</x>
+          
+          <y>112.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>242.5</x>
+          
+          <y>113</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>237</x>
+          
+          <y>115.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>232</x>
+          
+          <y>120.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>225.5</x>
+          
+          <y>122</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>219.5</x>
+          
+          <y>123</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>217.5</x>
+          
+          <y>127.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>222.5</x>
+          
+          <y>136</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>224.5</x>
+          
+          <y>143.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>218.5</x>
+          
+          <y>148.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>209.5</x>
+          
+          <y>149.5</y>
+        
+        </point>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area>
+      
+      <areaId>ws_1_10_2</areaId>
+      
+      <areaName>承德</areaName>
+      
+      <areaNamePoint>
+        
+        <x>0</x>
+        
+        <y>0</y>
+      
+      </areaNamePoint>
+      
+      <areaPoints>
+        
+        <point>
+          
+          <x>360.5</x>
+          
+          <y>119</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>354</x>
+          
+          <y>119.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>349.5</x>
+          
+          <y>125.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>343</x>
+          
+          <y>128</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>338</x>
+          
+          <y>131</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>334.5</x>
+          
+          <y>130.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>322.5</x>
+          
+          <y>128.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>318.5</x>
+          
+          <y>130.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>314.5</x>
+          
+          <y>135.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>309</x>
+          
+          <y>139.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>299.5</x>
+          
+          <y>140.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>293.5</x>
+          
+          <y>144.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>286.5</x>
+          
+          <y>144.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>281</x>
+          
+          <y>140</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>280</x>
+          
+          <y>133</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>280</x>
+          
+          <y>127.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>283</x>
+          
+          <y>124</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>290</x>
+          
+          <y>122.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>292.5</x>
+          
+          <y>118.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>284.5</x>
+          
+          <y>118</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>277</x>
+          
+          <y>116.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>271</x>
+          
+          <y>118</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>268</x>
+          
+          <y>113</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>260.5</x>
+          
+          <y>107.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>257</x>
+          
+          <y>102.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>257.5</x>
+          
+          <y>97</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>253</x>
+          
+          <y>100</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>247.5</x>
+          
+          <y>101.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>243</x>
+          
+          <y>104</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>241.5</x>
+          
+          <y>100</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>238</x>
+          
+          <y>95</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>234.5</x>
+          
+          <y>83</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>232.5</x>
+          
+          <y>79.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>227</x>
+          
+          <y>71.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>227</x>
+          
+          <y>63</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>231.5</x>
+          
+          <y>55</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>236</x>
+          
+          <y>49.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>240</x>
+          
+          <y>44.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>246</x>
+          
+          <y>43.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>252.5</x>
+          
+          <y>45</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>258.5</x>
+          
+          <y>45</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>266</x>
+          
+          <y>43</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>267</x>
+          
+          <y>36.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>264</x>
+          
+          <y>32.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>267</x>
+          
+          <y>20</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>273</x>
+          
+          <y>14.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>286</x>
+          
+          <y>15.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>288.5</x>
+          
+          <y>10</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>301.5</x>
+          
+          <y>7.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>308</x>
+          
+          <y>13</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>313.5</x>
+          
+          <y>20</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>313</x>
+          
+          <y>29.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>318</x>
+          
+          <y>38</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>321.5</x>
+          
+          <y>35</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>325.5</x>
+          
+          <y>45</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>325.5</x>
+          
+          <y>52.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>319.5</x>
+          
+          <y>53.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>322</x>
+          
+          <y>65</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>325</x>
+          
+          <y>69.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>328</x>
+          
+          <y>82</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>333.5</x>
+          
+          <y>78.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>347</x>
+          
+          <y>78.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>353.5</x>
+          
+          <y>79</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>363</x>
+          
+          <y>79.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>358</x>
+          
+          <y>91.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>352</x>
+          
+          <y>95</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>353.5</x>
+          
+          <y>100.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>347</x>
+          
+          <y>107.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>351.5</x>
+          
+          <y>114</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>360</x>
+          
+          <y>115.5</y>
+        
+        </point>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area>
+      
+      <areaId>ws_1_10_3</areaId>
+      
+      <areaName>秦皇岛</areaName>
+      
+      <areaNamePoint>
+        
+        <x>12</x>
+        
+        <y>-4</y>
+      
+      </areaNamePoint>
+      
+      <areaPoints>
+        
+        <point>
+          
+          <x>365</x>
+          
+          <y>183</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>356.5</x>
+          
+          <y>182</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>351</x>
+          
+          <y>178</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>345.5</x>
+          
+          <y>175</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>344</x>
+          
+          <y>171</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>346</x>
+          
+          <y>162</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>346.5</x>
+          
+          <y>152</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>348</x>
+          
+          <y>143.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>340.5</x>
+          
+          <y>140</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>334.5</x>
+          
+          <y>137</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>338</x>
+          
+          <y>131</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>343</x>
+          
+          <y>128</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>349.5</x>
+          
+          <y>125.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>354</x>
+          
+          <y>119.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>360.5</x>
+          
+          <y>119</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>367</x>
+          
+          <y>124.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>374</x>
+          
+          <y>123</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>378</x>
+          
+          <y>125</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>379</x>
+          
+          <y>133</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>382.5</x>
+          
+          <y>140.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>386.5</x>
+          
+          <y>143.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>387.5</x>
+          
+          <y>149.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>390.5</x>
+          
+          <y>153.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>386</x>
+          
+          <y>157.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>379.5</x>
+          
+          <y>159</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>376</x>
+          
+          <y>164.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>370.5</x>
+          
+          <y>169</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>368</x>
+          
+          <y>175</y>
+        
+        </point>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area>
+      
+      <areaId>ws_1_10_4</areaId>
+      
+      <areaName>唐山</areaName>
+      
+      <areaNamePoint>
+        
+        <x>-5</x>
+        
+        <y>-3</y>
+      
+      </areaNamePoint>
+      
+      <areaPoints>
+        
+        <point>
+          
+          <x>317.5</x>
+          
+          <y>200.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>315</x>
+          
+          <y>197</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>315</x>
+          
+          <y>190.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>306.5</x>
+          
+          <y>189</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>308.5</x>
+          
+          <y>181.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>307.5</x>
+          
+          <y>176.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>298.5</x>
+          
+          <y>180</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>298</x>
+          
+          <y>174</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>293</x>
+          
+          <y>171</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>292</x>
+          
+          <y>163.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>292</x>
+          
+          <y>157</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>300.5</x>
+          
+          <y>157</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>304.5</x>
+          
+          <y>154.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>298</x>
+          
+          <y>150</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>293.5</x>
+          
+          <y>149</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>293.5</x>
+          
+          <y>144.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>299.5</x>
+          
+          <y>139.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>309</x>
+          
+          <y>139.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>314.5</x>
+          
+          <y>135.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>318.5</x>
+          
+          <y>130.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>322.5</x>
+          
+          <y>128.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>334.5</x>
+          
+          <y>130.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>338</x>
+          
+          <y>131</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>334.5</x>
+          
+          <y>137</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>340.5</x>
+          
+          <y>140</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>348</x>
+          
+          <y>143.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>346.5</x>
+          
+          <y>152</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>346</x>
+          
+          <y>162</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>344</x>
+          
+          <y>171</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>345.5</x>
+          
+          <y>175</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>351</x>
+          
+          <y>178</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>356.5</x>
+          
+          <y>182</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>365</x>
+          
+          <y>183</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>366</x>
+          
+          <y>189.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>362</x>
+          
+          <y>189</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>359</x>
+          
+          <y>193.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>353</x>
+          
+          <y>200.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>346.5</x>
+          
+          <y>202.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>342.5</x>
+          
+          <y>203.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>337.5</x>
+          
+          <y>200.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>330</x>
+          
+          <y>206</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>325.5</x>
+          
+          <y>210</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>321.5</x>
+          
+          <y>205.5</y>
+        
+        </point>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area>
+      
+      <areaId>ws_1_10_5</areaId>
+      
+      <areaName>廊坊</areaName>
+      
+      <areaNamePoint>
+        
+        <x>-4</x>
+        
+        <y>1.9749999999999943</y>
+      
+      </areaNamePoint>
+      
+      <areaPoints>
+        
+        <point>
+          
+          <x>264.25</x>
+          
+          <y>176</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>261.25</x>
+          
+          <y>178.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>255.5</x>
+          
+          <y>177</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>251</x>
+          
+          <y>178.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>246.5</x>
+          
+          <y>181.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>246.5</x>
+          
+          <y>188.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>241.25</x>
+          
+          <y>185.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>237</x>
+          
+          <y>181.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>232.75</x>
+          
+          <y>184</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>231.25</x>
+          
+          <y>189</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>226.25</x>
+          
+          <y>192.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>225.5</x>
+          
+          <y>199.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>231.25</x>
+          
+          <y>206</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>230.75</x>
+          
+          <y>212</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>236.25</x>
+          
+          <y>214</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>236.5</x>
+          
+          <y>222.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>231.75</x>
+          
+          <y>225</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>238</x>
+          
+          <y>230.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>240.5</x>
+          
+          <y>233.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>239.5</x>
+          
+          <y>240.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>242.5</x>
+          
+          <y>248</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>248.25</x>
+          
+          <y>250.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>252</x>
+          
+          <y>248</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>253.5</x>
+          
+          <y>243.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>258.25</x>
+          
+          <y>236.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>253.75</x>
+          
+          <y>229</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>254</x>
+          
+          <y>219.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>261.75</x>
+          
+          <y>213.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>266.5</x>
+          
+          <y>204.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>262.75</x>
+          
+          <y>200.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>262.75</x>
+          
+          <y>197.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>266.25</x>
+          
+          <y>195.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>262.5</x>
+          
+          <y>192.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>263.5</x>
+          
+          <y>186</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>260.5</x>
+          
+          <y>182.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>262.75</x>
+          
+          <y>177.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>266.5</x>
+          
+          <y>175.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>274.25</x>
+          
+          <y>177</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>278.5</x>
+          
+          <y>175.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>278.75</x>
+          
+          <y>171.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>278</x>
+          
+          <y>167.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>280.5</x>
+          
+          <y>165.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>279</x>
+          
+          <y>162.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>276.5</x>
+          
+          <y>160.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>279</x>
+          
+          <y>156.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>278.5</x>
+          
+          <y>150.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>270.75</x>
+          
+          <y>152.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>263.25</x>
+          
+          <y>152.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>260.75</x>
+          
+          <y>156</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>261</x>
+          
+          <y>163</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>263.75</x>
+          
+          <y>165.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>267.5</x>
+          
+          <y>165.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>265.75</x>
+          
+          <y>169.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>266</x>
+          
+          <y>173.5</y>
+        
+        </point>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area>
+      
+      <areaId>ws_1_10_6</areaId>
+      
+      <areaName>保定</areaName>
+      
+      <areaNamePoint>
+        
+        <x>7</x>
+        
+        <y>10</y>
+      
+      </areaNamePoint>
+      
+      <areaPoints>
+        
+        <point>
+          
+          <x>195.25</x>
+          
+          <y>263.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>192.25</x>
+          
+          <y>262.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>189.25</x>
+          
+          <y>264</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>185.25</x>
+          
+          <y>263</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>180</x>
+          
+          <y>264.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>178</x>
+          
+          <y>262</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>176.75</x>
+          
+          <y>256</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>171.75</x>
+          
+          <y>252</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>166.25</x>
+          
+          <y>251.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>154.5</x>
+          
+          <y>240.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>146.25</x>
+          
+          <y>241.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>136.5</x>
+          
+          <y>242.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>130.5</x>
+          
+          <y>239</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>130.75</x>
+          
+          <y>235.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>127</x>
+          
+          <y>229.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>134.5</x>
+          
+          <y>218.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>140.25</x>
+          
+          <y>218</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>146.5</x>
+          
+          <y>222</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>157.25</x>
+          
+          <y>213.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>156.25</x>
+          
+          <y>209</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>156.5</x>
+          
+          <y>203.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>159.5</x>
+          
+          <y>198.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>159.75</x>
+          
+          <y>194.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>159</x>
+          
+          <y>190.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>165</x>
+          
+          <y>189</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>168</x>
+          
+          <y>186</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>171.5</x>
+          
+          <y>186</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>174.5</x>
+          
+          <y>188</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>175.5</x>
+          
+          <y>183</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>179</x>
+          
+          <y>184.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>182</x>
+          
+          <y>182</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>186</x>
+          
+          <y>183</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>190</x>
+          
+          <y>180.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>195</x>
+          
+          <y>172</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>199.5</x>
+          
+          <y>163.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>203.5</x>
+          
+          <y>156.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>206</x>
+          
+          <y>160.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>208.25</x>
+          
+          <y>164.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>206.75</x>
+          
+          <y>166.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>203</x>
+          
+          <y>168.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>204.25</x>
+          
+          <y>172.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>208</x>
+          
+          <y>175</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>207.25</x>
+          
+          <y>180.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>203.5</x>
+          
+          <y>185.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>204</x>
+          
+          <y>189.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>208</x>
+          
+          <y>189.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>212</x>
+          
+          <y>193</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>216.5</x>
+          
+          <y>191.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>217.75</x>
+          
+          <y>186.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>222.25</x>
+          
+          <y>180</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>230.25</x>
+          
+          <y>178</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>234.75</x>
+          
+          <y>178.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>237</x>
+          
+          <y>181.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>232.75</x>
+          
+          <y>184</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>231.25</x>
+          
+          <y>189</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>226.25</x>
+          
+          <y>192.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>225.5</x>
+          
+          <y>199.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>231.25</x>
+          
+          <y>206</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>230.75</x>
+          
+          <y>212</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>236.25</x>
+          
+          <y>214</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>236.5</x>
+          
+          <y>222.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>231.75</x>
+          
+          <y>225</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>227.25</x>
+          
+          <y>225.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>224.5</x>
+          
+          <y>231</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>223</x>
+          
+          <y>239.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>222.25</x>
+          
+          <y>245.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>216.75</x>
+          
+          <y>247.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>211.25</x>
+          
+          <y>251.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>211.25</x>
+          
+          <y>258</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>208</x>
+          
+          <y>261.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>201</x>
+          
+          <y>259.25</y>
+        
+        </point>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area>
+      
+      <areaId>ws_1_10_7</areaId>
+      
+      <areaName>石家庄</areaName>
+      
+      <areaNamePoint>
+        
+        <x>1.9749999999999943</x>
+        
+        <y>4</y>
+      
+      </areaNamePoint>
+      
+      <areaPoints>
+        
+        <point>
+          
+          <x>193.75</x>
+          
+          <y>298</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>189.75</x>
+          
+          <y>294</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>184.25</x>
+          
+          <y>292.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>180</x>
+          
+          <y>295.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>173.25</x>
+          
+          <y>300.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>168.5</x>
+          
+          <y>304.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>157.5</x>
+          
+          <y>307</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>142.25</x>
+          
+          <y>309.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>144.5</x>
+          
+          <y>303.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>145.5</x>
+          
+          <y>299</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>140.75</x>
+          
+          <y>298.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>138.75</x>
+          
+          <y>297.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>141</x>
+          
+          <y>294</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>138.25</x>
+          
+          <y>291.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>135.75</x>
+          
+          <y>289</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>136</x>
+          
+          <y>286.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>133.75</x>
+          
+          <y>284.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>133.25</x>
+          
+          <y>279.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>132.5</x>
+          
+          <y>276.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>131</x>
+          
+          <y>275.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>129.75</x>
+          
+          <y>273</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>125.5</x>
+          
+          <y>271.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>122</x>
+          
+          <y>268.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>119.75</x>
+          
+          <y>267.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>118</x>
+          
+          <y>264.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>117</x>
+          
+          <y>261</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>118</x>
+          
+          <y>258.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>119.75</x>
+          
+          <y>254.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>119.25</x>
+          
+          <y>252.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>119.5</x>
+          
+          <y>248.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>120.75</x>
+          
+          <y>245.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>125</x>
+          
+          <y>243.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>127.75</x>
+          
+          <y>240.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>130.5</x>
+          
+          <y>239</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>136.5</x>
+          
+          <y>242.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>146.25</x>
+          
+          <y>241.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>154.5</x>
+          
+          <y>240.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>166.25</x>
+          
+          <y>251.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>171.75</x>
+          
+          <y>252</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>176.75</x>
+          
+          <y>256</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>178</x>
+          
+          <y>262</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>180</x>
+          
+          <y>264.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>185.25</x>
+          
+          <y>263</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>189.25</x>
+          
+          <y>264</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>192.25</x>
+          
+          <y>262.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>195.25</x>
+          
+          <y>263.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>197</x>
+          
+          <y>268.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>203.25</x>
+          
+          <y>272.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>203</x>
+          
+          <y>279.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>199</x>
+          
+          <y>286.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>199</x>
+          
+          <y>293.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>197.5</x>
+          
+          <y>296.75</y>
+        
+        </point>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area>
+      
+      <areaId>ws_1_10_8</areaId>
+      
+      <areaName>沧州</areaName>
+      
+      <areaNamePoint>
+        
+        <x>9.974999999999994</x>
+        
+        <y>-3.0250000000000057</y>
+      
+      </areaNamePoint>
+      
+      <areaPoints>
+        
+        <point>
+          
+          <x>241.75</x>
+          
+          <y>300.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>241.75</x>
+          
+          <y>294.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>247</x>
+          
+          <y>285</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>249</x>
+          
+          <y>278.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>248.75</x>
+          
+          <y>273.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>241</x>
+          
+          <y>275</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>231.5</x>
+          
+          <y>279.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>227.5</x>
+          
+          <y>275.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>227</x>
+          
+          <y>271.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>228.25</x>
+          
+          <y>268.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>223</x>
+          
+          <y>268.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>217</x>
+          
+          <y>262.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>217.25</x>
+          
+          <y>259.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>211.25</x>
+          
+          <y>258</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>211.25</x>
+          
+          <y>251.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>216.75</x>
+          
+          <y>247.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>222.25</x>
+          
+          <y>245.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>223</x>
+          
+          <y>239.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>224.5</x>
+          
+          <y>231</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>227.25</x>
+          
+          <y>225.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>231.75</x>
+          
+          <y>225</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>238</x>
+          
+          <y>230.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>240.5</x>
+          
+          <y>233.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>239.5</x>
+          
+          <y>240.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>242.5</x>
+          
+          <y>248</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>248.25</x>
+          
+          <y>250.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>252</x>
+          
+          <y>248</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>253.5</x>
+          
+          <y>243.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>258.25</x>
+          
+          <y>236.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>262.25</x>
+          
+          <y>237.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>268.25</x>
+          
+          <y>236</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>271.25</x>
+          
+          <y>240</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>273</x>
+          
+          <y>242</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>276.75</x>
+          
+          <y>238</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>278.75</x>
+          
+          <y>240.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>280.75</x>
+          
+          <y>242.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>291</x>
+          
+          <y>238.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>295.25</x>
+          
+          <y>246.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>296.25</x>
+          
+          <y>249.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>302.25</x>
+          
+          <y>255.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>299.75</x>
+          
+          <y>257.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>299.5</x>
+          
+          <y>261</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>303</x>
+          
+          <y>261</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>302.5</x>
+          
+          <y>265.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>300.75</x>
+          
+          <y>268</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>293.5</x>
+          
+          <y>270.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>291.25</x>
+          
+          <y>279.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>287.5</x>
+          
+          <y>282.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>283.25</x>
+          
+          <y>281.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>277</x>
+          
+          <y>283.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>260.25</x>
+          
+          <y>285.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>255.25</x>
+          
+          <y>295.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>249.5</x>
+          
+          <y>303.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>245.5</x>
+          
+          <y>304.25</y>
+        
+        </point>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area>
+      
+      <areaId>ws_1_10_9</areaId>
+      
+      <areaName>衡水</areaName>
+      
+      <areaNamePoint>
+        
+        <x>1</x>
+        
+        <y>0</y>
+      
+      </areaNamePoint>
+      
+      <areaPoints>
+        
+        <point>
+          
+          <x>221.5</x>
+          
+          <y>329</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>217.25</x>
+          
+          <y>327</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>216.5</x>
+          
+          <y>321.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>210</x>
+          
+          <y>317.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>201.5</x>
+          
+          <y>313.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>199</x>
+          
+          <y>310.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>200.75</x>
+          
+          <y>304.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>194</x>
+          
+          <y>303.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>191.5</x>
+          
+          <y>303</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>193.75</x>
+          
+          <y>298</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>197.5</x>
+          
+          <y>296.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>199</x>
+          
+          <y>293.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>199</x>
+          
+          <y>286.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>203</x>
+          
+          <y>279.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>203.25</x>
+          
+          <y>272.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>197</x>
+          
+          <y>268.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>195.25</x>
+          
+          <y>263.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>201</x>
+          
+          <y>259.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>208</x>
+          
+          <y>261.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>211.25</x>
+          
+          <y>258</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>217.25</x>
+          
+          <y>259.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>217</x>
+          
+          <y>262.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>223</x>
+          
+          <y>268.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>228.25</x>
+          
+          <y>268.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>227</x>
+          
+          <y>271.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>227.5</x>
+          
+          <y>275.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>231.5</x>
+          
+          <y>279.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>241</x>
+          
+          <y>275</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>248.75</x>
+          
+          <y>273.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>249</x>
+          
+          <y>278.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>247</x>
+          
+          <y>285</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>241.75</x>
+          
+          <y>294.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>241.75</x>
+          
+          <y>300.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>238.75</x>
+          
+          <y>303.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>238</x>
+          
+          <y>313</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>230.5</x>
+          
+          <y>313</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>226.5</x>
+          
+          <y>316.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>224</x>
+          
+          <y>323.75</y>
+        
+        </point>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area>
+      
+      <areaId>ws_1_10_10</areaId>
+      
+      <areaName>邢台</areaName>
+      
+      <areaNamePoint>
+        
+        <x>4.974999999999994</x>
+        
+        <y>0</y>
+      
+      </areaNamePoint>
+      
+      <areaPoints>
+        
+        <point>
+          
+          <x>130.5</x>
+          
+          <y>337.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>129.75</x>
+          
+          <y>333.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>131</x>
+          
+          <y>329</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>134.25</x>
+          
+          <y>325.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>134.5</x>
+          
+          <y>320.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>138.5</x>
+          
+          <y>317.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>142.25</x>
+          
+          <y>309.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>157.5</x>
+          
+          <y>307</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>168.5</x>
+          
+          <y>304.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>173.25</x>
+          
+          <y>300.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>180</x>
+          
+          <y>295.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>184.25</x>
+          
+          <y>292.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>189.75</x>
+          
+          <y>294</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>193.75</x>
+          
+          <y>298</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>191.5</x>
+          
+          <y>303</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>194</x>
+          
+          <y>303.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>200.75</x>
+          
+          <y>304.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>199</x>
+          
+          <y>310.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>201.5</x>
+          
+          <y>313.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>210</x>
+          
+          <y>317.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>216.5</x>
+          
+          <y>321.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>217.25</x>
+          
+          <y>327</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>221.5</x>
+          
+          <y>329</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>222</x>
+          
+          <y>333</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>219.25</x>
+          
+          <y>338</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>215.75</x>
+          
+          <y>344.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>214.25</x>
+          
+          <y>348.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>205.5</x>
+          
+          <y>351.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>197.5</x>
+          
+          <y>347</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>196.5</x>
+          
+          <y>343.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>191.75</x>
+          
+          <y>342.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>188.25</x>
+          
+          <y>337.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>182</x>
+          
+          <y>337.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>174.75</x>
+          
+          <y>339.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>171.5</x>
+          
+          <y>342.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>166.75</x>
+          
+          <y>342.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>162.5</x>
+          
+          <y>348.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>155</x>
+          
+          <y>345.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>142.5</x>
+          
+          <y>345</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>136.25</x>
+          
+          <y>340.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>133.5</x>
+          
+          <y>337.25</y>
+        
+        </point>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area>
+      
+      <areaId>ws_1_10_11</areaId>
+      
+      <areaName>邯郸</areaName>
+      
+      <areaNamePoint>
+        
+        <x>-0.025000000000005684</x>
+        
+        <y>0</y>
+      
+      </areaNamePoint>
+      
+      <areaPoints>
+        
+        <point>
+          
+          <x>202</x>
+          
+          <y>388.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>199.25</x>
+          
+          <y>388.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>196.75</x>
+          
+          <y>383.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>193</x>
+          
+          <y>381.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>189.25</x>
+          
+          <y>384</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>184.5</x>
+          
+          <y>390.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>180.75</x>
+          
+          <y>387.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>175</x>
+          
+          <y>386.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>168</x>
+          
+          <y>387.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>164</x>
+          
+          <y>384.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>156</x>
+          
+          <y>380.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>146.25</x>
+          
+          <y>380.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>140.75</x>
+          
+          <y>377</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>137</x>
+          
+          <y>374</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>131.5</x>
+          
+          <y>376.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>126.75</x>
+          
+          <y>371.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>120.75</x>
+          
+          <y>367.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>122</x>
+          
+          <y>363.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>118</x>
+          
+          <y>359.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>116.75</x>
+          
+          <y>356.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>118</x>
+          
+          <y>353.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>123.5</x>
+          
+          <y>351.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>125.75</x>
+          
+          <y>346.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>128.75</x>
+          
+          <y>347</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>130.75</x>
+          
+          <y>346.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>130.5</x>
+          
+          <y>337.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>133.5</x>
+          
+          <y>337.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>136.25</x>
+          
+          <y>340.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>142.5</x>
+          
+          <y>345</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>155</x>
+          
+          <y>345.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>162.5</x>
+          
+          <y>348.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>166.75</x>
+          
+          <y>342.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>171.5</x>
+          
+          <y>342.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>174.75</x>
+          
+          <y>339.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>182</x>
+          
+          <y>337.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>188.25</x>
+          
+          <y>337.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>191.75</x>
+          
+          <y>342.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>196.5</x>
+          
+          <y>343.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>197.5</x>
+          
+          <y>347</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>205.5</x>
+          
+          <y>351.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>204</x>
+          
+          <y>354.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>200.25</x>
+          
+          <y>358.25</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>199.75</x>
+          
+          <y>364</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>197.5</x>
+          
+          <y>369.5</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>201</x>
+          
+          <y>372.75</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>206</x>
+          
+          <y>378</y>
+        
+        </point>
+        
+        <point>
+          
+          <x>206.5</x>
+          
+          <y>382.25</y>
+        
+        </point>
+      
+      </areaPoints>
+    
+    </area>
+  
+  </areas>
+
+</map>
