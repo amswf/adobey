@@ -214,16 +214,12 @@ package com.snsoft.mapview{
 			mapCenterP.y = mapRect.y + mapRect.height / 2;
 			
 			var areaCenterP:Point = new Point();
-			if(areaNamebRect.right < areaBtnRect.left || areaNamebRect.left > areaBtnRect.right){
+			if(areaNamebRect.right < areaBtnRect.left || areaNamebRect.left > areaBtnRect.right || areaNamebRect.bottom < areaBtnRect.top || areaNamebRect.top > areaBtnRect.bottom){
 				areaCenterP.x = areaBtnRect.x + areaBtnRect.width / 2 ;
-			}
-			else{
-				areaCenterP.x = areaNamebRect.x + areaNamebRect.width / 2 ;
-			}
-			if(areaNamebRect.bottom < areaBtnRect.top || areaNamebRect.top > areaBtnRect.bottom){
 				areaCenterP.y = areaBtnRect.y + areaBtnRect.height / 2 ;
 			}
 			else{
+				areaCenterP.x = areaNamebRect.x + areaNamebRect.width / 2 ;
 				areaCenterP.y = areaNamebRect.y + areaNamebRect.height / 2 ;
 			}
 			
