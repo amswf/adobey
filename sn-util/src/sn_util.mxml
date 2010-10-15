@@ -3,17 +3,17 @@
 	<mx:Script>
 		<![CDATA[
 			import com.snsoft.map.MapBackImage;
-			import com.snsoft.map.MapMain;
 			import com.snsoft.mapview.MapMain;
 			import com.snsoft.util.complexEvent.CplxMouseDrag;
+			import com.snsoft.util.log.LogMg;
 			private function init():void{
 				var mm:MapMain = new MapMain();
 				mm.width = 400;
 				mm.height = 300;
 				this.addChild(mm);
 				var sma:CplxMouseDrag = null;
-				var mm:com.snsoft.mapview.MapMain;
 				var mbi:MapBackImage = null;
+				var log:LogMg;
 			}
 		]]>
 	</mx:Script>
