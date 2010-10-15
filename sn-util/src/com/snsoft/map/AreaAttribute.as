@@ -15,6 +15,10 @@ package com.snsoft.map
 		
 		private var _areaNameYTextField:TextField = null;
 		
+		private var _areaCodeTextField:TextField = null;
+		
+		private var _areaUrlTextField:TextField = null;
+		
 		private var _submitBtn:Button = null;
 		
 		private var _deleteBtn:Button = null;
@@ -29,6 +33,8 @@ package com.snsoft.map
 			_areaNameTextField = this.getChildByName("areaNameTextField") as TextField;
 			_areaNameXTextField = this.getChildByName("areaNameXTextField") as TextField;
 			_areaNameYTextField = this.getChildByName("areaNameYTextField") as TextField;
+			_areaCodeTextField = this.getChildByName("areaCodeTextField") as TextField;
+			_areaUrlTextField = this.getChildByName("areaUrlTextField") as TextField;
 			_submitBtn = this.getChildByName("submitBtn") as Button;
 			_deleteBtn = this.getChildByName("deleteBtn") as Button;
 			
@@ -50,6 +56,22 @@ package com.snsoft.map
 		
 		public function getareaName():String{
 			return this._areaNameTextField.text;
+		}
+		
+		public function setareaCode(name:String):void{
+			this._areaCodeTextField.text = name;
+		}
+		
+		public function getareaCode():String{
+			return this._areaCodeTextField.text;
+		}
+		
+		public function setareaUrl(name:String):void{
+			this._areaUrlTextField.text = name;
+		}
+		
+		public function getareaUrl():String{
+			return this._areaUrlTextField.text;
 		}
 		
 		public function setareaNameX(x:String):void{

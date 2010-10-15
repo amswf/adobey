@@ -252,6 +252,12 @@
 				if(areaAttribute.getareaName() != null){
 					ma.mapAreaDO.areaName = areaAttribute.getareaName();
 				}
+				if(areaAttribute.getareaCode() != null){
+					ma.mapAreaDO.areaCode = areaAttribute.getareaCode();
+				}
+				if(areaAttribute.getareaUrl() != null){
+					ma.mapAreaDO.areaUrl = areaAttribute.getareaUrl();
+				}
 				if(areaAttribute.getareaNameX() != null){
 					ma.mapAreaDO.areaNamePlace.x = Number(areaAttribute.getareaNameX());
 				}

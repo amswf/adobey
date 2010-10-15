@@ -17,7 +17,18 @@ package com.snsoft.map
 		//地图块的显示名称
 		private var _areaName:String = null;
 		
+		//地图块ID
 		private var _areaId:String = null;
+		
+		/**
+		 * 地图块标识
+		 */		
+		private var _areaCode:String = null;
+		
+		/**
+		 * 地图块URL
+		 */		
+		private var _areaUrl:String = null;
 		
 		//地图块的显示名称坐标修正
 		private var _areaNamePlace:Point = new Point();
@@ -64,6 +75,26 @@ package com.snsoft.map
 		public function set areaId(value:String):void
 		{
 			_areaId = value;
+		}
+
+		public function get areaCode():String
+		{
+			return _areaCode;
+		}
+
+		public function set areaCode(value:String):void
+		{
+			_areaCode = value;
+		}
+
+		public function get areaUrl():String
+		{
+			return _areaUrl;
+		}
+
+		public function set areaUrl(value:String):void
+		{
+			_areaUrl = value;
 		}
 
 

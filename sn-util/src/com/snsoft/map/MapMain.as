@@ -118,7 +118,7 @@
 			this.addChild(wsFrame);
 			
 			var atbw:Number = 180;
-			var atbh:Number = 100;
+			var atbh:Number = 145;
 			
 			areaAttribute.x = this.width - atbw - SPACE;
 			areaAttribute.y = SPACE;
@@ -332,12 +332,22 @@
 			var mado:MapAreaDO = ws.currentClickMapArea.mapAreaDO;
 			
 			var an:String = "";
+			var ac:String = "";
+			var au:String = "";
 			var anx:String = "0";
 			var any:String = "0";
 			if(mado.areaName != null){
 				an = mado.areaName;
 			}
+			if(mado.areaCode != null){
+				ac = mado.areaCode;
+			}
+			if(mado.areaUrl != null){
+				au = mado.areaUrl;
+			}
 			areaAttribute.setareaName(an);
+			areaAttribute.setareaCode(ac);
+			areaAttribute.setareaUrl(au);
 			areaAttribute.setareaNameX(String(mado.areaNamePlace.x));
 			areaAttribute.setareaNameY(String(mado.areaNamePlace.y));
 			this.workSpaceHashVector.push(this.ws,this.ws.wsName);

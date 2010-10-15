@@ -58,7 +58,7 @@
 							var cfile:File = fileAry[i] as File;
 							if(cfile != null){
 								if(cfile.isDirectory){
-									 cfile.deleteDirectory(true);
+									cfile.deleteDirectory(true);
 								}
 								else{
 									cfile.deleteFile();
@@ -405,8 +405,23 @@
 						
 						//<areaName>
 						var areaName:XML = area.elements("areaName")[0];
-						var mapAreaName:String = areaName.text();
-						mado.areaName = mapAreaName;
+						if(areaName != null){
+							var mapAreaName:String = areaName.text();
+							mado.areaName = mapAreaName;
+						}
+						//<areaCode>
+						var areaCode:XML = area.elements("areaCode")[0];
+						if(areaCode != null){
+							var mapAreaCode:String = areaCode.text();
+							mado.areaCode = mapAreaCode;
+						}
+						
+						//<areaUrl>
+						var areaUrl:XML = area.elements("areaUrl")[0];
+						if(areaUrl != null){
+							var mapAreaUrl:String = areaUrl.text();
+							mado.areaUrl = mapAreaUrl;
+						}
 						
 						//<areaNamePoint>
 						var areaNamePoint:XML = area.elements("areaNamePoint")[0];
@@ -483,6 +498,8 @@
 				for (var i:int = 0; i<madoa.length; i++) {
 					var mado:MapAreaDO = madoa.findByIndex(i) as MapAreaDO;
 					var name:String = mado.areaName;
+					var code:String = mado.areaCode;
+					var url:String = mado.areaUrl;
 					var id:String = mado.areaId;
 					var placeP:Point = mado.areaNamePlace;
 					var pha:HashVector = mado.pointArray;
@@ -496,6 +513,14 @@
 					xml = xml.concat("<areaName>");
 					xml = xml.concat(name);
 					xml = xml.concat("</areaName>");
+					
+					xml = xml.concat("<areaCode>");
+					xml = xml.concat(code);
+					xml = xml.concat("</areaCode>");
+					
+					xml = xml.concat("<areaUrl>");
+					xml = xml.concat(url);
+					xml = xml.concat("</areaUrl>");
 					
 					xml = xml.concat("<areaNamePoint>");
 					
@@ -540,17 +565,17 @@
 		public function get workSpaceDO():WorkSpaceDO {
 			return _workSpaceDO;
 		}
-
+		
 		public function get mainDirectory():String
 		{
 			return _mainDirectory;
 		}
-
+		
 		public function set mainDirectory(value:String):void
 		{
 			_mainDirectory = value;
 		}
-
+		
 		public function get workSpaceDOVector():Vector.<WorkSpaceDO>
 		{
 			return _workSpaceDOVector;
