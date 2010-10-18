@@ -59,6 +59,7 @@ package com.snsoft.util.log{
 		}
 		
 		private static function handlerMenuSelect(e:Event):void{
+			stage.setChildIndex(logPanel,stage.numChildren - 1);
 			logPanel.visible = true;
 			logPanel.x = 10;
 			logPanel.y = 10;
