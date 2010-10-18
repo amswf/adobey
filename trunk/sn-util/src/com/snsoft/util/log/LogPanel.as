@@ -1,4 +1,4 @@
-package com.snsoft.util.log{
+﻿package com.snsoft.util.log{
 	import fl.controls.Button;
 	import fl.controls.TextArea;
 	import fl.core.InvalidationType;
@@ -7,7 +7,9 @@ package com.snsoft.util.log{
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
+	import flash.text.TextField;
 	import flash.text.TextFormat;
+	
 
 	public class LogPanel extends UIComponent{
 		
@@ -25,6 +27,11 @@ package com.snsoft.util.log{
 		 * 背景按钮
 		 */		
 		private var back:Button;
+		
+		/**
+		 * 窗口名称 
+		 */		
+		private var titleText:TextField;
 		
 		/**
 		 * 清除按钮 
@@ -85,6 +92,10 @@ package com.snsoft.util.log{
 			back.addEventListener(MouseEvent.MOUSE_DOWN,handlerBackMouseDown);
 			back.addEventListener(MouseEvent.MOUSE_UP,handlerBackMouseUp);
 			
+			titleText = new TextField();
+			titleText.text = "LogMg";
+			this.addChild(titleText);
+			
 			clearBtn = new Button();
 			clearBtn.label = "clear";
 			this.addChild(clearBtn);
@@ -129,26 +140,32 @@ package com.snsoft.util.log{
 		
 		private function resizeChild():void{
 			var space:Number = 10;
-			var btnHeight:Number = 22;
-			var btnWidth:Number = 38;
+			 
+			var btnRect:Rectangle = new Rectangle(space,space,38,22);
+			var titleTextRect:Rectangle = new Rectangle(space,space,50,22);
 			
 			back.width = this.width;
 			back.height = this.height;
 			
-			clearBtn.x = space;
-			clearBtn.y = space;
-			clearBtn.width = btnWidth;
-			clearBtn.height = btnHeight;
+			titleText.x = titleTextRect.x;
+			titleText.y = titleTextRect.x;
+			titleText.width = titleTextRect.width;
+			titleText.height = titleTextRect.width;
+			
+			clearBtn.x = btnRect.x + titleText.x + titleText.width;
+			clearBtn.y = btnRect.x;
+			clearBtn.width = btnRect.width;
+			clearBtn.height = btnRect.height;
 			
 			hiddenBtn.x = this.width - space - 22;
 			hiddenBtn.y = space;
 			hiddenBtn.width = 22;
-			hiddenBtn.height = btnHeight;
+			hiddenBtn.height = btnRect.height;
 			
 			logOutTextArea.x = space;
-			logOutTextArea.y = space * 2 + btnHeight;
+			logOutTextArea.y = space * 2 + btnRect.height;
 			logOutTextArea.width = this.width-space * 2;
-			logOutTextArea.height = this.height - space * 3 - btnHeight;
+			logOutTextArea.height = this.height - space * 3 - btnRect.height;
 			
 			back.drawNow();
 			clearBtn.drawNow();
