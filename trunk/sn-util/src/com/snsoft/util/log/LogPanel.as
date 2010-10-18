@@ -94,6 +94,7 @@
 			
 			titleText = new TextField();
 			titleText.text = "LogMg";
+			titleText.selectable = false;
 			this.addChild(titleText);
 			
 			clearBtn = new Button();
