@@ -30,6 +30,11 @@ package com.snsoft.room3d{
 		private var _textStr:String = null;
 		
 		/**
+		 * 描述信息 
+		 */		
+		private var _msg:String = null;
+		
+		/**
 		 * 正方体前面 
 		 */		
 		public static const FRONT:String = "front";
@@ -172,6 +177,22 @@ package com.snsoft.room3d{
 		public function set ballImageBitMapData(value:BitmapData):void
 		{
 			_ballImageBitMapData = value;
+		}
+
+		/**
+		 * 描述信息 
+		 */
+		public function get msg():String
+		{
+			return _msg;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set msg(value:String):void
+		{
+			_msg = value;
 		}
 
 

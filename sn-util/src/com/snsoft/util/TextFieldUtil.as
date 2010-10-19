@@ -2,7 +2,7 @@ package com.snsoft.util
 {
 	import flash.text.TextField;
 	import flash.text.TextFormat;
-
+	
 	public class TextFieldUtil
 	{
 		public function TextFieldUtil()
@@ -32,6 +32,16 @@ package com.snsoft.util
 				textField.width = calculateTextFieldWidth(textField);
 				var tft:TextFormat = textField.getTextFormat();
 				textField.height = tft.size + 6;
+			}
+		}
+		
+		public static function fitText(textField:TextField):void{
+			var tft:TextFormat = textField.getTextFormat();
+			var n:int = int((textField.width - 6) * 2 / int(tft.size));
+			var txt:String = textField.text;
+			if(StringUtil.getByteLen(txt) > n){
+				txt = StringUtil.subCNStr(txt,n - 1)+"...";
+				textField.text = txt;
 			}
 		}
 	}

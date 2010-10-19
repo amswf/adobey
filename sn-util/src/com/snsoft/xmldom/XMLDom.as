@@ -84,7 +84,14 @@ package com.snsoft.xmldom{
 				var value:String = atts.findByIndex(i) as String;
 				node.pushAttribute(name,value);
 			}
-			var childNodeLists:HashVector = parseXMLList(xml);
+			
+			var childNodeLists:HashVector;
+			if(xml.hasComplexContent()){
+				childNodeLists = parseXMLList(xml);
+			}
+			else {
+				childNodeLists = new HashVector();
+			}
 			node.childNodeLists = childNodeLists;
 			return node;
 		}

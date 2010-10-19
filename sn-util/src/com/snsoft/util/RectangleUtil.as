@@ -1,4 +1,5 @@
 package com.snsoft.util{
+	import flash.display.DisplayObject;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
@@ -27,6 +28,13 @@ package com.snsoft.util{
 			return new Point(rect.width,rect.height);
 		}
 		
+		/**
+		 * sprite x/y/width/height 加法 
+		 * @param rect1
+		 * @param rect2
+		 * @return 
+		 * 
+		 */		
 		public static function subRect(rect1:Rectangle,rect2:Rectangle):Rectangle{
 			var r:Rectangle = new Rectangle();
 			var r1:Rectangle = new Rectangle();
@@ -44,6 +52,13 @@ package com.snsoft.util{
 			return r;
 		}
 		
+		/**
+		 * sprite x/y/width/height 减法 
+		 * @param rect1
+		 * @param rect2
+		 * @return 
+		 * 
+		 */		
 		public static function plusRect(rect1:Rectangle,rect2:Rectangle):Rectangle{
 			var r:Rectangle = new Rectangle();
 			var r1:Rectangle = new Rectangle();
@@ -59,6 +74,29 @@ package com.snsoft.util{
 			r.width = r1.width + r2.width;
 			r.height = r1.height + r2.height;
 			return r;
+		}
+		
+		/**
+		 * 设置显示对象的  x/y/width/height
+		 * @param dobj
+		 * @param rect
+		 * 
+		 */		
+		public static function setRect(dobj:DisplayObject,rect:Rectangle):void{
+			dobj.x = rect.x;
+			dobj.y = rect.y;
+			dobj.width = rect.width;
+			dobj.height = rect.height;
+		}
+		
+		/**
+		 * 复制  Rectangle
+		 * @param rect
+		 * @return 
+		 * 
+		 */		
+		public static function cloneRect(rect:Rectangle):Rectangle{
+			return new Rectangle(rect.x,rect.y,rect.width,rect.height);
 		}
 	}
 }
