@@ -24,6 +24,7 @@
 	import flash.geom.Rectangle;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
+	import flash.system.System;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
@@ -176,6 +177,17 @@
 		private var roomTextLayer:MovieClip = new MovieClip();
 		
 		/**
+		 * 观查点文字层 
+		 */		
+		private var seatTextLayer:MovieClip = new MovieClip();
+		
+		
+		/**
+		 * 观查点文字层 
+		 */		
+		private var seatWindowMsgLayer:MovieClip = new MovieClip();
+		
+		/**
 		 * 3d全景对象
 		 */		
 		private var seat3dLayer:MovieClip = new MovieClip();
@@ -223,7 +235,9 @@
 		/**
 		 * 3D全景默认宽高位置信息 
 		 */		
-		private static const SEAT3D_DEFAULT_RECT:Rectangle = new Rectangle(170,50,450,430);
+		private static const SEAT3D_DEFAULT_RECT:Rectangle = new Rectangle(170,50,450,378);
+		
+		private static const SEAT_TITLE_DEFAULT_RECT:Rectangle = new Rectangle(170,438,450,42);
 		
 		/**
 		 * 当前场景的全屏状态 
@@ -255,6 +269,18 @@
 		 * 主显示层 
 		 */		
 		private var mainLayer:MovieClip;
+		
+		/**
+		 * 观察点简介信息 
+		 */		
+		private var introMsg:IntroMsg;	
+		
+		/**
+		 * 观察点详细信息 
+		 */		
+		private var windowMsg:WindowMsg;	
+		
+		private var currentSeatDO:SeatDO;
 		
 		public function Main(){
 			super();
@@ -423,6 +449,12 @@
 					seatDO.imageUrlHV.push(topImgUrl,SeatDO.TOP);
 					seatDO.imageUrlHV.push(bottomImgUrl,SeatDO.BOTTOM);
 					seatDO.place = p;
+					
+					var msgList:NodeList =placeNode.getNodeList("msg");
+					if(msgList != null && msgList.length() > 0){
+						var msgNode:Node = msgList.getNode(0);
+						seatDO.msg = msgNode.text;
+					}
 					placeHV.push(seatDO);
 				}
 				roomDO.placeHV = placeHV;
@@ -458,7 +490,7 @@
 			mainLayer.addChild(this.roomTextLayer);
 			mainLayer.addChild(seat3DBack);
 			mainLayer.addChild(this.seat3dLayer);
-			
+			mainLayer.addChild(this.seatTextLayer);
 			
 			seatScrollPane = new ScrollPane();
 			seatScrollPane.width = SEAT_SCROLL_PANE_DEFAULT_RECT.width;
@@ -475,6 +507,24 @@
 			menu.x = MENU_DEFAULT_RECT.x;
 			menu.y = MENU_DEFAULT_RECT.y;
 			mainLayer.addChild(menu);
+			
+			mainLayer.addChild(this.seatWindowMsgLayer);
+			
+			introMsg = new IntroMsg("");
+			introMsg.width = SEAT_TITLE_DEFAULT_RECT.width;
+			introMsg.height = SEAT_TITLE_DEFAULT_RECT.height;
+			introMsg.x = SEAT_TITLE_DEFAULT_RECT.x;
+			introMsg.y = SEAT_TITLE_DEFAULT_RECT.y;
+			this.seatTextLayer.addChild(introMsg);
+			introMsg.drawNow();
+			
+			windowMsg = new WindowMsg("","");
+			windowMsg.visible = false;
+			windowMsg.width = 400;
+			windowMsg.height = 300;
+			this.seatWindowMsgLayer.addChild(windowMsg);
+			windowMsg.drawNow();
+			
 		}
 		
 		/**
@@ -553,8 +603,8 @@
 			}
 			SpriteUtil.deleteAllChild(this.seat3dLayer);
 			
-			var seatDO:SeatDO = roomMap.currentSeatDO;
-			var s3d:Seat3D = new Seat3D(this.menu,roomMap.currentSeatDO,SEAT3D_DEFAULT_RECT.width,SEAT3D_DEFAULT_RECT.height);
+			currentSeatDO = roomMap.currentSeatDO;
+			var s3d:Seat3D = new Seat3D(this.menu,currentSeatDO,SEAT3D_DEFAULT_RECT.width,SEAT3D_DEFAULT_RECT.height);
 			s3d.addEventListener(Seat3D.CAMERA_ROTATION_EVENT,handlerCameraRotation);
 			s3d.addEventListener(MouseEvent.DOUBLE_CLICK,handlerCurrentSeatDOMouseDoubleClick);
 			s3d.doubleClickEnabled = true;
@@ -566,6 +616,22 @@
 			s3d.drawNow();
 			this.roomMap.setVisualAngleRotation(0);
 			
+			introMsg.refreshText(currentSeatDO.textStr);
+			windowMsg.visible = false;
+			introMsg.removeEventListener(IntroMsg.BUTTON_CLICK,handlerIntroMsgBtnClick);
+			if(currentSeatDO.textStr != null && currentSeatDO.textStr.length > 0 && currentSeatDO.msg != null && currentSeatDO.msg.length > 0){
+				trace("addEventListener");
+				introMsg.addEventListener(IntroMsg.BUTTON_CLICK,handlerIntroMsgBtnClick);	
+			}
+			
+			System.gc();
+		}
+		
+		private function handlerIntroMsgBtnClick(e:Event):void{
+			trace("handlerIntroMsgBtnClick");
+			windowMsg.visible = true;
+			windowMsg.refreshText(currentSeatDO.textStr,currentSeatDO.msg);
+			windowMsg.resetPlaceAndMask(stage);
 		}
 		
 		/**
@@ -574,7 +640,9 @@
 		 * 
 		 */		
 		private function handlerSeat3DCmp(e:Event):void{
-			setMainDisplayState();
+			if(this.visible){
+				setMainDisplayState();
+			}
 		}
 		
 		/**
