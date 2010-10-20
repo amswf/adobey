@@ -237,7 +237,15 @@
 		 */		
 		private static const SEAT3D_DEFAULT_RECT:Rectangle = new Rectangle(170,50,450,378);
 		
+		/**
+		 * 观察点标题信 默认宽高位置
+		 */		
 		private static const SEAT_TITLE_DEFAULT_RECT:Rectangle = new Rectangle(170,438,450,42);
+		
+		/**
+		 * 观察点标题信 全屏时宽高位置
+		 */		
+		private static const SEAT_TITLE_FULL_SCREEN_RECT:Rectangle = new Rectangle(10,10,450,42);
 		
 		/**
 		 * 当前场景的全屏状态 
@@ -599,14 +607,14 @@
 			trace("creatSeat3D");
 			if(currentSeat3D != null){
 				currentSeat3D.removeEventListener(Seat3D.CAMERA_ROTATION_EVENT,handlerCameraRotation);
-				currentSeat3D.removeEventListener(MouseEvent.DOUBLE_CLICK,handlerCurrentSeatDOMouseDoubleClick);
+				currentSeat3D.removeEventListener(MouseEvent.DOUBLE_CLICK,handlerCurrentSeat3DMouseDoubleClick);
 			}
 			SpriteUtil.deleteAllChild(this.seat3dLayer);
-			
+			System.gc();
 			currentSeatDO = roomMap.currentSeatDO;
 			var s3d:Seat3D = new Seat3D(this.menu,currentSeatDO,SEAT3D_DEFAULT_RECT.width,SEAT3D_DEFAULT_RECT.height);
 			s3d.addEventListener(Seat3D.CAMERA_ROTATION_EVENT,handlerCameraRotation);
-			s3d.addEventListener(MouseEvent.DOUBLE_CLICK,handlerCurrentSeatDOMouseDoubleClick);
+			s3d.addEventListener(MouseEvent.DOUBLE_CLICK,handlerCurrentSeat3DMouseDoubleClick);
 			s3d.doubleClickEnabled = true;
 			s3d.addEventListener(Seat3D.SEAT3D_CMP_EVENT,handlerSeat3DCmp);
 			s3d.x = SEAT3D_DEFAULT_RECT.x;
@@ -623,8 +631,6 @@
 				trace("addEventListener");
 				introMsg.addEventListener(IntroMsg.BUTTON_CLICK,handlerIntroMsgBtnClick);	
 			}
-			
-			System.gc();
 		}
 		
 		private function handlerIntroMsgBtnClick(e:Event):void{
@@ -650,7 +656,7 @@
 		 * @param e
 		 * 
 		 */		
-		private function handlerCurrentSeatDOMouseDoubleClick(e:Event):void{
+		private function handlerCurrentSeat3DMouseDoubleClick(e:Event):void{
 			if(!isTsp){
 				if(stage.displayState != StageDisplayState.FULL_SCREEN){
 					stage.displayState = StageDisplayState.FULL_SCREEN;
@@ -710,6 +716,9 @@
 						seatScrollPane.x = stage.fullScreenWidth - SEAT_SCROLL_PANE_DEFAULT_RECT.width - PLACE_SPACE_10;
 						seatScrollPane.y = PLACE_SPACE_10;
 						
+						introMsg.x = SEAT_TITLE_FULL_SCREEN_RECT.x;
+						introMsg.y = SEAT_TITLE_FULL_SCREEN_RECT.y;
+						
 						//						if(isTsp){
 						//							roomCardsScrollPane.height = stage.fullScreenHeight - PLACE_SPACE_10 - PLACE_SPACE_10;
 						//						}
@@ -731,6 +740,8 @@
 						
 						seatScrollPane.x = SEAT_SCROLL_PANE_DEFAULT_RECT.x;
 						seatScrollPane.y = SEAT_SCROLL_PANE_DEFAULT_RECT.y;
+						introMsg.x = SEAT_TITLE_DEFAULT_RECT.x;
+						introMsg.y = SEAT_TITLE_DEFAULT_RECT.y;
 						
 						//						if(isTsp){
 						//							roomCardsScrollPane.height = ROOM_CARDS_SCROLLPANE_RECT.height;

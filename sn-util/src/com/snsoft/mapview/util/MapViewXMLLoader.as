@@ -46,6 +46,16 @@ package com.snsoft.mapview.util{
 						var mapAreaName:String = areaName.text();
 						mado.areaName = mapAreaName;
 						
+						//<areaCode>
+						var areaCode:XML = area.elements("areaCode")[0];
+						var mapAreaCode:String = areaCode.text();
+						mado.areaCode = mapAreaCode;
+						
+						//<areaUrl>
+						var areaUrl:XML = area.elements("areaUrl")[0];
+						var mapAreaUrl:String = areaUrl.text();
+						mado.areaUrl = mapAreaUrl;
+						
 						//<areaNamePoint>
 						var areaNamePoint:XML = area.elements("areaNamePoint")[0];
 						if (areaNamePoint != null) {

@@ -1,4 +1,4 @@
-﻿package com.snsoft.mapview{
+package com.snsoft.mapview{
 	import com.snsoft.map.WorkSpaceDO;
 	import com.snsoft.map.util.MapUtil;
 	import com.snsoft.mapview.util.MapViewDraw;
@@ -29,7 +29,7 @@
 	
 	[Style(name="viewDagLimitSkin", type="Class")]
 	
-	public class MapMain extends UIComponent{
+	public class MapMainOpenUrl extends UIComponent{
 		
 		//XML文件文件根目录
 		private var _baseUrl:String = "flash_map";
@@ -86,7 +86,7 @@
 		
 		private var oldMapMaskLayer:Sprite = null;
 		
-		public function MapMain()
+		public function MapMainOpenUrl()
 		{
 			super();
 		}
@@ -146,15 +146,15 @@
 			this.addChild(oldMapLayer);
 			this.oldMapLayer.mask = this.oldMapMaskLayer;
 			
-			this.viewDragLimit = getDisplayObjectInstance(getStyleValue("viewDagLimitSkin"));
-			var viewPlace:Point = MapUtil.subSize(this,this.viewDragLimit);
-			viewPlace.x = 0;
-			MapUtil.setSpritePlace(viewDragLimit,viewPlace);
-			this.addChild(this.viewDragLimit);
-			
-			this.viewDrag = getDisplayObjectInstance(getStyleValue("viewDagSkin"));
-			MapUtil.setSpritePlace(viewDrag,viewPlace);
-			this.addChild(this.viewDrag);
+//			this.viewDragLimit = getDisplayObjectInstance(getStyleValue("viewDagLimitSkin"));
+//			var viewPlace:Point = MapUtil.subSize(this,this.viewDragLimit);
+//			viewPlace.x = 0;
+//			MapUtil.setSpritePlace(viewDragLimit,viewPlace);
+//			this.addChild(this.viewDragLimit);
+//			
+//			this.viewDrag = getDisplayObjectInstance(getStyleValue("viewDagSkin"));
+//			MapUtil.setSpritePlace(viewDrag,viewPlace);
+//			this.addChild(this.viewDrag);
 			
 			configXmlUrl = "viewcfg.xml";
 			var request:URLRequest = new URLRequest(configXmlUrl);	
@@ -252,8 +252,8 @@
 			
 			var shape:Shape = MapViewDraw.drawRect(new Point(this.width,this.height));
 			MapUtil.deleteAllChild(this.mapBackLayer);
-			this.mapBackLayer.addChild(shape);
-			shape.alpha = 0.2;
+//			this.mapBackLayer.addChild(shape);
+//			shape.alpha = 0.2;
 			if(Config.AREA_MOUSE_EVENT_TYPE_DOUBLE_CLICK == Config.areaMouseEventType){
 				this.mapBackLayer.doubleClickEnabled = true;
 				this.mapBackLayer.addEventListener(MouseEvent.DOUBLE_CLICK,handlerMapBackDoubleClick);
@@ -286,13 +286,13 @@
 			this.mapView.addEventListener(MapView.AREA_DOUBLE_CLICK_EVENT,handlerMapAreaDoubleClick);
 			newMapLayer.addChild(this.mapView);	
 			
-			var sma:CplxMouseDrag = new CplxMouseDrag();
-			var mapViewRect:Rectangle = this.mapView.backMaskRec;
-			var vdlp:Point = MapUtil.getSpriteSize(this.viewDragLimit);
-			var dragAlterRect:Rectangle = new Rectangle(vdlp.x,vdlp.y,-vdlp.x,-vdlp.y);
+//			var sma:CplxMouseDrag = new CplxMouseDrag();
+//			var mapViewRect:Rectangle = this.mapView.backMaskRec;
+//			var vdlp:Point = MapUtil.getSpriteSize(this.viewDragLimit);
+//			var dragAlterRect:Rectangle = new Rectangle(vdlp.x,vdlp.y,-vdlp.x,-vdlp.y);
 			
-			MapUtil.setSpriteSize(mapView,mapViewRect.bottomRight);
-			sma.addEvents(this.mapView,this.mapBackLayer,this.viewDrag,this.viewDragLimit,mapViewRect);
+//			MapUtil.setSpriteSize(mapView,mapViewRect.bottomRight);
+//			sma.addEvents(this.mapView,this.mapBackLayer,this.viewDrag,this.viewDragLimit,mapViewRect);
 		}
 		
 		/**

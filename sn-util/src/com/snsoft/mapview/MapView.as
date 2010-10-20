@@ -16,6 +16,8 @@ package com.snsoft.mapview{
 	import flash.filters.DropShadowFilter;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
 	
 	[Style(name="backSkin", type="Class")]
 	
@@ -115,12 +117,25 @@ package com.snsoft.mapview{
 					if(mado != null){
 						var av:AreaView = new AreaView();
 						av.mapAreaDO = mado;
+						
+						trace(mado.areaUrl);
 						av.drawNow();
 						areaBtnsLayer.addChild(av);	
-						av.doubleClickEnabled = true;
+						
 						av.addEventListener(MouseEvent.MOUSE_OVER,handlerAreaViewMouseOver);
 						av.addEventListener(MouseEvent.MOUSE_OUT,handlerAreaViewMouseOut);
-						av.addEventListener(MouseEvent.DOUBLE_CLICK,handlerAreaViewDoubleClick);
+						
+						if(Config.areaMouseEventType == Config.AREA_MOUSE_EVENT_TYPE_LINK){
+							
+							var url:String = av.mapAreaDO.areaUrl;
+							if(url != null && url.toLocaleLowerCase() != "null" && url.length > 0){
+								av.addEventListener(MouseEvent.CLICK,handlerAreaViewClick);
+							}
+						}
+						if(Config.areaMouseEventType == Config.AREA_MOUSE_EVENT_TYPE_DOUBLE_CLICK){
+							av.doubleClickEnabled = true;
+							av.addEventListener(MouseEvent.DOUBLE_CLICK,handlerAreaViewDoubleClick);
+						}
 					}
 				}
 				
@@ -183,6 +198,20 @@ package com.snsoft.mapview{
 				return sprite;
 			}
 			return null;
+		}
+		
+		
+		
+		private function handlerAreaViewClick(e:Event):void{
+			var av:AreaView = e.currentTarget as AreaView;
+			var url:String = av.mapAreaDO.areaUrl;
+			try{
+				var req:URLRequest = new URLRequest(url);
+				navigateToURL(req,"_self");
+			}
+			catch(e:Error){
+				trace(e.getStackTrace());
+			}
 		}
 		
 		/**
