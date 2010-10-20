@@ -1,4 +1,4 @@
-<map>
+﻿<map>
   
   <image>C:\Documents and Settings\Administrator\桌面\test\high.png</image>
   
@@ -9,6 +9,10 @@
       <areaId>ws_1_1</areaId>
       
       <areaName>新疆</areaName>
+      
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
       
       <areaNamePoint>
         
@@ -758,6 +762,10 @@
       
       <areaName>西藏</areaName>
       
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
+      
       <areaNamePoint>
         
         <x>0</x>
@@ -1482,6 +1490,10 @@
       
       <areaName>青海</areaName>
       
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
+      
       <areaNamePoint>
         
         <x>0</x>
@@ -2013,6 +2025,10 @@
       <areaId>ws_1_4</areaId>
       
       <areaName>甘肃</areaName>
+      
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
       
       <areaNamePoint>
         
@@ -2722,6 +2738,10 @@
       
       <areaName>宁夏</areaName>
       
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
+      
       <areaNamePoint>
         
         <x>5</x>
@@ -2901,6 +2921,10 @@
       <areaId>ws_1_6</areaId>
       
       <areaName>内蒙古</areaName>
+      
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
       
       <areaNamePoint>
         
@@ -3786,6 +3810,10 @@
       
       <areaName>黑龙江</areaName>
       
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
+      
       <areaNamePoint>
         
         <x>11</x>
@@ -4174,6 +4202,10 @@
       
       <areaName>吉林</areaName>
       
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
+      
       <areaNamePoint>
         
         <x>5</x>
@@ -4482,6 +4514,10 @@
       
       <areaName>辽宁</areaName>
       
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
+      
       <areaNamePoint>
         
         <x>6</x>
@@ -4725,6 +4761,10 @@
       <areaId>ws_1_10</areaId>
       
       <areaName>河北</areaName>
+      
+      <areaCode>heb</areaCode>
+      
+      <areaUrl></areaUrl>
       
       <areaNamePoint>
         
@@ -5306,6 +5346,10 @@
       
       <areaName>山西</areaName>
       
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
+      
       <areaNamePoint>
         
         <x>-3.0500000000000114</x>
@@ -5573,6 +5617,10 @@
       <areaId>ws_1_12</areaId>
       
       <areaName>陕西</areaName>
+      
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
       
       <areaNamePoint>
         
@@ -5993,6 +6041,10 @@
       <areaId>ws_1_14</areaId>
       
       <areaName>四川</areaName>
+      
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
       
       <areaNamePoint>
         
@@ -6517,6 +6569,10 @@
       <areaId>ws_1_15</areaId>
       
       <areaName>云南</areaName>
+      
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
       
       <areaNamePoint>
         
@@ -7066,6 +7122,10 @@
       
       <areaName>河南</areaName>
       
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
+      
       <areaNamePoint>
         
         <x>0</x>
@@ -7358,6 +7418,10 @@
       
       <areaName>江苏</areaName>
       
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
+      
       <areaNamePoint>
         
         <x>4</x>
@@ -7626,6 +7690,10 @@
       
       <areaName>上海</areaName>
       
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
+      
       <areaNamePoint>
         
         <x>16</x>
@@ -7693,6 +7761,10 @@
       <areaId>ws_1_19</areaId>
       
       <areaName>安徽</areaName>
+      
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
       
       <areaNamePoint>
         
@@ -7986,6 +8058,10 @@
       
       <areaName>重庆</areaName>
       
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
+      
       <areaNamePoint>
         
         <x>1</x>
@@ -8237,6 +8313,10 @@
       <areaId>ws_1_21</areaId>
       
       <areaName>湖北</areaName>
+      
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
       
       <areaNamePoint>
         
@@ -8570,6 +8650,10 @@
       
       <areaName>北京</areaName>
       
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
+      
       <areaNamePoint>
         
         <x>4</x>
@@ -8725,6 +8809,10 @@
       <areaId>ws_1_23</areaId>
       
       <areaName>天津</areaName>
+      
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
       
       <areaNamePoint>
         
@@ -8889,6 +8977,10 @@
       <areaId>ws_1_24</areaId>
       
       <areaName>浙江</areaName>
+      
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
       
       <areaNamePoint>
         
@@ -9077,6 +9169,10 @@
       <areaId>ws_1_25</areaId>
       
       <areaName>贵州</areaName>
+      
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
       
       <areaNamePoint>
         
@@ -9401,6 +9497,10 @@
       <areaId>ws_1_26</areaId>
       
       <areaName>湖南</areaName>
+      
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
       
       <areaNamePoint>
         
@@ -9734,6 +9834,10 @@
       
       <areaName>江西</areaName>
       
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
+      
       <areaNamePoint>
         
         <x>0</x>
@@ -10010,6 +10114,10 @@
       
       <areaName>福建</areaName>
       
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
+      
       <areaNamePoint>
         
         <x>0</x>
@@ -10285,6 +10393,10 @@
       <areaId>ws_1_29</areaId>
       
       <areaName>广东</areaName>
+      
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
       
       <areaNamePoint>
         
@@ -10650,6 +10762,10 @@
       
       <areaName>香港</areaName>
       
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
+      
       <areaNamePoint>
         
         <x>24</x>
@@ -10718,6 +10834,10 @@
       
       <areaName>澳门</areaName>
       
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
+      
       <areaNamePoint>
         
         <x>14</x>
@@ -10769,6 +10889,10 @@
       <areaId>ws_1_32</areaId>
       
       <areaName>台湾</areaName>
+      
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
       
       <areaNamePoint>
         
@@ -10957,6 +11081,10 @@
       <areaId>ws_1_33</areaId>
       
       <areaName>广西</areaName>
+      
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
       
       <areaNamePoint>
         
@@ -11322,6 +11450,10 @@
       
       <areaName>海南</areaName>
       
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
+      
       <areaNamePoint>
         
         <x>0</x>
@@ -11469,6 +11601,10 @@
       <areaId>ws_1_13</areaId>
       
       <areaName>山东</areaName>
+      
+      <areaCode>null</areaCode>
+      
+      <areaUrl>null</areaUrl>
       
       <areaNamePoint>
         
@@ -11897,6 +12033,10 @@
       <areaId>ws_1_35</areaId>
       
       <areaName>山东-龙口</areaName>
+      
+      <areaCode>sdlk</areaCode>
+      
+      <areaUrl>http://www.baidu.com</areaUrl>
       
       <areaNamePoint>
         
