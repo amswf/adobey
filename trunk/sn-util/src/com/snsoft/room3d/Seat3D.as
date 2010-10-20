@@ -1,4 +1,5 @@
 ﻿package com.snsoft.room3d{
+	import com.snsoft.util.ShapeUtil;
 	import com.snsoft.util.SkinsUtil;
 	
 	import fl.core.InvalidationType;
@@ -6,6 +7,7 @@
 	
 	import flash.display.BitmapData;
 	import flash.display.MovieClip;
+	import flash.display.Shape;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
@@ -16,10 +18,13 @@
 	import org.papervision3d.cameras.Camera3D;
 	import org.papervision3d.core.proto.MaterialObject3D;
 	import org.papervision3d.events.FileLoadEvent;
+	import org.papervision3d.materials.BitmapColorMaterial;
 	import org.papervision3d.materials.BitmapFileMaterial;
 	import org.papervision3d.materials.BitmapMaterial;
+	import org.papervision3d.materials.MovieMaterial;
 	import org.papervision3d.materials.utils.MaterialsList;
 	import org.papervision3d.objects.primitives.Cube;
+	import org.papervision3d.objects.primitives.Plane;
 	import org.papervision3d.objects.primitives.Sphere;
 	import org.papervision3d.render.BasicRenderEngine;
 	import org.papervision3d.scenes.Scene3D;
@@ -113,24 +118,44 @@
 		private static const MOUSE_MIN_MOVE:Number = 20;
 		
 		/**
-		 * 3D视窗 
+		 * 3D视窗 全影图 
 		 */		
-		private var viewport:Viewport3D;
+		private var viewportPanorama:Viewport3D;
 		
 		/**
-		 * 3D渲染器
+		 * 3D渲染器 全影图
 		 */		
-		private var renderer:BasicRenderEngine;
+		private var rendererPanorama:BasicRenderEngine;
 		
 		/**
-		 * 3D场景 
+		 * 3D场景  全影图
 		 */		
-		private var scene:Scene3D;
+		private var scenePanorama:Scene3D;
 		
 		/**
-		 * 摄像机 
+		 * 摄像机  全影图
 		 */		
-		private var camera:Camera3D;
+		private var cameraPanorama:Camera3D;
+		
+		/**
+		 * 3D视窗 全影图上装饰
+		 */		
+		private var viewportMural:Viewport3D;
+		
+		/**
+		 * 3D渲染器 全影图上装饰
+		 */		
+		private var rendererMural:BasicRenderEngine;
+		
+		/**
+		 * 3D场景  全影图上装饰
+		 */		
+		private var sceneMural:Scene3D;
+		
+		/**
+		 * 摄像机  全影图上装饰
+		 */		
+		private var cameraMural:Camera3D;
 		
 		/**
 		 * 正方体全景显示对象 
@@ -208,7 +233,8 @@
 			seatPointSkin:"SeatPoint_Skin",
 			seat3DFrameSkin:"Seat3D_frameSkin",
 			seat3DMouseDownMoveSkin:"Seat3DMouse_downMoveSkin",
-			seat3DMouseDownSkin:"Seat3DMouse_downSkin"
+			seat3DMouseDownSkin:"Seat3DMouse_downSkin",
+			seat3DFingerpostDefaultSkin:"Seat3DFingerpost_defaultSkin"
 		};
 		
 		/**
@@ -269,10 +295,17 @@
 		private function init3D():void
 		{
 			// Create container sprite and center it in the stage
-			viewport = new Viewport3D(seat3DWidth,seat3DHeight);
-			viewport.x = 0;
-			viewport.y = 0;
-			addChild( viewport );
+			viewportPanorama = new Viewport3D(seat3DWidth,seat3DHeight);
+			viewportPanorama.x = 0;
+			viewportPanorama.y = 0;
+			addChild( viewportPanorama );
+			
+			viewportMural = new Viewport3D(seat3DWidth,seat3DHeight);
+			viewportMural.x = 0;
+			viewportMural.y = 0;
+			addChild( viewportMural );
+			
+			
 			
 			
 			frame = getDisplayObjectInstance(getStyleValue("seat3DFrameSkin")) as MovieClip;
@@ -295,16 +328,25 @@
 			menu.addEventListener("def_UP",handlerMenuMouseUp);
 			menu.addEventListener("zoomIn_UP",handlerMenuMouseUp);
 			menu.addEventListener("zoomOut_UP",handlerMenuMouseUp);
-			
 			menu.addEventListener("auto_DOWN",handlerMenuMouseAutoClick);
 			
-			renderer = new BasicRenderEngine();
+			// Create readerer
+			rendererPanorama = new BasicRenderEngine();
 			
 			// Create scene
-			scene = new Scene3D();
+			scenePanorama = new Scene3D();
 			
 			// Create camera
-			camera = new Camera3D();
+			cameraPanorama = new Camera3D();
+			
+			// Create readerer
+			rendererMural = new BasicRenderEngine();
+			
+			// Create scene
+			sceneMural = new Scene3D();
+			
+			// Create camera
+			cameraMural = new Camera3D();
 			
 			this.addEventListener(Event.REMOVED_FROM_STAGE,handlerRemoveThis);
 		}
@@ -337,12 +379,20 @@
 			this.removeEventListener(MouseEvent.MOUSE_DOWN,handlerMouseDown);
 			this.removeEventListener(MouseEvent.MOUSE_UP,handlerMouseUp);
 			this.removeEventListener(Event.ENTER_FRAME,handlerEnterFrame);
-			if(renderer != null){
-				renderer.destroy();
+			if(rendererPanorama != null){
+				rendererPanorama.destroy();
 			}
-			if(viewport != null){
-				viewport.destroy();
+			if(viewportPanorama != null){
+				viewportPanorama.destroy();
 			}
+			
+			if(rendererMural != null){
+				rendererMural.destroy();
+			}
+			if(viewportMural != null){
+				viewportMural.destroy();
+			}
+			
 			if(cube != null){
 				cube.destroy();
 			}
@@ -399,9 +449,14 @@
 			else if(e.type == "def_DOWN"){
 				btnStepP.x = 0;
 				btnStepP.y = 0;
-				camera.rotationX = 0;
-				camera.rotationY = 0;
-				camera.zoom = 40;
+				cameraPanorama.rotationX = 0;
+				cameraPanorama.rotationY = 0;
+				cameraPanorama.zoom = 40;
+				
+				cameraMural.rotationX = 0;
+				cameraMural.rotationY = 0;
+				cameraMural.zoom = 40;
+				
 				zoomp = 0;
 				currentMoveDirection = "";
 			}
@@ -453,7 +508,21 @@
 			cube = new Cube( materials, size, size, size, quality, quality, quality, insideFaces, excludeFaces );
 			cube.z = -1000;
 			
-			scene.addChild( cube, "Cube" );
+			scenePanorama.addChild( cube, "Cube" );
+			
+			var fp:MovieClip = getDisplayObjectInstance(getStyleValue("seat3DFingerpostDefaultSkin")) as MovieClip;
+			
+			var material:MovieMaterial = new MovieMaterial(fp,true);
+			var plane:Plane = new Plane( material, 30, 60, 8, 8 );
+			plane.rotationX = 90;
+			plane.z = -500;
+			plane.y = -200;
+			sceneMural.addChild(plane);
+			
+			 
+			//sceneMural.addChild( cube, "Cube" );???????????????????????????????????????????????
+			
+			
 			
 			//Sphere
 			/*
@@ -594,7 +663,7 @@
 					
 					var downXY:Number = 15;
 					
-					var maxX:Number = ( this.viewport.viewportWidth) * this.viewport.scaleX  - downXY
+					var maxX:Number = ( this.viewportPanorama.viewportWidth) * this.viewportPanorama.scaleX  - downXY
 					if(mx < downXY){
 						mx = downXY;
 					}
@@ -602,7 +671,7 @@
 						mx = maxX;
 					}
 					
-					var maxY:Number = (this.viewport.viewportHeight ) * this.viewport.scaleY  - downXY;
+					var maxY:Number = (this.viewportPanorama.viewportHeight ) * this.viewportPanorama.scaleY  - downXY;
 					if(my < downXY){
 						my = downXY;
 					}
@@ -646,25 +715,25 @@
 				
 				if(autoMove){
 					if(currentMoveDirection == "left_DOWN"){
-						camera.rotationY -= AUTO_ROTATION_STEP;  
+						cameraPanorama.rotationY -= AUTO_ROTATION_STEP;  
 					}
 					else if(currentMoveDirection == "right_DOWN"){
-						camera.rotationY += AUTO_ROTATION_STEP;
+						cameraPanorama.rotationY += AUTO_ROTATION_STEP;
 					}
 					else if(currentMoveDirection == "up_DOWN"){
-						camera.rotationX -= AUTO_ROTATION_STEP; 
+						cameraPanorama.rotationX -= AUTO_ROTATION_STEP; 
 					}
 					else if(currentMoveDirection == "down_DOWN"){
-						camera.rotationX += AUTO_ROTATION_STEP; 
+						cameraPanorama.rotationX += AUTO_ROTATION_STEP; 
 					}
-					if(camera.rotationX > 90){
-						camera.rotationX = 90;
+					if(cameraPanorama.rotationX > 90){
+						cameraPanorama.rotationX = 90;
 					}
-					else if(camera.rotationX < -90){
-						camera.rotationX = -90;
+					else if(cameraPanorama.rotationX < -90){
+						cameraPanorama.rotationX = -90;
 					}
 					this.autoMoveCount = 0;
-					this.cameraRotationY = camera.rotationY;
+					this.cameraRotationY = cameraPanorama.rotationY;
 					this.dispatchEvent(new Event(CAMERA_ROTATION_EVENT));
 				}
 				else if(isMouseDown || isBtnDown){
@@ -675,7 +744,7 @@
 					
 					var rpy:Number = 0
 					if(py >= MOUSE_MIN_MOVE || py <= - MOUSE_MIN_MOVE){
-						rpy = py /camera.zoom;
+						rpy = py /cameraPanorama.zoom;
 						
 						if(py >= MOUSE_MIN_MOVE){
 							roteY = 1;
@@ -690,18 +759,18 @@
 					else if(rpy < -3){
 						rpy = -3;
 					}
-					var ry:Number = camera.rotationX - rpy;
+					var ry:Number = cameraPanorama.rotationX - rpy;
 					if(ry > 90){
 						ry = 90;
 					}
 					else if(ry < -90){
 						ry = -90;
 					}
-					camera.rotationX = ry;
+					cameraPanorama.rotationX = ry;
 					
 					var rpx:Number = 0;
 					if(px >= MOUSE_MIN_MOVE || px <= - MOUSE_MIN_MOVE){
-						rpx = px /camera.zoom;
+						rpx = px /cameraPanorama.zoom;
 						
 						if(px >= MOUSE_MIN_MOVE){
 							roteX = 1;
@@ -716,14 +785,14 @@
 					else if(rpx < -3){
 						rpx = -3;
 					}
-					var rx:Number = camera.rotationY - rpx;
+					var rx:Number = cameraPanorama.rotationY - rpx;
 					if(rx > 360){
 						rx -= 360;
 					}
 					else if(rx < -360){
 						rx += 360;
 					}
-					camera.rotationY = rx;
+					cameraPanorama.rotationY = rx;
 					this.cameraRotationY = rx;
 					this.dispatchEvent(new Event(CAMERA_ROTATION_EVENT));
 					
@@ -783,7 +852,10 @@
 						zoom(zoomp);
 					}
 				}
-				renderer.renderScene(scene,camera,viewport);
+				
+				cameraMural.rotationX = 0;
+				cameraMural.rotationY = cameraPanorama.rotationY;				
+				rendererAll();				
 				sign = true;
 			}
 		}
@@ -796,8 +868,9 @@
 		 */		
 		public function setCameraRotation(rotationY:Number):void{
 			autoMove = false;
-			this.camera.rotationY = rotationY;
-			renderer.renderScene(scene,camera,viewport);
+			this.cameraPanorama.rotationY = rotationY;
+			this.cameraMural.rotationY = rotationY;
+			rendererAll();
 		}
 		
 		/**
@@ -831,14 +904,14 @@
 		 * 
 		 */		
 		private function zoom(i:Number):void{
-			camera.zoom += i * 5;
-			if(camera.zoom  < 20){
-				camera.zoom  =20;
+			cameraPanorama.zoom += i * 5;
+			if(cameraPanorama.zoom  < 20){
+				cameraPanorama.zoom  =20;
 			}
-			if(camera.zoom  > 500){
-				camera.zoom  =500;
+			if(cameraPanorama.zoom  > 500){
+				cameraPanorama.zoom  =500;
 			}
-			renderer.renderScene(scene,camera,viewport);
+			rendererAll();
 		}
 		
 		/**
@@ -850,18 +923,23 @@
 		 * 
 		 */		
 		public function setViewport3DSize(scaleX:Number,scaleY:Number,width:Number,height:Number):void{
-			if(viewport != null && frame != null){
-				this.viewport.viewportWidth = width;
-				this.viewport.viewportHeight = height;
+			if(viewportPanorama != null && frame != null){
+				this.viewportPanorama.viewportWidth = width;
+				this.viewportPanorama.viewportHeight = height;
 				
 				frame.width = width * scaleX;
 				frame.height = height * scaleY;
 				
-				this.viewport.scaleX = scaleX;
-				this.viewport.scaleY = scaleY;
+				this.viewportPanorama.scaleX = scaleX;
+				this.viewportPanorama.scaleY = scaleY;
 				
-				renderer.renderScene(scene,camera,viewport);
+				rendererAll();
 			}
+		}
+		
+		public function rendererAll():void{
+			rendererPanorama.renderScene(scenePanorama,cameraPanorama,viewportPanorama);
+			rendererMural.renderScene(sceneMural,cameraMural,viewportMural);
 		}
 		
 		public function get cameraRotationY():Number

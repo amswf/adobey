@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application creationComplete="init();" xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
+	<mx:Script>
+		<![CDATA[
+			import com.snsoft.room3d.Main;
+			 
+			private function init():void{
+				var main:Main;
+			}
+		]]>
+	</mx:Script>
+</mx:Application>
