@@ -117,11 +117,8 @@ package com.snsoft.mapview{
 					if(mado != null){
 						var av:AreaView = new AreaView();
 						av.mapAreaDO = mado;
-						
-						trace(mado.areaUrl);
 						av.drawNow();
 						areaBtnsLayer.addChild(av);	
-						
 						av.addEventListener(MouseEvent.MOUSE_OVER,handlerAreaViewMouseOver);
 						av.addEventListener(MouseEvent.MOUSE_OUT,handlerAreaViewMouseOut);
 						

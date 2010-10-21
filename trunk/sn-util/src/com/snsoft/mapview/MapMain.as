@@ -8,6 +8,7 @@
 	import com.snsoft.xmldom.Node;
 	import com.snsoft.xmldom.NodeList;
 	import com.snsoft.xmldom.XMLDom;
+	import com.snsoft.xmldom.XMLFastConfig;
 	
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
@@ -156,12 +157,8 @@
 			MapUtil.setSpritePlace(viewDrag,viewPlace);
 			this.addChild(this.viewDrag);
 			
-			configXmlUrl = "viewcfg.xml";
-			var request:URLRequest = new URLRequest(configXmlUrl);	
-			var loader:URLLoader = new URLLoader();
-			loader.load(request);
-			loader.addEventListener(Event.COMPLETE,handlerConfigLoadComplete);
-			loader.addEventListener(IOErrorEvent.IO_ERROR,handlerConfigLoadIOError);
+			configXmlUrl = "viewcfg.xml";			
+			XMLFastConfig.instance(configXmlUrl,handlerConfigLoadComplete);
 		}
 		
 		private function handlerConfigLoadIOError(e:Event):void{
@@ -175,8 +172,7 @@
 		 */		
 		private function handlerConfigLoadComplete(e:Event):void{
 			
-			parseConfig(e);
-			trace(Config.areaMouseEventType);
+			parseConfig();
 			this.drawMapView(this.mapXmlName);
 		}
 		
@@ -185,20 +181,9 @@
 		 * @param e
 		 * 
 		 */		
-		private function parseConfig(e:Event):void{
-			var loader:URLLoader = e.currentTarget as URLLoader;
-			var xml:XML = new XML(loader.data);
-			var xmldom:XMLDom = new XMLDom(xml);
-			var configNode:Node = xmldom.parse();
-			var propertyNodeList:NodeList = configNode.getNodeList("property");
-			for(var i:int = 0;i < propertyNodeList.length();i ++){
-				var propertyNode:Node = propertyNodeList.getNode(i);
-				var name:String = propertyNode.getAttributeByName("name");
-				var value:String = propertyNode.getAttributeByName("value");
-				if(name == "clickType"){
-					Config.setAreaMouseEventType(value);
-				}
-			}
+		private function parseConfig():void{
+			var clickType:String = XMLFastConfig.getConfig("clickType");
+			Config.setAreaMouseEventType(clickType);
 		}
 		
 		/**
