@@ -205,6 +205,7 @@ package com.snsoft.mapview{
 			try{
 				var req:URLRequest = new URLRequest(url);
 				navigateToURL(req,"_self");
+				trace("url");
 			}
 			catch(e:Error){
 				trace(e.getStackTrace());

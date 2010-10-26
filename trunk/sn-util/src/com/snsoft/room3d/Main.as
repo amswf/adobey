@@ -22,6 +22,7 @@
 	import flash.external.ExternalInterface;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.geom.Vector3D;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.system.System;
@@ -290,6 +291,13 @@
 		
 		private var currentSeatDO:SeatDO;
 		
+		
+		private var creatSeat3DSign:Boolean = true;
+		
+		/**
+		 * 构造方法 
+		 * 
+		 */		
 		public function Main(){
 			super();
 			stage.scaleMode = StageScaleMode.NO_SCALE;
@@ -458,6 +466,58 @@
 					seatDO.imageUrlHV.push(bottomImgUrl,SeatDO.BOTTOM);
 					seatDO.place = p;
 					
+					var muralsList:NodeList =placeNode.getNodeList("murals");
+					if(muralsList != null && muralsList.length() > 0){
+						var muralsNode:Node = muralsList.getNode(0);
+						var muralList:NodeList = muralsNode.getNodeList("mural");
+						for(var k:int = 0;k < muralList.length();k ++){
+							var muralNode:Node = muralList.getNode(k);
+							var muralX:Number = Number(muralNode.getAttributeByName("x"));
+							var muralY:Number = Number(muralNode.getAttributeByName("y"));
+							var muralType:String = String(muralNode.getAttributeByName("type"));
+							var muralW:Number = 0;
+							if(muralType == SeatDO.RIGHT){
+								muralW = 1;
+							}
+							else if(muralType == SeatDO.BACK){
+								muralW = 2;
+							}
+							else if(muralType == SeatDO.LEFT){
+								muralW = 3;
+							}
+							else{
+								muralW = 0;
+							}
+							seatDO.murals.push(new Vector3D(muralX,muralY,0,muralW));
+						}
+					}
+					
+					var placeLinksList:NodeList =placeNode.getNodeList("placeLinks");
+					if(placeLinksList != null && placeLinksList.length() > 0){
+						var placeLinksNode:Node = placeLinksList.getNode(0);
+						var placeLinkList:NodeList = placeLinksNode.getNodeList("placeLink");
+						for(var k2:int = 0;k2 < placeLinkList.length();k2 ++){
+							var placeLinkNode:Node = placeLinkList.getNode(k2);
+							var placeLinkX:Number = Number(placeLinkNode.getAttributeByName("x"));
+							var placeLinkY:Number = Number(placeLinkNode.getAttributeByName("y"));
+							var placeLinkType:String = String(placeLinkNode.getAttributeByName("type"));
+							var placeLinkW:Number = 0;
+							if(placeLinkType == SeatDO.RIGHT){
+								placeLinkW = 1;
+							}
+							else if(placeLinkType == SeatDO.BACK){
+								placeLinkW = 2;
+							}
+							else if(placeLinkType == SeatDO.LEFT){
+								placeLinkW = 3;
+							}
+							else{
+								placeLinkW = 0;
+							}
+							seatDO.placeLinks.push(new Vector3D(placeLinkX,placeLinkY,0,placeLinkW));
+						}
+					}
+					
 					var msgList:NodeList =placeNode.getNodeList("msg");
 					if(msgList != null && msgList.length() > 0){
 						var msgNode:Node = msgList.getNode(0);
@@ -604,32 +664,37 @@
 		 * 
 		 */		
 		private function creatSeat3D(roomMap:RoomMap):void{
-			trace("creatSeat3D");
-			if(currentSeat3D != null){
-				currentSeat3D.removeEventListener(Seat3D.CAMERA_ROTATION_EVENT,handlerCameraRotation);
-				currentSeat3D.removeEventListener(MouseEvent.DOUBLE_CLICK,handlerCurrentSeat3DMouseDoubleClick);
-			}
-			SpriteUtil.deleteAllChild(this.seat3dLayer);
-			System.gc();
-			currentSeatDO = roomMap.currentSeatDO;
-			var s3d:Seat3D = new Seat3D(this.menu,currentSeatDO,SEAT3D_DEFAULT_RECT.width,SEAT3D_DEFAULT_RECT.height);
-			s3d.addEventListener(Seat3D.CAMERA_ROTATION_EVENT,handlerCameraRotation);
-			s3d.addEventListener(MouseEvent.DOUBLE_CLICK,handlerCurrentSeat3DMouseDoubleClick);
-			s3d.doubleClickEnabled = true;
-			s3d.addEventListener(Seat3D.SEAT3D_CMP_EVENT,handlerSeat3DCmp);
-			s3d.x = SEAT3D_DEFAULT_RECT.x;
-			s3d.y = SEAT3D_DEFAULT_RECT.y;
-			currentSeat3D = s3d;
-			this.seat3dLayer.addChild(s3d);
-			s3d.drawNow();
-			this.roomMap.setVisualAngleRotation(0);
-			
-			introMsg.refreshText(currentSeatDO.textStr);
-			windowMsg.visible = false;
-			introMsg.removeEventListener(IntroMsg.BUTTON_CLICK,handlerIntroMsgBtnClick);
-			if(currentSeatDO.textStr != null && currentSeatDO.textStr.length > 0 && currentSeatDO.msg != null && currentSeatDO.msg.length > 0){
-				trace("addEventListener");
-				introMsg.addEventListener(IntroMsg.BUTTON_CLICK,handlerIntroMsgBtnClick);	
+			if(creatSeat3DSign){
+				creatSeat3DSign = false;
+				trace("creatSeat3D");
+				if(currentSeat3D != null){
+					currentSeat3D.removeEventListener(Seat3D.CAMERA_ROTATION_EVENT,handlerCameraRotation);
+					currentSeat3D.removeEventListener(MouseEvent.DOUBLE_CLICK,handlerCurrentSeat3DMouseDoubleClick);
+				}
+				SpriteUtil.deleteAllChild(this.seat3dLayer);
+				System.gc();
+				currentSeatDO = roomMap.currentSeatDO;
+				var s3d:Seat3D = new Seat3D(this.menu,currentSeatDO,SEAT3D_DEFAULT_RECT.width,SEAT3D_DEFAULT_RECT.height);
+				s3d.addEventListener(Seat3D.CAMERA_ROTATION_EVENT,handlerCameraRotation);
+				s3d.addEventListener(MouseEvent.DOUBLE_CLICK,handlerCurrentSeat3DMouseDoubleClick);
+				s3d.doubleClickEnabled = true;
+				s3d.addEventListener(Seat3D.SEAT3D_CMP_EVENT,handlerSeat3DCmp);
+				s3d.x = SEAT3D_DEFAULT_RECT.x;
+				s3d.y = SEAT3D_DEFAULT_RECT.y;
+				currentSeat3D = s3d;
+				this.seat3dLayer.addChild(s3d);
+				
+				this.roomMap.setVisualAngleRotation(0);
+				
+				introMsg.refreshText(currentSeatDO.textStr);
+				windowMsg.visible = false;
+				introMsg.removeEventListener(IntroMsg.BUTTON_CLICK,handlerIntroMsgBtnClick);
+				if(currentSeatDO.textStr != null && currentSeatDO.textStr.length > 0 && currentSeatDO.msg != null && currentSeatDO.msg.length > 0){
+					trace("addEventListener");
+					introMsg.addEventListener(IntroMsg.BUTTON_CLICK,handlerIntroMsgBtnClick);	
+				}
+				creatSeat3DSign = true;
+				trace("this.seat3dLayer.numChildren",this.seat3dLayer.numChildren);
 			}
 		}
 		
