@@ -35,12 +35,12 @@ package com.snsoft.room3d{
 		/**
 		 * 壁画，点击位置 
 		 */
-		private var _murals:Vector.<Vector3D> = new Vector.<Vector3D>();
+		private var _murals:Vector.<MuralDO> = new Vector.<MuralDO>();
 		
 		/**
 		 * 去其它观察点，点击位置
 		 */
-		private var _placeLinks:Vector.<Vector3D> = new Vector.<Vector3D>();
+		private var _seatLinks:Vector.<SeatLinkDO> = new Vector.<SeatLinkDO>();
 		
 		/**
 		 * 正方体前面 
@@ -205,7 +205,7 @@ package com.snsoft.room3d{
 		/**
 		 * 壁画，点击位置 
 		 */
-		public function get murals():Vector.<Vector3D>
+		public function get murals():Vector.<MuralDO>
 		{
 			return _murals;
 		}
@@ -213,7 +213,7 @@ package com.snsoft.room3d{
 		/**
 		 * @private
 		 */
-		public function set murals(value:Vector.<Vector3D>):void
+		public function set murals(value:Vector.<MuralDO>):void
 		{
 			_murals = value;
 		}
@@ -221,17 +221,17 @@ package com.snsoft.room3d{
 		/**
 		 * 去其它观察点，点击位置
 		 */
-		public function get placeLinks():Vector.<Vector3D>
+		public function get seatLinks():Vector.<SeatLinkDO>
 		{
-			return _placeLinks;
+			return _seatLinks;
 		}
 
 		/**
 		 * @private
 		 */
-		public function set placeLinks(value:Vector.<Vector3D>):void
+		public function set seatLinks(value:Vector.<SeatLinkDO>):void
 		{
-			_placeLinks = value;
+			_seatLinks = value;
 		}
 
 

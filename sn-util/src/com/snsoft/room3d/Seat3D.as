@@ -1,4 +1,6 @@
 ﻿package com.snsoft.room3d{
+	import ascb.util.StringUtilities;
+	
 	import com.snsoft.util.ShapeUtil;
 	import com.snsoft.util.SkinsUtil;
 	
@@ -103,6 +105,10 @@
 		 * 3D展现初始化完成事件类型
 		 */		
 		public static const SEAT3D_CMP_EVENT:String = "SEAT3D_CMP_EVENT";
+		
+		public static const MURAL_CLICK:String = "MURAL_CLICK";
+		
+		public static const SEAT_LINK_CLICK:String = "SEAT_LINK_CLICK";
 		
 		/**
 		 * 等待一段时间后，摄像头步进角度值 
@@ -218,18 +224,40 @@
 		 * 显示边框 
 		 */		
 		private var frame:MovieClip;
+
 		
+		private var btn2DLayer:Sprite;		
 		
-		private var plane:Plane;
-		
-		private var mural2DLayer:Sprite;
-		
-		private var muralTest:MovieClip;
-		
+		private var btnMask:MovieClip;
 		/**
 		 * 正方体 1/2 边长 
 		 */		
 		private static const CUBE_SIDE_HARF_LEN:Number = 500;
+		
+		/**
+		 * 3D场景中壁画按钮位置 对象
+		 */		
+		private var btn3DMuralFingerV:Vector.<Plane> = new Vector.<Plane>();
+		
+		/**
+		 * 2D场景中壁画按钮位置 对象
+		 */	
+		private var btn2DMuralBtnV:Vector.<MovieClip> = new Vector.<MovieClip>();
+		
+		/**
+		 * 3D场景中位置切换按钮位置 对象
+		 */		
+		private var btn3DSeatLinkFingerV:Vector.<Plane> = new Vector.<Plane>();
+		
+		/**
+		 * 2D场景中位置切换按钮位置 对象
+		 */	
+		private var btn2DSeatLinkBtnV:Vector.<MovieClip> = new Vector.<MovieClip>();
+		
+		
+		private var currentMuralDO:MuralDO;
+		
+		private var currentSeatLinkDO:SeatLinkDO;
 		
 		public function Seat3D(menu:Menu,seatDO:SeatDO,seat3DWidth:Number,seat3DHeight:Number){
 			this.menu = menu;
@@ -250,7 +278,9 @@
 			seat3DMouseDownSkin:"Seat3DMouse_downSkin",
 			seat3DFingerpostDefaultSkin:"Seat3DFingerpost_defaultSkin",
 			seat3DMuralBtnDefaultSkin:"Seat3DMuralBtn_defaultSkin",
-			seat3DPlaceLinkBtnDefaultSkin:"Seat3DPlaceLinkBtn_defaultSkin"
+			seat3DPlaceLinkBtnDefaultSkin:"Seat3DPlaceLinkBtn_defaultSkin",
+			seat3DBtnMaskDefaultSkin:"Seat3DBtnMask_defaultSkin"
+			
 		};
 		
 		/**
@@ -366,12 +396,70 @@
 			
 			this.addEventListener(Event.REMOVED_FROM_STAGE,handlerRemoveThis);
 			
-			mural2DLayer = new Sprite();
-			this.addChild(mural2DLayer);
+			btn2DLayer = new Sprite();
+			this.addChild(btn2DLayer);
 			
-			muralTest = getDisplayObjectInstance(getStyleValue("seat3DPlaceLinkBtnDefaultSkin")) as MovieClip;
-			mural2DLayer.addChild(muralTest);
+			btnMask = getDisplayObjectInstance(getStyleValue("seat3DBtnMaskDefaultSkin")) as MovieClip;
+			btnMask.width = this.seat3DWidth;
+			btnMask.height = this.seat3DHeight;
+			this.addChild(btnMask);
+			btn2DLayer.mask = btnMask;
 			
+			var murals:Vector.<MuralDO> = this.seatDO.murals;
+			for(var i:int =0;i<murals.length;i++){
+				var mdo:MuralDO = murals[i];
+				var muralBtn:MovieClip = getDisplayObjectInstance(getStyleValue("seat3DMuralBtnDefaultSkin")) as MovieClip;
+				muralBtn.visible = false;
+				btn2DLayer.addChild(muralBtn);
+				btn2DMuralBtnV.push(muralBtn);
+				currentMuralDO = mdo;
+				muralBtn.muralsIndex = i;
+				muralBtn.addEventListener(MouseEvent.CLICK,handlerMuralBtnClick);
+				
+			}
+			
+			var seatLinks:Vector.<SeatLinkDO> = this.seatDO.seatLinks;
+			for(var ii:int =0;ii<seatLinks.length;ii++){
+				var sdo:SeatLinkDO = seatLinks[ii];
+				var seatLinkBtn:MovieClip = getDisplayObjectInstance(getStyleValue("seat3DMuralBtnDefaultSkin")) as MovieClip;
+				seatLinkBtn.visible = false;
+				btn2DLayer.addChild(seatLinkBtn);
+				btn2DSeatLinkBtnV.push(seatLinkBtn);
+				currentSeatLinkDO = sdo;
+				seatLinkBtn.seatLinksIndex = ii;
+				seatLinkBtn.addEventListener(MouseEvent.CLICK,handlerSeatLinkBtnClick);
+				
+			}
+			
+			
+		}
+		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
+		private function handlerMuralBtnClick(e:Event):void{
+			var muralBtn:MovieClip = e.currentTarget as MovieClip;
+			var i:int = muralBtn.muralsIndex;
+			var murals:Vector.<MuralDO> = this.seatDO.murals;
+			var mdo:MuralDO = murals[i];
+			currentMuralDO = mdo;
+			this.dispatchEvent(new Event(MURAL_CLICK));
+		}
+		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
+		private function handlerSeatLinkBtnClick(e:Event):void{
+			var seatLinkBtn:MovieClip = e.currentTarget as MovieClip;
+			var i:int = seatLinkBtn.seatLinksIndex;
+			var seatLinks:Vector.<SeatLinkDO> = this.seatDO.seatLinks;
+			var sdo:SeatLinkDO = seatLinks[i];
+			currentSeatLinkDO = sdo;
+			this.dispatchEvent(new Event(SEAT_LINK_CLICK));
 		}
 		
 		/**
@@ -533,23 +621,8 @@
 			
 			scenePanorama.addChild( cube, "Cube" );
 			
-			
-			
-			
-			 
-			
-			//sceneMural.addChild(creatPlane(new Vector3D(500,-500,-500 - 1000,0),new Vector3D(0,90,0,0)));
-			//sceneMural.addChild(creatPlane(new Vector3D(500,-500,500 - 1000,0),new Vector3D(0,90,0,0)));
-			//sceneMural.addChild(creatPlane(new Vector3D(500,500,-500 - 1000,0),new Vector3D(0,90,0,0)));
-			//sceneMural.addChild(creatPlane(new Vector3D(500,500,500 - 1000,0),new Vector3D(0,90,0,0)));
-			
-			//			sceneMural.addChild(creatPlane(new Vector3D(-500,-500,-500,0)));
-			//			sceneMural.addChild(creatPlane(new Vector3D(500,-500,-500,0)));
-			//			sceneMural.addChild(creatPlane(new Vector3D(-500,500,-500,0)));
-			//			sceneMural.addChild(creatPlane(new Vector3D(500,500,-500,0)));
-			
-			//Sphere
 			/*
+			Sphere
 			var material:MaterialObject3D = creatBitMap(seatDO,SeatDO.BALL); 
 			material.doubleSided = true;
 			material.smooth = true;
@@ -558,13 +631,24 @@
 			scene.addChild(ball);
 			*/
 			
-			plane = creatPlane(new Vector3D(0,0,0,0));
+//			plane = creatPlane(new Vector3D(0,0,0,0));
+//			sceneMural.addChild(plane);
 			
-			sceneMural.addChild(plane);
+			var murals:Vector.<MuralDO> = this.seatDO.murals;
+			for(var i:int =0;i<murals.length;i++){
+				var mdo:MuralDO = murals[i];
+				var muralPlane:Plane = creatPlane(new Vector3D(mdo.x,mdo.y,0,mdo.type));
+				btn3DMuralFingerV.push(muralPlane);
+				sceneMural.addChild(muralPlane);
+			}
 			
-			sceneMural.addChild(creatPlane(new Vector3D(0,0,0,3)));
-			sceneMural.addChild(creatPlane(new Vector3D(0,1000,0,3)));
-			sceneMural.addChild(creatPlane(new Vector3D(1000,1000,0,3)));
+			var seatLinks:Vector.<SeatLinkDO> = this.seatDO.seatLinks;
+			for(var ii:int =0;ii<seatLinks.length;ii++){
+				var sdo:SeatLinkDO = seatLinks[ii];
+				var seatLinkPlane:Plane = creatPlane(new Vector3D(sdo.x,sdo.y,0,sdo.type));
+				btn3DSeatLinkFingerV.push(seatLinkPlane);
+				sceneMural.addChild(seatLinkPlane);
+			}
 			
 			this.addEventListener(MouseEvent.MOUSE_WHEEL, handlerMouseWheel);
 			this.addEventListener(MouseEvent.MOUSE_DOWN,handlerMouseDown);
@@ -965,15 +1049,91 @@
 				cameraMural.rotationY = cameraPanorama.rotationY;				
 				rendererAll();		
 				
-				plane.calculateScreenCoords(cameraPanorama);
+				 
+				refresh2DBtns();
 				
-				var real2DX:Number = plane.screen.x+viewportPanorama.width/2;
-				var real2DY:Number = plane.screen.y+viewportPanorama.height/2;
-				
-				muralTest.x = real2DX;
-				muralTest.y = real2DY;
 				sign = true;
 			}
+		}
+		
+		public function refresh2DBtns():void{
+			for(var i:int =0;i<btn2DMuralBtnV.length;i++){
+				var muralPlane:Plane = btn3DMuralFingerV[i];
+				var real2DX:Number = muralPlane.screen.x+viewportPanorama.width/2;
+				var real2DY:Number = muralPlane.screen.y+viewportPanorama.height/2;
+				
+				var muralBtn:MovieClip = btn2DMuralBtnV[i];
+				var mtrect:Rectangle = muralBtn.getRect(btn2DLayer);
+				
+				if((this.cameraMural.rotationY % 360) < 90 && 
+					(this.cameraMural.rotationY % 360) > -90 && 
+					isIntervalValue(real2DX,- mtrect.width,this.seat3DWidth) && 
+					isIntervalValue(real2DY,- mtrect.height,this.seat3DHeight)){
+					muralBtn.visible = true;
+					
+					muralBtn.x = getIntervalValue(real2DX,- mtrect.width,this.seat3DWidth);
+					muralBtn.y = getIntervalValue(real2DY,- mtrect.height,this.seat3DHeight);
+				}
+				else {
+					muralBtn.visible  = false;
+				}	
+			}
+			
+			for(var ii:int =0;ii<btn2DSeatLinkBtnV.length;ii++){
+				var seatLinkPlane:Plane = btn3DSeatLinkFingerV[ii];
+				var seatLinkReal2DX:Number = seatLinkPlane.screen.x + viewportPanorama.width/2;
+				var seatLinkReal2DY:Number = seatLinkPlane.screen.y + viewportPanorama.height/2;
+				
+				var seatLinkBtn:MovieClip = btn2DSeatLinkBtnV[ii];
+				var slbrect:Rectangle = seatLinkBtn.getRect(btn2DLayer);
+				
+				if((this.cameraMural.rotationY % 360) < 90 && 
+					(this.cameraMural.rotationY % 360) > -90 && 
+					isIntervalValue(seatLinkReal2DX,- slbrect.width,this.seat3DWidth) && 
+					isIntervalValue(seatLinkReal2DY,- slbrect.height,this.seat3DHeight)){
+					seatLinkBtn.visible = true;
+					
+					seatLinkBtn.x = getIntervalValue(seatLinkReal2DX,- slbrect.width,this.seat3DWidth);
+					seatLinkBtn.y = getIntervalValue(seatLinkReal2DY,- slbrect.height,this.seat3DHeight);
+				}
+				else {
+					seatLinkBtn.visible  = false;
+				}	
+			}
+		}
+		
+		/**
+		 * 
+		 * @param value
+		 * @param min
+		 * @param max
+		 * @return 
+		 * 
+		 */		
+		public function isIntervalValue(value:Number,min:Number,max:Number):Boolean{
+			if(value < min ||  value >max){
+				return false;
+			}
+			return true;
+		}
+		
+		/**
+		 * 
+		 * @param value
+		 * @param min
+		 * @param max
+		 * @return 
+		 * 
+		 */		
+		public function getIntervalValue(value:Number,min:Number,max:Number):Number{
+			var v:Number = value;
+			if(v < min){
+				v = min;
+			}
+			else if(v >max){
+				v = max;
+			}
+			return v;
 		}
 		
 		
