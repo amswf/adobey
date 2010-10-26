@@ -8,11 +8,13 @@
 	import flash.display.BitmapData;
 	import flash.display.MovieClip;
 	import flash.display.Shape;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.geom.Vector3D;
 	import flash.ui.Mouse;
 	
 	import org.papervision3d.cameras.Camera3D;
@@ -217,6 +219,18 @@
 		 */		
 		private var frame:MovieClip;
 		
+		
+		private var plane:Plane;
+		
+		private var mural2DLayer:Sprite;
+		
+		private var muralTest:MovieClip;
+		
+		/**
+		 * 正方体 1/2 边长 
+		 */		
+		private static const CUBE_SIDE_HARF_LEN:Number = 500;
+		
 		public function Seat3D(menu:Menu,seatDO:SeatDO,seat3DWidth:Number,seat3DHeight:Number){
 			this.menu = menu;
 			this.seatDO = seatDO;
@@ -234,7 +248,9 @@
 			seat3DFrameSkin:"Seat3D_frameSkin",
 			seat3DMouseDownMoveSkin:"Seat3DMouse_downMoveSkin",
 			seat3DMouseDownSkin:"Seat3DMouse_downSkin",
-			seat3DFingerpostDefaultSkin:"Seat3DFingerpost_defaultSkin"
+			seat3DFingerpostDefaultSkin:"Seat3DFingerpost_defaultSkin",
+			seat3DMuralBtnDefaultSkin:"Seat3DMuralBtn_defaultSkin",
+			seat3DPlaceLinkBtnDefaultSkin:"Seat3DPlaceLinkBtn_defaultSkin"
 		};
 		
 		/**
@@ -298,12 +314,12 @@
 			viewportPanorama = new Viewport3D(seat3DWidth,seat3DHeight);
 			viewportPanorama.x = 0;
 			viewportPanorama.y = 0;
-			addChild( viewportPanorama );
+			this.addChild( viewportPanorama );
 			
 			viewportMural = new Viewport3D(seat3DWidth,seat3DHeight);
 			viewportMural.x = 0;
 			viewportMural.y = 0;
-			addChild( viewportMural );
+			this.addChild( viewportMural );
 			
 			
 			
@@ -349,6 +365,13 @@
 			cameraMural = new Camera3D();
 			
 			this.addEventListener(Event.REMOVED_FROM_STAGE,handlerRemoveThis);
+			
+			mural2DLayer = new Sprite();
+			this.addChild(mural2DLayer);
+			
+			muralTest = getDisplayObjectInstance(getStyleValue("seat3DPlaceLinkBtnDefaultSkin")) as MovieClip;
+			mural2DLayer.addChild(muralTest);
+			
 		}
 		
 		/**
@@ -489,7 +512,7 @@
 		private function create3DDisplayObject():void
 		{
 			// Attributes
-			var size :Number = 500;
+			var size :Number = CUBE_SIDE_HARF_LEN * 2;
 			var quality :Number = 16;
 			
 			//cube
@@ -506,23 +529,24 @@
 			var insideFaces  :int = Cube.ALL;
 			var excludeFaces :int = Cube.NONE;
 			cube = new Cube( materials, size, size, size, quality, quality, quality, insideFaces, excludeFaces );
-			cube.z = -1000;
+			cube.z = -CUBE_SIDE_HARF_LEN - 500;
 			
 			scenePanorama.addChild( cube, "Cube" );
 			
-			var fp:MovieClip = getDisplayObjectInstance(getStyleValue("seat3DFingerpostDefaultSkin")) as MovieClip;
 			
-			var material:MovieMaterial = new MovieMaterial(fp,true);
-			var plane:Plane = new Plane( material, 30, 60, 8, 8 );
-			plane.rotationX = 90;
-			plane.z = -500;
-			plane.y = -200;
-			sceneMural.addChild(plane);
+			
 			
 			 
-			//sceneMural.addChild( cube, "Cube" );???????????????????????????????????????????????
 			
+			//sceneMural.addChild(creatPlane(new Vector3D(500,-500,-500 - 1000,0),new Vector3D(0,90,0,0)));
+			//sceneMural.addChild(creatPlane(new Vector3D(500,-500,500 - 1000,0),new Vector3D(0,90,0,0)));
+			//sceneMural.addChild(creatPlane(new Vector3D(500,500,-500 - 1000,0),new Vector3D(0,90,0,0)));
+			//sceneMural.addChild(creatPlane(new Vector3D(500,500,500 - 1000,0),new Vector3D(0,90,0,0)));
 			
+			//			sceneMural.addChild(creatPlane(new Vector3D(-500,-500,-500,0)));
+			//			sceneMural.addChild(creatPlane(new Vector3D(500,-500,-500,0)));
+			//			sceneMural.addChild(creatPlane(new Vector3D(-500,500,-500,0)));
+			//			sceneMural.addChild(creatPlane(new Vector3D(500,500,-500,0)));
 			
 			//Sphere
 			/*
@@ -534,12 +558,96 @@
 			scene.addChild(ball);
 			*/
 			
+			plane = creatPlane(new Vector3D(0,0,0,0));
+			
+			sceneMural.addChild(plane);
+			
+			sceneMural.addChild(creatPlane(new Vector3D(0,0,0,3)));
+			sceneMural.addChild(creatPlane(new Vector3D(0,1000,0,3)));
+			sceneMural.addChild(creatPlane(new Vector3D(1000,1000,0,3)));
+			
 			this.addEventListener(MouseEvent.MOUSE_WHEEL, handlerMouseWheel);
 			this.addEventListener(MouseEvent.MOUSE_DOWN,handlerMouseDown);
 			this.addEventListener(MouseEvent.MOUSE_UP,handlerMouseUp);
 			this.addEventListener(Event.ENTER_FRAME,handlerEnterFrame);
 			this.dispatchEvent(new Event(SEAT3D_CMP_EVENT));
 		}
+		
+		private function calculateCubeTo3DRotation(v3d:Vector3D):Vector3D{
+			var rotation3D:Vector3D = new Vector3D();
+			if(v3d.w == 0){
+				rotation3D.y = 0; 
+			}
+			else if(v3d.w == 1){
+				rotation3D.y = 90; 			 
+			}
+			else if(v3d.w == 2){
+				rotation3D.y = 180; 		 
+			}
+			else if(v3d.w == 3){
+				rotation3D.y = 270; 		 
+			}
+			return rotation3D;
+		}
+		
+		/**
+		 * 
+		 * @param v3d
+		 * @return 
+		 * 
+		 */		
+		private function calculateCubeTo3DPlace(v3d:Vector3D):Vector3D{
+			var place3D:Vector3D = new Vector3D();
+			if(v3d.w == 0){
+				place3D.x = v3d.x - CUBE_SIDE_HARF_LEN;
+				place3D.y = -(v3d.y - CUBE_SIDE_HARF_LEN);
+				place3D.z = - CUBE_SIDE_HARF_LEN;
+			}
+			else if(v3d.w == 1){
+				place3D.x = CUBE_SIDE_HARF_LEN;
+				place3D.y = -(v3d.y - CUBE_SIDE_HARF_LEN);
+				place3D.z = - v3d.x - CUBE_SIDE_HARF_LEN;
+			}
+			else if(v3d.w == 2){
+				place3D.x = -(v3d.x - CUBE_SIDE_HARF_LEN);
+				place3D.y = -(v3d.y - CUBE_SIDE_HARF_LEN);
+				place3D.z = - CUBE_SIDE_HARF_LEN - 500 - CUBE_SIDE_HARF_LEN;
+			}
+			else if(v3d.w == 3){
+				place3D.x = -CUBE_SIDE_HARF_LEN;
+				place3D.y = -(v3d.y - CUBE_SIDE_HARF_LEN);
+				place3D.z = v3d.x - CUBE_SIDE_HARF_LEN - 500 - CUBE_SIDE_HARF_LEN;
+			}
+			return place3D;
+		}
+		
+		/**
+		 * 
+		 * @param place3D
+		 * @param rotation
+		 * @return 
+		 * 
+		 */		
+		private function creatPlane(placeCube:Vector3D):Plane{
+			
+			var place3D:Vector3D = calculateCubeTo3DPlace(placeCube);
+			var rotation3D:Vector3D = calculateCubeTo3DRotation(placeCube);
+			
+			var mc:MovieClip = getDisplayObjectInstance(getStyleValue("seat3DFingerpostDefaultSkin")) as MovieClip;
+			var material:MovieMaterial = new MovieMaterial(mc,true);
+			var plane:Plane = new Plane(material,25,45,1,1);
+			
+			plane.x = place3D.x;
+			plane.y = place3D.y;
+			plane.z = place3D.z;
+			
+			plane.rotationX = rotation3D.x;
+			plane.rotationY = rotation3D.y;
+			plane.rotationZ = rotation3D.z;
+			
+			return plane;
+		}
+		
 		
 		/**
 		 * 创建贴图 
@@ -853,12 +961,21 @@
 					}
 				}
 				
-				cameraMural.rotationX = 0;
+				cameraMural.rotationX = cameraPanorama.rotationX;
 				cameraMural.rotationY = cameraPanorama.rotationY;				
-				rendererAll();				
+				rendererAll();		
+				
+				plane.calculateScreenCoords(cameraPanorama);
+				
+				var real2DX:Number = plane.screen.x+viewportPanorama.width/2;
+				var real2DY:Number = plane.screen.y+viewportPanorama.height/2;
+				
+				muralTest.x = real2DX;
+				muralTest.y = real2DY;
 				sign = true;
 			}
 		}
+		
 		
 		/**
 		 * 设置 3D摄像机旋转角度 
@@ -911,6 +1028,7 @@
 			if(cameraPanorama.zoom  > 500){
 				cameraPanorama.zoom  =500;
 			}
+			cameraMural.zoom = cameraPanorama.zoom;
 			rendererAll();
 		}
 		

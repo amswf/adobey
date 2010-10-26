@@ -1,11 +1,9 @@
 package com.snsoft.room3d{
 	import com.snsoft.util.HashVector;
 	
-	import fl.core.InvalidationType;
-	import fl.core.UIComponent;
-	
 	import flash.display.BitmapData;
 	import flash.geom.Point;
+	import flash.geom.Vector3D;
 
 	/**
 	 * 3D显示数据对象
@@ -33,6 +31,16 @@ package com.snsoft.room3d{
 		 * 描述信息 
 		 */		
 		private var _msg:String = null;
+		
+		/**
+		 * 壁画，点击位置 
+		 */
+		private var _murals:Vector.<Vector3D> = new Vector.<Vector3D>();
+		
+		/**
+		 * 去其它观察点，点击位置
+		 */
+		private var _placeLinks:Vector.<Vector3D> = new Vector.<Vector3D>();
 		
 		/**
 		 * 正方体前面 
@@ -96,7 +104,6 @@ package com.snsoft.room3d{
 		
 		public function SeatDO()
 		{
-			super();
 		}
 
 		public function get nameStr():String
@@ -193,6 +200,38 @@ package com.snsoft.room3d{
 		public function set msg(value:String):void
 		{
 			_msg = value;
+		}
+
+		/**
+		 * 壁画，点击位置 
+		 */
+		public function get murals():Vector.<Vector3D>
+		{
+			return _murals;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set murals(value:Vector.<Vector3D>):void
+		{
+			_murals = value;
+		}
+
+		/**
+		 * 去其它观察点，点击位置
+		 */
+		public function get placeLinks():Vector.<Vector3D>
+		{
+			return _placeLinks;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set placeLinks(value:Vector.<Vector3D>):void
+		{
+			_placeLinks = value;
 		}
 
 

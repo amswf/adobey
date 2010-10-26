@@ -32,6 +32,11 @@ package com.snsoft.kjjc3{
 	
 	[Style(name="viewDagLimitSkin", type="Class")]
 	
+	/**
+	 * 科技进村3的主页flash，把原来的换成地图点击进入，当前对应龙口项目。 
+	 * @author Administrator
+	 * 
+	 */	
 	public class MapMainLONGKOU extends UIComponent{
 		
 		//XML文件文件根目录
