@@ -488,33 +488,50 @@
 							else{
 								muralW = 0;
 							}
-							seatDO.murals.push(new Vector3D(muralX,muralY,0,muralW));
+							
+							var muralText:String = String(muralNode.getAttributeByName("text"));
+							var muralUrl:String = String(muralNode.getAttributeByName("url"));
+							
+							var mdo:MuralDO = new MuralDO();
+							mdo.x = muralX;
+							mdo.y = muralY;
+							mdo.type = muralW;
+							mdo.text = muralText;;
+							mdo.url = muralUrl;
+							seatDO.murals.push(mdo);
 						}
 					}
 					
-					var placeLinksList:NodeList =placeNode.getNodeList("placeLinks");
-					if(placeLinksList != null && placeLinksList.length() > 0){
-						var placeLinksNode:Node = placeLinksList.getNode(0);
-						var placeLinkList:NodeList = placeLinksNode.getNodeList("placeLink");
-						for(var k2:int = 0;k2 < placeLinkList.length();k2 ++){
-							var placeLinkNode:Node = placeLinkList.getNode(k2);
-							var placeLinkX:Number = Number(placeLinkNode.getAttributeByName("x"));
-							var placeLinkY:Number = Number(placeLinkNode.getAttributeByName("y"));
-							var placeLinkType:String = String(placeLinkNode.getAttributeByName("type"));
-							var placeLinkW:Number = 0;
-							if(placeLinkType == SeatDO.RIGHT){
-								placeLinkW = 1;
+					var seatLinksList:NodeList =placeNode.getNodeList("seatLinks");
+					if(seatLinksList != null && seatLinksList.length() > 0){
+						var seatLinksNode:Node = seatLinksList.getNode(0);
+						var seatLinkList:NodeList = seatLinksNode.getNodeList("seatLink");
+						for(var k2:int = 0;k2 < seatLinkList.length();k2 ++){
+							var seatLinkNode:Node = seatLinkList.getNode(k2);
+							var seatLinkX:Number = Number(seatLinkNode.getAttributeByName("x"));
+							var seatLinkY:Number = Number(seatLinkNode.getAttributeByName("y"));
+							var seatLinkType:String = String(seatLinkNode.getAttributeByName("type"));
+							var seatLinkW:Number = 0;
+							if(seatLinkType == SeatDO.RIGHT){
+								seatLinkW = 1;
 							}
-							else if(placeLinkType == SeatDO.BACK){
-								placeLinkW = 2;
+							else if(seatLinkType == SeatDO.BACK){
+								seatLinkW = 2;
 							}
-							else if(placeLinkType == SeatDO.LEFT){
-								placeLinkW = 3;
+							else if(seatLinkType == SeatDO.LEFT){
+								seatLinkW = 3;
 							}
 							else{
-								placeLinkW = 0;
+								seatLinkW = 0;
 							}
-							seatDO.placeLinks.push(new Vector3D(placeLinkX,placeLinkY,0,placeLinkW));
+							var seatLinkName:String = String(seatLinksNode.getAttributeByName("text"));
+							 
+							var pdo:SeatLinkDO = new SeatLinkDO();
+							pdo.x = seatLinkX;
+							pdo.y = seatLinkY;
+							pdo.type = seatLinkW;
+							pdo.name = seatLinkName;;
+							seatDO.seatLinks.push(pdo);
 						}
 					}
 					
