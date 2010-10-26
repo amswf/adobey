@@ -696,6 +696,8 @@
 				s3d.addEventListener(MouseEvent.DOUBLE_CLICK,handlerCurrentSeat3DMouseDoubleClick);
 				s3d.doubleClickEnabled = true;
 				s3d.addEventListener(Seat3D.SEAT3D_CMP_EVENT,handlerSeat3DCmp);
+				s3d.addEventListener(Seat3D.MURAL_CLICK,handlerMuralClick);
+				s3d.addEventListener(Seat3D.SEAT_LINK_CLICK,handlerSeatLinkClick);
 				s3d.x = SEAT3D_DEFAULT_RECT.x;
 				s3d.y = SEAT3D_DEFAULT_RECT.y;
 				currentSeat3D = s3d;
@@ -713,6 +715,14 @@
 				creatSeat3DSign = true;
 				trace("this.seat3dLayer.numChildren",this.seat3dLayer.numChildren);
 			}
+		}
+		
+		private function handlerMuralClick(e:Event):void{
+			trace("handlerMuralClick");
+		}
+		
+		private function handlerSeatLinkClick(e:Event):void{
+			trace("handlerSeatLinkClick");
 		}
 		
 		private function handlerIntroMsgBtnClick(e:Event):void{

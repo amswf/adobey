@@ -423,17 +423,14 @@
 			var seatLinks:Vector.<SeatLinkDO> = this.seatDO.seatLinks;
 			for(var ii:int =0;ii<seatLinks.length;ii++){
 				var sdo:SeatLinkDO = seatLinks[ii];
-				var seatLinkBtn:MovieClip = getDisplayObjectInstance(getStyleValue("seat3DMuralBtnDefaultSkin")) as MovieClip;
+				var seatLinkBtn:MovieClip = getDisplayObjectInstance(getStyleValue("seat3DPlaceLinkBtnDefaultSkin")) as MovieClip;
 				seatLinkBtn.visible = false;
 				btn2DLayer.addChild(seatLinkBtn);
 				btn2DSeatLinkBtnV.push(seatLinkBtn);
 				currentSeatLinkDO = sdo;
 				seatLinkBtn.seatLinksIndex = ii;
-				seatLinkBtn.addEventListener(MouseEvent.CLICK,handlerSeatLinkBtnClick);
-				
+				seatLinkBtn.addEventListener(MouseEvent.CLICK,handlerSeatLinkBtnClick);	
 			}
-			
-			
 		}
 		
 		/**
@@ -631,11 +628,7 @@
 			ball = new Sphere(material,2000,60,40);
 			ball.z = -1000;
 			scene.addChild(ball);
-			*/
-			
-			plane = creatPlane(new Vector3D(0,0,0,0));
-			sceneMural.addChild(plane);
-			
+			*/			
 			var murals:Vector.<MuralDO> = this.seatDO.murals;
 			for(var i:int =0;i<murals.length;i++){
 				var mdo:MuralDO = murals[i];
@@ -1051,64 +1044,56 @@
 				cameraMural.rotationY = cameraPanorama.rotationY;				
 				rendererAll();		
 				
-				 
-				refresh2DBtns();
-				
 				sign = true;
 			}
 		}
 		
 		public function refresh2DBtns():void{
-			 
-			var real2DX:Number = plane.screen.x+viewportPanorama.width/2;
-			var real2DY:Number = plane.screen.y+viewportPanorama.height/2;
-			trace(real2DX,real2DY);
+			for(var i:int =0;i<btn2DMuralBtnV.length;i++){
+				var muralPlane:Plane = btn3DMuralFingerV[i];
+				muralPlane.calculateScreenCoords(cameraPanorama);
+				var real2DX:Number = muralPlane.screen.x+viewportPanorama.width/2;
+				var real2DY:Number = muralPlane.screen.y+viewportPanorama.height/2;
+				
+				var muralBtn:MovieClip = btn2DMuralBtnV[i];
+				var mtrect:Rectangle = muralBtn.getRect(btn2DLayer);
+				
+				if((this.cameraMural.rotationY % 360) < 90 && 
+					(this.cameraMural.rotationY % 360) > -90 && 
+					isIntervalValue(real2DX,- mtrect.width,this.seat3DWidth) && 
+					isIntervalValue(real2DY,- mtrect.height,this.seat3DHeight)){
+					muralBtn.visible = true;
+					
+					muralBtn.x = getIntervalValue(real2DX,- mtrect.width,this.seat3DWidth);
+					muralBtn.y = getIntervalValue(real2DY,- mtrect.height,this.seat3DHeight);
+				}
+				else {
+					muralBtn.visible  = false;
+				}	
+			}
 			
-//			for(var i:int =0;i<btn2DMuralBtnV.length;i++){
-//				var muralPlane:Plane = btn3DMuralFingerV[i];
-//				var real2DX:Number = muralPlane.screen.x+viewportPanorama.width/2;
-//				var real2DY:Number = muralPlane.screen.y+viewportPanorama.height/2;
-//				
-//				trace(real2DX,real2DY);
-//				
-//				var muralBtn:MovieClip = btn2DMuralBtnV[i];
-//				var mtrect:Rectangle = muralBtn.getRect(btn2DLayer);
-//				
-//				if((this.cameraMural.rotationY % 360) < 90 && 
-//					(this.cameraMural.rotationY % 360) > -90 && 
-//					isIntervalValue(real2DX,- mtrect.width,this.seat3DWidth) && 
-//					isIntervalValue(real2DY,- mtrect.height,this.seat3DHeight)){
-//					muralBtn.visible = true;
-//					
-//					muralBtn.x = getIntervalValue(real2DX,- mtrect.width,this.seat3DWidth);
-//					muralBtn.y = getIntervalValue(real2DY,- mtrect.height,this.seat3DHeight);
-//				}
-//				else {
-//					muralBtn.visible  = false;
-//				}	
-//			}
-//			
-//			for(var ii:int =0;ii<btn2DSeatLinkBtnV.length;ii++){
-//				var seatLinkPlane:Plane = btn3DSeatLinkFingerV[ii];
-//				var seatLinkReal2DX:Number = seatLinkPlane.screen.x + viewportPanorama.width/2;
-//				var seatLinkReal2DY:Number = seatLinkPlane.screen.y + viewportPanorama.height/2;
-//				
-//				var seatLinkBtn:MovieClip = btn2DSeatLinkBtnV[ii];
-//				var slbrect:Rectangle = seatLinkBtn.getRect(btn2DLayer);
-//				
-//				if((this.cameraMural.rotationY % 360) < 90 && 
-//					(this.cameraMural.rotationY % 360) > -90 && 
-//					isIntervalValue(seatLinkReal2DX,- slbrect.width,this.seat3DWidth) && 
-//					isIntervalValue(seatLinkReal2DY,- slbrect.height,this.seat3DHeight)){
-//					seatLinkBtn.visible = true;
-//					
-//					seatLinkBtn.x = getIntervalValue(seatLinkReal2DX,- slbrect.width,this.seat3DWidth);
-//					seatLinkBtn.y = getIntervalValue(seatLinkReal2DY,- slbrect.height,this.seat3DHeight);
-//				}
-//				else {
-//					seatLinkBtn.visible  = false;
-//				}	
-//			}
+			for(var ii:int =0;ii<btn2DSeatLinkBtnV.length;ii++){
+				var seatLinkPlane:Plane = btn3DSeatLinkFingerV[ii];
+				seatLinkPlane.calculateScreenCoords(cameraPanorama);
+				var seatLinkReal2DX:Number = seatLinkPlane.screen.x + viewportPanorama.width/2;
+				var seatLinkReal2DY:Number = seatLinkPlane.screen.y + viewportPanorama.height/2;
+				
+				var seatLinkBtn:MovieClip = btn2DSeatLinkBtnV[ii];
+				var slbrect:Rectangle = seatLinkBtn.getRect(btn2DLayer);
+				
+				if((this.cameraMural.rotationY % 360) < 90 && 
+					(this.cameraMural.rotationY % 360) > -90 && 
+					isIntervalValue(seatLinkReal2DX,- slbrect.width,this.seat3DWidth) && 
+					isIntervalValue(seatLinkReal2DY,- slbrect.height,this.seat3DHeight)){
+					seatLinkBtn.visible = true;
+					
+					seatLinkBtn.x = getIntervalValue(seatLinkReal2DX,- slbrect.width,this.seat3DWidth);
+					seatLinkBtn.y = getIntervalValue(seatLinkReal2DY,- slbrect.height,this.seat3DHeight);
+				}
+				else {
+					seatLinkBtn.visible  = false;
+				}	
+			}
 		}
 		
 		/**
@@ -1227,6 +1212,7 @@
 		public function rendererAll():void{
 			rendererPanorama.renderScene(scenePanorama,cameraPanorama,viewportPanorama);
 			rendererMural.renderScene(sceneMural,cameraMural,viewportMural);
+			refresh2DBtns();
 		}
 		
 		public function get cameraRotationY():Number
