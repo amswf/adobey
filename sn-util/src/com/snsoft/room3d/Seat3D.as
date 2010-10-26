@@ -18,6 +18,7 @@
 	import flash.geom.Rectangle;
 	import flash.geom.Vector3D;
 	import flash.ui.Mouse;
+	import flash.ui.MouseCursor;
 	
 	import org.papervision3d.cameras.Camera3D;
 	import org.papervision3d.core.proto.MaterialObject3D;
@@ -401,6 +402,9 @@
 			btn2DLayer = new Sprite();
 			this.addChild(btn2DLayer);
 			
+			btn2DLayer.addEventListener(MouseEvent.MOUSE_OVER,handlerMouseOver);
+			btn2DLayer.addEventListener(MouseEvent.MOUSE_OUT,handlerMouseOut);
+			
 			btnMask = getDisplayObjectInstance(getStyleValue("seat3DBtnMaskDefaultSkin")) as MovieClip;
 			btnMask.width = this.seat3DWidth;
 			btnMask.height = this.seat3DHeight;
@@ -431,6 +435,14 @@
 				seatLinkBtn.seatLinksIndex = ii;
 				seatLinkBtn.addEventListener(MouseEvent.CLICK,handlerSeatLinkBtnClick);	
 			}
+		}
+		
+		private function handlerMouseOver(e:Event):void{
+			Mouse.cursor = MouseCursor.BUTTON;	
+		}
+		
+		private function handlerMouseOut(e:Event):void{
+			Mouse.cursor = MouseCursor.AUTO;
 		}
 		
 		/**
