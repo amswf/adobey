@@ -23,6 +23,7 @@
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.MouseEvent;
+	import flash.events.TimerEvent;
 	import flash.external.ExternalInterface;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -33,6 +34,7 @@
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
+	import flash.utils.Timer;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.setInterval;
 	import flash.utils.setTimeout;
@@ -198,6 +200,11 @@
 		private var seat3dLayer:MovieClip = new MovieClip();
 		
 		/**
+		 * 3d全景对象
+		 */		
+		private var oldSeat3dLayer:MovieClip = new MovieClip();
+		
+		/**
 		 * 房间平面图滚动条 
 		 */		
 		private var seatScrollPane:ScrollPane;
@@ -223,9 +230,14 @@
 		private var roomMap:RoomMap;
 		
 		/**
-		 *当前3D显示 
+		 *当前3D观察点 
 		 */		
 		private var currentSeat3D:Seat3D;
+		
+		/**
+		 * 前一个3D观察点 
+		 */		
+		private var oldSeat3D:Seat3D;
 		
 		/**
 		 * 3D显示背景，用于全屏切换时，挡住其它显示对象 
@@ -313,6 +325,11 @@
 		 * 当前房间 
 		 */		
 		private var currentRoomDO:RoomDO;
+		
+		/**
+		 * 切换3D观察点计时器 
+		 */		
+		private var timerChangeSeat:Timer;
 		
 		/**
 		 * 构造方法 
@@ -547,7 +564,7 @@
 								seatLinkW = 0;
 							}
 							var seatLinkName:String = String(seatLinkNode.getAttributeByName("name"));
-							 
+							
 							var pdo:SeatLinkDO = new SeatLinkDO();
 							pdo.x = seatLinkX;
 							pdo.y = seatLinkY;
@@ -599,6 +616,7 @@
 			mainLayer.addChild(this.roomTextLayer);
 			mainLayer.addChild(seat3DBack);
 			mainLayer.addChild(this.seat3dLayer);
+			mainLayer.addChild(this.oldSeat3dLayer);
 			mainLayer.addChild(this.seatTextLayer);
 			
 			seatScrollPane = new ScrollPane();
@@ -712,8 +730,7 @@
 					currentSeat3D.removeEventListener(Seat3D.CAMERA_ROTATION_EVENT,handlerCameraRotation);
 					currentSeat3D.removeEventListener(MouseEvent.DOUBLE_CLICK,handlerCurrentSeat3DMouseDoubleClick);
 				}
-				SpriteUtil.deleteAllChild(this.seat3dLayer);
-				System.gc();
+				
 				currentSeatDO = seatDO;
 				
 				var s3d:Seat3D = new Seat3D(this.menu,currentSeatDO,SEAT3D_DEFAULT_RECT.width,SEAT3D_DEFAULT_RECT.height);
@@ -725,6 +742,9 @@
 				s3d.addEventListener(Seat3D.SEAT_LINK_CLICK,handlerSeatLinkClick);
 				s3d.x = SEAT3D_DEFAULT_RECT.x;
 				s3d.y = SEAT3D_DEFAULT_RECT.y;
+				
+				oldSeat3D = currentSeat3D;
+				
 				currentSeat3D = s3d;
 				this.seat3dLayer.addChild(s3d);
 				
@@ -739,7 +759,39 @@
 				}
 				creatSeat3DSign = true;
 				trace("this.seat3dLayer.numChildren",this.seat3dLayer.numChildren);
+				
+				if(oldSeat3D != null){
+					this.oldSeat3dLayer.addChild(oldSeat3D);
+					timerChangeSeatRemovieEvent();
+					this.seat3dLayer.alpha = 0;
+					timerChangeSeat = new Timer(20,10);
+					timerChangeSeat.start();
+					timerChangeSeat.addEventListener(TimerEvent.TIMER,handlerChangeSeatTimer);
+					timerChangeSeat.addEventListener(TimerEvent.TIMER_COMPLETE,handlerChangeSeatTimerCmp);
+				}
 			}
+		}
+		
+		private function handlerChangeSeatTimer(e:Event):void{
+			this.seat3dLayer.alpha += 0.1;
+			this.oldSeat3dLayer.alpha -= 0.1;
+		}
+		
+		private function handlerChangeSeatTimerCmp(e:Event):void{
+			timerChangeSeatRemovieEvent();
+			changeSeatCmp();
+		}
+		
+		private function timerChangeSeatRemovieEvent():void{
+			if(timerChangeSeat != null){
+				timerChangeSeat.stop();
+				timerChangeSeat.removeEventListener(TimerEvent.TIMER,handlerChangeSeatTimer);
+				timerChangeSeat.removeEventListener(TimerEvent.TIMER_COMPLETE,handlerChangeSeatTimerCmp);
+			}
+		}
+		private function changeSeatCmp():void{
+			SpriteUtil.deleteAllChild(this.oldSeat3dLayer);
+			System.gc();
 		}
 		
 		private function handlerMuralClick(e:Event):void{

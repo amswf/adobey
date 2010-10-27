@@ -504,21 +504,47 @@
 			this.removeEventListener(MouseEvent.MOUSE_UP,handlerMouseUp);
 			this.removeEventListener(Event.ENTER_FRAME,handlerEnterFrame);
 			if(rendererPanorama != null){
-				rendererPanorama.destroy();
+				try{
+					rendererPanorama.destroy();
+				}
+				catch(e:Error){
+					
+				}
 			}
+			
 			if(viewportPanorama != null){
-				viewportPanorama.destroy();
+				try{
+					viewportPanorama.destroy();
+				}
+				catch(e:Error){
+					
+				}
 			}
 			
 			if(rendererMural != null){
-				rendererMural.destroy();
+				try{
+					rendererMural.destroy();
+				}
+				catch(e:Error){
+					
+				}
 			}
+			
 			if(viewportMural != null){
-				viewportMural.destroy();
+				try{
+					viewportMural.destroy();
+				}
+				catch(e:Error){
+					
+				}
 			}
 			
 			if(cube != null){
-				cube.destroy();
+				try{
+					cube.destroy();
+				}
+				catch(e:Error){
+				}
 			}
 		}
 		
