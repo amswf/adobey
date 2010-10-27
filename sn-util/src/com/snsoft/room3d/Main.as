@@ -1,4 +1,6 @@
 ﻿package com.snsoft.room3d{
+	import ascb.util.StringUtilities;
+	
 	import com.snsoft.util.HashVector;
 	import com.snsoft.util.ImageLoader;
 	import com.snsoft.util.SkinsUtil;
@@ -14,10 +16,12 @@
 	import flash.display.LoaderInfo;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import flash.display.Stage;
 	import flash.display.StageAlign;
 	import flash.display.StageDisplayState;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.events.MouseEvent;
 	import flash.external.ExternalInterface;
 	import flash.geom.Point;
@@ -289,10 +293,26 @@
 		 */		
 		private var windowMsg:WindowMsg;	
 		
+		
+		/**
+		 * 当前观察点 
+		 */		
 		private var currentSeatDO:SeatDO;
 		
-		
+		/**
+		 * 创建观察点方法的互斥锁 
+		 */		
 		private var creatSeat3DSign:Boolean = true;
+		
+		/**
+		 * 当前点击的壁画数据对象 
+		 */		
+		private var currentMuralDO:MuralDO;
+		
+		/**
+		 * 当前房间 
+		 */		
+		private var currentRoomDO:RoomDO;
 		
 		/**
 		 * 构造方法 
@@ -490,13 +510,15 @@
 							}
 							
 							var muralText:String = String(muralNode.getAttributeByName("text"));
+							var muralContent:String = String(muralNode.getAttributeByName("content"));
 							var muralUrl:String = String(muralNode.getAttributeByName("url"));
 							
 							var mdo:MuralDO = new MuralDO();
 							mdo.x = muralX;
 							mdo.y = muralY;
 							mdo.type = muralW;
-							mdo.text = muralText;;
+							mdo.text = muralText;
+							mdo.content = muralContent;
 							mdo.url = muralUrl;
 							seatDO.murals.push(mdo);
 						}
@@ -524,13 +546,14 @@
 							else{
 								seatLinkW = 0;
 							}
-							var seatLinkName:String = String(seatLinksNode.getAttributeByName("text"));
+							var seatLinkName:String = String(seatLinkNode.getAttributeByName("name"));
 							 
 							var pdo:SeatLinkDO = new SeatLinkDO();
 							pdo.x = seatLinkX;
 							pdo.y = seatLinkY;
 							pdo.type = seatLinkW;
-							pdo.name = seatLinkName;;
+							pdo.name = seatLinkName;
+							trace(seatLinkX,seatLinkName);
 							seatDO.seatLinks.push(pdo);
 						}
 					}
@@ -540,7 +563,8 @@
 						var msgNode:Node = msgList.getNode(0);
 						seatDO.msg = msgNode.text;
 					}
-					placeHV.push(seatDO);
+					trace(seatDO.nameStr);
+					placeHV.push(seatDO,seatDO.nameStr);
 				}
 				roomDO.placeHV = placeHV;
 				roomHV.push(roomDO);
@@ -632,7 +656,7 @@
 		 */		
 		private function refreshRoomMap(roomDO:RoomDO):void{
 			trace("refreshRoomMap");
-			
+			currentRoomDO = roomDO;
 			
 			SpriteUtil.deleteAllChild(this.roomTextLayer);
 			var tft:TextFormat = new TextFormat();
@@ -641,7 +665,7 @@
 			tft.align = TextFormatAlign.CENTER;
 			
 			var n:int = int((ROOM_TEXT_RECT.width - 6) * 2 / int(tft.size));
-			var txt:String = roomDO.textStr;
+			var txt:String = currentRoomDO.textStr;
 			if(StringUtil.getByteLen(txt) > n){
 				txt = StringUtil.subCNStr(txt,n - 1)+"...";
 			}
@@ -653,7 +677,7 @@
 			this.roomTextLayer.addChild(tfd);
 			
 			SpriteUtil.deleteAllChild(roomMapLayer);
-			roomMap = new RoomMap(roomDO);
+			roomMap = new RoomMap(currentRoomDO);
 			roomMapLayer.addChild(roomMap);
 			roomMap.addEventListener(RoomMap.EVENT_ROOM_MAP_COMPLETE,handlerLoadBigImgCmp);
 			roomMap.addEventListener(RoomMap.EVENT_SEAT_POINT_MOUSE_CLICK,handlerSeatClick);
@@ -672,7 +696,7 @@
 		private function handlerSeatClick(e:Event):void{
 			trace("handlerSeatClick");
 			var roomMap:RoomMap = e.currentTarget as RoomMap;
-			creatSeat3D(roomMap);
+			creatSeat3D(roomMap.currentSeatDO);
 		}
 		
 		/**
@@ -680,7 +704,7 @@
 		 * @param roomMap
 		 * 
 		 */		
-		private function creatSeat3D(roomMap:RoomMap):void{
+		private function creatSeat3D(seatDO:SeatDO):void{
 			if(creatSeat3DSign){
 				creatSeat3DSign = false;
 				trace("creatSeat3D");
@@ -690,7 +714,8 @@
 				}
 				SpriteUtil.deleteAllChild(this.seat3dLayer);
 				System.gc();
-				currentSeatDO = roomMap.currentSeatDO;
+				currentSeatDO = seatDO;
+				
 				var s3d:Seat3D = new Seat3D(this.menu,currentSeatDO,SEAT3D_DEFAULT_RECT.width,SEAT3D_DEFAULT_RECT.height);
 				s3d.addEventListener(Seat3D.CAMERA_ROTATION_EVENT,handlerCameraRotation);
 				s3d.addEventListener(MouseEvent.DOUBLE_CLICK,handlerCurrentSeat3DMouseDoubleClick);
@@ -718,17 +743,60 @@
 		}
 		
 		private function handlerMuralClick(e:Event):void{
+			var s3d:Seat3D = e.currentTarget as Seat3D;
 			trace("handlerMuralClick");
+			
+			if(s3d.currentMuralDO != null){
+				currentMuralDO = s3d.currentMuralDO;
+				var text:String = currentMuralDO.text;
+				var content:String = currentMuralDO.content;
+				var url:String = currentMuralDO.url;
+				if(text != null && content != null && StringUtilities.trim(content).length > 0){
+					refreshWindowMsg(text,content,stage);
+				}
+				else if(text != null && url != null){
+					var req:URLRequest = new URLRequest(url);
+					var loader:URLLoader = new URLLoader();
+					loader.addEventListener(Event.COMPLETE,handlerLoadMuralUrlCmp);
+					loader.addEventListener(IOErrorEvent.IO_ERROR,handlerLoadMuralUrlError);
+					loader.load(req);
+					
+				}
+				else {
+					refreshWindowMsg("内容为空！","",stage);
+				}
+			}
 		}
+		
+		private function handlerLoadMuralUrlCmp(e:Event):void{
+			var loader:URLLoader = e.currentTarget as URLLoader;
+			var htmlText:String = String(loader.data);
+			refreshWindowMsg(currentMuralDO.text,htmlText,stage);
+		}
+		
+		private function handlerLoadMuralUrlError(e:Event):void{
+			refreshWindowMsg("加载失败！","",stage);
+		}
+		
 		
 		private function handlerSeatLinkClick(e:Event):void{
 			trace("handlerSeatLinkClick");
+			var s3d:Seat3D = e.currentTarget as Seat3D;
+			var s3dName:String = s3d.currentSeatLinkDO.name;
+			trace(currentRoomDO.placeHV.length,s3dName);
+			var sdo:SeatDO = currentRoomDO.placeHV.findByName(s3dName) as SeatDO;
+			creatSeat3D(sdo);
+			roomMap.setVisualAngle(sdo);
 		}
 		
 		private function handlerIntroMsgBtnClick(e:Event):void{
 			trace("handlerIntroMsgBtnClick");
+			refreshWindowMsg(currentSeatDO.textStr,currentSeatDO.msg,stage);
+		}
+		
+		private function refreshWindowMsg(text:String,msg:String,stage:Stage):void{
 			windowMsg.visible = true;
-			windowMsg.refreshText(currentSeatDO.textStr,currentSeatDO.msg);
+			windowMsg.refreshText(text,msg);
 			windowMsg.resetPlaceAndMask(stage);
 		}
 		
@@ -901,7 +969,7 @@
 			seatScrollPane.verticalScrollPosition = vsp;
 			seatScrollPane.update();
 			
-			creatSeat3D(roomMap);
+			creatSeat3D(roomMap.currentSeatDO);
 		}
 		
 	}

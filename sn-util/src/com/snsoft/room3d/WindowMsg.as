@@ -209,7 +209,7 @@ package com.snsoft.room3d{
 				if(msg == null){
 					msg = "";
 				}
-				msgTextArea.text = msg;
+				msgTextArea.htmlText = msg;
 			}
 		}
 		

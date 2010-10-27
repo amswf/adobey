@@ -15,6 +15,8 @@ package com.snsoft.room3d{
 		
 		private var _text:String;
 		
+		private var _content:String;
+		
 		private var _url:String;
 		
 		public function MuralDO()
@@ -70,6 +72,16 @@ package com.snsoft.room3d{
 		public function set url(value:String):void
 		{
 			_url = value;
+		}
+
+		public function get content():String
+		{
+			return _content;
+		}
+
+		public function set content(value:String):void
+		{
+			_content = value;
 		}
 
 

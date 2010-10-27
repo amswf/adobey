@@ -72,10 +72,7 @@
 		 */		
 		private var autoMove:Boolean;
 		
-		/**
-		 * 3D展现对象数据
-		 */		
-		private var seatDO:SeatDO;
+		private var _seatDO:SeatDO;
 		
 		/**
 		 * 摄像机水平旋转角度 
@@ -225,7 +222,7 @@
 		 * 显示边框 
 		 */		
 		private var frame:MovieClip;
-
+		
 		
 		private var btn2DLayer:Sprite;		
 		
@@ -255,16 +252,23 @@
 		 */	
 		private var btn2DSeatLinkBtnV:Vector.<MovieClip> = new Vector.<MovieClip>();
 		
+		private var _currentMuralDO:MuralDO;
 		
-		private var currentMuralDO:MuralDO;
-		
-		private var currentSeatLinkDO:SeatLinkDO;
+		private var _currentSeatLinkDO:SeatLinkDO;
 		
 		private var plane:Plane;
 		
+		/**
+		 * 构造方法 
+		 * @param menu
+		 * @param seatDO
+		 * @param seat3DWidth
+		 * @param seat3DHeight
+		 * 
+		 */		
 		public function Seat3D(menu:Menu,seatDO:SeatDO,seat3DWidth:Number,seat3DHeight:Number){
 			this.menu = menu;
-			this.seatDO = seatDO;
+			this._seatDO = seatDO;
 			this.seat3DWidth = seat3DWidth;
 			this.seat3DHeight = seat3DHeight;
 			super();
@@ -418,7 +422,6 @@
 				muralBtn.visible = false;
 				btn2DLayer.addChild(muralBtn);
 				btn2DMuralBtnV.push(muralBtn);
-				currentMuralDO = mdo;
 				muralBtn.muralsIndex = i;
 				muralBtn.addEventListener(MouseEvent.CLICK,handlerMuralBtnClick);
 				
@@ -431,7 +434,6 @@
 				seatLinkBtn.visible = false;
 				btn2DLayer.addChild(seatLinkBtn);
 				btn2DSeatLinkBtnV.push(seatLinkBtn);
-				currentSeatLinkDO = sdo;
 				seatLinkBtn.seatLinksIndex = ii;
 				seatLinkBtn.addEventListener(MouseEvent.CLICK,handlerSeatLinkBtnClick);	
 			}
@@ -455,7 +457,7 @@
 			var i:int = muralBtn.muralsIndex;
 			var murals:Vector.<MuralDO> = this.seatDO.murals;
 			var mdo:MuralDO = murals[i];
-			currentMuralDO = mdo;
+			_currentMuralDO = mdo;
 			this.dispatchEvent(new Event(MURAL_CLICK));
 		}
 		
@@ -469,7 +471,7 @@
 			var i:int = seatLinkBtn.seatLinksIndex;
 			var seatLinks:Vector.<SeatLinkDO> = this.seatDO.seatLinks;
 			var sdo:SeatLinkDO = seatLinks[i];
-			currentSeatLinkDO = sdo;
+			_currentSeatLinkDO = sdo;
 			this.dispatchEvent(new Event(SEAT_LINK_CLICK));
 		}
 		
@@ -1060,8 +1062,15 @@
 			}
 		}
 		
+		/**
+		 * 
+		 * 
+		 */		
 		public function refresh2DBtns():void{
+			var murals:Vector.<MuralDO> = this.seatDO.murals;
 			for(var i:int =0;i<btn2DMuralBtnV.length;i++){
+				var mdo:MuralDO = murals[i];
+				var typem:Number = mdo.type;
 				var muralPlane:Plane = btn3DMuralFingerV[i];
 				muralPlane.calculateScreenCoords(cameraPanorama);
 				var real2DX:Number = muralPlane.screen.x+viewportPanorama.width/2;
@@ -1070,12 +1079,11 @@
 				var muralBtn:MovieClip = btn2DMuralBtnV[i];
 				var mtrect:Rectangle = muralBtn.getRect(btn2DLayer);
 				
-				if((this.cameraMural.rotationY % 360) < 90 && 
-					(this.cameraMural.rotationY % 360) > -90 && 
-					isIntervalValue(real2DX,- mtrect.width,this.seat3DWidth) && 
-					isIntervalValue(real2DY,- mtrect.height,this.seat3DHeight)){
+				var isVisibleWidth:Boolean = isIntervalValue(real2DX,- mtrect.width,this.seat3DWidth);
+				var isVisibleHeight:Boolean = isIntervalValue(real2DY,- mtrect.height,this.seat3DHeight);
+				var isBV:Boolean = isBtnVisible(typem,this.cameraMural.rotationY);
+				if(isBV && isVisibleWidth && isVisibleHeight){
 					muralBtn.visible = true;
-					
 					muralBtn.x = getIntervalValue(real2DX,- mtrect.width,this.seat3DWidth);
 					muralBtn.y = getIntervalValue(real2DY,- mtrect.height,this.seat3DHeight);
 				}
@@ -1084,7 +1092,10 @@
 				}	
 			}
 			
+			var seatLinks:Vector.<SeatLinkDO> = this.seatDO.seatLinks;
 			for(var ii:int =0;ii<btn2DSeatLinkBtnV.length;ii++){
+				var sdo:SeatLinkDO = seatLinks[ii];
+				var typeSL:Number = sdo.type;
 				var seatLinkPlane:Plane = btn3DSeatLinkFingerV[ii];
 				seatLinkPlane.calculateScreenCoords(cameraPanorama);
 				var seatLinkReal2DX:Number = seatLinkPlane.screen.x + viewportPanorama.width/2;
@@ -1093,12 +1104,12 @@
 				var seatLinkBtn:MovieClip = btn2DSeatLinkBtnV[ii];
 				var slbrect:Rectangle = seatLinkBtn.getRect(btn2DLayer);
 				
-				if((this.cameraMural.rotationY % 360) < 90 && 
-					(this.cameraMural.rotationY % 360) > -90 && 
-					isIntervalValue(seatLinkReal2DX,- slbrect.width,this.seat3DWidth) && 
-					isIntervalValue(seatLinkReal2DY,- slbrect.height,this.seat3DHeight)){
+				var isSLVisibleWidth:Boolean = isIntervalValue(seatLinkReal2DX,- slbrect.width,this.seat3DWidth);
+				var isSLVisibleHeight:Boolean = isIntervalValue(seatLinkReal2DY,- slbrect.height,this.seat3DHeight);
+				
+				var isSLBV:Boolean = isBtnVisible(typeSL,this.cameraMural.rotationY);
+				if(isSLBV && isSLVisibleWidth && isSLVisibleHeight){
 					seatLinkBtn.visible = true;
-					
 					seatLinkBtn.x = getIntervalValue(seatLinkReal2DX,- slbrect.width,this.seat3DWidth);
 					seatLinkBtn.y = getIntervalValue(seatLinkReal2DY,- slbrect.height,this.seat3DHeight);
 				}
@@ -1110,6 +1121,33 @@
 		
 		/**
 		 * 
+		 * @param type
+		 * @param rotationY
+		 * @return 
+		 * 
+		 */		
+		public function isBtnVisible(type:Number,rotationY:Number):Boolean{
+			var isBV:Boolean = false;
+			var mry:Number = rotationY % 360;
+			if(type == 0){
+				isBV = isIntervalValue(mry,-90,90);
+			}
+			else if(type == 1){
+				isBV = isIntervalValue(mry,0,180) || isIntervalValue(mry,-360,-270);
+			}
+			else if(type == 2){
+				isBV = isIntervalValue(mry,90,270) || isIntervalValue(mry,-90,-270);
+			}
+			else if(type == 3){
+				isBV = isIntervalValue(mry,180,360) || isIntervalValue(mry,-180,0);
+			}
+			return isBV;
+		}
+		
+		
+		
+		/**
+		 * 
 		 * @param value
 		 * @param min
 		 * @param max
@@ -1117,7 +1155,7 @@
 		 * 
 		 */		
 		public function isIntervalValue(value:Number,min:Number,max:Number):Boolean{
-			if(value < min ||  value >max){
+			if(value < min || value >max){
 				return false;
 			}
 			return true;
@@ -1235,6 +1273,30 @@
 		public function set cameraRotationY(value:Number):void
 		{
 			_cameraRotationY = value;
+		}
+		
+		/**
+		 * 当前点击的壁画 
+		 */
+		public function get currentMuralDO():MuralDO
+		{
+			return _currentMuralDO;
+		}
+		
+		/**
+		 * 当前点击的观察点链接 
+		 */
+		public function get currentSeatLinkDO():SeatLinkDO
+		{
+			return _currentSeatLinkDO;
+		}		
+		
+		/**
+		 * 3D展现对象数据
+		 */
+		public function get seatDO():SeatDO
+		{
+			return _seatDO;
 		}
 		
 	}
