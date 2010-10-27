@@ -282,11 +282,19 @@ package com.snsoft.room3d{
 			var seatPoint:MovieClip = e.currentTarget as MovieClip;
 			this._currentSeatDO = seatPoint.seatDO;
 			
-			this.visualAngle.x = seatPoint.x;
-			this.visualAngle.y = seatPoint.y;
+			setVisualAngle(currentSeatDO);
 			this.dispatchEvent(new Event(EVENT_SEAT_POINT_MOUSE_CLICK));
 		}
 		
+		/**
+		 * 设置视角位置 
+		 * @param seatDO
+		 * 
+		 */		
+		public function setVisualAngle(seatDO:SeatDO):void{
+			this.visualAngle.x = seatDO.place.x;
+			this.visualAngle.y = seatDO.place.y;
+		}
 		
 		public function get room():RoomDO
 		{
