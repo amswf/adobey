@@ -42,7 +42,7 @@ package com.snsoft.room3d{
 		/**
 		 * 房间数据对象 
 		 */		
-		private var _room:RoomDO;
+		private var _roomDO:RoomDO;
 		
 		/**
 		 *当前观察点3D显示对象 
@@ -75,7 +75,7 @@ package com.snsoft.room3d{
 		private var visualAngleRotation:Number;
 		
 		public function RoomMap(room:RoomDO){
-			this.room = room;
+			this.roomDO = room;
 			super();
 		}
 		
@@ -123,12 +123,12 @@ package com.snsoft.room3d{
 		 * 
 		 */		
 		public function loadBgImg():void{
-			if(room.bgImgBitmap == null && room.bgImgUrl != null){
+			if(roomDO.bgImgBitmap == null && roomDO.bgImgUrl != null){
 				var imgl:ImageLoader = new ImageLoader();
-				imgl.loadImage(room.bgImgUrl);
+				imgl.loadImage(roomDO.bgImgUrl);
 				imgl.addEventListener(Event.COMPLETE,handlerLoaderBgImgCmp);
 			}
-			if(room.bgImgBitmap != null) {
+			if(roomDO.bgImgBitmap != null) {
 				init();
 			}
 		}
@@ -140,7 +140,7 @@ package com.snsoft.room3d{
 		 */		
 		private function handlerLoaderBgImgCmp(e:Event):void{
 			var imgl:ImageLoader = e.currentTarget as ImageLoader;
-			room.bgImgBitmap = imgl.bitmapData.clone();
+			roomDO.bgImgBitmap = imgl.bitmapData.clone();
 			init();
 		}
 		
@@ -151,9 +151,9 @@ package com.snsoft.room3d{
 		private function init():void{
 			var sourceSpr:Sprite = new Sprite();
 			
-			var bm:Bitmap = new Bitmap(room.bgImgBitmap.clone(),"auto",true);
+			var bm:Bitmap = new Bitmap(roomDO.bgImgBitmap.clone(),"auto",true);
 			sourceSpr.addChild(bm);
-			var placeHV:HashVector = this.room.placeHV;
+			var placeHV:HashVector = this.roomDO.placeHV;
 			
 			if(placeHV.length > 0){
 				trace("creat visualAngle");
@@ -296,14 +296,14 @@ package com.snsoft.room3d{
 			this.visualAngle.y = seatDO.place.y;
 		}
 		
-		public function get room():RoomDO
+		public function get roomDO():RoomDO
 		{
-			return _room;
+			return _roomDO;
 		}
 		
-		public function set room(value:RoomDO):void
+		public function set roomDO(value:RoomDO):void
 		{
-			_room = value;
+			_roomDO = value;
 		}
 		
 		public function get currentSeatDO():SeatDO

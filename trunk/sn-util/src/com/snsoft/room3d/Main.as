@@ -12,8 +12,6 @@
 	
 	import fl.containers.ScrollPane;
 	
-	import flash.display.Loader;
-	import flash.display.LoaderInfo;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.Stage;
@@ -24,10 +22,8 @@
 	import flash.events.IOErrorEvent;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
-	import flash.external.ExternalInterface;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.geom.Vector3D;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.system.System;
@@ -35,11 +31,6 @@
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
 	import flash.utils.Timer;
-	import flash.utils.getDefinitionByName;
-	import flash.utils.setInterval;
-	import flash.utils.setTimeout;
-	
-	import org.papervision3d.materials.MovieAssetMaterial;
 	
 	public class Main extends MovieClip{
 		
@@ -745,8 +736,23 @@
 				
 				oldSeat3D = currentSeat3D;
 				
-				currentSeat3D = s3d;
+				SpriteUtil.deleteAllChild(this.seat3dLayer);
 				this.seat3dLayer.addChild(s3d);
+				if(!s3d.isDraw){
+					s3d.drawNow();
+				}
+				currentSeat3D = s3d;
+				
+				if(oldSeat3D != null){
+					SpriteUtil.deleteAllChild(this.oldSeat3dLayer);
+					this.oldSeat3dLayer.addChild(oldSeat3D);
+					timerChangeSeatRemovieEvent();
+					this.seat3dLayer.alpha = 0;
+					timerChangeSeat = new Timer(20,10);
+					timerChangeSeat.start();
+					timerChangeSeat.addEventListener(TimerEvent.TIMER,handlerChangeSeatTimer);
+					timerChangeSeat.addEventListener(TimerEvent.TIMER_COMPLETE,handlerChangeSeatTimerCmp);
+				}
 				
 				this.roomMap.setVisualAngleRotation(0);
 				
@@ -760,15 +766,7 @@
 				creatSeat3DSign = true;
 				trace("this.seat3dLayer.numChildren",this.seat3dLayer.numChildren);
 				
-				if(oldSeat3D != null){
-					this.oldSeat3dLayer.addChild(oldSeat3D);
-					timerChangeSeatRemovieEvent();
-					this.seat3dLayer.alpha = 0;
-					timerChangeSeat = new Timer(20,10);
-					timerChangeSeat.start();
-					timerChangeSeat.addEventListener(TimerEvent.TIMER,handlerChangeSeatTimer);
-					timerChangeSeat.addEventListener(TimerEvent.TIMER_COMPLETE,handlerChangeSeatTimerCmp);
-				}
+				
 			}
 		}
 		
@@ -839,6 +837,7 @@
 			var sdo:SeatDO = currentRoomDO.placeHV.findByName(s3dName) as SeatDO;
 			creatSeat3D(sdo);
 			roomMap.setVisualAngle(sdo);
+			setScrollPosition(seatScrollPane,sdo);
 		}
 		
 		private function handlerIntroMsgBtnClick(e:Event):void{
@@ -996,32 +995,32 @@
 			roomMapLayer.addChild(rcBak);
 			roomMapLayer.swapChildren(roomMap,rcBak);
 			
-			var hsp:Number = 0;
-			var vsp:Number = 0;
-			
 			seatScrollPane.source= roomMapLayer;
-			if(roomMap.room != null && roomMap.room.placeHV != null){
-				var firstSeatDO:SeatDO = roomMap.room.placeHV.findByIndex(0) as SeatDO;
-				hsp = firstSeatDO.place.x - seatScrollPane.width / 2;
-				vsp = firstSeatDO.place.y - seatScrollPane.height / 2;
-				if(hsp > seatScrollPane.maxHorizontalScrollPosition){
-					hsp = seatScrollPane.maxHorizontalScrollPosition;
-				}
-				else if(hsp < 0){
-					hsp = 0;
-				}
-				if(vsp > seatScrollPane.maxVerticalScrollPosition){
-					vsp = seatScrollPane.maxVerticalScrollPosition;
-				}
-				else if(vsp < 0){
-					vsp = 0;
-				}
+			if(roomMap.roomDO != null && roomMap.roomDO.placeHV != null){
+				var firstSeatDO:SeatDO = roomMap.roomDO.placeHV.findByIndex(0) as SeatDO;
+				setScrollPosition(seatScrollPane,firstSeatDO);
+				creatSeat3D(firstSeatDO);
+			}			
+		}
+		
+		private function setScrollPosition(scrollPane:ScrollPane,seatDO:SeatDO):void{
+			var hsp:Number = seatDO.place.x - scrollPane.width / 2;
+			var vsp:Number = seatDO.place.y - scrollPane.height / 2;
+			if(hsp > scrollPane.maxHorizontalScrollPosition){
+				hsp = scrollPane.maxHorizontalScrollPosition;
 			}
-			seatScrollPane.horizontalScrollPosition = hsp;
-			seatScrollPane.verticalScrollPosition = vsp;
-			seatScrollPane.update();
+			else if(hsp < 0){
+				hsp = 0;
+			}
+			if(vsp > scrollPane.maxVerticalScrollPosition){
+				vsp = scrollPane.maxVerticalScrollPosition;
+			}
+			else if(vsp < 0){
+				vsp = 0;
+			}
 			
-			creatSeat3D(roomMap.currentSeatDO);
+			scrollPane.horizontalScrollPosition = hsp;
+			scrollPane.verticalScrollPosition = vsp;
 		}
 		
 	}
