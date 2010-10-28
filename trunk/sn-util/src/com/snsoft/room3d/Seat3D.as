@@ -26,6 +26,7 @@
 	import org.papervision3d.materials.BitmapColorMaterial;
 	import org.papervision3d.materials.BitmapFileMaterial;
 	import org.papervision3d.materials.BitmapMaterial;
+	import org.papervision3d.materials.MovieAssetMaterial;
 	import org.papervision3d.materials.MovieMaterial;
 	import org.papervision3d.materials.utils.MaterialsList;
 	import org.papervision3d.objects.primitives.Cube;
@@ -230,30 +231,43 @@
 		private static const CUBE_SIDE_HARF_LEN:Number = 500;
 		
 		/**
-		 * 3D场景中壁画按钮位置 对象
+		 * 3D场景中壁画按钮位置对象
 		 */		
 		private var btn3DMuralFingerV:Vector.<Plane> = new Vector.<Plane>();
 		
 		/**
-		 * 2D场景中壁画按钮位置 对象
+		 * 2D场景中壁画按钮位置对象
 		 */	
 		private var btn2DMuralBtnV:Vector.<MovieClip> = new Vector.<MovieClip>();
 		
 		/**
-		 * 3D场景中位置切换按钮位置 对象
+		 * 3D场景中位置切换按钮位置对象
 		 */		
 		private var btn3DSeatLinkFingerV:Vector.<Plane> = new Vector.<Plane>();
 		
 		/**
-		 * 2D场景中位置切换按钮位置 对象
+		 * 2D场景中位置切换按钮位置对象
 		 */	
 		private var btn2DSeatLinkBtnV:Vector.<MovieClip> = new Vector.<MovieClip>();
+		
+		
+		/**
+		 * 3D场景中等待特效位置对象
+		 */		
+		//private var btn3DWateMovieV:Vector.<Plane> = new Vector.<Plane>();
+		
+		/**
+		 * 2D场景中等待特效位置对象
+		 */	
+		//var btn2DWateMovieV:Vector.<MovieClip> = new Vector.<MovieClip>();
 		
 		private var _currentMuralDO:MuralDO;
 		
 		private var _currentSeatLinkDO:SeatLinkDO;
 		
-		private var plane:Plane;
+		//private var plane:Plane;
+		
+		private var wateMovie:MovieClip;
 		
 		/**
 		 * 构造方法 
@@ -358,6 +372,12 @@
 		 */		
 		private function init3D():void
 		{
+			
+			
+			wateMovie = SkinsUtil.createSkinByName("WateEffect");
+			wateMovie.x = seat3DWidth / 2;
+			wateMovie.y = seat3DHeight / 2;
+			this.addChild(wateMovie);
 			// Create container sprite and center it in the stage
 			viewportPanorama = new Viewport3D(seat3DWidth,seat3DHeight);
 			viewportPanorama.x = 0;
@@ -448,6 +468,14 @@
 				seatLinkBtn.seatLinksIndex = ii;
 				seatLinkBtn.addEventListener(MouseEvent.CLICK,handlerSeatLinkBtnClick);	
 			}
+			/*
+			for(var i3:int = 0;i3 < 6;i3 ++){
+				var wateMovie:MovieClip = SkinsUtil.createSkinByName("WateEffect");
+				wateMovie.visible = false;
+				btn2DLayer.addChild(wateMovie);
+				btn2DWateMovieV.push(wateMovie);
+			}
+			*/
 		}
 		
 		private function handlerMouseOver(e:Event):void{
@@ -695,6 +723,14 @@
 				btn3DSeatLinkFingerV.push(seatLinkPlane);
 				sceneMural.addChild(seatLinkPlane);
 			}
+			
+			/*
+			for(var i3:int =0;i3<4;i3++){
+				var wmPlane:Plane = creatPlane(new Vector3D(500,500,0,i3));
+				sceneMural.addChild(wmPlane);
+				btn3DWateMovieV.push(wmPlane);
+			}
+			*/
 			
 			this.addEventListener(MouseEvent.MOUSE_WHEEL, handlerMouseWheel);
 			this.addEventListener(MouseEvent.MOUSE_DOWN,handlerMouseDown);
@@ -1153,6 +1189,31 @@
 					seatLinkBtn.visible  = false;
 				}	
 			}
+			
+			/*
+			for(var i3:int =0;i3< 4;i3++){
+				var wateMoviePlane:Plane = btn3DWateMovieV[i3];
+				wateMoviePlane.calculateScreenCoords(cameraPanorama);
+				var wateMovieReal2DX:Number = wateMoviePlane.screen.x + viewportPanorama.width/2;
+				var wateMovieReal2DY:Number = wateMoviePlane.screen.y + viewportPanorama.height/2;
+				
+				var wateMovieBtn:MovieClip = btn2DWateMovieV[i3];
+				var wmbrect:Rectangle = wateMovieBtn.getRect(btn2DLayer);
+				
+				var isWMVisibleWidth:Boolean = isIntervalValue(wateMovieReal2DX,- wmbrect.width,this.seat3DWidth);
+				var isWMVisibleHeight:Boolean = isIntervalValue(wateMovieReal2DY,- wmbrect.height,this.seat3DHeight);
+				
+				var isWMBV:Boolean = isBtnVisible(i3,this.cameraMural.rotationY);
+				if(isWMBV && isWMVisibleWidth && isWMVisibleHeight){
+					wateMovieBtn.visible = true;
+					wateMovieBtn.x = getIntervalValue(wateMovieReal2DX,- wmbrect.width,this.seat3DWidth);
+					wateMovieBtn.y = getIntervalValue(wateMovieReal2DY,- wmbrect.height,this.seat3DHeight);
+				}
+				else {
+					wateMovieBtn.visible  = false;
+				}	
+			}
+			*/
 		}
 		
 		/**
@@ -1282,6 +1343,10 @@
 		 */		
 		public function setViewport3DSize(scaleX:Number,scaleY:Number,width:Number,height:Number):void{
 			if(viewportPanorama != null && frame != null){
+				
+				wateMovie.x = width / 2;
+				wateMovie.y = height / 2;
+				
 				this.viewportPanorama.viewportWidth = width;
 				this.viewportPanorama.viewportHeight = height;
 				
