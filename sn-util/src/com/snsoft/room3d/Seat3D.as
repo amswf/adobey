@@ -303,6 +303,19 @@
 			this.invalidate(InvalidationType.ALL,true);
 			this.invalidate(InvalidationType.SIZE,true);
 			super.configUI();
+			this.addEventListener(Event.EXIT_FRAME,handler);
+		}
+		
+		/**
+		 * 不知道为什么有时候组件不自动执行draw 方法。 
+		 * @param e
+		 * 
+		 */		
+		private function handler(e:Event):void{
+			this.removeEventListener(Event.EXIT_FRAME,handler);
+			if(!isDraw){
+				this.drawNow();
+			}
 		}
 		
 		/**
@@ -752,8 +765,7 @@
 			
 			var mc:MovieClip = getDisplayObjectInstance(getStyleValue("seat3DFingerpostDefaultSkin")) as MovieClip;
 			var material:MovieMaterial = new MovieMaterial(mc,true);
-			var plane:Plane = new Plane(material,25,45,1,1);
-			
+			var plane:Plane = new Plane(material,mc.width,mc.height,1,1);
 			plane.x = place3D.x;
 			plane.y = place3D.y;
 			plane.z = place3D.z;

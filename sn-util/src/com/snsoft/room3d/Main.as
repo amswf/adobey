@@ -738,9 +738,6 @@
 				
 				SpriteUtil.deleteAllChild(this.seat3dLayer);
 				this.seat3dLayer.addChild(s3d);
-				if(!s3d.isDraw){
-					s3d.drawNow();
-				}
 				currentSeat3D = s3d;
 				
 				if(oldSeat3D != null){
