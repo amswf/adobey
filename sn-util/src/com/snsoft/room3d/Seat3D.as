@@ -213,10 +213,7 @@
 		 */		
 		private var autoMoveCount:int = AUTO_MOVE_COUNT_MAX;
 		
-		/**
-		 * 当前组件是否已经绘制完成 
-		 */		
-		private var isDraw:Boolean = false;
+		private var _isDraw:Boolean = false;
 		
 		/**
 		 * 显示边框 
@@ -315,6 +312,7 @@
 		override protected function draw():void{
 			trace("Seat3D draw");
 			if(!isDraw){
+				_isDraw = true;
 				trace("Seat3D draw false");
 				init3D();
 				create3DDisplayObject();
@@ -1286,9 +1284,18 @@
 		}
 		
 		public function rendererAll():void{
-			rendererPanorama.renderScene(scenePanorama,cameraPanorama,viewportPanorama);
-			rendererMural.renderScene(sceneMural,cameraMural,viewportMural);
-			refresh2DBtns();
+			if( scenePanorama != null 
+				&& cameraPanorama != null
+				&& viewportPanorama != null
+				&& sceneMural != null
+				&& cameraMural != null
+				&& viewportMural != null
+				&& rendererPanorama != null
+				&& rendererMural != null){
+				rendererPanorama.renderScene(scenePanorama,cameraPanorama,viewportPanorama);
+				rendererMural.renderScene(sceneMural,cameraMural,viewportMural);
+				refresh2DBtns();
+			}
 		}
 		
 		public function get cameraRotationY():Number
@@ -1324,6 +1331,15 @@
 		{
 			return _seatDO;
 		}
+		
+		/**
+		 * 当前组件是否已经绘制完成 
+		 */
+		public function get isDraw():Boolean
+		{
+			return _isDraw;
+		}
+		
 		
 	}
 }
