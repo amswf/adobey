@@ -1,5 +1,6 @@
 package com.snsoft.room3d{
 	import com.snsoft.util.ImageLoader;
+	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.StringUtil;
 	import com.snsoft.util.text.Text;
 	
@@ -38,6 +39,8 @@ package com.snsoft.room3d{
 		private var imgMask:MovieClip;
 		
 		private var imgLayer:Sprite;
+		
+		private var wateMovie:MovieClip;
 		
 		public function RoomCard(roomDO:RoomDO)
 		{
@@ -85,6 +88,11 @@ package com.snsoft.room3d{
 			back.width = this.width;
 			this.addChild(back);
 			
+			wateMovie = SkinsUtil.createSkinByName("WateEffect");
+			wateMovie.x = this.width / 2;
+			wateMovie.y = (this.height + tfdHeight) / 2;
+			this.addChild(wateMovie);
+			
 			imgLayer = new Sprite();
 			this.addChild(imgLayer);
 			loadTitleImg();
@@ -129,6 +137,8 @@ package com.snsoft.room3d{
 		 * 
 		 */		
 		private function handlerLoaderTitleImgCmp(e:Event):void{
+			wateMovie.stop();
+			wateMovie.visible = false;
 			var imgl:ImageLoader = e.currentTarget as ImageLoader;
 			roomDO.titleImgBitmap = imgl.bitmapData;
 			var bm:Bitmap = new Bitmap(roomDO.titleImgBitmap.clone(),"auto",true);
