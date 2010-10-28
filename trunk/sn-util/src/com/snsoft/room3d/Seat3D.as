@@ -307,7 +307,7 @@
 		}
 		
 		/**
-		 * 不知道为什么有时候组件不自动执行draw 方法。 
+		 * 不知道为什么有时候组件不自动执行draw 方法，可能是创建地图
 		 * @param e
 		 * 
 		 */		
@@ -1166,13 +1166,13 @@
 			var isBV:Boolean = false;
 			var mry:Number = rotationY % 360;
 			if(type == 0){
-				isBV = isIntervalValue(mry,-90,90);
+				isBV = isIntervalValue(mry,-90,90) || isIntervalValue(mry,270,360) || isIntervalValue(mry,-360,-270);
 			}
 			else if(type == 1){
-				isBV = isIntervalValue(mry,0,180) || isIntervalValue(mry,-360,-270);
+				isBV = isIntervalValue(mry,0,180) || isIntervalValue(mry,-360,-180);
 			}
 			else if(type == 2){
-				isBV = isIntervalValue(mry,90,270) || isIntervalValue(mry,-90,-270);
+				isBV = isIntervalValue(mry,90,270) || isIntervalValue(mry,-270,-90);
 			}
 			else if(type == 3){
 				isBV = isIntervalValue(mry,180,360) || isIntervalValue(mry,-180,0);
