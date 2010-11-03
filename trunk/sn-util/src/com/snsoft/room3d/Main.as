@@ -606,8 +606,8 @@
 			mainLayer.addChild(this.roomLayer);
 			mainLayer.addChild(this.roomTextLayer);
 			mainLayer.addChild(seat3DBack);
-			mainLayer.addChild(this.seat3dLayer);
 			mainLayer.addChild(this.oldSeat3dLayer);
+			mainLayer.addChild(this.seat3dLayer);
 			mainLayer.addChild(this.seatTextLayer);
 			
 			seatScrollPane = new ScrollPane();
@@ -769,12 +769,12 @@
 		
 		private function handlerChangeSeatTimer(e:Event):void{
 			this.seat3dLayer.alpha += 0.1;
-			this.oldSeat3dLayer.alpha -= 0.1;
+			//this.oldSeat3dLayer.alpha -= 0.1;
 		}
 		
 		private function handlerChangeSeatTimerCmp(e:Event):void{
 			this.seat3dLayer.alpha = 1;
-			this.oldSeat3dLayer.alpha = 0;
+			//this.oldSeat3dLayer.alpha = 0;
 			timerChangeSeatRemovieEvent();
 			changeSeatCmp();
 		}

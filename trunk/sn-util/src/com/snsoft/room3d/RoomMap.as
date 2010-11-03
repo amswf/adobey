@@ -38,6 +38,12 @@ package com.snsoft.room3d{
 		 * 旋转视角事件
 		 */			
 		public static const EVENT_VISUAL_ANGLE_ROTATE:String = "EVENT_VISUAL_ANGLE_ROTATE";
+		
+		/**
+		 * 没有旋转事件 
+		 */		
+		public static const EVENT_VISUAL_ANGLE_ROTATE_STOP:String = "EVENT_VISUAL_ANGLE_ROTATE_STOP";
+		
 
 		/**
 		 * 房间数据对象 
@@ -208,6 +214,9 @@ package com.snsoft.room3d{
 				var nRotation:Number = this.calculateRotation();
 				this.visualAngle.rotation = visualAngleRotation + nRotation - mouseDownRotation;
 				this.dispatchEvent(new Event(EVENT_VISUAL_ANGLE_ROTATE));
+			}
+			else {
+				this.dispatchEvent(new Event(EVENT_VISUAL_ANGLE_ROTATE_STOP));
 			}
 		}
 		
