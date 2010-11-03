@@ -773,6 +773,8 @@
 		}
 		
 		private function handlerChangeSeatTimerCmp(e:Event):void{
+			this.seat3dLayer.alpha = 1;
+			this.oldSeat3dLayer.alpha = 0;
 			timerChangeSeatRemovieEvent();
 			changeSeatCmp();
 		}
