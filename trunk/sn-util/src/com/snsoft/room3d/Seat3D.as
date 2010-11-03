@@ -263,11 +263,22 @@
 		
 		private var _currentMuralDO:MuralDO;
 		
+		/**
+		 * 当前观察点链接数据对象 
+		 */		
 		private var _currentSeatLinkDO:SeatLinkDO;
 		
 		//private var plane:Plane;
 		
-		private var wateMovie:MovieClip;
+		/**
+		 * 等待加载动画 
+		 */		
+		private var waitMovie:MovieClip;
+		
+		/**
+		 *加载数量 
+		 */		
+		private var loadCount:int = 0;
 		
 		/**
 		 * 构造方法 
@@ -374,10 +385,11 @@
 		{
 			
 			
-			wateMovie = SkinsUtil.createSkinByName("WateEffect");
-			wateMovie.x = seat3DWidth / 2;
-			wateMovie.y = seat3DHeight / 2;
-			this.addChild(wateMovie);
+			waitMovie = SkinsUtil.createSkinByName("WateEffect");
+			waitMovie.x = seat3DWidth / 2;
+			waitMovie.y = seat3DHeight / 2;
+			waitMovie.visible = false;
+			this.addChild(waitMovie);
 			// Create container sprite and center it in the stage
 			viewportPanorama = new Viewport3D(seat3DWidth,seat3DHeight);
 			viewportPanorama.x = 0;
@@ -835,6 +847,8 @@
 					}
 					else {
 						material = new BitmapFileMaterial(burl);
+						waitMovie.visible = true;
+						loadCount ++;
 						material.addEventListener(FileLoadEvent.LOAD_COMPLETE,handlerLoadBallImgCmp);
 						
 						function handlerLoadBallImgCmp(e:Event):void{
@@ -866,6 +880,10 @@
 							ImgCatch.imgHV.push(bitmapData,burl);
 							material.bitmap = bitmapData;
 							seatDO.imageBitMapData.push(material.bitmap,fileType);
+							loadCount --;
+							if(loadCount == 0){
+								waitMovie.visible = false;
+							}
 						}
 					}	
 				}
@@ -1344,8 +1362,8 @@
 		public function setViewport3DSize(scaleX:Number,scaleY:Number,width:Number,height:Number):void{
 			if(viewportPanorama != null && frame != null){
 				
-				wateMovie.x = width / 2;
-				wateMovie.y = height / 2;
+				waitMovie.x = width / 2;
+				waitMovie.y = height / 2;
 				
 				this.viewportPanorama.viewportWidth = width;
 				this.viewportPanorama.viewportHeight = height;
