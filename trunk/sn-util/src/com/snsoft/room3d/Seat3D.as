@@ -1158,24 +1158,35 @@
 		 */		
 		public function refresh2DBtns():void{
 			var murals:Vector.<MuralDO> = this.seatDO.murals;
+			
+			var s3dw:Number = this.viewportMural.viewportWidth * this.viewportMural.scaleX;
+			var s3dh:Number = this.viewportMural.viewportHeight * this.viewportMural.scaleY;
+			
+			var s3dsclx:Number = this.viewportMural.scaleX;
+			var s3dscly:Number = this.viewportMural.scaleY;
+
+			trace("s3dw s3dh ",s3dw,s3dh);
+			
 			for(var i:int =0;i<btn2DMuralBtnV.length;i++){
 				var mdo:MuralDO = murals[i];
 				var typem:Number = mdo.type;
 				var muralPlane:Plane = btn3DMuralFingerV[i];
 				muralPlane.calculateScreenCoords(cameraPanorama);
-				var real2DX:Number = muralPlane.screen.x+viewportPanorama.width/2;
-				var real2DY:Number = muralPlane.screen.y+viewportPanorama.height/2;
+				var real2DX:Number = muralPlane.screen.x * s3dsclx+s3dw/2;
+				var real2DY:Number = muralPlane.screen.y * s3dsclx+s3dh/2;
 				
 				var muralBtn:MovieClip = btn2DMuralBtnV[i];
 				var mtrect:Rectangle = muralBtn.getRect(btn2DLayer);
 				
-				var isVisibleWidth:Boolean = isIntervalValue(real2DX,- mtrect.width,this.seat3DWidth);
-				var isVisibleHeight:Boolean = isIntervalValue(real2DY,- mtrect.height,this.seat3DHeight);
+				var isVisibleWidth:Boolean = isIntervalValue(real2DX,- mtrect.width,s3dw);
+				var isVisibleHeight:Boolean = isIntervalValue(real2DY,- mtrect.height,s3dh);
 				var isBV:Boolean = isBtnVisible(typem,this.cameraMural.rotationY);
 				if(isBV && isVisibleWidth && isVisibleHeight){
 					muralBtn.visible = true;
-					muralBtn.x = getIntervalValue(real2DX,- mtrect.width,this.seat3DWidth);
-					muralBtn.y = getIntervalValue(real2DY,- mtrect.height,this.seat3DHeight);
+					muralBtn.x = getIntervalValue(real2DX,- mtrect.width,s3dw);
+					muralBtn.y = getIntervalValue(real2DY,- mtrect.height,s3dh);
+					trace("muralBtn",muralBtn.x,muralBtn.y);
+
 				}
 				else {
 					muralBtn.visible  = false;
@@ -1188,20 +1199,20 @@
 				var typeSL:Number = sdo.type;
 				var seatLinkPlane:Plane = btn3DSeatLinkFingerV[ii];
 				seatLinkPlane.calculateScreenCoords(cameraPanorama);
-				var seatLinkReal2DX:Number = seatLinkPlane.screen.x + viewportPanorama.width/2;
-				var seatLinkReal2DY:Number = seatLinkPlane.screen.y + viewportPanorama.height/2;
+				var seatLinkReal2DX:Number = seatLinkPlane.screen.x * s3dsclx + s3dw/2;
+				var seatLinkReal2DY:Number = seatLinkPlane.screen.y * s3dsclx + s3dh/2;
 				
 				var seatLinkBtn:MovieClip = btn2DSeatLinkBtnV[ii];
 				var slbrect:Rectangle = seatLinkBtn.getRect(btn2DLayer);
 				
-				var isSLVisibleWidth:Boolean = isIntervalValue(seatLinkReal2DX,- slbrect.width,this.seat3DWidth);
-				var isSLVisibleHeight:Boolean = isIntervalValue(seatLinkReal2DY,- slbrect.height,this.seat3DHeight);
+				var isSLVisibleWidth:Boolean = isIntervalValue(seatLinkReal2DX,- slbrect.width,s3dw);
+				var isSLVisibleHeight:Boolean = isIntervalValue(seatLinkReal2DY,- slbrect.height,s3dh);
 				
 				var isSLBV:Boolean = isBtnVisible(typeSL,this.cameraMural.rotationY);
 				if(isSLBV && isSLVisibleWidth && isSLVisibleHeight){
 					seatLinkBtn.visible = true;
-					seatLinkBtn.x = getIntervalValue(seatLinkReal2DX,- slbrect.width,this.seat3DWidth);
-					seatLinkBtn.y = getIntervalValue(seatLinkReal2DY,- slbrect.height,this.seat3DHeight);
+					seatLinkBtn.x = getIntervalValue(seatLinkReal2DX,- slbrect.width,s3dw);
+					seatLinkBtn.y = getIntervalValue(seatLinkReal2DY,- slbrect.height,s3dh);
 				}
 				else {
 					seatLinkBtn.visible  = false;
@@ -1367,13 +1378,20 @@
 				
 				this.viewportPanorama.viewportWidth = width;
 				this.viewportPanorama.viewportHeight = height;
+				this.viewportPanorama.scaleX = scaleX;
+				this.viewportPanorama.scaleY = scaleY;
+				
+				this.viewportMural.viewportWidth = width;
+				this.viewportMural.viewportHeight = height;
+				this.viewportMural.scaleX = scaleX;
+				this.viewportMural.scaleY = scaleY;
 				
 				frame.width = width * scaleX;
 				frame.height = height * scaleY;
 				
-				this.viewportPanorama.scaleX = scaleX;
-				this.viewportPanorama.scaleY = scaleY;
-				
+				btnMask.width = width * scaleX;
+				btnMask.height = height * scaleY;
+	
 				rendererAll();
 			}
 		}
