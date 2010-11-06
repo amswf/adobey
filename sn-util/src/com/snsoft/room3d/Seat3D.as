@@ -1,12 +1,15 @@
 ﻿package com.snsoft.room3d{
 	import ascb.util.StringUtilities;
 	
+	import com.adobe.crypto.MD5;
+	import com.snsoft.util.HashVector;
 	import com.snsoft.util.ShapeUtil;
 	import com.snsoft.util.SkinsUtil;
 	
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
 	
+	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.MovieClip;
 	import flash.display.Shape;
@@ -26,6 +29,7 @@
 	import org.papervision3d.materials.BitmapColorMaterial;
 	import org.papervision3d.materials.BitmapFileMaterial;
 	import org.papervision3d.materials.BitmapMaterial;
+	import org.papervision3d.materials.ColorMaterial;
 	import org.papervision3d.materials.MovieAssetMaterial;
 	import org.papervision3d.materials.MovieMaterial;
 	import org.papervision3d.materials.utils.MaterialsList;
@@ -254,13 +258,28 @@
 		/**
 		 * 3D场景中等待特效位置对象
 		 */		
-		//private var btn3DWateMovieV:Vector.<Plane> = new Vector.<Plane>();
+		private var btn3DWaitMovieV:Vector.<Plane> = new Vector.<Plane>();
 		
 		/**
 		 * 2D场景中等待特效位置对象
 		 */	
-		//var btn2DWateMovieV:Vector.<MovieClip> = new Vector.<MovieClip>();
+		private var btn2DWaitMovieV:Vector.<MovieClip> = new Vector.<MovieClip>();
 		
+		/**
+		 * 一行显示多少个等待动画 
+		 */		
+		private var WAIT_MOVIE_NUM_X:int = 3;
+		
+		/**
+		 * 一列显示多少个等待动画 
+		 */		
+		private var WAIT_MOVIE_NUM_Y:int = 3;
+		
+		private var FACE_NUM_3D:int = 6;
+		
+		/**
+		 * 当前壁画数据对象 
+		 */		
 		private var _currentMuralDO:MuralDO;
 		
 		/**
@@ -268,17 +287,21 @@
 		 */		
 		private var _currentSeatLinkDO:SeatLinkDO;
 		
+		
 		//private var plane:Plane;
 		
 		/**
 		 * 等待加载动画 
 		 */		
-		private var waitMovie:MovieClip;
+		//private var waitMovie:MovieClip;
 		
 		/**
 		 *加载数量 
 		 */		
 		private var loadCount:int = 0;
+				
+		private var materialFileTypeHV:HashVector = new HashVector();
+		
 		
 		/**
 		 * 构造方法 
@@ -361,20 +384,7 @@
 			}
 		}
 		
-		/**
-		 *创建鼠标按下皮肤 
-		 * 
-		 */		
-		private function creatDownMouse():void{
-			downMouse = getDisplayObjectInstance(getStyleValue("seat3DMouseDownSkin")) as MovieClip;
-			downMoveMouse = getDisplayObjectInstance(getStyleValue("seat3DMouseDownMoveSkin")) as MovieClip;
-			this.addChild(downMouse);
-			this.addChild(downMoveMouse);
-			downMouse.mouseEnabled = false;
-			downMoveMouse.mouseEnabled = false;
-			downMouse.visible = false;
-			downMoveMouse.visible = false;
-		}
+		
 		
 		
 		/**
@@ -383,13 +393,14 @@
 		 */		
 		private function init3D():void
 		{
-			
-			
-			waitMovie = SkinsUtil.createSkinByName("WateEffect");
+			trace("init3D()");
+			/*
+			waitMovie = SkinsUtil.createSkinByName("WaitEffect");
 			waitMovie.x = seat3DWidth / 2;
 			waitMovie.y = seat3DHeight / 2;
 			waitMovie.visible = false;
 			this.addChild(waitMovie);
+			*/
 			// Create container sprite and center it in the stage
 			viewportPanorama = new Viewport3D(seat3DWidth,seat3DHeight);
 			viewportPanorama.x = 0;
@@ -480,20 +491,636 @@
 				seatLinkBtn.seatLinksIndex = ii;
 				seatLinkBtn.addEventListener(MouseEvent.CLICK,handlerSeatLinkBtnClick);	
 			}
-			/*
-			for(var i3:int = 0;i3 < 6;i3 ++){
-				var wateMovie:MovieClip = SkinsUtil.createSkinByName("WateEffect");
-				wateMovie.visible = false;
-				btn2DLayer.addChild(wateMovie);
-				btn2DWateMovieV.push(wateMovie);
+			
+			for(var i3:int = 0;i3 < FACE_NUM_3D;i3 ++){
+				var waitN:int = WAIT_MOVIE_NUM_X * WAIT_MOVIE_NUM_Y;
+				for(var j3:int =0;j3 < waitN ;j3++){
+					var waitMovie:MovieClip = SkinsUtil.createSkinByName("WaitEffect");
+					waitMovie.visible = false;
+					btn2DLayer.addChild(waitMovie);
+					btn2DWaitMovieV.push(waitMovie);
+				}
 			}
-			*/
+			
 		}
 		
+		/**
+		 *创建鼠标按下皮肤 
+		 * 
+		 */		
+		private function creatDownMouse():void{
+			downMouse = getDisplayObjectInstance(getStyleValue("seat3DMouseDownSkin")) as MovieClip;
+			downMoveMouse = getDisplayObjectInstance(getStyleValue("seat3DMouseDownMoveSkin")) as MovieClip;
+			this.addChild(downMouse);
+			this.addChild(downMoveMouse);
+			downMouse.mouseEnabled = false;
+			downMoveMouse.mouseEnabled = false;
+			downMouse.visible = false;
+			downMoveMouse.visible = false;
+		}
+		
+		
+		/**
+		 * 创建3D显示物体
+		 * 
+		 */		
+		private function create3DDisplayObject():void{
+			trace("create3DDisplayObject()");
+			
+			//添加壁画标记点
+			var murals:Vector.<MuralDO> = this.seatDO.murals;
+			for(var i:int =0;i<murals.length;i++){
+				var mdo:MuralDO = murals[i];
+				var muralPlane:Plane = creatPlane(new Vector3D(mdo.x,mdo.y,0,mdo.type));
+				btn3DMuralFingerV.push(muralPlane);
+				sceneMural.addChild(muralPlane);
+			}
+			
+			//添加观察点链接标记点
+			var seatLinks:Vector.<SeatLinkDO> = this.seatDO.seatLinks;
+			for(var ii:int =0;ii<seatLinks.length;ii++){
+				var sdo:SeatLinkDO = seatLinks[ii];
+				var seatLinkPlane:Plane = creatPlane(new Vector3D(sdo.x,sdo.y,0,sdo.type));
+				btn3DSeatLinkFingerV.push(seatLinkPlane);
+				sceneMural.addChild(seatLinkPlane);
+			}
+			
+			//添加等待3d动画标记点
+			var wms:Number = 100;
+			var wmps:Number = CUBE_SIDE_HARF_LEN - wms; 
+			for(var i3:int =0;i3<6;i3++){
+				for(var j3:int =0;j3<3;j3++){
+					for(var k3:int =0;k3<3;k3++){
+						var wmx:Number = j3 * wmps + wms;
+						var wmy:Number = k3 * wmps + wms;
+						var wmPlane:Plane = creatPlane(new Vector3D(wmx,wmy,0,i3));
+						sceneMural.addChild(wmPlane);
+						btn3DWaitMovieV.push(wmPlane);
+					}
+				}
+			}
+			
+			//主3D场景，正方体，六面帖图
+			var size :Number = CUBE_SIDE_HARF_LEN * 2;
+			var quality :Number = 16;
+			
+			//正方体材质
+			var materials:MaterialsList = new MaterialsList(
+				{
+					//all:
+					front:  creatBitMap(seatDO,SeatDO.FRONT),
+					back:   creatBitMap(seatDO,SeatDO.BACK),
+					right:  creatBitMap(seatDO,SeatDO.RIGHT),
+					left:   creatBitMap(seatDO,SeatDO.LEFT),
+					top:    creatBitMap(seatDO,SeatDO.TOP),
+					bottom: creatBitMap(seatDO,SeatDO.BOTTOM)
+				} );
+			
+			var insideFaces  :int = Cube.ALL;
+			var excludeFaces :int = Cube.NONE;
+			
+			//创建正方体
+			cube = new Cube( materials, size, size, size, quality, quality, quality, insideFaces, excludeFaces );
+			cube.z = -CUBE_SIDE_HARF_LEN - 500;
+			scenePanorama.addChild( cube, "Cube" );
+			
+			/*
+			Sphere
+			var material:MaterialObject3D = creatBitMap(seatDO,SeatDO.BALL); 
+			material.doubleSided = true;
+			material.smooth = true;
+			ball = new Sphere(material,2000,60,40);
+			ball.z = -1000;
+			scene.addChild(ball);
+			*/			
+			
+			this.addEventListener(MouseEvent.MOUSE_WHEEL, handlerMouseWheel);
+			this.addEventListener(MouseEvent.MOUSE_DOWN,handlerMouseDown);
+			this.addEventListener(MouseEvent.MOUSE_UP,handlerMouseUp);
+			this.addEventListener(Event.ENTER_FRAME,handlerEnterFrame);
+			this.dispatchEvent(new Event(SEAT3D_CMP_EVENT));
+		}
+		
+		private function calculateCubeTo3DRotation(v3d:Vector3D):Vector3D{
+			var rotation3D:Vector3D = new Vector3D();
+			if(v3d.w == 0){
+				rotation3D.y = 0; 
+			}
+			else if(v3d.w == 1){
+				rotation3D.y = 90; 			 
+			}
+			else if(v3d.w == 2){
+				rotation3D.y = 180; 		 
+			}
+			else if(v3d.w == 3){
+				rotation3D.y = 270; 		 
+			}
+			else if(v3d.w == 4){
+				rotation3D.x = 270; 		 
+			}
+			else if(v3d.w == 5){
+				rotation3D.x = 90; 		 
+			}
+			return rotation3D;
+		}
+		
+		/**
+		 * 
+		 * @param v3d
+		 * @return 
+		 * 
+		 */		
+		private function calculateCubeTo3DPlace(v3d:Vector3D):Vector3D{
+			var place3D:Vector3D = new Vector3D();
+			if(v3d.w == 0){
+				place3D.x = v3d.x - CUBE_SIDE_HARF_LEN;
+				place3D.y = -(v3d.y - CUBE_SIDE_HARF_LEN);
+				place3D.z = - CUBE_SIDE_HARF_LEN;
+			}
+			else if(v3d.w == 1){
+				place3D.x = CUBE_SIDE_HARF_LEN;
+				place3D.y = -(v3d.y - CUBE_SIDE_HARF_LEN);
+				place3D.z = - v3d.x - CUBE_SIDE_HARF_LEN;
+			}
+			else if(v3d.w == 2){
+				place3D.x = -(v3d.x - CUBE_SIDE_HARF_LEN);
+				place3D.y = -(v3d.y - CUBE_SIDE_HARF_LEN);
+				place3D.z = - CUBE_SIDE_HARF_LEN - 500 - CUBE_SIDE_HARF_LEN;
+			}
+			else if(v3d.w == 3){
+				place3D.x = -CUBE_SIDE_HARF_LEN;
+				place3D.y = -(v3d.y - CUBE_SIDE_HARF_LEN);
+				place3D.z = v3d.x - CUBE_SIDE_HARF_LEN - 500 - CUBE_SIDE_HARF_LEN;
+			}
+			else if(v3d.w == 4){
+				place3D.x = v3d.x - CUBE_SIDE_HARF_LEN;
+				place3D.y = CUBE_SIDE_HARF_LEN;
+				place3D.z = v3d.y - CUBE_SIDE_HARF_LEN - 500 - CUBE_SIDE_HARF_LEN;
+			}
+			else if(v3d.w == 5){
+				place3D.x = v3d.x - CUBE_SIDE_HARF_LEN;
+				place3D.y = -CUBE_SIDE_HARF_LEN;
+				place3D.z = -(v3d.y - CUBE_SIDE_HARF_LEN) - 500 - CUBE_SIDE_HARF_LEN;
+			}
+			return place3D;
+		}
+		
+		/**
+		 * 
+		 * @param place3D
+		 * @param rotation
+		 * @return 
+		 * 
+		 */		
+		private function creatPlane(placeCube:Vector3D):Plane{
+			
+			var place3D:Vector3D = calculateCubeTo3DPlace(placeCube);
+			var rotation3D:Vector3D = calculateCubeTo3DRotation(placeCube);
+			
+			var mc:MovieClip = getDisplayObjectInstance(getStyleValue("seat3DFingerpostDefaultSkin")) as MovieClip;
+			var material:MovieMaterial = new MovieMaterial(mc,true);
+			var plane:Plane = new Plane(material,mc.width,mc.height,1,1);
+			plane.x = place3D.x;
+			plane.y = place3D.y;
+			plane.z = place3D.z;
+			
+			plane.rotationX = rotation3D.x;
+			plane.rotationY = rotation3D.y;
+			plane.rotationZ = rotation3D.z;
+			
+			return plane;
+		}
+		
+		
+		/**
+		 * 创建贴图 
+		 * @param seatDO
+		 * @param fileType
+		 * @return 
+		 * 
+		 */		
+		private function creatBitMap(seatDO:SeatDO,fileType:String):MaterialObject3D{
+			var isLoad:Boolean = false;
+			var material:MaterialObject3D;
+			var typeInt:int = CubeFaceType.transTypeToInt(fileType);
+			if(seatDO != null && fileType != null && fileType.length > 0){
+				var bitMapData:BitmapData = seatDO.imageBitMapData.findByName(fileType) as BitmapData;
+				if(bitMapData == null){
+					var burl:String = seatDO.imageUrlHV.findByName(fileType) as String;;
+					var catchBitmapData:BitmapData = ImgCatch.imgHV.findByName(burl) as BitmapData;
+					
+					if(catchBitmapData != null){
+						material = new BitmapMaterial(catchBitmapData);
+					}
+					else {
+						material = new BitmapFileMaterial(burl);
+						material.name = MD5.hash(burl);
+						materialFileTypeHV.push(fileType,material.name);
+						//waitMovie.visible = true;
+						//loadCount ++;
+						material.addEventListener(FileLoadEvent.LOAD_COMPLETE,handlerLoadBallImgCmp);
+						material.addEventListener(FileLoadEvent.LOAD_ERROR,handlerLoadBallImgError);
+						isLoad = true;
+						
+					}	
+				}
+				else {
+					material = new BitmapMaterial(bitMapData);
+				}
+			}
+			if(material != null){
+				material.smooth = true;
+				material.oneSide = true;
+				//material.opposite = true;
+			}
+			if(!isLoad){
+				if(material.bitmap.width > 1 && material.bitmap.height > 1){
+					deleteFaceWaitMovies(typeInt);
+				}
+			}
+			return material;
+		}
+		
+		
+		
+		/**
+		 * 
+		 * 
+		 */		
+		public function refresh2DBtns():void{
+			var murals:Vector.<MuralDO> = this.seatDO.murals;
+			
+			var s3dw:Number = this.viewportMural.viewportWidth * this.viewportMural.scaleX;
+			var s3dh:Number = this.viewportMural.viewportHeight * this.viewportMural.scaleY;
+			
+			var s3dsclx:Number = this.viewportMural.scaleX;
+			var s3dscly:Number = this.viewportMural.scaleY;
+			
+			
+			for(var i:int =0;i < btn2DMuralBtnV.length;i++){
+				var mdo:MuralDO = murals[i];
+				var typem:Number = mdo.type;
+				var muralPlane:Plane = btn3DMuralFingerV[i];
+				muralPlane.calculateScreenCoords(cameraPanorama);
+				var real2DX:Number = muralPlane.screen.x * s3dsclx+s3dw/2;
+				var real2DY:Number = muralPlane.screen.y * s3dsclx+s3dh/2;
+				
+				var muralBtn:MovieClip = btn2DMuralBtnV[i];
+				var mtrect:Rectangle = muralBtn.getRect(btn2DLayer);
+				
+				var isVisibleWidth:Boolean = isIntervalValue(real2DX,- mtrect.width,s3dw);
+				var isVisibleHeight:Boolean = isIntervalValue(real2DY,- mtrect.height,s3dh);
+				var isBV:Boolean = isBtnVisible(typem,this.cameraMural.rotationX,this.cameraMural.rotationY);
+				if(isBV && isVisibleWidth && isVisibleHeight){
+					muralBtn.visible = true;
+					muralBtn.x = getIntervalValue(real2DX,- mtrect.width,s3dw);
+					muralBtn.y = getIntervalValue(real2DY,- mtrect.height,s3dh);
+					
+				}
+				else {
+					muralBtn.visible  = false;
+				}	
+			}
+			
+			var seatLinks:Vector.<SeatLinkDO> = this.seatDO.seatLinks;
+			for(var ii:int =0;ii<btn2DSeatLinkBtnV.length;ii++){
+				var sdo:SeatLinkDO = seatLinks[ii];
+				var typeSL:Number = sdo.type;
+				var seatLinkPlane:Plane = btn3DSeatLinkFingerV[ii];
+				seatLinkPlane.calculateScreenCoords(cameraPanorama);
+				var seatLinkReal2DX:Number = seatLinkPlane.screen.x * s3dsclx + s3dw/2;
+				var seatLinkReal2DY:Number = seatLinkPlane.screen.y * s3dsclx + s3dh/2;
+				
+				var seatLinkBtn:MovieClip = btn2DSeatLinkBtnV[ii];
+				var slbrect:Rectangle = seatLinkBtn.getRect(btn2DLayer);
+				
+				var isSLVisibleWidth:Boolean = isIntervalValue(seatLinkReal2DX,- slbrect.width,s3dw);
+				var isSLVisibleHeight:Boolean = isIntervalValue(seatLinkReal2DY,- slbrect.height,s3dh);
+				
+				var isSLBV:Boolean = isBtnVisible(typeSL,this.cameraMural.rotationX,this.cameraMural.rotationY);
+				if(isSLBV && isSLVisibleWidth && isSLVisibleHeight){
+					seatLinkBtn.visible = true;
+					seatLinkBtn.x = getIntervalValue(seatLinkReal2DX,- slbrect.width,s3dw);
+					seatLinkBtn.y = getIntervalValue(seatLinkReal2DY,- slbrect.height,s3dh);
+				}
+				else {
+					seatLinkBtn.visible  = false;
+				}	
+			}
+			
+			
+			for(var i3:int =0;i3< btn3DWaitMovieV.length;i3++){
+				var waitMoviePlane:Plane = btn3DWaitMovieV[i3];
+				var waitMovieBtn:MovieClip = btn2DWaitMovieV[i3];
+				
+				if(waitMoviePlane != null && waitMovieBtn != null){
+					waitMoviePlane.calculateScreenCoords(cameraPanorama);
+					var waitMovieReal2DX:Number = waitMoviePlane.screen.x * s3dsclx + s3dw/2;
+					var waitMovieReal2DY:Number = waitMoviePlane.screen.y * s3dsclx + s3dh/2;
+					
+					
+					var wmbrect:Rectangle = waitMovieBtn.getRect(btn2DLayer);
+					
+					var isWMVisibleWidth:Boolean = isIntervalValue(waitMovieReal2DX,- wmbrect.width,s3dw);
+					var isWMVisibleHeight:Boolean = isIntervalValue(waitMovieReal2DY,- wmbrect.height,s3dh);
+					
+					var typewm:int = int(i3 / (WAIT_MOVIE_NUM_X * waitMovieReal2DY));
+					var isWMBV:Boolean = isBtnVisible(typewm,this.cameraMural.rotationX,this.cameraMural.rotationY);
+					if(isWMBV && isWMVisibleWidth && isWMVisibleHeight){
+						waitMovieBtn.visible = true;
+						waitMovieBtn.x = getIntervalValue(waitMovieReal2DX,- wmbrect.width,s3dw);
+						waitMovieBtn.y = getIntervalValue(waitMovieReal2DY,- wmbrect.height,s3dh);
+					}
+					else {
+						waitMovieBtn.visible  = false;
+					}	
+				}
+			}
+			
+		}
+		
+		/**
+		 * 
+		 * @param type
+		 * @param rotationY
+		 * @return 
+		 * 
+		 */		
+		public function isBtnVisible(type:int,rotationX:Number,rotationY:Number):Boolean{
+			var isBV:Boolean = false;
+			var mrx:Number = rotationX % 360;
+			var mry:Number = rotationY % 360;
+			if(type == 0){
+				isBV = isIntervalValue(mry,-90,90) || isIntervalValue(mry,270,360) || isIntervalValue(mry,-360,-270);
+			}
+			else if(type == 1){
+				isBV = isIntervalValue(mry,0,180) || isIntervalValue(mry,-360,-180);
+			}
+			else if(type == 2){
+				isBV = isIntervalValue(mry,90,270) || isIntervalValue(mry,-270,-90);
+			}
+			else if(type == 3){
+				isBV = isIntervalValue(mry,180,360) || isIntervalValue(mry,-180,0);
+			}
+			else if(type == 5){
+				isBV = isIntervalValue(mrx,0,180) || isIntervalValue(mrx,-360,-180);
+			}
+			else if(type == 4){
+				isBV = isIntervalValue(mrx,180,360) || isIntervalValue(mrx,-180,0);
+			}
+			return isBV;
+		}
+		
+		
+		
+		/**
+		 * 
+		 * @param value
+		 * @param min
+		 * @param max
+		 * @return 
+		 * 
+		 */		
+		public function isIntervalValue(value:Number,min:Number,max:Number):Boolean{
+			if(value < min || value >max){
+				return false;
+			}
+			return true;
+		}
+		
+		/**
+		 * 
+		 * @param value
+		 * @param min
+		 * @param max
+		 * @return 
+		 * 
+		 */		
+		public function getIntervalValue(value:Number,min:Number,max:Number):Number{
+			var v:Number = value;
+			if(v < min){
+				v = min;
+			}
+			else if(v >max){
+				v = max;
+			}
+			return v;
+		}
+		
+		
+		/**
+		 * 设置 3D摄像机旋转角度 
+		 * @param rotationX
+		 * @param rotationY
+		 * 
+		 */		
+		public function setCameraRotation(rotationY:Number):void{
+			autoMove = false;
+			this.cameraPanorama.rotationY = rotationY;
+			this.cameraMural.rotationY = rotationY;
+			rendererAll();
+		}
+		
+		/**
+		 * 等待一段时间后，自动旋转场景，计数器加1 
+		 * @return 
+		 * 
+		 */		
+		private function addAutoMoveCount():Boolean{
+			if(this.autoMoveCount < AUTO_MOVE_COUNT_MAX){
+				this.autoMoveCount ++;
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		
+		/**
+		 * 鼠标滚轮事件，让摄像机视野放大缩小 
+		 * @param event
+		 * 
+		 */		
+		private function handlerMouseWheel(event:MouseEvent):void{
+			var i:int = event.delta;
+			zoom(i);
+		}
+		
+		/**
+		 * 摄像机视野放大缩小 
+		 * @param i
+		 * 
+		 */		
+		private function zoom(i:Number):void{
+			cameraPanorama.zoom += i * 5;
+			if(cameraPanorama.zoom  < 20){
+				cameraPanorama.zoom  =20;
+			}
+			if(cameraPanorama.zoom  > 500){
+				cameraPanorama.zoom  =500;
+			}
+			cameraMural.zoom = cameraPanorama.zoom;
+			rendererAll();
+		}
+		
+		/**
+		 * 设置3D视窗尺寸，用于全屏与非全屏显示切换 
+		 * @param scaleX
+		 * @param scaleY
+		 * @param width
+		 * @param height
+		 * 
+		 */		
+		public function setViewport3DSize(scaleX:Number,scaleY:Number,width:Number,height:Number):void{
+			if(viewportPanorama != null && frame != null){
+				
+				//waitMovie.x = width / 2;
+				//waitMovie.y = height / 2;
+				
+				this.viewportPanorama.viewportWidth = width;
+				this.viewportPanorama.viewportHeight = height;
+				this.viewportPanorama.scaleX = scaleX;
+				this.viewportPanorama.scaleY = scaleY;
+				
+				this.viewportMural.viewportWidth = width;
+				this.viewportMural.viewportHeight = height;
+				this.viewportMural.scaleX = scaleX;
+				this.viewportMural.scaleY = scaleY;
+				
+				frame.width = width * scaleX;
+				frame.height = height * scaleY;
+				
+				btnMask.width = width * scaleX;
+				btnMask.height = height * scaleY;
+				
+				rendererAll();
+			}
+		}
+		
+		public function rendererAll():void{
+			if( scenePanorama != null 
+				&& cameraPanorama != null
+				&& viewportPanorama != null
+				&& sceneMural != null
+				&& cameraMural != null
+				&& viewportMural != null
+				&& rendererPanorama != null
+				&& rendererMural != null){
+				rendererPanorama.renderScene(scenePanorama,cameraPanorama,viewportPanorama);
+				rendererMural.renderScene(sceneMural,cameraMural,viewportMural);
+				refresh2DBtns();
+			}
+		}
+		
+		
+		private function handlerLoadBallImgError(e:Event):void{
+			trace("handlerLoadBallImgError");
+			var material:BitmapFileMaterial = e.currentTarget as BitmapFileMaterial;
+			material.removeEventListener(FileLoadEvent.LOAD_COMPLETE,handlerLoadBallImgCmp);
+			material.removeEventListener(FileLoadEvent.LOAD_ERROR,handlerLoadBallImgError);
+			material.bitmap = new BitmapData(1,1,false,0x000000);
+			var fileType:String = String(materialFileTypeHV.findByName(material.name));
+			cube.replaceMaterialByName(new ColorMaterial(0x000000,1,false),fileType);
+		}
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
+		private function handlerLoadBallImgCmp(e:Event):void{
+			var material:BitmapFileMaterial = e.currentTarget as BitmapFileMaterial;
+			material.removeEventListener(FileLoadEvent.LOAD_COMPLETE,handlerLoadBallImgCmp);
+			material.removeEventListener(FileLoadEvent.LOAD_ERROR,handlerLoadBallImgError);
+			materialUpdate(material);
+		}
+		
+		/**
+		 * 
+		 * @param material
+		 * 
+		 */		
+		private function materialUpdate(material:BitmapFileMaterial):void{
+			
+			var fileType:String = String(materialFileTypeHV.findByName(material.name));
+			var typeInt:int = CubeFaceType.transTypeToInt(fileType);
+			
+			var bitmapData:BitmapData = new BitmapData(material.bitmap.width,material.bitmap.height);
+			var matrix:Matrix = null;
+			
+			if(fileType == SeatDO.BALL){
+				//当用一张平行柱面给球面做贴图时，因为在球里面看,需要把图水平翻转一下，才能正确显示。
+				matrix = new Matrix(-1,0,0,1, material.bitmap.width,0);
+			}
+			else if(fileType == SeatDO.TOP){
+				//当用正方体展现时，6张贴图用pt Gui 生成后，顶图需要旋转180度，才能正确显示。
+				matrix = new Matrix(-1,0,0,-1,material.bitmap.width,material.bitmap.height);
+			}
+			else{
+				matrix = new Matrix(1,0,0,1,0,0);
+			}			
+			
+			bitmapData.draw( material.bitmap,matrix);
+			if(fileType == SeatDO.BOTTOM || fileType == SeatDO.TOP){
+				var logo:BitmapData = ImgCatch.imgHV.findByName("logo.png") as BitmapData;
+				var logoRect:Rectangle = new Rectangle();
+				logoRect.x = (bitmapData.width - logo.width) * 0.5;
+				logoRect.y = (bitmapData.height - logo.height) * 0.5;
+				var logoMatrix:Matrix = new Matrix(1,0,0,1,logoRect.x,logoRect.y);
+				bitmapData.draw(logo,logoMatrix);
+			}
+			
+			ImgCatch.imgHV.push(bitmapData,material.url);
+			material.bitmap = bitmapData;
+			seatDO.imageBitMapData.push(material.bitmap,fileType);
+			
+			if(material.bitmap.width > 1 && material.bitmap.height > 1){
+				deleteFaceWaitMovies(typeInt);
+			}
+			//loadCount --;
+			//if(loadCount == 0){
+			//waitMovie.visible = false;
+			//}
+		}
+		
+		
+		
+		
+		private function deleteFaceWaitMovies(typeInt:int):void{
+			//每个面显示多少个等待动画
+			var waitN:int = WAIT_MOVIE_NUM_X * WAIT_MOVIE_NUM_Y;
+			//当前要删除的面
+			var btnwaitIndex:int = typeInt * waitN;
+			//删除每个面上的等待动画
+			for(var i:int = btnwaitIndex ;i < btnwaitIndex + waitN;i++){
+				if(i < btn2DWaitMovieV.length && i < btn3DWaitMovieV.length){
+					var btn2dwait:MovieClip = btn2DWaitMovieV[i];
+					if(btn2dwait != null){
+						btn2DLayer.removeChild(btn2dwait);
+						btn2DWaitMovieV[i] = null;
+					}
+					var btn3dwait:Plane = btn3DWaitMovieV[i];
+					if(btn3dwait != null){
+						sceneMural.removeChild(btn3dwait);
+						btn3DWaitMovieV[i] = null;
+					}		
+				}
+			}
+		}
+		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
 		private function handlerMouseOver(e:Event):void{
 			Mouse.cursor = MouseCursor.BUTTON;	
 		}
 		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
 		private function handlerMouseOut(e:Event):void{
 			Mouse.cursor = MouseCursor.AUTO;
 		}
@@ -683,221 +1310,7 @@
 			isBtnDown = false;
 		}
 		
-		/**
-		 * 创建3D显示物体
-		 * 
-		 */		
-		private function create3DDisplayObject():void
-		{
-			// Attributes
-			var size :Number = CUBE_SIDE_HARF_LEN * 2;
-			var quality :Number = 16;
-			
-			//cube
-			var materials:MaterialsList = new MaterialsList(
-				{
-					//all:
-					front:  creatBitMap(seatDO,SeatDO.FRONT),
-					back:   creatBitMap(seatDO,SeatDO.BACK),
-					right:  creatBitMap(seatDO,SeatDO.RIGHT),
-					left:   creatBitMap(seatDO,SeatDO.LEFT),
-					top:    creatBitMap(seatDO,SeatDO.TOP),
-					bottom: creatBitMap(seatDO,SeatDO.BOTTOM)
-				} );
-			var insideFaces  :int = Cube.ALL;
-			var excludeFaces :int = Cube.NONE;
-			cube = new Cube( materials, size, size, size, quality, quality, quality, insideFaces, excludeFaces );
-			cube.z = -CUBE_SIDE_HARF_LEN - 500;
-			
-			scenePanorama.addChild( cube, "Cube" );
-			
-			/*
-			Sphere
-			var material:MaterialObject3D = creatBitMap(seatDO,SeatDO.BALL); 
-			material.doubleSided = true;
-			material.smooth = true;
-			ball = new Sphere(material,2000,60,40);
-			ball.z = -1000;
-			scene.addChild(ball);
-			*/			
-			var murals:Vector.<MuralDO> = this.seatDO.murals;
-			for(var i:int =0;i<murals.length;i++){
-				var mdo:MuralDO = murals[i];
-				var muralPlane:Plane = creatPlane(new Vector3D(mdo.x,mdo.y,0,mdo.type));
-				btn3DMuralFingerV.push(muralPlane);
-				sceneMural.addChild(muralPlane);
-			}
-			
-			var seatLinks:Vector.<SeatLinkDO> = this.seatDO.seatLinks;
-			for(var ii:int =0;ii<seatLinks.length;ii++){
-				var sdo:SeatLinkDO = seatLinks[ii];
-				var seatLinkPlane:Plane = creatPlane(new Vector3D(sdo.x,sdo.y,0,sdo.type));
-				btn3DSeatLinkFingerV.push(seatLinkPlane);
-				sceneMural.addChild(seatLinkPlane);
-			}
-			
-			/*
-			for(var i3:int =0;i3<4;i3++){
-				var wmPlane:Plane = creatPlane(new Vector3D(500,500,0,i3));
-				sceneMural.addChild(wmPlane);
-				btn3DWateMovieV.push(wmPlane);
-			}
-			*/
-			
-			this.addEventListener(MouseEvent.MOUSE_WHEEL, handlerMouseWheel);
-			this.addEventListener(MouseEvent.MOUSE_DOWN,handlerMouseDown);
-			this.addEventListener(MouseEvent.MOUSE_UP,handlerMouseUp);
-			this.addEventListener(Event.ENTER_FRAME,handlerEnterFrame);
-			this.dispatchEvent(new Event(SEAT3D_CMP_EVENT));
-		}
 		
-		private function calculateCubeTo3DRotation(v3d:Vector3D):Vector3D{
-			var rotation3D:Vector3D = new Vector3D();
-			if(v3d.w == 0){
-				rotation3D.y = 0; 
-			}
-			else if(v3d.w == 1){
-				rotation3D.y = 90; 			 
-			}
-			else if(v3d.w == 2){
-				rotation3D.y = 180; 		 
-			}
-			else if(v3d.w == 3){
-				rotation3D.y = 270; 		 
-			}
-			return rotation3D;
-		}
-		
-		/**
-		 * 
-		 * @param v3d
-		 * @return 
-		 * 
-		 */		
-		private function calculateCubeTo3DPlace(v3d:Vector3D):Vector3D{
-			var place3D:Vector3D = new Vector3D();
-			if(v3d.w == 0){
-				place3D.x = v3d.x - CUBE_SIDE_HARF_LEN;
-				place3D.y = -(v3d.y - CUBE_SIDE_HARF_LEN);
-				place3D.z = - CUBE_SIDE_HARF_LEN;
-			}
-			else if(v3d.w == 1){
-				place3D.x = CUBE_SIDE_HARF_LEN;
-				place3D.y = -(v3d.y - CUBE_SIDE_HARF_LEN);
-				place3D.z = - v3d.x - CUBE_SIDE_HARF_LEN;
-			}
-			else if(v3d.w == 2){
-				place3D.x = -(v3d.x - CUBE_SIDE_HARF_LEN);
-				place3D.y = -(v3d.y - CUBE_SIDE_HARF_LEN);
-				place3D.z = - CUBE_SIDE_HARF_LEN - 500 - CUBE_SIDE_HARF_LEN;
-			}
-			else if(v3d.w == 3){
-				place3D.x = -CUBE_SIDE_HARF_LEN;
-				place3D.y = -(v3d.y - CUBE_SIDE_HARF_LEN);
-				place3D.z = v3d.x - CUBE_SIDE_HARF_LEN - 500 - CUBE_SIDE_HARF_LEN;
-			}
-			return place3D;
-		}
-		
-		/**
-		 * 
-		 * @param place3D
-		 * @param rotation
-		 * @return 
-		 * 
-		 */		
-		private function creatPlane(placeCube:Vector3D):Plane{
-			
-			var place3D:Vector3D = calculateCubeTo3DPlace(placeCube);
-			var rotation3D:Vector3D = calculateCubeTo3DRotation(placeCube);
-			
-			var mc:MovieClip = getDisplayObjectInstance(getStyleValue("seat3DFingerpostDefaultSkin")) as MovieClip;
-			var material:MovieMaterial = new MovieMaterial(mc,true);
-			var plane:Plane = new Plane(material,mc.width,mc.height,1,1);
-			plane.x = place3D.x;
-			plane.y = place3D.y;
-			plane.z = place3D.z;
-			
-			plane.rotationX = rotation3D.x;
-			plane.rotationY = rotation3D.y;
-			plane.rotationZ = rotation3D.z;
-			
-			return plane;
-		}
-		
-		
-		/**
-		 * 创建贴图 
-		 * @param seatDO
-		 * @param fileType
-		 * @return 
-		 * 
-		 */		
-		private function creatBitMap(seatDO:SeatDO,fileType:String):MaterialObject3D{
-			
-			var material:MaterialObject3D;
-			if(seatDO != null && fileType != null && fileType.length > 0){
-				var bitMapData:BitmapData = seatDO.imageBitMapData.findByName(fileType) as BitmapData;
-				if(bitMapData == null){
-					var burl:String = seatDO.imageUrlHV.findByName(fileType) as String;;
-					var catchBitmapData:BitmapData = ImgCatch.imgHV.findByName(burl) as BitmapData;
-					
-					if(catchBitmapData != null){
-						material = new BitmapMaterial(catchBitmapData);
-					}
-					else {
-						material = new BitmapFileMaterial(burl);
-						waitMovie.visible = true;
-						loadCount ++;
-						material.addEventListener(FileLoadEvent.LOAD_COMPLETE,handlerLoadBallImgCmp);
-						
-						function handlerLoadBallImgCmp(e:Event):void{
-							material.removeEventListener(FileLoadEvent.LOAD_COMPLETE,handlerLoadBallImgCmp);
-							var bitmapData:BitmapData = new BitmapData(material.bitmap.width,material.bitmap.height);
-							var matrix:Matrix = null;
-							
-							if(fileType == SeatDO.BALL){
-								//当用一张平行柱面给球面做贴图时，因为在球里面看,需要把图水平翻转一下，才能正确显示。
-								matrix = new Matrix(-1,0,0,1, material.bitmap.width,0);
-							}
-							else if(fileType == SeatDO.TOP){
-								//当用正方体展现时，6张贴图用pt Gui 生成后，顶图需要旋转180度，才能正确显示。
-								matrix = new Matrix(-1,0,0,-1,material.bitmap.width,material.bitmap.height);
-							}
-							else{
-								matrix = new Matrix(1,0,0,1,0,0);
-							}
-							bitmapData.draw( material.bitmap,matrix);
-							if(fileType == SeatDO.BOTTOM || fileType == SeatDO.TOP){
-								var logo:BitmapData = ImgCatch.imgHV.findByName("logo.png") as BitmapData;
-								var logoRect:Rectangle = new Rectangle();
-								logoRect.x = (bitmapData.width - logo.width) * 0.5;
-								logoRect.y = (bitmapData.height - logo.height) * 0.5;
-								var logoMatrix:Matrix = new Matrix(1,0,0,1,logoRect.x,logoRect.y);
-								bitmapData.draw(logo,logoMatrix);
-							}
-							
-							ImgCatch.imgHV.push(bitmapData,burl);
-							material.bitmap = bitmapData;
-							seatDO.imageBitMapData.push(material.bitmap,fileType);
-							loadCount --;
-							if(loadCount == 0){
-								waitMovie.visible = false;
-							}
-						}
-					}	
-				}
-				else {
-					material = new BitmapMaterial(bitMapData);
-				}
-			}
-			if(material != null){
-				material.smooth = true;
-				material.oneSide = true;
-				//material.opposite = true;
-			}
-			return material;
-		}
 		
 		/**
 		 * 鼠标按下事件，获得按下时坐标，改变鼠标显示样式 
@@ -1152,264 +1565,7 @@
 			}
 		}
 		
-		/**
-		 * 
-		 * 
-		 */		
-		public function refresh2DBtns():void{
-			var murals:Vector.<MuralDO> = this.seatDO.murals;
-			
-			var s3dw:Number = this.viewportMural.viewportWidth * this.viewportMural.scaleX;
-			var s3dh:Number = this.viewportMural.viewportHeight * this.viewportMural.scaleY;
-			
-			var s3dsclx:Number = this.viewportMural.scaleX;
-			var s3dscly:Number = this.viewportMural.scaleY;
-
-			trace("s3dw s3dh ",s3dw,s3dh);
-			
-			for(var i:int =0;i<btn2DMuralBtnV.length;i++){
-				var mdo:MuralDO = murals[i];
-				var typem:Number = mdo.type;
-				var muralPlane:Plane = btn3DMuralFingerV[i];
-				muralPlane.calculateScreenCoords(cameraPanorama);
-				var real2DX:Number = muralPlane.screen.x * s3dsclx+s3dw/2;
-				var real2DY:Number = muralPlane.screen.y * s3dsclx+s3dh/2;
-				
-				var muralBtn:MovieClip = btn2DMuralBtnV[i];
-				var mtrect:Rectangle = muralBtn.getRect(btn2DLayer);
-				
-				var isVisibleWidth:Boolean = isIntervalValue(real2DX,- mtrect.width,s3dw);
-				var isVisibleHeight:Boolean = isIntervalValue(real2DY,- mtrect.height,s3dh);
-				var isBV:Boolean = isBtnVisible(typem,this.cameraMural.rotationY);
-				if(isBV && isVisibleWidth && isVisibleHeight){
-					muralBtn.visible = true;
-					muralBtn.x = getIntervalValue(real2DX,- mtrect.width,s3dw);
-					muralBtn.y = getIntervalValue(real2DY,- mtrect.height,s3dh);
-					trace("muralBtn",muralBtn.x,muralBtn.y);
-
-				}
-				else {
-					muralBtn.visible  = false;
-				}	
-			}
-			
-			var seatLinks:Vector.<SeatLinkDO> = this.seatDO.seatLinks;
-			for(var ii:int =0;ii<btn2DSeatLinkBtnV.length;ii++){
-				var sdo:SeatLinkDO = seatLinks[ii];
-				var typeSL:Number = sdo.type;
-				var seatLinkPlane:Plane = btn3DSeatLinkFingerV[ii];
-				seatLinkPlane.calculateScreenCoords(cameraPanorama);
-				var seatLinkReal2DX:Number = seatLinkPlane.screen.x * s3dsclx + s3dw/2;
-				var seatLinkReal2DY:Number = seatLinkPlane.screen.y * s3dsclx + s3dh/2;
-				
-				var seatLinkBtn:MovieClip = btn2DSeatLinkBtnV[ii];
-				var slbrect:Rectangle = seatLinkBtn.getRect(btn2DLayer);
-				
-				var isSLVisibleWidth:Boolean = isIntervalValue(seatLinkReal2DX,- slbrect.width,s3dw);
-				var isSLVisibleHeight:Boolean = isIntervalValue(seatLinkReal2DY,- slbrect.height,s3dh);
-				
-				var isSLBV:Boolean = isBtnVisible(typeSL,this.cameraMural.rotationY);
-				if(isSLBV && isSLVisibleWidth && isSLVisibleHeight){
-					seatLinkBtn.visible = true;
-					seatLinkBtn.x = getIntervalValue(seatLinkReal2DX,- slbrect.width,s3dw);
-					seatLinkBtn.y = getIntervalValue(seatLinkReal2DY,- slbrect.height,s3dh);
-				}
-				else {
-					seatLinkBtn.visible  = false;
-				}	
-			}
-			
-			/*
-			for(var i3:int =0;i3< 4;i3++){
-				var wateMoviePlane:Plane = btn3DWateMovieV[i3];
-				wateMoviePlane.calculateScreenCoords(cameraPanorama);
-				var wateMovieReal2DX:Number = wateMoviePlane.screen.x + viewportPanorama.width/2;
-				var wateMovieReal2DY:Number = wateMoviePlane.screen.y + viewportPanorama.height/2;
-				
-				var wateMovieBtn:MovieClip = btn2DWateMovieV[i3];
-				var wmbrect:Rectangle = wateMovieBtn.getRect(btn2DLayer);
-				
-				var isWMVisibleWidth:Boolean = isIntervalValue(wateMovieReal2DX,- wmbrect.width,this.seat3DWidth);
-				var isWMVisibleHeight:Boolean = isIntervalValue(wateMovieReal2DY,- wmbrect.height,this.seat3DHeight);
-				
-				var isWMBV:Boolean = isBtnVisible(i3,this.cameraMural.rotationY);
-				if(isWMBV && isWMVisibleWidth && isWMVisibleHeight){
-					wateMovieBtn.visible = true;
-					wateMovieBtn.x = getIntervalValue(wateMovieReal2DX,- wmbrect.width,this.seat3DWidth);
-					wateMovieBtn.y = getIntervalValue(wateMovieReal2DY,- wmbrect.height,this.seat3DHeight);
-				}
-				else {
-					wateMovieBtn.visible  = false;
-				}	
-			}
-			*/
-		}
 		
-		/**
-		 * 
-		 * @param type
-		 * @param rotationY
-		 * @return 
-		 * 
-		 */		
-		public function isBtnVisible(type:Number,rotationY:Number):Boolean{
-			var isBV:Boolean = false;
-			var mry:Number = rotationY % 360;
-			if(type == 0){
-				isBV = isIntervalValue(mry,-90,90) || isIntervalValue(mry,270,360) || isIntervalValue(mry,-360,-270);
-			}
-			else if(type == 1){
-				isBV = isIntervalValue(mry,0,180) || isIntervalValue(mry,-360,-180);
-			}
-			else if(type == 2){
-				isBV = isIntervalValue(mry,90,270) || isIntervalValue(mry,-270,-90);
-			}
-			else if(type == 3){
-				isBV = isIntervalValue(mry,180,360) || isIntervalValue(mry,-180,0);
-			}
-			return isBV;
-		}
-		
-		
-		
-		/**
-		 * 
-		 * @param value
-		 * @param min
-		 * @param max
-		 * @return 
-		 * 
-		 */		
-		public function isIntervalValue(value:Number,min:Number,max:Number):Boolean{
-			if(value < min || value >max){
-				return false;
-			}
-			return true;
-		}
-		
-		/**
-		 * 
-		 * @param value
-		 * @param min
-		 * @param max
-		 * @return 
-		 * 
-		 */		
-		public function getIntervalValue(value:Number,min:Number,max:Number):Number{
-			var v:Number = value;
-			if(v < min){
-				v = min;
-			}
-			else if(v >max){
-				v = max;
-			}
-			return v;
-		}
-		
-		
-		/**
-		 * 设置 3D摄像机旋转角度 
-		 * @param rotationX
-		 * @param rotationY
-		 * 
-		 */		
-		public function setCameraRotation(rotationY:Number):void{
-			autoMove = false;
-			this.cameraPanorama.rotationY = rotationY;
-			this.cameraMural.rotationY = rotationY;
-			rendererAll();
-		}
-		
-		/**
-		 * 等待一段时间后，自动旋转场景，计数器加1 
-		 * @return 
-		 * 
-		 */		
-		private function addAutoMoveCount():Boolean{
-			if(this.autoMoveCount < AUTO_MOVE_COUNT_MAX){
-				this.autoMoveCount ++;
-				return true;
-			}
-			else{
-				return false;
-			}
-		}
-		
-		/**
-		 * 鼠标滚轮事件，让摄像机视野放大缩小 
-		 * @param event
-		 * 
-		 */		
-		private function handlerMouseWheel(event:MouseEvent):void{
-			var i:int = event.delta;
-			zoom(i);
-		}
-		
-		/**
-		 * 摄像机视野放大缩小 
-		 * @param i
-		 * 
-		 */		
-		private function zoom(i:Number):void{
-			cameraPanorama.zoom += i * 5;
-			if(cameraPanorama.zoom  < 20){
-				cameraPanorama.zoom  =20;
-			}
-			if(cameraPanorama.zoom  > 500){
-				cameraPanorama.zoom  =500;
-			}
-			cameraMural.zoom = cameraPanorama.zoom;
-			rendererAll();
-		}
-		
-		/**
-		 * 设置3D视窗尺寸，用于全屏与非全屏显示切换 
-		 * @param scaleX
-		 * @param scaleY
-		 * @param width
-		 * @param height
-		 * 
-		 */		
-		public function setViewport3DSize(scaleX:Number,scaleY:Number,width:Number,height:Number):void{
-			if(viewportPanorama != null && frame != null){
-				
-				waitMovie.x = width / 2;
-				waitMovie.y = height / 2;
-				
-				this.viewportPanorama.viewportWidth = width;
-				this.viewportPanorama.viewportHeight = height;
-				this.viewportPanorama.scaleX = scaleX;
-				this.viewportPanorama.scaleY = scaleY;
-				
-				this.viewportMural.viewportWidth = width;
-				this.viewportMural.viewportHeight = height;
-				this.viewportMural.scaleX = scaleX;
-				this.viewportMural.scaleY = scaleY;
-				
-				frame.width = width * scaleX;
-				frame.height = height * scaleY;
-				
-				btnMask.width = width * scaleX;
-				btnMask.height = height * scaleY;
-	
-				rendererAll();
-			}
-		}
-		
-		public function rendererAll():void{
-			if( scenePanorama != null 
-				&& cameraPanorama != null
-				&& viewportPanorama != null
-				&& sceneMural != null
-				&& cameraMural != null
-				&& viewportMural != null
-				&& rendererPanorama != null
-				&& rendererMural != null){
-				rendererPanorama.renderScene(scenePanorama,cameraPanorama,viewportPanorama);
-				rendererMural.renderScene(sceneMural,cameraMural,viewportMural);
-				refresh2DBtns();
-			}
-		}
 		
 		public function get cameraRotationY():Number
 		{

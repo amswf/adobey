@@ -504,18 +504,7 @@
 							var muralY:Number = Number(muralNode.getAttributeByName("y"));
 							var muralType:String = String(muralNode.getAttributeByName("type"));
 							var muralW:Number = 0;
-							if(muralType == SeatDO.RIGHT){
-								muralW = 1;
-							}
-							else if(muralType == SeatDO.BACK){
-								muralW = 2;
-							}
-							else if(muralType == SeatDO.LEFT){
-								muralW = 3;
-							}
-							else{
-								muralW = 0;
-							}
+							muralW = CubeFaceType.transTypeToInt(muralType);
 							
 							var muralText:String = String(muralNode.getAttributeByName("text"));
 							var muralContent:String = String(muralNode.getAttributeByName("content"));
@@ -542,18 +531,8 @@
 							var seatLinkY:Number = Number(seatLinkNode.getAttributeByName("y"));
 							var seatLinkType:String = String(seatLinkNode.getAttributeByName("type"));
 							var seatLinkW:Number = 0;
-							if(seatLinkType == SeatDO.RIGHT){
-								seatLinkW = 1;
-							}
-							else if(seatLinkType == SeatDO.BACK){
-								seatLinkW = 2;
-							}
-							else if(seatLinkType == SeatDO.LEFT){
-								seatLinkW = 3;
-							}
-							else{
-								seatLinkW = 0;
-							}
+							seatLinkW = CubeFaceType.transTypeToInt(seatLinkType);
+							
 							var seatLinkName:String = String(seatLinkNode.getAttributeByName("name"));
 							
 							var pdo:SeatLinkDO = new SeatLinkDO();
