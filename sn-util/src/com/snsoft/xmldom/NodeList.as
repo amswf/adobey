@@ -23,7 +23,7 @@ package com.snsoft.xmldom{
 		 * @param node
 		 * 
 		 */		
-		public function pushNode(node:Node):void{
+		internal function pushNode(node:Node):void{
 			nodes.push(node);
 		}
 		
