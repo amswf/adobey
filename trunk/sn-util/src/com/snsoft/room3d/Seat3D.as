@@ -1061,7 +1061,7 @@
 			
 			bitmapData.draw( material.bitmap,matrix);
 			if(fileType == SeatDO.BOTTOM || fileType == SeatDO.TOP){
-				var logo:BitmapData = ImgCatch.imgHV.findByName("logo.png") as BitmapData;
+				var logo:BitmapData = ImgCatch.imgHV.findByName(Config.LOGO_IMG) as BitmapData;
 				var logoRect:Rectangle = new Rectangle();
 				logoRect.x = (bitmapData.width - logo.width) * 0.5;
 				logoRect.y = (bitmapData.height - logo.height) * 0.5;

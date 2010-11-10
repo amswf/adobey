@@ -15,7 +15,7 @@ package com.snsoft.util
 		 * @return 宽度
 		 * 
 		 */		
-		public static function calculateTextFieldWidth(textField:TextField):Number{
+		public static function calculateWidth(textField:TextField):Number{
 			var width:Number = 0;
 			if(textField != null && textField.text != null){
 				var tft:TextFormat = textField.getTextFormat();
@@ -27,9 +27,21 @@ package com.snsoft.util
 			return width;
 		}
 		
+		public static function calculateBoldWidth(textField:TextField):Number{
+			var width:Number = 0;
+			if(textField != null && textField.text != null){
+				var tft:TextFormat = textField.getTextFormat();
+				var size:int = tft.size as int;
+				var text:String = textField.text;
+				var len:int = StringUtil.getByteLen(text);
+				width = 0.5 * (size + 1) * len + 6;
+			}
+			return width;
+		}
+		
 		public static function fitSize(textField:TextField):void{
 			if(textField != null && textField.text != null){
-				textField.width = calculateTextFieldWidth(textField);
+				textField.width = calculateWidth(textField);
 				var tft:TextFormat = textField.getTextFormat();
 				textField.height = tft.size + 6;
 			}
