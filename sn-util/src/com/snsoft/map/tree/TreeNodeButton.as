@@ -65,7 +65,7 @@ package com.snsoft.map.tree
 				value = "";
 			}
 			this._lableName.text = value;
-			var w:Number = TextFieldUtil.calculateTextFieldWidth(this._lableName);
+			var w:Number = TextFieldUtil.calculateWidth(this._lableName);
 			this._lableName.width = w;
 			this._msk.width = w ;
 			_lableText = value;

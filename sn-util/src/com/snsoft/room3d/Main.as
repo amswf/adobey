@@ -382,7 +382,7 @@
 		 * 
 		 */		
 		private function handlerLoadXMLCmp(e:Event):void{
-			var url:String = "logo.png";
+			var url:String = Config.LOGO_IMG;
 			var il:ImageLoader = new ImageLoader();
 			il.loadImage(url);
 			il.addEventListener(Event.COMPLETE,handlerLoaderLogoImgCmp);
