@@ -1,10 +1,13 @@
 package com.snsoft.sndoor{
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.SpriteUtil;
+	import com.snsoft.util.complexEvent.CplxEventOpenUrl;
 	import com.snsoft.xmldom.Node;
 	import com.snsoft.xmldom.NodeList;
 	import com.snsoft.xmldom.XMLDom;
 	
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
@@ -12,6 +15,7 @@ package com.snsoft.sndoor{
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.events.MouseEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	
@@ -32,9 +36,19 @@ package com.snsoft.sndoor{
 		 */		
 		private var menuIback:MovieClip;
 		
-	
+		/**
+		 * 按钮数据对象列表 
+		 */		
+		private var menuDOV:Vector.<MenuDO>;
 		
 		
+		private var imageBox:ImageBox;
+		
+		
+		/**
+		 * 
+		 * 
+		 */		
 		public function Main()
 		{
 			super();
@@ -59,24 +73,55 @@ package com.snsoft.sndoor{
 			var xml:XML = new XML(loader.data);
 			var xmldom:XMLDom = new XMLDom(xml);
 			var node:Node = xmldom.parse();
-			creatDO(node);
+			creatData(node);
+			
+		}
+		
+		private function creatData(node:Node):void{
+			imageBox = new ImageBox();
+			trace(node.name);
+			menuDOV = new Vector.<MenuDO>();
+			var menuIs:Node = node.getNodeListFirstNode("menuIs");
+			var menuIList:NodeList = menuIs.getNodeList("menuI");
+			for(var i:int =0;i<menuIList.length();i++){
+				var menuI:Node = menuIList.getNode(i);
+				var menuDO:MenuDO = new MenuDO();
+				menuDO.name = menuI.getAttributeByName("name");
+				menuDO.text = menuI.getAttributeByName("text");
+				menuDO.eText = menuI.getAttributeByName("eText");
+				menuDO.image = menuI.getAttributeByName("image");
+				imageBox.addImageUrl(menuDO.image);
+				menuDO.eText = menuI.getAttributeByName("eText");
+				menuDO.url = menuI.getAttributeByName("url");
+				menuDO.type = menuI.getAttributeByName("type");
+				var menuIIList:NodeList = menuI.getNodeList("menuII");
+				if(menuIIList != null){
+					for(var j:int =0;j<menuIIList.length();j++){
+						var menuII:Node = menuIIList.getNode(j);
+						var cmenuDO:MenuDO = new MenuDO();
+						cmenuDO.name = menuII.getAttributeByName("name");
+						cmenuDO.text = menuII.getAttributeByName("text");
+						cmenuDO.eText = menuII.getAttributeByName("eText");
+						cmenuDO.image = menuII.getAttributeByName("image");
+						imageBox.addImageUrl(cmenuDO.image);
+						cmenuDO.eText = menuII.getAttributeByName("eText");
+						cmenuDO.url = menuII.getAttributeByName("url");
+						cmenuDO.type = menuII.getAttributeByName("type");
+						menuDO.pushChildMenuDO(cmenuDO);
+					}
+				}
+				menuDOV.push(menuDO);
+				
+			}
+			
+			imageBox.addEventListener(Event.COMPLETE,handlerImageBoxCmp);
+			imageBox.loadImage();
+			
+		}
+		
+		private function handlerImageBoxCmp(e:Event):void{
 			init();
 		}
-		
-		private function creatDO(node:Node):void{
-			trace(node.name);
-			var menuIs:Node = node.getNodeListFirstNode("menuIs");
-			var menuList:NodeList = menuIs.getNodeList("menuI");
-			for(var i:int =0;i<menuList.length();i++){
-				var menuI:Node = menuList.getNode(i);
-			}
-			trace(menuList.length());
-		}
-		
-		private function handlerLoadXMLError(e:Event):void{
-			trace("加载出错！" + DATA_XML_URL);
-		}
-		
 		
 		private function init():void{
 			
@@ -86,23 +131,48 @@ package com.snsoft.sndoor{
 			mainLayer = new MovieClip();
 			this.addChild(mainLayer);
 			
+			var menuX:Number = 0;
+			var menuY:Number = 72;
+			
 			menuIback = SkinsUtil.createSkinByName(menuIBackDefaultSkin);
-			menuIback.x = 0;
-			menuIback.y = 72;
+			menuIback.x = menuX;
+			menuIback.y = menuY;
 			mainBackLayer.addChild(menuIback);
 			
-			var mib:MenuIBtn = new MenuIBtn("政府用户",true);
-			mainLayer.addChild(mib);
-			mib.x = 0;
-			mib.y = 72;
-			
-			var mib2:MenuIBtn = new MenuIBtn("政府用户",true);
-			mainLayer.addChild(mib2);
-			mib2.x = mib.width + mib.x;
-			mib2.y = 72;
+			for(var i:int =0;i < menuDOV.length;i++){
+				var menuDO:MenuDO = menuDOV[i];
+				
+				var hasChild:Boolean = false;
+				
+				if(menuDO.type == MenuDO.TYPE_URL){
+					hasChild = false;
+				}
+				else if(menuDO.childMenuDOs.length > 0){
+					hasChild = true;
+				}
+				
+				var mib:MenuIBtn = new MenuIBtn(menuDO.text,hasChild);
+				mainLayer.addChild(mib);
+				mib.x = menuX;
+				mib.y = menuY;
+				menuX = mib.x + mib.width;
+				
+				if(menuDO.type == MenuDO.TYPE_URL){
+					var cpl:CplxEventOpenUrl = new CplxEventOpenUrl(mib,MouseEvent.CLICK,menuDO.url);
+				}
+				else if(menuDO.type == MenuDO.TYPE_CARD || menuDO.type == MenuDO.TYPE_LIST){
+					
+				}
+			}
 			
 			this.addEventListener(Event.ENTER_FRAME,handlerEnterFrame);
 			stage.addEventListener(Event.RESIZE,handlerResize);
+		}
+		
+		
+		
+		private function handlerLoadXMLError(e:Event):void{
+			trace("加载出错！" + DATA_XML_URL);
 		}
 		
 		private function handlerEnterFrame(e:Event):void{
