@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application creationComplete="init();" xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
+	<mx:Script>
+		<![CDATA[
+			import com.snsoft.sndoor.MenuI;
+			import com.snsoft.sndoor.MenuIBtn;
+			import com.snsoft.sndoor.MenuII;
+			import com.snsoft.sndoor.Main;
+			import com.snsoft.util.UIComponentExample;
+			 
+			private function init():void{
+				 Main;
+				 UIComponentExample;
+				 MenuI;
+				 MenuII;
+				 MenuIBtn;
+			}
+		]]>
+	</mx:Script>
+</mx:Application>
