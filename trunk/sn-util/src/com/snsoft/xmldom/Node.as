@@ -15,13 +15,23 @@ package com.snsoft.xmldom{
 		 * NodeList 的列表
 		 * 
 		 * HashVector.<NodeList>
-		 */		
+		 */	
 		private var _childNodeLists:HashVector = new HashVector();
 		
+		/**
+		 * 标签名称 
+		 */		
 		private var _name:String;
 		
+		/**
+		 * 标签文本 
+		 */		
 		private var _text:String;
 		
+		/**
+		 * 构造方法 
+		 * 
+		 */		
 		public function Node()
 		{
 		}
@@ -32,7 +42,7 @@ package com.snsoft.xmldom{
 		 * @param value
 		 * 
 		 */		
-		public function pushAttribute(name:String,value:String):void{
+		internal function pushAttribute(name:String,value:String):void{
 			attribute.push(name,value);
 		}
 		
@@ -57,7 +67,7 @@ package com.snsoft.xmldom{
 		}
 		
 		/**
-		 * 子结点
+		 * 名为name子结点列表
 		 * @param name
 		 * @return 
 		 * 
@@ -67,31 +77,27 @@ package com.snsoft.xmldom{
 		}
 		
 		/**
+		 * 名为name子结点列表的第一个结点
+		 * @param name
+		 * @return 
+		 * 
+		 */		
+		public function getNodeListFirstNode(name:String):Node{
+			var list:NodeList = getNodeList(name);
+			if(list != null && list.length() > 0){
+				return list.getNode(0);
+			}
+			return null;
+		}
+		
+		/**
 		 * 子结点
 		 * @param name
 		 * @param nodeList
 		 * 
 		 */		
-		public function pushNodeList(name:String,nodeList:NodeList):void{
+		internal function pushNodeList(name:String,nodeList:NodeList):void{
 			childNodeLists.push(nodeList,name);
-		}
-
-		/**
-		 * 子结点
-		 *  
-		 * HashVector.<NodeList>
-		 */
-		public function get childNodeLists():HashVector
-		{
-			return _childNodeLists;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set childNodeLists(value:HashVector):void
-		{
-			_childNodeLists = value;
 		}
 
 		public function get name():String
@@ -112,6 +118,24 @@ package com.snsoft.xmldom{
 		public function set text(value:String):void
 		{
 			_text = value;
+		}
+
+		/**
+		 * NodeList 的列表
+		 * 
+		 * HashVector.<NodeList>
+		 */
+		internal function get childNodeLists():HashVector
+		{
+			return _childNodeLists;
+		}
+
+		/**
+		 * @private
+		 */
+		internal function set childNodeLists(value:HashVector):void
+		{
+			_childNodeLists = value;
 		}
 
 

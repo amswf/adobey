@@ -3,7 +3,7 @@ package com.snsoft.xmldom{
 	import com.snsoft.util.HashVector;
 	
 	/**
-	 * 解析XML为基本树
+	 * 解析XML为基本树，数据持久化
 	 *  
 	 * @author Administrator
 	 * 
