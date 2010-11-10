@@ -18,6 +18,11 @@ package com.snsoft.sndoor{
 		public static const TYPE_LIST:String = "list";
 		
 		/**
+		 * 子列表显示类型  url
+		 */		
+		public static const TYPE_URL:String = "url";
+		
+		/**
 		 * 名称 
 		 */		
 		private var _name:String;
@@ -47,8 +52,26 @@ package com.snsoft.sndoor{
 		 */		
 		private var _contents:String;
 		
-		public function MenuDO()
-		{
+		/**
+		 * 链接地址 
+		 */
+		private var _url:String;
+		
+		/**
+		 * 按钮列表 
+		 */		
+		private var _childMenuDOs:Vector.<MenuDO> = new Vector.<MenuDO>();
+		
+		/**
+		 * 构造方法 
+		 * 
+		 */		
+		public function MenuDO(){
+			
+		}
+		
+		public function pushChildMenuDO(menuDO:MenuDO):void{
+			_childMenuDOs.push(menuDO);
 		}
 
 		public function get name():String
@@ -109,6 +132,30 @@ package com.snsoft.sndoor{
 		public function set contents(value:String):void
 		{
 			_contents = value;
+		}
+
+		/**
+		 * 子按钮列表 
+		 */
+		public function get childMenuDOs():Vector.<MenuDO>
+		{
+			return _childMenuDOs;
+		}
+
+		/**
+		 * 链接地址 
+		 */
+		public function get url():String
+		{
+			return _url;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set url(value:String):void
+		{
+			_url = value;
 		}
 
 
