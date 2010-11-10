@@ -34,17 +34,20 @@ package com.snsoft.sndoor{
 		 * 鼠标移出，下拉指示箭头 
 		 */		
 		private var menuIPollTriangleMouseOver:MovieClip;
-		
-		private var text:String;
+			
+		private var _menuDO:MenuDO;
 		
 		private var _hasChildPoll:Boolean
 		
 		private var textFiled:TextField;
 		
+		private var _index:int;
 		
-		public function MenuIBtn(text:String,hasChildPoll:Boolean = false){
+		
+		public function MenuIBtn(menuDO:MenuDO,index:int,hasChildPoll:Boolean = false){
 			super();
-			this.text = text;
+			this._menuDO = menuDO;
+			this._index = index;
 			this._hasChildPoll = hasChildPoll;
 			
 			btnTop = getDisplayObjectInstance(getStyleValue(btnTopSkin)) as MovieClip;
@@ -53,7 +56,7 @@ package com.snsoft.sndoor{
 			menuIPollTriangleMouseOver = getDisplayObjectInstance(getStyleValue(menuIPollTriangleMouseOverDefaultSkin)) as MovieClip;
 			
 			textFiled = new TextField();
-			textFiled.htmlText = "<b>"+this.text+"</b>";
+			textFiled.htmlText = "<b>"+menuDO.text+"</b>";
 			textFiled.x = 30;
 			textFiled.y = 10;
 			textFiled.setTextFormat(getStyleValue(textDefaultTextFormat) as TextFormat);
@@ -71,7 +74,6 @@ package com.snsoft.sndoor{
 			btnTop.mouseEnabled = true;
 			btnTop.buttonMode = true;
 			btnTop.addEventListener(MouseEvent.MOUSE_OVER,handlerMouseOver);
-			btnTop.addEventListener(MouseEvent.MOUSE_OUT,handlerMouseOut);
 			
 			menuIPollTriangleMouseOut.x = textFiled.getRect(this).right + 5;
 			menuIPollTriangleMouseOut.y = 18;
@@ -82,7 +84,6 @@ package com.snsoft.sndoor{
 			menuIPollTriangleMouseOver.x = textFiled.getRect(this).right + 5;
 			menuIPollTriangleMouseOver.y = 18;
 			menuIPollTriangleMouseOver.visible = false;
-
 		}
 		
 		/**
@@ -156,7 +157,9 @@ package com.snsoft.sndoor{
 			textFiled.setTextFormat(getStyleValue(textMouseOverTextFormat) as TextFormat);
 		}
 		
-		private function handlerMouseOut(e:Event):void{
+		 
+		
+		public function setStateToDefault():void{
 			menuIMouseOver.visible = false;
 			if(hasChildPoll ){
 				menuIPollTriangleMouseOut.visible = true;
@@ -168,6 +171,16 @@ package com.snsoft.sndoor{
 		public function get hasChildPoll():Boolean
 		{
 			return _hasChildPoll;
+		}
+
+		public function get menuDO():MenuDO
+		{
+			return _menuDO;
+		}
+
+		public function get index():int
+		{
+			return _index;
 		}
 
 		

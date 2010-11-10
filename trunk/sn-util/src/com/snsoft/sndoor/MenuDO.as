@@ -58,6 +58,11 @@ package com.snsoft.sndoor{
 		private var _url:String;
 		
 		/**
+		 * 链接地址打开方式 
+		 */		
+		private var _window:String;
+		
+		/**
 		 * 按钮列表 
 		 */		
 		private var _childMenuDOs:Vector.<MenuDO> = new Vector.<MenuDO>();
@@ -156,6 +161,22 @@ package com.snsoft.sndoor{
 		public function set url(value:String):void
 		{
 			_url = value;
+		}
+
+		/**
+		 * 
+		 */
+		public function get window():String
+		{
+			return _window;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set window(value:String):void
+		{
+			_window = value;
 		}
 
 
