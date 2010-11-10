@@ -6,6 +6,7 @@
 			import com.snsoft.sndoor.MenuI;
 			import com.snsoft.sndoor.MenuIBtn;
 			import com.snsoft.sndoor.MenuII;
+			import com.snsoft.sndoor.MenuIICardBtn;
 			import com.snsoft.util.UIComponentExample;
 			import com.snsoft.util.complexEvent.CplxEventOpenUrl;
 			 
@@ -16,6 +17,7 @@
 				 MenuII;
 				 MenuIBtn;
 				 CplxEventOpenUrl;
+				 MenuIICardBtn;
 			}
 		]]>
 	</mx:Script>

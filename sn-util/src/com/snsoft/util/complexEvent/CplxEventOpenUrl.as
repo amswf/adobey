@@ -32,6 +32,9 @@ package com.snsoft.util.complexEvent{
 			this.dobj = dobj;
 			this.eventType = eventType;
 			this.url = url;
+			if(window == null){
+				window = "_self";
+			}
 			this.window = window;
 			addEvent();
 		}
