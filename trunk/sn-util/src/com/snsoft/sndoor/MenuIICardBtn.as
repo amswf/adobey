@@ -46,7 +46,7 @@ package com.snsoft.sndoor{
 			image.buttonMode = true;
 			image.x = boarder;
 			image.y = boarder;
-			var imageLayer:MovieClip = image.imageLayer;
+			var imageLayer:MovieClip = image.effectLayer;
 			imageLayer.addChild(imageBitmap);
 			image.alpha = imageDefaultAlpha;
 			image.addEventListener(MouseEvent.MOUSE_OVER,handlerMouseOver);

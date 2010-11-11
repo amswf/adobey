@@ -95,7 +95,7 @@ package com.snsoft.sndoor{
 			menuIPollTriangleMouseOutDefaultSkin:"MenuIPollTriangleMouseOut_defaultSkin",
 			menuIPollTriangleMouseOverDefaultSkin:"MenuIPollTriangleMouseOver_defaultSkin",
 			textDefaultTextFormat:new TextFormat("",14,0xffffff),
-			textMouseOverTextFormat:new TextFormat("",14,0x6F787F)
+			textMouseOverTextFormat:new TextFormat("",14,0x6e777f)
 		};
 		
 		/**
