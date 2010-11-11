@@ -110,6 +110,9 @@ package com.snsoft.xmldom{
 				var varAttributeXML:XML = attributeXMLList[i];
 				var name:String = varAttributeXML.name();
 				var value:String = varAttributeXML.toString();
+				if(!StringUtil.isEffective(value)){
+					value = null;
+				}
 				if(StringUtil.isEffective(name)){
 					hv.push(value,name);
 				}

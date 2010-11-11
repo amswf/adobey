@@ -6,6 +6,7 @@
 	import com.snsoft.xmldom.NodeList;
 	import com.snsoft.xmldom.XMLDom;
 	
+	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -100,7 +101,9 @@
 				menuDO.text = menuI.getAttributeByName("text");
 				menuDO.eText = menuI.getAttributeByName("eText");
 				menuDO.image = menuI.getAttributeByName("image");
-				imageBox.addImageUrl(menuDO.image);
+				if(menuDO.image != null){
+					imageBox.addImageUrl(menuDO.image);
+				}
 				menuDO.eText = menuI.getAttributeByName("eText");
 				menuDO.url = menuI.getAttributeByName("url");
 				menuDO.type = menuI.getAttributeByName("type");
@@ -115,7 +118,10 @@
 						cmenuDO.text = menuII.getAttributeByName("text");
 						cmenuDO.eText = menuII.getAttributeByName("eText");
 						cmenuDO.image = menuII.getAttributeByName("image");
-						imageBox.addImageUrl(cmenuDO.image);
+						if(cmenuDO.image != null){
+							trace(cmenuDO.image);
+							imageBox.addImageUrl(cmenuDO.image);
+						}
 						cmenuDO.eText = menuII.getAttributeByName("eText");
 						cmenuDO.url = menuII.getAttributeByName("url");
 						cmenuDO.type = menuII.getAttributeByName("type");
@@ -146,6 +152,7 @@
 			
 			mainBackLayer = new MovieClip();
 			this.addChild(mainBackLayer);
+			mainBackLayer.addEventListener(MouseEvent.MOUSE_MOVE,handlerMenuIIBtnsLayerMouseOut);
 			
 			mainLayer = new MovieClip();
 			this.addChild(mainLayer);
@@ -159,16 +166,16 @@
 			adLayer.x = menuIsLayerX;
 			adLayer.y = menuIsLayerY + menuIHeight;
 			adLayer.addEventListener(MouseEvent.MOUSE_MOVE,handlerMenuIIBtnsLayerMouseOut);
+		
+			menuIIBtnsLayer = new MovieClip();
+			mainLayer.addChild(menuIIBtnsLayer);
+			menuIIBtnsLayer.x = menuIsLayerX;
+			menuIIBtnsLayer.y = menuIsLayerY + menuIHeight;
 			
 			menuIBtnsLayer = new MovieClip();
 			mainLayer.addChild(menuIBtnsLayer);
 			menuIBtnsLayer.x = menuIsLayerX;
 			menuIBtnsLayer.y = menuIsLayerY;
-			
-			menuIIBtnsLayer = new MovieClip();
-			mainLayer.addChild(menuIIBtnsLayer);
-			menuIIBtnsLayer.x = menuIsLayerX;
-			menuIIBtnsLayer.y = menuIsLayerY + menuIHeight;
 			
 			var logoBack:MovieClip = SkinsUtil.createSkinByName("BtnTop_skin");
 			logoBack.width = MAIN_WIDTH;
@@ -247,6 +254,10 @@
 		 */		
 		private function handlerMenuIBtnOver(e:Event):void{
 			SpriteUtil.deleteAllChild(menuIIBtnsLayer);
+			var effect:MovieClip = SkinsUtil.createSkinByName("MenuIIsEffect");
+			var imageLayer:MovieClip = effect.effectLayer;
+			menuIIBtnsLayer.addChild(effect);
+			
 			var mib:MenuIBtn = e.currentTarget as MenuIBtn;
 			var menuDO:MenuDO = mib.menuDO;
 			var cmenuDOV:Vector.<MenuDO> = menuDO.childMenuDOs;
@@ -254,49 +265,118 @@
 			resetMenuIBtnsStateExceptIndex(mib.index);
 			if(cmenuDOV.length > 0){
 				var miiBack:MovieClip = SkinsUtil.createSkinByName("MenuIIBack_defaultSkin");
-				menuIIBtnsLayer.addChild(miiBack);
+				imageLayer.addChild(miiBack);
 				
 				var miiBackBorder:MovieClip = SkinsUtil.createSkinByName("MenuIIBackBorder_defaultSkin");
 				miiBackBorder.mouseEnabled = false;
-				menuIIBtnsLayer.addChild(miiBackBorder);
+				imageLayer.addChild(miiBackBorder);
 				
-				
+				var baseX:Number = 0;
+				var baseY:Number = 0;
 				
 				var bx:Number = 0;
 				var by:Number = 0;
-				for(var i:int =0;i < cmenuDOV.length;i++){
+				
+				var backWidth:Number = MAIN_WIDTH;
+				var backHeight:Number = 0;
+				
+				var menuHeight:Number = 0;
+				
+				var rowNum:int = 0;
+				if(menuDO.type == MenuDO.TYPE_CARD){
+					rowNum = 3;
+					baseX = 0;
+					baseY = 0;
 					
-					if(i > 0 && i < cmenuDOV.length){
-						var separator:MovieClip = SkinsUtil.createSkinByName("MenuIISeparator_defaultSkin");
-						separator.x = bx;
-						separator.y = by;
-						menuIIBtnsLayer.addChild(separator);
+					bx = baseX;
+					by = baseY;
+					
+					for(var i:int =0;i < cmenuDOV.length;i++){
+						
+						if(i % rowNum != 0 || i % rowNum != rowNum - 1){
+							var separator:MovieClip = SkinsUtil.createSkinByName("MenuIISeparator_defaultSkin");
+							separator.x = bx;
+							separator.y = by;
+							imageLayer.addChild(separator);
+						}
+						
+						var cmdo:MenuDO = cmenuDOV[i];
+						var bmd:BitmapData = imageBox.getImageByUrl(cmdo.image);
+						cmdo.text = cmdo.text;
+						cmdo.contents = cmdo.contents;
+						var miicb:MenuIICardBtn = new MenuIICardBtn(cmdo,bmd);
+						miicb.x = bx;
+						miicb.y = by;
+						imageLayer.addChild(miicb);
+						bx = miicb.x + miicb.width;
+						if(i % rowNum == rowNum - 1){
+							bx = baseX;
+							by += miicb.height;
+						}
+						menuHeight = miicb.height;
 					}
+					backHeight = (int((cmenuDOV.length - 1) / rowNum) + 1) * menuHeight;
+				}
+				else if(menuDO.type == MenuDO.TYPE_LIST){
+					rowNum = 4;
+					var boarder:Number = 10;
+					var imgi:BitmapData = imageBox.getImageByUrl(menuDO.image);
+					var imagibm:Bitmap = new Bitmap(imgi,"auto",true);
+					imageLayer.addChild(imagibm);
+					imagibm.x = boarder;
+					imagibm.y = boarder;
 					
-					var cmdo:MenuDO = cmenuDOV[i];
-					var bmd:BitmapData = imageBox.getImageByUrl(cmdo.image);
-					cmdo.text = cmdo.text;
-					cmdo.contents = cmdo.contents;
-					var miicb:MenuIICardBtn = new MenuIICardBtn(cmdo,bmd);
-					miicb.x = bx;
-					miicb.y = by;
-					menuIIBtnsLayer.addChild(miicb);
-					bx = miicb.x + miicb.width;
-					if(i % 3 == 2){
-						by += miicb.height;
+					baseX = imagibm.x + imgi.width + boarder * 4;
+					baseY = 0;
+					
+					bx = baseX;
+					by = baseY;
+					
+					var my:Number = 0;
+					for(var ii:int =0;ii < cmenuDOV.length;ii++){
+						if(ii < cmenuDOV.length && ii % (rowNum * 2) < rowNum){
+							var separatorList:MovieClip = SkinsUtil.createSkinByName("MenuIISeparator_defaultSkin");
+							separatorList.x = bx;
+							separatorList.y = by;
+							imageLayer.addChild(separatorList);
+						}
+						
+						var cmldo:MenuDO = cmenuDOV[ii];
+						var bmdl:BitmapData = imageBox.getImageByUrl(cmldo.image);
+						cmldo.text = cmldo.text;
+						cmldo.contents = cmldo.contents;
+						var miilb:MenuIIListBtn = new MenuIIListBtn(cmldo,145,imgi.height / 2);
+						miilb.x = bx;
+						miilb.y = by;
+						imageLayer.addChild(miilb);
+						bx = miilb.x + miilb.width;
+						if(ii % rowNum == rowNum - 1){
+							bx = baseX;
+							by += miilb.height;
+						}
+						menuHeight = miilb.height;
+					}
+					my = (int((cmenuDOV.length - 1) / (rowNum *2)) + 1) * menuHeight * 2;
+					
+					backHeight = boarder + imgi.height + boarder;
+					
+					if(my > backHeight){
+						backHeight = my;
 					}
 				}
-				
 				miiBack.width = MAIN_WIDTH;
-				miiBack.height = by;
+				miiBack.height = backHeight;
 				
 				miiBackBorder.width = MAIN_WIDTH;
-				miiBackBorder.height = by;
+				miiBackBorder.height = backHeight;
 			}
 		}
 		
-		
-		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
 		private function handlerLoadXMLError(e:Event):void{
 			trace("加载出错！" + DATA_XML_URL);
 		}
