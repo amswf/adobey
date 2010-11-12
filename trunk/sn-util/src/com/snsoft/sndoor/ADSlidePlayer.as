@@ -194,7 +194,7 @@ package com.snsoft.sndoor{
 				
 				btnx += btnSep + btnWidth;
 			}
-		
+			
 			newSlideDobj = getSlideByLoop();
 			newSlideLayer.addChild(newSlideDobj);
 			setBtnIsSlideVisible(0);
@@ -206,12 +206,10 @@ package com.snsoft.sndoor{
 			var adsBtn:ADSlideBtn = e.currentTarget as ADSlideBtn;
 			var cindex:int = this.getPreviousSlideIndex();
 			stopTimer();
+			isMouseOverCurrenBtn = true;
 			if(adsBtn.index != cindex){
 				setSlideIndex(adsBtn.index);
 				changeToNextSlide();
-			}
-			else {
-				isMouseOverCurrenBtn = true;
 			}
 		}
 		
@@ -223,7 +221,7 @@ package com.snsoft.sndoor{
 		}
 		
 		private function startTimer():void{
-			if(slideDOV.length > 1){
+			if(slideDOV.length > 1 && !isMouseOverCurrenBtn){
 				if(slideTimer != null){
 					slideTimer.start();
 				}
@@ -235,7 +233,7 @@ package com.snsoft.sndoor{
 				slideTimer.stop(); 
 			}
 			if(effectTimer != null){
-			 	effectTimer.stop();
+				effectTimer.stop();
 			}
 		}
 		
@@ -268,9 +266,7 @@ package com.snsoft.sndoor{
 			effectTimer.removeEventListener(TimerEvent.TIMER,handlerEffectTimer);
 			effectTimer.removeEventListener(TimerEvent.TIMER_COMPLETE,handlerEffectTimerCmp);
 			SpriteUtil.deleteAllChild(oldSlideLayer);
-			
-			
-			slideTimer.start();
+			startTimer();
 		}
 		
 		private function setBtnIsSlideVisible(index:int):void{
