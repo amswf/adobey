@@ -54,6 +54,7 @@ package com.snsoft.sndoor{
 		 */		
 		private var newSlideDobj:MovieClip;
 		
+		private var previousSlideIndex:int = 0;
 		
 		private var slideIndex:int = 0;
 		
@@ -71,13 +72,23 @@ package com.snsoft.sndoor{
 		
 		private var btnsLayer:MovieClip;
 		
+		private var slideBtnFrameLayer:MovieClip;
+		
 		private var btnsV:Vector.<ADSlideBtn> = new Vector.<ADSlideBtn>();
+		
+		private var slideBtnFrame:MovieClip;
 		
 		private static const BTN_BACK_HEIGHT:Number = 64;
 		
 		private static const BTN_WIDTH:Number = 120;
 		
 		private static const BTN_HEIGHT:Number = 50;
+		
+		private var slideBtnFrameMoveStartX:Number = 0;
+		
+		private var slideBtnFrameMoveEndX:Number = 0;
+		
+		private var slideBtnFrameTimer:Timer;
 		
 		/**
 		 * 
@@ -113,12 +124,20 @@ package com.snsoft.sndoor{
 			
 			btnsLayer = new MovieClip();
 			btnsLayer.y = height - btnBack.height;
+			
+			slideBtnFrameLayer = new MovieClip();
+			slideBtnFrameLayer.y = height - btnBack.height;
+			slideBtnFrameLayer.mouseEnabled = false;
+			slideBtnFrameLayer.mouseChildren = false;
+			
+			slideBtnFrame = getDisplayObjectInstance(getStyleValue(slideBtnFrameDefaultSkin)) as MovieClip;
 		}
 		
 		/**
 		 * 样式 
 		 */			
 		private static var defaultStyles:Object = {
+			slideBtnFrameDefaultSkin:"SlideBtnFrame_defaultSkin",
 			slideBtnAlphaSkin:"SlideBtnAlpha_skin",
 			slideAssistSkin:"SlideAssist_skin",
 			slideBtnBackSkin:"SlideBtnBack_skin"
@@ -127,6 +146,8 @@ package com.snsoft.sndoor{
 		/**
 		 * 样式  
 		 */		
+		private static const slideBtnFrameDefaultSkin:String = "slideBtnFrameDefaultSkin";
+		
 		private static const slideAssistSkin:String = "slideAssistSkin";
 		
 		private static const slideBtnBackSkin:String = "slideBtnBackSkin";
@@ -162,6 +183,7 @@ package com.snsoft.sndoor{
 			this.addChild(newSlideLayer);
 			this.addChild(btnBack);
 			this.addChild(btnsLayer);
+			this.addChild(slideBtnFrameLayer);
 			
 			var btnsBorder:Number = 50;
 			var btnMinSep:Number = 20;
@@ -175,7 +197,15 @@ package com.snsoft.sndoor{
 			
 			btnSep = (this.width - btnsBorder - btnsBorder - btnWidth * slideDOV.length)/ (slideDOV.length - 1);
 			
+			
+			
 			var btnx:Number = btnsBorder;
+			
+			slideBtnFrame.x = btnx -(slideBtnFrame.width - BTN_WIDTH) / 2;
+			slideBtnFrame.y = 0; 
+			slideBtnFrame.width = slideBtnFrame.width - BTN_WIDTH + btnWidth;
+			slideBtnFrameLayer.addChild(slideBtnFrame);
+			
 			for(var i:int = 0;i < slideDOV.length;i ++){
 				
 				var sdo:SlideDO = slideDOV[i];
@@ -208,6 +238,7 @@ package com.snsoft.sndoor{
 			stopTimer();
 			isMouseOverCurrenBtn = true;
 			if(adsBtn.index != cindex){
+				previousSlideIndex = cindex;
 				setSlideIndex(adsBtn.index);
 				changeToNextSlide();
 			}
@@ -273,12 +304,35 @@ package com.snsoft.sndoor{
 			for(var i:int = 0;i < btnsV.length;i ++){
 				var adsBtn:ADSlideBtn = btnsV[i];
 				if(i == index){
+					
+					var pbtn:ADSlideBtn = btnsV[previousSlideIndex];
+					slideBtnFrameMoveStartX = slideBtnFrame.x;
+					slideBtnFrameMoveEndX = adsBtn.x - (slideBtnFrame.width - BTN_WIDTH) / 2;
+					
+					if(slideBtnFrameTimer != null){
+						slideBtnFrameTimer.stop();
+					}
+					slideBtnFrameTimer = new Timer(10,20);
+					slideBtnFrameTimer.addEventListener(TimerEvent.TIMER,handlerSlideBtnFrameTimer);
+					slideBtnFrameTimer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerSlideBtnFrameTimerCmp);
+					slideBtnFrameTimer.start();
+					
+					//slideBtnFrame.x = adsBtn.x - (slideBtnFrame.width - BTN_WIDTH) / 2;
 					adsBtn.setBtnSlideVisible(true);
 				}
 				else {
 					adsBtn.setBtnSlideVisible(false);
 				}
 			}
+		}
+		
+		private function handlerSlideBtnFrameTimer(e:Event):void{
+			var len:Number = (slideBtnFrameMoveEndX - slideBtnFrameMoveStartX) / 20;
+			slideBtnFrame.x += len;
+		}
+		
+		private function handlerSlideBtnFrameTimerCmp(e:Event):void{
+			slideBtnFrame.x = slideBtnFrameMoveEndX;
 		}
 		
 		private function getPreviousSlideIndex():int{
