@@ -1,6 +1,7 @@
 ﻿package com.snsoft.sndoor{
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.SpriteUtil;
+	import com.snsoft.util.StringUtil;
 	import com.snsoft.util.complexEvent.CplxEventOpenUrl;
 	import com.snsoft.xmldom.Node;
 	import com.snsoft.xmldom.NodeList;
@@ -15,9 +16,13 @@
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.MouseEvent;
-	import flash.geom.Rectangle;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
+	import flash.text.TextField;
+	import flash.text.TextFieldType;
+	import flash.text.TextFormat;
+	import flash.text.TextFormatAlign;
 	
 	public class Main extends MovieClip{
 		
@@ -65,6 +70,14 @@
 		
 		private var mediaBox:MediaBox;
 		
+		private var logoUrl:String;
+		
+		private var phoneText:String;
+		
+		private var searchUrl:String;
+		
+		private var searchText:TextField;
+		
 		
 		/**
 		 * 
@@ -99,8 +112,33 @@
 		}
 		
 		private function creatData(node:Node):void{
-			//一二级菜单
+			//图片资源
 			imageBox = new ImageBox();
+			//媒体资源
+			mediaBox = new MediaBox();
+			
+			//变量
+			var vars:Node = node.getNodeListFirstNode("vars");
+			var varList:NodeList = vars.getNodeList("var");
+			for(var iv:int =0;iv<varList.length();iv++){
+				var varNode:Node = varList.getNode(iv);
+				var name:String = varNode.getAttributeByName("name");
+				var value:String = varNode.getAttributeByName("value");
+				trace(value);
+				if(name == "logo"){
+					logoUrl = value;
+					imageBox.addImageUrl(logoUrl);
+				}
+				else if(name == "phone"){
+					phoneText = value;
+					phoneText = StringUtil.replaceLineBreak(phoneText);
+				}
+				else if(name == "search"){
+					searchUrl = value;
+				}
+			}
+			
+			//一二级菜单
 			menuDOV = new Vector.<MenuDO>();
 			var menuIs:Node = node.getNodeListFirstNode("menuIs");
 			var menuIList:NodeList = menuIs.getNodeList("menuI");
@@ -145,11 +183,9 @@
 				}
 			}
 			
-			imageBox.addEventListener(Event.COMPLETE,handlerImageBoxCmp);
-			imageBox.loadImage();
+			
 			
 			//幻灯片
-			mediaBox = new MediaBox();
 			slideDOV = new Vector.<SlideDO>();
 			var slides:Node = node.getNodeListFirstNode("slides");
 			var slideList:NodeList = slides.getNodeList("slide");
@@ -168,12 +204,15 @@
 				imageBox.addImageUrl(slideDO.image);
 			}
 			
+			imageBox.addEventListener(Event.COMPLETE,handlerImageBoxCmp);
+			imageBox.loadImage();
+			
 			mediaBox.addEventListener(Event.COMPLETE,handlerMediaBoxCmp);
 			mediaBox.loadMedia();
 		}
 		
 		private function handlerMediaBoxCmp(e:Event):void{
-			 //??????????????????????????????????????????????????????????/
+			//??????????????????????????????????????????????????????????/
 		}
 		
 		
@@ -182,6 +221,7 @@
 		}
 		
 		private function init():void{
+			var border:Number = 10;
 			
 			var menuIsLayerX:Number = 0;
 			var menuIsLayerY:Number = 72;
@@ -220,6 +260,57 @@
 			mainLayer.addChild(menuIBtnsLayer);
 			menuIBtnsLayer.x = menuIsLayerX;
 			menuIBtnsLayer.y = menuIsLayerY;
+			
+			//LOGO图片
+			var logobmd:BitmapData = imageBox.getImageByUrl(logoUrl);
+			var logobm:Bitmap = new Bitmap(logobmd,"auto",true);
+			logoLayer.addChild(logobm);
+			
+			//联系方式
+			var phoneTextField:TextField = new TextField();
+			phoneTextField.mouseEnabled = false;
+			phoneTextField.width = 500;
+			phoneTextField.height = 72;
+			phoneTextField.x = MAIN_WIDTH - phoneTextField.width - border;
+			phoneTextField.y = 0;
+			phoneTextField.htmlText = "<b>"+phoneText+"</b>";
+			logoLayer.addChild(phoneTextField);
+			
+			var phoneTextFormat:TextFormat =new TextFormat();
+			phoneTextFormat.font ="宋体";
+			phoneTextFormat.align = TextFormatAlign.RIGHT;
+			phoneTextFormat.size = 12;
+			phoneTextFormat.color = 0x4F921F;
+			phoneTextFormat.leading = 4;
+			phoneTextField.setTextFormat(phoneTextFormat);
+			
+			//搜索
+			var search:MovieClip = new MovieClip();
+			menuIBtnsLayer.addChild(search);
+			var searchBack:MovieClip = SkinsUtil.createSkinByName("SearchBack_defaultSkin");
+			search.addChild(searchBack);
+			var searchBtn:MovieClip = SkinsUtil.createSkinByName("SearchBtn_defaultSkin");
+			searchBtn.buttonMode = true;
+			search.addChild(searchBtn);
+			searchBtn.addEventListener(MouseEvent.CLICK,handlerSearchBtnClick);
+			searchText = new TextField();
+			searchText.width = 90;
+			searchText.height = 19;
+			searchText.x = 10;
+			searchText.border = false;
+			searchText.background = false;
+			searchText.wordWrap = false;
+			searchText.text = " ";
+			searchText.type = TextFieldType.INPUT;
+			search.addChild(searchText);
+			
+			var searchTextFormat:TextFormat =new TextFormat();
+			searchTextFormat.font ="宋体";
+			searchTextFormat.size = 13;
+			searchText.setTextFormat(searchTextFormat);
+			search.x = MAIN_WIDTH - searchBack.width - border;
+			search.y = 9;
+			
 			
 			//主背景
 			mainBack = SkinsUtil.createSkinByName("BtnTop_skin");
@@ -277,6 +368,17 @@
 			
 			var ads:ADSlidePlayer = new ADSlidePlayer(slideDOV,imageBox,mediaBox,MAIN_WIDTH,AD_HEIGHT);
 			this.adLayer.addChild(ads);
+		}
+		
+		private function handlerSearchBtnClick(e:Event):void{
+			try{
+				var url:String = searchUrl + searchText.text;
+				var req:URLRequest = new URLRequest(url);
+				navigateToURL(req,"_blank");
+			}
+			catch(e:Error){
+				
+			}
 		}
 		
 		private function resetMenuIBtnsStateExceptIndex(index:int = -1):void{

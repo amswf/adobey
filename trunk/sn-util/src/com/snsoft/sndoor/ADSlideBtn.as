@@ -45,7 +45,6 @@ package com.snsoft.sndoor{
 		 * 绘制组件显示
 		 */		
 		override protected function draw():void{
-			trace("draw");
 			imageBitMap.width = this.width;
 			imageBitMap.height = this.height;
 			this.addChild(imageBitMap);

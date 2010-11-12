@@ -9,6 +9,28 @@ package com.snsoft.util
 		}
 		
 		/**
+		 * 修复文本化的换行符 \r 
+		 * @param str
+		 * @return 
+		 * 
+		 */		
+		public static function replaceLineBreak(str:String):String{
+			var ctext:String = null;
+			if(str != null){
+				ctext = "";
+				var array:Array = str.split("\\r");
+				for (var i:int = 0; i<array.length; i++) {
+					var str:String = String(array[i]);
+					if (i != 0) {
+						ctext +=  "\r";
+					}
+					ctext +=  str;
+				}
+			}
+			return ctext;
+		}
+		
+		/**
 		 * 获得字符串的字节 
 		 * @return 
 		 * 
