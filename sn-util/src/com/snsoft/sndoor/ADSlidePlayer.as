@@ -272,7 +272,6 @@ package com.snsoft.sndoor{
 		private function setBtnIsSlideVisible(index:int):void{
 			for(var i:int = 0;i < btnsV.length;i ++){
 				var adsBtn:ADSlideBtn = btnsV[i];
-				trace("setBtnSlideVisible",i,index);
 				if(i == index){
 					adsBtn.setBtnSlideVisible(true);
 				}
@@ -300,17 +299,24 @@ package com.snsoft.sndoor{
 		
 		private function getSlideByLoop():MovieClip{
 			var slide:MovieClip = new MovieClip();
+			var mask:MovieClip = getDisplayObjectInstance(getStyleValue(slideAssistSkin)) as MovieClip;
+			mask.width = this.width;
+			mask.height = this.height;
+			slide.addChild(mask);
 			
 			var slideDO:SlideDO = slideDOV[slideIndex];
 			var dobj:DisplayObject= mediaBox.getMediaByUrl(slideDO.media);
 			if(dobj is Bitmap){
 				var bm:Bitmap = dobj as Bitmap;
 				slide.addChild(bm);
+				bm.mask = mask;
 			}
 			else if(dobj is MovieClip){
 				var mc:MovieClip = dobj as MovieClip;
 				slide.addChild(mc);
+				mc.mask = mask;
 				mc.play();
+				
 			}
 			slideIndex ++ ;
 			if(slideIndex > slideDOV.length - 1){
