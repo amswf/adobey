@@ -2,7 +2,10 @@
 <mx:Application creationComplete="init();" xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
 	<mx:Script>
 		<![CDATA[
+			import com.snsoft.sndoor.ADSlideBtn;
+			import com.snsoft.sndoor.ADSlidePlayer;
 			import com.snsoft.sndoor.Main;
+			import com.snsoft.sndoor.MediaBox;
 			import com.snsoft.sndoor.MenuI;
 			import com.snsoft.sndoor.MenuIBtn;
 			import com.snsoft.sndoor.MenuII;
@@ -20,6 +23,9 @@
 				 CplxEventOpenUrl;
 				 MenuIICardBtn;
 				 MenuIIListBtn;
+				 MediaBox;
+				 ADSlidePlayer;
+				 ADSlideBtn;
 			}
 		]]>
 	</mx:Script>
