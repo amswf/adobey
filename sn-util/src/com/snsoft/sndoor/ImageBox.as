@@ -86,6 +86,7 @@ package com.snsoft.sndoor{
 		 */		
 		private function handlerError(e:Event):void{
 			loadingCount ++;
+			loadingImage();
 		}
 	}
 }

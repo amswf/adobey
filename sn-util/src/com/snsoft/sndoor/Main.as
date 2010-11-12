@@ -31,6 +31,12 @@
 		
 		private var MAIN_WIDTH:Number = 1002;
 		
+		private var MAIN_HEIGHT:Number = 560;
+		
+		private var AD_HEIGHT:Number = 450;
+		
+		private var mainBack:MovieClip;
+		
 		/**
 		 * 一级按钮背景 
 		 */		
@@ -54,6 +60,10 @@
 		private var logoLayer:MovieClip;
 		
 		private var menuIBtnV:Vector.<MenuIBtn> = new Vector.<MenuIBtn>();
+		
+		private var slideDOV:Vector.<SlideDO>;
+		
+		private var mediaBox:MediaBox;
 		
 		
 		/**
@@ -89,8 +99,8 @@
 		}
 		
 		private function creatData(node:Node):void{
+			//一二级菜单
 			imageBox = new ImageBox();
-			trace(node.name);
 			menuDOV = new Vector.<MenuDO>();
 			var menuIs:Node = node.getNodeListFirstNode("menuIs");
 			var menuIList:NodeList = menuIs.getNodeList("menuI");
@@ -101,9 +111,6 @@
 				menuDO.text = menuI.getAttributeByName("text");
 				menuDO.eText = menuI.getAttributeByName("eText");
 				menuDO.image = menuI.getAttributeByName("image");
-				if(menuDO.image != null){
-					imageBox.addImageUrl(menuDO.image);
-				}
 				menuDO.eText = menuI.getAttributeByName("eText");
 				menuDO.url = menuI.getAttributeByName("url");
 				menuDO.type = menuI.getAttributeByName("type");
@@ -118,26 +125,57 @@
 						cmenuDO.text = menuII.getAttributeByName("text");
 						cmenuDO.eText = menuII.getAttributeByName("eText");
 						cmenuDO.image = menuII.getAttributeByName("image");
-						if(cmenuDO.image != null){
-							trace(cmenuDO.image);
-							imageBox.addImageUrl(cmenuDO.image);
-						}
 						cmenuDO.eText = menuII.getAttributeByName("eText");
 						cmenuDO.url = menuII.getAttributeByName("url");
 						cmenuDO.type = menuII.getAttributeByName("type");
 						cmenuDO.window = menuII.getAttributeByName("window");
 						cmenuDO.contents = menuII.getAttributeByName("contents");
 						menuDO.pushChildMenuDO(cmenuDO);
+						
+						if(cmenuDO.image != null){
+							trace("cmenuDO.image",cmenuDO.image);
+							imageBox.addImageUrl(cmenuDO.image);
+						}
 					}
 				}
 				menuDOV.push(menuDO);
 				
+				if(menuDO.image != null){
+					imageBox.addImageUrl(menuDO.image);
+				}
 			}
 			
 			imageBox.addEventListener(Event.COMPLETE,handlerImageBoxCmp);
 			imageBox.loadImage();
 			
+			//幻灯片
+			mediaBox = new MediaBox();
+			slideDOV = new Vector.<SlideDO>();
+			var slides:Node = node.getNodeListFirstNode("slides");
+			var slideList:NodeList = slides.getNodeList("slide");
+			for(var ii:int =0;ii<slideList.length();ii ++){
+				var slide:Node = slideList.getNode(ii);
+				var slideDO:SlideDO = new SlideDO();
+				slideDO.name = slide.getAttributeByName("name");
+				slideDO.text = slide.getAttributeByName("text");
+				slideDO.url = slide.getAttributeByName("url");
+				slideDO.window = slide.getAttributeByName("window");
+				slideDO.media = slide.getAttributeByName("media");	
+				slideDO.image = slide.getAttributeByName("image");
+				slideDOV.push(slideDO);
+				trace("slideDO.media",slideDO.media);
+				mediaBox.addMediaUrl(slideDO.media);
+				imageBox.addImageUrl(slideDO.image);
+			}
+			
+			mediaBox.addEventListener(Event.COMPLETE,handlerMediaBoxCmp);
+			mediaBox.loadMedia();
 		}
+		
+		private function handlerMediaBoxCmp(e:Event):void{
+			 //??????????????????????????????????????????????????????????/
+		}
+		
 		
 		private function handlerImageBoxCmp(e:Event):void{
 			init();
@@ -150,48 +188,53 @@
 			
 			var menuIHeight:Number = 37;
 			
+			//主背景层
 			mainBackLayer = new MovieClip();
 			this.addChild(mainBackLayer);
 			mainBackLayer.addEventListener(MouseEvent.MOUSE_MOVE,handlerMenuIIBtnsLayerMouseOut);
 			
+			//主显示层
 			mainLayer = new MovieClip();
 			this.addChild(mainLayer);
 			
+			//logo显示层
 			logoLayer = new MovieClip();
 			mainLayer.addChild(logoLayer);
 			logoLayer.addEventListener(MouseEvent.MOUSE_MOVE,handlerMenuIIBtnsLayerMouseOut);
 			
+			//广告层
 			adLayer = new MovieClip();
 			mainLayer.addChild(adLayer);
 			adLayer.x = menuIsLayerX;
 			adLayer.y = menuIsLayerY + menuIHeight;
 			adLayer.addEventListener(MouseEvent.MOUSE_MOVE,handlerMenuIIBtnsLayerMouseOut);
-		
+			
+			//二级菜单层
 			menuIIBtnsLayer = new MovieClip();
 			mainLayer.addChild(menuIIBtnsLayer);
 			menuIIBtnsLayer.x = menuIsLayerX;
 			menuIIBtnsLayer.y = menuIsLayerY + menuIHeight;
 			
+			//一级菜单层
 			menuIBtnsLayer = new MovieClip();
 			mainLayer.addChild(menuIBtnsLayer);
 			menuIBtnsLayer.x = menuIsLayerX;
 			menuIBtnsLayer.y = menuIsLayerY;
 			
-			var logoBack:MovieClip = SkinsUtil.createSkinByName("BtnTop_skin");
-			logoBack.width = MAIN_WIDTH;
-			logoBack.height = menuIsLayerY;
-			logoLayer.addChild(logoBack);
+			//主背景
+			mainBack = SkinsUtil.createSkinByName("BtnTop_skin");
+			mainBackLayer.addChild(mainBack);
+			mainBack.width = MAIN_WIDTH;
+			mainBack.height = MAIN_HEIGHT;
 			
-			var ad:MovieClip = SkinsUtil.createSkinByName("BtnTop_skin");
-			ad.width = MAIN_WIDTH;
-			ad.height = 400;
-			adLayer.addChild(ad);
-			
+			//一级菜单背景
 			menuIback = SkinsUtil.createSkinByName(menuIBackDefaultSkin);
 			menuIback.x = menuIsLayerX;
 			menuIback.y = menuIsLayerY;
 			mainBackLayer.addChild(menuIback);
 			
+			
+			//场景缩放事件
 			this.addEventListener(Event.ENTER_FRAME,handlerEnterFrame);
 			stage.addEventListener(Event.RESIZE,handlerResize);
 			
@@ -230,7 +273,10 @@
 				}
 				
 				menuX = mib.x + mib.width;
-			}		
+			}	
+			
+			var ads:ADSlidePlayer = new ADSlidePlayer(slideDOV,imageBox,mediaBox,MAIN_WIDTH,AD_HEIGHT);
+			this.adLayer.addChild(ads);
 		}
 		
 		private function resetMenuIBtnsStateExceptIndex(index:int = -1):void{
@@ -255,8 +301,12 @@
 		private function handlerMenuIBtnOver(e:Event):void{
 			SpriteUtil.deleteAllChild(menuIIBtnsLayer);
 			var effect:MovieClip = SkinsUtil.createSkinByName("MenuIIsEffect");
-			var imageLayer:MovieClip = effect.effectLayer;
+			var effectLayer:MovieClip = effect.effectLayer;
 			menuIIBtnsLayer.addChild(effect);
+			
+			var mask:MovieClip = SkinsUtil.createSkinByName("BtnTop_skin");
+			menuIIBtnsLayer.addChild(mask);
+			effect.mask = mask;
 			
 			var mib:MenuIBtn = e.currentTarget as MenuIBtn;
 			var menuDO:MenuDO = mib.menuDO;
@@ -265,11 +315,11 @@
 			resetMenuIBtnsStateExceptIndex(mib.index);
 			if(cmenuDOV.length > 0){
 				var miiBack:MovieClip = SkinsUtil.createSkinByName("MenuIIBack_defaultSkin");
-				imageLayer.addChild(miiBack);
+				effectLayer.addChild(miiBack);
 				
 				var miiBackBorder:MovieClip = SkinsUtil.createSkinByName("MenuIIBackBorder_defaultSkin");
 				miiBackBorder.mouseEnabled = false;
-				imageLayer.addChild(miiBackBorder);
+				effectLayer.addChild(miiBackBorder);
 				
 				var baseX:Number = 0;
 				var baseY:Number = 0;
@@ -297,7 +347,7 @@
 							var separator:MovieClip = SkinsUtil.createSkinByName("MenuIISeparator_defaultSkin");
 							separator.x = bx;
 							separator.y = by;
-							imageLayer.addChild(separator);
+							effectLayer.addChild(separator);
 						}
 						
 						var cmdo:MenuDO = cmenuDOV[i];
@@ -307,7 +357,7 @@
 						var miicb:MenuIICardBtn = new MenuIICardBtn(cmdo,bmd);
 						miicb.x = bx;
 						miicb.y = by;
-						imageLayer.addChild(miicb);
+						effectLayer.addChild(miicb);
 						bx = miicb.x + miicb.width;
 						if(i % rowNum == rowNum - 1){
 							bx = baseX;
@@ -322,7 +372,7 @@
 					var boarder:Number = 10;
 					var imgi:BitmapData = imageBox.getImageByUrl(menuDO.image);
 					var imagibm:Bitmap = new Bitmap(imgi,"auto",true);
-					imageLayer.addChild(imagibm);
+					effectLayer.addChild(imagibm);
 					imagibm.x = boarder;
 					imagibm.y = boarder;
 					
@@ -338,7 +388,7 @@
 							var separatorList:MovieClip = SkinsUtil.createSkinByName("MenuIISeparator_defaultSkin");
 							separatorList.x = bx;
 							separatorList.y = by;
-							imageLayer.addChild(separatorList);
+							effectLayer.addChild(separatorList);
 						}
 						
 						var cmldo:MenuDO = cmenuDOV[ii];
@@ -348,7 +398,7 @@
 						var miilb:MenuIIListBtn = new MenuIIListBtn(cmldo,145,imgi.height / 2);
 						miilb.x = bx;
 						miilb.y = by;
-						imageLayer.addChild(miilb);
+						effectLayer.addChild(miilb);
 						bx = miilb.x + miilb.width;
 						if(ii % rowNum == rowNum - 1){
 							bx = baseX;
@@ -369,6 +419,9 @@
 				
 				miiBackBorder.width = MAIN_WIDTH;
 				miiBackBorder.height = backHeight;
+				
+				mask.width = MAIN_WIDTH;
+				mask.height = backHeight;
 			}
 		}
 		
@@ -393,6 +446,8 @@
 		private function resize():void{
 			alignCenter(mainLayer, MAIN_WIDTH, stage.stageWidth);
 			updateToStageWidth(menuIback);
+			updateToStageWidth(mainBack);
+			mainBack
 		}
 		
 		private function alignCenter(sprite:Sprite,width:Number,parentWidth:Number):void{
