@@ -36,9 +36,9 @@
 		
 		private var MAIN_WIDTH:Number = 1002;
 		
-		private var MAIN_HEIGHT:Number = 560;
+		private var MAIN_HEIGHT:Number = 536;
 		
-		private var AD_HEIGHT:Number = 450;
+		private var AD_HEIGHT:Number = 426;
 		
 		private var mainBack:MovieClip;
 		
@@ -64,6 +64,8 @@
 		
 		private var logoLayer:MovieClip;
 		
+		private var loadingLayer:MovieClip;
+		
 		private var menuIBtnV:Vector.<MenuIBtn> = new Vector.<MenuIBtn>();
 		
 		private var slideDOV:Vector.<SlideDO>;
@@ -74,9 +76,29 @@
 		
 		private var phoneText:String;
 		
+		private var doorType:String;
+		
+		private static const DOOR_TYPE_MAIN:String = "main";
+		
+		private static const DOOR_TYPE_SECOND:String = "second";
+		
+		
+		
 		private var searchUrl:String;
 		
 		private var searchText:TextField;
+		
+		private var loadingMedia:LoadingProgress;
+		
+		private var loadingImage:LoadingProgress;
+		
+		private var border:Number = 10;
+		
+		private var menuIsLayerX:Number = 0;
+		
+		private var menuIsLayerY:Number = 72;
+		
+		private var menuIHeight:Number = 37;
 		
 		
 		/**
@@ -88,6 +110,61 @@
 			super();
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
+			
+			
+			//主背景层
+			mainBackLayer = new MovieClip();
+			this.addChild(mainBackLayer);
+			mainBackLayer.addEventListener(MouseEvent.MOUSE_MOVE,handlerMenuIIBtnsLayerMouseOut);
+			
+			//主显示层
+			mainLayer = new MovieClip();
+			this.addChild(mainLayer);
+			
+			//进度条层
+			loadingLayer = new MovieClip();
+			mainLayer.addChild(loadingLayer);
+			
+			//logo显示层
+			logoLayer = new MovieClip();
+			mainLayer.addChild(logoLayer);
+			logoLayer.addEventListener(MouseEvent.MOUSE_MOVE,handlerMenuIIBtnsLayerMouseOut);
+			
+			//广告层
+			adLayer = new MovieClip();
+			mainLayer.addChild(adLayer);
+			adLayer.x = menuIsLayerX;
+			adLayer.y = menuIsLayerY + menuIHeight;
+			adLayer.addEventListener(MouseEvent.MOUSE_MOVE,handlerMenuIIBtnsLayerMouseOut);
+			
+			//二级菜单层
+			menuIIBtnsLayer = new MovieClip();
+			mainLayer.addChild(menuIIBtnsLayer);
+			menuIIBtnsLayer.x = menuIsLayerX;
+			menuIIBtnsLayer.y = menuIsLayerY + menuIHeight;
+			
+			//一级菜单层
+			menuIBtnsLayer = new MovieClip();
+			mainLayer.addChild(menuIBtnsLayer);
+			menuIBtnsLayer.x = menuIsLayerX;
+			menuIBtnsLayer.y = menuIsLayerY;
+			
+			//主背景
+			mainBack = SkinsUtil.createSkinByName("BtnTop_skin");
+			mainBackLayer.addChild(mainBack);
+			mainBack.width = MAIN_WIDTH;
+			mainBack.height = MAIN_HEIGHT;
+			
+			//一级菜单背景
+			menuIback = SkinsUtil.createSkinByName(menuIBackDefaultSkin);
+			menuIback.x = menuIsLayerX;
+			menuIback.y = menuIsLayerY;
+			mainBackLayer.addChild(menuIback);
+			
+			
+			//场景缩放事件
+			this.addEventListener(Event.ENTER_FRAME,handlerEnterFrame);
+			stage.addEventListener(Event.RESIZE,handlerResize);
 			
 			loadXML();
 		}
@@ -117,6 +194,17 @@
 			//媒体资源
 			mediaBox = new MediaBox();
 			
+			//进度条
+			loadingImage = new LoadingProgress(400,20);
+			loadingLayer.addChild(loadingImage);
+			loadingImage.x = (MAIN_WIDTH - loadingImage.width) / 2;
+			loadingImage.y = 40;
+			
+			loadingMedia = new LoadingProgress(400,20);
+			loadingLayer.addChild(loadingMedia);
+			loadingMedia.x = (MAIN_WIDTH - loadingMedia.width) / 2;
+			loadingMedia.y = 300;
+			
 			//变量
 			var vars:Node = node.getNodeListFirstNode("vars");
 			var varList:NodeList = vars.getNodeList("var");
@@ -136,6 +224,24 @@
 				else if(name == "search"){
 					searchUrl = value;
 				}
+				else if(name == "doorType"){
+					doorType = value;
+				}
+			}
+			
+			var dt:String = loaderInfo.parameters["doorType"];
+			if(dt != null){
+				doorType = dt;
+			}
+			
+			if(doorType == DOOR_TYPE_MAIN){
+				 
+			}
+			else if(doorType == DOOR_TYPE_SECOND) {
+				loadingLayer.removeChild(loadingMedia);
+			}
+			else {
+
 			}
 			
 			//一二级菜单
@@ -205,61 +311,44 @@
 			}
 			
 			imageBox.addEventListener(Event.COMPLETE,handlerImageBoxCmp);
+			imageBox.addEventListener(ImageBox.EVENT_LOADING,handlerImageBoxLoading);
 			imageBox.loadImage();
 			
 			mediaBox.addEventListener(Event.COMPLETE,handlerMediaBoxCmp);
-			mediaBox.loadMedia();
+			mediaBox.addEventListener(ImageBox.EVENT_LOADING,handlerMediaBoxLoading);
+			
+		}
+		
+		private function handlerImageBoxLoading(e:Event):void{
+			loadingImage.setProgressValue(imageBox.loadingCount / imageBox.allCount);
+		}
+		
+		private function handlerMediaBoxLoading(e:Event):void{
+			loadingMedia.setProgressValue(mediaBox.loadingCount / mediaBox.allCount);
 		}
 		
 		private function handlerMediaBoxCmp(e:Event):void{
-			//??????????????????????????????????????????????????????????/
+			loadingLayer.removeChild(loadingMedia);
+			var ads:ADSlidePlayer = new ADSlidePlayer(slideDOV,imageBox,mediaBox,MAIN_WIDTH,AD_HEIGHT);
+			this.adLayer.addChild(ads);
 		}
 		
 		
 		private function handlerImageBoxCmp(e:Event):void{
+			loadingLayer.removeChild(loadingImage);
+			if(doorType == DOOR_TYPE_MAIN){
+				mediaBox.loadMedia();
+			}
+			else if(doorType == DOOR_TYPE_SECOND) {
+				
+			}
+			else {
+				mediaBox.loadMedia();
+			}
 			init();
 		}
 		
 		private function init():void{
-			var border:Number = 10;
-			
-			var menuIsLayerX:Number = 0;
-			var menuIsLayerY:Number = 72;
-			
-			var menuIHeight:Number = 37;
-			
-			//主背景层
-			mainBackLayer = new MovieClip();
-			this.addChild(mainBackLayer);
-			mainBackLayer.addEventListener(MouseEvent.MOUSE_MOVE,handlerMenuIIBtnsLayerMouseOut);
-			
-			//主显示层
-			mainLayer = new MovieClip();
-			this.addChild(mainLayer);
-			
-			//logo显示层
-			logoLayer = new MovieClip();
-			mainLayer.addChild(logoLayer);
-			logoLayer.addEventListener(MouseEvent.MOUSE_MOVE,handlerMenuIIBtnsLayerMouseOut);
-			
-			//广告层
-			adLayer = new MovieClip();
-			mainLayer.addChild(adLayer);
-			adLayer.x = menuIsLayerX;
-			adLayer.y = menuIsLayerY + menuIHeight;
-			adLayer.addEventListener(MouseEvent.MOUSE_MOVE,handlerMenuIIBtnsLayerMouseOut);
-			
-			//二级菜单层
-			menuIIBtnsLayer = new MovieClip();
-			mainLayer.addChild(menuIIBtnsLayer);
-			menuIIBtnsLayer.x = menuIsLayerX;
-			menuIIBtnsLayer.y = menuIsLayerY + menuIHeight;
-			
-			//一级菜单层
-			menuIBtnsLayer = new MovieClip();
-			mainLayer.addChild(menuIBtnsLayer);
-			menuIBtnsLayer.x = menuIsLayerX;
-			menuIBtnsLayer.y = menuIsLayerY;
 			
 			//LOGO图片
 			var logobmd:BitmapData = imageBox.getImageByUrl(logoUrl);
@@ -312,22 +401,7 @@
 			search.y = 9;
 			
 			
-			//主背景
-			mainBack = SkinsUtil.createSkinByName("BtnTop_skin");
-			mainBackLayer.addChild(mainBack);
-			mainBack.width = MAIN_WIDTH;
-			mainBack.height = MAIN_HEIGHT;
 			
-			//一级菜单背景
-			menuIback = SkinsUtil.createSkinByName(menuIBackDefaultSkin);
-			menuIback.x = menuIsLayerX;
-			menuIback.y = menuIsLayerY;
-			mainBackLayer.addChild(menuIback);
-			
-			
-			//场景缩放事件
-			this.addEventListener(Event.ENTER_FRAME,handlerEnterFrame);
-			stage.addEventListener(Event.RESIZE,handlerResize);
 			
 			
 			var menuX:Number = 0;
@@ -365,9 +439,6 @@
 				
 				menuX = mib.x + mib.width;
 			}	
-			
-			var ads:ADSlidePlayer = new ADSlidePlayer(slideDOV,imageBox,mediaBox,MAIN_WIDTH,AD_HEIGHT);
-			this.adLayer.addChild(ads);
 		}
 		
 		private function handlerSearchBtnClick(e:Event):void{
