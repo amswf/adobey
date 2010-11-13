@@ -276,9 +276,9 @@ package com.snsoft.sndoor{
 			if(slideTimer != null){
 				slideTimer.stop(); 
 			}
-			if(effectTimer != null){
-				effectTimer.stop();
-			}
+//			if(effectTimer != null){
+//				effectTimer.stop();
+//			}
 		}
 		
 		private function handlerTimerCmp(e:Event):void{
