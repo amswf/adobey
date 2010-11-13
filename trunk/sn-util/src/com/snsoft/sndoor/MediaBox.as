@@ -30,11 +30,16 @@ package com.snsoft.sndoor{
 		 */		
 		private var mediaUrlV:Vector.<String> = new Vector.<String>();
 		
-		private var loadingCount:int = 0;
+		private var _loadingCount:int = 0;
+		
+		private var _allCount:int = 0;
 		
 		private var isLoadingCmp:Boolean = false;
 		
 		private var isLoading:Boolean = false;
+		
+		public static const EVENT_LOADING:String = "EVENT_LOADING";
+		
 		/**
 		 * 
 		 * @param mediaUrlV
@@ -49,6 +54,7 @@ package com.snsoft.sndoor{
 		
 		public function addMediaUrl(url:String):void{
 			mediaUrlV.push(url);
+			_allCount = mediaUrlV.length;
 		}
 		
 		public function getMediaByUrl(url:String):DisplayObject{
@@ -100,7 +106,8 @@ package com.snsoft.sndoor{
 			}
 			var url:String = mediaUrlV[loadingCount];
 			mediaDisplayObjectV.push(dobj,url);
-			loadingCount ++;
+			_loadingCount ++;
+			this.dispatchEvent(new Event(EVENT_LOADING));
 			loadingMedia();
 		}
 		
@@ -110,7 +117,26 @@ package com.snsoft.sndoor{
 		 * 
 		 */		
 		private function handlerLoadIOError(e:Event):void{
-			loadingCount ++;
+			_loadingCount ++;
+			this.dispatchEvent(new Event(EVENT_LOADING));
+			loadingMedia();
 		}
+
+		public function get loadingCount():int
+		{
+			return _loadingCount;
+		}
+
+		public function get allCount():int
+		{
+			return _allCount;
+		}
+
+		public function set allCount(value:int):void
+		{
+			_allCount = value;
+		}
+
+
 	}
 }

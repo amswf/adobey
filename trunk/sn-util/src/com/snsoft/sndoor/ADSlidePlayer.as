@@ -1,5 +1,6 @@
 package com.snsoft.sndoor{
 	import com.snsoft.util.SpriteUtil;
+	import com.snsoft.util.UrlUtil;
 	
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
@@ -113,6 +114,7 @@ package com.snsoft.sndoor{
 			oldSlideLayer = new MovieClip();
 			newSlideLayer = new MovieClip();
 			
+			
 			back = getDisplayObjectInstance(getStyleValue(slideAssistSkin)) as MovieClip;
 			back.width = width;
 			back.height = height;
@@ -162,6 +164,7 @@ package com.snsoft.sndoor{
 		public static function getStyleDefinition():Object { 
 			return UIComponent.mergeStyles(UIComponent.getStyleDefinition(), defaultStyles);
 		}	
+		
 		/**
 		 *  
 		 * 
@@ -218,6 +221,7 @@ package com.snsoft.sndoor{
 				
 				adsBtn.addEventListener(MouseEvent.MOUSE_OVER,handlerADSlideBtnMouseOver);
 				adsBtn.addEventListener(MouseEvent.MOUSE_OUT,handlerADSlideBtnMouseOut);
+				adsBtn.addEventListener(MouseEvent.CLICK,handlerSlideMouseClick);
 				
 				btnsLayer.addChild(adsBtn);
 				btnsV.push(adsBtn);
@@ -231,6 +235,15 @@ package com.snsoft.sndoor{
 			startTimer();
 		}
 		
+		
+		private function handlerSlideMouseClick(e:Event):void{
+			var adsBtn:ADSlideBtn = e.currentTarget as ADSlideBtn;
+			var index:int = this.getPreviousSlideIndex();
+			var sdo:SlideDO = slideDOV[index];
+			if(sdo.url != null){
+				UrlUtil.openUrl(sdo.url,sdo.window);
+			}
+		}
 		
 		private function handlerADSlideBtnMouseOver(e:Event):void{
 			var adsBtn:ADSlideBtn = e.currentTarget as ADSlideBtn;

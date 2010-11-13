@@ -18,11 +18,16 @@ package com.snsoft.sndoor{
 		
 		private var imageBitMapDataHv:HashVector = new HashVector();
 		
-		private var loadingCount:int = 0;
+		private var _loadingCount:int = 0;
+		
+		private var _allCount:int = 0;
 		
 		private var isLoadingCmp:Boolean = false;
 		
 		private var isLoading:Boolean = false;
+		
+		public static const EVENT_LOADING:String = "EVENT_LOADING";
+
 		
 		public function ImageBox(imageUrlV:Vector.<String> = null){
 			if(imageUrlV != null){
@@ -32,6 +37,7 @@ package com.snsoft.sndoor{
 		
 		public function addImageUrl(url:String):void{
 			imageUrlV.push(url);
+			_allCount = imageUrlV.length;
 		}
 		
 		public function getImageByUrl(url:String):BitmapData{
@@ -75,7 +81,8 @@ package com.snsoft.sndoor{
 			var imgl:ImageLoader = e.currentTarget as ImageLoader;
 			imgl.removeEventListener(Event.COMPLETE,handlerCmp);
 			imageBitMapDataHv.push(imgl.bitmapData,imgl.url);
-			loadingCount ++;
+			_loadingCount ++;
+			this.dispatchEvent(new Event(EVENT_LOADING));
 			loadingImage();
 		}
 		
@@ -85,8 +92,21 @@ package com.snsoft.sndoor{
 		 * 
 		 */		
 		private function handlerError(e:Event):void{
-			loadingCount ++;
+			_loadingCount ++;
+			this.dispatchEvent(new Event(EVENT_LOADING));
 			loadingImage();
 		}
+
+		public function get loadingCount():int
+		{
+			return _loadingCount;
+		}
+
+		public function get allCount():int
+		{
+			return _allCount;
+		}
+
+
 	}
 }

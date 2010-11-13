@@ -4,6 +4,7 @@
 		<![CDATA[
 			import com.snsoft.sndoor.ADSlideBtn;
 			import com.snsoft.sndoor.ADSlidePlayer;
+			import com.snsoft.sndoor.LoadingProgress;
 			import com.snsoft.sndoor.Main;
 			import com.snsoft.sndoor.MediaBox;
 			import com.snsoft.sndoor.MenuI;
@@ -26,6 +27,7 @@
 				 MediaBox;
 				 ADSlidePlayer;
 				 ADSlideBtn;
+				 LoadingProgress;
 			}
 		]]>
 	</mx:Script>
