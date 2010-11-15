@@ -1,13 +1,9 @@
-package com.snsoft.kjjc3{
+package com.snsoft.mapviewpro{
 	import com.snsoft.map.WorkSpaceDO;
 	import com.snsoft.map.util.MapUtil;
 	import com.snsoft.mapview.util.MapViewDraw;
 	import com.snsoft.mapview.util.MapViewXMLLoader;
 	import com.snsoft.util.HashVector;
-	import com.snsoft.util.complexEvent.CplxMouseDrag;
-	import com.snsoft.xmldom.Node;
-	import com.snsoft.xmldom.NodeList;
-	import com.snsoft.xmldom.XMLDom;
 	import com.snsoft.xmldom.XMLFastConfig;
 	
 	import fl.core.InvalidationType;
@@ -21,7 +17,6 @@ package com.snsoft.kjjc3{
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.utils.Timer;
@@ -37,7 +32,7 @@ package com.snsoft.kjjc3{
 	 * @author Administrator
 	 * 
 	 */	
-	public class MapMainLONGKOU extends UIComponent{
+	public class MapMainOpenUrl extends UIComponent{
 		
 		//XML文件文件根目录
 		private var _baseUrl:String = "flash_map";
@@ -94,7 +89,7 @@ package com.snsoft.kjjc3{
 		
 		private var oldMapMaskLayer:Sprite = null;
 		
-		public function MapMainLONGKOU()
+		public function MapMainOpenUrl()
 		{
 			super();
 		}
