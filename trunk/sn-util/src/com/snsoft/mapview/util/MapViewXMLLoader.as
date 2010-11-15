@@ -5,11 +5,11 @@ package com.snsoft.mapview.util{
 	import com.snsoft.util.HashVector;
 	
 	import flash.geom.Point;
-
+	
 	public class MapViewXMLLoader{
 		
 		public function MapViewXMLLoader(){
-		
+			
 		}
 		
 		public static function creatWorkSpaceDO(xml:XML,wsName:String):WorkSpaceDO{
@@ -38,23 +38,31 @@ package com.snsoft.mapview.util{
 						
 						//<areaId>
 						var areaId:XML = area.elements("areaId")[0];
+						if(areaId != null){
 						var mapAreaId:String = areaId.text();
 						mado.areaId = mapAreaId;
+						}
 						
 						//<areaName>
 						var areaName:XML = area.elements("areaName")[0];
+						if(areaName != null){
 						var mapAreaName:String = areaName.text();
 						mado.areaName = mapAreaName;
+						}
 						
 						//<areaCode>
 						var areaCode:XML = area.elements("areaCode")[0];
-						var mapAreaCode:String = areaCode.text();
-						mado.areaCode = mapAreaCode;
+						if(areaCode != null){
+							var mapAreaCode:String = areaCode.text();
+							mado.areaCode = mapAreaCode;
+						}
 						
 						//<areaUrl>
 						var areaUrl:XML = area.elements("areaUrl")[0];
+						if(areaUrl != null){
 						var mapAreaUrl:String = areaUrl.text();
 						mado.areaUrl = mapAreaUrl;
+						}
 						
 						//<areaNamePoint>
 						var areaNamePoint:XML = area.elements("areaNamePoint")[0];

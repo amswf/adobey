@@ -4,10 +4,6 @@ package com.snsoft.mapviewpro{
 	import com.snsoft.mapview.util.MapViewDraw;
 	import com.snsoft.mapview.util.MapViewXMLLoader;
 	import com.snsoft.util.HashVector;
-	import com.snsoft.util.complexEvent.CplxMouseDrag;
-	import com.snsoft.xmldom.Node;
-	import com.snsoft.xmldom.NodeList;
-	import com.snsoft.xmldom.XMLDom;
 	import com.snsoft.xmldom.XMLFastConfig;
 	
 	import fl.core.InvalidationType;
@@ -21,7 +17,6 @@ package com.snsoft.mapviewpro{
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.utils.Timer;
@@ -37,7 +32,7 @@ package com.snsoft.mapviewpro{
 	 * @author Administrator
 	 * 
 	 */	
-	public class MapMainOpenUrl extends UIComponent{
+	public class MapMainDragAndOpenUrl extends UIComponent{
 		
 		//XML文件文件根目录
 		private var _baseUrl:String = "flash_map";
@@ -94,7 +89,7 @@ package com.snsoft.mapviewpro{
 		
 		private var oldMapMaskLayer:Sprite = null;
 		
-		public function MapMainOpenUrl()
+		public function MapMainDragAndOpenUrl()
 		{
 			super();
 		}

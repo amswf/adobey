@@ -1,4 +1,4 @@
-package com.snsoft.tvc2.chart{
+﻿package com.snsoft.tvc2.chart{
 	import com.snsoft.util.text.EffectText;
 	import com.snsoft.util.text.TextStyles;
 	import com.snsoft.util.SpriteUtil;
@@ -13,9 +13,7 @@ package com.snsoft.tvc2.chart{
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
-	
-	import mx.messaging.channels.StreamingAMFChannel;
-	
+		
 	
 	[Style(name="coorAxesX_default_skin", type="Class")]
 	

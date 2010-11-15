@@ -52,8 +52,6 @@
 	import flash.net.URLRequest;
 	import flash.text.TextFormat;
 	
-	import mx.messaging.management.Attribute;
-	
 	/**
 	 * 主入口类 
 	 * 

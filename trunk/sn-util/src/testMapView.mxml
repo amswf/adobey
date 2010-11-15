@@ -10,8 +10,8 @@
 			import com.snsoft.mapview.MapMain;
 			import com.snsoft.mapview.MapView;
 			import com.snsoft.mapview.util.MapViewDraw;
-			import com.snsoft.mapviewpro.MapMainLONGKOU;
 			import com.snsoft.mapviewpro.MapMainOpenUrl;
+			import com.snsoft.mapviewpro.MapMainDragAndOpenUrl;
 			import com.snsoft.xmldom.XMLFastConfig;
 			
 			public function init():void{
@@ -19,8 +19,8 @@
 				var mv:MapView = null;
 				var main:MapMain = null;
 				var xmlfc:XMLFastConfig;
-				var mvlk:MapMainLONGKOU;
-				var mvou:MapMainOpenUrl;
+				var mvlk:MapMainOpenUrl;
+				var mvou:MapMainDragAndOpenUrl;
 			}
 			
 		]]>
