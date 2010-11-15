@@ -7,10 +7,11 @@
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
-			import com.snsoft.kjjc3.MapMainLONGKOU;
 			import com.snsoft.mapview.MapMain;
 			import com.snsoft.mapview.MapView;
 			import com.snsoft.mapview.util.MapViewDraw;
+			import com.snsoft.mapviewpro.MapMainLONGKOU;
+			import com.snsoft.mapviewpro.MapMainOpenUrl;
 			import com.snsoft.xmldom.XMLFastConfig;
 			
 			public function init():void{
@@ -18,7 +19,8 @@
 				var mv:MapView = null;
 				var main:MapMain = null;
 				var xmlfc:XMLFastConfig;
-				var mvou:MapMainLONGKOU;
+				var mvlk:MapMainLONGKOU;
+				var mvou:MapMainOpenUrl;
 			}
 			
 		]]>
