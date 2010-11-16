@@ -9,25 +9,37 @@ package com.snsoft.util
 		}
 		
 		/**
-		 * 修复文本化的换行符 \r 
+		 * 修复文本化的转意字符
 		 * @param str
 		 * @return 
 		 * 
 		 */		
-		public static function replaceLineBreak(str:String):String{
+		public static function replaceAll(str:String,pattern:String,repl:String):String{
 			var ctext:String = null;
 			if(str != null){
 				ctext = "";
-				var array:Array = str.split("\\r");
+				var array:Array = str.split(pattern);
 				for (var i:int = 0; i<array.length; i++) {
 					var str:String = String(array[i]);
 					if (i != 0) {
-						ctext +=  "\r";
+						ctext += repl;
 					}
-					ctext +=  str;
+					ctext += str;
 				}
 			}
 			return ctext;
+		}
+		
+		/**
+		 * 修复文本化的回车换行转意字符
+		 * @param str
+		 * @return 
+		 * 
+		 */		
+		public static function replaceAllCRLF(str:String):String{
+			var crlf:String = replaceAll(str,"\\r","\r");
+			crlf = replaceAll(crlf,"\\n","\n");
+			return crlf;
 		}
 		
 		/**

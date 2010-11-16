@@ -1,6 +1,11 @@
 package com.snsoft.util{
 	import flash.display.Sprite;
 	
+	/**
+	 * 显示对象常用处理方法 
+	 * @author Administrator
+	 * 
+	 */	
 	public class SpriteUtil{
 		
 		public function SpriteUtil()
