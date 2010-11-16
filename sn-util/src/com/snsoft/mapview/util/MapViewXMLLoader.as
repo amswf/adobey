@@ -3,6 +3,9 @@ package com.snsoft.mapview.util{
 	import com.snsoft.map.MapPointsManager;
 	import com.snsoft.map.WorkSpaceDO;
 	import com.snsoft.util.HashVector;
+	import com.snsoft.xmldom.Node;
+	import com.snsoft.xmldom.NodeList;
+	import com.snsoft.xmldom.XMLDom;
 	
 	import flash.geom.Point;
 	
@@ -17,85 +20,69 @@ package com.snsoft.mapview.util{
 			//<map> 
 			var map:XML = xml;
 			
+			var xmldom:XMLDom = new XMLDom(map);
+			var mapNode:Node = xmldom.parse();
+			
 			//<image>
-			var image:XML = map.elements("image")[0];
-			var mapImage:String = image.text();
+			var mapImage:String = mapNode.getAttributeByName("image");
 			wsdo.image = mapImage;
 			wsdo.wsName = wsName;
 			
 			//工作区地图块数据对象列表
-			var madoha:HashVector = new HashVector();
+			var madoha:HashVector = new HashVector  ;
 			//<areas>
-			var areas:XMLList = map.elements("areas").children();
-			if (areas != null) {
-				for (var i:int = 0; i<areas.length(); i++) {
+			var areasNode:Node = mapNode.getNodeListFirstNode("areas");
+			var areaList:NodeList = areasNode.getNodeList("area");
+			if (areaList != null) {
+				for (var i:int = 0; i<areaList.length(); i++) {
 					
 					//<area>
-					var area:XML = areas[i];
-					if (area != null) {
+					var areaNode:Node = areaList.getNode(i);
+					if (areaNode != null) {
 						//地图块数据对象
 						var mado:MapAreaDO = new MapAreaDO();
 						
 						//<areaId>
-						var areaId:XML = area.elements("areaId")[0];
-						if(areaId != null){
-						var mapAreaId:String = areaId.text();
-						mado.areaId = mapAreaId;
-						}
+						mado.areaId = areaNode.getAttributeByName("areaId");
 						
-						//<areaName>
-						var areaName:XML = area.elements("areaName")[0];
-						if(areaName != null){
-						var mapAreaName:String = areaName.text();
-						mado.areaName = mapAreaName;
-						}
+						//<areaName> 
+						mado.areaName = areaNode.getAttributeByName("areaName");
 						
 						//<areaCode>
-						var areaCode:XML = area.elements("areaCode")[0];
-						if(areaCode != null){
-							var mapAreaCode:String = areaCode.text();
-							mado.areaCode = mapAreaCode;
-						}
+						mado.areaCode = areaNode.getAttributeByName("areaCode");
 						
 						//<areaUrl>
-						var areaUrl:XML = area.elements("areaUrl")[0];
-						if(areaUrl != null){
-						var mapAreaUrl:String = areaUrl.text();
-						mado.areaUrl = mapAreaUrl;
-						}
+						mado.areaUrl = areaNode.getAttributeByName("areaUrl");
 						
 						//<areaNamePoint>
-						var areaNamePoint:XML = area.elements("areaNamePoint")[0];
-						if (areaNamePoint != null) {
-							var apx:XML = areaNamePoint.elements("x")[0];
-							var apy:XML = areaNamePoint.elements("y")[0];
+						var areaNamePointNode:Node = areaNode.getNodeListFirstNode("areaNamePoint");
+						if (areaNamePointNode != null) {
+							var apx:String = areaNamePointNode.getAttributeByName("x");
+							var apy:String = areaNamePointNode.getAttributeByName("y");
 							var mapap:Point = new Point();
 							if (apx != null && apy != null) {
-								if (apx.text() != null && apy.text() != null) {
-									mapap = new Point(Number(apx.text()),Number(apy.text()));
-								}
+								mapap = new Point(Number(apx),Number(apy));
 							}
 							mado.areaNamePlace = mapap;
 						}
 						
 						//地图块的点列
 						var pha:HashVector = new HashVector();
-						//<areaPoints>
-						var areaPoints:XML = area.elements("areaPoints")[0];
-						if (areaPoints != null) {
-							var areaPointsChilds:XMLList = areaPoints.children();
-							for (var j:int = 0; j<areaPointsChilds.length(); j++) {
-								var areaPoint:XML = areaPointsChilds[j];
-								if (areaPoint != null) {
-									var px:XML = areaPoint.elements("x")[0];
-									var py:XML = areaPoint.elements("y")[0];
+						//<areaPoints>			
+						var areaPointsNode:Node = areaNode.getNodeListFirstNode("areaPoints");
+						if (areaPointsNode != null) {
+							var areaPointList:NodeList = areaPointsNode.getNodeList("point");
+							for (var j:int = 0; j<areaPointList.length(); j++) {
+								var areaPointNode:Node = areaPointList.getNode(j);
+								if (areaPointNode != null) {
+									var px:String = areaPointNode.getAttributeByName("x");
+									var py:String = areaPointNode.getAttributeByName("y");
 									var p:Point = new Point();
 									if (px != null && py != null) {
-										if (px.text() != null && py.text() != null) {
-											p = new Point(Number(px.text()),Number(py.text()));
-											var name:String = MapPointsManager.createPointHashName(p);
-											pha.push(p,name);
-										}
+										p = new Point(Number(px),Number(py));
+										var name:String = MapPointsManager.createPointHashName(p);
+										pha.push(p,name);
+										
 									}
 								}
 							}
