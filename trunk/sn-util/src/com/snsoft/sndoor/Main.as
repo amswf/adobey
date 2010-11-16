@@ -219,7 +219,7 @@
 				}
 				else if(name == "phone"){
 					phoneText = value;
-					phoneText = StringUtil.replaceLineBreak(phoneText);
+					phoneText = StringUtil.replaceAllCRLF(phoneText);
 				}
 				else if(name == "search"){
 					searchUrl = value;
