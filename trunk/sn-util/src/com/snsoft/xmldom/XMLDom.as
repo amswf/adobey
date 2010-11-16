@@ -23,11 +23,7 @@ package com.snsoft.xmldom{
 		 */		
 		public function parse():Node{
 			//trace("parse",xml);
-			var xdNode:Node = new Node();
-			xdNode.name = xml.name();
-			xdNode.text = xml.text();
-			var childNodeLists:HashVector = parseXMLList(xml);
-			xdNode.childNodeLists = childNodeLists;
+			var xdNode:Node = parseXML(xml);
 			return xdNode;
 		}
 		
