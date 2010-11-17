@@ -323,6 +323,11 @@
 		private var timerChangeSeat:Timer;
 		
 		/**
+		 * 遮罩其它 
+		 */		
+		private var maskOther:MovieClip;
+		
+		/**
 		 * 构造方法 
 		 * 
 		 */		
@@ -502,13 +507,13 @@
 							var muralNode:Node = muralList.getNode(k);
 							var muralX:Number = Number(muralNode.getAttributeByName("x"));
 							var muralY:Number = Number(muralNode.getAttributeByName("y"));
-							var muralType:String = String(muralNode.getAttributeByName("type"));
+							var muralType:String = muralNode.getAttributeByName("type");
 							var muralW:Number = 0;
 							muralW = CubeFaceType.transTypeToInt(muralType);
 							
-							var muralText:String = String(muralNode.getAttributeByName("text"));
-							var muralContent:String = String(muralNode.getAttributeByName("content"));
-							var muralUrl:String = String(muralNode.getAttributeByName("url"));
+							var muralText:String = muralNode.getAttributeByName("text");
+							var muralContent:String = muralNode.getAttributeByName("content");
+							var muralUrl:String = muralNode.getAttributeByName("url");
 							
 							var mdo:MuralDO = new MuralDO();
 							mdo.x = muralX;
@@ -529,11 +534,11 @@
 							var seatLinkNode:Node = seatLinkList.getNode(k2);
 							var seatLinkX:Number = Number(seatLinkNode.getAttributeByName("x"));
 							var seatLinkY:Number = Number(seatLinkNode.getAttributeByName("y"));
-							var seatLinkType:String = String(seatLinkNode.getAttributeByName("type"));
+							var seatLinkType:String = seatLinkNode.getAttributeByName("type");
 							var seatLinkW:Number = 0;
 							seatLinkW = CubeFaceType.transTypeToInt(seatLinkType);
 							
-							var seatLinkName:String = String(seatLinkNode.getAttributeByName("name"));
+							var seatLinkName:String = seatLinkNode.getAttributeByName("name");
 							
 							var pdo:SeatLinkDO = new SeatLinkDO();
 							pdo.x = seatLinkX;
@@ -605,7 +610,12 @@
 			menu.y = MENU_DEFAULT_RECT.y;
 			mainLayer.addChild(menu);
 			
-			mainLayer.addChild(this.seatWindowMsgLayer);
+			this.addChild(this.seatWindowMsgLayer);
+			
+			maskOther = SkinsUtil.createSkinByName("WindowMaskOther_defaultSkin");
+			trace("maskOther",maskOther);
+			maskOther.visible = false;
+			this.seatWindowMsgLayer.addChild(maskOther);			
 			
 			introMsg = new IntroMsg("");
 			introMsg.width = SEAT_TITLE_DEFAULT_RECT.width;
@@ -621,7 +631,37 @@
 			windowMsg.height = 300;
 			this.seatWindowMsgLayer.addChild(windowMsg);
 			windowMsg.drawNow();
+			windowMsg.addEventListener(WindowMsg.CLOSE_BTN_CLICK,handlerWindowMsgClose);
 			
+			stage.addEventListener(Event.RESIZE,handlerWindowMsgStageResize);
+		}
+		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
+		private function handlerWindowMsgClose(e:Event):void{
+			windowMsg.visible = false;
+			maskOther.visible = false;
+		}
+		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
+		private function handlerWindowMsgStageResize(e:Event):void{
+			if(stage != null || maskOther != null){
+				resetPlaceAndMask(stage);
+			}
+		}
+		
+		public function resetPlaceAndMask(stage:Stage):void{
+			windowMsg.x = (stage.stageWidth - windowMsg.width) / 2;
+			windowMsg.y = (stage.stageHeight - windowMsg.height) / 2;
+			maskOther.width = stage.stageWidth;
+			maskOther.height = stage.stageHeight;
 		}
 		
 		/**
@@ -692,10 +732,11 @@
 		 * @param roomMap
 		 * 
 		 */		
-		private function creatSeat3D(seatDO:SeatDO):void{
+		private function creatSeat3D(seatDO:SeatDO,rotation:Number = 0):void{
+			
 			if(creatSeat3DSign){
 				creatSeat3DSign = false;
-				trace("creatSeat3D");
+				trace("creatSeat3D",rotation);
 				if(currentSeat3D != null){
 					currentSeat3D.removeEventListener(Seat3D.CAMERA_ROTATION_EVENT,handlerCameraRotation);
 					currentSeat3D.removeEventListener(MouseEvent.DOUBLE_CLICK,handlerCurrentSeat3DMouseDoubleClick);
@@ -711,7 +752,8 @@
 				s3d.addEventListener(Seat3D.MURAL_CLICK,handlerMuralClick);
 				s3d.addEventListener(Seat3D.SEAT_LINK_CLICK,handlerSeatLinkClick);
 				s3d.x = SEAT3D_DEFAULT_RECT.x;
-				s3d.y = SEAT3D_DEFAULT_RECT.y;
+				s3d.y = SEAT3D_DEFAULT_RECT.y;				
+				
 				
 				oldSeat3D = currentSeat3D;
 				
@@ -730,10 +772,11 @@
 					timerChangeSeat.addEventListener(TimerEvent.TIMER_COMPLETE,handlerChangeSeatTimerCmp);
 				}
 				
-				this.roomMap.setVisualAngleRotation(0);
+				this.roomMap.setVisualAngleRotation(rotation);
 				
 				introMsg.refreshText(currentSeatDO.textStr);
 				windowMsg.visible = false;
+				maskOther.visible = false;
 				introMsg.removeEventListener(IntroMsg.BUTTON_CLICK,handlerIntroMsgBtnClick);
 				if(currentSeatDO.textStr != null && currentSeatDO.textStr.length > 0 && currentSeatDO.msg != null && currentSeatDO.msg.length > 0){
 					trace("addEventListener");
@@ -813,7 +856,11 @@
 			var s3dName:String = s3d.currentSeatLinkDO.name;
 			trace(currentRoomDO.placeHV.length,s3dName);
 			var sdo:SeatDO = currentRoomDO.placeHV.findByName(s3dName) as SeatDO;
-			creatSeat3D(sdo);
+			var rotation:Number = 0;
+			if(currentSeat3D != null){
+				rotation = currentSeat3D.cameraRotationY;
+			}
+			creatSeat3D(sdo,rotation);
 			roomMap.setVisualAngle(sdo);
 			setScrollPosition(seatScrollPane,sdo);
 		}
@@ -825,8 +872,9 @@
 		
 		private function refreshWindowMsg(text:String,msg:String,stage:Stage):void{
 			windowMsg.visible = true;
+			maskOther.visible = true;
 			windowMsg.refreshText(text,msg);
-			windowMsg.resetPlaceAndMask(stage);
+			resetPlaceAndMask(stage);
 		}
 		
 		/**
@@ -898,6 +946,7 @@
 						currentSeat3D.setViewport3DSize(scale,scale,seat3DFullScreenRect.width,seat3DFullScreenRect.height);
 						currentSeat3D.x = seat3DFullScreenRect.x;
 						currentSeat3D.y = seat3DFullScreenRect.y;
+						currentSeat3D.setCameraRotation(roomMap.getVisualAngleRotation());
 						
 						menu.x = (stage.fullScreenWidth - menu.getRect(this).width) / 2;
 						menu.y = stage.fullScreenHeight - menu.getRect(this).height - PLACE_SPACE_10;
@@ -923,6 +972,7 @@
 						currentSeat3D.setViewport3DSize(1,1,SEAT3D_DEFAULT_RECT.width,SEAT3D_DEFAULT_RECT.height);
 						currentSeat3D.x = SEAT3D_DEFAULT_RECT.x;
 						currentSeat3D.y = SEAT3D_DEFAULT_RECT.y;
+						currentSeat3D.setCameraRotation(roomMap.getVisualAngleRotation());
 						
 						menu.x = MENU_DEFAULT_RECT.x;
 						menu.y = MENU_DEFAULT_RECT.y;
