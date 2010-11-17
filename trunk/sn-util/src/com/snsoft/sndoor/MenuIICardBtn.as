@@ -66,6 +66,8 @@ package com.snsoft.sndoor{
 			
 			//内容
 			contentsText = new TextField();
+			contentsText.multiline = true;
+			contentsText.wordWrap = true;
 			contentsText.mouseEnabled = false;
 			contentsText.htmlText = menuDO.contents;
 			contentsText.x = image.x + image.width + boarder;
