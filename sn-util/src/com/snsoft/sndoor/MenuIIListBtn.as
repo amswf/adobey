@@ -44,9 +44,7 @@ package com.snsoft.sndoor{
 			
 			effect = SkinsUtil.createSkinByName("ImageEffect");
 			var imageLayer:MovieClip = effect.effectLayer;
-			if(menuDO.url != null){
-				imagCplx = new CplxEventOpenUrl(effect,MouseEvent.CLICK,menuDO.url,menuDO.window);
-			}
+			
 			
 			//英文标题
 			eTitleText = new TextField();
@@ -80,6 +78,9 @@ package com.snsoft.sndoor{
 			
 			btnTop.addEventListener(MouseEvent.MOUSE_OVER,handlerMouseOver);
 			btnTop.addEventListener(MouseEvent.MOUSE_OUT,handlerMouseOut);
+			if(menuDO.url != null){
+				imagCplx = new CplxEventOpenUrl(btnTop,MouseEvent.CLICK,menuDO.url,menuDO.window);
+			}
 			
 			var ew:Number = TextFieldUtil.calculateWidth(eTitleText);
 			var tw:Number = TextFieldUtil.calculateWidth(titleText);

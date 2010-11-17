@@ -3,9 +3,13 @@
 	<mx:Script>
 		<![CDATA[
 			import com.snsoft.room3d.Main;
+			import com.snsoft.util.di.DependencyInjection;
+			import com.snsoft.util.di.ObjectProperty;
 			 
 			private function init():void{
 				var main:Main;
+				ObjectProperty;
+				DependencyInjection;
 			}
 		]]>
 	</mx:Script>
