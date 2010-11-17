@@ -1,4 +1,4 @@
-﻿package com.snsoft.util{
+﻿package com.snsoft.util.di{
 	import com.snsoft.xmldom.Node;
 	import com.snsoft.xmldom.NodeList;
 	import com.snsoft.xmldom.XMLDom;
@@ -12,14 +12,22 @@
 	 */	
 	public class ObjectProperty{
 		
+		/**
+		 * 对象固有属性 
+		 */		
 		private var _propertyNames:Vector.<String>;
+		
+		/**
+		 * 对象动态属性 
+		 */
+		private var _dynamicPropertyNames:Vector.<String>;
 		
 		public static const DESCRIBE_TAG_ACCESSOR:String = "accessor";
 		
 		public static const DESCRIBE_TAG_NAME:String = "name";
 		
-		public function ObjectProperty()
-		{
+		public function ObjectProperty(obj:Object){
+			getPropertys(obj);
 		}
 		
 		/**
@@ -27,14 +35,17 @@
 		 * @param obj 要获得属性的对象
 		 * 
 		 */		
-		public function getPropertys(obj:Object):void{
-			this.propertyNames = new Vector.<String>();
+		private function getPropertys(obj:Object):void{
+			this._propertyNames = new Vector.<String>();
+			this._dynamicPropertyNames = new Vector.<String>();
 			
+			//动态属性
 			for (var pn:* in obj){
 				var dname:String= String(pn);
-				this.propertyNames.push(dname);
+				this._dynamicPropertyNames.push(dname);
 			}
 			
+			//静态属性
 			var xml:XML = describeType(obj);
 			//trace(xml);
 			var xmldom:XMLDom = new XMLDom(xml);
@@ -43,7 +54,7 @@
 			for(var i:int = 0;i < nodeList.length();i ++){
 				var cnode:Node = nodeList.getNode(i);
 				var sname:String = cnode.getAttributeByName(DESCRIBE_TAG_NAME);
-				this.propertyNames.push(sname);
+				this._propertyNames.push(sname);
 			}
 		}
 
@@ -52,9 +63,12 @@
 			return _propertyNames;
 		}
 
-		public function set propertyNames(value:Vector.<String>):void
+		/**
+		 * 对象动态属性 
+		 */
+		public function get dynamicPropertyNames():Vector.<String>
 		{
-			_propertyNames = value;
+			return _dynamicPropertyNames;
 		}
 
 	}
