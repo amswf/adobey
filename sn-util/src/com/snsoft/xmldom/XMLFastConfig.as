@@ -8,8 +8,12 @@ package com.snsoft.xmldom{
 	import flash.net.URLRequest;
 	
 	/**
-	 * 配置信息快速访问类 
+	 * 配置信息快速访问类
+	 * 
 	 * 默认XML为：〈xml〉〈property name="" value="" /〉〈/xml〉
+	 * 
+	 * <xml><property name="" value="" /></xml>
+	 * 
 	 * @author Administrator
 	 * 
 	 */	
