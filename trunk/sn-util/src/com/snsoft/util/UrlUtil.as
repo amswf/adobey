@@ -4,6 +4,11 @@ package com.snsoft.util{
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	
+	/**
+	 * 打开URL地址 
+	 * @author Administrator
+	 * 
+	 */	
 	public class UrlUtil extends EventDispatcher{
 		
 		private var url:String;

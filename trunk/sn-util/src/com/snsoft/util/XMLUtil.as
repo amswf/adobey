@@ -1,5 +1,10 @@
 ﻿package com.snsoft.util
 {
+	/**
+	 * xml格式化,目前不支持含有CDADA标签
+	 * @author Administrator
+	 * 
+	 */	
 	public class XMLUtil
 	{
 		public function XMLUtil()

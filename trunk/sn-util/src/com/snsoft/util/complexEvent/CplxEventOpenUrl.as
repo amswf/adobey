@@ -1,4 +1,6 @@
 package com.snsoft.util.complexEvent{
+	import com.snsoft.util.UrlUtil;
+	
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -52,13 +54,7 @@ package com.snsoft.util.complexEvent{
 		}
 		
 		private function handler(e:Event):void{
-			try{
-				var req:URLRequest = new URLRequest(url);
-				navigateToURL(req,window);
-			}
-			catch (e:Error){
-				trace("打开地址出错:"+ url);
-			}
+			UrlUtil.openUrl(url,window);
 			this.dispatchEvent(new Event(eventType));
 		}
 		
