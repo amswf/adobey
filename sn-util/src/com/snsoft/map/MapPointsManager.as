@@ -301,8 +301,8 @@
 		public static function creatHashArrayHashName(ha:HashVector):String{
 			var hn:String = null;
 			var ary:Array = ha.toArray();
-			if(ary != null){
-				for(var i:int =0;i<ary.length;i++){
+			if(ary != null && ary.length > 0){
+				for(var i:int =0;i < ary.length;i++){
 					var p:Point = ary[i] as Point;
 					if(p != null){
 						var pn:String = MapPointsManager.createPointHashName(p);
