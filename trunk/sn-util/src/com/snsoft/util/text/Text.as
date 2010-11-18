@@ -5,6 +5,7 @@ package com.snsoft.util.text{
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 	import flash.utils.setTimeout;
 	
@@ -36,17 +37,9 @@ package com.snsoft.util.text{
 				tfd.embedFonts = true;
 			}
 			tfd.selectable = false;
+			tfd.autoSize = TextFieldAutoSize.LEFT;
+			tfd.text = text;
 			tfd.setTextFormat(textFormat);
-			TextFieldUtil.fitSize(tfd);
-			tfd.addEventListener(Event.ADDED_TO_STAGE,handler);
-			
-			function handler(e:Event):void{
-				var tfde:TextField = e.currentTarget as TextField;
-				var tft:TextFormat = textFormat;
-				tft.color = tft.color;
-				tft.size = tft.size;
-				tfde.setTextFormat(tft);
-			}
 		}
 		
 		/**
