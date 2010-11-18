@@ -18,7 +18,7 @@
 		 * 按源对象的属性或按指定的属性名称，把源对象的值注入到目的对象中
 		 * 
 		 */		
-		public static function diObject(fobj:Object,tobj:Object,...name):void{
+		public static function diObjToObj(fobj:Object,tobj:Object,...name):void{
 			var ary:Array = name;
 			var op:ObjectProperty = new ObjectProperty(fobj);
 			var v:Vector.<String>;
@@ -39,6 +39,19 @@
 				if(tobj.hasOwnProperty(pName)){
 					tobj[pName] = fobj[pName];
 				}
+			}
+		}
+		
+		/**
+		 * 
+		 * @param obj
+		 * @param name
+		 * @param value
+		 * 
+		 */		
+		public static function diValueToObj(obj:Object,name:String,value:Object):void{
+			if(obj.hasOwnProperty(name)){
+				obj[name] = value;
 			}
 		}
 	}
