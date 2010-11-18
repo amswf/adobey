@@ -51,7 +51,7 @@ package com.snsoft.xmldom{
 		
 		/**
 		 * 根据类，把 XML属性映射 (ORM)对象数据
-		 * @param obj
+		 * @param OrmClass
 		 * 
 		 */		
 		public function ormAttribute(OrmClass:Class):Object{
