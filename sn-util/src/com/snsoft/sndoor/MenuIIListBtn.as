@@ -12,6 +12,7 @@ package com.snsoft.sndoor{
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 	
 	public class MenuIIListBtn extends UIComponent{
@@ -45,32 +46,41 @@ package com.snsoft.sndoor{
 			effect = SkinsUtil.createSkinByName("ImageEffect");
 			var imageLayer:MovieClip = effect.effectLayer;
 			
+			var eWidth:Number = 0;
+			var tWidth:Number = 0;
 			
+			var textMaxWidth:Number = this.width - boarder - boarder;
 			//英文标题
 			eTitleText = new TextField();
+			eTitleText.autoSize = TextFieldAutoSize.LEFT;
 			eTitleText.mouseEnabled = false;
 			eTitleText.htmlText = menuDO.eText;
-			eTitleText.width = this.width - boarder - boarder;
+			eTitleText.setTextFormat(getStyleValue(eTitleMouseOverTextFormat) as TextFormat);
+			eWidth = eTitleText.width;
+			eTitleText.width = textMaxWidth;
 			eTitleText.height = 16;
 			eTitleText.x = boarder;
 			eTitleText.y = this.height - boarder - eTitleText.height;
 			this.addChild(eTitleText);
-			eTitleText.setTextFormat(getStyleValue(eTitleMouseOverTextFormat) as TextFormat);
+			
 			
 			//标题
 			titleText = new TextField();
+			titleText.autoSize = TextFieldAutoSize.LEFT;
 			titleText.mouseEnabled = false;
 			titleText.htmlText = "<b>"+menuDO.text+"</b>";
-			titleText.width = this.width - boarder - boarder;
+			titleText.setTextFormat(getStyleValue(titleMouseOverTextFormat) as TextFormat);
+			tWidth = titleText.width;
+			titleText.width = textMaxWidth;
 			titleText.height = 18;
 			titleText.x = boarder;
 			titleText.y = this.height - boarder - eTitleText.height - titleText.height;
 			this.addChild(titleText);
-			titleText.setTextFormat(getStyleValue(titleMouseOverTextFormat) as TextFormat);
 			
 			
+			//按钮点击对象
 			btnTop = getDisplayObjectInstance(getStyleValue(btnTopSkin)) as MovieClip;
-			btnTop.width = this.width - boarder - boarder;
+			btnTop.width = textMaxWidth;
 			btnTop.height = titleText.height + eTitleText.height + 5;
 			btnTop.x = boarder;
 			btnTop.y = titleText.y;
@@ -82,10 +92,14 @@ package com.snsoft.sndoor{
 				imagCplx = new CplxEventOpenUrl(btnTop,MouseEvent.CLICK,menuDO.url,menuDO.window);
 			}
 			
-			var ew:Number = TextFieldUtil.calculateWidth(eTitleText);
-			var tw:Number = TextFieldUtil.calculateWidth(titleText);
-			
-			var lmw:Number = ew > tw ? ew : tw;
+			if(eWidth > textMaxWidth){
+				eWidth = textMaxWidth;
+			}
+			if(tWidth > textMaxWidth){
+				tWidth = textMaxWidth;
+			}
+			 
+			var lmw:Number = eWidth > tWidth ? eWidth : tWidth;
 			lm = SkinsUtil.createSkinByName("MenuIILineMovieEffect");
 			lm.width = lmw;
 			lm.x = boarder+ lm.width / 2;

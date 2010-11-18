@@ -3,6 +3,7 @@
 	import com.snsoft.util.SpriteUtil;
 	import com.snsoft.util.StringUtil;
 	import com.snsoft.util.complexEvent.CplxEventOpenUrl;
+	import com.snsoft.util.di.DependencyInjection;
 	import com.snsoft.xmldom.Node;
 	import com.snsoft.xmldom.NodeList;
 	import com.snsoft.xmldom.XMLDom;
@@ -250,30 +251,13 @@
 			var menuIList:NodeList = menuIs.getNodeList("menuI");
 			for(var i:int =0;i<menuIList.length();i++){
 				var menuI:Node = menuIList.getNode(i);
-				var menuDO:MenuDO = new MenuDO();
-				menuDO.name = menuI.getAttributeByName("name");
-				menuDO.text = menuI.getAttributeByName("text");
-				menuDO.eText = menuI.getAttributeByName("eText");
-				menuDO.image = menuI.getAttributeByName("image");
-				menuDO.eText = menuI.getAttributeByName("eText");
-				menuDO.url = menuI.getAttributeByName("url");
-				menuDO.type = menuI.getAttributeByName("type");
-				menuDO.window = menuI.getAttributeByName("window");
-				menuDO.contents = menuI.getAttributeByName("contents");
+				var menuDO:MenuDO = menuI.ormAttribute(MenuDO) as MenuDO;
+				 
 				var menuIIList:NodeList = menuI.getNodeList("menuII");
 				if(menuIIList != null){
 					for(var j:int =0;j<menuIIList.length();j++){
 						var menuII:Node = menuIIList.getNode(j);
-						var cmenuDO:MenuDO = new MenuDO();
-						cmenuDO.name = menuII.getAttributeByName("name");
-						cmenuDO.text = menuII.getAttributeByName("text");
-						cmenuDO.eText = menuII.getAttributeByName("eText");
-						cmenuDO.image = menuII.getAttributeByName("image");
-						cmenuDO.eText = menuII.getAttributeByName("eText");
-						cmenuDO.url = menuII.getAttributeByName("url");
-						cmenuDO.type = menuII.getAttributeByName("type");
-						cmenuDO.window = menuII.getAttributeByName("window");
-						cmenuDO.contents = menuII.getAttributeByName("contents");
+						var cmenuDO:MenuDO = menuII.ormAttribute(MenuDO) as MenuDO;
 						menuDO.pushChildMenuDO(cmenuDO);
 						
 						if(cmenuDO.image != null){
@@ -297,13 +281,7 @@
 			var slideList:NodeList = slides.getNodeList("slide");
 			for(var ii:int =0;ii<slideList.length();ii ++){
 				var slide:Node = slideList.getNode(ii);
-				var slideDO:SlideDO = new SlideDO();
-				slideDO.name = slide.getAttributeByName("name");
-				slideDO.text = slide.getAttributeByName("text");
-				slideDO.url = slide.getAttributeByName("url");
-				slideDO.window = slide.getAttributeByName("window");
-				slideDO.media = slide.getAttributeByName("media");	
-				slideDO.image = slide.getAttributeByName("image");
+				var slideDO:SlideDO = slide.ormAttribute(SlideDO) as SlideDO;
 				slideDOV.push(slideDO);
 				trace("slideDO.media",slideDO.media);
 				mediaBox.addMediaUrl(slideDO.media);
