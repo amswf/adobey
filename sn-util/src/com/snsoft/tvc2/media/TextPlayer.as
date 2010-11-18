@@ -1,4 +1,4 @@
-package com.snsoft.tvc2.media{
+﻿package com.snsoft.tvc2.media{
 	import com.snsoft.tvc2.Business;
 	import com.snsoft.tvc2.dataObject.TextOutDO;
 	import com.snsoft.util.text.EffectText;
@@ -40,7 +40,6 @@ package com.snsoft.tvc2.media{
 		
 		override protected function play():void{
 			this.textField = EffectText.creatTextByStyleName(textOutDO.text,textOutDO.style);
-			this.textField.text = textOutDO.text;
 			this.addChild(this.textField);
 			this.dispatchEvent(new Event(EVENT_PLAYED));
 			this.isPlayCmp = true;
