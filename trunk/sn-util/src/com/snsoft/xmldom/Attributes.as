@@ -42,5 +42,19 @@ package com.snsoft.xmldom{
 		public function getByIndex(index:int):String{
 			return hv.findByIndex(index) as String;
 		}
+		
+		/**
+		 * 获得属性 
+		 * @param name
+		 * @return 
+		 * 
+		 */		
+		public function getNameByIndex(index:int):String{
+			return hv.findNameByIndex(index) as String;
+		}
+		
+		public function length():int{
+			return hv.length;
+		}
 	}
 }

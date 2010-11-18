@@ -1,6 +1,9 @@
 package com.snsoft.xmldom{
 	import com.snsoft.util.HashVector;
+	import com.snsoft.util.di.DependencyInjection;
 	import com.snsoft.xmldom.Attributes;
+	
+	import flash.utils.getDefinitionByName;
 
 	public class Node{
 		
@@ -44,6 +47,28 @@ package com.snsoft.xmldom{
 		 */		
 		internal function pushAttribute(name:String,value:String):void{
 			attribute.push(name,value);
+		}
+		
+		/**
+		 * 根据类，把 XML属性映射 (ORM)对象数据
+		 * @param obj
+		 * 
+		 */		
+		public function ormAttribute(OrmClass:Class):Object{
+			var obj:Object;
+			try {
+				obj = new OrmClass();
+				for(var i:int = 0;i<attribute.length();i++){
+					var aName:String = attribute.getNameByIndex(i);
+					var aValue:String = attribute.getByIndex(i);
+					if(aValue != null){
+						DependencyInjection.diValueToObj(obj,aName,aValue);
+					}
+				}
+			} catch (e:Error) {
+				
+			}
+			return obj;
 		}
 		
 		/**
