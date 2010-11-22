@@ -1,4 +1,4 @@
-package com.snsoft.room3d{
+package com.snsoft.room3d.dataObject{
 	import com.snsoft.util.HashVector;
 	
 	import flash.display.Bitmap;

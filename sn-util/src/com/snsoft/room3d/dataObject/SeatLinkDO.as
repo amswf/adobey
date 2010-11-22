@@ -1,4 +1,4 @@
-package com.snsoft.room3d{
+package com.snsoft.room3d.dataObject{
 	
 	/**
 	 * 观察点按钮数据对象 
