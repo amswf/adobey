@@ -31,6 +31,10 @@
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
 	import flash.utils.Timer;
+	import com.snsoft.room3d.dataObject.MuralDO;
+	import com.snsoft.room3d.dataObject.RoomDO;
+	import com.snsoft.room3d.dataObject.SeatDO;
+	import com.snsoft.room3d.dataObject.SeatLinkDO;
 	
 	public class Main extends MovieClip{
 		

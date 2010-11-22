@@ -39,6 +39,9 @@
 	import org.papervision3d.render.BasicRenderEngine;
 	import org.papervision3d.scenes.Scene3D;
 	import org.papervision3d.view.Viewport3D;
+	import com.snsoft.room3d.dataObject.MuralDO;
+	import com.snsoft.room3d.dataObject.SeatDO;
+	import com.snsoft.room3d.dataObject.SeatLinkDO;
 	
 	/**
 	 * 3D展现对象，把图片帖图到3D图形上，并且按钮控制3显示 

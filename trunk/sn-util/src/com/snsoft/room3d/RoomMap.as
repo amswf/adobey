@@ -12,6 +12,8 @@ package com.snsoft.room3d{
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.ui.Mouse;
+	import com.snsoft.room3d.dataObject.RoomDO;
+	import com.snsoft.room3d.dataObject.SeatDO;
 	
 	[Style(name="seatPointSkin", type="Class")]
 	

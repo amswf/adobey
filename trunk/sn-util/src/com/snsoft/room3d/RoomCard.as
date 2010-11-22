@@ -16,6 +16,7 @@ package com.snsoft.room3d{
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
+	import com.snsoft.room3d.dataObject.RoomDO;
 	
 	[Style(name="roomCardImgBakSkin", type="Class")]
 	

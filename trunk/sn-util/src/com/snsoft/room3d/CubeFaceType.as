@@ -1,4 +1,5 @@
 package com.snsoft.room3d{
+	import com.snsoft.room3d.dataObject.SeatDO;
 	
 	/**
 	 * 
