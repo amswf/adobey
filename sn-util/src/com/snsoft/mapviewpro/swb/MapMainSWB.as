@@ -40,6 +40,8 @@ package com.snsoft.mapviewpro.swb{
 	 */	
 	public class MapMainSWB extends UIComponent{
 		
+		public static var WINDOW:String;
+		
 		//XML文件文件根目录
 		private var _baseUrl:String = "flash_map";
 		
@@ -262,6 +264,14 @@ package com.snsoft.mapviewpro.swb{
 		private function parseConfig():void{
 			var clickType:String = XMLFastConfig.getConfig("clickType");
 			Config.setAreaMouseEventType(clickType);
+			var window:String = XMLFastConfig.getConfig("window");
+			if(window != null && window.length > 0){
+				WINDOW = window;
+			}
+			else{
+				WINDOW = "_self";
+			}
+			
 		}
 		
 		
