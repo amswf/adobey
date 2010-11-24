@@ -207,7 +207,7 @@ package com.snsoft.mapviewpro.swb{
 			var url:String = av.mapAreaDO.areaUrl;
 			try{
 				var req:URLRequest = new URLRequest(url);
-				navigateToURL(req,"_self");
+				navigateToURL(req,MapMainSWB.WINDOW);
 				trace("url");
 			}
 			catch(e:Error){
