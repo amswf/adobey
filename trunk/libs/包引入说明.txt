@@ -1,0 +1,6 @@
+flex打包，新建flex library project  项目名称为pv3d，然后从svn上把pv3d包down下来，然后 build project，生成一个pv3d.swc。
+flash打包,新建as3.fla,包fl和包flash,把公共库里的组件全拖到库里，新建一个影片剪辑，然后把这个影片剪辑导出swc。
+
+flex引入包，本sn_util项目引入此库文件。
+
+flash,主菜单编辑->首选参数->ActionScript->ActionScript 3.0 ->源路径，写入包地址
