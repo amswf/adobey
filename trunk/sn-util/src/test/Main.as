@@ -28,7 +28,7 @@
 				trace(user.name,user.i,user.num);
 				
 				var u2:User = new User();
-				DependencyInjection.diObjToObj(user,u2) as User;
+				DependencyInjection.diToObj(user,u2,"name","i") as User;
 				trace("name","i","num");
 				trace(u2.name,u2.i,u2.num);
 			}
