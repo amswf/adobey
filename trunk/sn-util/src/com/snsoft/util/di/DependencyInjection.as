@@ -20,9 +20,8 @@
 		 */		
 		public static function diObjToObj(fobj:Object,tobj:Object,...name):void{
 			var ary:Array = name;
-			var op:ObjectProperty = new ObjectProperty(fobj);
 			var v:Vector.<String>;
-			if(ary == null || name.length > 0){
+			if(ary != null && ary.length > 0){
 				v = new Vector.<String>();
 				for(var i:int = 0;i < ary.length;i ++){
 					var aName:String = String(ary[i]);
@@ -32,6 +31,7 @@
 				}
 			}
 			else {
+				var op:ObjectProperty = new ObjectProperty(fobj);
 				v = op.propertyNames;
 			}
 			for(var i2:int = 0;i2<v.length;i2++){
@@ -43,7 +43,7 @@
 		}
 		
 		/**
-		 * 
+		 * 给对象注入值
 		 * @param obj
 		 * @param name
 		 * @param value

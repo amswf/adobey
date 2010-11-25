@@ -1,4 +1,5 @@
 ﻿package test{
+	import com.snsoft.util.di.DependencyInjection;
 	import com.snsoft.xmldom.Node;
 	import com.snsoft.xmldom.NodeList;
 	import com.snsoft.xmldom.XMLDom;
@@ -24,7 +25,12 @@
 				var user:User = userNode.ormAttribute(User) as User;
 				
 				trace("name","i","num");
-				trace(user.name,user.num,user.i);
+				trace(user.name,user.i,user.num);
+				
+				var u2:User = new User();
+				DependencyInjection.diObjToObj(user,u2) as User;
+				trace("name","i","num");
+				trace(u2.name,u2.i,u2.num);
 			}
 		}
 		
