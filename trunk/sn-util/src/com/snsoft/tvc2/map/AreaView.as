@@ -2,7 +2,6 @@ package com.snsoft.tvc2.map{
 	import com.snsoft.map.MapAreaDO;
 	import com.snsoft.map.util.MapUtil;
 	import com.snsoft.mapview.util.MapViewDraw;
-	import com.snsoft.mapview.util.MyColorTransform;
 	import com.snsoft.util.text.EffectText;
 	import com.snsoft.util.text.Text;
 	import com.snsoft.util.ColorTransformUtil;

@@ -1,5 +1,4 @@
 ﻿package com.snsoft.tvc2.chart{
-	import com.snsoft.mapview.util.MyColorTransform;
 	import com.snsoft.tvc2.dataObject.DataDO;
 	import com.snsoft.tvc2.dataObject.ListDO;
 	import com.snsoft.tvc2.dataObject.TextPointDO;
