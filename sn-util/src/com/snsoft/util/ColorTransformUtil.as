@@ -18,6 +18,9 @@ package com.snsoft.util{
 				ct.redOffset = cl.redOffset;
 				ct.greenOffset = cl.greenOffset;
 				ct.blueOffset = cl.blueOffset;
+				ct.redMultiplier = 0;
+				ct.greenMultiplier = 0;
+				ct.blueMultiplier = 0;
 				mc.transform.colorTransform = ct;
 			}
 		}
