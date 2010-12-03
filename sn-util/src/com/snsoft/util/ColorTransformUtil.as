@@ -9,8 +9,9 @@ package com.snsoft.util{
 		{
 		}
 		
-		public static function setColor(mc:Sprite = null,color:uint = 0xffffff):void{
+		public static function setColor(mc:Sprite = null,color:uint = 0xffffff,alpha:Number = 1):void{
 			if(mc != null){
+				mc.alpha = alpha;
 				var ct:ColorTransform = mc.transform.colorTransform;
 				var cl:Color = new Color();
 				cl.color = color;

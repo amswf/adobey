@@ -3,7 +3,7 @@ package com.snsoft.mapview{
 	import com.snsoft.map.MapAreaDO;
 	import com.snsoft.map.util.MapUtil;
 	import com.snsoft.mapview.util.MapViewDraw;
-	import com.snsoft.mapview.util.MyColorTransform;
+	import com.snsoft.util.ColorTransformUtil;
 	
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
@@ -81,13 +81,13 @@ package com.snsoft.mapview{
 		}
 		
 		private function setMouseOverColor():void{
-			MyColorTransform.transColor(this.areaBtnLayer,1,200,0,0);
-			MyColorTransform.transColor(this.areaNameLayer,1,200,0,0);
+			ColorTransformUtil.setColor(this.areaBtnLayer,0xbb0000);
+			ColorTransformUtil.setColor(this.areaNameLayer,0xbb0000);
 		}
 		
 		private function setMouseOutColor():void{
-			MyColorTransform.transColor(this.areaBtnLayer,0,0,0,0);
-			MyColorTransform.transColor(this.areaNameLayer,1,0,0,0);
+			ColorTransformUtil.setColor(this.areaBtnLayer,0xbb0000,0);
+			ColorTransformUtil.setColor(this.areaNameLayer,0x000000);
 		}
 		
 		/**

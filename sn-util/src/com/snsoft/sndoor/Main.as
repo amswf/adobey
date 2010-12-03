@@ -73,7 +73,9 @@
 		
 		private var mediaBox:MediaBox;
 		
-		private var logoUrl:String;
+		private var logoImageUrl:String;
+		
+		private var logoBtnOpenUrl:String;
 		
 		private var phoneText:String;
 		
@@ -215,8 +217,8 @@
 				var value:String = varNode.getAttributeByName("value");
 				trace(value);
 				if(name == "logo"){
-					logoUrl = value;
-					imageBox.addImageUrl(logoUrl);
+					logoImageUrl = value;
+					imageBox.addImageUrl(logoImageUrl);
 				}
 				else if(name == "phone"){
 					phoneText = value;
@@ -227,6 +229,9 @@
 				}
 				else if(name == "doorType"){
 					doorType = value;
+				}
+				else if(name == "logoUrl"){
+					logoBtnOpenUrl = value;
 				}
 			}
 			
@@ -329,9 +334,16 @@
 		private function init():void{
 			
 			//LOGO图片
-			var logobmd:BitmapData = imageBox.getImageByUrl(logoUrl);
+			var logobmd:BitmapData = imageBox.getImageByUrl(logoImageUrl);
 			var logobm:Bitmap = new Bitmap(logobmd,"auto",true);
-			logoLayer.addChild(logobm);
+			var logoMc:MovieClip = new MovieClip();
+			logoMc.addChild(logobm)
+			logoLayer.addChild(logoMc);
+			
+			logoMc.buttonMode = true;
+			logoMc.mouseChildren = false;
+			logoMc.mouseEnabled = true;
+			logoMc.addEventListener(MouseEvent.CLICK,handlerLogoMouseClick);
 			
 			//联系方式
 			var phoneTextField:TextField = new TextField();
@@ -390,10 +402,7 @@
 				
 				var hasChild:Boolean = false;
 				
-				if(menuDO.type == MenuDO.TYPE_URL){
-					hasChild = false;
-				}
-				else if(menuDO.childMenuDOs.length > 0){
+				if(menuDO.childMenuDOs.length > 0){
 					hasChild = true;
 				}
 				
@@ -411,12 +420,18 @@
 				mib.y = menuY;
 				
 				mib.addEventListener(MouseEvent.MOUSE_OVER,handlerMenuIBtnOver);
-				if(menuDO.type == MenuDO.TYPE_URL){
+				if(menuDO.url != null && menuDO.url.length > 0){
 					var cpl:CplxEventOpenUrl = new CplxEventOpenUrl(mib,MouseEvent.CLICK,menuDO.url);
 				}
-				
 				menuX = mib.x + mib.width;
 			}	
+		}
+		
+		private function handlerLogoMouseClick(e:Event):void{
+			var logoMC:MovieClip = e.currentTarget as MovieClip;
+			if(logoBtnOpenUrl != null && logoBtnOpenUrl.length > 0){
+				var cpl:CplxEventOpenUrl = new CplxEventOpenUrl(logoMC,MouseEvent.CLICK,logoBtnOpenUrl,"_self");
+			}
 		}
 		
 		private function handlerSearchBtnClick(e:Event):void{
