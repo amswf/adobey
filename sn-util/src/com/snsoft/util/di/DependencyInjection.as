@@ -75,8 +75,8 @@
 		 * @param value
 		 * 
 		 */		
-		public static function diValueToObj(obj:Object,name:String,value:Object):void{
-			if(obj.hasOwnProperty(name)){
+		public static function diValueToObj(obj:Object,name:String,value:Object,judgeProperty:Boolean = true):void{
+			if(obj.hasOwnProperty(name) || !judgeProperty){
 				obj[name] = value;
 			}
 		}

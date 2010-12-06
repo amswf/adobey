@@ -54,15 +54,23 @@ package com.snsoft.xmldom{
 		 * @param OrmClass
 		 * 
 		 */		
-		public function ormAttribute(OrmClass:Class):Object{
+		public function ormAttribute(OrmClass:Class = null):Object{
 			var obj:Object;
+			var judgeProperty:Boolean = false;
 			try {
-				obj = new OrmClass();
+				if(OrmClass != null){
+					obj = new OrmClass();
+					judgeProperty = true;
+				}
+				else {
+					obj = new Object();
+					judgeProperty = false;
+				}
 				for(var i:int = 0;i<attribute.length();i++){
 					var aName:String = attribute.getNameByIndex(i);
 					var aValue:String = attribute.getByIndex(i);
 					if(aValue != null){
-						DependencyInjection.diValueToObj(obj,aName,aValue);
+						DependencyInjection.diValueToObj(obj,aName,aValue,judgeProperty);
 					}
 				}
 			} catch (e:Error) {
