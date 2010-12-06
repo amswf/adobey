@@ -32,7 +32,7 @@ package com.snsoft.xmldom{
 		private static var propertyValue:String = null;
 		
 		public function XMLFastConfig(){
-			
+			throw new Error("XMLFastConfig 不能用new 初始化，请使用XMLFastConfig.instance();");
 		}
 		
 		/**
