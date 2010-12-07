@@ -198,12 +198,12 @@
 			mediaBox = new MediaBox();
 			
 			//进度条
-			loadingImage = new LoadingProgress(400,20);
-			loadingLayer.addChild(loadingImage);
-			loadingImage.x = (MAIN_WIDTH - loadingImage.width) / 2;
-			loadingImage.y = 40;
+			//loadingImage = new LoadingProgress(400,20);
+			//loadingLayer.addChild(loadingImage);
+			//loadingImage.x = (MAIN_WIDTH - loadingImage.width) / 2;
+			//loadingImage.y = 40;
 			
-			loadingMedia = new LoadingProgress(400,20);
+			loadingMedia = new LoadingProgress(38,38);
 			loadingLayer.addChild(loadingMedia);
 			loadingMedia.x = (MAIN_WIDTH - loadingMedia.width) / 2;
 			loadingMedia.y = 300;
@@ -294,7 +294,7 @@
 			}
 			
 			imageBox.addEventListener(Event.COMPLETE,handlerImageBoxCmp);
-			imageBox.addEventListener(ImageBox.EVENT_LOADING,handlerImageBoxLoading);
+			//imageBox.addEventListener(ImageBox.EVENT_LOADING,handlerImageBoxLoading);
 			imageBox.loadImage();
 			
 			mediaBox.addEventListener(Event.COMPLETE,handlerMediaBoxCmp);
@@ -303,7 +303,7 @@
 		}
 		
 		private function handlerImageBoxLoading(e:Event):void{
-			loadingImage.setProgressValue(imageBox.loadingCount / imageBox.allCount);
+			//loadingImage.setProgressValue(imageBox.loadingCount / imageBox.allCount);
 		}
 		
 		private function handlerMediaBoxLoading(e:Event):void{
@@ -318,7 +318,7 @@
 		
 		
 		private function handlerImageBoxCmp(e:Event):void{
-			loadingLayer.removeChild(loadingImage);
+			//loadingLayer.removeChild(loadingImage);
 			if(doorType == DOOR_TYPE_MAIN){
 				mediaBox.loadMedia();
 			}

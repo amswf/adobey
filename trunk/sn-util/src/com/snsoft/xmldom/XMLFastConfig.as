@@ -31,8 +31,12 @@ package com.snsoft.xmldom{
 		
 		private static var propertyValue:String = null;
 		
+		private static var isInstance:Boolean = false;
+		
 		public function XMLFastConfig(){
-			throw new Error("XMLFastConfig 不能用new 初始化，请使用XMLFastConfig.instance();");
+			if(!isInstance){
+				throw new Error("XMLFastConfig 不能用new 初始化，请使用静态方法：XMLFastConfig.instance();");
+			}
 		}
 		
 		/**
@@ -49,7 +53,9 @@ package com.snsoft.xmldom{
 			XMLFastConfig.propertyName = propertyName;
 			XMLFastConfig.propertyValue = propertyValue;
 			XMLFastConfig.configXmlUrl = configXmlUrl;
+			isInstance = true; 
 			var xmlfc:XMLFastConfig = new XMLFastConfig();
+			isInstance = false;
 			xmlfc.loadConfig();
 			xmlfc.addEventListener(Event.COMPLETE,handlerLoadComplete);
 		}
