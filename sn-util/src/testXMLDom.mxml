@@ -7,10 +7,12 @@
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
+			import com.snsoft.xmldom.XMLFastConfig;
 			import com.snsoft.xmldom.XMLLoader;
 			
 			public function init():void{
 				XMLLoader;
+				XMLFastConfig;
 			}
 		]]>
 	</fx:Script>
