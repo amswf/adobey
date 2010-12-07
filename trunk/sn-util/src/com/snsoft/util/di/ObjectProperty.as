@@ -22,10 +22,21 @@
 		 */
 		private var _dynamicPropertyNames:Vector.<String>;
 		
+		/**
+		 * 静态属性信息描述文件的属性标签 
+		 */		
 		public static const DESCRIBE_TAG_ACCESSOR:String = "accessor";
 		
+		/**
+		 * 描述标签名称 
+		 */		
 		public static const DESCRIBE_TAG_NAME:String = "name";
 		
+		/**
+		 * 构造方法 
+		 * @param obj
+		 * 
+		 */		
 		public function ObjectProperty(obj:Object){
 			getPropertys(obj);
 		}
