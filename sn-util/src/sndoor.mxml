@@ -6,7 +6,7 @@
 			import com.snsoft.sndoor.ADSlidePlayer;
 			import com.snsoft.sndoor.LoadingProgress;
 			import com.snsoft.sndoor.Main;
-			import com.snsoft.sndoor.MediaBox;
+			import com.snsoft.util.srcbox.MediaBox;
 			import com.snsoft.sndoor.MenuI;
 			import com.snsoft.sndoor.MenuIBtn;
 			import com.snsoft.sndoor.MenuII;
