@@ -7,8 +7,8 @@
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
-			import com.snsoft.util.imgedt.ImageEditor;
-			import com.snsoft.util.imgedt.ImageProcess;
+			import com.snsoft.imgedt.ImageEditor;
+			import com.snsoft.imgedt.ImageProcess;
 			
 			public function init():void{
 				ImageProcess;
