@@ -1,4 +1,4 @@
-package com.snsoft.util.imgedt{
+package com.snsoft.imgedt{
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
 	

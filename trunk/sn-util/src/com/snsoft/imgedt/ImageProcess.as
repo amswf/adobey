@@ -1,4 +1,4 @@
-package com.snsoft.util.imgedt{
+package com.snsoft.imgedt{
 	import flash.display.BitmapData;
 	import flash.display.BlendMode;
 	import flash.geom.ColorTransform;
