@@ -1,4 +1,4 @@
-package com.snsoft.sndoor{
+package com.snsoft.util.srcbox{
 	import com.snsoft.util.HashVector;
 	
 	import flash.display.BitmapData;

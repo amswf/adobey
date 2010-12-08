@@ -13,6 +13,8 @@ package com.snsoft.sndoor{
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
+	import com.snsoft.util.srcbox.MediaBox;
+	import com.snsoft.util.srcbox.ImageBox;
 	
 	/**
 	 * 幻灯片 

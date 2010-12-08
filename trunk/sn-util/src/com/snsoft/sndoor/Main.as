@@ -24,6 +24,8 @@
 	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
+	import com.snsoft.util.srcbox.MediaBox;
+	import com.snsoft.util.srcbox.ImageBox;
 	
 	public class Main extends MovieClip{
 		
