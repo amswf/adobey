@@ -1,5 +1,6 @@
 package com.snsoft.imgedt{
 	import com.adobe.crypto.MD5;
+	import com.adobe.images.JPGEncoder;
 	import com.snsoft.util.FileUtil;
 	import com.snsoft.util.GridImageUtil;
 	import com.snsoft.util.ImageLoader;
@@ -16,15 +17,20 @@ package com.snsoft.imgedt{
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.net.FileFilter;
 	import flash.net.FileReference;
+	import flash.net.URLLoader;
 	import flash.net.URLRequest;
+	import flash.net.URLRequestMethod;
 	import flash.net.URLVariables;
+	import flash.utils.ByteArray;
 	
 	public class ImageEditor extends UIComponent{
 		
+		private static var IMAGE_FRAME_SIZE_REVISE:Number = 2;
 		
 		private var BASE_URL:String = "http://127.0.0.1:8080/image-upload/";
 		
@@ -64,15 +70,19 @@ package com.snsoft.imgedt{
 		
 		private var mainFrameLayer:Sprite = new Sprite();
 		
+		private var mainFrame:MovieClip;
+		
 		private var fileReference:FileReference = new FileReference();
 		
 		private var fileFilterArray:Array = new Array(new FileFilter("图片 (*.jpg,*.png)","*.jpg;*.png"));
 		
-		private var currentSoleMD5FileName:String;
-		
 		private var editorWidth:Number;
 		
 		private var editorHeight:Number;
+		
+		private var currentSoleMD5FileName:String;
+		
+		private var currentImageBmd:BitmapData;
 		
 		public function ImageEditor(frameWidth:Number = 124,frameHeight:Number = 124){
 			super();
@@ -163,14 +173,14 @@ package com.snsoft.imgedt{
 			
 			assistImagRotationLayer.x = editorWidth / 2;
 			assistImagRotationLayer.y = editorHeight / 2;
+			//assistImagRotationLayer.rotation = 45;
 			
 			mainImagRotationLayer.x = assistImagRotationLayer.x;
 			mainImagRotationLayer.y = assistImagRotationLayer.y;
+			//mainImagRotationLayer.rotation = 45;
 			
 			mainImagLayer.mask = mainMaskLayer;
 			assistImagLayer.mask = assistMaskLayer;
-			
-			
 			
 			var assistBackBmd:BitmapData = GridImageUtil.drawShepherdSheck(editorWidth,editorHeight);
 			var assistBackbm:Bitmap = new Bitmap(assistBackBmd);
@@ -186,11 +196,11 @@ package com.snsoft.imgedt{
 			assistMask.height = editorHeight;
 			assistMaskLayer.addChild(assistMask);
 			
-			mainImagLayer.x = - editorWidth / 2;
-			mainImagLayer.y = - editorHeight / 2;
+			mainImagLayer.x = - mainImagRotationLayer.x;
+			mainImagLayer.y = - mainImagRotationLayer.y;
 			
-			assistImagLayer.x = mainImagLayer.x;
-			assistImagLayer.y = mainImagLayer.y;
+			assistImagLayer.x = - assistImagRotationLayer.x;
+			assistImagLayer.y = - assistImagRotationLayer.y;
 			
 			assistImagDragLimitLayer.x = ( - frameWidth) / 2;
 			assistImagDragLimitLayer.y = ( - frameWidth) / 2;
@@ -205,9 +215,9 @@ package com.snsoft.imgedt{
 			cplxd.addEvents(assistImagLayer,assistImagDragLimitLayer);
 			cplxd.addEventListener(CplxMouseDrag.DRAG_MOVE_EVENT,handlerDragMove);
 			
-			var mainFrame:MovieClip = getDisplayObjectInstance(getStyleValue(imageFrameDefaultSkin)) as MovieClip;
-			mainFrame.width = frameWidth;
-			mainFrame.height = frameHeight;
+			mainFrame = getDisplayObjectInstance(getStyleValue(imageFrameDefaultSkin)) as MovieClip;
+			mainFrame.width = frameWidth + IMAGE_FRAME_SIZE_REVISE;
+			mainFrame.height = frameHeight + IMAGE_FRAME_SIZE_REVISE;
 			mainFrame.x = (editorWidth - frameWidth) / 2;
 			mainFrame.y = (editorHeight - frameHeight) / 2;
 			mainFrameLayer.addChild(mainFrame);
@@ -215,8 +225,8 @@ package com.snsoft.imgedt{
 			var mainMask:MovieClip = getDisplayObjectInstance(getStyleValue(assistRect)) as MovieClip;
 			mainMask.x = mainFrame.x;
 			mainMask.y = mainFrame.y;
-			mainMask.width = mainFrame.width - 2;
-			mainMask.height = mainFrame.height - 2;
+			mainMask.width = frameWidth;
+			mainMask.height = frameWidth;
 			mainMaskLayer.addChild(mainMask);
 		}
 		
@@ -264,6 +274,33 @@ package com.snsoft.imgedt{
 			setBtnPlace(btnsLayer,resetBtn,10);
 			
 			openBtn.addEventListener(MouseEvent.CLICK,handlerOpenBtnClick);
+			saveBtn.addEventListener(MouseEvent.CLICK,handlerSaveBtnClick);
+		}
+		
+		private function handlerSaveBtnClick(e:Event):void{
+			var rect:Rectangle = new Rectangle();
+			rect.x = assistImagDragLimitLayer.x - assistImagLayer.x;
+			rect.y = assistImagDragLimitLayer.y - assistImagLayer.y;
+			rect.width = frameWidth;
+			rect.height = frameHeight;
+			var ilc:BitmapData = new BitmapData(frameWidth,frameHeight,true,0x00ffffffff);
+			var matrix:Matrix = new Matrix();
+			matrix.translate(-mainFrame.x ,-mainFrame.y );
+			ilc.draw(editorLayer,matrix);
+			var jpge:JPGEncoder = new JPGEncoder(100);
+			var bytes:ByteArray = jpge.encode(ilc);
+			var url:String = BASE_URL + FILE_SAVE + "?fileName=" + currentSoleMD5FileName;
+			var request:URLRequest = new URLRequest(url);
+			request.data = bytes;
+			request.method = URLRequestMethod.POST;
+			request.contentType = "application/octet-stream";
+			var loader:URLLoader = new URLLoader();
+			loader.addEventListener(Event.COMPLETE,handlerSaveImageCmp);
+			loader.load(request);
+		}
+		
+		private function handlerSaveImageCmp(e:Event):void{
+			trace("图片保存成功！");
 		}
 		
 		private function handlerOpenBtnClick(e:Event):void{
@@ -291,7 +328,7 @@ package com.snsoft.imgedt{
 		
 		private function handlerLoadUploadImgCmp(e:Event):void{
 			var il:ImageLoader = e.currentTarget as ImageLoader;
-			
+			currentImageBmd = il.bitmapData.clone();
 			var mainbm:Bitmap = new Bitmap(il.bitmapData,"auto",true);
 			SpriteUtil.deleteAllChild(mainImagLayer);
 			mainImagLayer.addChild(mainbm);
@@ -299,7 +336,6 @@ package com.snsoft.imgedt{
 			var assistbm:Bitmap = new Bitmap(il.bitmapData,"auto",true);
 			SpriteUtil.deleteAllChild(assistImagLayer);
 			assistImagLayer.addChild(assistbm);
-			
 		}
 		
 		public function setBtnPlace(baseObj:DisplayObject,obj:DisplayObject,space:Number):void{
@@ -316,6 +352,7 @@ package com.snsoft.imgedt{
 		public static function getStyleDefinition():Object { 
 			return UIComponent.mergeStyles(UIComponent.getStyleDefinition(), defaultStyles);
 		}	
+		
 		/**
 		 *  
 		 * 
