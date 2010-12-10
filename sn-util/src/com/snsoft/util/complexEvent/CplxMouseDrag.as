@@ -108,6 +108,10 @@ package com.snsoft.util.complexEvent
 			}
 		}
 		
+		public function getDragRect():Rectangle{
+			return dragDisplayObject.getRect(this.dragDisplayObject.parent);
+		}
+		
 		/**
 		 * 把当前拖动对象和限制对象，算出小地图中拖动对象的位置并置属性。 
 		 * @param d
