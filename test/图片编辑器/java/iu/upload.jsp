@@ -1,8 +1,8 @@
 <%@ page contentType="text/html;charset=gb2312" language="java"
 	import="java.io.*,java.awt.Image,java.awt.image.*,com.sun.image.codec.jpeg.*,java.sql.*,com.jspsmart.upload.*,java.util.*"%>
 <%
-	String fileMD5 = request.getParameter("fileMD5");
-	System.out.println(fileMD5);
+	String fileNameMD5 = request.getParameter("fileNameMD5");
+	System.out.println(fileNameMD5);
 	SmartUpload mySmartUpload = new SmartUpload();
 	long file_size_max = 4000000;
 	String fileName2 = "", ext = "", testvar = "";
@@ -11,7 +11,7 @@
 	mySmartUpload.initialize(pageContext);
 	//只允许上载此类文件
 	try {
-		mySmartUpload.setAllowedFilesList("jpg,gif");
+		mySmartUpload.setAllowedFilesList("jpg,gif,png");
 		//上载文件 
 		mySmartUpload.upload();
 	} catch (Exception e) {
@@ -31,8 +31,8 @@
 				//更改文件名，取得当前上传时间的毫秒数值
 				Calendar calendar = Calendar.getInstance();
 				String filename = null;
-				if(fileMD5 != null){
-					filename = fileMD5;
+				if(fileNameMD5 != null){
+					filename = fileNameMD5;
 					
 				}
 				else {

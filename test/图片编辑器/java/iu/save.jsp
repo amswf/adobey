@@ -5,10 +5,10 @@
 <%
 	int v;
 
-	String url = "admin/upload/"; //应保证在根目录中有此目录的存在
+	String url = "admin/save/"; //应保证在根目录中有此目录的存在
 	String saveurl = application.getRealPath("/") + url;
 	String fileName = request.getParameter("fileName");
-	saveurl += fileName + ".jpg"; //保存路径
+	saveurl += fileName; //保存路径
 	System.out.println(saveurl);
 	BufferedInputStream inputStream = new BufferedInputStream(request.getInputStream());
 	FileOutputStream outputStream = new FileOutputStream(new File(saveurl));
