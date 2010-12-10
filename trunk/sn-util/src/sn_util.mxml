@@ -2,22 +2,9 @@
 <mx:Application creationComplete="init();" xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
 	<mx:Script>
 		<![CDATA[
-			import com.snsoft.map.MapBackImage;
-			import com.snsoft.mapview.MapMain;
-			import com.snsoft.room3d.IntroMsg;
-			import com.snsoft.room3d.WindowMsg;
-			import com.snsoft.util.complexEvent.CplxMouseDrag;
-			import com.snsoft.util.log.LogMg;
+				 
 			private function init():void{
-				var mm:MapMain = new MapMain();
-				mm.width = 400;
-				mm.height = 300;
-				this.addChild(mm);
-				var sma:CplxMouseDrag = null;
-				var mbi:MapBackImage = null;
-				var log:LogMg;
-				var rm:WindowMsg;
-				var im:IntroMsg;
+				
 			}
 		]]>
 	</mx:Script>
