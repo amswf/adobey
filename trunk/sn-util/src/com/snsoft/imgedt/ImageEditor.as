@@ -30,7 +30,7 @@ package com.snsoft.imgedt{
 	
 	public class ImageEditor extends UIComponent{
 		
-		private static var IMAGE_FRAME_SIZE_REVISE:Number = 2;
+		private static var IMAGE_FRAME_SIZE_REVISE:Number = 4;
 		
 		private var BASE_URL:String = "http://127.0.0.1:8080/image-upload/";
 		
@@ -71,6 +71,8 @@ package com.snsoft.imgedt{
 		private var mainFrameLayer:Sprite = new Sprite();
 		
 		private var mainFrame:MovieClip;
+		
+		private var dragLimit:MovieClip;
 		
 		private var fileReference:FileReference = new FileReference();
 		
@@ -136,7 +138,7 @@ package com.snsoft.imgedt{
 		override protected function draw():void{
 			
 			var btnsHeight:Number = 35;
-		
+			
 			editorWidth = this.width;
 			editorHeight = this.height - btnsHeight;
 			
@@ -152,13 +154,14 @@ package com.snsoft.imgedt{
 		private function initEditor():void{
 			editorLayer.addChild(assistBackGridLayer);
 			editorLayer.addChild(assistImagRotationLayer);
+			editorLayer.addChild(assistImagDragLimitLayer);
 			editorLayer.addChild(assistMaskLayer);
 			editorLayer.addChild(assistTopGridLayer);
 			editorLayer.addChild(mainFrameLayer);
 			editorLayer.addChild(mainImagRotationLayer);
 			editorLayer.addChild(mainMaskLayer);
 			
-			assistImagRotationLayer.addChild(assistImagDragLimitLayer);
+			
 			assistImagRotationLayer.addChild(assistImagLayer);
 			mainImagRotationLayer.addChild(mainImagLayer);
 			
@@ -173,6 +176,12 @@ package com.snsoft.imgedt{
 			
 			assistImagRotationLayer.x = editorWidth / 2;
 			assistImagRotationLayer.y = editorHeight / 2;
+			
+			assistImagDragLimitLayer.x = editorWidth / 2;
+			assistImagDragLimitLayer.y = editorHeight / 2;
+			assistImagDragLimitLayer.mouseEnabled = false;
+			assistImagDragLimitLayer.mouseChildren = false;
+
 			//assistImagRotationLayer.rotation = 45;
 			
 			mainImagRotationLayer.x = assistImagRotationLayer.x;
@@ -182,7 +191,7 @@ package com.snsoft.imgedt{
 			mainImagLayer.mask = mainMaskLayer;
 			assistImagLayer.mask = assistMaskLayer;
 			
-			var assistBackBmd:BitmapData = GridImageUtil.drawShepherdSheck(editorWidth,editorHeight);
+			var assistBackBmd:BitmapData = GridImageUtil.drawShepherdSheck(editorWidth,editorHeight,8,8,0xffffffff,0xffbbbbbb);
 			var assistBackbm:Bitmap = new Bitmap(assistBackBmd);
 			assistBackGridLayer.addChild(assistBackbm);
 			
@@ -202,17 +211,14 @@ package com.snsoft.imgedt{
 			assistImagLayer.x = - assistImagRotationLayer.x;
 			assistImagLayer.y = - assistImagRotationLayer.y;
 			
-			assistImagDragLimitLayer.x = ( - frameWidth) / 2;
-			assistImagDragLimitLayer.y = ( - frameWidth) / 2;
 			
-			var dragLimit:MovieClip = getDisplayObjectInstance(getStyleValue(assistRect)) as MovieClip;
-			dragLimit.width = frameWidth;
-			dragLimit.height = frameHeight;
-			dragLimit.visible = false;
+			
+			dragLimit = getDisplayObjectInstance(getStyleValue(assistRect)) as MovieClip;
+			setDragLimit(dragLimit,1);
 			assistImagDragLimitLayer.addChild(dragLimit);
 			
 			var cplxd:CplxMouseDrag = new CplxMouseDrag();
-			cplxd.addEvents(assistImagLayer,assistImagDragLimitLayer);
+			cplxd.addEvents(assistImagLayer,dragLimit);
 			cplxd.addEventListener(CplxMouseDrag.DRAG_MOVE_EVENT,handlerDragMove);
 			
 			mainFrame = getDisplayObjectInstance(getStyleValue(imageFrameDefaultSkin)) as MovieClip;
@@ -275,6 +281,83 @@ package com.snsoft.imgedt{
 			
 			openBtn.addEventListener(MouseEvent.CLICK,handlerOpenBtnClick);
 			saveBtn.addEventListener(MouseEvent.CLICK,handlerSaveBtnClick);
+			rotationLeftBtn.addEventListener(MouseEvent.CLICK,handlerRotationLeftBtnClick);
+			rotationRightBtn.addEventListener(MouseEvent.CLICK,handlerRotationRightBtnClick);
+			zoomInBtn.addEventListener(MouseEvent.CLICK,handlerRotationZoomInBtnClick);
+			zoomOutBtn.addEventListener(MouseEvent.CLICK,handlerRotationZoomOutBtnClick);
+			resetBtn.addEventListener(MouseEvent.CLICK,handlerRotationResetBtnClick);
+			
+		}
+		
+		private function handlerRotationResetBtnClick(e:Event):void{
+			resetImage();
+		}
+		
+		
+		
+		private function handlerRotationZoomInBtnClick(e:Event):void{
+			imageZoom(0.1);
+		}
+		
+		private function handlerRotationZoomOutBtnClick(e:Event):void{
+			imageZoom(-0.1);
+		}
+		
+		private function handlerRotationLeftBtnClick(e:Event):void{
+			imageRotation(-10);
+		}
+		
+		private function handlerRotationRightBtnClick(e:Event):void{
+			imageRotation(10);
+		}
+		
+		
+		
+		private function resetImage():void{
+			mainImagRotationLayer.rotation = 0;
+			mainImagRotationLayer.scaleX = 1;
+			mainImagRotationLayer.scaleY = 1;
+			
+			assistImagRotationLayer.rotation = 0;
+			assistImagRotationLayer.scaleX = 1;
+			assistImagRotationLayer.scaleY = 1;
+			
+			mainImagLayer.x = -mainImagRotationLayer.x;
+			mainImagLayer.y = -mainImagRotationLayer.y;
+			
+			assistImagLayer.x = -assistImagRotationLayer.x;
+			assistImagLayer.y = -assistImagRotationLayer.y;
+			
+			setDragLimit(dragLimit,1);
+		}
+		
+		private function imageRotation(rotation:int):void{
+			mainImagRotationLayer.rotation += rotation;
+			assistImagRotationLayer.rotation += rotation;
+		}
+		
+		private function imageZoom(scale:Number):void{
+			
+			if(mainImagRotationLayer.scaleX < 10){
+				var p:Number = 100;
+				scale = scale + 1;
+				mainImagRotationLayer.scaleX *= scale;
+				mainImagRotationLayer.scaleY *= scale;
+				
+				assistImagRotationLayer.scaleX *= scale;
+				assistImagRotationLayer.scaleY *= scale;
+				
+				setDragLimit(dragLimit,1 / mainImagRotationLayer.scaleX);
+			}
+		}
+		
+		private function setDragLimit(dragLimit:Sprite,scale:Number):void{
+			var dragWidth:Number = frameWidth * scale;
+			var dragHeight:Number = frameHeight * scale;
+			dragLimit.x = - dragWidth / 2;
+			dragLimit.y = - dragWidth / 2;
+			dragLimit.width = dragWidth;
+			dragLimit.height = dragHeight;
 		}
 		
 		private function handlerSaveBtnClick(e:Event):void{
@@ -327,6 +410,7 @@ package com.snsoft.imgedt{
 		}
 		
 		private function handlerLoadUploadImgCmp(e:Event):void{
+			resetImage();
 			var il:ImageLoader = e.currentTarget as ImageLoader;
 			currentImageBmd = il.bitmapData.clone();
 			var mainbm:Bitmap = new Bitmap(il.bitmapData,"auto",true);
