@@ -31,7 +31,7 @@
 		
 		private static const menuIBackDefaultSkin:String = "MenuIBack_defaultSkin";
 		
-		private static const DATA_XML_URL:String = "data.xml";
+		private var dataXMLUrl:String = "data.xml";
 		
 		private var mainBackLayer:MovieClip;
 		
@@ -171,12 +171,22 @@
 			this.addEventListener(Event.ENTER_FRAME,handlerEnterFrame);
 			stage.addEventListener(Event.RESIZE,handlerResize);
 			
+			
+			var dt:String = loaderInfo.parameters["doorType"];
+			if(dt != null){
+				doorType = dt;
+			}
+			
+			var dataUrl:String = loaderInfo.parameters["dataUrl"];
+			if(dataUrl != null){
+				dataXMLUrl = dataUrl;
+			}
 			loadXML();
 		}
 		
 		
 		private function loadXML():void{
-			var url:String = DATA_XML_URL;
+			var url:String = dataXMLUrl;
 			var req:URLRequest = new URLRequest(url);
 			var loader:URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE,handlerLoadXMLCmp);
@@ -230,16 +240,13 @@
 					searchUrl = value;
 				}
 				else if(name == "doorType"){
-					doorType = value;
+					if(doorType == null){
+						doorType = value;
+					}
 				}
 				else if(name == "logoUrl"){
 					logoBtnOpenUrl = value;
 				}
-			}
-			
-			var dt:String = loaderInfo.parameters["doorType"];
-			if(dt != null){
-				doorType = dt;
 			}
 			
 			if(doorType == DOOR_TYPE_MAIN){
@@ -599,7 +606,7 @@
 		 * 
 		 */		
 		private function handlerLoadXMLError(e:Event):void{
-			trace("加载出错！" + DATA_XML_URL);
+			trace("加载出错！" + dataXMLUrl);
 		}
 		
 		private function handlerEnterFrame(e:Event):void{
