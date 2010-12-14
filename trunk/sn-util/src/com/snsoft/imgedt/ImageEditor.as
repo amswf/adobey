@@ -4,8 +4,10 @@ package com.snsoft.imgedt{
 	import com.snsoft.util.FileUtil;
 	import com.snsoft.util.GridImageUtil;
 	import com.snsoft.util.ImageLoader;
+	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.SpriteUtil;
 	import com.snsoft.util.complexEvent.CplxMouseDrag;
+	import com.snsoft.util.text.EffectText;
 	
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
@@ -16,7 +18,9 @@ package com.snsoft.imgedt{
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.events.MouseEvent;
+	import flash.events.TimerEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -26,21 +30,27 @@ package com.snsoft.imgedt{
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
 	import flash.net.URLVariables;
+	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
+	import flash.text.TextFormat;
 	import flash.utils.ByteArray;
+	import flash.utils.Timer;
 	
 	public class ImageEditor extends UIComponent{
 		
+		public static const SAVE_COMPLETE:String = "SAVE_COMPLETE";
+		
 		private static var IMAGE_FRAME_SIZE_REVISE:Number = 4;
 		
-		private var BASE_URL:String = "http://127.0.0.1:8080/image-upload/";
+		private var rootUrl:String = "http://127.0.0.1:8080/image-upload/";
 		
-		private var FILE_UPLOAD:String = "upload.jsp"; 
+		private var uploadFile:String = "upload.jsp"; 
 		
-		private var PATH_UPLOAD:String = "admin/upload/";
+		private var uploadBaseUrl:String = "admin/upload/";
 		
-		private var FILE_SAVE:String = "save.jsp";
+		private var saveFile:String = "save.jsp";
 		
-		private var PATH_SAVE:String = "admin/save/";
+		private var saveBaseUrl:String = "admin/save/";
 		
 		private var frameWidth:Number;
 		
@@ -49,6 +59,10 @@ package com.snsoft.imgedt{
 		private var btnsLayer:Sprite = new Sprite();
 		
 		private var editorLayer:Sprite = new Sprite();
+		
+		private var waitEffectLayer:Sprite = new Sprite();
+		
+		private var msgLayer:Sprite = new Sprite();
 		
 		private var assistImagLayer:Sprite = new Sprite();
 		
@@ -86,12 +100,48 @@ package com.snsoft.imgedt{
 		
 		private var currentImageBmd:BitmapData;
 		
-		public function ImageEditor(frameWidth:Number = 124,frameHeight:Number = 124){
+		private var waiting:Boolean = false;
+		
+		//private var waitTimer:Timer = new Timer(15000,1);
+		
+		private var waitEffect:Sprite;
+		
+		private var msgmc:Sprite = new Sprite();
+		
+		private var msgTextField:TextField;
+		
+		private var msgTimer:Timer = new Timer(3000,1);
+		
+		private var _saveFileUrl:String;
+		
+		public function ImageEditor(frameWidth:Number = 124,
+									frameHeight:Number = 124,
+									rootUrl:String = null,
+									uploadFile:String = null,
+									uploadBaseUrl:String = null,
+									saveFile:String = null,
+									saveBaseUrl:String = null){
 			super();
 			this.width = 320;
 			this.height = 320;
 			this.frameWidth = frameWidth;
 			this.frameHeight = frameHeight;
+			
+			if(rootUrl != null){
+				this.rootUrl = rootUrl;
+			}
+			if(uploadFile != null){
+				this.uploadFile = uploadFile;
+			}
+			if(uploadBaseUrl != null){
+				this.uploadBaseUrl = uploadBaseUrl;
+			}
+			if(saveFile != null){
+				this.saveFile = saveFile;
+			}
+			if(saveBaseUrl != null){
+				this.saveBaseUrl = saveBaseUrl;
+			}
 		}
 		
 		/**
@@ -107,7 +157,10 @@ package com.snsoft.imgedt{
 			resetBtnDefaultSkin:"ResetBtn_defaultSkin",
 			openBtnDefaultSkin:"OpenBtn_defaultSkin",
 			imageFrameDefaultSkin:"ImageFrame_defaultSkin",
-			assistRect:"AssistRect"
+			assistRect:"AssistRect",
+			waitBackDefaultSkin:"WaitBack_defaultSkin",
+			msgBackDefaultSkin:"MsgBack_defaultSkin"
+			
 			
 		};
 		
@@ -129,6 +182,10 @@ package com.snsoft.imgedt{
 		
 		private static var assistRect:String = "assistRect";
 		
+		private static var waitBackDefaultSkin:String = "waitBackDefaultSkin";
+		
+		private static var msgBackDefaultSkin:String = "msgBackDefaultSkin";
+		
 		
 		
 		/**
@@ -145,10 +202,24 @@ package com.snsoft.imgedt{
 			this.addChild(editorLayer);
 			editorLayer.y = btnsHeight;
 			this.addChild(btnsLayer);
+			this.addChild(waitEffectLayer);
+			this.addChild(msgLayer);
 			initEditor();
 			initFileReference();
 			initBtns();
-			
+			initWaitEffect();
+			initMsgEffect();
+			//waitTimer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerWaitTimerCmp);
+			msgTimer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerMsgTimerCmp);
+		}
+		
+		private function handlerWaitTimerCmp(e:Event):void{
+			setWaitEffect(false);
+			setMsg("链接超时！");
+		}
+		
+		private function handlerMsgTimerCmp(e:Event):void{
+			msgmc.visible = false;
 		}
 		
 		private function initEditor():void{
@@ -160,7 +231,6 @@ package com.snsoft.imgedt{
 			editorLayer.addChild(mainFrameLayer);
 			editorLayer.addChild(mainImagRotationLayer);
 			editorLayer.addChild(mainMaskLayer);
-			
 			
 			assistImagRotationLayer.addChild(assistImagLayer);
 			mainImagRotationLayer.addChild(mainImagLayer);
@@ -181,7 +251,7 @@ package com.snsoft.imgedt{
 			assistImagDragLimitLayer.y = editorHeight / 2;
 			assistImagDragLimitLayer.mouseEnabled = false;
 			assistImagDragLimitLayer.mouseChildren = false;
-
+			
 			//assistImagRotationLayer.rotation = 45;
 			
 			mainImagRotationLayer.x = assistImagRotationLayer.x;
@@ -246,6 +316,57 @@ package com.snsoft.imgedt{
 		private function initFileReference():void{
 			fileReference.addEventListener(Event.SELECT,handlerFileReferenceSelect);
 			fileReference.addEventListener(Event.COMPLETE,handlerFileReferenceCmp);
+			fileReference.addEventListener(IOErrorEvent.IO_ERROR,handlerIOError);
+		}
+		
+		private function initMsgEffect():void{
+			
+			var msgBack:MovieClip = getDisplayObjectInstance(getStyleValue(msgBackDefaultSkin)) as MovieClip;
+			msgBack.width = this.width;
+			msgBack.height = 25;
+			msgmc.addChild(msgBack);
+			msgTextField = EffectText.creatShadowTextField("",new TextFormat());
+			msgTextField.width = this.width;
+			msgTextField.height = 25;
+			msgTextField.x = this.width / 2;
+			msgTextField.y = 4;
+			msgTextField.autoSize = TextFieldAutoSize.CENTER;
+			msgmc.addChild(msgTextField);
+			msgmc.x = 0;
+			msgmc.y = this.height - msgBack.height; 
+			msgmc.visible = false;
+			msgLayer.addChild(msgmc);
+		}
+		
+		public function setMsg(msg:String):void{
+			msgTextField.text = msg;
+			var tft:TextFormat = new TextFormat(null,14,0x000000);
+			msgTextField.setTextFormat(tft);
+			msgmc.visible = true;
+			msgTimer.stop();
+			msgTimer.start();
+		}
+		
+		private function initWaitEffect():void{
+			waitEffect = new Sprite();
+			var waitBack:MovieClip = getDisplayObjectInstance(getStyleValue(waitBackDefaultSkin)) as MovieClip;
+			waitBack.width = this.width;
+			waitBack.height = this.height;
+			waitEffect.addChild(waitBack);
+			
+			var loading:MovieClip = SkinsUtil.createSkinByName("Loading");
+			waitEffect.addChild(loading);
+			loading.x = editorWidth / 2 + editorLayer.x ;
+			loading.y = editorHeight / 2 + editorLayer.y;
+			
+			waitEffect.visible = false;
+			waitEffectLayer.addChild(waitEffect);
+		}
+		
+		private function setWaitEffect(b:Boolean):void{
+			//waitTimer.start();
+			waiting = b;
+			waitEffect.visible = b;
 		}
 		
 		private function initBtns():void{
@@ -263,7 +384,6 @@ package com.snsoft.imgedt{
 			rotationRightBtn.buttonMode = true;
 			var resetBtn:MovieClip = getDisplayObjectInstance(getStyleValue(resetBtnDefaultSkin)) as MovieClip;
 			resetBtn.buttonMode = true;
-			
 			
 			btnsLayer.addChild(openBtn);
 			btnsLayer.addChild(saveBtn);
@@ -361,29 +481,41 @@ package com.snsoft.imgedt{
 		}
 		
 		private function handlerSaveBtnClick(e:Event):void{
-			var rect:Rectangle = new Rectangle();
-			rect.x = assistImagDragLimitLayer.x - assistImagLayer.x;
-			rect.y = assistImagDragLimitLayer.y - assistImagLayer.y;
-			rect.width = frameWidth;
-			rect.height = frameHeight;
-			var ilc:BitmapData = new BitmapData(frameWidth,frameHeight,true,0x00ffffffff);
-			var matrix:Matrix = new Matrix();
-			matrix.translate(-mainFrame.x ,-mainFrame.y );
-			ilc.draw(editorLayer,matrix);
-			var jpge:JPGEncoder = new JPGEncoder(100);
-			var bytes:ByteArray = jpge.encode(ilc);
-			var url:String = BASE_URL + FILE_SAVE + "?fileName=" + currentSoleMD5FileName;
-			var request:URLRequest = new URLRequest(url);
-			request.data = bytes;
-			request.method = URLRequestMethod.POST;
-			request.contentType = "application/octet-stream";
-			var loader:URLLoader = new URLLoader();
-			loader.addEventListener(Event.COMPLETE,handlerSaveImageCmp);
-			loader.load(request);
+			if(!waiting){
+				if(mainImagLayer.numChildren > 0){
+					setWaitEffect(true);
+					var rect:Rectangle = new Rectangle();
+					rect.x = assistImagDragLimitLayer.x - assistImagLayer.x;
+					rect.y = assistImagDragLimitLayer.y - assistImagLayer.y;
+					rect.width = frameWidth;
+					rect.height = frameHeight;
+					var ilc:BitmapData = new BitmapData(frameWidth,frameHeight,true,0x00ffffffff);
+					var matrix:Matrix = new Matrix();
+					matrix.translate(-mainFrame.x ,-mainFrame.y );
+					ilc.draw(editorLayer,matrix);
+					var jpge:JPGEncoder = new JPGEncoder(100);
+					var bytes:ByteArray = jpge.encode(ilc);
+					var url:String = rootUrl + saveFile + "?fileName=" + currentSoleMD5FileName;
+					var request:URLRequest = new URLRequest(url);
+					request.data = bytes;
+					request.method = URLRequestMethod.POST;
+					request.contentType = "application/octet-stream";
+					var loader:URLLoader = new URLLoader();
+					loader.addEventListener(Event.COMPLETE,handlerSaveImageCmp);
+					loader.addEventListener(IOErrorEvent.IO_ERROR,handlerIOError);
+					loader.load(request);
+				}
+				else {
+					setMsg("没有需要保存的图片！");
+				}
+			}
 		}
 		
 		private function handlerSaveImageCmp(e:Event):void{
-			trace("图片保存成功！");
+			setMsg("图片保存成功！");
+			this.dispatchEvent(new Event(SAVE_COMPLETE));
+			this.saveFileUrl = rootUrl + saveBaseUrl + currentSoleMD5FileName;
+			setWaitEffect(false);
 		}
 		
 		private function handlerOpenBtnClick(e:Event):void{
@@ -391,22 +523,29 @@ package com.snsoft.imgedt{
 		}
 		
 		private function handlerFileReferenceSelect(e:Event):void{
-			trace("selected！");
-			var req:URLRequest = new URLRequest(BASE_URL + FILE_UPLOAD);
-			var variables:URLVariables = new URLVariables();
-			currentSoleMD5FileName = FileUtil.creatSoleMD5FileName(fileReference.name);
-			var fileName:String = FileUtil.getFileName(currentSoleMD5FileName);
-			variables["fileNameMD5"] = fileName;
-			req.data = variables;
-			fileReference.upload(req);
+			if(!waiting){
+				setWaitEffect(true);
+				var req:URLRequest = new URLRequest(rootUrl + uploadFile);
+				var variables:URLVariables = new URLVariables();
+				currentSoleMD5FileName = FileUtil.creatSoleMD5FileName(fileReference.name);
+				var fileName:String = FileUtil.getFileName(currentSoleMD5FileName);
+				variables["fileNameMD5"] = fileName;
+				req.data = variables;
+				fileReference.upload(req);
+			}
+		}
+		
+		private function handlerIOError(e:Event):void{
+			setWaitEffect(false);
+			setMsg("链接服务器出错！");
 		}
 		
 		private function handlerFileReferenceCmp(e:Event):void{
-			trace("上传成功！"+fileReference.name);
-			var url:String = BASE_URL + PATH_UPLOAD + currentSoleMD5FileName;
+			var url:String = rootUrl + uploadBaseUrl + currentSoleMD5FileName;
 			var il:ImageLoader = new ImageLoader();
 			il.loadImage(url);
 			il.addEventListener(Event.COMPLETE,handlerLoadUploadImgCmp);
+			il.addEventListener(IOErrorEvent.IO_ERROR,handlerIOError);
 		}
 		
 		private function handlerLoadUploadImgCmp(e:Event):void{
@@ -420,6 +559,8 @@ package com.snsoft.imgedt{
 			var assistbm:Bitmap = new Bitmap(il.bitmapData,"auto",true);
 			SpriteUtil.deleteAllChild(assistImagLayer);
 			assistImagLayer.addChild(assistbm);
+			setWaitEffect(false);
+			setMsg("图片上传成功！");
 		}
 		
 		public function setBtnPlace(baseObj:DisplayObject,obj:DisplayObject,space:Number):void{
@@ -446,6 +587,17 @@ package com.snsoft.imgedt{
 			this.invalidate(InvalidationType.SIZE,true);
 			super.configUI();
 		}
+		
+		public function get saveFileUrl():String
+		{
+			return _saveFileUrl;
+		}
+		
+		public function set saveFileUrl(value:String):void
+		{
+			_saveFileUrl = value;
+		}
+		
 		
 	}
 }
