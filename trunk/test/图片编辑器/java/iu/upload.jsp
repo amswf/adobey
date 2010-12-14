@@ -42,13 +42,6 @@
 				saveurl += filename + "." + ext; //保存路径
 				System.out.println(saveurl);
 				myFile.saveAs(saveurl, SmartUpload.SAVE_PHYSICAL);
-				String ret = "parent.HtmlEdit.focus();";
-				ret += "var range = parent.HtmlEdit.document.selection.createRange();";
-				ret += "range.pasteHTML('<img src=\"" + request.getContextPath() + "/admin/upload/" + filename + "." + ext + "\">');";
-				ret += "alert('上传成功！');";
-				ret += "window.location='upload.htm';";
-				out.print("<script language=javascript>" + ret + "</script>");
-
 			}
 		}
 	} catch (Exception e) {
