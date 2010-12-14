@@ -1,4 +1,5 @@
-<%@ page contentType="text/html;charset=gb2312" language="java"
+
+<%@page import="com.jspsmart.upload.File"%><%@ page contentType="text/html;charset=utf-8" language="java"
 	import="java.io.*,java.awt.Image,java.awt.image.*,com.sun.image.codec.jpeg.*,java.sql.*,com.jspsmart.upload.*,java.util.*"%>
 <%
 	String fileNameMD5 = request.getParameter("fileNameMD5");
@@ -6,29 +7,31 @@
 	SmartUpload mySmartUpload = new SmartUpload();
 	long file_size_max = 4000000;
 	String fileName2 = "", ext = "", testvar = "";
-	String url = "admin/upload/"; //Ó¦±£Ö¤ÔÚ¸ùÄ¿Â¼ÖÐÓÐ´ËÄ¿Â¼µÄ´æÔÚ
-	//³õÊ¼»¯
+	String url = "admin/upload/"; //åº”ä¿è¯åœ¨æ ¹ç›®å½•ä¸­æœ‰æ­¤ç›®å½•çš„å­˜åœ¨
+	//åˆå§‹åŒ–
 	mySmartUpload.initialize(pageContext);
-	//Ö»ÔÊÐíÉÏÔØ´ËÀàÎÄ¼þ
+	//åªå…è®¸ä¸Šè½½æ­¤ç±»æ–‡ä»¶
 	try {
 		mySmartUpload.setAllowedFilesList("jpg,gif,png");
-		//ÉÏÔØÎÄ¼þ 
+		//ä¸Šè½½æ–‡ä»¶ 
 		mySmartUpload.upload();
 	} catch (Exception e) {
 
 	}
 	try {
-
-		com.jspsmart.upload.File myFile = mySmartUpload.getFiles().getFile(0);
+		Files files = mySmartUpload.getFiles();
+		int count = files.getCount();
+		System.out.println(count);
+		File myFile = files.getFile(0);
 		if (myFile.isMissing()) {
 
 		} else {
-			//String myFileName=myFile.getFileName(); //È¡µÃÉÏÔØµÄÎÄ¼þµÄÎÄ¼þÃû
-			ext = myFile.getFileExt(); //È¡µÃºó×ºÃû
-			int file_size = myFile.getSize(); //È¡µÃÎÄ¼þµÄ´óÐ¡ 
+			//String myFileName=myFile.getFileName(); //å–å¾—ä¸Šè½½çš„æ–‡ä»¶çš„æ–‡ä»¶å
+			ext = myFile.getFileExt(); //å–å¾—åŽç¼€å
+			int file_size = myFile.getSize(); //å–å¾—æ–‡ä»¶çš„å¤§å° 
 			String saveurl = "";
 			if (file_size < file_size_max) {
-				//¸ü¸ÄÎÄ¼þÃû£¬È¡µÃµ±Ç°ÉÏ´«Ê±¼äµÄºÁÃëÊýÖµ
+				//æ›´æ”¹æ–‡ä»¶åï¼Œå–å¾—å½“å‰ä¸Šä¼ æ—¶é—´çš„æ¯«ç§’æ•°å€¼
 				Calendar calendar = Calendar.getInstance();
 				String filename = null;
 				if(fileNameMD5 != null){
@@ -39,13 +42,13 @@
 					filename = String.valueOf(calendar.getTimeInMillis());
 				}
 				saveurl = application.getRealPath("/") + url;
-				saveurl += filename + "." + ext; //±£´æÂ·¾¶
+				saveurl += filename + "." + ext; //ä¿å­˜è·¯å¾„
 				System.out.println(saveurl);
 				myFile.saveAs(saveurl, SmartUpload.SAVE_PHYSICAL);
 			}
 		}
 	} catch (Exception e) {
-		out.print(e.toString());
+		System.out.println(e.getStackTrace());
 	}
 %>
 
