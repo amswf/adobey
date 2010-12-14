@@ -1,0 +1,7 @@
+﻿<xml>
+	<property name="rootUrl" value="http://127.0.0.1:8080/image-upload/" />
+	<property name="uploadFile" value="upload.jsp" />
+	<property name="uploadBaseUrl" value="admin/upload/" />
+	<property name="saveFile" value="save.jsp" />
+	<property name="saveBaseUrl" value="admin/save/" />
+</xml>
