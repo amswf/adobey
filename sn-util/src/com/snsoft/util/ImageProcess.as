@@ -1,4 +1,4 @@
-package com.snsoft.imgedt{
+package com.snsoft.util{
 	import com.snsoft.util.Math.Polar;
 	
 	import flash.display.BitmapData;
