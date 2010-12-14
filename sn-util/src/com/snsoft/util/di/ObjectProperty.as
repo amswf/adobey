@@ -4,7 +4,7 @@
 	import com.snsoft.xmldom.XMLDom;
 	
 	import flash.utils.describeType;
-
+	
 	/**
 	 * 获得一个类对象的属性名称，包括动态属性名称和静态属性名称 
 	 * @author Administrator
@@ -62,18 +62,20 @@
 			var xmldom:XMLDom = new XMLDom(xml);
 			var node:Node = xmldom.parse();
 			var nodeList:NodeList = node.getNodeList(DESCRIBE_TAG_ACCESSOR);
-			for(var i:int = 0;i < nodeList.length();i ++){
-				var cnode:Node = nodeList.getNode(i);
-				var sname:String = cnode.getAttributeByName(DESCRIBE_TAG_NAME);
-				this._propertyNames.push(sname);
+			if(nodeList != null){
+				for(var i:int = 0;i < nodeList.length();i ++){
+					var cnode:Node = nodeList.getNode(i);
+					var sname:String = cnode.getAttributeByName(DESCRIBE_TAG_NAME);
+					this._propertyNames.push(sname);
+				}
 			}
 		}
-
+		
 		public function get propertyNames():Vector.<String>
 		{
 			return _propertyNames;
 		}
-
+		
 		/**
 		 * 对象动态属性 
 		 */
@@ -81,6 +83,6 @@
 		{
 			return _dynamicPropertyNames;
 		}
-
+		
 	}
 }
