@@ -525,11 +525,11 @@ package com.snsoft.imgedt{
 		private function handlerFileReferenceSelect(e:Event):void{
 			if(!waiting){
 				setWaitEffect(true);
-				var req:URLRequest = new URLRequest(rootUrl + uploadFile);
+				var url:String = rootUrl + uploadFile;
+				var req:URLRequest = new URLRequest(url);
 				var variables:URLVariables = new URLVariables();
 				currentSoleMD5FileName = FileUtil.creatSoleMD5FileName(fileReference.name);
-				var fileName:String = FileUtil.getFileName(currentSoleMD5FileName);
-				variables["fileNameMD5"] = fileName;
+				variables["fileNameMD5"] = currentSoleMD5FileName;
 				req.data = variables;
 				fileReference.upload(req);
 			}
