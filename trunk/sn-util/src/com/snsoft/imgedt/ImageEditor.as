@@ -7,6 +7,7 @@ package com.snsoft.imgedt{
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.SpriteUtil;
 	import com.snsoft.util.complexEvent.CplxMouseDrag;
+	import com.snsoft.util.complexEvent.CplxMousePressing;
 	import com.snsoft.util.text.EffectText;
 	
 	import fl.core.InvalidationType;
@@ -401,37 +402,61 @@ package com.snsoft.imgedt{
 			
 			openBtn.addEventListener(MouseEvent.CLICK,handlerOpenBtnClick);
 			saveBtn.addEventListener(MouseEvent.CLICK,handlerSaveBtnClick);
-			rotationLeftBtn.addEventListener(MouseEvent.CLICK,handlerRotationLeftBtnClick);
-			rotationRightBtn.addEventListener(MouseEvent.CLICK,handlerRotationRightBtnClick);
-			zoomInBtn.addEventListener(MouseEvent.CLICK,handlerRotationZoomInBtnClick);
-			zoomOutBtn.addEventListener(MouseEvent.CLICK,handlerRotationZoomOutBtnClick);
+			 
 			resetBtn.addEventListener(MouseEvent.CLICK,handlerRotationResetBtnClick);
 			
+			var cmprl:CplxMousePressing = new CplxMousePressing(rotationLeftBtn);
+			var cmprr:CplxMousePressing = new CplxMousePressing(rotationRightBtn);
+			var cmpzi:CplxMousePressing = new CplxMousePressing(zoomInBtn);
+			var cmpzo:CplxMousePressing = new CplxMousePressing(zoomOutBtn);
+			
+			cmprl.addEventListener(MouseEvent.CLICK,handlerRotationLeftBtnClick);
+			cmprr.addEventListener(MouseEvent.CLICK,handlerRotationRightBtnClick);
+			cmpzi.addEventListener(MouseEvent.CLICK,handlerZoomInBtnClick);
+			cmpzo.addEventListener(MouseEvent.CLICK,handlerZoomOutBtnClick);
+			
+			cmprl.addEventListener(CplxMousePressing.MOUSEEVENT_PRESSING,handlerRotationLeftBtnPressing);
+			cmprr.addEventListener(CplxMousePressing.MOUSEEVENT_PRESSING,handlerRotationRightBtnPressing);
+			cmpzi.addEventListener(CplxMousePressing.MOUSEEVENT_PRESSING,handlerZoomInBtnPressing);
+			cmpzo.addEventListener(CplxMousePressing.MOUSEEVENT_PRESSING,handlerZoomOutBtnPressing);
+			
+		}
+		
+		private function handlerZoomInBtnPressing(e:Event):void{
+			imageZoom(0.01);
+		}
+		
+		private function handlerZoomOutBtnPressing(e:Event):void{
+			imageZoom(-0.01);
+		}
+		
+		private function handlerRotationLeftBtnPressing(e:Event):void{
+			imageRotation(-0.5);
+		}
+		
+		private function handlerRotationRightBtnPressing(e:Event):void{
+			imageRotation(0.5);
+		}
+		
+		private function handlerZoomInBtnClick(e:Event):void{
+			imageZoom(0.1);
+		}
+		
+		private function handlerZoomOutBtnClick(e:Event):void{
+			imageZoom(-0.1);
+		}
+		
+		private function handlerRotationLeftBtnClick(e:Event):void{
+			imageRotation(-0.5);
+		}
+		
+		private function handlerRotationRightBtnClick(e:Event):void{
+			imageRotation(0.5);
 		}
 		
 		private function handlerRotationResetBtnClick(e:Event):void{
 			resetImage();
 		}
-		
-		
-		
-		private function handlerRotationZoomInBtnClick(e:Event):void{
-			imageZoom(0.1);
-		}
-		
-		private function handlerRotationZoomOutBtnClick(e:Event):void{
-			imageZoom(-0.1);
-		}
-		
-		private function handlerRotationLeftBtnClick(e:Event):void{
-			imageRotation(-10);
-		}
-		
-		private function handlerRotationRightBtnClick(e:Event):void{
-			imageRotation(10);
-		}
-		
-		
 		
 		private function resetImage():void{
 			mainImagRotationLayer.rotation = 0;
@@ -451,7 +476,7 @@ package com.snsoft.imgedt{
 			setDragLimit(dragLimit,1);
 		}
 		
-		private function imageRotation(rotation:int):void{
+		private function imageRotation(rotation:Number):void{
 			mainImagRotationLayer.rotation += rotation;
 			assistImagRotationLayer.rotation += rotation;
 		}
