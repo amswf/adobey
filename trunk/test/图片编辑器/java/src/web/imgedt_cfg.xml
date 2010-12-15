@@ -1,6 +1,6 @@
 ﻿<?xml version ="1.0" encoding="utf-8" ?>
 <xml>
-	<property name="rootUrl" value="/image-upload/" />
+	<property name="rootUrl" value="/imgupl/" />
 	<property name="uploadFile" value="upload.jsp" />
 	<property name="uploadBaseUrl" value="admin/upload/" />
 	<property name="saveFile" value="save.jsp" />
