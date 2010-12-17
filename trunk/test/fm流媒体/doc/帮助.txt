@@ -1,0 +1,16 @@
+http://red5.googlecode.com/svn/java/example/tags/0_8_0
+
+red5 java 例子，对应red5 0.8
+
+下载 red5 0.8 war 和 window 版,red5.google.com  Download页面。
+
+新建eclipce 项目 dynamic web
+
+把war webapp/root/WEB-INF/lib 下的jar 拷贝到项目下的webapp/WEB-INF/lib
+
+把 exe 根目录下的red5.jar boot.jar 拷贝到项目下的webapp/WEB-INF/lib
+
+就可以用eclipce 开发 red5 服务端代码了
+
+
+
