@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application creationComplete="init();" xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
+	<mx:Script>
+		<![CDATA[
+			import com.snsoft.fmc.NSICode;
+			import com.snsoft.fmc.test.NetConnCall;
+			import com.snsoft.fmc.test.OnVideo;
+			import com.snsoft.fmc.test.SeatSO;
+			import com.snsoft.fmc.test.SharedBall;
+			import com.snsoft.fmc.test.vi.Room;
+			import com.snsoft.fmc.test.vi.Seat;
+			
+			private function init():void{
+				SharedBall;
+				NetConnCall;
+				OnVideo;
+				NSICode;
+				Room;
+				Seat;
+				SeatSO;
+			}
+		]]>
+	</mx:Script>
+</mx:Application>
