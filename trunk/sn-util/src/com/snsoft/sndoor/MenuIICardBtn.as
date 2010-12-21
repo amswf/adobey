@@ -13,6 +13,7 @@ package com.snsoft.sndoor{
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
+	import flash.utils.getDefinitionByName;
 	
 	public class MenuIICardBtn extends UIComponent{
 		
@@ -29,6 +30,10 @@ package com.snsoft.sndoor{
 		private var _menuDO:MenuDO;
 		
 		private var imagCplx:CplxEventOpenUrl;
+		
+		private var textCplx:CplxEventOpenUrl;
+		
+		private var textMouseMc:MovieClip;
 		
 		public function MenuIICardBtn(menuDO:MenuDO,imageBitmapData:BitmapData){
 			super();
@@ -75,6 +80,16 @@ package com.snsoft.sndoor{
 			contentsText.width = textWidth;
 			contentsText.height = 81;
 			
+			textMouseMc = getDisplayObjectInstance(getStyleValue(btnIITopSkin)) as MovieClip;
+			textMouseMc.x = titleText.x;
+			textMouseMc.y = titleText.y;
+			textMouseMc.width = textWidth;
+			textMouseMc.height = 110;
+			textMouseMc.buttonMode = true;
+			if(menuDO.url != null){
+				textCplx = new CplxEventOpenUrl(textMouseMc,MouseEvent.CLICK,menuDO.url,menuDO.window);
+			}
+			
 			this.width = boarder + image.width + boarder + textWidth + boarder;
 			this.height = boarder + image.height + boarder;
 		}
@@ -84,7 +99,8 @@ package com.snsoft.sndoor{
 		 */			
 		private static var defaultStyles:Object = {
 			titleDefaultTextFormat:new TextFormat("",14,0x5f5f5f),
-			contentsDefaultTextFormat:new TextFormat("",12,0x949494)
+			contentsDefaultTextFormat:new TextFormat("",12,0x949494),
+			btnIITopSkin:"BtnIITop_skin"
 		};
 		
 		/**
@@ -96,6 +112,11 @@ package com.snsoft.sndoor{
 		 * 
 		 */		
 		private static const contentsDefaultTextFormat:String = "contentsDefaultTextFormat";
+		
+		/**
+		 * 
+		 */		
+		private static const btnIITopSkin:String = "btnIITopSkin";
 		
 		/**
 		 * 
@@ -126,6 +147,7 @@ package com.snsoft.sndoor{
 			titleText.setTextFormat(getStyleValue(titleDefaultTextFormat) as TextFormat);
 			this.addChild(contentsText);
 			contentsText.setTextFormat(getStyleValue(contentsDefaultTextFormat) as TextFormat);
+			this.addChild(textMouseMc);
 		}
 		
 		private function handlerMouseOver(e:Event):void{
