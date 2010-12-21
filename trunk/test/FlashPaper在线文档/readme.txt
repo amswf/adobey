@@ -1,0 +1,1 @@
+用flashpaper2.2.exe 转换文档成swf,然后用fp_read.swf播放。
