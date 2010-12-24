@@ -27,6 +27,8 @@
 	
 	public class OnVideo extends Sprite{
 		
+		private static const VC_SO_NAME:String = "vc_so_name";
+		
 		private var rtmp:String = "rtmp://192.168.0.22/oflaDemo";
 		
 		private var localNc:NetConnection;
@@ -54,11 +56,11 @@
 		private var hallComBox:ComboBox;
 		
 		private var roomComBox:ComboBox;
-				
+		
 		private var roomName:String;
 		
 		private var seatSO:SeatSO;
-				
+		
 		private var userNameTfd:TextField;
 		
 		private var videoName:String;
@@ -122,7 +124,7 @@
 				
 				localNc.client = this;
 				localNc.objectEncoding = ObjectEncoding.AMF3;
-				localNc.connect(rtmp);
+				localNc.connect(rtmp,this.getUserNameTfdText());
 				localNc.addEventListener(NetStatusEvent.NET_STATUS,handlerLocalNCStatus);
 				localNc.addEventListener(IOErrorEvent.IO_ERROR,handlerIOError);
 			}
@@ -142,7 +144,7 @@
 			//调用red5的Service
 			trace("handlerLocalNCStatus:",e.info.code);
 			if(e.info.code == NSICode.NetConnection_Connect_Success){
-				seatSO = new SeatSO("SeatSO",localNc);
+				seatSO = new SeatSO(VC_SO_NAME,localNc);
 				seatSO.initSO();
 				seatSO.addEventListener(SyncEvent.SYNC,handlerSync);	
 				var rspd:Responder = new Responder(localNcCallRoomListResult,localNcCallRoomListStatus);
@@ -168,10 +170,21 @@
 			var box:ComboBox = e.currentTarget as ComboBox;
 			var roomName:String = String(box.value);
 			if(roomName != null){
+				
+				if(this.roomName == null){
+					var rspdc:Responder = new Responder(localNcCallCreaSeatResult,localNcCallCreaSeatStatus);
+					localNc.call("vcService.creatSeat",rspdc,roomName,getUserNameTfdText());
+				}
+				else {
+					var rspdm:Responder = new Responder(localNcCallMoveSeatResult,localNcCallMoveSeatStatus);
+					localNc.call("vcService.moveSeat",rspdm,this.roomName,roomName,getUserNameTfdText());
+				}
 				this.roomName = roomName;
-				var rspd:Responder = new Responder(localNcCallCreaSeatResult,localNcCallCreaSeatStatus);
-				localNc.call("vcService.creatSeat",rspd,roomName,userNameTfd.text);
 			}
+		}
+		
+		private function getUserNameTfdText():String{
+			return userNameTfd.text;
 		}
 		
 		private function handlerRoomComboBoxChange(e:Event):void{
@@ -181,6 +194,10 @@
 				this.videoName = videoName;
 				initNetVideo();
 			}
+		}
+		
+		private function localNcCallMoveSeatResult(obj:Object):void{
+			seatSO.updatSO();
 		}
 		
 		private function localNcCallCreaSeatResult(obj:Object):void{
@@ -198,8 +215,7 @@
 			recordNs.attachCamera(camera);
 			recordNs.attachAudio(mic);
 			recordNs.publish(videoName+"_rcd",NSPublishType.RECORD);
-			
-			seatSO.addVideo(videoName);
+			seatSO.updatSO();
 		}
 		
 		private function localNcCallSeatListResult(obj:Object):void{
@@ -216,6 +232,10 @@
 					roomComBox.addItem(item);
 				}
 			}
+		}
+		
+		private function localNcCallMoveSeatStatus(obj:Object):void{
+			trace("localNcCallSeatListStatus");
 		}
 		
 		private function localNcCallCreaSeatStatus(obj:Object):void{

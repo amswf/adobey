@@ -34,17 +34,10 @@ package com.snsoft.fmc.test{
 			trace("soVideoArrayName",so.data[soVideoArrayName]);
 		}		
 		
-		public function addVideo(videoName:String):void{
-			var array:Array = getSoVideoArray();
-			array.push(videoName);
-			so.setProperty("lala",new Date().getTime());
-		}
-		
-		public function getSoVideoArray():Array{
-			trace("soVideoArrayName",so.data[soVideoArrayName]);
-			var array:Array = so.data[soVideoArrayName] as Array;
-			trace("array",array.length);
-			return array;
+		public function updatSO():void{
+			var st:String = String(new Date().getTime());
+			so.setProperty("lala",st);
+			trace("so.data[lala]:",so.data["lala"]);
 		}
 		
 		private function syncHandler(e:Event):void{
