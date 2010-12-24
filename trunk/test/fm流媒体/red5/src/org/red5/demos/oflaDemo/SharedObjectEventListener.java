@@ -5,11 +5,10 @@ import java.util.Map;
 
 import org.red5.server.api.IAttributeStore;
 import org.red5.server.api.event.IEvent;
-import org.red5.server.api.event.IEventListener;
 import org.red5.server.api.so.ISharedObjectBase;
 import org.red5.server.api.so.ISharedObjectListener;
 
-public class SharedObjectEventListener implements ISharedObjectListener,IEventListener {
+public class SharedObjectEventListener implements ISharedObjectListener {
 
 	@Override
 	public void onSharedObjectClear(ISharedObjectBase arg0) {
@@ -57,12 +56,6 @@ public class SharedObjectEventListener implements ISharedObjectListener,IEventLi
 	public void onSharedObjectUpdate(ISharedObjectBase arg0, String arg1, Object arg2) {
 		// TODO Auto-generated method stub
 		System.out.println("onSharedObjectUpdate3");
-	}
-
-	@Override
-	public void notifyEvent(IEvent arg0) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
