@@ -5,10 +5,13 @@ import java.util.Vector;
 
 import org.red5.demos.oflaDemo.vc.Room;
 import org.red5.demos.oflaDemo.vc.Seat;
+import org.red5.server.so.SharedObject;
 
 public class VCService {
 	
 	private VCManager vcm = VCManager.getInstance();
+	
+	private static SharedObject vcso;
 	
 	public Vector<Room> getRoomList(){
 		return vcm.getHall().getRoomList();
@@ -31,6 +34,12 @@ public class VCService {
 		Room room = vcm.getHall().getRoomByName(roomName);
 		room.addSeat(seat);
 		return seat;
+	}
+	
+	public void delSeat(String roomName,String userName){
+		System.out.println("delSeat:" + roomName + userName);
+		Room room = vcm.getHall().getRoomByName(roomName);
+		room.delSeat(userName);
 	}
 
 }
