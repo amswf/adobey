@@ -17,7 +17,7 @@ package com.snsoft.fmc.test{
 		
 		private var nc:NetConnection;
 		
-		private var soVideoArrayName:String = "soVideoArrayName";
+		private static const UVSO:String = "uvso";
 				
 		public function SeatSO(name:String,nc:NetConnection){
 			this.name = name;
@@ -28,16 +28,13 @@ package com.snsoft.fmc.test{
 		public function initSO():void{
 			so = SharedObject.getRemote(name, nc.uri, true);
 			so.connect(nc);
-			var seatList:Vector.<Seat> = new Vector.<Seat>();
-			so.setProperty(soVideoArrayName,new Array());
 			so.addEventListener(SyncEvent.SYNC, syncHandler);
-			trace("soVideoArrayName",so.data[soVideoArrayName]);
 		}		
 		
 		public function updatSO():void{
 			var st:String = String(new Date().getTime());
-			so.setProperty("lala",st);
-			trace("so.data[lala]:",so.data["lala"]);
+			so.setProperty(UVSO,st);
+			trace("so.data[uvso]:",so.data[UVSO]);
 		}
 		
 		private function syncHandler(e:Event):void{

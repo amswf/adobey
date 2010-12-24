@@ -11,6 +11,7 @@
 	import flash.events.ActivityEvent;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.events.MouseEvent;
 	import flash.events.NetStatusEvent;
 	import flash.events.SyncEvent;
 	import flash.media.Camera;
@@ -63,13 +64,19 @@
 		
 		private var userNameTfd:TextField;
 		
+		private var connBtn:Button;
+		
+		private var disConnBtn:Button;
+		
 		private var videoName:String;
+		
+		private var isConn:Boolean = false;
 		
 		public function OnVideo()
 		{
 			super();
 			initComBox();
-			init();
+			
 		}
 		
 		public function initComBox():void{
@@ -84,25 +91,57 @@
 			userNameTfd.width = 150;
 			this.addChild(userNameTfd);
 			
+			connBtn = new Button();
+			connBtn.label = "链接";
+			connBtn.x = 200;
+			connBtn.y = 300;
+			connBtn.width = 50;
+			connBtn.addEventListener(MouseEvent.CLICK,handlerConnBtnClick);
+			this.addChild(connBtn);
+			
+			disConnBtn = new Button();
+			disConnBtn.label = "断开";
+			disConnBtn.x = 250;
+			disConnBtn.y = 300;
+			disConnBtn.width = 50;
+			disConnBtn.addEventListener(MouseEvent.CLICK,handlerDisConnBtnClick);
+			this.addChild(disConnBtn);
+			
 			hallComBox = new ComboBox();
-			hallComBox.x = 200;
+			hallComBox.x = 300;
 			hallComBox.y = 300;
 			this.addChild(hallComBox);
 			hallComBox.addEventListener(Event.CHANGE,handlerHallComboBoxChange);
 			
 			roomComBox = new ComboBox();
-			roomComBox.x = 350;
+			roomComBox.x = 400;
 			roomComBox.y = 300;
 			this.addChild(roomComBox);
 			roomComBox.addEventListener(Event.CHANGE,handlerRoomComboBoxChange);
 			
 		}
 		
+		private function handlerConnBtnClick(e:Event):void{
+			if(!isConn){
+				init();
+			}
+		}
+		
+		private function handlerDisConnBtnClick(e:Event):void{
+			if(isConn){
+				localNc.close();
+				this.removeChild(localVideo);
+				roomComBox.removeAll();
+				hallComBox.removeAll();
+				userNameTfd.type = TextFieldType.INPUT;
+			}
+		}
+		
 		/**
 		 * 初始化 
 		 * 
 		 */		
-		public function init():void{
+		private function init():void{
 			localNc = new NetConnection();
 			mic = Microphone.getMicrophone();
 			camera = Camera.getCamera();
@@ -141,6 +180,7 @@
 		 */		
 		private function handlerLocalNCStatus(e:NetStatusEvent):void {
 			
+			userNameTfd.type = TextFieldType.DYNAMIC;
 			//调用red5的Service
 			trace("handlerLocalNCStatus:",e.info.code);
 			if(e.info.code == NSICode.NetConnection_Connect_Success){
@@ -154,6 +194,7 @@
 		
 		private function localNcCallRoomListResult(obj:Object):void{
 			var array:Array = obj as Array;
+			hallComBox.removeAll();
 			if(array != null){
 				hallComBox.addItem(ComboBoxUtil.creatCBIterm("请选择聊天室",null));
 				for(var i:int = 0;i<array.length;i++){
@@ -177,7 +218,7 @@
 				}
 				else {
 					var rspdm:Responder = new Responder(localNcCallMoveSeatResult,localNcCallMoveSeatStatus);
-					localNc.call("vcService.moveSeat",rspdm,this.roomName,roomName,getUserNameTfdText());
+					localNc.call("vcService.moveSeat",rspdm,getUserNameTfdText(),this.roomName,roomName);
 				}
 				this.roomName = roomName;
 			}
