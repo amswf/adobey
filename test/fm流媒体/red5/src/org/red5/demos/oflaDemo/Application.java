@@ -1,5 +1,7 @@
 package org.red5.demos.oflaDemo;
 
+import java.util.Date;
+
 import org.red5.demos.oflaDemo.vc.Hall;
 import org.red5.demos.oflaDemo.vc.Room;
 import org.red5.demos.oflaDemo.vc.Seat;
@@ -34,6 +36,8 @@ public class Application extends ApplicationAdapter implements IPendingServiceCa
 	private IServerStream serverStream;
 
 	private ISharedObject vcso;
+	
+	private static final String UVSO = "uvso";
 
 	private VCService vcs = new VCService();
 
@@ -90,6 +94,8 @@ public class Application extends ApplicationAdapter implements IPendingServiceCa
 		Object[] params = (Object[]) conn.getAttribute("params");
 		String userName = (String) params[0];
 		vcs.dropSeat(userName);
+		String ms = String.valueOf(new Date().getTime());
+		vcso.setAttribute("uvso", ms);
 		if (appScope == conn.getScope() && serverStream != null) {
 			serverStream.close();
 		}
