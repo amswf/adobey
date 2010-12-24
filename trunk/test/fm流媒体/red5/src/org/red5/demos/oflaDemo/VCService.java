@@ -43,21 +43,30 @@ public class VCService {
 		Room fromRoom = hall.getRoomByName(fromRoomName);
 		Room toRoom = hall.getRoomByName(toRoomName);
 		Seat seat = fromRoom.getSeatByName(userName);
-		fromRoom.delSeat(userName);
-		toRoom.addSeat(seat);
+		if (seat != null) {
+			fromRoom.delSeat(userName);
+			toRoom.addSeat(seat);
+		}
+		System.out.println("toRoomName:"+ toRoomName);
+		System.out.println("fromRoom:"+ fromRoom.getSeatList().size());
+		System.out.println("toRoom:"+ toRoom);
+		System.out.println("toRoom:"+ toRoom.getSeatList());
+		System.out.println("toRoom:"+ toRoom.getSeatList().size());
 	}
 
 	public void dropSeat(String userName) {
 		Hall hall = vcm.getHall();
 		List<Room> list = hall.getRoomList();
 		for (int i = 0; i < list.size(); i++) {
-			Room room = list.get(i);	
-			delSeat(room.getRoomName(),userName);
+			Room room = list.get(i);
+			delSeat(room.getRoomName(), userName);
 		}
 	}
 
 	public void delSeat(String roomName, String userName) {
-		System.out.println("delSeat:" + roomName + userName);
+		System.out.println("delSeat:");
+		System.out.println("roomName:" + roomName);
+		System.out.println("userName:" + userName);
 		Room room = vcm.getHall().getRoomByName(roomName);
 		room.delSeat(userName);
 	}
