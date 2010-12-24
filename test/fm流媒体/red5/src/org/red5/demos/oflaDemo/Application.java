@@ -55,10 +55,8 @@ public class Application extends ApplicationAdapter implements IPendingServiceCa
 		if (b) {
 			vcso = this.getSharedObject(app, VC_SO_NAME);
 		}
-		IEventListener soel = new SharedObjectEventListener();
-		vcso.addEventListener(soel);
-		vcso.setAttribute("test", "toto");
-		System.out.println("vcso:" + vcso);
+		SharedObjectEventListener soel = new SharedObjectEventListener();
+		vcso.addSharedObjectListener(soel);
 		return true;
 	}
 
@@ -67,8 +65,10 @@ public class Application extends ApplicationAdapter implements IPendingServiceCa
 	public boolean appConnect(IConnection conn, Object[] params) {
 		log.info("oflaDemo appConnect");
 		System.out.println("oflaDemo appConnect");
+		conn.setAttribute("params", params);
 		measureBandwidth(conn);
 		if (conn instanceof IStreamCapableConnection) {
+			
 			IStreamCapableConnection streamConn = (IStreamCapableConnection) conn;
 			SimpleConnectionBWConfig bwConfig = new SimpleConnectionBWConfig();
 			bwConfig.getChannelBandwidth()[IBandwidthConfigure.OVERALL_CHANNEL] = 1024 * 1024;
@@ -87,6 +87,9 @@ public class Application extends ApplicationAdapter implements IPendingServiceCa
 	public void appDisconnect(IConnection conn) {
 		log.info("oflaDemo appDisconnect");
 		System.out.println("oflaDemo appDisconnect");
+		Object[] params = (Object[]) conn.getAttribute("params");
+		String userName = (String) params[0];
+		vcs.dropSeat(userName);
 		if (appScope == conn.getScope() && serverStream != null) {
 			serverStream.close();
 		}
