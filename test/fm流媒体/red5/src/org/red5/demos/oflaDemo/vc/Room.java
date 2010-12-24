@@ -25,6 +25,16 @@ public class Room {
 	public void addSeat(Seat seat) {
 		this.seatList.add(seat);
 	}
+	
+	public void delSeat(String userName){
+		for(int i = 0;i<seatList.size();i++){
+			Seat st = seatList.get(i);
+			if(userName != null && userName.equals(st.getUserName())){
+				seatList.remove(i);
+				break;
+			}
+		}
+	}
 
 	public Vector<Seat> getSeatList() {
 		return seatList;
@@ -50,6 +60,19 @@ public class Room {
 		Seat seat = null;
 		if (i >= 0 && i < seatList.size()) {
 			seat = seatList.get(i);
+		}
+		
+		return seat;
+	}
+	
+	public Seat getSeatByName(String userName) {
+		Seat seat = null;
+		for(int i = 0;i<seatList.size();i++){
+			Seat st = seatList.get(i);
+			if(userName != null && userName.equals(st.getUserName())){
+				seat = st;
+				break;
+			}
 		}
 		return seat;
 	}

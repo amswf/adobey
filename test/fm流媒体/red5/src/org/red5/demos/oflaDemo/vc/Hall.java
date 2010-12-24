@@ -37,6 +37,7 @@ public class Hall {
 			Room rm = roomList.get(i);
 			if(roomName != null && roomName.equals(rm.getRoomName())){
 				room = rm;
+				break;
 			}
 		}
 		return room;
