@@ -1,0 +1,1 @@
+把greensock-as3.zip 里的com包解压到fla 同级目录下。
