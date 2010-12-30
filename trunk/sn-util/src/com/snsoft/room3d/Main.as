@@ -15,6 +15,7 @@
 	import com.snsoft.xmldom.NodeList;
 	
 	import fl.containers.ScrollPane;
+	import fl.events.ScrollEvent;
 	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -169,6 +170,10 @@
 		private var roomMapLayer:MovieClip = new MovieClip();
 		
 		/**
+		 *房间平面图上的观察点所在的层 
+		 */		
+		private var roomMapSeatsLayer:MovieClip = new MovieClip();
+		/**
 		 * 房间所在的层 
 		 */		
 		private var roomLayer:MovieClip = new MovieClip();
@@ -202,7 +207,7 @@
 		/**
 		 * 房间平面图滚动条 
 		 */		
-		//private var seatScrollPane:ScrollPane;
+		private var mapScrollPane:ScrollPane;
 		
 		/**
 		 * 房间平面图滚动条默认尺寸和宽高 
@@ -223,6 +228,11 @@
 		 * 房间地图 
 		 */		
 		private var roomMap:RoomMap;
+		
+		/**
+		 * 房间地图 
+		 */		
+		private var roomMapSeats:RoomMapSeats;
 		
 		/**
 		 *当前3D观察点 
@@ -598,14 +608,16 @@
 			mainLayer.addChild(this.seat3dLayer);
 			mainLayer.addChild(this.seatTextLayer);
 			
-			//seatScrollPane = new ScrollPane();
-			//seatScrollPane.width = SEAT_SCROLL_PANE_DEFAULT_RECT.width;
-			//seatScrollPane.height = SEAT_SCROLL_PANE_DEFAULT_RECT.height;
-			roomMapLayer.x = SEAT_SCROLL_PANE_DEFAULT_RECT.x;
-			roomMapLayer.y = SEAT_SCROLL_PANE_DEFAULT_RECT.y;
-			//seatScrollPane.scrollDrag = true;
-			//mainLayer.addChild(seatScrollPane);
+			mapScrollPane = new ScrollPane();
+			mapScrollPane.width = SEAT_SCROLL_PANE_DEFAULT_RECT.width;
+			mapScrollPane.height = SEAT_SCROLL_PANE_DEFAULT_RECT.height;
+			mapScrollPane.x = SEAT_SCROLL_PANE_DEFAULT_RECT.x;
+			mapScrollPane.y = SEAT_SCROLL_PANE_DEFAULT_RECT.y;
+			mapScrollPane.scrollDrag = true;
+			mainLayer.addChild(mapScrollPane);
+			mapScrollPane.addEventListener(ScrollEvent.SCROLL,handlerMapScrollPaneScroll);
 			
+			mainLayer.addChild(this.roomMapSeatsLayer);
 			var roomDefault:RoomDO = roomHV.findByIndex(0) as RoomDO;
 			refreshRoomMap(roomDefault);
 			
@@ -638,6 +650,13 @@
 			windowMsg.addEventListener(WindowMsg.CLOSE_BTN_CLICK,handlerWindowMsgClose);
 			
 			stage.addEventListener(Event.RESIZE,handlerWindowMsgStageResize);
+		}
+		
+		
+		private function handlerMapScrollPaneScroll(e:Event):void{
+			var x:Number = -mapScrollPane.horizontalScrollPosition;
+			var y:Number = -mapScrollPane.verticalScrollPosition;
+			roomMapSeats.setScrollPosition(x,y);
 		}
 		
 		/**
@@ -709,24 +728,23 @@
 			this.roomTextLayer.addChild(tfd);
 			
 			SpriteUtil.deleteAllChild(roomMapLayer);
-			if(roomMap != null){
-				roomMap.removeEventListener(RoomMap.EVENT_ROOM_MAP_COMPLETE,handlerLoadBigImgCmp);
-				roomMap.removeEventListener(RoomMap.EVENT_SEAT_POINT_MOUSE_CLICK,handlerSeatClick);
-				roomMap.removeEventListener(RoomMap.EVENT_VISUAL_ANGLE_ROTATE,handlerVisualAngleRotate);
-			}
-			
-			var rmw:Number = SEAT_SCROLL_PANE_DEFAULT_RECT.width;
-			var rmh:Number = SEAT_SCROLL_PANE_DEFAULT_RECT.height;
-			roomMap = new RoomMap(currentRoomDO,rmw,rmh);
+			SpriteUtil.deleteAllChild(roomMapSeatsLayer);
+			roomMap = new RoomMap(currentRoomDO);
 			roomMapLayer.addChild(roomMap);
 			roomMap.addEventListener(RoomMap.EVENT_ROOM_MAP_COMPLETE,handlerLoadBigImgCmp);
-			roomMap.addEventListener(RoomMap.EVENT_SEAT_POINT_MOUSE_CLICK,handlerSeatClick);
-			roomMap.addEventListener(RoomMap.EVENT_VISUAL_ANGLE_ROTATE,handlerVisualAngleRotate);
+			
+			roomMapSeats = new RoomMapSeats(currentRoomDO);
+			roomMapSeats.width = SEAT_SCROLL_PANE_DEFAULT_RECT.width;
+			roomMapSeats.height = SEAT_SCROLL_PANE_DEFAULT_RECT.height;
+			roomMapSeats.x = SEAT_SCROLL_PANE_DEFAULT_RECT.x;
+			roomMapSeats.y = SEAT_SCROLL_PANE_DEFAULT_RECT.y;
+			roomMapSeatsLayer.addChild(roomMapSeats);
+			roomMapSeats.addEventListener(RoomMapSeats.EVENT_SEAT_POINT_MOUSE_CLICK,handlerSeatClick);
+			roomMapSeats.addEventListener(RoomMapSeats.EVENT_VISUAL_ANGLE_ROTATE,handlerVisualAngleRotate);
 		}
 		
 		private function handlerVisualAngleRotate(e:Event):void{
-			var roomMap:RoomMap = e.currentTarget as RoomMap;
-			currentSeat3D.setCameraRotation(roomMap.getVisualAngleRotation());
+			currentSeat3D.setCameraRotation(roomMapSeats.getVisualAngleRotation());
 		}
 		
 		/**
@@ -737,7 +755,7 @@
 		private function handlerSeatClick(e:Event):void{
 			trace("handlerSeatClick");
 			var roomMap:RoomMap = e.currentTarget as RoomMap;
-			creatSeat3D(roomMap.currentSeatDO);
+			creatSeat3D(roomMapSeats.currentSeatDO);
 		}
 		
 		/**
@@ -785,7 +803,7 @@
 					timerChangeSeat.addEventListener(TimerEvent.TIMER_COMPLETE,handlerChangeSeatTimerCmp);
 				}
 				
-				this.roomMap.setVisualAngleRotation(rotation);
+				this.roomMapSeats.setVisualAngleRotation(rotation);
 				
 				introMsg.refreshText(currentSeatDO.textStr);
 				windowMsg.visible = false;
@@ -874,8 +892,8 @@
 				rotation = currentSeat3D.cameraRotationY;
 			}
 			creatSeat3D(sdo,rotation);
-			roomMap.setVisualAngle(sdo);
-			setScrollPosition(roomMap,sdo);
+			roomMapSeats.setVisualAngle(sdo);
+			setScrollPosition(mapScrollPane,sdo);
 		}
 		
 		private function handlerIntroMsgBtnClick(e:Event):void{
@@ -959,13 +977,15 @@
 						currentSeat3D.setViewport3DSize(scale,scale,seat3DFullScreenRect.width,seat3DFullScreenRect.height);
 						currentSeat3D.x = seat3DFullScreenRect.x;
 						currentSeat3D.y = seat3DFullScreenRect.y;
-						currentSeat3D.setCameraRotation(roomMap.getVisualAngleRotation());
+						currentSeat3D.setCameraRotation(roomMapSeats.getVisualAngleRotation());
 						
 						menu.x = (stage.fullScreenWidth - menu.getRect(this).width) / 2;
 						menu.y = stage.fullScreenHeight - menu.getRect(this).height - PLACE_SPACE_10;
 						
-						roomMapLayer.x = stage.fullScreenWidth - SEAT_SCROLL_PANE_DEFAULT_RECT.width - PLACE_SPACE_10;
-						roomMapLayer.y = PLACE_SPACE_10;
+						mapScrollPane.x = stage.fullScreenWidth - SEAT_SCROLL_PANE_DEFAULT_RECT.width - PLACE_SPACE_10;
+						mapScrollPane.y = PLACE_SPACE_10;
+						roomMapSeats.x = mapScrollPane.x;
+						roomMapSeats.y = mapScrollPane.y;
 						
 						introMsg.x = SEAT_TITLE_FULL_SCREEN_RECT.x;
 						introMsg.y = SEAT_TITLE_FULL_SCREEN_RECT.y;
@@ -985,13 +1005,15 @@
 						currentSeat3D.setViewport3DSize(1,1,SEAT3D_DEFAULT_RECT.width,SEAT3D_DEFAULT_RECT.height);
 						currentSeat3D.x = SEAT3D_DEFAULT_RECT.x;
 						currentSeat3D.y = SEAT3D_DEFAULT_RECT.y;
-						currentSeat3D.setCameraRotation(roomMap.getVisualAngleRotation());
+						currentSeat3D.setCameraRotation(roomMapSeats.getVisualAngleRotation());
 						
 						menu.x = MENU_DEFAULT_RECT.x;
 						menu.y = MENU_DEFAULT_RECT.y;
 						
-						roomMapLayer.x = SEAT_SCROLL_PANE_DEFAULT_RECT.x;
-						roomMapLayer.y = SEAT_SCROLL_PANE_DEFAULT_RECT.y;
+						mapScrollPane.x = SEAT_SCROLL_PANE_DEFAULT_RECT.x;
+						mapScrollPane.y = SEAT_SCROLL_PANE_DEFAULT_RECT.y;
+						roomMapSeats.x = mapScrollPane.x;
+						roomMapSeats.y = mapScrollPane.y;
 						introMsg.x = SEAT_TITLE_DEFAULT_RECT.x;
 						introMsg.y = SEAT_TITLE_DEFAULT_RECT.y;
 						
@@ -1016,7 +1038,7 @@
 		 */		
 		private function handlerCameraRotation(e:Event):void{
 			var s3d:Seat3D = e.currentTarget as Seat3D;
-			this.roomMap.setVisualAngleRotation(s3d.cameraRotationY);
+			this.roomMapSeats.setVisualAngleRotation(s3d.cameraRotationY);
 		}
 		
 		/**
@@ -1036,16 +1058,15 @@
 			roomMapLayer.addChild(rcBak);
 			roomMapLayer.swapChildren(roomMap,rcBak);
 			
-			//seatScrollPane.source= roomMapLayer;
+			mapScrollPane.source= roomMapLayer;
 			if(roomMap.roomDO != null && roomMap.roomDO.placeHV != null){
 				var firstSeatDO:SeatDO = roomMap.roomDO.placeHV.findByIndex(0) as SeatDO;
-				setScrollPosition(roomMap,firstSeatDO);
+				setScrollPosition(mapScrollPane,firstSeatDO);
 				creatSeat3D(firstSeatDO);
 			}			
 		}
 		
-		private function setScrollPosition(roomMap:RoomMap,seatDO:SeatDO):void{
-			var scrollPane:ScrollPane = roomMap.scrollPane;
+		private function setScrollPosition(scrollPane:ScrollPane,seatDO:SeatDO):void{
 			var hsp:Number = seatDO.place.x - scrollPane.width / 2;
 			var vsp:Number = seatDO.place.y - scrollPane.height / 2;
 			if(hsp > scrollPane.maxHorizontalScrollPosition){
