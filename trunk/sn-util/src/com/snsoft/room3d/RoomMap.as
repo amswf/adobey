@@ -1,10 +1,13 @@
 package com.snsoft.room3d{
+	import com.snsoft.room3d.dataObject.RoomDO;
+	import com.snsoft.room3d.dataObject.SeatDO;
 	import com.snsoft.util.HashVector;
 	import com.snsoft.util.ImageLoader;
 	
 	import fl.containers.ScrollPane;
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
+	import fl.events.ScrollEvent;
 	
 	import flash.display.Bitmap;
 	import flash.display.MovieClip;
@@ -12,8 +15,6 @@ package com.snsoft.room3d{
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.ui.Mouse;
-	import com.snsoft.room3d.dataObject.RoomDO;
-	import com.snsoft.room3d.dataObject.SeatDO;
 	
 	[Style(name="seatPointSkin", type="Class")]
 	
@@ -82,8 +83,18 @@ package com.snsoft.room3d{
 		 */		
 		private var visualAngleRotation:Number;
 		
-		public function RoomMap(room:RoomDO){
+		private var scrollPaneWidth:Number;
+		
+		private var scrollPaneHeight:Number;
+		
+		private var _scrollPane:ScrollPane;
+		
+		private var sourceSpr:Sprite;
+		
+		public function RoomMap(room:RoomDO,scrollPaneWidth:Number,scrollPaneHeight:Number){
 			this.roomDO = room;
+			this.scrollPaneWidth = scrollPaneWidth;
+			this.scrollPaneHeight = scrollPaneHeight;
 			super();
 		}
 		
@@ -157,10 +168,20 @@ package com.snsoft.room3d{
 		 * 
 		 */		
 		private function init():void{
-			var sourceSpr:Sprite = new Sprite();
+			_scrollPane = new ScrollPane();
+			_scrollPane.scrollDrag = true;
+			_scrollPane.width = scrollPaneWidth;
+			_scrollPane.height = scrollPaneHeight;
+			this.addChild(_scrollPane);
+			_scrollPane.drawNow();
 			
 			var bm:Bitmap = new Bitmap(roomDO.bgImgBitmap.clone(),"auto",true);
-			sourceSpr.addChild(bm);
+			var map:Sprite = new Sprite();
+			map.addChild(bm);
+			_scrollPane.source = map;
+			
+			sourceSpr = new Sprite();
+			_scrollPane.addEventListener(ScrollEvent.SCROLL,handlerScroll);
 			var placeHV:HashVector = this.roomDO.placeHV;
 			
 			if(placeHV.length > 0){
@@ -201,6 +222,11 @@ package com.snsoft.room3d{
 			
 		}
 		
+		private function handlerScroll(e:Event):void{
+			sourceSpr.x = -_scrollPane.horizontalScrollPosition;
+			sourceSpr.y = -_scrollPane.verticalScrollPosition;
+		}
+		
 		private function handlerVisualAngleMouseDown(e:Event):void{
 			isRotation = true;
 			mouseDownRotation = this.calculateRotation();
@@ -227,8 +253,8 @@ package com.snsoft.room3d{
 		private function calculateRotation():Number{
 			var rate:Number = 0;
 			
-			var py:Number = this.mouseY - this.visualAngle.y;
-			var px:Number = this.mouseX - this.visualAngle.x;
+			var py:Number = sourceSpr.mouseY - this.visualAngle.y;
+			var px:Number = sourceSpr.mouseX - this.visualAngle.x;
 			
 			var brate:Number;
 			if(px == 0){
@@ -320,6 +346,11 @@ package com.snsoft.room3d{
 		public function get currentSeatDO():SeatDO
 		{
 			return _currentSeatDO;
+		}
+
+		public function get scrollPane():ScrollPane
+		{
+			return _scrollPane;
 		}
 		
 		
