@@ -3,84 +3,78 @@
 	
 	import flash.geom.Point;
 	
+	/**
+	 * 矩阵寻路 
+	 * @author Administrator
+	 * 
+	 */	
 	public class WayFinding{
 		
 		private var ivv:Vector.<Vector.<Boolean>>;
 		
+		
+		private var pv:Vector.<Point>;
 		public function WayFinding(ivv:Vector.<Vector.<Boolean>>){
 			this.ivv = ivv;
 		}
 		
-		public function find(from:Point,to:Point):void{
+		public function find(from:Point,to:Point):Vector.<Point>{
 			
-			var printhv:HashVector = new HashVector();
-			var waypv:HashVector = new HashVector();
-			var findedvhv:Vector.<HashVector> = new Vector.<HashVector>();
-			finding(from,to,waypv,printhv,findedvhv);
+			var ivv:Vector.<Vector.<Boolean>> = copyPointVector(this.ivv);
+			var frompv:Vector.<Point> = new Vector.<Point>();
+			frompv.push(from);
+			var heap:Heap = new Heap();
+			heap.push(from,from);
+			var n1:Number = new Date().getTime();
+			finding(frompv,to,ivv,heap);
+			var n2:Number = new Date().getTime();
+			return pv;
 		}
 		
-		private function finding(from:Point,to:Point,waypv:HashVector,printhv:HashVector,findedvhv:Vector.<HashVector>):void{
-			var poName:String = creatPointName(from);
-			waypv.push(from,poName);
-			var pv:Vector.<Point> = adjacency4Point(from);
-			for(var i:int = 0;i<pv.length;i++){
-				var nfrom:Point = pv[i];
-				var prName:String = creatPringName(from,nfrom);
-				var npoName:String = creatPointName(nfrom);
-				
-				if(nfrom.equals(to)){
-					waypv.push(to);
-					findedvhv.push(waypv);
-					trace("找到一条路：" + waypv.length);
-					trace(Vector.<Point>(waypv.toVector()));
-					break;
-				}
-				else if( printhv.findByName(prName) == null && waypv.findByName(npoName) == null){
-					printhv.push(nfrom, prName);
-					var nwaypv:HashVector = waypv.copy(); 
-					finding(nfrom,to,nwaypv,printhv,findedvhv);
-				}
-			}
-		}
-		
-		
-		private function mergePrintHv(p:Point,waypv:HashVector,findedvhv:Vector.<HashVector>):Boolean{
-			var poName:String = creatPointName(p);
-			var sign:Boolean = false;
-			for(var i:int = 0;i<findedvhv.length;i++){
-				var hv:HashVector = findedvhv[i];
-				var findex:int = hv.findIndexByName(poName);
-				if(findex >= 0){
-					sign = true;
-					var nwaypv:HashVector = waypv.copy(); 
-					nwaypv.push(p,creatPointName(p));
-					for(var j:int = findex + 1;j<hv.length;j++){
-						var fpoName:String = hv.findNameByIndex(j);
-						nwaypv.push(hv.findByIndex(j),fpoName);
+		private function finding(frompv:Vector.<Point>,to:Point,ivv:Vector.<Vector.<Boolean>>,heap:Heap):void{
+			var nfromv:Vector.<Point> = new Vector.<Point>();
+			for(var i:int = 0;i<frompv.length;i++){
+				var from:Point = frompv[i];
+				if(ivv[from.y][from.x]){
+					ivv[from.y][from.x] = false;
+					var npv:Vector.<Point> = adjacency4Point(from);
+					for(var j:int = 0;j<npv.length;j++){
+						var np:Point = npv[j];
+						if(ivv[np.y][np.x]){
+							heap.push(from,np);
+							if(np.equals(to)){
+								pv = heap.getSort(np);
+								return;
+							}
+							else {
+								nfromv.push(np);
+							}
+						}
 					}
-					findedvhv.push(nwaypv);
-					trace("找到一条路：" + nwaypv.length);
-					trace(Vector.<Point>(nwaypv.toVector()));
 				}
+				heap.remove(from);
 			}
-			return sign;
+			if(nfromv.length > 0){
+				finding(nfromv,to,ivv,heap);
+			}
 		}
 		
+		private function copyPointVector(ivv:Vector.<Vector.<Boolean>>):Vector.<Vector.<Boolean>>{
+			var civv:Vector.<Vector.<Boolean>> = new Vector.<Vector.<Boolean>>();
+			for(var i:int = 0;i<ivv.length;i++){
+				var iv:Vector.<Boolean> = ivv[i];
+				var civ:Vector.<Boolean> = copyVector(iv);
+				civv.push(civ);
+			}
+			return civv;
+		}
 		
-		private function copyPointVector(pv:Vector.<Point>):Vector.<Point>{
-			var cpv:Vector.<Point> = new Vector.<Point>();
+		private function copyVector(pv:Vector.<Boolean>):Vector.<Boolean>{
+			var cpv:Vector.<Boolean> = new Vector.<Boolean>();
 			for(var i:int = 0;i<pv.length;i++){
-				cpv.push(new Point(pv[i].x,pv[i].y));
+				cpv.push(pv[i]);
 			}
 			return cpv;
-		}
-		
-		private function creatPringName(p1:Point,p2:Point):String{
-			return creatPointName(p1) +"-"+ creatPointName(p2);
-		} 
-		
-		private function creatPointName(p:Point):String{
-			return p.x + "_" + p.y;
 		}
 		
 		/**
@@ -103,7 +97,7 @@
 			if (p.y < ivv.length - 1) {
 				//trace("下面");
 				var bp:Point = new Point();
-				bp.y = p.x;
+				bp.x = p.x;
 				bp.y = p.y + 1;
 				vp.push(bp);
 			}
