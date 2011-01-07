@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application creationComplete="init();" xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
+	<mx:Script>
+		<![CDATA[
+			
+			private function init():void{
+				
+				//粒子
+				//particle;
+				
+				wayfindTest;
+			}
+		]]>
+	</mx:Script>
+</mx:Application>

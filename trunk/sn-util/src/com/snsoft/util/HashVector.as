@@ -84,7 +84,9 @@ package com.snsoft.util{
 		 */		
 		public function toVector():Vector.<Object>{
 			var v:Vector.<Object> = new Vector.<Object>();
-			v.concat(this.valueVec);
+			for(var i:int =0;i<this.valueVec.length;i++){
+				v.push(this.valueVec[i]);
+			}
 			return v;
 		}
 		
@@ -164,6 +166,16 @@ package com.snsoft.util{
 				i = idAry[name] as int;
 			}
 			return i;
+		}
+		
+		public function copy():HashVector{
+			var hv:HashVector = new HashVector();
+			for(var i:int =0;i<this.length;i++){
+				var name:String = this.findNameByIndex(i);
+				var value:Object = this.findByIndex(i);
+				hv.push(value,name);
+			}
+			return hv;
 		}
 		
 		/**
