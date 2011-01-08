@@ -27,14 +27,16 @@ package com.snsoft.wayfinding{
 			var parentName:String = null;			 
 			heapNode.parentPoint = parent;
 			heapNode.value = current;
-			nodevv[current.x][current.y] = heapNode;
+			nodevv[current.y][current.x] = heapNode;
+			
+			//trace(getSort(current));
 		}
 		
 		public function getSort(p:Point):Vector.<Point>{
 			var pv:Vector.<Point> = new Vector.<Point>();
 			var np:Point = p.clone();
 			for(;np != null;){
-				var node:HeapNode = nodevv[np.x][np.y];
+				var node:HeapNode = nodevv[np.y][np.x];
 				pv.push(node.value);
 				np = node.parentPoint;
 			}
@@ -44,10 +46,6 @@ package com.snsoft.wayfinding{
 				npv[len - 1 - i] = pv[i];
 			}
 			return npv;
-		}
-		
-		private function creatPointName(p:Point):String{
-			return p.x + "_" + p.y;
 		}
 	}
 }
