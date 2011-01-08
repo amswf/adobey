@@ -18,7 +18,7 @@
 		/**
 		 * 找到的路径 
 		 */		
-		private var pv:Vector.<Point>;
+		
 		
 		public function WayFinding(ivv:Vector.<Vector.<Boolean>>){
 			this.ivv = ivv;
@@ -32,14 +32,14 @@
 		 * 
 		 */		
 		public function find(from:Point,to:Point):Vector.<Point>{
-			
-			var ivv:Vector.<Vector.<Boolean>> = copyPointVector(this.ivv);
+			var pv:Vector.<Point> = new Vector.<Point>();
+			var ivv:Vector.<Vector.<Boolean>> = copyVectorVectorBoolean(this.ivv);
 			var frompv:Vector.<Point> = new Vector.<Point>();
 			frompv.push(from);
 			var heap:Way = new Way(this.ivv);
 			heap.push(from);
 			var n1:Number = new Date().getTime();
-			finding(frompv,to,ivv,heap);
+			finding(frompv,to,ivv,heap,pv);
 			var n2:Number = new Date().getTime();
 			return pv;
 		}
@@ -52,7 +52,7 @@
 		 * @param heap
 		 * 
 		 */		
-		private function finding(frompv:Vector.<Point>,to:Point,ivv:Vector.<Vector.<Boolean>>,heap:Way):void{
+		private function finding(frompv:Vector.<Point>,to:Point,ivv:Vector.<Vector.<Boolean>>,heap:Way,pv:Vector.<Point>):void{
 			var nfromv:Vector.<Point> = new Vector.<Point>();
 			for(var i:int = 0;i<frompv.length;i++){
 				var from:Point = frompv[i];
@@ -64,7 +64,8 @@
 						if(ivv[np.y][np.x]){
 							heap.push(np,from);
 							if(np.equals(to)){
-								pv = heap.getSort(np);
+								var fpv:Vector.<Point> = heap.getSort(np);
+								copyVectorPoint(fpv,pv);
 								return;
 							}
 							else {
@@ -75,7 +76,7 @@
 				}
 			}
 			if(nfromv.length > 0){
-				finding(nfromv,to,ivv,heap);
+				finding(nfromv,to,ivv,heap,pv);
 			}
 		}
 		
@@ -85,11 +86,11 @@
 		 * @return 
 		 * 
 		 */		
-		private function copyPointVector(ivv:Vector.<Vector.<Boolean>>):Vector.<Vector.<Boolean>>{
+		private function copyVectorVectorBoolean(ivv:Vector.<Vector.<Boolean>>):Vector.<Vector.<Boolean>>{
 			var civv:Vector.<Vector.<Boolean>> = new Vector.<Vector.<Boolean>>();
 			for(var i:int = 0;i<ivv.length;i++){
 				var iv:Vector.<Boolean> = ivv[i];
-				var civ:Vector.<Boolean> = copyVector(iv);
+				var civ:Vector.<Boolean> = copyVectorBoolean(iv);
 				civv.push(civ);
 			}
 			return civv;
@@ -101,12 +102,24 @@
 		 * @return 
 		 * 
 		 */		
-		private function copyVector(pv:Vector.<Boolean>):Vector.<Boolean>{
+		private function copyVectorBoolean(pv:Vector.<Boolean>):Vector.<Boolean>{
 			var cpv:Vector.<Boolean> = new Vector.<Boolean>();
 			for(var i:int = 0;i<pv.length;i++){
 				cpv.push(pv[i]);
 			}
 			return cpv;
+		}
+		
+		/**
+		 * 克隆  Vector.<Object>
+		 * @param pv
+		 * @return 
+		 * 
+		 */		
+		private function copyVectorPoint(fpv:Vector.<Point>, tpv:Vector.<Point>):void{
+			for(var i:int = 0;i<fpv.length;i++){
+				tpv.push(fpv[i]);
+			}
 		}
 		
 		/**
