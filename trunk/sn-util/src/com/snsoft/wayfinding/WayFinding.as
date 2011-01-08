@@ -1,6 +1,4 @@
 ﻿package com.snsoft.wayfinding{
-	import com.snsoft.util.HashVector;
-	
 	import flash.geom.Point;
 	
 	/**
