@@ -23,7 +23,7 @@
 			var ivv:Vector.<Vector.<Boolean>> = copyPointVector(this.ivv);
 			var frompv:Vector.<Point> = new Vector.<Point>();
 			frompv.push(from);
-			var heap:Heap = new Heap();
+			var heap:Heap = new Heap(this.ivv);
 			heap.push(from);
 			var n1:Number = new Date().getTime();
 			finding(frompv,to,ivv,heap);

@@ -1,7 +1,6 @@
 package com.snsoft.wayfinding{
-	import com.snsoft.util.HashVector;
-	
 	import flash.geom.Point;
+	import flash.utils.Dictionary;
 	
 	
 	/**
@@ -11,36 +10,33 @@ package com.snsoft.wayfinding{
 	 */	
 	public class Heap{
 				
-		private var nodeList:HashVector = new HashVector();
+		private var nodevv:Vector.<Vector.<HeapNode>>= new Vector.<Vector.<HeapNode>>();
 		
 		private var rootNode:HeapNode = new HeapNode();
 		
-		public function Heap(){
+		public function Heap(ivv:Vector.<Vector.<Boolean>>){
+			for (var i:int = 0; i< ivv.length; i++) {
+				var ivlen:int = ivv[i].length;
+				var nv:Vector.<HeapNode> = new Vector.<HeapNode>(ivlen);
+				nodevv.push(nv);
+			}
 		}
 		
 		public function push(current:Point,parent:Point = null):void{
 			var heapNode:HeapNode = new HeapNode();
-			var parentNode:HeapNode = null;
-			if(parent != null){
-				var pname:String = creatPointName(parent);
-				parentNode = nodeList.findByName(pname) as HeapNode;
-			}
-			else{
-				parentNode = this.rootNode;
-			}
-			heapNode.parentNode = parentNode;
+			var parentName:String = null;			 
+			heapNode.parentPoint = parent;
 			heapNode.value = current;
-			var cname:String = creatPointName(current);
-			nodeList.push(heapNode,cname);
+			nodevv[current.x][current.y] = heapNode;
 		}
 		
 		public function getSort(p:Point):Vector.<Point>{
-			var name:String = creatPointName(p);
 			var pv:Vector.<Point> = new Vector.<Point>();
-			var node:HeapNode = nodeList.findByName(name) as HeapNode;
-			for(;node != null && node.value != null;){
+			var np:Point = p.clone();
+			for(;np != null;){
+				var node:HeapNode = nodevv[np.x][np.y];
 				pv.push(node.value);
-				node = node.parentNode;
+				np = node.parentPoint;
 			}
 			var len:int = pv.length;
 			var npv:Vector.<Point> = new Vector.<Point>(len);
