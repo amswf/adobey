@@ -10,20 +10,33 @@
 	 */	
 	public class WayFinding{
 		
+		/**
+		 * 寻路矩阵 
+		 */		
 		private var ivv:Vector.<Vector.<Boolean>>;
 		
-		
+		/**
+		 * 找到的路径 
+		 */		
 		private var pv:Vector.<Point>;
+		
 		public function WayFinding(ivv:Vector.<Vector.<Boolean>>){
 			this.ivv = ivv;
 		}
 		
+		/**
+		 * 找路径 
+		 * @param from
+		 * @param to
+		 * @return 
+		 * 
+		 */		
 		public function find(from:Point,to:Point):Vector.<Point>{
 			
 			var ivv:Vector.<Vector.<Boolean>> = copyPointVector(this.ivv);
 			var frompv:Vector.<Point> = new Vector.<Point>();
 			frompv.push(from);
-			var heap:Heap = new Heap(this.ivv);
+			var heap:Way = new Way(this.ivv);
 			heap.push(from);
 			var n1:Number = new Date().getTime();
 			finding(frompv,to,ivv,heap);
@@ -31,7 +44,15 @@
 			return pv;
 		}
 		
-		private function finding(frompv:Vector.<Point>,to:Point,ivv:Vector.<Vector.<Boolean>>,heap:Heap):void{
+		/**
+		 * 找路径叠代主方法
+		 * @param frompv
+		 * @param to
+		 * @param ivv
+		 * @param heap
+		 * 
+		 */		
+		private function finding(frompv:Vector.<Point>,to:Point,ivv:Vector.<Vector.<Boolean>>,heap:Way):void{
 			var nfromv:Vector.<Point> = new Vector.<Point>();
 			for(var i:int = 0;i<frompv.length;i++){
 				var from:Point = frompv[i];
@@ -58,6 +79,12 @@
 			}
 		}
 		
+		/**
+		 *  克隆  Vector.<Vector.<Boolean>> 
+		 * @param ivv
+		 * @return 
+		 * 
+		 */		
 		private function copyPointVector(ivv:Vector.<Vector.<Boolean>>):Vector.<Vector.<Boolean>>{
 			var civv:Vector.<Vector.<Boolean>> = new Vector.<Vector.<Boolean>>();
 			for(var i:int = 0;i<ivv.length;i++){
@@ -68,6 +95,12 @@
 			return civv;
 		}
 		
+		/**
+		 * 克隆  Vector.<Boolean>
+		 * @param pv
+		 * @return 
+		 * 
+		 */		
 		private function copyVector(pv:Vector.<Boolean>):Vector.<Boolean>{
 			var cpv:Vector.<Boolean> = new Vector.<Boolean>();
 			for(var i:int = 0;i<pv.length;i++){
