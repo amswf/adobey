@@ -1,6 +1,5 @@
 package com.snsoft.wayfinding{
 	import flash.geom.Point;
-	import flash.utils.Dictionary;
 	
 	
 	/**
