@@ -1,7 +1,11 @@
 package com.snsoft.wayfinding{
+	import flash.geom.Point;
+
 	public class HeapNode{
 		
 		private var _parentNode:HeapNode;
+		
+		private var _parentPoint:Point;
 		
 		private var _value:Object;
 		
@@ -40,5 +44,16 @@ package com.snsoft.wayfinding{
 		{
 			_parentNode = value;
 		}
+
+		public function get parentPoint():Point
+		{
+			return _parentPoint;
+		}
+
+		public function set parentPoint(value:Point):void
+		{
+			_parentPoint = value;
+		}
+
 	}
 }
