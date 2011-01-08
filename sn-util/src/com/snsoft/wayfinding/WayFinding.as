@@ -24,7 +24,7 @@
 			var frompv:Vector.<Point> = new Vector.<Point>();
 			frompv.push(from);
 			var heap:Heap = new Heap();
-			heap.push(from,from);
+			heap.push(from);
 			var n1:Number = new Date().getTime();
 			finding(frompv,to,ivv,heap);
 			var n2:Number = new Date().getTime();
@@ -41,7 +41,7 @@
 					for(var j:int = 0;j<npv.length;j++){
 						var np:Point = npv[j];
 						if(ivv[np.y][np.x]){
-							heap.push(from,np);
+							heap.push(np,from);
 							if(np.equals(to)){
 								pv = heap.getSort(np);
 								return;
@@ -52,7 +52,6 @@
 						}
 					}
 				}
-				heap.remove(from);
 			}
 			if(nfromv.length > 0){
 				finding(nfromv,to,ivv,heap);

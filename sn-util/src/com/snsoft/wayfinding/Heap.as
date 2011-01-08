@@ -2,7 +2,7 @@ package com.snsoft.wayfinding{
 	import com.snsoft.util.HashVector;
 	
 	import flash.geom.Point;
-
+	
 	
 	/**
 	 * 堆排序 
@@ -10,47 +10,44 @@ package com.snsoft.wayfinding{
 	 * 
 	 */	
 	public class Heap{
+				
+		private var nodeList:HashVector = new HashVector();
 		
-		private var hv:HashVector = new HashVector();
+		private var rootNode:HeapNode = new HeapNode();
 		
 		public function Heap(){
-		
 		}
 		
-		public function push(parent:Point,current:Point):void{
-			
-			var pname:String = creatPointName(parent);
+		public function push(current:Point,parent:Point = null):void{
+			var heapNode:HeapNode = new HeapNode();
+			var parentNode:HeapNode = null;
+			if(parent != null){
+				var pname:String = creatPointName(parent);
+				parentNode = nodeList.findByName(pname) as HeapNode;
+			}
+			else{
+				parentNode = this.rootNode;
+			}
+			heapNode.parentNode = parentNode;
+			heapNode.value = current;
 			var cname:String = creatPointName(current);
-			
-			var pv:Vector.<Point> = hv.findByName(pname) as Vector.<Point>;
-			
-			var npv:Vector.<Point> = null;
-			if(pv != null){
-				npv = copyPointVector(pv);
-			}
-			else {
-				npv = new Vector.<Point>();
-			}
-			npv.push(current);
-			hv.push(npv,cname);
-		}
-		
-		public function remove(p:Point):void{
-			var name:String = creatPointName(p);
-			hv.removeByName(name);
-		}
-		
-		private function copyPointVector(pv:Vector.<Point>):Vector.<Point>{
-			var cpv:Vector.<Point> = new Vector.<Point>();
-			for(var i:int = 0;i<pv.length;i++){
-				cpv.push(new Point(pv[i].x,pv[i].y));
-			}
-			return cpv;
+			nodeList.push(heapNode,cname);
 		}
 		
 		public function getSort(p:Point):Vector.<Point>{
 			var name:String = creatPointName(p);
-			return hv.findByName(name) as Vector.<Point>;
+			var pv:Vector.<Point> = new Vector.<Point>();
+			var node:HeapNode = nodeList.findByName(name) as HeapNode;
+			for(;node != null && node.value != null;){
+				pv.push(node.value);
+				node = node.parentNode;
+			}
+			var len:int = pv.length;
+			var npv:Vector.<Point> = new Vector.<Point>(len);
+			for(var i:int = 0;i<len;i++){
+				npv[len - 1 - i] = pv[i];
+			}
+			return npv;
 		}
 		
 		private function creatPointName(p:Point):String{
