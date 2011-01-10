@@ -5,6 +5,7 @@ package com.snsoft.util.complexEvent{
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.net.URLRequest;
+	import flash.net.URLVariables;
 	import flash.net.navigateToURL;
 	
 	/**
@@ -22,6 +23,10 @@ package com.snsoft.util.complexEvent{
 		
 		private var window:String;
 		
+		private var method:String;
+		
+		private var postData:URLVariables;
+		
 		/**
 		 * 事件对象/事件类形/url地址/打开方式 
 		 * @param dobj
@@ -30,10 +35,12 @@ package com.snsoft.util.complexEvent{
 		 * @param window
 		 * 
 		 */		
-		public function CplxEventOpenUrl(dobj:DisplayObject,eventType:String,url:String,window:String = "_self"){
+		public function CplxEventOpenUrl(dobj:DisplayObject,eventType:String,url:String,window:String = "_self",method:String = "GET",postData:URLVariables = null){
 			this.dobj = dobj;
 			this.eventType = eventType;
+			this.method = method;
 			this.url = url;
+			this.postData = postData;
 			if(window == null){
 				window = "_self";
 			}
@@ -42,7 +49,7 @@ package com.snsoft.util.complexEvent{
 		}
 		
 		/**
-		 * 移除事件侦听 
+		 * 移除事件侦听
 		 * 
 		 */		
 		public function removeEvent():void{
@@ -54,7 +61,7 @@ package com.snsoft.util.complexEvent{
 		}
 		
 		private function handler(e:Event):void{
-			UrlUtil.openUrl(url,window);
+			UrlUtil.openUrl(url,window,method,postData);
 			this.dispatchEvent(new Event(eventType));
 		}
 		
