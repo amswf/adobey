@@ -388,7 +388,7 @@
 			searchText.border = false;
 			searchText.background = false;
 			searchText.wordWrap = false;
-			searchText.text = " ";
+			searchText.text = "";
 			searchText.type = TextFieldType.INPUT;
 			search.addChild(searchText);
 			
