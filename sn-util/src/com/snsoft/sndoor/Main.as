@@ -4,6 +4,8 @@
 	import com.snsoft.util.StringUtil;
 	import com.snsoft.util.complexEvent.CplxEventOpenUrl;
 	import com.snsoft.util.di.DependencyInjection;
+	import com.snsoft.util.srcbox.ImageBox;
+	import com.snsoft.util.srcbox.MediaBox;
 	import com.snsoft.xmldom.Node;
 	import com.snsoft.xmldom.NodeList;
 	import com.snsoft.xmldom.XMLDom;
@@ -24,8 +26,6 @@
 	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
-	import com.snsoft.util.srcbox.MediaBox;
-	import com.snsoft.util.srcbox.ImageBox;
 	
 	public class Main extends MovieClip{
 		
@@ -446,6 +446,7 @@
 		private function handlerSearchBtnClick(e:Event):void{
 			try{
 				var url:String = searchUrl + searchText.text;
+				url = encodeURI(url);
 				var req:URLRequest = new URLRequest(url);
 				navigateToURL(req,"_blank");
 			}
