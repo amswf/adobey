@@ -47,7 +47,7 @@ package com.snsoft.room3d{
 		 */		
 		public static const EVENT_VISUAL_ANGLE_ROTATE_STOP:String = "EVENT_VISUAL_ANGLE_ROTATE_STOP";
 		
-
+		
 		/**
 		 * 房间数据对象 
 		 */		
@@ -183,8 +183,10 @@ package com.snsoft.room3d{
 		}
 		
 		public function setScrollPosition(x:Number,y:Number):void{
-			seatPoints.x = x;
-			seatPoints.y = y;
+			if(seatPoints != null){
+				seatPoints.x = x;
+				seatPoints.y = y;
+			}
 		}
 		
 		private function handlerVisualAngleMouseDown(e:Event):void{
@@ -256,7 +258,9 @@ package com.snsoft.room3d{
 		}
 		
 		public function setVisualAngleRotation(rotation:Number):void{
-			this.visualAngle.rotation = rotation;
+			if(this.visualAngle != null){
+				this.visualAngle.rotation = rotation;
+			}
 		}
 		
 		public function getVisualAngleRotation():Number{
