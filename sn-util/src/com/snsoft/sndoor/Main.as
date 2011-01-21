@@ -18,6 +18,7 @@
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
@@ -390,12 +391,13 @@
 			searchText.wordWrap = false;
 			searchText.text = "";
 			searchText.type = TextFieldType.INPUT;
+			searchText.addEventListener(KeyboardEvent.KEY_DOWN,handlerKeyDown);
 			search.addChild(searchText);
 			
 			var searchTextFormat:TextFormat =new TextFormat();
 			searchTextFormat.font ="宋体";
 			searchTextFormat.size = 13;
-			searchText.setTextFormat(searchTextFormat);
+			searchText.defaultTextFormat = searchTextFormat;
 			search.x = MAIN_WIDTH - searchBack.width - border;
 			search.y = 9;
 			
@@ -436,6 +438,12 @@
 			}	
 		}
 		
+		private function handlerKeyDown(e:KeyboardEvent){
+			if(e.keyCode == 13){
+				searchOpenWindow();
+			}
+		}
+		
 		private function handlerLogoMouseClick(e:Event):void{
 			var logoMC:MovieClip = e.currentTarget as MovieClip;
 			if(logoBtnOpenUrl != null && logoBtnOpenUrl.length > 0){
@@ -444,6 +452,10 @@
 		}
 		
 		private function handlerSearchBtnClick(e:Event):void{
+			searchOpenWindow();
+		}
+		
+		private function searchOpenWindow():void{
 			try{
 				var url:String = searchUrl + searchText.text;
 				url = encodeURI(url);
@@ -451,7 +463,6 @@
 				navigateToURL(req,"_blank");
 			}
 			catch(e:Error){
-				
 			}
 		}
 		
