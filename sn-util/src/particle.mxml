@@ -7,12 +7,14 @@
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
+			import com.snsoft.particle.Fireworks;
 			import com.snsoft.particle.Particle;
 			import com.snsoft.physics.Physics;
 			 
 			public function init():void{
 				Particle;
 				Physics;
+				Fireworks;
 			}
 		]]>
 	</fx:Script>

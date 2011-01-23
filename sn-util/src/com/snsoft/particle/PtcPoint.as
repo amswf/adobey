@@ -1,4 +1,9 @@
 package com.snsoft.particle{
+	/**
+	 * 粒子点 
+	 * @author Administrator
+	 * 
+	 */	
 	public class PtcPoint{
 		public function PtcPoint(x:Number = 0,y:Number = 0,u:Boolean = false){
 			this.u = u;
