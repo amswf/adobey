@@ -11,7 +11,7 @@ package com.snsoft.physics{
 		
 		private var frame_time:Number;
 		
-		
+		private var pov:Vector.<PhysicsObject> = new Vector.<PhysicsObject>();
 		
 		public function Physics(){
 			this.addEventListener(Event.ENTER_FRAME,handlerEnterFrame);	
@@ -21,8 +21,8 @@ package com.snsoft.physics{
 			frame_time = 1 / stage.frameRate;
 			
 			var fd2:Number = frame_time * frame_time;
-			for(var i:int = 0;i<this.numChildren;i++){
-				var po:PhysicsObject = this.getChildAt(i) as PhysicsObject;
+			for(var i:int = 0;i<this.pov.length;i++){
+				var po:PhysicsObject = getPhysicsObject(i);
 				var c:Number = Math.sqrt(po.vx * po.vx + po.vy * po.vy);
 				var a:Number = 0;
 				var b:Number = 0;
@@ -41,36 +41,44 @@ package com.snsoft.physics{
 						ay += acce.ay;
 					}
 					else if(acce.type == Acceleration.TYPE_FRICTION){
+						var signx:Number = 0;
+						if(po.vx > 0){
+							signx = -1;
+						}
+						else if(po.vx < 0){
+							signx = 1;
+						}
+						
+						var signy:Number = 0;
+						if(po.vy > 0){
+							signy = -1;
+						}
+						else if(po.vy < 0){
+							signy = 1;
+						}
+						
 						ax += acce.a * a;
 						ay += acce.a * b;
 					}
 				}
-				
-				
 				var px:Number = frame_time * po.vx + ax * fd2 / 2;
 				var py:Number = frame_time * po.vy + ay * fd2 / 2;
-				if(Math.abs(px) < 1){
-					px = 0;
-				}
-				if(Math.abs(py) < 1){
-					py = 0;
-				}
+				
 				po.x += px;
 				po.y += py;
 				
 				po.vx += ax * frame_time;
 				po.vy += ay * frame_time;
-				if(Math.abs(po.vx * frame_time) < 1){
-					po.vx = 0;
-				}
-				if(Math.abs(po.vy * frame_time) < 1){
-					po.vy = 0;
-				}
+				po.dispatchEvent(new Event(PhysicsObjectEvent.REFRESH));
 			}
 		}
 		
-		public function addPhysicsChild(po:PhysicsObject):void{
-			this.addChild(po);
+		public function addPhysicsObject(po:PhysicsObject):void{
+			pov.push(po);
+		}
+		
+		public function getPhysicsObject(i:int):PhysicsObject{
+			return pov[i];
 		}
 	}
 }
