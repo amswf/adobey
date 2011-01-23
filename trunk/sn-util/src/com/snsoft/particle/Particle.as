@@ -5,43 +5,53 @@ package com.snsoft.particle{
 	import flash.events.Event;
 	import flash.utils.Timer;
 	
+	/**
+	 * 粒子运动 
+	 * @author Administrator
+	 * 
+	 */	
 	public class Particle extends Sprite{
 		
 		private var bmd:BitmapData;
 		
 		private var i:int = 300;
 		
-		private var pv:Vector.<PtcPoint>;
+		private var pv:Vector.<PtcPoint> = new Vector.<PtcPoint>();
 		
 		private var sign:Boolean = true;
 		
-		public function Particle(width:Number,height:Number){
-			pv = new Vector.<PtcPoint>();
-			bmd = new BitmapData(width,height,true,0x00000000);
-			var bm:Bitmap = new Bitmap(bmd,"auto",true);
-			this.addChild(bm);
-			
-			this.addEventListener(Event.ENTER_FRAME,handlerEnterFrame);
+		private var defColor:uint;
+		
+		public function Particle(bmd:BitmapData,defColor:uint = 0x00000000){
+			this.bmd = bmd;
+			this.defColor = defColor;
 		}
 		
-		private function handlerEnterFrame(e:Event):void{
-			var x:Number = 200;
-			var y:Number = i;
-			var pp:PtcPoint = new PtcPoint(x,y,true);
+		/**
+		 * 设置新的粒子点 
+		 * @param x
+		 * @param y
+		 * 
+		 */		
+		public function setPixel32(x:int,y:int,color:uint):void{
 			setOldPixel32();
-			bmd.setPixel32(x,y,0xffffffff);
+			var pp:PtcPoint = new PtcPoint(x,y,true);
 			pv.push(pp);
-			i --;
+			bmd.setPixel32(x,y,color);
 		}
 		
+		/**
+		 * 设置历史粒子点 
+		 * 
+		 */		
 		private function setOldPixel32():void{
 			if(sign){
 				sign = false;
-				for(var i:int = 0;i<pv.length;i++){
+				for(var i:int = pv.length -1;i >= 0;i--){
 					var pp:PtcPoint = pv[i];
 					var color:uint = bmd.getPixel32(pp.x,pp.y);
 					
-					var pc:uint = 0x10 * 0x1000000;
+					var pc:uint = 0x08 * 0x1000000;
 					var c:uint;
 					if( color <= pc){
 						c = color & 0x00ffffff;
@@ -54,13 +64,11 @@ package com.snsoft.particle{
 				}
 				
 				var len:int = pv.length;
-				for(var i2:int = 0;i2<len;i2++){
-					var dpp:PtcPoint = pv[i2];
-					if(!dpp.u){
-						pv.splice(i2,1);
-						i2--;
-						len --;
-					}
+				
+				var sign:Boolean = true;
+				
+				while(pv.length > 0 && !(sign = pv[0].u)){
+					pv.splice(0,1);
 				}
 				sign = true;
 			}

@@ -19,7 +19,10 @@ package com.snsoft.physics{
 		
 		private var _y:Number = 0;
 		
-		public function PhysicsObject(){
+		private var _linkObj:Object;
+		
+		public function PhysicsObject(linkObj:Object = null){
+			this.linkObj = linkObj;
 			super();
 		}
 
@@ -95,6 +98,17 @@ package com.snsoft.physics{
 			_y = value;
 		}
 
+		public function get linkObj():Object
+		{
+			return _linkObj;
+		}
+
+		public function set linkObj(value:Object):void
+		{
+			_linkObj = value;
+		}
+
+		 
 
 	}
 }
