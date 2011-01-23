@@ -2,13 +2,15 @@
 <mx:Application creationComplete="init();" xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
 	<mx:Script>
 		<![CDATA[
+			import com.snsoft.util.images.BitmapBytes;
 			
 			private function init():void{
 				
 				//粒子
 				//particle;
-				
+				BitmapBytes;
 				wayfindTest;
+				particle;
 			}
 		]]>
 	</mx:Script>

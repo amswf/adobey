@@ -3,8 +3,9 @@ package com.snsoft.physics{
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
+	import flash.events.EventDispatcher;
 	
-	public class PhysicsObject extends Sprite{
+	public class PhysicsObject extends EventDispatcher{
 		
 		private var _m:Number; 
 		
@@ -14,8 +15,11 @@ package com.snsoft.physics{
 		
 		private var _ahv:HashVector = new HashVector();
 		
-		public function PhysicsObject(dobj:DisplayObject){
-			this.addChild(dobj);
+		private var _x:Number = 0;
+		
+		private var _y:Number = 0;
+		
+		public function PhysicsObject(){
 			super();
 		}
 
@@ -70,5 +74,27 @@ package com.snsoft.physics{
 		public function acceLen():int{
 			return this._ahv.length;
 		}
+
+		public function get x():Number
+		{
+			return _x;
+		}
+
+		public function set x(value:Number):void
+		{
+			_x = value;
+		}
+
+		public function get y():Number
+		{
+			return _y;
+		}
+
+		public function set y(value:Number):void
+		{
+			_y = value;
+		}
+
+
 	}
 }
