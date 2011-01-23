@@ -25,9 +25,11 @@ package com.snsoft.physics{
 		
 		private var _type:int = 0;
 		
-		public function Acceleration()
-		{
-			
+		public function Acceleration(a:Number = 0,ax:Number = 0,ay:Number = 0,type:Number = 0){
+			this._a = a;
+			this._ax = ax;
+			this._ay = ay;
+			this._type = type;
 		}
 
 		public function get ax():Number
@@ -38,7 +40,7 @@ package com.snsoft.physics{
 		public function set ax(value:Number):void
 		{
 			_ax = value;
-			_a = NaN;
+			//_a = NaN;
 		}
 
 		public function get ay():Number
@@ -49,7 +51,7 @@ package com.snsoft.physics{
 		public function set ay(value:Number):void
 		{
 			_ay = value;
-			_a = NaN;
+			//_a = NaN;
 		}
 
 		public function get a():Number
@@ -60,8 +62,8 @@ package com.snsoft.physics{
 		public function set a(value:Number):void
 		{
 			_a = value;
-			_ax = NaN;
-			_ay = NaN;
+			//_ax = NaN;
+			//_ay = NaN;
 		}
 
 		public function get type():int
