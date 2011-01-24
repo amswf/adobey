@@ -43,9 +43,14 @@ package com.snsoft.particle{
 			var x:Number = this.mouseX;
 			var y:Number = this.mouseY;
 			
+			var blue:uint = uint(Math.random() * 0xff);
+			var green:uint = uint(Math.random() * 0xff) << (2 * 4);
+			var red:uint = uint(Math.random() * 0xff) << (4 * 4);
+			var color:uint = 0xff000000 + red + green + blue;
+			
 			for(var i:int = 0;i< 20;i++){
 				var rate:Number = ( i * 18 * Math.PI ) / 180;
-				var ptc:Particle = new Particle(bmd);
+				var ptc:Particle = new Particle(bmd,color);
 				var po:PhysicsObject = new PhysicsObject(ptc);
 				po.x = x;
 				po.y = y;
@@ -53,17 +58,23 @@ package com.snsoft.particle{
 				po.vy = 70 * Math.sin(rate);
 				po.pushAcce(a1);
 				po.pushAcce(a2);
-				ptc.setPixel32(po.x,po.y,0xffffffff);
+				
+				ptc.setPixel32(po.x,po.y);
 				physics.addPhysicsObject(po);
 				po.addEventListener(PhysicsObjectEvent.REFRESH,handlerRefresh);	
 			}
 		}
 		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
 		private function handlerRefresh(e:Event):void {
 			var po:PhysicsObject = e.currentTarget as PhysicsObject;
 			
 			var ptc:Particle = po.linkObj as Particle;
-			ptc.setPixel32(po.x,po.y,0xffffffff);
+			ptc.setPixel32(po.x,po.y);
 			
 			var p:Point = ptc.getLastPlace();
 			if(p == null || p.x < 0 || p.x > bmd.width || p.y < 0 || p.y > bmd.height){

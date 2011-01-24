@@ -21,7 +21,7 @@ package com.snsoft.particle{
 		
 		private var sign:Boolean = true;
 		
-		private var defColor:uint;
+		private var color:uint;
 		
 		private var count:uint = 0;
 		
@@ -29,9 +29,9 @@ package com.snsoft.particle{
 		
 		private var alpha:uint;
 		
-		public function Particle(bmd:BitmapData,defColor:uint = 0x00000000,maxCount:uint = 50){
+		public function Particle(bmd:BitmapData,color:uint = 0x00000000,maxCount:uint = 50){
 			this.bmd = bmd;
-			this.defColor = defColor;
+			this.color = color;
 			this.maxCount = maxCount;
 		}
 		
@@ -41,7 +41,7 @@ package com.snsoft.particle{
 		 * @param y
 		 * 
 		 */		
-		public function setPixel32(x:int,y:int,color:uint):void{
+		public function setPixel32(x:int,y:int):void{
 			if(sign){
 				sign = false;
 				count ++;
