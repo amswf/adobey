@@ -48,7 +48,7 @@ package com.snsoft.particle{
 				
 				
 				var pc:uint = 0x0f;
-				if(count >= maxCount){
+				if(count >= maxCount&& maxCount > 0){
 					if(alpha < pc){
 						alpha = 0x00;
 					}
