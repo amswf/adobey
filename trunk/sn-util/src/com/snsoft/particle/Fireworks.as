@@ -11,6 +11,7 @@ package com.snsoft.particle{
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.geom.Point;
 	
 	public class Fireworks extends Sprite{
 		
@@ -63,8 +64,16 @@ package com.snsoft.particle{
 		
 		private function handlerRefresh(e:Event):void {
 			var po:PhysicsObject = e.currentTarget as PhysicsObject;
+			
 			var ptc:Particle = po.linkObj as Particle;
 			ptc.setPixel32(po.x,po.y,0xffffffff);
+			
+			var p:Point = ptc.getLastPlace();
+			if(p == null || p.x < 0 || p.x > bmd.width || p.y < 0 || p.y > bmd.height){
+				ptc = null;
+				po.isDel = true;
+				po.removeEventListener(PhysicsObjectEvent.REFRESH,handlerRefresh);	
+			}
 		}
 	}
 }

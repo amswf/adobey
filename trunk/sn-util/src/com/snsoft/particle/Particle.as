@@ -3,6 +3,7 @@ package com.snsoft.particle{
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.geom.Point;
 	import flash.utils.Timer;
 	
 	/**
@@ -10,7 +11,7 @@ package com.snsoft.particle{
 	 * @author Administrator
 	 * 
 	 */	
-	public class Particle extends Sprite{
+	public class Particle{
 		
 		private var bmd:BitmapData;
 		
@@ -38,6 +39,19 @@ package com.snsoft.particle{
 			var pp:PtcPoint = new PtcPoint(x,y,true);
 			pv.push(pp);
 			bmd.setPixel32(x,y,color);
+		}
+		
+		/**
+		 * 获得最后一个点坐标 
+		 * @return 
+		 * 
+		 */		
+		public function getLastPlace():Point{
+			var p:Point = null;
+			if(pv.length >= 0){
+				p = new Point(pv[0].x,pv[0].y); 
+			}
+			return p;
 		}
 		
 		/**
