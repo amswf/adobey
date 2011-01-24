@@ -8,9 +8,10 @@
 				
 				//粒子
 				//particle;
-				BitmapBytes;
-				wayfindTest;
-				particle;
+				//BitmapBytes;
+				//wayfindTest;
+				//particle;
+				fmTest;
 			}
 		]]>
 	</mx:Script>
