@@ -30,7 +30,7 @@
 		
 		private static const VC_SO_NAME:String = "vc_so_name";
 		
-		private var rtmp:String = "rtmp://192.168.0.22/oflaDemo";
+		//private var rtmp:String = "rtmp://192.168.0.22/oflaDemo";
 		
 		private var localNc:NetConnection;
 		
@@ -62,6 +62,8 @@
 		
 		private var seatSO:SeatSO;
 		
+		private var rtmpUrlTfd:TextField;
+		
 		private var userNameTfd:TextField;
 		
 		private var connBtn:Button;
@@ -81,12 +83,22 @@
 		
 		public function initComBox():void{
 			
+			rtmpUrlTfd = new TextField();
+			rtmpUrlTfd.type = TextFieldType.INPUT;
+			rtmpUrlTfd.border = true;
+			rtmpUrlTfd.text = "rtmp://192.168.0.22/oflaDemo";
+			rtmpUrlTfd.x = 20;
+			rtmpUrlTfd.y = 300;
+			rtmpUrlTfd.height = 20;
+			rtmpUrlTfd.width = 300;
+			this.addChild(rtmpUrlTfd);
+			
 			userNameTfd = new TextField();
 			userNameTfd.type = TextFieldType.INPUT;
 			userNameTfd.border = true;
 			userNameTfd.text = "defName";
 			userNameTfd.x = 20;
-			userNameTfd.y = 300;
+			userNameTfd.y = 340;
 			userNameTfd.height = 20;
 			userNameTfd.width = 150;
 			this.addChild(userNameTfd);
@@ -94,7 +106,7 @@
 			connBtn = new Button();
 			connBtn.label = "链接";
 			connBtn.x = 200;
-			connBtn.y = 300;
+			connBtn.y = 340;
 			connBtn.width = 50;
 			connBtn.addEventListener(MouseEvent.CLICK,handlerConnBtnClick);
 			this.addChild(connBtn);
@@ -102,20 +114,20 @@
 			disConnBtn = new Button();
 			disConnBtn.label = "断开";
 			disConnBtn.x = 250;
-			disConnBtn.y = 300;
+			disConnBtn.y = 340;
 			disConnBtn.width = 50;
 			disConnBtn.addEventListener(MouseEvent.CLICK,handlerDisConnBtnClick);
 			this.addChild(disConnBtn);
 			
 			hallComBox = new ComboBox();
 			hallComBox.x = 300;
-			hallComBox.y = 300;
+			hallComBox.y = 340;
 			this.addChild(hallComBox);
 			hallComBox.addEventListener(Event.CHANGE,handlerHallComboBoxChange);
 			
 			roomComBox = new ComboBox();
 			roomComBox.x = 400;
-			roomComBox.y = 300;
+			roomComBox.y = 340;
 			this.addChild(roomComBox);
 			roomComBox.addEventListener(Event.CHANGE,handlerRoomComboBoxChange);
 			
@@ -163,7 +175,8 @@
 				
 				localNc.client = this;
 				localNc.objectEncoding = ObjectEncoding.AMF3;
-				localNc.connect(rtmp,this.getUserNameTfdText());
+				trace(rtmpUrlTfd.text);
+				localNc.connect(rtmpUrlTfd.text,this.getUserNameTfdText());
 				localNc.addEventListener(NetStatusEvent.NET_STATUS,handlerLocalNCStatus);
 				localNc.addEventListener(IOErrorEvent.IO_ERROR,handlerIOError);
 			}
@@ -251,11 +264,11 @@
 			liveNs.attachAudio(mic);
 			liveNs.publish(videoName,NSPublishType.LIVE);
 			
-			recordNs = new NetStream(localNc,NetStream.CONNECT_TO_FMS);
-			recordNs.bufferTime = 0.1;
-			recordNs.attachCamera(camera);
-			recordNs.attachAudio(mic);
-			recordNs.publish(videoName+"_rcd",NSPublishType.RECORD);
+			//recordNs = new NetStream(localNc,NetStream.CONNECT_TO_FMS);
+			//recordNs.bufferTime = 0.1;
+			//recordNs.attachCamera(camera);
+			//recordNs.attachAudio(mic);
+			//recordNs.publish(videoName+"_rcd",NSPublishType.RECORD);
 			seatSO.updatSO();
 		}
 		
@@ -295,7 +308,9 @@
 			netNc = new NetConnection();
 			netNc.client = this;
 			netNc.objectEncoding = ObjectEncoding.AMF3;
-			netNc.connect(rtmp);
+			
+			trace(rtmpUrlTfd.text);
+			netNc.connect(rtmpUrlTfd.text);
 			netNc.addEventListener(NetStatusEvent.NET_STATUS,handlerNetNCStatus);
 			netNc.addEventListener(IOErrorEvent.IO_ERROR,handlerIOError); 
 		}
