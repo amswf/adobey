@@ -21,6 +21,8 @@ package com.snsoft.physics{
 		
 		private var _linkObj:Object;
 		
+		private var _isDel:Boolean = false;
+		
 		public function PhysicsObject(linkObj:Object = null){
 			this.linkObj = linkObj;
 			super();
@@ -106,6 +108,16 @@ package com.snsoft.physics{
 		public function set linkObj(value:Object):void
 		{
 			_linkObj = value;
+		}
+
+		public function get isDel():Boolean
+		{
+			return _isDel;
+		}
+
+		public function set isDel(value:Boolean):void
+		{
+			_isDel = value;
 		}
 
 		 
