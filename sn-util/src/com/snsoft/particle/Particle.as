@@ -23,9 +23,16 @@ package com.snsoft.particle{
 		
 		private var defColor:uint;
 		
-		public function Particle(bmd:BitmapData,defColor:uint = 0x00000000){
+		private var count:uint = 0;
+		
+		private var maxCount:uint = 0;
+		
+		private var alpha:uint;
+		
+		public function Particle(bmd:BitmapData,defColor:uint = 0x00000000,maxCount:uint = 50){
 			this.bmd = bmd;
 			this.defColor = defColor;
+			this.maxCount = maxCount;
 		}
 		
 		/**
@@ -35,10 +42,32 @@ package com.snsoft.particle{
 		 * 
 		 */		
 		public function setPixel32(x:int,y:int,color:uint):void{
-			setOldPixel32();
-			var pp:PtcPoint = new PtcPoint(x,y,true);
-			pv.push(pp);
-			bmd.setPixel32(x,y,color);
+			if(sign){
+				sign = false;
+				count ++;
+				
+				
+				var pc:uint = 0x0f;
+				if(count >= maxCount){
+					if(alpha < pc){
+						alpha = 0x00;
+					}
+					else {
+						alpha -= pc;
+					}
+				}
+				else {
+					alpha = color >>> (6 * 4);
+				}
+				 
+				var c:uint = alpha << (6 * 4);
+				c = c + (color & 0x00ffffff); 
+				setOldPixel32(c);
+				var pp:PtcPoint = new PtcPoint(x,y,true);
+				pv.push(pp);
+				bmd.setPixel32(x,y,c);
+				sign = true;
+			}
 		}
 		
 		/**
@@ -58,33 +87,26 @@ package com.snsoft.particle{
 		 * 设置历史粒子点 
 		 * 
 		 */		
-		private function setOldPixel32():void{
-			if(sign){
-				sign = false;
-				for(var i:int = pv.length -1;i >= 0;i--){
-					var pp:PtcPoint = pv[i];
-					var color:uint = bmd.getPixel32(pp.x,pp.y);
-					
-					var pc:uint = 0x08 * 0x1000000;
-					var c:uint;
-					if( color <= pc){
-						c = color & 0x00ffffff;
-						pp.u = false;
-					}
-					else {
-						c = color - pc;
-					}
-					bmd.setPixel32(pp.x,pp.y,c);
+		private function setOldPixel32(color:uint):void{
+			var alpha:uint = color >>> (6 * 4);
+			var pc:uint = 0x08;
+			for(var i:int = pv.length -1;i >= 0;i--){
+				var pp:PtcPoint = pv[i];
+				if( alpha <= pc){
+					alpha = 0x00;
+					pp.u = false;
 				}
-				
-				var len:int = pv.length;
-				
-				var sign:Boolean = true;
-				
-				while(pv.length > 0 && !(sign = pv[0].u)){
-					pv.splice(0,1);
+				else {
+					alpha -= pc;
 				}
-				sign = true;
+				var c:uint = alpha << (6 * 4);
+				c = c + (color & 0x00ffffff);
+				bmd.setPixel32(pp.x,pp.y,c);
+			}
+			var len:int = pv.length;
+			var sign:Boolean = true;
+			while(pv.length > 0 && !(sign = pv[0].u)){
+				pv.splice(0,1);
 			}
 		}
 	}

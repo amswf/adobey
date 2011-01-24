@@ -32,9 +32,6 @@ package com.snsoft.particle{
 			var bm:Bitmap = new Bitmap(bmd,"auto",true);
 			this.addChild(bm);
 			
-			var btn:Button = new Button();
-			btn.x = 400;
-			this.addChild(btn);
 			var sign:Boolean = false;
 			stage.addEventListener(MouseEvent.CLICK,handler);
 		}
