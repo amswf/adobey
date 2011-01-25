@@ -35,8 +35,32 @@
 		 */		
 		private var sign:Boolean = true;
 		
-		public function Fireworks()
+		/**
+		 * 物理运动区域宽度 
+		 */		
+		private var bmdWidth:Number;
+		
+		/**
+		 * 物理运动区域高度 
+		 */		
+		private var bmdHeight:Number;
+		
+		/**
+		 * 爆点最大Y坐标值 
+		 */		
+		private var maxBlowHeight:Number;
+		
+		/**
+		 * 爆点最大X坐标值 
+		 */		
+		private var minBlowHeight:Number;
+		
+		public function Fireworks(bmdWidth:Number,bmdHeight:Number,minBlowHeight:Number = 0,maxBlowHeight:Number = 300)
 		{
+			this.bmdWidth = bmdWidth;
+			this.bmdHeight = bmdHeight;
+			this.minBlowHeight = minBlowHeight;
+			this.maxBlowHeight = maxBlowHeight;
 			init();
 			super();
 		}
@@ -50,7 +74,7 @@
 			physics = new Physics();
 			this.addChild(physics);
 			//创建物理运动区域
-			bmd = new BitmapData(800,600,true,0x00000000);
+			bmd = new BitmapData(bmdWidth,bmdHeight,true,0x00000000);
 			var bm:Bitmap = new Bitmap(bmd,"auto",true);
 			this.addChild(bm);
 			
@@ -75,7 +99,9 @@
 			var red:uint = uint(Math.random() * 0xff) << (4 * 4);
 			var color:uint = 0xff000000 + red + green + blue;
 			//创建随机礼花的最大高度
-			var maxHeight:Number = 200 * Math.random();
+			
+			var min:Number = (minBlowHeight <= maxBlowHeight) ? minBlowHeight : maxBlowHeight;
+			var maxHeight:Number = min +Math.abs(minBlowHeight - maxBlowHeight) * Math.random();
 			//创建一个粒子运动特效
 			var ptc:SparkParticle = new SparkParticle(bmd,color,0);
 			//创建物理运动单元的链接对象
