@@ -1,6 +1,6 @@
 package com.snsoft.particle{
 	/**
-	 * 粒子点 
+	 * 粒子点信息
 	 * @author Administrator
 	 * 
 	 */	

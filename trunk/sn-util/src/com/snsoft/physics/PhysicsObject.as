@@ -5,6 +5,11 @@ package com.snsoft.physics{
 	import flash.display.Sprite;
 	import flash.events.EventDispatcher;
 	
+	/**
+	 * 物理运动单元 
+	 * @author Administrator
+	 * 
+	 */	
 	public class PhysicsObject extends EventDispatcher{
 		
 		private var _m:Number; 

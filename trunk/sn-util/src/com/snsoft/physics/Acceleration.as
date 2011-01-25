@@ -8,7 +8,7 @@ package com.snsoft.physics{
 	public class Acceleration{
 		
 		/**
-		 * 摩擦力加速度
+		 * 摩擦力或阻力加速度
 		 */		
 		public static const TYPE_FRICTION:int = 1;
 		
