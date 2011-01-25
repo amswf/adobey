@@ -1,6 +1,11 @@
 package com.snsoft.physics{
 	import flash.events.Event;
 	
+	/**
+	 * 物理运动单元事件
+	 * @author Administrator
+	 * 
+	 */	
 	public class PhysicsObjectEvent extends Event{
 		
 		/**

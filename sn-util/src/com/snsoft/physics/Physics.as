@@ -2,6 +2,11 @@ package com.snsoft.physics{
 	import flash.display.Sprite;
 	import flash.events.Event;
 	
+	/**
+	 * 物理运动引擎 
+	 * @author Administrator
+	 * 
+	 */	
 	public class Physics extends Sprite{
 		
 		/**
@@ -9,10 +14,19 @@ package com.snsoft.physics{
 		 */		
 		private static const PIXEL_SIZE:Number = 0.28 * 0.001;
 		
+		/**
+		 * 一帧的时间 
+		 */		
 		private var frame_time:Number;
 		
+		/**
+		 * 物理运动单元列表
+		 */		
 		private var pov:Vector.<PhysicsObject> = new Vector.<PhysicsObject>();
 		
+		/**
+		 * 刷新运动时的多线程互斥标记 
+		 */		
 		private var sign:Boolean = true;
 		
 		/**
@@ -24,7 +38,7 @@ package com.snsoft.physics{
 		}
 		
 		/**
-		 * 
+		 * 主方法
 		 * @param e
 		 * 
 		 */		
@@ -34,6 +48,8 @@ package com.snsoft.physics{
 				
 				frame_time = 1 / stage.frameRate;
 				var fd2:Number = frame_time * frame_time;
+				
+				//刷新物理单元运动状态
 				for(var i:int = 0;i<this.pov.length;i++){
 					var po:PhysicsObject = getPhysicsObject(i);
 					if(!po.isDel){
@@ -86,6 +102,7 @@ package com.snsoft.physics{
 					}
 				}
 				
+				//把已删除的物理单元从列表中去掉
 				for(var i2:int = 0;i2 < this.pov.length;i2 ++){
 					var po2:PhysicsObject = getPhysicsObject(i2);
 					if(po2.isDel){
@@ -97,10 +114,21 @@ package com.snsoft.physics{
 			}
 		}
 		
+		/**
+		 * 添加物理运动单元  
+		 * @param po
+		 * 
+		 */		
 		public function addPhysicsObject(po:PhysicsObject):void{
 			pov.push(po);
 		}
 		
+		/**
+		 * 获得物理运动单元 
+		 * @param i
+		 * @return 
+		 * 
+		 */		
 		public function getPhysicsObject(i:int):PhysicsObject{
 			return pov[i];
 		}
