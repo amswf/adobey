@@ -61,7 +61,7 @@
 			po.x = bmd.width * Math.random();
 			po.y = bmd.height;
 			po.vx = -15 + 30 * Math.random();
-			po.vy = -300 - 100 * Math.random();
+			po.vy = -400 - 100 * Math.random();
 			po.pushAcce(a1);			
 			ptc.setPixel32(po.x,po.y);
 			physics.addPhysicsObject(po);
@@ -77,14 +77,12 @@
 				var maxHeight:Number = fwlo.maxHeight;
 				var ptc:Particle = fwlo.particle;
 				ptc.setPixel32(po.x,po.y);
-				if(po.y <= maxHeight){
-					ptc = null;
-					po.isDel = true;
-					po.removeEventListener(PhysicsObjectEvent.REFRESH,handlerRefresh);	
+				if(po.y <= maxHeight && !ptc.isStop){
+					var color:uint = ptc.color;
+					ptc.isStop = true;
 					var blue:uint = uint(Math.random() * 0xff);
 					var green:uint = uint(Math.random() * 0xff) << (2 * 4);
 					var red:uint = uint(Math.random() * 0xff) << (4 * 4);
-					var color:uint = 0xff000000 + red + green + blue;
 					shell(po.x,po.y,color);
 				}
 				sign = true;
@@ -97,7 +95,7 @@
 			
 			for(var i:int = 0;i< 20;i++){
 				var rate:Number = ( i * 18 * Math.PI ) / 180;
-				var ptc:Particle = new Particle(bmd,color);
+				var ptc:Particle = new Particle(bmd,color,50);
 				var po:PhysicsObject = new PhysicsObject(ptc);
 				po.x = x;
 				po.y = y;
@@ -119,16 +117,14 @@
 		 */		
 		private function handlerRefresh(e:Event):void {
 			var po:PhysicsObject = e.currentTarget as PhysicsObject;
-			
 			var ptc:Particle = po.linkObj as Particle;
 			ptc.setPixel32(po.x,po.y);
-			
-			var p:Point = ptc.getLastPlace();
-			if(p == null || p.x < 0 || p.x > bmd.width || p.y < 0 || p.y > bmd.height){
+			if(ptc.isCmp){
 				ptc = null;
 				po.isDel = true;
-				po.removeEventListener(PhysicsObjectEvent.REFRESH,handlerRefresh);	
+				po.removeEventListener(PhysicsObjectEvent.REFRESH,handlerRefresh);
 			}
+			
 		}
 	}
 }
