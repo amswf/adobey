@@ -21,13 +21,17 @@ package com.snsoft.particle{
 		
 		private var sign:Boolean = true;
 		
-		private var color:uint;
+		private var _color:uint;
 		
 		private var count:uint = 0;
 		
 		private var maxCount:uint = 0;
 		
 		private var alpha:uint;
+		
+		private var _isStop:Boolean = false;
+		
+		private var _isCmp:Boolean = false;
 		
 		public function Particle(bmd:BitmapData,color:uint = 0x00000000,maxCount:uint = 50){
 			this.bmd = bmd;
@@ -45,10 +49,13 @@ package com.snsoft.particle{
 			if(sign){
 				sign = false;
 				count ++;
-				
-				
 				var pc:uint = 0x0f;
-				if(count >= maxCount&& maxCount > 0){
+				
+				if(count >= maxCount && maxCount > 0){
+					isStop = true;
+				}
+				
+				if(isStop){
 					if(alpha < pc){
 						alpha = 0x00;
 					}
@@ -59,13 +66,21 @@ package com.snsoft.particle{
 				else {
 					alpha = color >>> (6 * 4);
 				}
-				 
+				
 				var c:uint = alpha << (6 * 4);
 				c = c + (color & 0x00ffffff); 
+				
+				if(!isStop){
+					var pp:PtcPoint = new PtcPoint(x,y,true);
+					pv.push(pp);
+					bmd.setPixel32(x,y,c);
+				}
+				else {
+					if(pv.length == 0){
+						isCmp = true;
+					}
+				}
 				setOldPixel32(c);
-				var pp:PtcPoint = new PtcPoint(x,y,true);
-				pv.push(pp);
-				bmd.setPixel32(x,y,c);
 				sign = true;
 			}
 		}
@@ -108,6 +123,41 @@ package com.snsoft.particle{
 			while(pv.length > 0 && !(sign = pv[0].u)){
 				pv.splice(0,1);
 			}
+			if(pv.length == 0){
+				isStop = true;
+			}
 		}
+		
+		public function get color():uint
+		{
+			return _color;
+		}
+		
+		public function set color(value:uint):void
+		{
+			_color = value;
+		}
+		
+		public function get isStop():Boolean
+		{
+			return _isStop;
+		}
+		
+		public function set isStop(value:Boolean):void
+		{
+			_isStop = value;
+		}
+
+		public function get isCmp():Boolean
+		{
+			return _isCmp;
+		}
+
+		public function set isCmp(value:Boolean):void
+		{
+			_isCmp = value;
+		}
+
+		
 	}
 }
