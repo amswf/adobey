@@ -115,6 +115,12 @@
 					ptc.isStop = true;
 					createSparks(po.x,po.y,color);
 				}
+				
+				if(ptc.isCmp){
+					ptc = null;
+					po.isDel = true;
+					po.removeEventListener(PhysicsObjectEvent.REFRESH,handlerSparksRefresh);
+				}
 				sign = true;
 			}
 		}

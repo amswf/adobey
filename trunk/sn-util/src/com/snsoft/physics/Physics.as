@@ -48,7 +48,7 @@ package com.snsoft.physics{
 				
 				frame_time = 1 / stage.frameRate;
 				var fd2:Number = frame_time * frame_time;
-				
+				trace(pov.length);
 				//刷新物理单元运动状态
 				for(var i:int = 0;i<this.pov.length;i++){
 					var po:PhysicsObject = getPhysicsObject(i);
