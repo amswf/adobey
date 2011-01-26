@@ -1,4 +1,4 @@
-package com.snsoft.peopleRes8{
+package com.snsoft.pd8{
 	import com.snsoft.util.SpriteUtil;
 	
 	import flash.display.Bitmap;

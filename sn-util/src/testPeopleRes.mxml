@@ -7,8 +7,8 @@
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
-			import com.snsoft.peopleRes8.PeopleMove;
-			import com.snsoft.peopleRes8.PeopleRes;
+			import com.snsoft.pd8.PeopleMove;
+			import com.snsoft.pd8.PeopleRes;
 			
 			
 			public function init():void{

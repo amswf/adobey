@@ -1,4 +1,4 @@
-package com.snsoft.peopleRes8{
+package com.snsoft.pd8{
 	import com.snsoft.util.ImageLoader;
 	
 	import flash.display.BitmapData;
