@@ -33,7 +33,7 @@ package com.snsoft.peopleRes8{
 		}
 		
 		/**
-		 * 
+		 * 加载图片
 		 * 
 		 */		
 		public function load():void{
@@ -78,7 +78,7 @@ package com.snsoft.peopleRes8{
 		}
 		
 		/**
-		 * 
+		 * 获得动作图片
 		 * @param direction
 		 * @param index
 		 * @return 

@@ -7,26 +7,56 @@ package com.snsoft.peopleRes8{
 	 */	
 	public class Direction8{
 		
+		/**
+		 * 向上走 
+		 */		
 		private static const TOP:int = 2;
 		
+		/**
+		 * 右上走 
+		 */		
 		private static const TOP_RIGHT:int = 3;
 		
+		/**
+		 * 向右走 
+		 */		
 		private static const RIGHT:int = 4;
 		
+		/**
+		 * 右下走 
+		 */		
 		private static const BOTTOM_RIGHT:int = 5;
 		
+		/**
+		 * 向下走 
+		 */		
 		private static const BOTTOM:int = 6;
 		
+		/**
+		 * 左下走 
+		 */		
 		private static const BOTTOM_LEFT:int = 7;
 		
+		/**
+		 *向左走 
+		 */		
 		private static const LEFT:int = 0;
 		
+		/**
+		 * 左上走 
+		 */		
 		private static const TOP_LEFT:int = 1;
 		
 		public function Direction8()
 		{
 		}
 		
+		/**
+		 * 把图片中的方向映射到代码中的方向，从左顺时针转一圈为0 ~ 7的编号
+		 * @param direction
+		 * @return 
+		 * 
+		 */		
 		public static function tranDirection(direction:int):int{
 			var code:int = -1;
 			switch (direction) {
