@@ -10,8 +10,9 @@
 				//particle;
 				//BitmapBytes;
 				//wayfindTest;
-				particle;
+				//particle;
 				//fmTest;
+				testPeopleRes;
 			}
 		]]>
 	</mx:Script>
