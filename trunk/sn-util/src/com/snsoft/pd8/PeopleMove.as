@@ -7,6 +7,11 @@ package com.snsoft.pd8{
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	
+	/**
+	 * 人物八方走动 
+	 * @author Administrator
+	 * 
+	 */	
 	public class PeopleMove extends Sprite{
 		
 		/**
@@ -51,6 +56,7 @@ package com.snsoft.pd8{
 		
 		public function PeopleMove(peopleRes:PeopleRes)
 		{
+			PeopleMoveEvent;
 			this.peopleRes = peopleRes;
 			this.addEventListener(Event.ADDED_TO_STAGE,handlerAddToStage);
 		}
@@ -102,6 +108,9 @@ package com.snsoft.pd8{
 			SpriteUtil.deleteAllChild(imageLayer);
 			var bm:Bitmap = new Bitmap(bmd,"auto",true);
 			imageLayer.addChild(bm);
+			var e:Event = new PeopleMoveEvent(PeopleMoveEvent.PEOPLE_MOVE);
+			PeopleMoveEvent(e).code = code;
+			this.dispatchEvent(e);
 		}
 		
 		/**
