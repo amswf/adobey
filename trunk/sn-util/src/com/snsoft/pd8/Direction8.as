@@ -1,4 +1,4 @@
-package com.snsoft.peopleRes8{
+package com.snsoft.pd8{
 	
 	/**
 	 * 八方向编码 
