@@ -10,42 +10,42 @@ package com.snsoft.pd8{
 		/**
 		 * 向上走 
 		 */		
-		private static const TOP:int = 2;
+		public static const TOP:int = 2;
 		
 		/**
 		 * 右上走 
 		 */		
-		private static const TOP_RIGHT:int = 3;
+		public static const TOP_RIGHT:int = 3;
 		
 		/**
 		 * 向右走 
 		 */		
-		private static const RIGHT:int = 4;
+		public static const RIGHT:int = 4;
 		
 		/**
 		 * 右下走 
 		 */		
-		private static const BOTTOM_RIGHT:int = 5;
+		public static const BOTTOM_RIGHT:int = 5;
 		
 		/**
 		 * 向下走 
 		 */		
-		private static const BOTTOM:int = 6;
+		public static const BOTTOM:int = 6;
 		
 		/**
 		 * 左下走 
 		 */		
-		private static const BOTTOM_LEFT:int = 7;
+		public static const BOTTOM_LEFT:int = 7;
 		
 		/**
 		 *向左走 
 		 */		
-		private static const LEFT:int = 0;
+		public static const LEFT:int = 0;
 		
 		/**
 		 * 左上走 
 		 */		
-		private static const TOP_LEFT:int = 1;
+		public static const TOP_LEFT:int = 1;
 		
 		public function Direction8()
 		{
