@@ -1,9 +1,9 @@
-package org.red5.demos.oflaDemo.vc;
+锘縫ackage org.red5.demos.oflaDemo.vc;
 
 import java.util.Vector;
 
 /**
- * 视频大厅
+ * 瑙嗛澶у巺
  * 
  * @author Administrator
  * 
@@ -11,7 +11,7 @@ import java.util.Vector;
 public class Hall {
 
 	/**
-	 * 房间列表
+	 * 鎴块棿鍒楄〃
 	 */
 	private Vector<Room> roomList = new Vector<Room>();
 
