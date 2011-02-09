@@ -1,20 +1,20 @@
-package org.red5.demos.oflaDemo.vc;
+ï»¿package org.red5.demos.oflaDemo.vc;
 
 
 public class Seat {
 	
 	/**
-	 * ÊÓÆµµØÖ·
+	 * è§†é¢‘åœ°å€
 	 */
 	private String videoName;
 	
 	/**
-	 * ÓÃ»§Ãû
+	 * ç”¨æˆ·å
 	 */
 	private String userName;
 	
 	/**
-	 * µÇÂ¼ÑéÖ¤´®
+	 * ç™»å½•éªŒè¯ä¸²
 	 */
 	private String checklogin;
 
