@@ -55,6 +55,14 @@
 		 */		
 		private var minBlowHeight:Number;
 		
+		/**
+		 *  
+		 * @param bmdWidth 物理运动区域宽度
+		 * @param bmdHeight 物理运动区域高度
+		 * @param minBlowHeight 爆点最小X坐标值
+		 * @param maxBlowHeight 爆点最大X坐标值
+		 * 
+		 */		
 		public function Fireworks(bmdWidth:Number,bmdHeight:Number,minBlowHeight:Number = 0,maxBlowHeight:Number = 300)
 		{
 			this.bmdWidth = bmdWidth;
