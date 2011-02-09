@@ -3,6 +3,7 @@
 	import com.snsoft.fmc.NSPublishType;
 	import com.snsoft.fmc.test.vi.Seat;
 	import com.snsoft.util.ComboBoxUtil;
+	import com.snsoft.xmldom.XMLFastConfig;
 	
 	import fl.controls.Button;
 	import fl.controls.ComboBox;
@@ -28,10 +29,10 @@
 	
 	public class OnVideo extends Sprite{
 		
+		private var rtmp:String = null;
+		
 		private static const VC_SO_NAME:String = "vc_so_name";
-		
-		//private var rtmp:String = "rtmp://192.168.0.22/oflaDemo";
-		
+				
 		private var localNc:NetConnection;
 		
 		private var netNc:NetConnection;
@@ -62,7 +63,7 @@
 		
 		private var seatSO:SeatSO;
 		
-		private var rtmpUrlTfd:TextField;
+		//private var rtmpUrlTfd:TextField;
 		
 		private var userNameTfd:TextField;
 		
@@ -77,21 +78,20 @@
 		public function OnVideo()
 		{
 			super();
-			initComBox();
+			loadConfig();
 			
 		}
 		
+		public function loadConfig():void{
+			XMLFastConfig.instance("config.xml",handlerXMLFastConfigComplete);
+		}
+		
+		public function handlerXMLFastConfigComplete(e:Event):void{
+			initComBox();
+		}
+		
 		public function initComBox():void{
-			
-			rtmpUrlTfd = new TextField();
-			rtmpUrlTfd.type = TextFieldType.INPUT;
-			rtmpUrlTfd.border = true;
-			rtmpUrlTfd.text = "rtmp://192.168.0.22/oflaDemo";
-			rtmpUrlTfd.x = 20;
-			rtmpUrlTfd.y = 300;
-			rtmpUrlTfd.height = 20;
-			rtmpUrlTfd.width = 300;
-			this.addChild(rtmpUrlTfd);
+			rtmp = XMLFastConfig.getConfig("url");
 			
 			userNameTfd = new TextField();
 			userNameTfd.type = TextFieldType.INPUT;
@@ -159,9 +159,10 @@
 			camera = Camera.getCamera();
 			
 			if(camera != null && mic != null){
-				camera.setKeyFrameInterval(5);
-				camera.setMode(352,288,25);
-				camera.setQuality(480000,90);
+				trace(camera.fps);
+				camera.setKeyFrameInterval(15);
+				camera.setMode(400,300,15,false);
+				camera.setQuality(80000,0);
 				camera.addEventListener(ActivityEvent.ACTIVITY,handlerCameraActivityEvent);
 				
 				mic.setLoopBack(false);
@@ -175,8 +176,8 @@
 				
 				localNc.client = this;
 				localNc.objectEncoding = ObjectEncoding.AMF3;
-				trace(rtmpUrlTfd.text);
-				localNc.connect(rtmpUrlTfd.text,this.getUserNameTfdText());
+				trace(rtmp);
+				localNc.connect(rtmp,this.getUserNameTfdText());
 				localNc.addEventListener(NetStatusEvent.NET_STATUS,handlerLocalNCStatus);
 				localNc.addEventListener(IOErrorEvent.IO_ERROR,handlerIOError);
 			}
@@ -309,8 +310,8 @@
 			netNc.client = this;
 			netNc.objectEncoding = ObjectEncoding.AMF3;
 			
-			trace(rtmpUrlTfd.text);
-			netNc.connect(rtmpUrlTfd.text);
+			trace(rtmp);
+			netNc.connect(rtmp);
 			netNc.addEventListener(NetStatusEvent.NET_STATUS,handlerNetNCStatus);
 			netNc.addEventListener(IOErrorEvent.IO_ERROR,handlerIOError); 
 		}
@@ -320,7 +321,7 @@
 			if(e.info.code == NSICode.NetConnection_Connect_Success){
 				netNs = new NetStream(netNc,NetStream.CONNECT_TO_FMS);
 				netNs.bufferTime = 0.1;
-				netVideo = new Video(352,288);
+				netVideo = new Video(360,270);
 				this.addChild(netVideo);
 				netNs.play(videoName);
 				trace(videoName);

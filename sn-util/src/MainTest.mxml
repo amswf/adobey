@@ -11,8 +11,8 @@
 				//BitmapBytes;
 				//wayfindTest;
 				//particle;
-				//fmTest;
-				testPeopleRes;
+				fmTest;
+				//testPeopleRes;
 			}
 		]]>
 	</mx:Script>
