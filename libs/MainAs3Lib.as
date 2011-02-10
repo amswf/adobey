@@ -6,6 +6,13 @@
 	import fl.containers.*;
 	import fl.controls.*;
 	import fl.core.*;
+	import flash.net.GroupSpecifier;
+	import flash.net.NetGroup;
+	import flash.net.NetGroupInfo;
+	import flash.net.NetGroupReceiveMode;
+	import flash.net.NetGroupReplicationStrategy;
+	import flash.net.NetGroupSendMode;
+	import flash.net.NetGroupSendResult;
 	
 	public class MainAs3Lib extends MovieClip {
 		
@@ -46,6 +53,13 @@
 			fl.motion.easing.Quartic;
 			fl.motion.easing.Quintic;
 			fl.motion.easing.Sine;
+			flash.net.GroupSpecifier;
+			flash.net.NetGroup;
+			flash.net.NetGroupInfo;
+			flash.net.NetGroupReceiveMode;
+			flash.net.NetGroupReplicationStrategy;
+			flash.net.NetGroupSendMode;
+			flash.net.NetGroupSendResult;
 		}
 	}
 	
