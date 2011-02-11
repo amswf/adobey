@@ -252,7 +252,7 @@ package com.snsoft.fmc.test{
 		}
 		
 		private function localNcCallMoveSeatResult(obj:Object):void{
-			seatSO.updatSO();
+			seatSO.updateSO();
 		}
 		
 		private function localNcCallCreaSeatResult(obj:Object):void{
@@ -270,7 +270,7 @@ package com.snsoft.fmc.test{
 			//recordNs.attachCamera(camera);
 			//recordNs.attachAudio(mic);
 			//recordNs.publish(videoName+"_rcd",NSPublishType.RECORD);
-			seatSO.updatSO();
+			seatSO.updateSO();
 		}
 		
 		private function localNcCallSeatListResult(obj:Object):void{
