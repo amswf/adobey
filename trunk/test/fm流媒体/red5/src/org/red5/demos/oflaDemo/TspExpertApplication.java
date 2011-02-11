@@ -124,18 +124,6 @@ public class TspExpertApplication extends ApplicationAdapter implements IPending
 	public void resultReceived(IPendingServiceCall ipendingservicecall) {
 		System.out.println("resultReceived");
 	}
-	
-	/**
-	 * 告诉客户端刷新共享对象
-	 * @param conn
-	 */
-	public void refreshSO(IConnection conn){
-		if (conn instanceof IServiceCapableConnection) {
-			// 转发消息
-			IServiceCapableConnection sc = (IServiceCapableConnection) conn;
-			sc.invoke("callBackRefreshSO");
-		}
-	}
 
 	/**
 	 * 告诉客户端有用户请求视频
@@ -181,6 +169,5 @@ public class TspExpertApplication extends ApplicationAdapter implements IPending
 	 */
 	private Seat getSeatByIndex(String roomName, int i) {
 		return VCManager.getInstance().getHall().getRoomByName(roomName).getSeatByIndex(i);
-
 	}
 }
