@@ -1,4 +1,4 @@
-﻿package org.red5.demos.oflaDemo.vc;
+package org.red5.demos.oflaDemo.vc;
 
 import java.util.Vector;
 
@@ -22,20 +22,6 @@ public class Room {
 	 */
 	private int maxSeatCount;
 
-	public void addSeat(Seat seat) {
-		this.seatList.add(seat);
-	}
-	
-	public void delSeat(String userName){
-		for(int i = 0;i<seatList.size();i++){
-			Seat st = seatList.get(i);
-			if(userName != null && userName.equals(st.getUserName())){
-				seatList.remove(i);
-				break;
-			}
-		}
-	}
-
 	public Vector<Seat> getSeatList() {
 		return seatList;
 	}
@@ -56,20 +42,56 @@ public class Room {
 		return roomName;
 	}
 
+	public void addSeat(Seat seat) {
+		this.seatList.add(seat);
+	}
+
+	public Seat getSeatById(String clientId) {
+		Seat seat = null;
+		for (int i = 0; i < seatList.size(); i++) {
+			Seat st = seatList.get(i);
+			if (clientId != null && clientId.equals(st.getClientId())) {
+				seat = st;
+				break;
+			}
+		}
+		return seat;
+	}
+
+	public void delSeatById(String clientId) {
+		for (int i = 0; i < seatList.size(); i++) {
+			Seat st = seatList.get(i);
+			if (clientId != null && clientId.equals(st.getClientId())) {
+				seatList.remove(i);
+				break;
+			}
+		}
+	}
+
+	public void delSeat(String userName) {
+		for (int i = 0; i < seatList.size(); i++) {
+			Seat st = seatList.get(i);
+			if (userName != null && userName.equals(st.getUserName())) {
+				seatList.remove(i);
+				break;
+			}
+		}
+	}
+
 	public Seat getSeatByIndex(int i) {
 		Seat seat = null;
 		if (i >= 0 && i < seatList.size()) {
 			seat = seatList.get(i);
 		}
-		
+
 		return seat;
 	}
-	
+
 	public Seat getSeatByName(String userName) {
 		Seat seat = null;
-		for(int i = 0;i<seatList.size();i++){
+		for (int i = 0; i < seatList.size(); i++) {
 			Seat st = seatList.get(i);
-			if(userName != null && userName.equals(st.getUserName())){
+			if (userName != null && userName.equals(st.getUserName())) {
 				seat = st;
 				break;
 			}

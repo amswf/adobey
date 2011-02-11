@@ -1,7 +1,12 @@
-﻿package org.red5.demos.oflaDemo.vc;
+package org.red5.demos.oflaDemo.vc;
 
 
 public class Seat {
+	
+	/***
+	 * 客户端ID
+	 */
+	private String clientId;
 	
 	/**
 	 * 视频地址
@@ -40,6 +45,14 @@ public class Seat {
 
 	public void setChecklogin(String checklogin) {
 		this.checklogin = checklogin;
+	}
+
+	public String getClientId() {
+		return clientId;
+	}
+
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
 	}
 	
 }
