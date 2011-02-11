@@ -52,6 +52,11 @@ package com.snsoft.fmc.test{
 		private var connBtn:Button;
 		
 		/**
+		 * 链接按钮 
+		 */		
+		private var refreshBtn:Button;
+		
+		/**
 		 * 请求视频按钮 
 		 */		
 		private var reqVideoBtn:Button;
@@ -215,11 +220,21 @@ package com.snsoft.fmc.test{
 			connBtn.addEventListener(MouseEvent.CLICK,handlerConnBtnClick);
 			this.addChild(connBtn);
 			
+			//专家列表
 			roomComBox = new ComboBox();
-			roomComBox.x = 400;
+			roomComBox.x = 300;
 			roomComBox.y = 340;
 			this.addChild(roomComBox);
 			roomComBox.addEventListener(Event.CHANGE,handlerRoomComboBoxChange);
+			
+			//刷新按钮
+			refreshBtn = new Button();
+			refreshBtn.label = "刷新";
+			refreshBtn.x = 400;
+			refreshBtn.y = 340;
+			refreshBtn.width = 50;
+			refreshBtn.addEventListener(MouseEvent.CLICK,handlerRefreshBtnClick);
+			this.addChild(refreshBtn);
 			
 			//提示信息
 			msgTfd = new TextField();
@@ -231,6 +246,10 @@ package com.snsoft.fmc.test{
 			msgTfd.height = 20;
 			msgTfd.width = 400;
 			this.addChild(msgTfd);
+		}
+		
+		private function handlerRefreshBtnClick(e:Event):void{
+			updateSeatSO();
 		}
 		
 		private function handlerRoomComboBoxChange(e:Event):void{
@@ -269,13 +288,14 @@ package com.snsoft.fmc.test{
 				nc.close();
 				setMsg("断开链接");
 				setConnBtn("链接");
+				roomComBox.removeAll();
 			}
 			else {
 				setMsg("请稍等...");
 				nc = new NetConnection();
 				nc.client = this;
 				nc.connect(rtmpUrl,getUserName(),getVideoName(),this.userType);
-				nc.addEventListener(NetStatusEvent.NET_STATUS,handlerLocalNCStatus);
+				nc.addEventListener(NetStatusEvent.NET_STATUS,handlerNcStatus);
 				nc.addEventListener(IOErrorEvent.IO_ERROR,handlerIOError);
 			}
 		}
@@ -285,7 +305,7 @@ package com.snsoft.fmc.test{
 		 * @param e
 		 * 
 		 */		
-		private function handlerLocalNCStatus(e:NetStatusEvent):void {
+		private function handlerNcStatus(e:NetStatusEvent):void {
 			
 			userNameTfd.type = TextFieldType.DYNAMIC;
 			//调用red5的Service
@@ -308,6 +328,8 @@ package com.snsoft.fmc.test{
 		 * 
 		 */		
 		private function handlerSync(e:Event):void{
+			setMsg("handlerSync");
+			trace("handlerSync");
 			var rspd:Responder = new Responder(localNcCallSeatListResult,localNcCallSeatListStatus);
 			nc.call("vcService.getSeatList",rspd,this.userType);
 		}
@@ -317,7 +339,8 @@ package com.snsoft.fmc.test{
 		 * @param obj
 		 * 
 		 */		
-		private function localNcCallSeatListResult(obj:Object):void{			
+		private function localNcCallSeatListResult(obj:Object):void{	
+			setMsg("localNcCallSeatListResult");
 			trace("localNcCallSeatListResult");
 			var array:Array = obj as Array;
 			if(array != null){
@@ -355,6 +378,16 @@ package com.snsoft.fmc.test{
 		}
 		
 		/**
+		 * 更新seatSO 
+		 * 
+		 */		
+		private function updateSeatSO():void{
+			if(seatSO != null){
+				seatSO.updatSO();
+			}
+		}
+		
+		/**
 		 * nc 链接失败
 		 * @param e
 		 * 
@@ -386,7 +419,7 @@ package com.snsoft.fmc.test{
 		 * 
 		 */		
 		private function setMsg(msg:String):void{
-			msgTfd.text = msg;
+			msgTfd.text = msg + "    [" + String(int(1000 * Math.random()))+ "]";
 		}
 		
 		private function setConnBtn(text:String):void{
