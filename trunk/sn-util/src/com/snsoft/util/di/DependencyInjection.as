@@ -58,7 +58,7 @@
 			}
 			else {
 				var op:ObjectProperty = new ObjectProperty(fobj);
-				v = op.propertyNames;
+				v = op.getAllPropertyNames();
 			}
 			for(var i2:int = 0;i2<v.length;i2++){
 				var pName:String = v[i2];

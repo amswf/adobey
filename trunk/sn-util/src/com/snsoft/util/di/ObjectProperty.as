@@ -71,6 +71,17 @@
 			}
 		}
 		
+		public function getAllPropertyNames():Vector.<String>{
+			var v:Vector.<String> = new Vector.<String>();
+			for(var i:int = 0;i < propertyNames.length;i ++){
+				v.push(propertyNames[i]);
+			}
+			for(var ii:int = 0;ii < dynamicPropertyNames.length;ii ++){
+				v.push(dynamicPropertyNames[ii]);
+			}
+			return v;
+		}
+		
 		public function get propertyNames():Vector.<String>
 		{
 			return _propertyNames;

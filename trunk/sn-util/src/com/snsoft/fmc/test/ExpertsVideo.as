@@ -1,6 +1,8 @@
 package com.snsoft.fmc.test{
 	import com.snsoft.fmc.NSICode;
+	import com.snsoft.fmc.test.vi.Seat;
 	import com.snsoft.util.ComboBoxUtil;
+	import com.snsoft.util.di.DependencyInjection;
 	import com.snsoft.xmldom.XMLFastConfig;
 	
 	import fl.controls.Button;
@@ -110,6 +112,11 @@ package com.snsoft.fmc.test{
 		 * 用户类型
 		 */
 		private var _userType:String = "two";
+		
+		/**
+		 * 客户端在服务端的信息对象 
+		 */		
+		private var farSeat:Seat = null;
 		
 		/**
 		 * 构造方法 
@@ -248,15 +255,35 @@ package com.snsoft.fmc.test{
 			this.addChild(msgTfd);
 		}
 		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
 		private function handlerRefreshBtnClick(e:Event):void{
 			updateSeatSO();
 		}
 		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
 		private function handlerRoomComboBoxChange(e:Event):void{
 			var box:ComboBox = e.currentTarget as ComboBox;
-			var clientId:String = String(box.value);
+			var oppositeClientId:String = String(box.value);
+			callServerReqVideo(this.farSeat.clientId,oppositeClientId);
+		}
+		
+		/**
+		 * 
+		 * @param clientId
+		 * @param oppositeClientId
+		 * 
+		 */		
+		private function callServerReqVideo(clientId:String,oppositeClientId:String):void{
 			var rspd:Responder = new Responder(reqVideoResult,reqVideoStatus);
-			nc.call("reqVideo",rspd,clientId);
+			nc.call("callBackReqVideo",rspd,clientId,oppositeClientId);
 		}
 		
 		/**
@@ -331,8 +358,9 @@ package com.snsoft.fmc.test{
 			setMsg("handlerSync");
 			trace("handlerSync");
 			var rspd:Responder = new Responder(localNcCallSeatListResult,localNcCallSeatListStatus);
-			nc.call("vcService.getSeatList",rspd,this.userType);
+			nc.call("vcService.getSeatList",rspd,"one");
 		}
+		
 		
 		/**
 		 * 共享对象Responder事件  
@@ -348,10 +376,12 @@ package com.snsoft.fmc.test{
 				roomComBox.addItem(ComboBoxUtil.creatCBIterm("请选择专家",null));
 				for(var i:int = 0;i<array.length;i++){
 					var obj:Object = array[i];
-					var userName:String = obj.userName as String;
-					var clientId:String = obj.clientId as String;
-					var item:Object = ComboBoxUtil.creatCBIterm(userName,clientId);
+					var seat:Seat = DependencyInjection.diObjByClass(obj,Seat) as Seat;
+					var item:Object = ComboBoxUtil.creatCBIterm(seat.userName,seat.clientId);
 					roomComBox.addItem(item);
+					if(videoName == seat.videoName){
+						this.farSeat = DependencyInjection.diObjByClass(seat,Seat) as Seat;
+					}
 				}
 			}
 		}
@@ -365,16 +395,15 @@ package com.snsoft.fmc.test{
 			trace("localNcCallSeatListStatus");
 		}
 		
-		
 		/**
 		 * 视频交互，服务端回调到这个客户端 
 		 * @param oppositeClientId
 		 * @return 
 		 * 
 		 */		
-		public function callBackVideoRequest(oppositeClientId:String):void{
-			setMsg("callBackVideoRequest:clientId" + oppositeClientId);
-			trace("callBackVideoRequest:clientId",oppositeClientId);
+		public function callBackVideoRequest(clientId:String, oppositeClientId:String):void{
+			setMsg("cid:" + oppositeClientId + "ocid:" + oppositeClientId);
+			trace("cid:" + oppositeClientId + "ocid:" + oppositeClientId);
 		}
 		
 		/**
@@ -422,6 +451,11 @@ package com.snsoft.fmc.test{
 			msgTfd.text = msg + "    [" + String(int(1000 * Math.random()))+ "]";
 		}
 		
+		/**
+		 *  
+		 * @param text
+		 * 
+		 */		
 		private function setConnBtn(text:String):void{
 			connBtn.label = text;
 		}
