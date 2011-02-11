@@ -3,10 +3,12 @@
 	<mx:Script>
 		<![CDATA[
 			import com.snsoft.fmc.NSICode;
+			import com.snsoft.fmc.test.ExpertsVideo;
 			import com.snsoft.fmc.test.NetConnCall;
 			import com.snsoft.fmc.test.OnVideo;
 			import com.snsoft.fmc.test.SeatSO;
 			import com.snsoft.fmc.test.SharedBall;
+			import com.snsoft.fmc.test.TspClientVideo;
 			import com.snsoft.fmc.test.vi.Room;
 			import com.snsoft.fmc.test.vi.Seat;
 			
@@ -18,6 +20,8 @@
 				Room;
 				Seat;
 				SeatSO;
+				ExpertsVideo;
+				TspClientVideo;
 			}
 		]]>
 	</mx:Script>
