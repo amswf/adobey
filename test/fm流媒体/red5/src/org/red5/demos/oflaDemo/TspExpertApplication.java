@@ -77,17 +77,20 @@ public class TspExpertApplication extends ApplicationAdapter implements IPending
 			bwConfig.getChannelBandwidth()[IBandwidthConfigure.OVERALL_CHANNEL] = 1024 * 1024;
 			bwConfig.getChannelInitialBurst()[IBandwidthConfigure.OVERALL_CHANNEL] = 128 * 1024;
 			streamConn.setBandwidthConfigure(bwConfig);
-
-			if (String.valueOf(params[2]).equals("one")) {
-				System.out.println(params[0]);
-				System.out.println(params[1]);
-				String id = conn.getClient().getId();
-				onLineClient.put(id, conn);
-				Seat seat = new Seat();
-				seat.setClientId(id);
-				seat.setUserName(String.valueOf(params[0]));
-				seat.setVideoName(String.valueOf(params[1]));
-				addSeat("one",seat);
+			if (params != null && params.length > 0) {
+				if (String.valueOf(params[2]).equals("one")) {
+					System.out.println(params[0]);
+					System.out.println(params[1]);
+					String id = conn.getClient().getId();
+					onLineClient.put(id, conn);
+					Seat seat = new Seat();
+					seat.setClientId(id);
+					seat.setUserName(String.valueOf(params[0]));
+					seat.setVideoName(String.valueOf(params[1]));
+					addSeat("one", seat);
+					String ms = String.valueOf(new Date().getTime());
+					vcso.setAttribute("uvso", ms);
+				}
 			}
 		}
 		return super.appConnect(conn, params);
@@ -99,17 +102,20 @@ public class TspExpertApplication extends ApplicationAdapter implements IPending
 		log.info("oflaDemo appDisconnect");
 		System.out.println("oflaDemo appDisconnect");
 		Object[] params = (Object[]) conn.getAttribute("params");
-		String userName = (String) params[0];
-		vcs.dropSeat(userName);
-		String ms = String.valueOf(new Date().getTime());
-		vcso.setAttribute("uvso", ms);
-		if (appScope == conn.getScope() && serverStream != null) {
-			serverStream.close();
-		}
-		if (String.valueOf(params[2]).equals("one")) {
-			String id = conn.getClient().getId();
-			onLineClient.remove(id);
-			removeSeat("one",id);
+		if (params != null && params.length > 0) {
+			String userName = (String) params[0];
+			vcs.dropSeat(userName);
+			
+			if (appScope == conn.getScope() && serverStream != null) {
+				serverStream.close();
+			}
+			if (String.valueOf(params[2]).equals("one")) {
+				String id = conn.getClient().getId();
+				onLineClient.remove(id);
+				removeSeat("one", id);
+			}
+			String ms = String.valueOf(new Date().getTime());
+			vcso.setAttribute("uvso", ms);
 		}
 		super.appDisconnect(conn);
 	}
@@ -119,40 +125,62 @@ public class TspExpertApplication extends ApplicationAdapter implements IPending
 		System.out.println("resultReceived");
 	}
 	
-	public void reqVideo(String uid){
-		System.out.println("reqVideo");
-		System.out.println(uid);
-		callClient(uid,"callBackVideoRequest",new Object[]{uid});
+	/**
+	 * 告诉客户端刷新共享对象
+	 * @param conn
+	 */
+	public void refreshSO(IConnection conn){
+		if (conn instanceof IServiceCapableConnection) {
+			// 转发消息
+			IServiceCapableConnection sc = (IServiceCapableConnection) conn;
+			sc.invoke("callBackRefreshSO");
+		}
 	}
 
 	/**
-	 * 调用指定的客户端
+	 * 告诉客户端有用户请求视频
 	 * @param uid
-	 * @param method_name
-	 * @param obj
-	 * @return
 	 */
-	public boolean callClient(String uid, String method_name, Object[] obj) {
-		IConnection toClient = onLineClient.get(uid);
-		if (toClient instanceof IServiceCapableConnection) {
+	public void reqVideo(String uid) {
+		System.out.println("reqVideo");
+		System.out.println(uid);
+		IConnection conn = onLineClient.get(uid);
+		if (conn instanceof IServiceCapableConnection) {
 			// 转发消息
-			IServiceCapableConnection sc = (IServiceCapableConnection) toClient;
-			sc.invoke(method_name, obj);
-			return true;
+			IServiceCapableConnection sc = (IServiceCapableConnection) conn;
+			sc.invoke("callBackVideoRequest", new Object[] { uid });
 		}
-		return false;
 	}
 
+	/**
+	 * 添加用户
+	 * 
+	 * @param roomName
+	 * @param seat
+	 */
 	private void addSeat(String roomName, Seat seat) {
 		VCManager.getInstance().getHall().getRoomByName(roomName).addSeat(seat);
 	}
-	
-	private void removeSeat(String roomName,String clientId){
+
+	/**
+	 * 删除用户
+	 * 
+	 * @param roomName
+	 * @param clientId
+	 */
+	private void removeSeat(String roomName, String clientId) {
 		VCManager.getInstance().getHall().getRoomByName(roomName).delSeatById(clientId);
 	}
-	
-	private Seat getSeatByIndex(String roomName,int i){
+
+	/**
+	 * 通过ID获得用户
+	 * 
+	 * @param roomName
+	 * @param i
+	 * @return
+	 */
+	private Seat getSeatByIndex(String roomName, int i) {
 		return VCManager.getInstance().getHall().getRoomByName(roomName).getSeatByIndex(i);
-		
+
 	}
 }
