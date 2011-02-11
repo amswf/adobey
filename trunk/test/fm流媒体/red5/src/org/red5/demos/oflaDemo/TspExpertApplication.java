@@ -105,7 +105,7 @@ public class TspExpertApplication extends ApplicationAdapter implements IPending
 		if (params != null && params.length > 0) {
 			String userName = (String) params[0];
 			vcs.dropSeat(userName);
-			
+
 			if (appScope == conn.getScope() && serverStream != null) {
 				serverStream.close();
 			}
@@ -126,17 +126,32 @@ public class TspExpertApplication extends ApplicationAdapter implements IPending
 	}
 
 	/**
-	 * 告诉客户端有用户请求视频
-	 * @param uid
+	 * 告诉客户端，它的用户信息(目前不用)
+	 * 
+	 * @param conn
+	 * @param seat
 	 */
-	public void reqVideo(String uid) {
-		System.out.println("reqVideo");
-		System.out.println(uid);
-		IConnection conn = onLineClient.get(uid);
+	private void callClientSetSeat(IConnection conn, Seat seat) {
 		if (conn instanceof IServiceCapableConnection) {
 			// 转发消息
 			IServiceCapableConnection sc = (IServiceCapableConnection) conn;
-			sc.invoke("callBackVideoRequest", new Object[] { uid });
+			sc.invoke("callBackSetSeat", new Object[] { seat });
+		}
+	}
+
+	/**
+	 * 一个客户端向另一个客户端请求视频
+	 * 
+	 * @param uid
+	 */
+	public void callBackReqVideo(String clientId, String oppositeClientId) {
+		System.out.println("reqVideo");
+		System.out.println("clientId:" + clientId + "oppositeClientId" + oppositeClientId);
+		IConnection conn = onLineClient.get(oppositeClientId);
+		if (conn instanceof IServiceCapableConnection) {
+			// 转发消息
+			IServiceCapableConnection sc = (IServiceCapableConnection) conn;
+			sc.invoke("callBackVideoRequest", new Object[] { clientId, oppositeClientId });
 		}
 	}
 

@@ -57,6 +57,18 @@ public class Room {
 		}
 		return seat;
 	}
+	
+	public Seat getSeatByVideoName(String videoName) {
+		Seat seat = null;
+		for (int i = 0; i < seatList.size(); i++) {
+			Seat st = seatList.get(i);
+			if (videoName != null && videoName.equals(st.getVideoName())) {
+				seat = st;
+				break;
+			}
+		}
+		return seat;
+	}
 
 	public void delSeatById(String clientId) {
 		for (int i = 0; i < seatList.size(); i++) {

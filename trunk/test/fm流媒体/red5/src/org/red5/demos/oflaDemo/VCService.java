@@ -1,4 +1,4 @@
-﻿package org.red5.demos.oflaDemo;
+package org.red5.demos.oflaDemo;
 
 import java.util.Date;
 import java.util.List;
@@ -17,6 +17,11 @@ public class VCService {
 
 	public Vector<Room> getRoomList() {
 		return vcm.getHall().getRoomList();
+	}
+	
+	public Seat getSeatByVideoName(String roomName,String videoName) {
+		System.out.println("getSeatList:" + roomName);
+		return vcm.getHall().getRoomByName(roomName).getSeatByVideoName(videoName);
 	}
 
 	public Vector<Seat> getSeatList(String roomName) {
