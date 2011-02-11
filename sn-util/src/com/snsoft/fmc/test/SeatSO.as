@@ -31,7 +31,7 @@ package com.snsoft.fmc.test{
 			so.addEventListener(SyncEvent.SYNC, syncHandler);
 		}		
 		
-		public function updatSO():void{
+		public function updateSO():void{
 			var st:String = String(new Date().getTime());
 			so.setProperty(UVSO,st);
 			trace("so.data[uvso]:",so.data[UVSO]);

@@ -316,6 +316,7 @@ package com.snsoft.fmc.test{
 				setMsg("断开链接");
 				setConnBtn("链接");
 				roomComBox.removeAll();
+				updateSeatSO();
 			}
 			else {
 				setMsg("请稍等...");
@@ -341,8 +342,9 @@ package com.snsoft.fmc.test{
 				setMsg("链接成功");
 				setConnBtn("断开");
 				seatSO = new SeatSO(VC_SO_NAME,nc);
-				seatSO.initSO();
 				seatSO.addEventListener(SyncEvent.SYNC,handlerSync);
+				seatSO.initSO();
+				updateSeatSO();
 			}
 			else {
 				setMsg("e.info.code:" + e.info.code);
@@ -360,7 +362,6 @@ package com.snsoft.fmc.test{
 			var rspd:Responder = new Responder(localNcCallSeatListResult,localNcCallSeatListStatus);
 			nc.call("vcService.getSeatList",rspd,"one");
 		}
-		
 		
 		/**
 		 * 共享对象Responder事件  
@@ -402,8 +403,8 @@ package com.snsoft.fmc.test{
 		 * 
 		 */		
 		public function callBackVideoRequest(clientId:String, oppositeClientId:String):void{
-			setMsg("cid:" + oppositeClientId + "ocid:" + oppositeClientId);
-			trace("cid:" + oppositeClientId + "ocid:" + oppositeClientId);
+			setMsg("cid:" + clientId + "ocid:" + oppositeClientId);
+			trace("cid:" + clientId + "ocid:" + oppositeClientId);
 		}
 		
 		/**
@@ -412,7 +413,7 @@ package com.snsoft.fmc.test{
 		 */		
 		private function updateSeatSO():void{
 			if(seatSO != null){
-				seatSO.updatSO();
+				seatSO.updateSO();
 			}
 		}
 		
