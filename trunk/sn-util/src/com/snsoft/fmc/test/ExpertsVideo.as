@@ -39,7 +39,12 @@ package com.snsoft.fmc.test{
 		/**
 		 * 配置中的名称 
 		 */		
-		private static const CFG_USERNAME:String = "userName"
+		private static const CFG_USERNAME:String = "userName";
+			
+		/**
+		 * 配置中的名称 
+		 */		
+		private static const CFG_USERTYPE:String = "userType";
 		
 		/**
 		 * 共享对象名称 
@@ -194,7 +199,15 @@ package com.snsoft.fmc.test{
 			//初始化参数
 			rtmpUrl = XMLFastConfig.getConfig(CFG_URL);
 			//选择用户端类型
-			setType();
+			var userType:String = XMLFastConfig.getConfig(CFG_USERTYPE);
+			
+			if(userType == "one" || userType == "two"){
+				this.userType = userType;
+				initFace();
+			}
+			else {
+				setType();
+			}
 		}
 		
 		/**
@@ -253,8 +266,12 @@ package com.snsoft.fmc.test{
 		 */		
 		private function initFace():void{
 			//删除类型按钮
-			this.removeChild(expertsBtn);
-			this.removeChild(tspBtn);
+			if(expertsBtn != null){
+				this.removeChild(expertsBtn);
+			}
+			if(tspBtn != null){
+				this.removeChild(tspBtn);
+			}
 			
 			var userName:String = XMLFastConfig.getConfig(CFG_USERNAME);
 			//用户名
@@ -266,6 +283,7 @@ package com.snsoft.fmc.test{
 			userNameTfd.y = 340;
 			userNameTfd.height = 20;
 			userNameTfd.width = 150;
+			userNameTfd.visible = false;
 			this.addChild(userNameTfd);
 			
 			//链接按钮
@@ -281,6 +299,9 @@ package com.snsoft.fmc.test{
 			roomComBox = new ComboBox();
 			roomComBox.x = 300;
 			roomComBox.y = 340;
+			if(this.userType == "one"){
+				roomComBox.visible =false;
+			}
 			this.addChild(roomComBox);
 			roomComBox.addEventListener(Event.CHANGE,handlerRoomComboBoxChange);
 			
