@@ -35,6 +35,12 @@ package com.snsoft.fmc.test{
 		 */		
 		private static const CFG_URL:String = "url";
 		
+		
+		/**
+		 * 配置中的名称 
+		 */		
+		private static const CFG_USERNAME:String = "userName"
+		
 		/**
 		 * 共享对象名称 
 		 */		
@@ -249,11 +255,13 @@ package com.snsoft.fmc.test{
 			//删除类型按钮
 			this.removeChild(expertsBtn);
 			this.removeChild(tspBtn);
+			
+			var userName:String = XMLFastConfig.getConfig(CFG_USERNAME);
 			//用户名
 			userNameTfd = new TextField();
 			userNameTfd.type = TextFieldType.INPUT;
 			userNameTfd.border = true;
-			userNameTfd.text = "defName";
+			userNameTfd.text = userName;
 			userNameTfd.x = 20;
 			userNameTfd.y = 340;
 			userNameTfd.height = 20;
@@ -309,6 +317,12 @@ package com.snsoft.fmc.test{
 			oppositeVideo = new Video(360,270);
 			oppositeVideo.visible = false;
 			this.addChild(oppositeVideo);
+			
+			localVideo = new Video(200,150);
+			localVideo.x = 400 ;
+			localVideo.y = 0;
+			localVideo.visible = false;
+			addChild(localVideo);
 		}
 		
 		
@@ -320,32 +334,7 @@ package com.snsoft.fmc.test{
 		 */		
 		private function handlerRefreshBtnClick(e:Event):void{
 			updateSeatSO();
-		}
-		
-		/**
-		 * 
-		 * @param e
-		 * 
-		 */		
-		private function handlerRoomComboBoxChange(e:Event):void{
-			var box:ComboBox = e.currentTarget as ComboBox;
-			var oppositeClientId:String = String(box.value);
-			var oppositeSeat:Seat = seatHV.findByName(oppositeClientId) as Seat;
-			trace(oppositeSeat.userName,oppositeSeat.videoName,oppositeSeat.userType);
-			callServerReqVideo(this.localSeat.clientId,oppositeSeat.userType,oppositeClientId);
-		}
-		
-		/**
-		 *  
-		 * @param clientId
-		 * @param oppositeClientType
-		 * @param oppositeClientId
-		 * 
-		 */			
-		private function callServerReqVideo(clientId:String,oppositeClientType:String,oppositeClientId:String):void{
-			var ncc:NCCall = new NCCall(nc,"callBackReqVideo",null,null,clientId,oppositeClientType,oppositeClientId);
-			ncc.call();
-		}		
+		}	
 		
 		/**
 		 * 事件	链接按钮按下后初始化网络链接 
@@ -361,6 +350,7 @@ package com.snsoft.fmc.test{
 				updateSeatSO();
 				accessBtn.visible = false;
 				oppositeVideo.visible = false;
+				localVideo.visible = false;
 			}
 			else {
 				setMsg("请稍等...");
@@ -385,13 +375,53 @@ package com.snsoft.fmc.test{
 			if(e.info.code == NSICode.NetConnection_Connect_Success){
 				setMsg("链接成功");
 				setConnBtn("断开");
+				
+				mic = Microphone.getMicrophone();
+				camera = Camera.getCamera();
+				
+				if(camera != null && mic != null){
+					trace(camera.fps);
+					camera.setKeyFrameInterval(15);
+					camera.setMode(400,300,15,false);
+					camera.setQuality(80000,0);
+					camera.addEventListener(ActivityEvent.ACTIVITY,handlerCameraActivityEvent);
+					
+					mic.setLoopBack(false);
+					mic.setUseEchoSuppression(true);
+					
+					localVideo.attachCamera(camera);
+					localVideo.visible = true;
+				}
+				
 				seatSO = new SeatSO(VC_SO_NAME,nc);
 				seatSO.addEventListener(SyncEvent.SYNC,handlerSync);
 				seatSO.initSO();
 				updateSeatSO();
+				var ncc:NCCall = new NCCall(nc,"vcService.getSeatList",tspSeatListResult,null,this.userType);
+				ncc.call();
 			}
 			else {
 				setMsg("e.info.code:" + e.info.code);
+			}
+		}
+		
+		/**
+		 *  
+		 * @param obj
+		 * 
+		 */		
+		private function tspSeatListResult(obj:Object):void{	
+			setMsg("tspSeatListResult");
+			var array:Array = obj as Array;
+			if(array != null){
+				for(var i:int = 0;i<array.length;i++){
+					var obj:Object = array[i];
+					var seat:Seat = DependencyInjection.diObjByClass(obj,Seat) as Seat;
+					if(videoName == seat.videoName){
+						this.localSeat = DependencyInjection.diObjByClass(seat,Seat) as Seat;
+					}
+					 
+				}
 			}
 		}
 		
@@ -402,7 +432,6 @@ package com.snsoft.fmc.test{
 		 */		
 		private function handlerSync(e:Event):void{
 			setMsg("handlerSync");
-			trace("handlerSync");
 			var ncc:NCCall = new NCCall(nc,"vcService.getSeatList",localNcCallSeatListResult,null,"one");
 			ncc.call();
 		}
@@ -414,12 +443,10 @@ package com.snsoft.fmc.test{
 		 */		
 		private function localNcCallSeatListResult(obj:Object):void{	
 			setMsg("localNcCallSeatListResult");
-			trace("localNcCallSeatListResult");
 			var array:Array = obj as Array;
 			if(array != null){
 				roomComBox.removeAll();
 				roomComBox.addItem(ComboBoxUtil.creatCBIterm("请选择专家",null));
-				
 				seatHV = new HashVector();
 				for(var i:int = 0;i<array.length;i++){
 					var obj:Object = array[i];
@@ -427,65 +454,125 @@ package com.snsoft.fmc.test{
 					seatHV.push(seat,seat.clientId);
 					var item:Object = ComboBoxUtil.creatCBIterm(seat.userName,seat.clientId);
 					roomComBox.addItem(item);
-					if(videoName == seat.videoName){
-						this.localSeat = DependencyInjection.diObjByClass(seat,Seat) as Seat;
-					}
 					trace(seat.clientId,seat.userName,seat.videoName,seat.userType);
 				}
 			}
 		}
 		
-		 
+		/**
+		 * 选择用户
+		 * @param e
+		 * 
+		 */		
+		private function handlerRoomComboBoxChange(e:Event):void{
+			trace("handlerRoomComboBoxChange");
+			var box:ComboBox = e.currentTarget as ComboBox;
+			var oppositeClientId:String = String(box.value);
+			var oppositeSeat:Seat = seatHV.findByName(oppositeClientId) as Seat;
+			callServerReqVideo(this.localSeat.userType,this.localSeat.clientId,oppositeSeat.userType,oppositeClientId);
+		}
 		
 		/**
-		 * 允许视频交互，服务端回调到这个客户端 
+		 * 请求视频 
+		 * @param clientId
+		 * @param oppositeClientType
+		 * @param oppositeClientId
+		 * 
+		 */			
+		private function callServerReqVideo(userType:String,clientId:String,oppositeClientType:String,oppositeClientId:String):void{
+			var ncc:NCCall = new NCCall(nc,"callBackReqVideo",null,null,userType,clientId,oppositeClientType,oppositeClientId);
+			ncc.call();
+		}	
+		
+		/**
+		 * 被请求视频
 		 * @param oppositeClientId
 		 * @return 
 		 * 
 		 */		
-		public function callBackVideoRequest(clientId:String, oppositeClientId:String,oppositeVideoName:String):void{
-			setMsg("cid:" + clientId + "ocid:" + oppositeClientId+"视频请求，请点击接受。");
-			trace("cid:" + clientId + "ocid:" + oppositeClientId);
-			
+		public function callBackVideoRequest(oppositeUserType:String, oppositeClientId:String,oppositeVideoName:String):void{
+			setMsg("oppositeClientId:" + oppositeClientId+"视频请求，请点击接受。");
 			accessBtn.visible = true;
 			this.oppositeSeat.clientId = oppositeClientId;
+			this.oppositeSeat.userType = oppositeUserType;
+			this.oppositeSeat.videoName = oppositeVideoName;
+			
+			//下面是，用户按下按钮
 		}
 		
 		/**
-		 * 接受请求按钮按下
+		 * 事件：接受按钮按下, 接受请求 
 		 * @param e
 		 * 
 		 */		
 		private function handlerAccessBtnClick(e:Event):void{
+			//发布视频
 			accessCamera();
+			//通知请求方，已接受视频 
 			callServiceAccessVideo();
 		}
 		
 		/**
-		 * 做为被请求方同接受视频后，通知请求方播放视频 
+		 * 通知请求方，已接受视频
+		 * 
+		 */		
+		private function callServiceAccessVideo():void{
+			var ncc:NCCall = new NCCall(nc,"callBackAccessVideo",null,null,this.oppositeSeat.clientId,this.localSeat.clientId, this.localSeat.videoName);
+			ncc.call();
+		}
+		
+		/**
+		 * 请求方接到通知，已接受视频 
 		 * @param clientVideoName
 		 * 
 		 */		
-		public function callBackReqAccessVideo(clientVideoName:String):void{
-			trace("clientVideoName:",clientVideoName);
+		public function callBackReqAccessVideo(clientId:String,clientVideoName:String):void{
+			trace("clientVideoName:",clientVideoName,"localSeat.videoName",localSeat.videoName);
+			var seat:Seat = this.seatHV.findByName(clientId) as Seat;
+			this.oppositeSeat.clientId = seat.clientId;
+			this.oppositeSeat.userType = seat.userType;
+			playOppositeVideo(clientVideoName);
+			if(clientVideoName != localSeat.videoName){
+				accessCamera();
+				callServicePassiveClientPlayVideo();
+			}
+			
+		}	
+		
+		/**
+		 * 通知被请求方,播放视频
+		 * 
+		 */		
+		public function callServicePassiveClientPlayVideo():void{
+			setMsg(" callServicePassiveClientPlayVideo "+" oppositeSeat.clientId "+oppositeSeat.clientId);
+			var ncc:NCCall = new NCCall(nc,"callBackPassiveClientPlayVideo",null,null,oppositeSeat.userType,oppositeSeat.clientId);
+			ncc.call();
+		}
+		
+		/**
+		 * 被请求方，播放视频
+		 * 
+		 */		
+		public function callBackPassiveClientPlayVideo(clientId:String):void{
+			setMsg("callBackPassiveClientPlayVideo：clientId　"+ clientId);
+			playOppositeVideo(oppositeSeat.videoName);
+		}
+		
+		/**
+		 * 播放对方视频 
+		 * @param videoName
+		 * 
+		 */		
+		public function playOppositeVideo(videoName:String):void{
+			setMsg("playOppositeVideo:videoName"+ videoName);
 			if(nsOpposite != null){
 				nsOpposite.close();
 			}
-			
 			nsOpposite = new NetStream(nc,NetStream.CONNECT_TO_FMS);
 			nsOpposite.bufferTime = 0.1;
-			nsOpposite.play(clientVideoName);
+			nsOpposite.play(videoName);
 			oppositeVideo.attachNetStream(nsOpposite);
 			oppositeVideo.visible = true;
-			
-			if(clientVideoName != localSeat.videoName){
-				accessCamera();
-				
-			}
-		}	
-		
-		public function callServicePassiveClientPlayVideo():void{
-			
 		}
 		
 		/**
@@ -493,25 +580,8 @@ package com.snsoft.fmc.test{
 		 * 
 		 */		
 		public function accessCamera():void{
-			mic = Microphone.getMicrophone();
-			camera = Camera.getCamera();
 			
 			if(camera != null && mic != null){
-				trace(camera.fps);
-				camera.setKeyFrameInterval(15);
-				camera.setMode(400,300,15,false);
-				camera.setQuality(80000,0);
-				camera.addEventListener(ActivityEvent.ACTIVITY,handlerCameraActivityEvent);
-				
-				mic.setLoopBack(false);
-				mic.setUseEchoSuppression(true);
-				
-				localVideo = new Video(200,150);
-				localVideo.x = 400 ;
-				localVideo.y = 0;
-				localVideo.attachCamera(camera);
-				addChild(localVideo);
-				
 				nsLocal = new NetStream(nc,NetStream.CONNECT_TO_FMS);
 				nsLocal.bufferTime = 0.1;
 				nsLocal.attachCamera(camera);
@@ -550,14 +620,7 @@ package com.snsoft.fmc.test{
 		
 		
 		
-		/**
-		 * 通知请求方，视频 
-		 * 
-		 */		
-		private function callServiceAccessVideo():void{
-			var ncc:NCCall = new NCCall(nc,"callBackAccessVideo",null,null,this.oppositeSeat.clientId, this.localSeat.videoName);
-			ncc.call();
-		}
+		
 		
 		/**
 		 * 更新seatSO 
@@ -602,6 +665,7 @@ package com.snsoft.fmc.test{
 		 */		
 		private function setMsg(msg:String):void{
 			msgTfd.text = msg + "    [" + String(int(1000 * Math.random()))+ "]";
+			trace(msg);
 		}
 		
 		/**
