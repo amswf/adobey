@@ -5,7 +5,7 @@ package com.snsoft.fmc{
 	import flash.net.Responder;
 	
 	/**
-	 * NetConnectionCall  
+	 * NetConnection.Call 封装  
 	 * @author Administrator
 	 * 
 	 */	
