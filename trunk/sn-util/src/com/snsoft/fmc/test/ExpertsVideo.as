@@ -1,7 +1,9 @@
 package com.snsoft.fmc.test{
 	import com.snsoft.fmc.NSICode;
+	import com.snsoft.fmc.NSPublishType;
 	import com.snsoft.fmc.test.vi.Seat;
 	import com.snsoft.util.ComboBoxUtil;
+	import com.snsoft.util.HashVector;
 	import com.snsoft.util.di.DependencyInjection;
 	import com.snsoft.xmldom.XMLFastConfig;
 	
@@ -10,13 +12,18 @@ package com.snsoft.fmc.test{
 	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import flash.events.ActivityEvent;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.MouseEvent;
 	import flash.events.NetStatusEvent;
 	import flash.events.SyncEvent;
+	import flash.media.Camera;
+	import flash.media.Microphone;
+	import flash.media.Video;
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
+	import flash.net.ObjectEncoding;
 	import flash.net.Responder;
 	import flash.text.TextField;
 	import flash.text.TextFieldType;
@@ -57,6 +64,11 @@ package com.snsoft.fmc.test{
 		 * 链接按钮 
 		 */		
 		private var refreshBtn:Button;
+		
+		/**
+		 * 链接按钮 
+		 */		
+		private var accessBtn:Button;
 		
 		/**
 		 * 请求视频按钮 
@@ -117,6 +129,36 @@ package com.snsoft.fmc.test{
 		 * 客户端在服务端的信息对象 
 		 */		
 		private var farSeat:Seat = null;
+		
+		/**
+		 * 请求方客户端在服务端的信息对象 
+		 */	
+		private var oppositeSeat:Seat = new Seat();
+		
+		/**
+		 * 用户列表 
+		 */		
+		private var seatHV:HashVector = null;
+		
+		/**
+		 * 话筒 
+		 */		
+		private var mic:Microphone;
+		
+		/**
+		 * 摄像头 
+		 */		
+		private var camera:Camera;
+		
+		/**
+		 * 本地视频 
+		 */		
+		private var localVideo:Video;
+		
+		/**
+		 * 对方视频 
+		 */		
+		private var oppositeVideo:Video;
 		
 		/**
 		 * 构造方法 
@@ -243,6 +285,16 @@ package com.snsoft.fmc.test{
 			refreshBtn.addEventListener(MouseEvent.CLICK,handlerRefreshBtnClick);
 			this.addChild(refreshBtn);
 			
+			//接受视频按钮
+			accessBtn = new Button();
+			accessBtn.label = "接受";
+			accessBtn.x = 450;
+			accessBtn.y = 340;
+			accessBtn.width = 50;
+			accessBtn.addEventListener(MouseEvent.CLICK,handlerAccessBtnClick);
+			accessBtn.visible = false;
+			this.addChild(accessBtn);
+			
 			//提示信息
 			msgTfd = new TextField();
 			msgTfd.type = TextFieldType.DYNAMIC;
@@ -253,7 +305,13 @@ package com.snsoft.fmc.test{
 			msgTfd.height = 20;
 			msgTfd.width = 400;
 			this.addChild(msgTfd);
+			
+			oppositeVideo = new Video(360,270);
+			oppositeVideo.visible = false;
+			this.addChild(oppositeVideo);
 		}
+		
+		
 		
 		/**
 		 * 
@@ -272,7 +330,9 @@ package com.snsoft.fmc.test{
 		private function handlerRoomComboBoxChange(e:Event):void{
 			var box:ComboBox = e.currentTarget as ComboBox;
 			var oppositeClientId:String = String(box.value);
-			callServerReqVideo(this.farSeat.clientId,oppositeClientId);
+			var oppositeSeat:Seat = seatHV.findByName(oppositeClientId) as Seat;
+			trace(oppositeSeat.userName,oppositeSeat.videoName,oppositeSeat.userType);
+			callServerReqVideo(this.farSeat.clientId,oppositeSeat.userType,oppositeClientId);
 		}
 		
 		/**
@@ -281,9 +341,9 @@ package com.snsoft.fmc.test{
 		 * @param oppositeClientId
 		 * 
 		 */		
-		private function callServerReqVideo(clientId:String,oppositeClientId:String):void{
+		private function callServerReqVideo(clientId:String,oppositeClientType:String,oppositeClientId:String):void{
 			var rspd:Responder = new Responder(reqVideoResult,reqVideoStatus);
-			nc.call("callBackReqVideo",rspd,clientId,oppositeClientId);
+			nc.call("callBackReqVideo",rspd,clientId,oppositeClientType,oppositeClientId);
 		}
 		
 		/**
@@ -317,6 +377,8 @@ package com.snsoft.fmc.test{
 				setConnBtn("链接");
 				roomComBox.removeAll();
 				updateSeatSO();
+				accessBtn.visible = false;
+				oppositeVideo.visible = false;
 			}
 			else {
 				setMsg("请稍等...");
@@ -375,14 +437,18 @@ package com.snsoft.fmc.test{
 			if(array != null){
 				roomComBox.removeAll();
 				roomComBox.addItem(ComboBoxUtil.creatCBIterm("请选择专家",null));
+				
+				seatHV = new HashVector();
 				for(var i:int = 0;i<array.length;i++){
 					var obj:Object = array[i];
 					var seat:Seat = DependencyInjection.diObjByClass(obj,Seat) as Seat;
+					seatHV.push(seat,seat.clientId);
 					var item:Object = ComboBoxUtil.creatCBIterm(seat.userName,seat.clientId);
 					roomComBox.addItem(item);
 					if(videoName == seat.videoName){
 						this.farSeat = DependencyInjection.diObjByClass(seat,Seat) as Seat;
 					}
+					trace(seat.clientId,seat.userName,seat.videoName,seat.userType);
 				}
 			}
 		}
@@ -397,14 +463,133 @@ package com.snsoft.fmc.test{
 		}
 		
 		/**
-		 * 视频交互，服务端回调到这个客户端 
+		 * 允许视频交互，服务端回调到这个客户端 
 		 * @param oppositeClientId
 		 * @return 
 		 * 
 		 */		
-		public function callBackVideoRequest(clientId:String, oppositeClientId:String):void{
-			setMsg("cid:" + clientId + "ocid:" + oppositeClientId);
+		public function callBackVideoRequest(clientId:String, oppositeClientId:String,oppositeVideoName:String):void{
+			setMsg("cid:" + clientId + "ocid:" + oppositeClientId+"视频请求，请点击接受。");
 			trace("cid:" + clientId + "ocid:" + oppositeClientId);
+			
+			accessBtn.visible = true;
+			this.oppositeSeat.clientId = oppositeClientId;
+		}
+		
+		/**
+		 * 接受请求按钮按下
+		 * @param e
+		 * 
+		 */		
+		private function handlerAccessBtnClick(e:Event):void{
+			accessCamera();
+			callServiceAccessVideo();
+		}
+		
+		/**
+		 * 允许视频交互 
+		 * @param clientVideoName
+		 * 
+		 */		
+		public function callBackReqAccessVideo(clientVideoName:String):void{
+			trace("clientVideoName:",clientVideoName);
+			if(nsOpposite != null){
+				nsOpposite.close();
+			}
+			nsOpposite = new NetStream(nc,NetStream.CONNECT_TO_FMS);
+			nsOpposite.bufferTime = 0.1;
+			nsOpposite.play(farSeat.videoName);
+			oppositeVideo.attachNetStream(nsOpposite);
+			oppositeVideo.visible = true;
+		}
+		
+		
+		
+		//被请求时摄像头初始化
+		
+		public function accessCamera():void{
+			mic = Microphone.getMicrophone();
+			camera = Camera.getCamera();
+			
+			if(camera != null && mic != null){
+				trace(camera.fps);
+				camera.setKeyFrameInterval(15);
+				camera.setMode(400,300,15,false);
+				camera.setQuality(80000,0);
+				camera.addEventListener(ActivityEvent.ACTIVITY,handlerCameraActivityEvent);
+				
+				mic.setLoopBack(false);
+				mic.setUseEchoSuppression(true);
+				
+				localVideo = new Video(200,150);
+				localVideo.x = 400 ;
+				localVideo.y = 0;
+				localVideo.attachCamera(camera);
+				addChild(localVideo);
+				
+				nsLocal = new NetStream(nc,NetStream.CONNECT_TO_FMS);
+				nsLocal.bufferTime = 0.1;
+				nsLocal.attachCamera(camera);
+				nsLocal.attachAudio(mic);
+				nsLocal.publish(farSeat.videoName,NSPublishType.LIVE);
+			}
+			else {
+				trace("缺少摄像头或声音设备！");
+			}
+		}
+		
+		/**
+		 * camera 摄像头激活 
+		 * @param event
+		 * 
+		 */		
+		private function handlerCameraActivityEvent(event:ActivityEvent):void {
+			//trace("activityHandler: " + event);
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/**
+		 * 通知请求方，视频 
+		 * 
+		 */		
+		private function callServiceAccessVideo():void{
+			var rspd:Responder = new Responder(callServiceAccessVideoResult,callServiceAccessVideoStatus);
+			nc.call("callBackAccessVideo",rspd, this.oppositeSeat.clientId, this.farSeat.videoName);
+		}
+		
+		/**
+		 * 共享对象Responder事件  
+		 * @param obj
+		 * 
+		 */		
+		private function callServiceAccessVideoResult(obj:Object):void{	
+			
+		}
+		
+		/**
+		 * 共享对象Responder事件 
+		 * @param obj
+		 * 
+		 */		
+		private function callServiceAccessVideoStatus(obj:Object):void{
+			trace("localNcCallSeatListStatus");
 		}
 		
 		/**
@@ -500,7 +685,7 @@ package com.snsoft.fmc.test{
 		{
 			_videoName = value;
 		}
-
+		
 		/**
 		 * 用户类型
 		 */
@@ -508,7 +693,7 @@ package com.snsoft.fmc.test{
 		{
 			return _userType;
 		}
-
+		
 		/**
 		 * @private
 		 */

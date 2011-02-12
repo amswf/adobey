@@ -218,7 +218,6 @@
 					hallComBox.addItem(item);
 				}
 			}
-			
 		}
 		
 		private function handlerHallComboBoxChange(e:Event):void{
