@@ -46,7 +46,7 @@ public class Room {
 		this.seatList.add(seat);
 	}
 
-	public Seat getSeatById(String clientId) {
+	public Seat getSeatByClientId(String clientId) {
 		Seat seat = null;
 		for (int i = 0; i < seatList.size(); i++) {
 			Seat st = seatList.get(i);

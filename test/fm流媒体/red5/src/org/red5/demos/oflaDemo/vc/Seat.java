@@ -22,6 +22,11 @@ public class Seat {
 	 * 登录验证串
 	 */
 	private String checklogin;
+	
+	/**
+	 * 用户类型
+	 */
+	private String userType;
 
 	public String getVideoName() {
 		return videoName;
@@ -53,6 +58,14 @@ public class Seat {
 
 	public void setClientId(String clientId) {
 		this.clientId = clientId;
+	}
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
 	}
 	
 }

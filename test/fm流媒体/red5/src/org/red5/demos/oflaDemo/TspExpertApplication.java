@@ -39,6 +39,12 @@ public class TspExpertApplication extends ApplicationAdapter implements IPending
 
 	private HashMap<String, IConnection> onLineClient = new HashMap<String, IConnection>();
 
+	private static final int USER_NAME = 0;
+
+	private static final int VIDEO_NAME = 1;
+
+	private static final int USER_TYPE = 2;
+
 	private VCService vcs = new VCService();
 
 	{
@@ -69,7 +75,6 @@ public class TspExpertApplication extends ApplicationAdapter implements IPending
 	public boolean appConnect(IConnection conn, Object[] params) {
 		log.info("oflaDemo appConnect");
 		System.out.println("oflaDemo appConnect");
-		conn.setAttribute("params", params);
 		measureBandwidth(conn);
 		if (conn instanceof IStreamCapableConnection) {
 			IStreamCapableConnection streamConn = (IStreamCapableConnection) conn;
@@ -77,20 +82,20 @@ public class TspExpertApplication extends ApplicationAdapter implements IPending
 			bwConfig.getChannelBandwidth()[IBandwidthConfigure.OVERALL_CHANNEL] = 1024 * 1024;
 			bwConfig.getChannelInitialBurst()[IBandwidthConfigure.OVERALL_CHANNEL] = 128 * 1024;
 			streamConn.setBandwidthConfigure(bwConfig);
-			if (params != null && params.length > 0) {
-				if (String.valueOf(params[2]).equals("one")) {
-					System.out.println(params[0]);
-					System.out.println(params[1]);
-					String id = conn.getClient().getId();
-					onLineClient.put(id, conn);
-					Seat seat = new Seat();
-					seat.setClientId(id);
-					seat.setUserName(String.valueOf(params[0]));
-					seat.setVideoName(String.valueOf(params[1]));
-					addSeat("one", seat);
-					String ms = String.valueOf(new Date().getTime());
-					vcso.setAttribute("uvso", ms);
-				}
+			if (params != null && params.length == 3) {
+				conn.setAttribute("params", params);
+				System.out.println(params[USER_NAME]);
+				System.out.println(params[VIDEO_NAME]);
+				String id = conn.getClient().getId();
+				onLineClient.put(id, conn);
+				Seat seat = new Seat();
+				seat.setClientId(id);
+				seat.setUserName(String.valueOf(params[USER_NAME]));
+				seat.setVideoName(String.valueOf(params[VIDEO_NAME]));
+				seat.setUserType(String.valueOf(params[USER_TYPE]));
+				addSeat(String.valueOf(params[USER_TYPE]), seat);
+				String ms = String.valueOf(new Date().getTime());
+				vcso.setAttribute("uvso", ms);
 			}
 		}
 		return super.appConnect(conn, params);
@@ -109,13 +114,14 @@ public class TspExpertApplication extends ApplicationAdapter implements IPending
 			if (appScope == conn.getScope() && serverStream != null) {
 				serverStream.close();
 			}
-			if (String.valueOf(params[2]).equals("one")) {
+
+			if (params != null && params.length == 3) {
 				String id = conn.getClient().getId();
 				onLineClient.remove(id);
-				removeSeat("one", id);
+				removeSeat(String.valueOf(params[USER_TYPE]), id);
+				String ms = String.valueOf(new Date().getTime());
+				vcso.setAttribute("uvso", ms);
 			}
-			String ms = String.valueOf(new Date().getTime());
-			vcso.setAttribute("uvso", ms);
 		}
 		super.appDisconnect(conn);
 	}
@@ -123,6 +129,23 @@ public class TspExpertApplication extends ApplicationAdapter implements IPending
 	@Override
 	public void resultReceived(IPendingServiceCall ipendingservicecall) {
 		System.out.println("resultReceived");
+	}
+
+	/**
+	 * 请求方通知被请求方播放请求方视频
+	 * @param passiveUserType
+	 * @param passiveClientId
+	 */
+	public void callBackPassiveClientPlayVideo(String passiveUserType, String passiveClientId) {
+		System.out.println("callBackPassiveClientPlayVideo");
+		System.out.println("　passiveUserType:" + passiveUserType +"　passiveClientId:" + passiveClientId);
+		IConnection conn = onLineClient.get(passiveClientId);
+		if (conn instanceof IServiceCapableConnection) {
+			// 转发消息
+			Seat seat = getSeatByClientId(passiveUserType, passiveClientId);
+			IServiceCapableConnection sc = (IServiceCapableConnection) conn;
+			sc.invoke("callBackPassiveClientPlayVideo", new Object[] {seat.getClientId()});
+		}
 	}
 
 	/**
@@ -144,14 +167,32 @@ public class TspExpertApplication extends ApplicationAdapter implements IPending
 	 * 
 	 * @param uid
 	 */
-	public void callBackReqVideo(String clientId, String oppositeClientId) {
+	public void callBackReqVideo(String userType,String clientId, String oppositeClientType, String oppositeClientId) {
 		System.out.println("reqVideo");
-		System.out.println("clientId:" + clientId + "oppositeClientId" + oppositeClientId);
+		System.out.println("clientId:" + clientId + " oppositeClientType:" + oppositeClientType + " oppositeClientId:" + oppositeClientId);
 		IConnection conn = onLineClient.get(oppositeClientId);
 		if (conn instanceof IServiceCapableConnection) {
 			// 转发消息
+			Seat seat = getSeatByClientId(userType, clientId);
 			IServiceCapableConnection sc = (IServiceCapableConnection) conn;
-			sc.invoke("callBackVideoRequest", new Object[] { clientId, oppositeClientId });
+			sc.invoke("callBackVideoRequest", new Object[] {userType, clientId, seat.getVideoName() });
+		}
+	}
+
+	/**
+	 * 通知请求方，已接受视频
+	 * 
+	 * @param oppositeClientId
+	 * @param clientVideoName
+	 */
+	public void callBackAccessVideo(String oppositeClientId,String clientId, String clientVideoName) {
+		System.out.println("reqVideo");
+		System.out.println("oppositeClientId:" + oppositeClientId + "clientVideoName" + clientVideoName);
+		IConnection conn = onLineClient.get(oppositeClientId);
+		if (conn instanceof IServiceCapableConnection) {
+
+			IServiceCapableConnection sc = (IServiceCapableConnection) conn;
+			sc.invoke("callBackReqAccessVideo", new Object[] {clientId, clientVideoName });
 		}
 	}
 
@@ -184,5 +225,16 @@ public class TspExpertApplication extends ApplicationAdapter implements IPending
 	 */
 	private Seat getSeatByIndex(String roomName, int i) {
 		return VCManager.getInstance().getHall().getRoomByName(roomName).getSeatByIndex(i);
+	}
+
+	/**
+	 * 通过ID获得用户
+	 * 
+	 * @param roomName
+	 * @param i
+	 * @return
+	 */
+	private Seat getSeatByClientId(String roomName, String clientId) {
+		return VCManager.getInstance().getHall().getRoomByName(roomName).getSeatByClientId(clientId);
 	}
 }
