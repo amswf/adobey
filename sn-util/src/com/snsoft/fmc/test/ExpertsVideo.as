@@ -1,4 +1,5 @@
 package com.snsoft.fmc.test{
+	import com.snsoft.fmc.NCCall;
 	import com.snsoft.fmc.NSICode;
 	import com.snsoft.fmc.NSPublishType;
 	import com.snsoft.fmc.test.vi.Seat;
@@ -24,7 +25,6 @@ package com.snsoft.fmc.test{
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
 	import flash.net.ObjectEncoding;
-	import flash.net.Responder;
 	import flash.text.TextField;
 	import flash.text.TextFieldType;
 	
@@ -128,7 +128,7 @@ package com.snsoft.fmc.test{
 		/**
 		 * 客户端在服务端的信息对象 
 		 */		
-		private var farSeat:Seat = null;
+		private var localSeat:Seat = null;
 		
 		/**
 		 * 请求方客户端在服务端的信息对象 
@@ -332,38 +332,20 @@ package com.snsoft.fmc.test{
 			var oppositeClientId:String = String(box.value);
 			var oppositeSeat:Seat = seatHV.findByName(oppositeClientId) as Seat;
 			trace(oppositeSeat.userName,oppositeSeat.videoName,oppositeSeat.userType);
-			callServerReqVideo(this.farSeat.clientId,oppositeSeat.userType,oppositeClientId);
+			callServerReqVideo(this.localSeat.clientId,oppositeSeat.userType,oppositeClientId);
 		}
 		
 		/**
-		 * 
+		 *  
 		 * @param clientId
+		 * @param oppositeClientType
 		 * @param oppositeClientId
 		 * 
-		 */		
+		 */			
 		private function callServerReqVideo(clientId:String,oppositeClientType:String,oppositeClientId:String):void{
-			var rspd:Responder = new Responder(reqVideoResult,reqVideoStatus);
-			nc.call("callBackReqVideo",rspd,clientId,oppositeClientType,oppositeClientId);
-		}
-		
-		/**
-		 * 共享对象Responder事件  
-		 * @param obj
-		 * 
-		 */		
-		private function reqVideoResult(obj:Object):void{
-			trace("reqVideoResult");
-		}
-		
-		/**
-		 * 共享对象Responder事件 
-		 * @param obj
-		 * 
-		 */		
-		private function reqVideoStatus(obj:Object):void{
-			trace("reqVideoStatus");
-		}
-		
+			var ncc:NCCall = new NCCall(nc,"callBackReqVideo",null,null,clientId,oppositeClientType,oppositeClientId);
+			ncc.call();
+		}		
 		
 		/**
 		 * 事件	链接按钮按下后初始化网络链接 
@@ -421,8 +403,8 @@ package com.snsoft.fmc.test{
 		private function handlerSync(e:Event):void{
 			setMsg("handlerSync");
 			trace("handlerSync");
-			var rspd:Responder = new Responder(localNcCallSeatListResult,localNcCallSeatListStatus);
-			nc.call("vcService.getSeatList",rspd,"one");
+			var ncc:NCCall = new NCCall(nc,"vcService.getSeatList",localNcCallSeatListResult,null,"one");
+			ncc.call();
 		}
 		
 		/**
@@ -446,21 +428,14 @@ package com.snsoft.fmc.test{
 					var item:Object = ComboBoxUtil.creatCBIterm(seat.userName,seat.clientId);
 					roomComBox.addItem(item);
 					if(videoName == seat.videoName){
-						this.farSeat = DependencyInjection.diObjByClass(seat,Seat) as Seat;
+						this.localSeat = DependencyInjection.diObjByClass(seat,Seat) as Seat;
 					}
 					trace(seat.clientId,seat.userName,seat.videoName,seat.userType);
 				}
 			}
 		}
 		
-		/**
-		 * 共享对象Responder事件 
-		 * @param obj
-		 * 
-		 */		
-		private function localNcCallSeatListStatus(obj:Object):void{
-			trace("localNcCallSeatListStatus");
-		}
+		 
 		
 		/**
 		 * 允许视频交互，服务端回调到这个客户端 
@@ -487,7 +462,7 @@ package com.snsoft.fmc.test{
 		}
 		
 		/**
-		 * 允许视频交互 
+		 * 做为被请求方同接受视频后，通知请求方播放视频 
 		 * @param clientVideoName
 		 * 
 		 */		
@@ -496,17 +471,27 @@ package com.snsoft.fmc.test{
 			if(nsOpposite != null){
 				nsOpposite.close();
 			}
+			
 			nsOpposite = new NetStream(nc,NetStream.CONNECT_TO_FMS);
 			nsOpposite.bufferTime = 0.1;
-			nsOpposite.play(farSeat.videoName);
+			nsOpposite.play(clientVideoName);
 			oppositeVideo.attachNetStream(nsOpposite);
 			oppositeVideo.visible = true;
+			
+			if(clientVideoName != localSeat.videoName){
+				accessCamera();
+				
+			}
+		}	
+		
+		public function callServicePassiveClientPlayVideo():void{
+			
 		}
 		
-		
-		
-		//被请求时摄像头初始化
-		
+		/**
+		 * 发布视频 
+		 * 
+		 */		
 		public function accessCamera():void{
 			mic = Microphone.getMicrophone();
 			camera = Camera.getCamera();
@@ -531,7 +516,7 @@ package com.snsoft.fmc.test{
 				nsLocal.bufferTime = 0.1;
 				nsLocal.attachCamera(camera);
 				nsLocal.attachAudio(mic);
-				nsLocal.publish(farSeat.videoName,NSPublishType.LIVE);
+				nsLocal.publish(localSeat.videoName,NSPublishType.LIVE);
 			}
 			else {
 				trace("缺少摄像头或声音设备！");
@@ -570,26 +555,8 @@ package com.snsoft.fmc.test{
 		 * 
 		 */		
 		private function callServiceAccessVideo():void{
-			var rspd:Responder = new Responder(callServiceAccessVideoResult,callServiceAccessVideoStatus);
-			nc.call("callBackAccessVideo",rspd, this.oppositeSeat.clientId, this.farSeat.videoName);
-		}
-		
-		/**
-		 * 共享对象Responder事件  
-		 * @param obj
-		 * 
-		 */		
-		private function callServiceAccessVideoResult(obj:Object):void{	
-			
-		}
-		
-		/**
-		 * 共享对象Responder事件 
-		 * @param obj
-		 * 
-		 */		
-		private function callServiceAccessVideoStatus(obj:Object):void{
-			trace("localNcCallSeatListStatus");
+			var ncc:NCCall = new NCCall(nc,"callBackAccessVideo",null,null,this.oppositeSeat.clientId, this.localSeat.videoName);
+			ncc.call();
 		}
 		
 		/**
