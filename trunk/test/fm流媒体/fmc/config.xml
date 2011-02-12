@@ -1,0 +1,13 @@
+﻿<config>
+	<property name="userType" value="two" />
+
+	<property name="userName" value="local" />
+
+	<property name="url" value="rtmp://60.10.151.28/oflaDemo" />
+
+	<!-- rtmp://60.10.151.28/oflaDemo -->
+
+	<!-- rtmp://192.168.0.22/oflaDemo -->
+
+	<!-- userType one two none -->
+</config>
