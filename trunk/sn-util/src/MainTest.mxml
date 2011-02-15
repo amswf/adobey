@@ -2,7 +2,7 @@
 <mx:Application creationComplete="init();" xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
 	<mx:Script>
 		<![CDATA[
-			import com.snsoft.util.images.BitmapBytes;
+			import com.snsoft.util.UUID;
 			
 			private function init():void{
 				
@@ -13,6 +13,7 @@
 				//particle;
 				fmTest;
 				//testPeopleRes;
+				UUID;
 			}
 		]]>
 	</mx:Script>
