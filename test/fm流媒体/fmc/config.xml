@@ -1,7 +1,7 @@
 ﻿<config>
-	<property name="userType" value="two" />
+	<property name="userType" value="none" />
 
-	<property name="userName" value="local" />
+	<property name="userName" value="test" />
 
 	<property name="url" value="rtmp://60.10.151.28/oflaDemo" />
 
