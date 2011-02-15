@@ -6,13 +6,7 @@
 	import fl.containers.*;
 	import fl.controls.*;
 	import fl.core.*;
-	import flash.net.GroupSpecifier;
-	import flash.net.NetGroup;
-	import flash.net.NetGroupInfo;
-	import flash.net.NetGroupReceiveMode;
-	import flash.net.NetGroupReplicationStrategy;
-	import flash.net.NetGroupSendMode;
-	import flash.net.NetGroupSendResult;
+	import flash.net.*;
 	
 	public class MainAs3Lib extends MovieClip {
 		
