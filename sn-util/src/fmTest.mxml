@@ -6,6 +6,7 @@
 			import com.snsoft.fmc.test.ExpertsVideo;
 			import com.snsoft.fmc.test.NetConnCall;
 			import com.snsoft.fmc.test.OnVideo;
+			import com.snsoft.fmc.test.PerformTest;
 			import com.snsoft.fmc.test.SeatSO;
 			import com.snsoft.fmc.test.SharedBall;
 			import com.snsoft.fmc.test.TspClientVideo;
@@ -22,6 +23,7 @@
 				SeatSO;
 				ExpertsVideo;
 				TspClientVideo;
+				PerformTest;
 			}
 		]]>
 	</mx:Script>
