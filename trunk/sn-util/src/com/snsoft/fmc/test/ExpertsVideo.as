@@ -292,6 +292,7 @@ package com.snsoft.fmc.test{
 			connBtn.x = 200;
 			connBtn.y = 340;
 			connBtn.width = 50;
+			connBtn.visible = false;
 			connBtn.addEventListener(MouseEvent.CLICK,handlerConnBtnClick);
 			this.addChild(connBtn);
 			
@@ -299,8 +300,16 @@ package com.snsoft.fmc.test{
 			roomComBox = new ComboBox();
 			roomComBox.x = 300;
 			roomComBox.y = 340;
-			if(this.userType == "one"){
+			
+			var userType:String = XMLFastConfig.getConfig(CFG_USERTYPE);
+			if(userType == "one"){
 				roomComBox.visible =false;
+			}
+			if(userType == "two"){
+				
+			}
+			else {
+				roomComBox.visible = true;
 			}
 			this.addChild(roomComBox);
 			roomComBox.addEventListener(Event.CHANGE,handlerRoomComboBoxChange);
@@ -344,6 +353,8 @@ package com.snsoft.fmc.test{
 			localVideo.y = 0;
 			localVideo.visible = false;
 			addChild(localVideo);
+			
+			connectService();
 		}
 		
 		
@@ -363,6 +374,10 @@ package com.snsoft.fmc.test{
 		 * 
 		 */		
 		private function handlerConnBtnClick(e:Event):void{
+			connectService();
+		}
+		
+		private function connectService():void{
 			if(nc != null && nc.connected){
 				nc.close();
 				setMsg("断开链接");
@@ -409,9 +424,6 @@ package com.snsoft.fmc.test{
 					
 					mic.setLoopBack(false);
 					mic.setUseEchoSuppression(true);
-					
-					localVideo.attachCamera(camera);
-					localVideo.visible = true;
 				}
 				
 				seatSO = new SeatSO(VC_SO_NAME,nc);
@@ -487,6 +499,10 @@ package com.snsoft.fmc.test{
 		 */		
 		private function handlerRoomComboBoxChange(e:Event):void{
 			trace("handlerRoomComboBoxChange");
+			
+			localVideo.attachCamera(camera);
+			localVideo.visible = true;
+			
 			var box:ComboBox = e.currentTarget as ComboBox;
 			var oppositeClientId:String = String(box.value);
 			var oppositeSeat:Seat = seatHV.findByName(oppositeClientId) as Seat;
@@ -527,6 +543,9 @@ package com.snsoft.fmc.test{
 		 * 
 		 */		
 		private function handlerAccessBtnClick(e:Event):void{
+			localVideo.attachCamera(camera);
+			localVideo.visible = true;
+			accessBtn.visible = false;
 			//发布视频
 			accessCamera();
 			//通知请求方，已接受视频 
