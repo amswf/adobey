@@ -6,8 +6,10 @@ package com.snsoft.fmc.test{
 	import com.snsoft.util.ComboBoxUtil;
 	import com.snsoft.util.SpriteUtil;
 	import com.snsoft.util.UUID;
+	import com.snsoft.xmldom.XMLFastConfig;
 	
 	import fl.controls.Button;
+	import fl.controls.CheckBox;
 	import fl.controls.ComboBox;
 	import fl.controls.TextArea;
 	
@@ -34,12 +36,19 @@ package com.snsoft.fmc.test{
 		 */		
 		private var camera:Camera;
 		
+		/**
+		 * 配置中的名称 
+		 */		
+		private static const CFG_URL:String = "url";
+		
 		
 		private var rtmpUrl:String = "rtmp://192.168.0.33/oflaDemo";
 		
 		private var ncList:Vector.<UUNetConnection> = new Vector.<UUNetConnection>();
 		
-		private var nsList:Vector.<NetStream> = new Vector.<NetStream>();
+		private var nsPlayList:Vector.<NetStream> = new Vector.<NetStream>();
+		
+		private var nsPubList:Vector.<NetStream> = new Vector.<NetStream>();
 		
 		private var videosLayer:Sprite = new Sprite();
 		
@@ -83,7 +92,20 @@ package com.snsoft.fmc.test{
 			var cameraBtn:Button = this.getChildByName("cameraBtn") as Button;
 			cameraBtn.addEventListener(MouseEvent.CLICK,handlerCameraBtnClick);
 			
+			XMLFastConfig.instance("config.xml",handlerXMLFastConfigComplete);
+			
 		}
+		
+		/**
+		 * 事件  
+		 * @param e
+		 * 
+		 */		
+		public function handlerXMLFastConfigComplete(e:Event):void{
+			//初始化参数
+			rtmpUrl = XMLFastConfig.getConfig(CFG_URL);
+		}
+			
 		
 		private function handlerCameraBtnClick(e:Event):void{
 			setMsg("设置摄像头");
@@ -123,6 +145,7 @@ package com.snsoft.fmc.test{
 				var uuid:String = UUID.create();
 				nc.client = this;
 				nc.uuconnect(rtmpUrl);
+				setMsg("链接服务器： "+rtmpUrl);
 				nc.addEventListener(NetStatusEvent.NET_STATUS,handlerNcStatus);
 			}
 		}
@@ -148,27 +171,44 @@ package com.snsoft.fmc.test{
 		 */		
 		private function handlerPublishBtnClick(e:Event):void{
 			var nc:UUNetConnection = ncList[0];
-			var ncc:NCCall = new NCCall(nc,"getId",getConnCountResult,null,nc.uuid);
+			var ncc:NCCall = new NCCall(nc,"getId",getIdResult,null,nc.uuid);
 			ncc.call();
 		}
 		
-		private function getConnCountResult(obj:Object):void{
+		private function getIdResult(obj:Object):void{
 			var id:String = String(obj);
+			
+			clearPubNs();
 			for(var i:int = 0;i<ncList.length;i ++){
 				var nc:UUNetConnection = ncList[i];
 				for(var j:int = 0;j<this.getNsNum();j ++){
 					var videoName:String = "cid" + id + "nc" + i + "ns" + j;
 					videoNameList.push(videoName);
 					var ns:NetStream = new NetStream(nc,NetStream.CONNECT_TO_FMS);
-					ns.bufferTime = 0.1;
-					ns.attachCamera(camera);
-					ns.attachAudio(mic);
-					ns.publish(videoName,NSPublishType.LIVE);
+					ns.bufferTime = getBufferTime();
+					if(isPubVideo()){
+						ns.attachCamera(camera);
+						setMsg("发布视频");
+					}
+					if(isPubAudio()){
+						ns.attachAudio(mic);
+						setMsg("发布音频");
+					}
+					ns.publish(videoName,NSPublishType.APPEND);
+					nsPubList.push(ns);
 					setMsg("发布视频成功：" +videoName);
 					var ncc:NCCall = new NCCall(nc,"addVideo",addVideoResult,null,videoName);
 					ncc.call();
 				}
 			}
+		}
+		
+		private function clearPubNs():void{
+			for(var i:int = 0;i<nsPubList.length;i ++){
+				var ns:NetStream = nsPubList[i];
+				ns.close();
+			}
+			nsPubList = new Vector.<NetStream>();
 		}
 		
 		private function addVideoResult(obj:Object):void{
@@ -240,10 +280,10 @@ package com.snsoft.fmc.test{
 			for(var i:int = 0;i<videoNameList.length;i ++){
 				var nc:UUNetConnection = ncList[i % ncList.length];
 				var ns:NetStream = new NetStream(nc,NetStream.CONNECT_TO_FMS);
-				ns.bufferTime = 0.5;
+				ns.bufferTime = getBufferTime();
 				var videoName:String = videoNameList[i] as String;
 				ns.play(videoName);
-				nsList.push(ns);
+				nsPlayList.push(ns);
 				var video:Video = new Video();
 				video.x = i * 5;
 				video.attachNetStream(ns);
@@ -272,11 +312,11 @@ package com.snsoft.fmc.test{
 		
 		private function removePlayer():void{
 			SpriteUtil.deleteAllChild(videosLayer);
-			for(var i:int = 0;i<nsList.length;i ++){
-				var ns:NetStream = nsList[i];
+			for(var i:int = 0;i<nsPlayList.length;i ++){
+				var ns:NetStream = nsPlayList[i];
 				ns.close();
 			}
-			nsList = new Vector.<NetStream>();
+			nsPlayList = new Vector.<NetStream>();
 		}
 		
 		
@@ -314,14 +354,31 @@ package com.snsoft.fmc.test{
 			return getTfdValue("qualityTfd");
 		}
 		
-		private function getTfdValue(name:String):int{
+		private function getBufferTime():Number{
+			return getTfdValue("bufferTfd"); 
+		}
+		
+		private function getTfdValue(name:String):Number{
 			var tfd:TextField = this.getChildByName(name) as TextField;
-			return int(tfd.text);
+			return Number(tfd.text);
+		}
+		
+		private function isPubVideo():Boolean{
+			return getCheckBoxValue("videoCB");
+		}
+		
+		private function isPubAudio():Boolean{
+			return getCheckBoxValue("audioCB");
+		}
+		
+		private function getCheckBoxValue(name:String):Boolean{
+			var cb:CheckBox = this.getChildByName(name) as CheckBox;
+			return cb.selected;
 		}
 		
 		private function setMsg(msg:String):void{
 			var ta:TextArea = this.getChildByName("msgTA") as TextArea;
-			ta.text += msg + "[" + int(Math.random() * 1000) + "]\r";
+			ta.text += msg + "    [" + int(Math.random() * 1000) + "]\r";
 		}
 		
 		/**
