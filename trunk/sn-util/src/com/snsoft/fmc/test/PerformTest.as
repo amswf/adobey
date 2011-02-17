@@ -105,7 +105,7 @@ package com.snsoft.fmc.test{
 			//初始化参数
 			rtmpUrl = XMLFastConfig.getConfig(CFG_URL);
 		}
-			
+		
 		
 		private function handlerCameraBtnClick(e:Event):void{
 			setMsg("设置摄像头");
@@ -117,7 +117,7 @@ package com.snsoft.fmc.test{
 			mic = Microphone.getMicrophone();
 			camera = Camera.getCamera();
 			
-			if(camera != null && mic != null){
+			if(camera != null){
 				trace(camera.fps);
 				camera.setKeyFrameInterval(15);
 				camera.setMode(400,300,15,false);
@@ -129,7 +129,8 @@ package com.snsoft.fmc.test{
 				localVideo.y = 0;
 				localVideo.attachCamera(camera);
 				this.addChild(localVideo);
-				
+			}
+			if(mic != null){
 				mic.setLoopBack(false);
 				mic.setUseEchoSuppression(true);
 			}
@@ -186,19 +187,27 @@ package com.snsoft.fmc.test{
 					videoNameList.push(videoName);
 					var ns:NetStream = new NetStream(nc,NetStream.CONNECT_TO_FMS);
 					ns.bufferTime = getBufferTime();
-					if(isPubVideo()){
+					var sign:Boolean = false;
+					if(isPubVideo() && camera != null){
 						ns.attachCamera(camera);
 						setMsg("发布视频");
+						sign = true;
 					}
-					if(isPubAudio()){
+					if(isPubAudio() && mic != null){
 						ns.attachAudio(mic);
 						setMsg("发布音频");
+						sign = true;
 					}
-					ns.publish(videoName,NSPublishType.LIVE);
-					nsPubList.push(ns);
-					setMsg("发布视频成功：" +videoName);
-					var ncc:NCCall = new NCCall(nc,"addVideo",addVideoResult,null,videoName);
-					ncc.call();
+					if(sign){
+						ns.publish(videoName,NSPublishType.LIVE);
+						nsPubList.push(ns);
+						setMsg("发布成功：" +videoName);
+						var ncc:NCCall = new NCCall(nc,"addVideo",addVideoResult,null,videoName);
+						ncc.call();
+					}
+					else {
+						setMsg("发布失败：音频、视频都没勾选");
+					}
 				}
 			}
 		}
@@ -275,7 +284,7 @@ package com.snsoft.fmc.test{
 		 * 
 		 */		
 		public function playAllVideo():void{
-			removePlayer();
+			clearNsPlayList();
 			setMsg("视频列表：" + videoNameList.length);
 			for(var i:int = 0;i<videoNameList.length;i ++){
 				var nc:UUNetConnection = ncList[i % ncList.length];
@@ -310,8 +319,7 @@ package com.snsoft.fmc.test{
 			video.attachNetStream(ns);
 		}
 		
-		private function removePlayer():void{
-			SpriteUtil.deleteAllChild(videosLayer);
+		private function clearNsPlayList():void{
 			for(var i:int = 0;i<nsPlayList.length;i ++){
 				var ns:NetStream = nsPlayList[i];
 				ns.close();
