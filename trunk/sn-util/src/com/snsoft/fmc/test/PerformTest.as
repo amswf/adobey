@@ -194,7 +194,7 @@ package com.snsoft.fmc.test{
 						ns.attachAudio(mic);
 						setMsg("发布音频");
 					}
-					ns.publish(videoName,NSPublishType.APPEND);
+					ns.publish(videoName,NSPublishType.LIVE);
 					nsPubList.push(ns);
 					setMsg("发布视频成功：" +videoName);
 					var ncc:NCCall = new NCCall(nc,"addVideo",addVideoResult,null,videoName);
