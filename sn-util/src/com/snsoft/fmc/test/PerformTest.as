@@ -2,6 +2,8 @@ package com.snsoft.fmc.test{
 	import com.snsoft.fmc.NCCall;
 	import com.snsoft.fmc.NSICode;
 	import com.snsoft.fmc.NSPublishType;
+	import com.snsoft.fmc.test.vi.PlayNetStream;
+	import com.snsoft.fmc.test.vi.PubNetStream;
 	import com.snsoft.fmc.test.vi.UUNetConnection;
 	import com.snsoft.util.ComboBoxUtil;
 	import com.snsoft.util.SpriteUtil;
@@ -46,15 +48,15 @@ package com.snsoft.fmc.test{
 		
 		private var ncList:Vector.<UUNetConnection> = new Vector.<UUNetConnection>();
 		
-		private var nsPlayList:Vector.<NetStream> = new Vector.<NetStream>();
+		private var nsPlayList:Vector.<PlayNetStream> = new Vector.<PlayNetStream>();
 		
-		private var nsPubList:Vector.<NetStream> = new Vector.<NetStream>();
+		private var nsPubList:Vector.<PubNetStream> = new Vector.<PubNetStream>();
 		
 		private var videosLayer:Sprite = new Sprite();
 		
 		private var videoNameList:Vector.<String>;
 		
-		private var ns:NetStream;
+		private var nsPlayOne:PlayNetStream;
 		
 		public function PerformTest()
 		{
@@ -69,35 +71,36 @@ package com.snsoft.fmc.test{
 			
 			creatMicAndVideo();
 			
+			//链接按钮
 			var connectBtn:Button = this.getChildByName("connectBtn") as Button;
 			connectBtn.addEventListener(MouseEvent.CLICK,handlerConnectBtnClick);
-			
+			//发布按钮
 			var publishBtn:Button = this.getChildByName("publishBtn") as Button;
 			publishBtn.addEventListener(MouseEvent.CLICK,handlerPublishBtnClick);
-			
+			//接收接钮
 			var playBtn:Button = this.getChildByName("playBtn") as Button;
 			playBtn.addEventListener(MouseEvent.CLICK,handlerPlayBtnClick);
-			
-			var delBtn:Button = this.getChildByName("delBtn") as Button;
-			delBtn.addEventListener(MouseEvent.CLICK,handlerDelBtnClick);
-			
-			
+			//刷新按钮
 			var refreshBtn:Button = this.getChildByName("refreshBtn") as Button;
 			refreshBtn.addEventListener(MouseEvent.CLICK,handlerRefreshBtnClick);
-			
+			//视频列表
 			var videoListCB:ComboBox = this.getChildByName("videoListCB") as ComboBox;
 			videoListCB.addEventListener(Event.CHANGE,handlerVideoListCBChange);
-			
-			
+			//设置摄像头按钮
 			var cameraBtn:Button = this.getChildByName("cameraBtn") as Button;
 			cameraBtn.addEventListener(MouseEvent.CLICK,handlerCameraBtnClick);
+			//设置摄像头按钮
+			var clearMsgBtn:Button = this.getChildByName("clearMsgBtn") as Button;
+			clearMsgBtn.addEventListener(MouseEvent.CLICK,handlerClearMsgBtnClick);
 			
+			//加载配置
 			XMLFastConfig.instance("config.xml",handlerXMLFastConfigComplete);
 			
 		}
 		
+		
 		/**
-		 * 事件  
+		 * 事件  加载配置
 		 * @param e
 		 * 
 		 */		
@@ -106,13 +109,31 @@ package com.snsoft.fmc.test{
 			rtmpUrl = XMLFastConfig.getConfig(CFG_URL);
 		}
 		
+		/**
+		 * 事件	清除信息 
+		 * @param e
+		 * 
+		 */		
+		private function handlerClearMsgBtnClick(e:Event):void{
+			var ta:TextArea = this.getChildByName("msgTA") as TextArea;
+			ta.text = "";
+		}
 		
+		/**
+		 * 设置摄像头
+		 * @param e
+		 * 
+		 */		
 		private function handlerCameraBtnClick(e:Event):void{
 			setMsg("设置摄像头");
 			camera.setMode(getCameraWidth(),getCameraHeight(),getFRM(),false);
 			camera.setQuality(getCameraQuality()* 800,0);
 		}
 		
+		/**
+		 * 初始化话筒和摄像头
+		 * 
+		 */		
 		private function creatMicAndVideo():void{
 			mic = Microphone.getMicrophone();
 			camera = Camera.getCamera();
@@ -136,6 +157,11 @@ package com.snsoft.fmc.test{
 			}
 		}
 		
+		/**
+		 * 链接 
+		 * @param e
+		 * 
+		 */		
 		private function handlerConnectBtnClick(e:Event):void{
 			videoNameList = new Vector.<String>();
 			var ncNum:int = this.getNcNum();
@@ -152,7 +178,7 @@ package com.snsoft.fmc.test{
 		}
 		
 		/**
-		 * 
+		 * 事件	链接成功
 		 * @param e
 		 * 
 		 */		
@@ -166,7 +192,7 @@ package com.snsoft.fmc.test{
 		}
 		
 		/**
-		 * 
+		 * 事件	发布按钮
 		 * @param e
 		 * 
 		 */		
@@ -176,16 +202,21 @@ package com.snsoft.fmc.test{
 			ncc.call();
 		}
 		
+		/**
+		 * 回调	 获得当前id
+		 * @param obj
+		 * 
+		 */		
 		private function getIdResult(obj:Object):void{
 			var id:String = String(obj);
-			
 			clearPubNs();
 			for(var i:int = 0;i<ncList.length;i ++){
 				var nc:UUNetConnection = ncList[i];
 				for(var j:int = 0;j<this.getNsNum();j ++){
 					var videoName:String = "cid" + id + "nc" + i + "ns" + j;
 					videoNameList.push(videoName);
-					var ns:NetStream = new NetStream(nc,NetStream.CONNECT_TO_FMS);
+					var ns:PubNetStream = new PubNetStream(nc,NetStream.CONNECT_TO_FMS);
+					ns.setPerformTest(this);
 					ns.bufferTime = getBufferTime();
 					var sign:Boolean = false;
 					if(isPubVideo() && camera != null){
@@ -199,7 +230,7 @@ package com.snsoft.fmc.test{
 						sign = true;
 					}
 					if(sign){
-						ns.publish(videoName,NSPublishType.LIVE);
+						ns.uuPublish(videoName,NSPublishType.LIVE);
 						nsPubList.push(ns);
 						setMsg("发布成功：" +videoName);
 						var ncc:NCCall = new NCCall(nc,"addVideo",addVideoResult,null,videoName);
@@ -214,10 +245,10 @@ package com.snsoft.fmc.test{
 		
 		private function clearPubNs():void{
 			for(var i:int = 0;i<nsPubList.length;i ++){
-				var ns:NetStream = nsPubList[i];
+				var ns:PubNetStream = nsPubList[i];
 				ns.close();
 			}
-			nsPubList = new Vector.<NetStream>();
+			nsPubList = new Vector.<PubNetStream>();
 		}
 		
 		private function addVideoResult(obj:Object):void{
@@ -234,13 +265,6 @@ package com.snsoft.fmc.test{
 			playAllVideo();
 		}
 		
-		private function handlerDelBtnClick(e:Event):void{	
-			
-			var nc:UUNetConnection = ncList[0];
-			var ncc:NCCall = new NCCall(nc,"delAllVideo",delAllVideoResult,null);
-			ncc.call();
-		}
-		
 		private function handlerRefreshBtnClick(e:Event):void{
 			refreshVideoList();
 		}
@@ -251,28 +275,23 @@ package com.snsoft.fmc.test{
 			ncc.call();
 		}
 		
-		private function handlerVideoListCBChange(e:Event):void{
-			var cb:ComboBox = e.currentTarget as ComboBox;
-			var videoName:String = String(cb.value);
-			if(videoName != null){
-				var nc:UUNetConnection = ncList[0];
-				playOneVideo(nc,videoName);
-			}
-		}
-		
-		
 		private function getPlayOneVideoListResult(obj:Object):void{
 			var videoNameArray:Array = obj as Array;
 			var videoListCB:ComboBox = this.getChildByName("videoListCB") as ComboBox;
 			videoListCB.removeAll();
 			videoListCB.addItem(ComboBoxUtil.creatCBIterm("请选择视频",null));
+			setMsg("视频列表：" +videoNameArray.length);
 			for(var i:int = 0;i<videoNameArray.length;i ++){
 				var videoName:String = videoNameArray[i] as String;
 				videoListCB.addItem(ComboBoxUtil.creatCBIterm(videoName,videoName));
 			}
 		}
 		
-		
+		/**
+		 * 
+		 * @param obj
+		 * 
+		 */		
 		private function delAllVideoResult(obj:Object):void{
 			refreshVideoList();
 			trace(obj);	
@@ -288,15 +307,29 @@ package com.snsoft.fmc.test{
 			setMsg("视频列表：" + videoNameList.length);
 			for(var i:int = 0;i<videoNameList.length;i ++){
 				var nc:UUNetConnection = ncList[i % ncList.length];
-				var ns:NetStream = new NetStream(nc,NetStream.CONNECT_TO_FMS);
+				var ns:PlayNetStream = new PlayNetStream(nc,NetStream.CONNECT_TO_FMS);
 				ns.bufferTime = getBufferTime();
 				var videoName:String = videoNameList[i] as String;
-				ns.play(videoName);
+				ns.uuPlay(videoName);
 				nsPlayList.push(ns);
 				var video:Video = new Video();
 				video.x = i * 5;
 				video.attachNetStream(ns);
 				setMsg("接收视频：" + videoName);
+			}
+		}
+		
+		/**
+		 * 
+		 * @param e
+		 * 
+		 */		
+		private function handlerVideoListCBChange(e:Event):void{
+			var cb:ComboBox = e.currentTarget as ComboBox;
+			var videoName:String = String(cb.value);
+			if(videoName != null){
+				var nc:UUNetConnection = ncList[0];
+				playOneVideo(nc,videoName);
 			}
 		}
 		
@@ -308,23 +341,23 @@ package com.snsoft.fmc.test{
 		 */		
 		public function playOneVideo(nc:UUNetConnection,videoName:String):void{
 			SpriteUtil.deleteAllChild(videosLayer);
-			if(ns != null){
-				ns.close();
+			if(nsPlayOne != null){
+				nsPlayOne.close();
 			}
-			ns = new NetStream(nc,NetStream.CONNECT_TO_FMS);
-			ns.bufferTime = 0.5;
-			ns.play(videoName);
+			nsPlayOne = new PlayNetStream(nc,NetStream.CONNECT_TO_FMS);
+			nsPlayOne.bufferTime = getBufferTime();
+			nsPlayOne.uuPlay(videoName);
 			var video:Video = new Video();
 			videosLayer.addChild(video);
-			video.attachNetStream(ns);
+			video.attachNetStream(nsPlayOne);
 		}
 		
 		private function clearNsPlayList():void{
 			for(var i:int = 0;i<nsPlayList.length;i ++){
-				var ns:NetStream = nsPlayList[i];
+				var ns:PlayNetStream = nsPlayList[i];
 				ns.close();
 			}
-			nsPlayList = new Vector.<NetStream>();
+			nsPlayList = new Vector.<PlayNetStream>();
 		}
 		
 		
@@ -384,9 +417,9 @@ package com.snsoft.fmc.test{
 			return cb.selected;
 		}
 		
-		private function setMsg(msg:String):void{
+		public function setMsg(msg:String):void{
 			var ta:TextArea = this.getChildByName("msgTA") as TextArea;
-			ta.text += msg + "    [" + int(Math.random() * 1000) + "]\r";
+			ta.appendText(msg + "    [" + int(Math.random() * 1000) + "]\r\n");
 		}
 		
 		/**
