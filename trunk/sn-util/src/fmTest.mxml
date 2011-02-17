@@ -10,6 +10,8 @@
 			import com.snsoft.fmc.test.SeatSO;
 			import com.snsoft.fmc.test.SharedBall;
 			import com.snsoft.fmc.test.TspClientVideo;
+			import com.snsoft.fmc.test.vi.PlayNetStream;
+			import com.snsoft.fmc.test.vi.PubNetStream;
 			import com.snsoft.fmc.test.vi.Room;
 			import com.snsoft.fmc.test.vi.Seat;
 			
@@ -24,6 +26,8 @@
 				ExpertsVideo;
 				TspClientVideo;
 				PerformTest;
+				PubNetStream;
+				PlayNetStream;
 			}
 		]]>
 	</mx:Script>
