@@ -3,7 +3,7 @@
 
 	<property name="userName" value="test" />
 
-	<property name="url" value="rtmp://60.10.151.28/oflaDemo" />
+	<property name="url" value="rtmp://192.168.0.33/oflaDemo" />
 
 	<!-- rtmp://60.10.151.28/oflaDemo -->
 
