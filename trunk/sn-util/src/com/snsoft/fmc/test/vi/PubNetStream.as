@@ -21,6 +21,8 @@
 		
 		private var pt:PerformTest;
 		
+		private var bufferEmptyCount:int = 0;
+		
 		public function PubNetStream(connection:NetConnection, peerID:String="connectToFMS")
 		{
 			super(connection, peerID);
@@ -56,11 +58,39 @@
 		}
 		
 		private function handerNetStatus(e:NetStatusEvent):void{
-			pt.setMsg("Pub状态" + e.info.code);
-			if(e.info.code == NSICode.NetStream_Publish_Idle){
-				pt.setMsg("Status状态" + e.info.code + "重新发布视频");
-				super.publish(pubName,pubType); 
+			//pt.setMsg("Status状态" + e.info.code);
+			if(e.info.code == NSICode.NetStream_Buffer_Empty){
+				bufferEmptyCount ++;
+				if(bufferEmptyCount >= 10){
+					this.close();
+				}
 			}
+			if(e.info.code == NSICode.NetStream_Buffer_Full){
+				bufferEmptyCount = 0;
+			}
+			else if(e.info.code == NSICode.NetStream_Publish_Idle){
+				this.close();
+			}
+			else if(e.info.code == NSICode.NetStream_Connect_Rejected){
+				this.close();
+			}
+			else if(e.info.code == NSICode.NetStream_Connect_Closed){
+				rePublish(e.info.code);
+			}
+			else if(e.info.code == NSICode.NetStream_Unpublish_Success){
+				rePublish(e.info.code);
+			}
+		}
+		
+		/**
+		 * 重新发布 
+		 * @param code
+		 * 
+		 */		
+		private function rePublish(code:String):void{
+			bufferEmptyCount = 0;
+			pt.setMsg("Status状态" + code + "重新发布视频" + this.currentFPS);
+			super.publish(pubName,pubType);
 		}
 		
 	}

@@ -49,7 +49,6 @@
 		}
 		
 		private function handerNetStatus(e:NetStatusEvent):void{
-			pt.setMsg("Play状态" + e.info.code);
 			if(e.info.code == NSICode.NetStream_Play_Failed){
 				pt.setMsg("Status状态" + e.info.code + "重新获得视频");
 				super.play.apply(null,playParameters);

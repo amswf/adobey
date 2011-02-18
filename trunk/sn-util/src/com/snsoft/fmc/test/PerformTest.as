@@ -13,7 +13,9 @@ package com.snsoft.fmc.test{
 	import fl.controls.Button;
 	import fl.controls.CheckBox;
 	import fl.controls.ComboBox;
+	import fl.controls.Label;
 	import fl.controls.TextArea;
+	import fl.core.UIComponent;
 	
 	import flash.display.Sprite;
 	import flash.events.ActivityEvent;
@@ -25,6 +27,7 @@ package com.snsoft.fmc.test{
 	import flash.media.Video;
 	import flash.net.NetStream;
 	import flash.text.TextField;
+	import flash.text.TextFormat;
 	
 	public class PerformTest extends Sprite{
 		
@@ -70,6 +73,13 @@ package com.snsoft.fmc.test{
 			this.addChild(videosLayer);
 			
 			creatMicAndVideo();
+			
+			for(var i:int = 0;i<this.numChildren;i++){
+				var uic:UIComponent = this.getChildAt(i) as UIComponent;
+				if(uic != null){
+					uic.setStyle("textFormat",new TextFormat(null,12));
+				}
+			}
 			
 			//链接按钮
 			var connectBtn:Button = this.getChildByName("connectBtn") as Button;
@@ -141,8 +151,8 @@ package com.snsoft.fmc.test{
 			if(camera != null){
 				trace(camera.fps);
 				camera.setKeyFrameInterval(15);
-				camera.setMode(400,300,15,false);
-				camera.setQuality(48000,0);
+				camera.setMode(getCameraWidth(),getCameraHeight(),getFRM(),false);
+				camera.setQuality(getCameraQuality()*800,0);
 				camera.addEventListener(ActivityEvent.ACTIVITY,handlerCameraActivityEvent);
 				
 				var localVideo:Video = new Video(200,150);
@@ -308,6 +318,7 @@ package com.snsoft.fmc.test{
 			for(var i:int = 0;i<videoNameList.length;i ++){
 				var nc:UUNetConnection = ncList[i % ncList.length];
 				var ns:PlayNetStream = new PlayNetStream(nc,NetStream.CONNECT_TO_FMS);
+				ns.setPerformTest(this);
 				ns.bufferTime = getBufferTime();
 				var videoName:String = videoNameList[i] as String;
 				ns.uuPlay(videoName);
@@ -345,6 +356,7 @@ package com.snsoft.fmc.test{
 				nsPlayOne.close();
 			}
 			nsPlayOne = new PlayNetStream(nc,NetStream.CONNECT_TO_FMS);
+			nsPlayOne.setPerformTest(this);
 			nsPlayOne.bufferTime = getBufferTime();
 			nsPlayOne.uuPlay(videoName);
 			var video:Video = new Video();
@@ -419,7 +431,8 @@ package com.snsoft.fmc.test{
 		
 		public function setMsg(msg:String):void{
 			var ta:TextArea = this.getChildByName("msgTA") as TextArea;
-			ta.appendText(msg + "    [" + int(Math.random() * 1000) + "]\r\n");
+			ta.appendText(msg + "    [" + int(Math.random() * 1000) + "]\n");
+			ta.verticalScrollPosition = ta.maxVerticalScrollPosition;
 		}
 		
 		/**
