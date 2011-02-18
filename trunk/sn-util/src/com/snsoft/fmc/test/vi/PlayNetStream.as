@@ -1,4 +1,4 @@
-package com.snsoft.fmc.test.vi{
+﻿package com.snsoft.fmc.test.vi{
 	import com.snsoft.fmc.NSICode;
 	import com.snsoft.fmc.test.PerformTest;
 	
@@ -49,6 +49,7 @@ package com.snsoft.fmc.test.vi{
 		}
 		
 		private function handerNetStatus(e:NetStatusEvent):void{
+			pt.setMsg("Play状态" + e.info.code);
 			if(e.info.code == NSICode.NetStream_Play_Failed){
 				pt.setMsg("Status状态" + e.info.code + "重新获得视频");
 				super.play.apply(null,playParameters);

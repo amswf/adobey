@@ -1,4 +1,4 @@
-package com.snsoft.fmc.test.vi{
+﻿package com.snsoft.fmc.test.vi{
 	import com.snsoft.fmc.NSICode;
 	import com.snsoft.fmc.test.PerformTest;
 	
@@ -56,6 +56,7 @@ package com.snsoft.fmc.test.vi{
 		}
 		
 		private function handerNetStatus(e:NetStatusEvent):void{
+			pt.setMsg("Pub状态" + e.info.code);
 			if(e.info.code == NSICode.NetStream_Publish_Idle){
 				pt.setMsg("Status状态" + e.info.code + "重新发布视频");
 				super.publish(pubName,pubType); 
