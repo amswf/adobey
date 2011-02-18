@@ -58,7 +58,7 @@
 		}
 		
 		private function handerNetStatus(e:NetStatusEvent):void{
-			//pt.setMsg("Status状态" + e.info.code);
+			//pt.setMsg("Status发布状态" + e.info.code);
 			if(e.info.code == NSICode.NetStream_Buffer_Empty){
 				bufferEmptyCount ++;
 				if(bufferEmptyCount >= 10){
@@ -90,7 +90,9 @@
 		private function rePublish(code:String):void{
 			bufferEmptyCount = 0;
 			pt.setMsg("Status状态" + code + "重新发布视频" + this.currentFPS);
+			this.send("rePlay");
 			super.publish(pubName,pubType);
+			
 		}
 		
 	}
