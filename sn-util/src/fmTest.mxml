@@ -8,7 +8,9 @@
 			import com.snsoft.fmc.test.OnVideo;
 			import com.snsoft.fmc.test.PerformTest;
 			import com.snsoft.fmc.test.SeatSO;
+			import com.snsoft.fmc.test.SendNetStream;
 			import com.snsoft.fmc.test.SharedBall;
+			import com.snsoft.fmc.test.TestSend;
 			import com.snsoft.fmc.test.TspClientVideo;
 			import com.snsoft.fmc.test.vi.PlayNetStream;
 			import com.snsoft.fmc.test.vi.PubNetStream;
@@ -28,6 +30,8 @@
 				PerformTest;
 				PubNetStream;
 				PlayNetStream;
+				TestSend;
+				SendNetStream;
 			}
 		]]>
 	</mx:Script>
