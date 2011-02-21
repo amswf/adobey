@@ -61,6 +61,8 @@ package com.snsoft.fmc.test{
 		
 		private var nsPlayOne:PlayNetStream;
 		
+		private var localVideo:Video;
+		
 		public function PerformTest()
 		{
 			this.addEventListener(Event.ENTER_FRAME,handlerEnterFrame);
@@ -78,6 +80,9 @@ package com.snsoft.fmc.test{
 				var uic:UIComponent = this.getChildAt(i) as UIComponent;
 				if(uic != null){
 					uic.setStyle("textFormat",new TextFormat(null,12));
+					if(uic is ComboBox){
+						(uic as ComboBox).dropdown.setRendererStyle("textFormat",new TextFormat(null,12));
+					}
 				}
 			}
 			
@@ -136,8 +141,7 @@ package com.snsoft.fmc.test{
 		 */		
 		private function handlerCameraBtnClick(e:Event):void{
 			setMsg("设置摄像头");
-			camera.setMode(getCameraWidth(),getCameraHeight(),getFRM(),false);
-			camera.setQuality(getCameraQuality()* 800,0);
+			creatMicAndVideo();
 		}
 		
 		/**
@@ -155,7 +159,10 @@ package com.snsoft.fmc.test{
 				camera.setQuality(getCameraQuality()*800,0);
 				camera.addEventListener(ActivityEvent.ACTIVITY,handlerCameraActivityEvent);
 				
-				var localVideo:Video = new Video(200,150);
+				if(localVideo != null){
+					this.removeChild(localVideo);
+				}
+				localVideo = new Video(200,150);
 				localVideo.x = 400 ;
 				localVideo.y = 0;
 				localVideo.attachCamera(camera);

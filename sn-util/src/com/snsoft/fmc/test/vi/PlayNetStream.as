@@ -55,8 +55,9 @@
 			}
 			if(e.info.code == NSICode.NetStream_Play_PublishNotify){
 				//这里要找到NetStream.send  发不过来的原因。
+				pt.setMsg("Status状态" + e.info.code + "延时过大");
 				super.play.apply(null,playParameters);
 			}
-		}		
-	}
+		}		 
+	}	
 }
