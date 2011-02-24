@@ -26,7 +26,6 @@ public class FileSave extends HttpServlet {
 		int v;
 
 		String saveurl = this.getServletContext().getRealPath("/") + Config.SAVE_FILE_PATH;
-		String uploadurl = this.getServletContext().getRealPath("/") + Config.UPLOAD_FILE_PATH;
 		String fileName = request.getParameter("fileName");
 		saveurl += fileName; // ±£´æÂ·¾¶
 		System.out.println(saveurl);
