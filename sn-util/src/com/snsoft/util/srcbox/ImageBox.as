@@ -1,6 +1,6 @@
 package com.snsoft.util.srcbox{
 	import com.snsoft.util.HashVector;
-	import com.snsoft.util.ImageLoader;
+	import com.snsoft.util.images.ImageLoader;
 	
 	import flash.display.BitmapData;
 	import flash.events.Event;

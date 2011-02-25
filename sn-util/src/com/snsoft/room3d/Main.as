@@ -6,7 +6,7 @@
 	import com.snsoft.room3d.dataObject.SeatDO;
 	import com.snsoft.room3d.dataObject.SeatLinkDO;
 	import com.snsoft.util.HashVector;
-	import com.snsoft.util.ImageLoader;
+	import com.snsoft.util.images.ImageLoader;
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.SpriteUtil;
 	import com.snsoft.util.StringUtil;
