@@ -48,6 +48,7 @@ package com.snsoft.util.images{
 		 */		
 		public function ImagesManager(type:String = "ordered", imgUrlList:Vector.<String> = null){
 			if(imgUrlList != null){
+				this.type = type;
 				this.imgUrlList = imgUrlList;
 			}
 		}
@@ -68,7 +69,7 @@ package com.snsoft.util.images{
 		 * @param imgUrl
 		 * 
 		 */		
-		public function getImgBitmapDataByUrl(imgUrl:String):BitmapData{
+		public function getImgByUrl(imgUrl:String):BitmapData{
 			return this.imgBmdList.findByName(imgUrl) as BitmapData;
 		}
 		
@@ -85,10 +86,11 @@ package com.snsoft.util.images{
 		 * @param index
 		 * 
 		 */		
-		public function getImgBitmapDataByIndex(index:int):BitmapData{
+		public function getImgByIndex(index:int):BitmapData{
 			var bmd:BitmapData = null;
-			if(this.imgBmdList.length > 0 && index >= 0 && index < this.imgBmdList.length){
-				bmd = this.imgBmdList.findByIndex(index) as BitmapData;
+			if(this.imgUrlList.length > 0 && index >= 0 && index < this.imgUrlList.length){
+				var url:String = this.imgUrlList[index];
+				bmd = this.imgBmdList.findByName(url) as BitmapData;
 			}
 			return bmd;
 		}
@@ -172,6 +174,8 @@ package com.snsoft.util.images{
 		 */		
 		private function plusOrderedLoadCmpCount():void{
 			loadCmpCount ++;
+			var pv:Number = int(100 * this.loadCmpCount / this.imgUrlList.length);
+			this.dispatchEvent(new ImagesManagerEvent(ImagesManagerEvent.PROGRESS,false,false,pv));
 			if(loadCmpCount < this.imgUrlList.length){
 				loadNextImage();
 			}
@@ -186,6 +190,8 @@ package com.snsoft.util.images{
 		 */		
 		private function plusUnOrderedLoadCmpCount():void{
 			loadCmpCount ++;
+			var pv:Number = int(100 * this.loadCmpCount / this.imgUrlList.length);
+			this.dispatchEvent(new ImagesManagerEvent(ImagesManagerEvent.PROGRESS,false,false,pv));
 			if(loadCmpCount == this.imgUrlList.length){
 				this.dispatchEvent(new Event(Event.COMPLETE));
 			}
