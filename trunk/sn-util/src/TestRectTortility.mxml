@@ -7,7 +7,7 @@
 		<![CDATA[
 			import com.snsoft.tortility.Quadrilateral4Point;
 			import com.snsoft.tortility.RectTortility;
-			import com.snsoft.util.ImageLoader;
+			import com.snsoft.util.images.ImageLoader;
 			
 			private var q4pe:Quadrilateral4Point = new Quadrilateral4Point(new Point(0,0),new Point(100,0),new Point(150,200),new Point(0,100));
 			

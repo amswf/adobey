@@ -1,7 +1,7 @@
 package com.snsoft.map
 {
 	import com.snsoft.map.util.MapUtil;
-	import com.snsoft.util.ImageLoader;
+	import com.snsoft.util.images.ImageLoader;
 	import com.snsoft.util.SkinsUtil;
 	
 	import flash.display.Bitmap;

@@ -2,7 +2,7 @@ package com.snsoft.room3d{
 	import com.snsoft.room3d.dataObject.RoomDO;
 	import com.snsoft.room3d.dataObject.SeatDO;
 	import com.snsoft.util.HashVector;
-	import com.snsoft.util.ImageLoader;
+	import com.snsoft.util.images.ImageLoader;
 	
 	import fl.containers.ScrollPane;
 	import fl.core.InvalidationType;

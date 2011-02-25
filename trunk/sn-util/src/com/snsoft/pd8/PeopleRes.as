@@ -1,5 +1,5 @@
 package com.snsoft.pd8{
-	import com.snsoft.util.ImageLoader;
+	import com.snsoft.util.images.ImageLoader;
 	
 	import flash.display.BitmapData;
 	import flash.events.Event;

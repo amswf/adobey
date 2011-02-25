@@ -1,5 +1,5 @@
 package com.snsoft.room3d{
-	import com.snsoft.util.ImageLoader;
+	import com.snsoft.util.images.ImageLoader;
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.StringUtil;
 	import com.snsoft.util.text.Text;
