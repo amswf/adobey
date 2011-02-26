@@ -1,4 +1,4 @@
-package com.snsoft.sndoor{
+package com.snsoft.util.uiloading{
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
 	
@@ -15,7 +15,7 @@ package com.snsoft.sndoor{
 		
 		private var loadingTextFormat:TextFormat;
 		
-		public function LoadingProgress(width:Number,height:Number){
+		public function LoadingProgress(width:Number,height:Number,textColor:uint = 0x4F921F){
 			super();
 			this.width = width;
 			this.height = height;
@@ -24,7 +24,7 @@ package com.snsoft.sndoor{
 			loadingTextFormat.font ="宋体";
 			loadingTextFormat.align = TextFormatAlign.CENTER;
 			loadingTextFormat.size = 12;
-			loadingTextFormat.color = 0x4F921F;
+			loadingTextFormat.color = textColor;
 			loadingTextFormat.leading = 4;
 			
 			loadingText = new TextField();

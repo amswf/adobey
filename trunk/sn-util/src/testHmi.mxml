@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application creationComplete="init();" xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
+	<mx:Script>
+		<![CDATA[
+			import com.ldl.hmi.Main;
+			import com.ldl.hmi.MenuBtn;
+			 
+			
+			private function init():void{
+				com.ldl.hmi.Main;
+				com.ldl.hmi.MenuBtn;
+			}
+		]]>
+	</mx:Script>
+</mx:Application>
