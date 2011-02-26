@@ -14,12 +14,9 @@
 				//BitmapBytes;
 				//wayfindTest;
 				//particle;
-				fmTest;
+				//fmTest;
 				//testPeopleRes;
-				UUID;
-				ImagesManager;
-				ListController;
-				ImagesManagerEvent;
+				testHmi;
 			}
 		]]>
 	</mx:Script>

@@ -27,6 +27,7 @@
 	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
+	import com.snsoft.util.uiloading.LoadingProgress;
 	
 	public class Main extends MovieClip{
 		

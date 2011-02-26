@@ -4,7 +4,7 @@
 		<![CDATA[
 			import com.snsoft.sndoor.ADSlideBtn;
 			import com.snsoft.sndoor.ADSlidePlayer;
-			import com.snsoft.sndoor.LoadingProgress;
+			import com.snsoft.util.uiloading.LoadingProgress;
 			import com.snsoft.sndoor.Main;
 			import com.snsoft.util.srcbox.MediaBox;
 			import com.snsoft.sndoor.MenuI;
