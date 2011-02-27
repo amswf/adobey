@@ -1,4 +1,4 @@
-package com.ldl.hmi{
+﻿package com.ldl.hmi{
 	import com.snsoft.font.EmbedFonts;
 	
 	import flash.display.MovieClip;
@@ -29,6 +29,7 @@ package com.ldl.hmi{
 		private function handlerEnterFrame(e:Event):void{
 			this.removeEventListener(Event.ENTER_FRAME,handlerEnterFrame);
 			
+			setTextColor(0x000000,10,false);
 			this.addEventListener(MouseEvent.MOUSE_OVER,handlerMouseOver);
 			this.addEventListener(MouseEvent.MOUSE_OUT,handlerMouseOut);
 		}
@@ -56,25 +57,26 @@ package com.ldl.hmi{
 				var dsf:DropShadowFilter = new DropShadowFilter(2,45,0x000000,1,3,3,1,3);
 				filters.push(dsf);
 			}
+			setTextField(ctfd,size,color,isDsf);
+			setTextField(etfd,size-1,color,isDsf);
+		}
+		
+		private function setTextField(textField:TextField, size:int, color:uint, isDsf:Boolean):void{
+			var filters:Array = new Array();
+			if(isDsf){
+				var dsf:DropShadowFilter = new DropShadowFilter(2,45,0x000000,1,3,3,1,3);
+				filters.push(dsf);
+			}
 			
 			var ctft:TextFormat = ctfd.getTextFormat();
 			ctft.font = EmbedFonts.findFontByName("FZHeiB01S");
 			ctft.color = color;
 			ctft.size = size;
-			ctfd.embedFonts = true;
-			ctfd.antiAliasType = AntiAliasType.ADVANCED;
-			ctfd.gridFitType = GridFitType.PIXEL;
-			ctfd.setTextFormat(ctft);
-			ctfd.filters = filters;
-			var etft:TextFormat = etfd.getTextFormat();
-			etft.font = EmbedFonts.findFontByName("FZHeiB01S");
-			etft.color = color;
-			etft.size = size - 1;
-			etfd.embedFonts = true;
-			etfd.antiAliasType = AntiAliasType.ADVANCED;
-			etfd.gridFitType = GridFitType.PIXEL;
-			etfd.setTextFormat(etft);
-			etfd.filters = filters;
+			textField.embedFonts = true;
+			textField.antiAliasType = AntiAliasType.ADVANCED;
+			textField.gridFitType = GridFitType.PIXEL;
+			textField.setTextFormat(ctft);
+			textField.filters = filters;
 		}
 		
 		private function get ctfd():TextField{
