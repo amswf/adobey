@@ -11,8 +11,8 @@ package com.snsoft.util.rlm{
 		 */		
 		public static const UNORDERED:String = "unordered";
 		
-		public function ResLoadManagerType()
-		{
+		public function ResLoadManagerType(){
+			
 		}
 	}
 }

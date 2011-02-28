@@ -5,7 +5,7 @@ package com.snsoft.util.rlm{
 	 * @author Administrator
 	 * 
 	 */	
-	public class LoadType{
+	public class ResLoaderType{
 		
 		/**
 		 * SWF 文件或图像（JPG、PNG 或 GIF）文件 
@@ -17,7 +17,8 @@ package com.snsoft.util.rlm{
 		 */		
 		public static const URL:String = "url";
 		
-		public function LoadType(){
+		public function ResLoaderType(){
+			
 		}
 	}
 }

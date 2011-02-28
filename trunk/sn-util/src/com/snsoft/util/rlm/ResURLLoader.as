@@ -6,6 +6,11 @@ package com.snsoft.util.rlm{
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 
+	/**
+	 * 加载文本、二进制数据或 URL 编码变量的形式从 URL 下载数据  
+	 * @author Administrator
+	 * 
+	 */	
 	public class ResURLLoader extends URLLoader{
 		
 		private var _urlMd5:String;

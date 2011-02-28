@@ -10,18 +10,31 @@ package com.snsoft.util.rlm{
 	import flash.net.URLRequest;
 	
 	/**
+	 * 资源加载管理器
 	 * resources load manager 
 	 * @author Administrator
 	 * 
 	 */	
 	public class ResLoadManager extends EventDispatcher{
 		
+		/**
+		 * 加载类型  顺序/非顺序 ResLoadManagerType 
+		 */		
 		private var type:String;
 		
+		/**
+		 * 地址列表 
+		 */		
 		private var urlList:Vector.<String> = new Vector.<String>();
 		
+		/**
+		 * 加载文件类 
+		 */		
 		private var loadTypeList:Vector.<String> = new Vector.<String>();
 		
+		/**
+		 * 加载到的资源列表 
+		 */		
 		private var resList:HashVector = new HashVector();
 		
 		/**
@@ -34,12 +47,24 @@ package com.snsoft.util.rlm{
 		 */		
 		private var loadCmpCount:int = 0;
 		
+		/**
+		 * 加载失败计数 
+		 */		
 		private var errorCount:int = 0;
 		
+		/**
+		 * 已加载的字节数 
+		 */		
 		private var bytesLoaded:int = 0;
 		
+		/**
+		 * 总字节数 
+		 */		
 		private var bytesTotal:int = 0;
 		
+		/**
+		 * 非顺序加载时，已加载字节数的列表 
+		 */		
 		private var bytesLoadedList:HashVector = new HashVector();
 		
 		/**
@@ -54,17 +79,35 @@ package com.snsoft.util.rlm{
 		/**
 		 * 返回url 对应资源的标识ID用于取出资源
 		 * @param url 资源地址
-		 * @param type ResType.MEDIA 或  URL
+		 * @param type ResType.MEDIA 或  URL type等 于null时，按扩展名自动处理
 		 * 
 		 */		
-		public function add(url:String,loadType:String):String{
+		public function add(url:String,resLoadType:String = null):String{
 			var urlMd5:String = null;
-			if(!isLoading){
+			if(!isLoading && url != null){
+				if(resLoadType == null){
+					resLoadType = getLoaderType(url);
+				}
 				this.urlList.push(url);
-				this.loadTypeList.push(loadType);
+				this.loadTypeList.push(resLoadType);
 				urlMd5 = MD5.hash(url);
 			}
 			return urlMd5;
+		}
+		
+		public function getLoaderType(url:String):String{
+			var type:String = ResLoaderType.URL;
+			var dotIndex:int = url.lastIndexOf(".");
+			if(dotIndex > 0){
+				var eName:String = url.substring(dotIndex + 1,url.length);
+				if(    eName.toLocaleLowerCase() == "swf" 
+					|| eName.toLocaleLowerCase() == "png"
+					|| eName.toLocaleLowerCase() == "jpg"
+					|| eName.toLocaleLowerCase() == "gif"){
+					type = ResLoaderType.MEDIA;
+				}
+			}
+			return type;
 		}
 		
 		public function getProgressValue():Number{
@@ -103,7 +146,7 @@ package com.snsoft.util.rlm{
 			var url:String = this.urlList[i];
 			var loadType:String = this.loadTypeList[i];
 			if(url != null && url.length > 0){
-				if(loadType == LoadType.MEDIA){
+				if(loadType == ResLoaderType.MEDIA){
 					var rl:ResLoader = new ResLoader();
 					rl.addEventListener(ResLoaderEvent.IS_RECEIVE_BYTES_TOTAL,handlerIsReceiveBytes);
 					var rlinfo:LoaderInfo = rl.contentLoaderInfo;
@@ -112,7 +155,7 @@ package com.snsoft.util.rlm{
 					rlinfo.addEventListener(ProgressEvent.PROGRESS,handlerProgress);
 					rl.load(new URLRequest(url));
 				}
-				else if(loadType == LoadType.URL){
+				else if(loadType == ResLoaderType.URL){
 					var rul:ResURLLoader = new ResURLLoader();
 					rul.addEventListener(ResLoaderEvent.IS_RECEIVE_BYTES_TOTAL,handlerIsReceiveBytes);
 					rul.addEventListener(Event.COMPLETE,handlerLoadComplete);
