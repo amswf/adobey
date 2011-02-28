@@ -14,6 +14,8 @@ package com.ldl.hmi{
 		
 		private var lp:LoadingProgress;
 		
+		private var dataNode:Node;
+		
 		public function Main(){
 			lp = new LoadingProgress(38,38,0xffffff);
 			lp.x = 400;
@@ -29,8 +31,7 @@ package com.ldl.hmi{
 		 */		
 		private function handlerEnterFrame(e:Event):void{
 			this.removeEventListener(Event.ENTER_FRAME,handlerEnterFrame);
-			
-			loadFonts();
+			loadXML();
 		}
 		
 		private function loadXML():void{
@@ -41,9 +42,9 @@ package com.ldl.hmi{
 		private function handlerLoadXMLCmp(e:Event):void{
 			var xl:XMLLoader = e.currentTarget as XMLLoader;
 			var xd:XMLDom = new XMLDom(xl.xml);
-			var node:Node = xd.parse();
-			node.getNodeListFirstNode("menus");
-			setProgressValue();
+			dataNode = xd.parse();
+			
+			loadFonts();
 		}
 		
 		private function loadFonts():void{
@@ -55,27 +56,26 @@ package com.ldl.hmi{
 		}
 		
 		private function handlerProgress(e:Event):void{
-			var ef:EmbedFonts = e.currentTarget as EmbedFonts;
-			trace(ef.getProgressValue());
+			var ef:EmbedFonts = e.currentTarget as EmbedFonts;			
+			lp.setProgressValue(ef.getProgressValue());
 			
 			//进度条输出.......................................................
 			//和XML解析,顺序加载
 		}
 		
 		private function handlerLoadFontCmp(e:Event):void{
-			setProgressValue();
+			
 		}
 		
 		private function handlerIOError(e:Event):void{
 			trace("字体加载出错");
 		}
 		
-		private function setProgressValue():void{
+		private function removeProgress():void{
 			if(lp != null){
 				this.removeChild(lp);
 				lp = null;
 				init();
-				
 			}
 		}
 		

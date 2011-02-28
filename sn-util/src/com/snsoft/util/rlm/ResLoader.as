@@ -7,6 +7,11 @@ package com.snsoft.util.rlm{
 	import flash.net.URLRequest;
 	import flash.system.LoaderContext;
 
+	/**
+	 * 加载 SWF 文件或图像（JPG、PNG 或 GIF）文件  
+	 * @author Administrator
+	 * 
+	 */	
 	public class ResLoader extends Loader{
 		 
 		private var _urlMd5:String;

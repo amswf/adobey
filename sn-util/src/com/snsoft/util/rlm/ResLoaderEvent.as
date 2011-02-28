@@ -1,6 +1,11 @@
 package com.snsoft.util.rlm{
 	import flash.events.Event;
 
+	/**
+	 * 资源加载事件 
+	 * @author Administrator
+	 * 
+	 */	
 	public class ResLoaderEvent extends Event{
 		
 		/**
