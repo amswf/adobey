@@ -194,12 +194,12 @@
 			}
 		}
 		
-		public function getProgressValue():int{
+		public function getProgressValue():Number{
 			var bl:int = 0;
 			for(var i:int = 0;i < bytesLoadedHV.length;i ++){
 				bl += bytesLoadedHV.findByIndex(i) as int;	
 			}
-			return int(100 * bl / bytesTotal);
+			return bl / bytesTotal;
 		}
 		
 		/**

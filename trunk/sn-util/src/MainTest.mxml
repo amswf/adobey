@@ -6,6 +6,8 @@
 			import com.snsoft.util.images.ImagesManager;
 			import com.snsoft.util.images.ImagesManagerEvent;
 			import com.snsoft.util.lc.ListController;
+			 
+			import com.snsoft.util.rlm.ResLoadManager;
 			
 			private function init():void{
 				
@@ -17,6 +19,9 @@
 				//fmTest;
 				//testPeopleRes;
 				testHmi;
+				 
+				ResLoadManager;
+				 
 			}
 		]]>
 	</mx:Script>
