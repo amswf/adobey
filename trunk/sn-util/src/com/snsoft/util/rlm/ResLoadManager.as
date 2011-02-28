@@ -1,6 +1,7 @@
 package com.snsoft.util.rlm{
 	import com.adobe.crypto.MD5;
 	import com.snsoft.util.HashVector;
+	import com.snsoft.util.rlm.res.ResBase;
 	
 	import flash.display.LoaderInfo;
 	import flash.events.Event;
@@ -35,7 +36,7 @@ package com.snsoft.util.rlm{
 		/**
 		 * 加载到的资源列表 
 		 */		
-		private var resList:HashVector = new HashVector();
+		private var resDataList:HashVector = new HashVector();
 		
 		/**
 		 * 是否在加载 
@@ -62,6 +63,8 @@ package com.snsoft.util.rlm{
 		 */		
 		private var bytesTotal:int = 0;
 		
+		private var resList:Vector.<ResBase> = new Vector.<ResBase>();
+		
 		/**
 		 * 非顺序加载时，已加载字节数的列表 
 		 */		
@@ -77,12 +80,27 @@ package com.snsoft.util.rlm{
 		}
 		
 		/**
-		 * 返回url 对应资源的标识ID用于取出资源
+		 * 添加资源 
+		 * @param res
+		 * 
+		 */		
+		public function addRes(res:ResBase):void{
+			this.resList.push(res);
+			var urlList:Vector.<String> = res.urlList;
+			for(var i:int = 0;i < urlList.length;i ++){
+				var url:String = urlList[i];
+				trace(url);
+				this.addUrl(url);
+			}
+		}
+		
+		/**
+		 * 返回url 对应资源的标识ID，是url 的MD5值，用于取出资源
 		 * @param url 资源地址
 		 * @param type ResType.MEDIA 或  URL type等 于null时，按扩展名自动处理
 		 * 
 		 */		
-		public function add(url:String,resLoadType:String = null):String{
+		public function addUrl(url:String,resLoadType:String = null):String{
 			var urlMd5:String = null;
 			if(!isLoading && url != null){
 				if(resLoadType == null){
@@ -95,7 +113,13 @@ package com.snsoft.util.rlm{
 			return urlMd5;
 		}
 		
-		public function getLoaderType(url:String):String{
+		/**
+		 * 扩展名判断加载类型
+		 * @param url 
+		 * @return 
+		 * 
+		 */		
+		private function getLoaderType(url:String):String{
 			var type:String = ResLoaderType.URL;
 			var dotIndex:int = url.lastIndexOf(".");
 			if(dotIndex > 0){
@@ -108,6 +132,35 @@ package com.snsoft.util.rlm{
 				}
 			}
 			return type;
+		}
+		
+		/**
+		 * 获得资源 
+		 * @param urlMd5
+		 * @return 
+		 * 
+		 */		
+		public function getResByUrlMd5(urlMd5:String):Object{
+			return this.resDataList.findByName(urlMd5);
+		}
+		
+		/**
+		 * 获得资源 
+		 * @param index
+		 * @return 
+		 * 
+		 */		
+		public function getResByIndex(index:int):Object{
+			return this.resDataList.findByIndex(index);
+		}
+		
+		/**
+		 * 资源个数 
+		 * @return 
+		 * 
+		 */		
+		public function get length():int{
+			return this.resDataList.length;
 		}
 		
 		public function getProgressValue():Number{
@@ -177,6 +230,16 @@ package com.snsoft.util.rlm{
 		
 		private function handlerLoadComplete(e:Event):void{
 			this.loadCmpCount ++;
+			if(e.currentTarget is LoaderInfo){
+				var li:LoaderInfo = e.currentTarget as LoaderInfo;
+				var rl:ResLoader = li.loader as ResLoader;
+				this.resDataList.push(li,rl.urlMd5);
+			}
+			else if(e.currentTarget is ResURLLoader){
+				var rul:ResURLLoader = e.currentTarget as ResURLLoader;
+				bytesLoaded = rul.bytesLoaded;
+				this.resDataList.push(rul.data,rul.urlMd5);
+			}
 			checkLoadsCmp();
 		}
 		
@@ -199,6 +262,7 @@ package com.snsoft.util.rlm{
 		
 		private function checkLoadsCmp():void{
 			if(this.loadCmpCount == this.urlList.length){
+				setResObjToRes();
 				this.dispatchEvent(new Event(Event.COMPLETE));
 			}
 			else {
@@ -207,6 +271,22 @@ package com.snsoft.util.rlm{
 				}
 				else {
 					loadNext(this.loadCmpCount);
+				}
+			}
+		}
+		
+		private function setResObjToRes():void{
+			for(var i:int = 0;i < this.resList.length;i ++){
+				var res:ResBase = this.resList[i];
+				if(res != null){
+					var rdlist:Vector.<Object> = new Vector.<Object>();
+					for(var j:int = 0;j < res.urlMd5List.length;j ++){
+						var urlMd5:String = res.urlMd5List[j];
+						var obj:Object = this.resDataList.findByName(urlMd5);
+						rdlist.push(obj);
+					}
+					res.resDataList = rdlist;
+					res.callBack();
 				}
 			}
 		}
