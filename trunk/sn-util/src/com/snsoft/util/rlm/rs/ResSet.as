@@ -22,7 +22,7 @@ package com.snsoft.util.rlm.rs{
 			createAbstractClass(ResSet);
 		}
 		
-		public function addUrl(url:String):void{
+		public function addResUrl(url:String):void{
 			this.urlList.push(url);
 		}
 		

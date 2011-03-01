@@ -1,5 +1,4 @@
 ﻿package com.snsoft.util.rlm.rs{
-	import com.adobe.crypto.MD5;
 	import com.snsoft.util.HashVector;
 	
 	import flash.display.LoaderInfo;
@@ -76,7 +75,7 @@
 			if (fontName != null && fontName.length > 0) {
 				this.fontNameList.push(fontName);
 				var url:String = SWF_FONT_ROOT_PATH + fontName + SWF_EXT_NAME;
-				this.addUrl(url);
+				this.addResUrl(url);
 			}
 		}
 		
