@@ -1,4 +1,5 @@
 package com.snsoft.util{
+	import com.adobe.crypto.MD5;
 	
 	/**
 	 * 自定义的哈稀列表
@@ -32,15 +33,16 @@ package com.snsoft.util{
 			if(name == null){
 				name = String(new Date().getTime()) + "_" + String(this.length + 1);
 			}
+			var nameMd5:String = MD5.hash(name);
 			var i:int = this.findIndexByName(name);
 			if(i>=0){
 				valueVec[i] = value;
-				idAry[name] = i;
+				idAry[nameMd5] = i;
 			}
 			else {
 				nameVec.push(name);
 				valueVec.push(value);
-				idAry[name] = this.valueVec.length -1;
+				idAry[nameMd5] = this.valueVec.length -1;
 			}
 		}
 		
@@ -52,15 +54,17 @@ package com.snsoft.util{
 		public function removeByIndex(index:int):void{
 			if(indexIsCorrect(index)){
 				var name:String = this.findNameByIndex(index);
+				var nameMd5:String = MD5.hash(name);
 				this.nameVec.splice(index,1);
 				this.valueVec.splice(index,1);
-				idAry[name] = -1;
+				idAry[nameMd5] = -1;
 				for(var i:int = index;i<this.nameVec.length;i++){
 					var rname:String = this.nameVec[i];
-					if(idAry[rname] != null){
-						var rIndex:int = idAry[rname] as int;
+					var rnameMd5:String = MD5.hash(rname);
+					if(idAry[rnameMd5] != null){
+						var rIndex:int = idAry[rnameMd5] as int;
 						if(rIndex >= 0){
-							idAry[rname] = i;
+							idAry[rnameMd5] = i;
 						}
 					}
 				}
@@ -162,8 +166,9 @@ package com.snsoft.util{
 		 */		
 		public function findIndexByName(name:String):int{
 			var i:int = -1;
-			if(idAry[name] != null){
-				i = idAry[name] as int;
+			var nameMd5:String = MD5.hash(name);
+			if(idAry[nameMd5] != null){
+				i = idAry[nameMd5] as int;
 			}
 			return i;
 		}
