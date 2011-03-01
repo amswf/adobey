@@ -1,4 +1,4 @@
-﻿package com.snsoft.util.rlm.res{
+﻿package com.snsoft.util.rlm.rs{
 	import com.adobe.crypto.MD5;
 	import com.snsoft.util.HashVector;
 	
@@ -16,7 +16,7 @@
 	 * @author Administrator
 	 * 
 	 */
-	public class ResEmbedFonts extends ResBase {
+	public class RSEmbedFonts extends ResSet {
 		
 		private static var SWF_EXT_NAME:String = ".swf";
 		
@@ -58,7 +58,7 @@
 		 * @param fontName 字体名称 名称同字体所在的swf文件，及swf文件里定义的字体的link
 		 * 
 		 */
-		public function ResEmbedFonts(...fontName) {
+		public function RSEmbedFonts(...fontName) {
 			var ary:Array = fontName as Array;
 			if (ary != null) {
 				for (var i:int =0; i<ary.length; i++) {
@@ -87,7 +87,7 @@
 		 * 
 		 */		
 		public static function findFontByName(name:String):String{
-			return ResEmbedFonts.fontEnNameList[name] as String;
+			return RSEmbedFonts.fontEnNameList[name] as String;
 		}
 		
 		/**
@@ -122,7 +122,7 @@
 				var fname:String = f.fontName;
 				trace(cname,":",fname);
 				if(cname != null && fname != null){
-					ResEmbedFonts.fontEnNameList[cname] = fname;
+					RSEmbedFonts.fontEnNameList[cname] = fname;
 				}
 			}
 		}

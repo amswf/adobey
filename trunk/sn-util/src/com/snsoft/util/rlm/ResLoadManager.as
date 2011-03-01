@@ -1,7 +1,6 @@
 package com.snsoft.util.rlm{
 	import com.adobe.crypto.MD5;
 	import com.snsoft.util.HashVector;
-	import com.snsoft.util.rlm.res.ResBase;
 	
 	import flash.display.LoaderInfo;
 	import flash.events.Event;
@@ -13,6 +12,7 @@ package com.snsoft.util.rlm{
 	import com.snsoft.util.rlm.loader.ResLoaderEvent;
 	import com.snsoft.util.rlm.loader.ResLoaderType;
 	import com.snsoft.util.rlm.loader.ResURLLoader;
+	import com.snsoft.util.rlm.rs.ResSet;
 	
 	/**
 	 * 资源加载管理器
@@ -67,7 +67,7 @@ package com.snsoft.util.rlm{
 		 */		
 		private var bytesTotal:int = 0;
 		
-		private var resList:Vector.<ResBase> = new Vector.<ResBase>();
+		private var resSetList:Vector.<ResSet> = new Vector.<ResSet>();
 		
 		/**
 		 * 非顺序加载时，已加载字节数的列表 
@@ -88,22 +88,22 @@ package com.snsoft.util.rlm{
 		 * @param res
 		 * 
 		 */		
-		public function addRes(res:ResBase):void{
-			this.resList.push(res);
-			var urlList:Vector.<String> = res.urlList;
+		public function addResSet(resSet:ResSet):void{
+			this.resSetList.push(resSet);
+			var urlList:Vector.<String> = resSet.urlList;
 			for(var i:int = 0;i < urlList.length;i ++){
 				var url:String = urlList[i];
-				this.addUrl(url);
+				this.addResUrl(url);
 			}
 		}
 		
 		/**
-		 * 返回url 对应资源的标识ID，是url 的MD5值，用于取出资源
+		 * 
 		 * @param url 资源地址
 		 * @param type ResType.MEDIA 或  URL type等 于null时，按扩展名自动处理
 		 * 
 		 */		
-		public function addUrl(url:String,resLoadType:String = null):void{
+		public function addResUrl(url:String,resLoadType:String = null):void{
 			if(!isLoading && url != null){
 				if(resLoadType == null){
 					resLoadType = getLoaderType(url);
@@ -142,6 +142,16 @@ package com.snsoft.util.rlm{
 		 */		
 		public function getResByIndex(index:int):Object{
 			return this.resDataList.findByIndex(index);
+		}
+		
+		/**
+		 * 获得资源 
+		 * @param index
+		 * @return 
+		 * 
+		 */		
+		public function getResByResUrl(resUrl:String):Object{
+			return this.resDataList.findByName(resUrl);
 		}
 		
 		/**
@@ -266,8 +276,8 @@ package com.snsoft.util.rlm{
 		}
 		
 		private function setResObjToRes():void{
-			for(var i:int = 0;i < this.resList.length;i ++){
-				var res:ResBase = this.resList[i];
+			for(var i:int = 0;i < this.resSetList.length;i ++){
+				var res:ResSet = this.resSetList[i];
 				if(res != null){
 					var rdlist:Vector.<Object> = new Vector.<Object>();
 					for(var j:int = 0;j < res.urlList.length;j ++){
