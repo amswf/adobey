@@ -107,7 +107,7 @@
 					var name:String = list[i];
 					if (name != null && name.length > 0) {
 						try {
-							var li:LoaderInfo = this._resNameList[i] as LoaderInfo;
+							var li:LoaderInfo = this.resDataList[i] as LoaderInfo;
 							if(li != null){
 								var domain:ApplicationDomain = li.applicationDomain;
 								var fontLibrary:Class = domain.getDefinition(name) as Class;
