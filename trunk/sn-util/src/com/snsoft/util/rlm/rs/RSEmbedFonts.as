@@ -7,7 +7,7 @@
 	import flash.utils.getQualifiedClassName;
 	
 	/**
-	 * 嵌入字体
+	 * 嵌入字体资源集
 	 * 
 	 * 
 	 * 字体名称 同字体所在的swf文件，及swf文件里定义的字体的link是相同的。
