@@ -67,6 +67,9 @@ package com.snsoft.util.rlm{
 		 */		
 		private var bytesTotal:int = 0;
 		
+		/**
+		 * 资源集列表 
+		 */		
 		private var resSetList:Vector.<ResSet> = new Vector.<ResSet>();
 		
 		/**
