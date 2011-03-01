@@ -22,8 +22,6 @@
 		
 		private static var SWF_FONT_ROOT_PATH:String = "font/";
 		
-		 
-		
 		/**
 		 * 字体文件列表 
 		 */
@@ -77,12 +75,8 @@
 		public function addFontName(fontName:String):void{
 			if (fontName != null && fontName.length > 0) {
 				this.fontNameList.push(fontName);
-				
-				var swfName:String = SWF_FONT_ROOT_PATH + fontName + SWF_EXT_NAME;
-				this.urlList.push(swfName);
-				
-				var urlMd5:String = MD5.hash(swfName);
-				this.urlMd5List.push(urlMd5);
+				var url:String = SWF_FONT_ROOT_PATH + fontName + SWF_EXT_NAME;
+				this.addUrl(url);
 			}
 		}
 		

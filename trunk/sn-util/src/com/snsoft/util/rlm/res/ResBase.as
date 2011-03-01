@@ -5,12 +5,14 @@ package com.snsoft.util.rlm.res{
 		
 		private var _urlList:Vector.<String> = new Vector.<String>();
 		
-		private var _urlMd5List:Vector.<String> = new Vector.<String>();
-		
-		private var _resDataList:Vector.<Object>;
+		private var _resDataList:Vector.<Object> = new Vector.<Object>();
 		
 		public function ResBase(){
 			createAbstractClass(ResBase);
+		}
+		
+		public function addUrl(url:String):void{
+			this.urlList.push(url);
 		}
 		
 		/**
@@ -24,11 +26,6 @@ package com.snsoft.util.rlm.res{
 		public function get urlList():Vector.<String>
 		{
 			return _urlList;
-		}
-
-		public function get urlMd5List():Vector.<String>
-		{
-			return _urlMd5List;
 		}
 		
 		public function set resDataList(resDataList:Vector.<Object>):void{
