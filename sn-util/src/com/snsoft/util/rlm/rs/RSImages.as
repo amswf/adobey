@@ -5,6 +5,11 @@ package com.snsoft.util.rlm.rs{
 	import flash.display.BitmapData;
 	import flash.display.LoaderInfo;
 
+	/**
+	 * 图片资源集 
+	 * @author Administrator
+	 * 
+	 */	
 	public class RSImages extends ResSet{
 		
 		private var imageBmdList:HashVector = new HashVector();
