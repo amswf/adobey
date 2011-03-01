@@ -1,6 +1,4 @@
-package com.snsoft.util.rlm.loader{
-	import com.adobe.crypto.MD5;
-	
+package com.snsoft.util.rlm.loader{	
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.ProgressEvent;
@@ -14,7 +12,7 @@ package com.snsoft.util.rlm.loader{
 	 */	
 	public class ResLoader extends Loader{
 		 
-		private var _urlMd5:String;
+		private var _url:String;
 		
 		private var isReceiveBytesTotal:Boolean = false;
 		
@@ -25,7 +23,7 @@ package com.snsoft.util.rlm.loader{
 		}
 		
 		override public function load(request:URLRequest, context:LoaderContext=null):void{
-			this._urlMd5 = MD5.hash(request.url);
+			this._url = request.url;
 			super.load(request,context);
 		}
 		
@@ -42,9 +40,9 @@ package com.snsoft.util.rlm.loader{
 			}
 		}
 
-		public function get urlMd5():String
+		public function get url():String
 		{
-			return _urlMd5;
+			return _url;
 		}
 
 	}

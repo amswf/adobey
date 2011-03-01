@@ -8,6 +8,7 @@
 			import com.snsoft.util.lc.ListController;
 			import com.snsoft.util.rlm.ResLoadManager;
 			import com.snsoft.util.rlm.rs.RSEmbedFonts;
+			import com.snsoft.util.rlm.rs.RSImages;
 			
 			private function init():void{
 				
@@ -22,7 +23,7 @@
 				 
 				ResLoadManager;
 				RSEmbedFonts;
-				 
+				RSImages;
 			}
 		]]>
 	</mx:Script>
