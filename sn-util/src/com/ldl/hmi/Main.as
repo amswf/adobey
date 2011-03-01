@@ -64,7 +64,7 @@ package com.ldl.hmi{
 		}
 		
 		private function handlerLoadFontCmp(e:Event):void{
-			
+			removeProgress();
 		}
 		
 		private function handlerIOError(e:Event):void{
