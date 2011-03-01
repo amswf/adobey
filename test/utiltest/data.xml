@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xml>
+	<menus>
+		<menu name="m1" value="" text="首 页" url="http://www.baidu.com" target="_self"/>
+		<menu name="m2" value="" text="关于我们" url="http://www.baidu.com" target="_self"/>
+		<menu name="m3" value="" text="案例参考" url="http://www.baidu.com" target="_self"/>
+		<menu name="m4" value="" text="服务流程" url="http://www.baidu.com" target="_self"/>
+		<menu name="m5" value="" text="市场价格" url="http://www.baidu.com" target="_self"/>
+		<menu name="m6" value="" text="招聘人才" url="http://www.baidu.com" target="_self"/>
+		<menu name="m7" value="" text="联系我们" url="http://www.baidu.com" target="_self"/>
+		<menu name="m8" value="" text="友情链接" url="http://www.baidu.com" target="_self"/>
+	</menus>
+</xml>
