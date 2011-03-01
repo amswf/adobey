@@ -34,6 +34,10 @@ package com.snsoft.util.rlm.res{
 		public function set resDataList(resDataList:Vector.<Object>):void{
 			this._resDataList = resDataList;
 		}
+		
+		public function get resDataList():Vector.<Object>{
+			return this._resDataList;
+		}
 
 	}
 }
