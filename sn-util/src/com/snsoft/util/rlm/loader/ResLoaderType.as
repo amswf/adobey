@@ -1,4 +1,4 @@
-package com.snsoft.util.rlm{
+package com.snsoft.util.rlm.loader{
 	
 	/**
 	 * 要加载的文件的类型 

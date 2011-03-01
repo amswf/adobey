@@ -9,6 +9,10 @@ package com.snsoft.util.rlm{
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
 	import flash.net.URLRequest;
+	import com.snsoft.util.rlm.loader.ResLoader;
+	import com.snsoft.util.rlm.loader.ResLoaderEvent;
+	import com.snsoft.util.rlm.loader.ResLoaderType;
+	import com.snsoft.util.rlm.loader.ResURLLoader;
 	
 	/**
 	 * 资源加载管理器

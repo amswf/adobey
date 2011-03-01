@@ -1,4 +1,4 @@
-package com.snsoft.util.rlm{
+package com.snsoft.util.rlm.loader{
 	import com.adobe.crypto.MD5;
 	
 	import flash.display.Loader;

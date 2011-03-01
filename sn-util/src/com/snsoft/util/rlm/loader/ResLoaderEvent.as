@@ -1,4 +1,4 @@
-package com.snsoft.util.rlm{
+package com.snsoft.util.rlm.loader{
 	import flash.events.Event;
 
 	/**
