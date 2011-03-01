@@ -89,7 +89,6 @@ package com.snsoft.util.rlm{
 			var urlList:Vector.<String> = res.urlList;
 			for(var i:int = 0;i < urlList.length;i ++){
 				var url:String = urlList[i];
-				trace(url);
 				this.addUrl(url);
 			}
 		}
@@ -100,17 +99,14 @@ package com.snsoft.util.rlm{
 		 * @param type ResType.MEDIA 或  URL type等 于null时，按扩展名自动处理
 		 * 
 		 */		
-		public function addUrl(url:String,resLoadType:String = null):String{
-			var urlMd5:String = null;
+		public function addUrl(url:String,resLoadType:String = null):void{
 			if(!isLoading && url != null){
 				if(resLoadType == null){
 					resLoadType = getLoaderType(url);
 				}
 				this.urlList.push(url);
 				this.loadTypeList.push(resLoadType);
-				urlMd5 = MD5.hash(url);
 			}
-			return urlMd5;
 		}
 		
 		/**
@@ -132,16 +128,6 @@ package com.snsoft.util.rlm{
 				}
 			}
 			return type;
-		}
-		
-		/**
-		 * 获得资源 
-		 * @param urlMd5
-		 * @return 
-		 * 
-		 */		
-		public function getResByUrlMd5(urlMd5:String):Object{
-			return this.resDataList.findByName(urlMd5);
 		}
 		
 		/**
@@ -280,8 +266,8 @@ package com.snsoft.util.rlm{
 				var res:ResBase = this.resList[i];
 				if(res != null){
 					var rdlist:Vector.<Object> = new Vector.<Object>();
-					for(var j:int = 0;j < res.urlMd5List.length;j ++){
-						var urlMd5:String = res.urlMd5List[j];
+					for(var j:int = 0;j < res.urlList.length;j ++){
+						var urlMd5:String = MD5.hash(res.urlList[j]);
 						var obj:Object = this.resDataList.findByName(urlMd5);
 						rdlist.push(obj);
 					}
