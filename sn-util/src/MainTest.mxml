@@ -7,7 +7,7 @@
 			import com.snsoft.util.images.ImagesManagerEvent;
 			import com.snsoft.util.lc.ListController;
 			import com.snsoft.util.rlm.ResLoadManager;
-			import com.snsoft.util.rlm.res.ResEmbedFonts;
+			import com.snsoft.util.rlm.rs.RSEmbedFonts;
 			
 			private function init():void{
 				
@@ -21,7 +21,7 @@
 				testHmi;
 				 
 				ResLoadManager;
-				ResEmbedFonts;
+				RSEmbedFonts;
 				 
 			}
 		]]>

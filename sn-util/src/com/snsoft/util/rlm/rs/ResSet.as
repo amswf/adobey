@@ -1,14 +1,14 @@
-package com.snsoft.util.rlm.res{
+package com.snsoft.util.rlm.rs{
 	import com.snsoft.util.AbstractBase;
 
-	public class ResBase extends AbstractBase{
+	public class ResSet extends AbstractBase{
 		
 		private var _urlList:Vector.<String> = new Vector.<String>();
 		
 		private var _resDataList:Vector.<Object> = new Vector.<Object>();
 		
-		public function ResBase(){
-			createAbstractClass(ResBase);
+		public function ResSet(){
+			createAbstractClass(ResSet);
 		}
 		
 		public function addUrl(url:String):void{
