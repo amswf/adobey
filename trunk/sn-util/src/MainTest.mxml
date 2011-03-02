@@ -2,6 +2,7 @@
 <mx:Application creationComplete="init();" xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
 	<mx:Script>
 		<![CDATA[
+			import com.snsoft.effect.WaterWave;
 			import com.snsoft.util.UUID;
 			import com.snsoft.util.lc.ListController;
 			import com.snsoft.util.rlm.ResLoadManager;
@@ -18,6 +19,7 @@
 				//fmTest;
 				//testPeopleRes;
 				testHmi;
+				WaterWave;
 			}
 		]]>
 	</mx:Script>
