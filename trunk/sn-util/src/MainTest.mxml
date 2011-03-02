@@ -8,6 +8,7 @@
 			import com.snsoft.util.rlm.ResLoadManager;
 			import com.snsoft.util.rlm.rs.RSEmbedFonts;
 			import com.snsoft.util.rlm.rs.RSImages;
+			import com.snsoft.util.rlm.rs.RSTextFile;
 			
 			private function init():void{
 				
@@ -19,7 +20,7 @@
 				//fmTest;
 				//testPeopleRes;
 				testHmi;
-				WaterWave;
+				RSTextFile;
 			}
 		]]>
 	</mx:Script>
