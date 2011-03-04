@@ -5,10 +5,10 @@
 	import com.snsoft.mapview.util.MapViewXMLLoader;
 	import com.snsoft.util.HashVector;
 	import com.snsoft.util.complexEvent.CplxMouseDrag;
-	import com.snsoft.xmldom.Node;
-	import com.snsoft.xmldom.NodeList;
-	import com.snsoft.xmldom.XMLDom;
-	import com.snsoft.xmldom.XMLFastConfig;
+	import com.snsoft.util.xmldom.Node;
+	import com.snsoft.util.xmldom.NodeList;
+	import com.snsoft.util.xmldom.XMLDom;
+	import com.snsoft.util.xmldom.XMLFastConfig;
 	
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;

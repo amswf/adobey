@@ -6,7 +6,7 @@ package com.snsoft.mapviewpro{
 	import com.snsoft.mapview.util.MapViewXMLLoader;
 	import com.snsoft.util.HashVector;
 	import com.snsoft.util.PointUtil;
-	import com.snsoft.xmldom.XMLFastConfig;
+	import com.snsoft.util.xmldom.XMLFastConfig;
 	
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
