@@ -29,6 +29,8 @@
 	import com.snsoft.tvc2.util.StringUtil;
 	import com.snsoft.tvc2.xml.XMLParse;
 	import com.snsoft.util.HashVector;
+	import com.snsoft.util.rlm.ResLoadManager;
+	import com.snsoft.util.rlm.rs.RSEmbedFonts;
 	import com.snsoft.util.text.TextStyle;
 	import com.snsoft.util.text.TextStyles;
 	
@@ -143,14 +145,18 @@
 		}
 		
 		private function loadEmbedFonts(fontNameV:Vector.<String>):void{
+			trace(fontNameV);
 			if(fontNameV != null && fontNameV.length > 0){
-				var ef:EmbedFonts = new EmbedFonts();
+			
+				var rs:RSEmbedFonts = new RSEmbedFonts();
 				for(var i:int =0;i<fontNameV.length;i++){
-					ef.addFontName(fontNameV[i]);
+					rs.addFontName(fontNameV[i]);
 				}
-				ef.loadFontSwf();
-				ef.addEventListener(Event.COMPLETE,handlerEmbedFontsCmp);
-				ef.addEventListener(EmbedFontsEvent.IO_ERROR,handlerIOError);
+				
+				var rlm:ResLoadManager = new ResLoadManager();
+				rlm.addResSet(rs);
+				rlm.load();
+				rlm.addEventListener(Event.COMPLETE,handlerEmbedFontsCmp);
 			}
 		}
 		
