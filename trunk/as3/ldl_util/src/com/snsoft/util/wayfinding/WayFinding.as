@@ -1,4 +1,4 @@
-﻿package com.snsoft.wayfinding{
+﻿package com.snsoft.util.wayfinding{
 	import flash.geom.Point;
 	
 	/**

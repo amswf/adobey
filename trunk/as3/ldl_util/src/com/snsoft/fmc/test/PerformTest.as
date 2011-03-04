@@ -8,7 +8,7 @@ package com.snsoft.fmc.test{
 	import com.snsoft.util.ComboBoxUtil;
 	import com.snsoft.util.SpriteUtil;
 	import com.snsoft.util.UUID;
-	import com.snsoft.xmldom.XMLFastConfig;
+	import com.snsoft.util.xmldom.XMLFastConfig;
 	
 	import fl.controls.Button;
 	import fl.controls.CheckBox;

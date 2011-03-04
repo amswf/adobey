@@ -3,7 +3,7 @@ package com.snsoft.fmc.test{
 	import com.snsoft.fmc.NSPublishType;
 	import com.snsoft.fmc.test.vi.Seat;
 	import com.snsoft.util.ComboBoxUtil;
-	import com.snsoft.xmldom.XMLFastConfig;
+	import com.snsoft.util.xmldom.XMLFastConfig;
 	
 	import fl.controls.Button;
 	import fl.controls.ComboBox;

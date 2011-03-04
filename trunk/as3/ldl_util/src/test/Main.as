@@ -1,8 +1,8 @@
 ﻿package test{
 	import com.snsoft.util.di.DependencyInjection;
-	import com.snsoft.xmldom.Node;
-	import com.snsoft.xmldom.NodeList;
-	import com.snsoft.xmldom.XMLDom;
+	import com.snsoft.util.xmldom.Node;
+	import com.snsoft.util.xmldom.NodeList;
+	import com.snsoft.util.xmldom.XMLDom;
 	
 	import flash.display.Sprite;
 

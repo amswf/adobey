@@ -1,4 +1,4 @@
-package com.snsoft.xmldom{
+package com.snsoft.util.xmldom{
 	import ascb.util.StringUtilities;
 	
 	import com.snsoft.util.HashVector;

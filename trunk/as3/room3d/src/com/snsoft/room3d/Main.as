@@ -11,8 +11,8 @@
 	import com.snsoft.util.SpriteUtil;
 	import com.snsoft.util.StringUtil;
 	import com.snsoft.util.text.Text;
-	import com.snsoft.xmldom.Node;
-	import com.snsoft.xmldom.NodeList;
+	import com.snsoft.util.xmldom.Node;
+	import com.snsoft.util.xmldom.NodeList;
 	
 	import fl.containers.ScrollPane;
 	import fl.events.ScrollEvent;

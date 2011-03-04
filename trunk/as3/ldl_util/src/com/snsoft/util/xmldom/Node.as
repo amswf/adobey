@@ -1,7 +1,7 @@
-package com.snsoft.xmldom{
+package com.snsoft.util.xmldom{
 	import com.snsoft.util.HashVector;
 	import com.snsoft.util.di.DependencyInjection;
-	import com.snsoft.xmldom.Attributes;
+	import com.snsoft.util.xmldom.Attributes;
 	
 	import flash.utils.getDefinitionByName;
 

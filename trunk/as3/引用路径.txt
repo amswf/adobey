@@ -4,7 +4,7 @@ F:\flex_project\as3_pro\ldl_util\src
 
 as3¹Ù·½°ü
 
-:\flex_project\as3_pro\as3corelib\src
+F:\flex_project\as3_pro\as3corelib\src
 
 3d
 
