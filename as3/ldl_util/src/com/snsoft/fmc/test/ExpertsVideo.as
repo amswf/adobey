@@ -6,7 +6,7 @@ package com.snsoft.fmc.test{
 	import com.snsoft.util.ComboBoxUtil;
 	import com.snsoft.util.HashVector;
 	import com.snsoft.util.di.DependencyInjection;
-	import com.snsoft.xmldom.XMLFastConfig;
+	import com.snsoft.util.xmldom.XMLFastConfig;
 	
 	import fl.controls.Button;
 	import fl.controls.ComboBox;

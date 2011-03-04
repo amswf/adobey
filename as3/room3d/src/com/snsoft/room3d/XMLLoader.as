@@ -1,6 +1,6 @@
 package com.snsoft.room3d{
-	import com.snsoft.xmldom.Node;
-	import com.snsoft.xmldom.XMLDom;
+	import com.snsoft.util.xmldom.Node;
+	import com.snsoft.util.xmldom.XMLDom;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;

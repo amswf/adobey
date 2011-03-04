@@ -1,4 +1,4 @@
-package com.snsoft.webservice{
+package com.snsoft.test.webservice{
         
         /******************************************************************************
          *

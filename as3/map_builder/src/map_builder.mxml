@@ -8,10 +8,12 @@
 	<fx:Script>
 		<![CDATA[
 			import com.snsoft.map.MapMain;
+			import com.snsoft.map.file.MapDataFileManager;
 			
 			
 			public function init():void{
 				com.snsoft.map.MapMain;
+				MapDataFileManager;
 			}
 		]]>
 	</fx:Script>

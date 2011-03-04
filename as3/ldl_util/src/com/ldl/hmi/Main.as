@@ -2,9 +2,9 @@ package com.ldl.hmi{
 	import com.snsoft.font.EmbedFonts;
 	import com.snsoft.font.EmbedFontsEvent;
 	import com.snsoft.util.uiloading.LoadingProgress;
-	import com.snsoft.xmldom.Node;
-	import com.snsoft.xmldom.XMLDom;
-	import com.snsoft.xmldom.XMLLoader;
+	import com.snsoft.util.xmldom.Node;
+	import com.snsoft.util.xmldom.XMLDom;
+	import com.snsoft.util.xmldom.XMLLoader;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
