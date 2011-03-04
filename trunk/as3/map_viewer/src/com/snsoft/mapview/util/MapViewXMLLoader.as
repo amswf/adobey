@@ -4,9 +4,9 @@ package com.snsoft.mapview.util{
 	import com.snsoft.mapview.dataObj.MapAreaDO;
 	import com.snsoft.mapview.dataObj.WorkSpaceDO;
 	import com.snsoft.util.HashVector;
-	import com.snsoft.xmldom.Node;
-	import com.snsoft.xmldom.NodeList;
-	import com.snsoft.xmldom.XMLDom;
+	import com.snsoft.util.xmldom.Node;
+	import com.snsoft.util.xmldom.NodeList;
+	import com.snsoft.util.xmldom.XMLDom;
 	
 	import flash.geom.Point;
 	

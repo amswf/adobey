@@ -1,6 +1,4 @@
 ﻿package com.snsoft.tvc2.xml{
-	import ascb.util.StringUtilities;
-	
 	import com.snsoft.tvc2.dataObject.BizDO;
 	import com.snsoft.tvc2.dataObject.DataDO;
 	import com.snsoft.tvc2.dataObject.ListDO;
@@ -17,13 +15,12 @@
 	import com.snsoft.tvc2.dataObject.TextPointDO;
 	import com.snsoft.tvc2.dataObject.TimeLineDO;
 	import com.snsoft.tvc2.dataObject.VarDO;
-	import com.snsoft.util.text.TextStyle;
-	import com.snsoft.util.text.TextStyles;
 	import com.snsoft.tvc2.util.StringUtil;
 	import com.snsoft.util.HashVector;
-	import com.snsoft.xmldom.Node;
-	import com.snsoft.xmldom.NodeList;
-	import com.snsoft.xmldom.XMLDom;
+	import com.snsoft.util.text.TextStyle;
+	import com.snsoft.util.xmldom.Node;
+	import com.snsoft.util.xmldom.NodeList;
+	import com.snsoft.util.xmldom.XMLDom;
 	
 	import flash.geom.Point;
 	

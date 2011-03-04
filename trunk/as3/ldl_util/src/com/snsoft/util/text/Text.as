@@ -1,6 +1,6 @@
 package com.snsoft.util.text{
-	import com.snsoft.font.EmbedFonts;
 	import com.snsoft.util.TextFieldUtil;
+	import com.snsoft.util.rlm.rs.RSEmbedFonts;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -30,7 +30,7 @@ package com.snsoft.util.text{
 		public static function setTextField(tfd:TextField,text:String,textFormat:TextFormat,isEmbedFont:Boolean = false):void{
 			tfd.text = text;
 			if(isEmbedFont){
-				var embedFontName:String = EmbedFonts.findFontByName(textFormat.font);
+				var embedFontName:String = RSEmbedFonts.findFontByName(textFormat.font);
 				if(embedFontName != null && embedFontName.length > 0){
 					textFormat.font = embedFontName;
 				}
