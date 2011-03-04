@@ -8,9 +8,9 @@
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/flex.swc" useDefaultLinkType="false"/>
         </excludedEntries>
       </libraryPathEntry>
-      <libraryPathEntry kind="3" linkType="1" path="F:/flex_project/libs/as3lib.swc" useDefaultLinkType="false"/>
-      <libraryPathEntry kind="3" linkType="1" path="F:/flex_project/libs/ldl_util.swc" useDefaultLinkType="false"/>
-      <libraryPathEntry kind="3" linkType="1" path="F:/flex_project/libs/map_viewer.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="${DOCUMENTS}/as3flalib/as3lib.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="/ldl_util/bin-debug/ldl_util.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="/map_viewer/bin-debug/map_viewer.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
