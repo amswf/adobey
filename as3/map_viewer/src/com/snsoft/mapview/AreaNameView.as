@@ -95,7 +95,6 @@ package com.snsoft.mapview {
 			this.setMouseOutColor();
 		}
 
-
 		public function setMouseOverColor():void {
 			var cn:CuntryName=this.cuntryName;
 			cn.setColor(0xbb0000);
