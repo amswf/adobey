@@ -127,8 +127,6 @@ package com.snsoft.mapview{
 						av.mapAreaDO = mado;
 						av.drawNow();
 						areaBtnsLayer.addChild(av);	
-						av.addEventListener(MouseEvent.MOUSE_OVER,handlerAreaViewMouseOver);
-						av.addEventListener(MouseEvent.MOUSE_OUT,handlerAreaViewMouseOut);
 						
 						var anv:AreaNameView = new AreaNameView();
 						anv.mapAreaDO = mado;
@@ -242,23 +240,16 @@ package com.snsoft.mapview{
 		
 		
 		
-		private function handlerAreaNameViewMouseOver(e:Event):void{
-			var anv:AreaNameView = e.currentTarget as AreaNameView;
-			anv.areaView.dispatchEvent(new Event(MouseEvent.MOUSE_OVER));
-		}
-		
-		private function handlerAreaNameViewMouseOut(e:Event):void{
-			var anv:AreaNameView = e.currentTarget as AreaNameView;
-			anv.areaView.dispatchEvent(new Event(MouseEvent.MOUSE_OUT));
-		}
+		 
 		
 		/**
 		 * 事件 
 		 * @param e
 		 * 
 		 */		
-		private function handlerAreaViewMouseOver(e:Event):void{
-			var av:AreaView = e.currentTarget as AreaView;
+		private function handlerAreaNameViewMouseOver(e:Event):void{
+			var anv:AreaNameView = e.currentTarget as AreaNameView;
+			var av:AreaView = anv.areaView;
 			var mado:MapAreaDO = av.mapAreaDO;
 			cuntyLable.nameStr = mado.areaName;
 			var mapRect:Rectangle = areaBtnsLayer.getRect(this);
@@ -330,7 +321,7 @@ package com.snsoft.mapview{
 		 * @param e
 		 * 
 		 */		
-		private function handlerAreaViewMouseOut(e:Event):void{
+		private function handlerAreaNameViewMouseOut(e:Event):void{
 			this.lightShapesLayer.visible = false;
 			cuntyLableLayer.visible = false;
 		}
