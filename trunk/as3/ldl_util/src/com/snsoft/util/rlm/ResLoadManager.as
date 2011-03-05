@@ -39,7 +39,7 @@
 		/**
 		 * 加载到的资源列表 
 		 */
-		private var resDataList:HashVector = new HashVector  ;
+		private var resDataList:HashVector = new HashVector(true);
 
 		/**
 		 * 是否在加载 
@@ -74,7 +74,7 @@
 		/**
 		 * 非顺序加载时，已加载字节数的列表 
 		 */
-		private var bytesLoadedList:HashVector = new HashVector  ;
+		private var bytesLoadedList:HashVector = new HashVector(true);
 
 		/**
 		 * 
@@ -250,7 +250,7 @@
 		private function handlerProgress(e:Event):void {
 			if (this.type == ResLoadManagerType.UNORDERED) {
 				var value:int = this.getLoaderBytesLoaded(e);
-				var name:String = this.getLoaderUrlMd5(e);
+				var name:String = this.getLoaderUrl(e);
 				this.bytesLoadedList.push(value,name);
 			}
 			else {
@@ -328,18 +328,18 @@
 			return bytesLoaded;
 		}
 
-		private function getLoaderUrlMd5(e:Event):String {
-			var urlMd5:String = null;
+		private function getLoaderUrl(e:Event):String {
+			var url:String = null;
 			if (e.currentTarget is LoaderInfo) {
 				var li:LoaderInfo = e.currentTarget as LoaderInfo;
 				var rl:ResLoader = li.loader as ResLoader;
-				urlMd5 = rl.url;
+				url = rl.url;
 			}
 			else if (e.currentTarget is ResURLLoader) {
 				var rul:ResURLLoader = e.currentTarget as ResURLLoader;
-				urlMd5 = rul.url;
+				url = rul.url;
 			}
-			return urlMd5;
+			return url;
 		}
 	}
 }

@@ -5,6 +5,9 @@ package com.snsoft.util{
 	 * 自定义的哈稀列表
 	 * 
 	 * 查找的速度最优处理，添加，删除时稍慢，保持效率。 
+	 * 
+	 * isSafe： name 值是否是安全的，是安全的，则多长的都能放到哈希表中，内建了hash 名称，但是损失了效率。
+	 * 
 	 * @author Administrator
 	 * 
 	 */	
@@ -19,8 +22,15 @@ package com.snsoft.util{
 		//下标 ，例如：array[name] = index
 		private var idAry:Array = new Array();
 		
-		public function HashVector(){
-			
+		private var isSafe:Boolean;
+		
+		/**
+		 *  
+		 * @param isSafe key 值是否是安全的，是安全的，则多长的都能放到哈希表中，内建了hash 名称，但是损失了效率。
+		 * 
+		 */		
+		public function HashVector(isSafe:Boolean = false){
+			this.isSafe = isSafe;	
 		}
 		
 		/**
@@ -33,7 +43,14 @@ package com.snsoft.util{
 			if(name == null){
 				name = String(new Date().getTime()) + "_" + String(this.length + 1);
 			}
-			var nameMd5:String = MD5.hash(name);
+			
+			var nameMd5:String = null;
+			if(isSafe){
+				nameMd5 = MD5.hash(name);
+			}
+			else {
+				nameMd5 = name;
+			}
 			var i:int = this.findIndexByName(name);
 			if(i>=0){
 				valueVec[i] = value;
@@ -54,13 +71,25 @@ package com.snsoft.util{
 		public function removeByIndex(index:int):void{
 			if(indexIsCorrect(index)){
 				var name:String = this.findNameByIndex(index);
-				var nameMd5:String = MD5.hash(name);
+				var nameMd5:String = null;
+				if(isSafe){
+					nameMd5 = MD5.hash(name);
+				}
+				else {
+					nameMd5 = name;
+				}
 				this.nameVec.splice(index,1);
 				this.valueVec.splice(index,1);
 				idAry[nameMd5] = -1;
 				for(var i:int = index;i<this.nameVec.length;i++){
 					var rname:String = this.nameVec[i];
-					var rnameMd5:String = MD5.hash(rname);
+					var rnameMd5:String = null;
+					if(isSafe){
+						rnameMd5 = MD5.hash(rname);
+					}
+					else {
+						rnameMd5 = rname;
+					}
 					if(idAry[rnameMd5] != null){
 						var rIndex:int = idAry[rnameMd5] as int;
 						if(rIndex >= 0){
@@ -166,7 +195,13 @@ package com.snsoft.util{
 		 */		
 		public function findIndexByName(name:String):int{
 			var i:int = -1;
-			var nameMd5:String = MD5.hash(name);
+			var nameMd5:String = null;
+			if(isSafe){
+				nameMd5 = MD5.hash(name);
+			}
+			else {
+				nameMd5 = name;
+			}
 			if(idAry[nameMd5] != null){
 				i = idAry[nameMd5] as int;
 			}
