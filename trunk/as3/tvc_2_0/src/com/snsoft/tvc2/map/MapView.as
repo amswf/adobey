@@ -190,7 +190,7 @@ package com.snsoft.tvc2.map{
 				for(var i:int = 0;i<madohv.length;i ++){
 					var mado:MapAreaDO = madohv.findByIndex(i) as MapAreaDO;
 					var ary:Array = mado.pointArray.toArray();
-					var shape:Shape = MapViewDraw.drawFill(0xffffff,0xffffff,0,1,ary);
+					var shape:Shape = MapViewDraw.drawFill(0xffffff,1,ary);
 					sprite.addChild(shape);
 				}
 				return sprite;

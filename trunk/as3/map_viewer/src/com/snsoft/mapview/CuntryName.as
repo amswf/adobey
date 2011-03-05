@@ -6,6 +6,7 @@ package com.snsoft.mapview
 	import flash.display.MovieClip;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
+	import flash.text.TextFormat;
 	 
 	
 	public class CuntryName extends MovieClip
@@ -23,6 +24,12 @@ package com.snsoft.mapview
 			_lableName.autoSize = TextFieldAutoSize.LEFT;
 			_msk = this.getChildByName("msk") as MovieClip;
 			this.lableText = lableText;
+		}
+		
+		public function setColor(color:uint):void{
+			var tft:TextFormat = this._lableName.getTextFormat();
+			tft.color = color;
+			this._lableName.setTextFormat(tft);
 		}
 
 		public function get lableText():String

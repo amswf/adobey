@@ -177,7 +177,7 @@ package com.snsoft.mapviewpro.swb{
 				for(var i:int = 0;i<madohv.length;i ++){
 					var mado:MapAreaDO = madohv.findByIndex(i) as MapAreaDO;
 					var ary:Array = mado.pointArray.toArray();
-					var shape:Shape = MapViewDraw.drawFill(0xffffff,0xffffff,0,1,ary);
+					var shape:Shape = MapViewDraw.drawFill(0xffffff,1,ary);
 					sprite.addChild(shape);
 				}
 				return sprite;
@@ -288,8 +288,8 @@ package com.snsoft.mapviewpro.swb{
 			var aryy:Array = new Array();
 			aryy.push(py1,py2,areaCenterP);
 			
-			var shapeX:Shape = MapViewDraw.drawFill(0x000000,0xffffff,0.1,0.5,aryx);
-			var shapeY:Shape = MapViewDraw.drawFill(0x000000,0xffffff,0.1,0.5,aryy);
+			var shapeX:Shape = MapViewDraw.drawFill(0xffffff,0.5,aryx);
+			var shapeY:Shape = MapViewDraw.drawFill(0xffffff,0.5,aryy);
 			
 			PointUtil.deleteAllChild(this.lightShapesLayer);
 			

@@ -1,9 +1,9 @@
 package com.snsoft.mapview{
-	import com.snsoft.mapview.dataObj.WorkSpaceDO;
 	import com.snsoft.mapview.dataObj.MapAreaDO;
-	import com.snsoft.util.PointUtil;
+	import com.snsoft.mapview.dataObj.WorkSpaceDO;
 	import com.snsoft.mapview.util.MapViewDraw;
 	import com.snsoft.util.HashVector;
+	import com.snsoft.util.PointUtil;
 	
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
@@ -35,6 +35,8 @@ package com.snsoft.mapview{
 		private var _workSpaceDO:WorkSpaceDO = null;
 		
 		private var areaBtnsLayer:Sprite = new Sprite();
+		
+		private var areaNamesLayer:Sprite = new Sprite();
 		
 		private var mapLinesLayer:Sprite = new Sprite();
 		
@@ -83,6 +85,10 @@ package com.snsoft.mapview{
 			lightShapesLayer.mouseEnabled = false;
 			lightShapesLayer.buttonMode = false;
 			
+			mapLinesLayer.mouseChildren = false;
+			mapLinesLayer.mouseEnabled = false;
+			mapLinesLayer.buttonMode = false;
+			
 			this.invalidate(InvalidationType.ALL,true);
 			this.invalidate(InvalidationType.SIZE,true);
 			super.configUI();
@@ -97,13 +103,15 @@ package com.snsoft.mapview{
 			PointUtil.deleteAllChild(this);
 			PointUtil.deleteAllChild(backLayer);
 			PointUtil.deleteAllChild(areaBtnsLayer);
+			PointUtil.deleteAllChild(areaNamesLayer);
 			PointUtil.deleteAllChild(mapLinesLayer);
 			PointUtil.deleteAllChild(lightShapesLayer);
 			PointUtil.deleteAllChild(cuntyLableLayer);
 			
 			this.addChild(backLayer);
-			this.addChild(mapLinesLayer);
 			this.addChild(areaBtnsLayer);
+			this.addChild(mapLinesLayer);
+			this.addChild(areaNamesLayer);
 			this.addChild(lightShapesLayer);
 			this.addChild(cuntyLableLayer);
 			
@@ -121,6 +129,15 @@ package com.snsoft.mapview{
 						areaBtnsLayer.addChild(av);	
 						av.addEventListener(MouseEvent.MOUSE_OVER,handlerAreaViewMouseOver);
 						av.addEventListener(MouseEvent.MOUSE_OUT,handlerAreaViewMouseOut);
+						
+						var anv:AreaNameView = new AreaNameView();
+						anv.mapAreaDO = mado;
+						anv.drawNow();
+						av.areaNameView = anv;
+						anv.areaView = av;
+						areaNamesLayer.addChild(anv);	
+						anv.addEventListener(MouseEvent.MOUSE_OVER,handlerAreaNameViewMouseOver);
+						anv.addEventListener(MouseEvent.MOUSE_OUT,handlerAreaNameViewMouseOut);
 						
 						if(Config.areaMouseEventType == Config.AREA_MOUSE_EVENT_TYPE_LINK){
 							
@@ -174,7 +191,7 @@ package com.snsoft.mapview{
 				for(var i:int = 0;i<madohv.length;i ++){
 					var mado:MapAreaDO = madohv.findByIndex(i) as MapAreaDO;
 					var ary:Array = mado.pointArray.toArray();
-					var shape:Shape = MapViewDraw.drawFill(0xffffff,0xffffff,0,1,ary);
+					var shape:Shape = MapViewDraw.drawFill(0xffffff,1,ary);
 					sprite.addChild(shape);
 				}
 				return sprite;
@@ -223,6 +240,18 @@ package com.snsoft.mapview{
 			this.dispatchEvent(new Event(AREA_DOUBLE_CLICK_EVENT));
 		}
 		
+		
+		
+		private function handlerAreaNameViewMouseOver(e:Event):void{
+			var anv:AreaNameView = e.currentTarget as AreaNameView;
+			anv.areaView.dispatchEvent(new Event(MouseEvent.MOUSE_OVER));
+		}
+		
+		private function handlerAreaNameViewMouseOut(e:Event):void{
+			var anv:AreaNameView = e.currentTarget as AreaNameView;
+			anv.areaView.dispatchEvent(new Event(MouseEvent.MOUSE_OUT));
+		}
+		
 		/**
 		 * 事件 
 		 * @param e
@@ -233,8 +262,8 @@ package com.snsoft.mapview{
 			var mado:MapAreaDO = av.mapAreaDO;
 			cuntyLable.nameStr = mado.areaName;
 			var mapRect:Rectangle = areaBtnsLayer.getRect(this);
-			var areaBtnRect:Rectangle = av.areaBtnLayer.getRect(av.parent);
-			var areaNamebRect:Rectangle = av.areaNameLayer.getRect(av.parent);
+			var areaBtnRect:Rectangle = av.areaBtnLayer.getRect(this);
+			var areaNamebRect:Rectangle = av.areaNameView.areaNameLayer.getRect(this);
 			
 			var mapCenterP:Point = new Point();
 			mapCenterP.x = mapRect.x + mapRect.width / 2;
@@ -285,8 +314,8 @@ package com.snsoft.mapview{
 			var aryy:Array = new Array();
 			aryy.push(py1,py2,areaCenterP);
 			
-			var shapeX:Shape = MapViewDraw.drawFill(0x000000,0xffffff,0.1,0.5,aryx);
-			var shapeY:Shape = MapViewDraw.drawFill(0x000000,0xffffff,0.1,0.5,aryy);
+			var shapeX:Shape = MapViewDraw.drawFill(0xffffff,0.5,aryx);
+			var shapeY:Shape = MapViewDraw.drawFill(0xffffff,0.5,aryy);
 			
 			PointUtil.deleteAllChild(this.lightShapesLayer);
 			

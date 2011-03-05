@@ -17,11 +17,11 @@ package com.snsoft.mapview.util{
 		 * @return 
 		 * 
 		 */
-		public static function drawFill(lineColor:int,fillColor:int,lineAlpha:Number=1,fillAlpha:Number=1,...pointArrayArray:Array):Shape {
+		public static function drawFill(fillColor:int,fillAlpha:Number=1,...pointArrayArray:Array):Shape {
 			if (pointArrayArray != null) {
 				var shape:Shape = new Shape();
 				var gra:Graphics = shape.graphics;
-				gra.lineStyle(1,lineColor,lineAlpha);
+				gra.lineStyle();
 				gra.beginFill(fillColor,fillAlpha);
 				for (var ii:int = 0; ii<pointArrayArray.length; ii++) {
 					var pointArray:Array = pointArrayArray[ii];
