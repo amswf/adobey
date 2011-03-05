@@ -90,7 +90,7 @@ package com.snsoft.tvc2.map{
 				var mado:MapAreaDO = this.mapAreaDO;
 				if(mado != null){
 					var pointAry:Array = mado.pointArray.toArray();
-					var cl:Shape = MapViewDraw.drawFill(0xffffff,0x000000,1,1,pointAry);
+					var cl:Shape = MapViewDraw.drawFill(0x000000,1,pointAry);
 					areaBtnLayer.addChild(cl);
 					setAreaColor(0xcccccc,0);
 					var dobj:Rectangle = cl.getRect(this);
