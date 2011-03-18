@@ -1,3 +1,4 @@
 ﻿<config>
 	<property name="clickType" value="link" />
+	<property name="urlTarget" value="top" />
 </config>
