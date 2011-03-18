@@ -4,6 +4,7 @@ package com.snsoft.mapview{
 	import com.snsoft.mapview.util.MapViewDraw;
 	import com.snsoft.util.HashVector;
 	import com.snsoft.util.PointUtil;
+	import com.snsoft.util.xmldom.XMLFastConfig;
 	
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
@@ -138,15 +139,14 @@ package com.snsoft.mapview{
 						anv.addEventListener(MouseEvent.MOUSE_OUT,handlerAreaNameViewMouseOut);
 						
 						if(Config.areaMouseEventType == Config.AREA_MOUSE_EVENT_TYPE_LINK){
-							
-							var url:String = av.mapAreaDO.areaUrl;
+							var url:String = anv.mapAreaDO.areaUrl;
 							if(url != null && url.toLocaleLowerCase() != "null" && url.length > 0){
-								av.addEventListener(MouseEvent.CLICK,handlerAreaViewClick);
+								anv.addEventListener(MouseEvent.CLICK,handlerAreaViewClick);
 							}
 						}
 						if(Config.areaMouseEventType == Config.AREA_MOUSE_EVENT_TYPE_DOUBLE_CLICK){
-							av.doubleClickEnabled = true;
-							av.addEventListener(MouseEvent.DOUBLE_CLICK,handlerAreaViewDoubleClick);
+							anv.doubleClickEnabled = true;
+							anv.addEventListener(MouseEvent.DOUBLE_CLICK,handlerAreaViewDoubleClick);
 						}
 					}
 				}
@@ -215,12 +215,17 @@ package com.snsoft.mapview{
 		
 		
 		private function handlerAreaViewClick(e:Event):void{
-			var av:AreaView = e.currentTarget as AreaView;
+			var av:AreaNameView = e.currentTarget as AreaNameView;
 			var url:String = av.mapAreaDO.areaUrl;
+			
+			var urlTarget:String = XMLFastConfig.getConfig("urlTarget");
+			if(urlTarget == null || urlTarget.length == 0){
+				urlTarget = "_self";
+			}
 			try{
 				var req:URLRequest = new URLRequest(url);
-				navigateToURL(req,"_self");
-				trace("url");
+				navigateToURL(req,urlTarget);
+				trace(urlTarget);
 			}
 			catch(e:Error){
 				trace(e.getStackTrace());
