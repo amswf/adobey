@@ -1,4 +1,4 @@
-package com.snsoft.util.rlm.loader {
+﻿package com.snsoft.util.rlm.loader {
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -26,8 +26,10 @@ package com.snsoft.util.rlm.loader {
 		}
 
 		override public function load(request:URLRequest, context:SoundLoaderContext = null):void {
-			this._url = request.url;
-			this.load(request,context);		
+			if (request != null) {
+				this._url = request.url;
+				super.load(request, context);
+			}
 		}
 
 		private function handlerIOError(e:Event):void {
