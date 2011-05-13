@@ -12,8 +12,8 @@ package com.snsoft.util.rlm.rs {
 
 		}
 
-		public function getTextByUrl(url:String):String {
-			return this.soundList.findByName(url) as String;
+		public function getSoundByUrl(url:String):Sound {
+			return this.soundList.findByName(url) as Sound;
 		}
 
 		override public function callBack():void {
