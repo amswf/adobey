@@ -1,4 +1,4 @@
-﻿package com.snsoft.tvc2{
+﻿package com.snsoft.tvc2 {
 	import com.snsoft.font.EmbedFonts;
 	import com.snsoft.font.EmbedFontsEvent;
 	import com.snsoft.tvc2.bizSounds.BizSoundDO;
@@ -31,6 +31,7 @@
 	import com.snsoft.util.HashVector;
 	import com.snsoft.util.rlm.ResLoadManager;
 	import com.snsoft.util.rlm.rs.RSEmbedFonts;
+	import com.snsoft.util.rlm.rs.RSTextFile;
 	import com.snsoft.util.text.TextStyle;
 	import com.snsoft.util.text.TextStyles;
 
@@ -114,13 +115,81 @@
 		 */
 		override protected function draw():void {
 			//首先 loadStylesXML 然后loadEmbedFonts() 然后是 loadMarketXML() 和 loadMainXML();
-			loadStylesXML();
+			//loadStylesXML();
+			loadXML();
+		}
+
+		private function loadXML():void {
+			var rlm:ResLoadManager = new ResLoadManager();
+
+			var mainrs:RSTextFile = new RSTextFile();
+			mainrs.addResUrl(mainXmlUrl);
+			rlm.addResSet(mainrs);
+
+			var marketrs:RSTextFile = new RSTextFile();
+			marketrs.addResUrl(marketXmlUrl);
+			rlm.addResSet(marketrs);
+
+			var stylers:RSTextFile = new RSTextFile();
+			stylers.addResUrl(styleXmlUrl);
+			rlm.addResSet(stylers);
+			rlm.addEventListener(Event.COMPLETE, handlerLoadXML);
+			rlm.load();
+		}
+
+		private function handlerLoadXML(e:Event):void {
+			var rlm:ResLoadManager = e.currentTarget as ResLoadManager;
+			var parse:XMLParse  = new XMLParse();
+
+			//市场数据XML
+			var marketXML:XML = new XML(rlm.getResByResUrl(marketXmlUrl));
+			marketMainDO = parse.parseMarketCoordsMain(marketXML);
+
+			//字体数据XML
+			var fontXML:XML = new XML(rlm.getResByResUrl(styleXmlUrl));
+
+			//主数据XML
+			var mainXML:XML = new XML(rlm.getResByResUrl(mainXmlUrl));
+			mainDO = parse.parseTvcMainXML(mainXML);
+
+			//加载字体
+			loadFont(fontXML);
+		}
+
+		private function loadFont(fontXML:XML):void {
+			var parse:XMLParse = new XMLParse();
+			var hv:HashVector = parse.parseStyles(fontXML);
+			var fontNameV:Vector.<String> = new Vector.<String>();
+			var fontNameHv:HashVector = new HashVector();
+			var rsfont:RSEmbedFonts = new RSEmbedFonts();
+
+			for (var i:int = 0; i < hv.length; i++) {
+				var name:String = hv.findNameByIndex(i);
+				var textStyle:TextStyle = hv.findByIndex(i) as TextStyle;
+				TextStyles.pushTextStyle(name, textStyle);
+				var textFormat:TextFormat = textStyle.textFormat;
+				if (textFormat != null) {
+					var font:String = textFormat.font;
+					if (StringUtil.isEffective(font)) {
+						rsfont.addFontName(font);
+					}
+				}
+			}
+
+			var rlm:ResLoadManager = new ResLoadManager();
+			rlm.addResSet(rsfont);
+			rlm.addEventListener(Event.COMPLETE, hanlerLoadEmbedFontCMP);
+			rlm.load();
+		}
+
+		private function hanlerLoadEmbedFontCMP(e:Event):void {
+			//然后加载main资源
 		}
 
 		private function loadStylesXML():void {
 			if (styleXmlUrl != null) {
 				var req:URLRequest = new URLRequest(styleXmlUrl);
-				var loader:URLLoader=new URLLoader();
+				var loader:URLLoader = new URLLoader();
 				loader.load(req);
 				loader.addEventListener(Event.COMPLETE, handlerLoadStyleCmp);
 			}
@@ -129,11 +198,11 @@
 		private function handlerLoadStyleCmp(e:Event):void {
 			var loader:URLLoader = e.currentTarget as URLLoader;
 			var xml:XML = new XML(loader.data);
-			var parse:XMLParse           =new XMLParse();
+			var parse:XMLParse = new XMLParse();
 			var hv:HashVector = parse.parseStyles(xml);
-			var fontNameV:Vector.<String>=new Vector.<String>();
-			var fontNameHv:HashVector    =new HashVector();
-			for (var i:int=0; i < hv.length; i++) {
+			var fontNameV:Vector.<String> = new Vector.<String>();
+			var fontNameHv:HashVector = new HashVector();
+			for (var i:int = 0; i < hv.length; i++) {
 				var name:String = hv.findNameByIndex(i);
 				var textStyle:TextStyle = hv.findByIndex(i) as TextStyle;
 				TextStyles.pushTextStyle(name, textStyle);
@@ -145,7 +214,7 @@
 					}
 				}
 			}
-			for (var i2:int=0; i2 < fontNameHv.length; i2++) {
+			for (var i2:int = 0; i2 < fontNameHv.length; i2++) {
 				fontNameV.push(fontNameHv.findByIndex(i2) as String);
 			}
 			loadEmbedFonts(fontNameV);
@@ -155,12 +224,12 @@
 			trace(fontNameV);
 			if (fontNameV != null && fontNameV.length > 0) {
 
-				var rs:RSEmbedFonts=new RSEmbedFonts();
-				for (var i:int=0; i < fontNameV.length; i++) {
+				var rs:RSEmbedFonts = new RSEmbedFonts();
+				for (var i:int = 0; i < fontNameV.length; i++) {
 					rs.addFontName(fontNameV[i]);
 				}
 
-				var rlm:ResLoadManager=new ResLoadManager();
+				var rlm:ResLoadManager = new ResLoadManager();
 				rlm.addResSet(rs);
 				rlm.load();
 				rlm.addEventListener(Event.COMPLETE, handlerEmbedFontsCmp);
@@ -174,7 +243,7 @@
 		private function loadMarketXML():void {
 			if (marketXmlUrl != null) {
 				var reqm:URLRequest = new URLRequest(marketXmlUrl);
-				var loaderm:URLLoader=new URLLoader();
+				var loaderm:URLLoader = new URLLoader();
 				loaderm.load(reqm);
 				loaderm.addEventListener(Event.COMPLETE, handlerLoaderMarketXmlCMP);
 			}
@@ -183,7 +252,7 @@
 		private function handlerLoaderMarketXmlCMP(e:Event):void {
 			var loader:URLLoader = e.currentTarget as URLLoader;
 			var xml:XML = new XML(loader.data);
-			var parse:XMLParse  =new XMLParse();
+			var parse:XMLParse  = new XMLParse();
 			marketMainDO = parse.parseMarketCoordsMain(xml);
 			ChartSoundsManager;
 			loadMainXML();
@@ -192,7 +261,7 @@
 		private function loadMainXML():void {
 			if (mainXmlUrl != null) {
 				var req:URLRequest = new URLRequest(mainXmlUrl);
-				var loader:URLLoader=new URLLoader();
+				var loader:URLLoader = new URLLoader();
 				loader.load(req);
 				loader.addEventListener(Event.COMPLETE, handlerLoaderCMP);
 			}
@@ -201,7 +270,7 @@
 		private function handlerLoaderCMP(e:Event):void {
 			var loader:URLLoader = e.currentTarget as URLLoader;
 			var xml:XML = new XML(loader.data);
-			var parse:XMLParse  =new XMLParse();
+			var parse:XMLParse  = new XMLParse();
 			mainDO = parse.parseTvcMainXML(xml);
 			mainDOSourceLoad(mainDO);
 		}
@@ -211,26 +280,26 @@
 				var timeLineDOHv:HashVector = mainDO.timeLineDOHv;
 				var signLoad:Boolean = false;
 				if (timeLineDOHv != null) {
-					for (var i:int=0; i < timeLineDOHv.length; i++) {
+					for (var i:int = 0; i < timeLineDOHv.length; i++) {
 						var timeLineDO:TimeLineDO = timeLineDOHv.findByIndex(i) as TimeLineDO;
 						if (timeLineDO != null) {
 							var bizDOHv:HashVector = timeLineDO.bizDOHv;
 
 							if (bizDOHv != null) {
-								for (var j:int=0; j < bizDOHv.length; j++) {
+								for (var j:int = 0; j < bizDOHv.length; j++) {
 									var bizDO:BizDO = bizDOHv.findByIndex(j) as BizDO;
 									var varDOHv:HashVector = bizDO.varDOHv;
 
 									if (varDOHv != null && varDOHv.length > 0) {
 
-										var gvalue:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_VALUE);
+										var gvalue:String = getVarAttribute(varDOHv, VAR_GOODS, XMLParse.ATT_VALUE);
 
-										var mapName:String = getVarAttribute(varDOHv,VAR_MAP_NAME,XMLParse.ATT_VALUE);
+										var mapName:String = getVarAttribute(varDOHv, VAR_MAP_NAME, XMLParse.ATT_VALUE);
 										bizDO.mapName = mapName;
 
-										var mapFileName:String = getVarAttribute(varDOHv,VAR_MAP_File_NAME,XMLParse.ATT_VALUE);
+										var mapFileName:String = getVarAttribute(varDOHv, VAR_MAP_File_NAME, XMLParse.ATT_VALUE);
 										if (StringUtil.isEffective(mapFileName)) {
-											var aml:AreaMapLoader = new AreaMapLoader(mapFileName,bizDO);
+											var aml:AreaMapLoader = new AreaMapLoader(mapFileName, bizDO);
 											plusSourceCount();
 											aml.load();
 											signLoad = true;
@@ -244,25 +313,24 @@
 											var distributeMapName:String = distributeMapNameVarDO.getAttribute(XMLParse.ATT_VALUE) as String;
 											if (StringUtil.isEffective(distributeMapName)) {
 												var distributeMediaLoader:MediaLoader = new MediaLoader(bizDO);
-												var distributeUrlV:Vector.<String>   =new Vector.<String>();
+												var distributeUrlV:Vector.<String>   = new Vector.<String>();
 												distributeUrlV.push(distributeMapName);
 												plusSourceCount();
 												signLoad = true;
 												distributeMediaLoader.addEventListener(Event.COMPLETE, handlerDistributeMediaLoaderComplete);
 												distributeMediaLoader.loadList(distributeUrlV);
-
 											}
 										}
 									}
 									var mediasHv:HashVector = bizDO.mediasHv;
 									if (mediasHv != null) {
-										for (var k:int=0; k < mediasHv.length; k++) {
+										for (var k:int = 0; k < mediasHv.length; k++) {
 											var mediasDO:MediasDO = mediasHv.findByIndex(k) as MediasDO;
-											var mediaDOHv:Vector.<MediaDO >  = mediasDO.mediaDOHv;
-											for (var l:int=0; l < mediaDOHv.length; l++) {
+											var mediaDOHv:Vector.<MediaDO>  = mediasDO.mediaDOHv;
+											for (var l:int = 0; l < mediaDOHv.length; l++) {
 												var mediaDO:MediaDO = mediaDOHv[l];
 												var mediaLoader:MediaLoader = new MediaLoader(mediaDO);
-												var mediaUrlV:Vector.<String>=new Vector.<String>();
+												var mediaUrlV:Vector.<String> = new Vector.<String>();
 												var mediaUrl:String = mediaDO.url;
 												if (StringUtil.isEffective(mediaUrl)) {
 													mediaUrlV.push(mediaDO.url);
@@ -279,23 +347,22 @@
 
 									var soundsHv:HashVector = bizDO.soundsHv;
 									if (soundsHv != null) {
-										for (var k2:int=0; k2 < soundsHv.length; k2++) {
+										for (var k2:int = 0; k2 < soundsHv.length; k2++) {
 											var soundsDO:SoundsDO = soundsHv.findByIndex(k2) as SoundsDO;
-											var soundDOHv:Vector.<SoundDO >  = soundsDO.soundDOHv;
-											for (var l2:int=0; l2 < soundDOHv.length; l2++) {
+											var soundDOHv:Vector.<SoundDO>  = soundsDO.soundDOHv;
+											for (var l2:int = 0; l2 < soundDOHv.length; l2++) {
 												var soundDO:SoundDO = soundDOHv[l2];
 												var soundLoader:Mp3Loader = new Mp3Loader(soundDO);
 												var soundUrl:String = soundDO.url;
 												var soundText:String = soundDO.text;
-												var soundUrlV:Vector.<String>=new Vector.<String>();
+												var soundUrlV:Vector.<String> = new Vector.<String>();
 												if (StringUtil.isEffective(soundUrl)) {
 													soundUrlV.push(soundUrl);
 
-												}
-												else if (StringUtil.isEffective(soundText)) {
+												} else if (StringUtil.isEffective(soundText)) {
 													var n:Number = Number(soundText);
 													if (n > 0) {
-														soundUrlV = PriceUtils.toCNUpper(n,2);
+														soundUrlV = PriceUtils.toCNUpper(n, 2);
 													}
 												}
 												if (soundUrlV != null && soundUrlV.length > 0) {
@@ -317,25 +384,22 @@
 										var bizSoundDO:BizSoundDO = null;
 										if (type == XMLParse.TAG_CHART) {
 											bizSoundDO = bizPriceSoundLoad(bizDO);
-										}
-										else if (type == XMLParse.TAG_EXPONENTIAL) {
+										} else if (type == XMLParse.TAG_EXPONENTIAL) {
 											bizSoundDO = bizExponentialSoundLoad(bizDO);
-										}
-										else if (type == XMLParse.TAG_DISTRIBUTE) {
+										} else if (type == XMLParse.TAG_DISTRIBUTE) {
 											bizSoundDO = bizDistributeSoundLoad(bizDO);
-										}
-										else if (type == XMLParse.TAG_DISTRIBUTE_AREA) {
+										} else if (type == XMLParse.TAG_DISTRIBUTE_AREA) {
 											bizSoundDO = bizDistributeAreaSoundLoad(bizDO);
 										}
 										if (bizSoundDO != null) {
-											var urlvv:Vector.<Vector.<String >  >  = bizSoundDO.urlVV;
-											var textVV:Vector.<Vector.<String >  >  = bizSoundDO.textVV;
-											var vvs:Vector.<Vector.<Sound>>    =new Vector.<Vector.<Sound>>();
+											var urlvv:Vector.<Vector.<String>>  = bizSoundDO.urlVV;
+											var textVV:Vector.<Vector.<String>>  = bizSoundDO.textVV;
+											var vvs:Vector.<Vector.<Sound>>    = new Vector.<Vector.<Sound>>();
 											dataDO.bizSoundList = vvs;
 											if (urlvv != null) {
-												for (var k3:int=0; k3 < urlvv.length; k3++) {
-													var disurlv:Vector.<String >  = urlvv[k3];
-													var vs:Vector.<Sound>      =new Vector.<Sound>();
+												for (var k3:int = 0; k3 < urlvv.length; k3++) {
+													var disurlv:Vector.<String>  = urlvv[k3];
+													var vs:Vector.<Sound>      = new Vector.<Sound>();
 													vvs.push(vs);
 													var mp3Loader:Mp3Loader = new Mp3Loader(vs);
 													plusSourceCount();
@@ -353,7 +417,7 @@
 						}
 					}
 				}
-				if (! signLoad) {
+				if (!signLoad) {
 					play();
 				}
 			}
@@ -368,11 +432,11 @@
 			if (mainDO != null) {
 				var timeLineDOHv:HashVector = mainDO.timeLineDOHv;
 				if (timeLineDOHv != null) {
-					for (var i:int=0; i < timeLineDOHv.length; i++) {
+					for (var i:int = 0; i < timeLineDOHv.length; i++) {
 						var timeLineDO:TimeLineDO = timeLineDOHv.findByIndex(i) as TimeLineDO;
 						if (timeLineDO != null) {
 							timeLineNum++;
-							var timeLine:TimeLine = new TimeLine(timeLineDO,marketMainDO);
+							var timeLine:TimeLine = new TimeLine(timeLineDO, marketMainDO);
 							timeLine.addEventListener(Event.COMPLETE, handlerTimeLinePlayCmp);
 							this.addChild(timeLine);
 						}
@@ -397,15 +461,15 @@
 			var type:String = dataDO.type;
 
 			if (varDOHv != null) {
-				var gName:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_VALUE);
-				var gText:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_TEXT);
-				var dateType:String = getVarAttribute(varDOHv,VAR_DATE_TYPE,XMLParse.ATT_VALUE);
+				var gName:String = getVarAttribute(varDOHv, VAR_GOODS, XMLParse.ATT_VALUE);
+				var gText:String = getVarAttribute(varDOHv, VAR_GOODS, XMLParse.ATT_TEXT);
+				var dateType:String = getVarAttribute(varDOHv, VAR_DATE_TYPE, XMLParse.ATT_VALUE);
 
-				var dasdo:DistributeAreaSoundsDO=new DistributeAreaSoundsDO();
+				var dasdo:DistributeAreaSoundsDO = new DistributeAreaSoundsDO();
 				dasdo.goodsCode = gName;
 				dasdo.goodsText = gText;
 				dasdo.dateType = dateType;
-				var dasm:DistributeAreaSoundsManager=new DistributeAreaSoundsManager();
+				var dasm:DistributeAreaSoundsManager = new DistributeAreaSoundsManager();
 				var urlvv:BizSoundDO = dasm.creatDistributeAreaUrlList(dasdo);
 				return urlvv;
 			}
@@ -421,21 +485,20 @@
 			var dataDO:DataDO = bizDO.dataDO;
 			var varDOHv:HashVector = bizDO.varDOHv;
 			var type:String = dataDO.type;
-			var xgtListDOV:Vector.<ListDO >  = dataDO.xGraduationText;
+			var xgtListDOV:Vector.<ListDO>  = dataDO.xGraduationText;
 			if (varDOHv != null) {
 				//var xgtName:String = xgtListDOV[0].name;//<list name="week" text="X 坐标刻度文字" style="">
-				var listDOV:Vector.<ListDO >  = dataDO.data;
+				var listDOV:Vector.<ListDO>  = dataDO.data;
 
 				var currentListDO:ListDO = null;
 				var forecastListDO:ListDO = null;
-				for (var ci:int=0; ci < listDOV.length; ci++) {
+				for (var ci:int = 0; ci < listDOV.length; ci++) {
 					var listDO:ListDO = listDOV[ci];
 					var name:String = listDO.name;
 
 					if (name.indexOf(LIST_NAME_TYPE_CURRENT) >= 0) {
 						currentListDO = listDO;
-					}
-					else if (name.indexOf(LIST_NAME_TYPE_FORECAST) >= 0) {
+					} else if (name.indexOf(LIST_NAME_TYPE_FORECAST) >= 0) {
 						forecastListDO = listDO;
 					}
 				}
@@ -445,8 +508,8 @@
 					var currentValue:Number = 0;
 					var latestValue:Number = 0;
 
-					var tpdoHv:Vector.<TextPointDO >  = currentListDO.listHv;
-					for (var i2:int=tpdoHv.length - 1; i2 >= 0; i2--) {
+					var tpdoHv:Vector.<TextPointDO>  = currentListDO.listHv;
+					for (var i2:int = tpdoHv.length - 1; i2 >= 0; i2--) {
 						var tpdo:TextPointDO = tpdoHv[i2];
 						var tpvalue:Number = Number(tpdo.value);
 						if (tpvalue > 0) {
@@ -457,7 +520,7 @@
 
 					}
 
-					for (var i21:int=tpdoHv.length - 1; i21 >= 0; i21--) {
+					for (var i21:int = tpdoHv.length - 1; i21 >= 0; i21--) {
 						var tpdo21:TextPointDO = tpdoHv[i21];
 						var tpvalue21:Number = Number(tpdo21.value);
 						if (tpvalue21 > 0 && i21 < currentIndex) {
@@ -468,28 +531,28 @@
 
 
 					var priceExponentialTrend:int = NaN;
-					priceExponentialTrend = getTrend(currentValue,latestValue);
+					priceExponentialTrend = getTrend(currentValue, latestValue);
 
-					var gName:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_VALUE);
-					var gText:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_TEXT);
-					var dateType:String = getVarAttribute(varDOHv,VAR_DATE_TYPE,XMLParse.ATT_VALUE);
+					var gName:String = getVarAttribute(varDOHv, VAR_GOODS, XMLParse.ATT_VALUE);
+					var gText:String = getVarAttribute(varDOHv, VAR_GOODS, XMLParse.ATT_TEXT);
+					var dateType:String = getVarAttribute(varDOHv, VAR_DATE_TYPE, XMLParse.ATT_VALUE);
 
 					var forecastContrastPrice:Number = 0;
 
 					var forecastTrend:int = NaN;
 					if (forecastListDO != null) {
-						var ftpdoHv:Vector.<TextPointDO >  = forecastListDO.listHv;
+						var ftpdoHv:Vector.<TextPointDO>  = forecastListDO.listHv;
 
 						if (currentIndex + 1 < ftpdoHv.length) {
 							var ftpdo:TextPointDO = ftpdoHv[currentIndex + 1];
 							var ftpvalue:Number = Number(ftpdo.value);
 							if (ftpvalue > 0) {
-								forecastTrend = getTrend(ftpvalue,currentValue);
+								forecastTrend = getTrend(ftpvalue, currentValue);
 							}
 						}
 					}
 
-					var csdo:ChartSoundsDO=new ChartSoundsDO();
+					var csdo:ChartSoundsDO = new ChartSoundsDO();
 					csdo.dateType = dateType;
 					csdo.goodsCode = gName;
 					csdo.goodsText = gText;
@@ -499,7 +562,7 @@
 						csdo.forecastPriceExponentialTrend = forecastTrend;
 					}
 
-					var csm:ChartSoundsManager=new ChartSoundsManager();
+					var csm:ChartSoundsManager = new ChartSoundsManager();
 					var urlvv:BizSoundDO = csm.creatExponentialSoundUrlList(csdo);
 
 					return urlvv;
@@ -512,17 +575,17 @@
 			var dataDO:DataDO = bizDO.dataDO;
 			var varDOHv:HashVector = bizDO.varDOHv;
 			var type:String = dataDO.type;
-			var xgtListDOV:Vector.<ListDO >  = dataDO.xGraduationText;
+			var xgtListDOV:Vector.<ListDO>  = dataDO.xGraduationText;
 			if (varDOHv != null) {
-				var listDOV:Vector.<ListDO >  = dataDO.broadcast;
+				var listDOV:Vector.<ListDO>  = dataDO.broadcast;
 				if (listDOV != null && marketMainDO != null && bizDO.mapName != null) {
 					setMarketsName(listDOV, marketMainDO, bizDO.mapName);
 				}
 				var lowListDO:ListDO = null;
 				var highListDO:ListDO = null;
 
-				var lowDisV:Vector.<TextPointDO >  = null;
-				var highDisV:Vector.<TextPointDO >  = null;
+				var lowDisV:Vector.<TextPointDO>  = null;
+				var highDisV:Vector.<TextPointDO>  = null;
 				if (listDOV.length > 0) {
 					lowListDO = listDOV[0];
 					if (lowListDO != null) {
@@ -539,10 +602,10 @@
 				var lowDesListDO:ListDO = null;
 				var highDesListDO:ListDO = null;
 
-				var lowDesV:Vector.<TextPointDO >  = null;
-				var highDesV:Vector.<TextPointDO >  = null;
+				var lowDesV:Vector.<TextPointDO>  = null;
+				var highDesV:Vector.<TextPointDO>  = null;
 
-				var deslv:Vector.<ListDO >  = dataDO.des;
+				var deslv:Vector.<ListDO>  = dataDO.des;
 				if (deslv.length > 0) {
 					lowDesListDO = deslv[0];
 					if (lowDesListDO != null) {
@@ -556,12 +619,12 @@
 					}
 				}
 
-				var gName:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_VALUE);
-				var gText:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_TEXT);
-				var dateType:String = getVarAttribute(varDOHv,VAR_DATE_TYPE,XMLParse.ATT_VALUE);
+				var gName:String = getVarAttribute(varDOHv, VAR_GOODS, XMLParse.ATT_VALUE);
+				var gText:String = getVarAttribute(varDOHv, VAR_GOODS, XMLParse.ATT_TEXT);
+				var dateType:String = getVarAttribute(varDOHv, VAR_DATE_TYPE, XMLParse.ATT_VALUE);
 
 				var forecastContrastPrice:Number = 0;
-				var dsdo:DistributeSoundsDO     =new DistributeSoundsDO();
+				var dsdo:DistributeSoundsDO     = new DistributeSoundsDO();
 				dsdo.dateType = dateType;
 				dsdo.goodsCode = gName;
 				dsdo.goodsText = gText;
@@ -570,7 +633,7 @@
 				dsdo.lowDesV = lowDesV;
 				dsdo.highDesV = highDesV;
 
-				var dsm:DistributeSoundsManager=new DistributeSoundsManager();
+				var dsm:DistributeSoundsManager = new DistributeSoundsManager();
 				var urlvv:BizSoundDO = dsm.creatPriceSoundUrlList(dsdo);
 				return urlvv;
 			}
@@ -578,10 +641,10 @@
 		}
 
 		public function setMarketsName(listDOV:Vector.<ListDO>, marketMainDO:MarketMainDO, coordsName:String):void {
-			for (var i:int=0; i < listDOV.length; i++) {
+			for (var i:int = 0; i < listDOV.length; i++) {
 				var listDO:ListDO = listDOV[i];
-				var tpdov:Vector.<TextPointDO >  = listDO.listHv;
-				for (var j:int=0; j < tpdov.length; j++) {
+				var tpdov:Vector.<TextPointDO>  = listDO.listHv;
+				for (var j:int = 0; j < tpdov.length; j++) {
 					var tpdo:TextPointDO = tpdov[j];
 					var coordName:String = tpdo.name;
 
@@ -616,23 +679,21 @@
 			var dataDO:DataDO = bizDO.dataDO;
 			var varDOHv:HashVector = bizDO.varDOHv;
 			var type:String = dataDO.type;
-			var xgtListDOV:Vector.<ListDO >  = dataDO.xGraduationText;
+			var xgtListDOV:Vector.<ListDO>  = dataDO.xGraduationText;
 			if (varDOHv != null) {
 
-				var listDOV:Vector.<ListDO >  = dataDO.data;
+				var listDOV:Vector.<ListDO>  = dataDO.data;
 				var historyListDO:ListDO = null;
 				var currentListDO:ListDO = null;
 				var forecastListDO:ListDO = null;
-				for (var ci:int=0; ci < listDOV.length; ci++) {
+				for (var ci:int = 0; ci < listDOV.length; ci++) {
 					var listDO:ListDO = listDOV[ci];
 					var name:String = listDO.name;
 					if (name.indexOf(LIST_NAME_TYPE_HISTORY) >= 0) {
 						historyListDO = listDO;
-					}
-					else if (name.indexOf(LIST_NAME_TYPE_CURRENT) >= 0) {
+					} else if (name.indexOf(LIST_NAME_TYPE_CURRENT) >= 0) {
 						currentListDO = listDO;
-					}
-					else if (name.indexOf(LIST_NAME_TYPE_FORECAST) >= 0) {
+					} else if (name.indexOf(LIST_NAME_TYPE_FORECAST) >= 0) {
 						forecastListDO = listDO;
 					}
 				}
@@ -643,12 +704,12 @@
 					var currentValue:Number = 0;
 					var latestValue:Number = 0;
 
-					var tpdoHv:Vector.<TextPointDO >  = currentListDO.listHv;
+					var tpdoHv:Vector.<TextPointDO>  = currentListDO.listHv;
 					var highPrice:Number = 0;
 					var lowPrice:Number = 10000;
 
 
-					for (var i2:int=tpdoHv.length - 1; i2 >= 0; i2--) {
+					for (var i2:int = tpdoHv.length - 1; i2 >= 0; i2--) {
 						var tpdo:TextPointDO = tpdoHv[i2];
 						var tpvalue:Number = Number(tpdo.value);
 						if (tpvalue > 0) {
@@ -659,7 +720,7 @@
 
 					}
 
-					for (var i21:int=tpdoHv.length - 1; i21 >= 0; i21--) {
+					for (var i21:int = tpdoHv.length - 1; i21 >= 0; i21--) {
 						var tpdo21:TextPointDO = tpdoHv[i21];
 						var tpvalue21:Number = Number(tpdo21.value);
 						if (tpvalue21 > 0 && i21 < currentIndex) {
@@ -668,7 +729,7 @@
 						}
 					}
 
-					for (var i22:int=tpdoHv.length - 1; i22 >= 0; i22--) {
+					for (var i22:int = tpdoHv.length - 1; i22 >= 0; i22--) {
 						var tpdo22:TextPointDO = tpdoHv[i22];
 						var tpvalue22:Number = Number(tpdo22.value);
 
@@ -683,18 +744,18 @@
 
 					var priceTrend:int = 0;
 
-					priceTrend = getTrend(currentValue,latestValue);
+					priceTrend = getTrend(currentValue, latestValue);
 
-					var gName:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_VALUE);
-					var gText:String = getVarAttribute(varDOHv,VAR_GOODS,XMLParse.ATT_TEXT);
-					var dateType:String = getVarAttribute(varDOHv,VAR_DATE_TYPE,XMLParse.ATT_VALUE);
-					var mName:String = getVarAttribute(varDOHv,VAR_MARKET,XMLParse.ATT_VALUE);
-					var mText:String = getVarAttribute(varDOHv,VAR_MARKET,XMLParse.ATT_TEXT);
+					var gName:String = getVarAttribute(varDOHv, VAR_GOODS, XMLParse.ATT_VALUE);
+					var gText:String = getVarAttribute(varDOHv, VAR_GOODS, XMLParse.ATT_TEXT);
+					var dateType:String = getVarAttribute(varDOHv, VAR_DATE_TYPE, XMLParse.ATT_VALUE);
+					var mName:String = getVarAttribute(varDOHv, VAR_MARKET, XMLParse.ATT_VALUE);
+					var mText:String = getVarAttribute(varDOHv, VAR_MARKET, XMLParse.ATT_TEXT);
 
 					var historyContrastPrice:Number = NaN;
 					var historyPrice:Number = 0;
 					if (historyListDO != null) {
-						var htpdoHv:Vector.<TextPointDO >  = historyListDO.listHv;
+						var htpdoHv:Vector.<TextPointDO>  = historyListDO.listHv;
 						if (currentIndex < htpdoHv.length) {
 							var htpdo:TextPointDO = htpdoHv[currentIndex];
 							var htpvalue:Number = Number(htpdo.value);
@@ -706,7 +767,7 @@
 					}
 					var historyNextPrice:Number = 0;
 					if (historyListDO != null) {
-						var hntpdoHv:Vector.<TextPointDO >  = historyListDO.listHv;
+						var hntpdoHv:Vector.<TextPointDO>  = historyListDO.listHv;
 						if (currentIndex + 1 < hntpdoHv.length) {
 							var hrtpdo:TextPointDO = hntpdoHv[currentIndex + 1];
 							var hrtpvalue:Number = Number(hrtpdo.value);
@@ -722,7 +783,7 @@
 					var forecastTrend:int = NaN;
 
 					if (forecastListDO != null) {
-						var ftpdoHv:Vector.<TextPointDO >  = forecastListDO.listHv;
+						var ftpdoHv:Vector.<TextPointDO>  = forecastListDO.listHv;
 						if (currentIndex + 1 < ftpdoHv.length) {
 							var ftpdo:TextPointDO = ftpdoHv[currentIndex + 1];
 							var ftpvalue:Number = Number(ftpdo.value);
@@ -731,12 +792,12 @@
 									forecastContrastPrice = ftpvalue - historyNextPrice;
 								}
 								forecastPrice = ftpvalue;
-								forecastTrend = getTrend(ftpvalue,currentValue);
+								forecastTrend = getTrend(ftpvalue, currentValue);
 							}
 						}
 					}
 
-					var csdo:ChartSoundsDO=new ChartSoundsDO();
+					var csdo:ChartSoundsDO = new ChartSoundsDO();
 					csdo.dateType = dateType;
 					csdo.goodsCode = gName;
 					csdo.goodsText = gText;
@@ -764,7 +825,7 @@
 						csdo.forecastContrastPrice = forecastContrastPrice;
 					}
 
-					var csm:ChartSoundsManager=new ChartSoundsManager();
+					var csm:ChartSoundsManager = new ChartSoundsManager();
 					var urlvv:BizSoundDO = csm.creatPriceSoundUrlList(csdo);
 
 					return urlvv;
@@ -775,10 +836,10 @@
 
 		private function handlerBizSoundCmp(e:Event):void {
 			var mp3Loader:Mp3Loader = e.currentTarget as Mp3Loader;
-			var vs:Vector.<Sound >  = mp3Loader.dataObj as Vector.<Sound > ;
-			var sl:Vector.<Sound >  = mp3Loader.soundList;
+			var vs:Vector.<Sound>  = mp3Loader.dataObj as Vector.<Sound>;
+			var sl:Vector.<Sound>  = mp3Loader.soundList;
 			if (sl != null) {
-				for (var i:int=0; i < sl.length; i++) {
+				for (var i:int = 0; i < sl.length; i++) {
 					vs.push(sl[i]);
 				}
 			}
@@ -789,11 +850,9 @@
 			var trend:int = 0;
 			if ((value - baseValue) / baseValue > 0.1) {
 				trend = 1;
-			}
-			else if ((value - baseValue) / baseValue < -0.1) {
+			} else if ((value - baseValue) / baseValue < -0.1) {
 				trend = -1;
-			}
-			else {
+			} else {
 				trend = 0;
 			}
 			return trend;
