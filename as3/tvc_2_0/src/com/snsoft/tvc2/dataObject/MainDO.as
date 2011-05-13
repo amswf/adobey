@@ -1,4 +1,4 @@
-package com.snsoft.tvc2.dataObject{
+﻿package com.snsoft.tvc2.dataObject{
 	import com.snsoft.util.HashVector;
 
 	
