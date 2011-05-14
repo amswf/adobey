@@ -10,7 +10,7 @@ package com.snsoft.util.rlm.rs{
 		}
 		
 		
-		override public function callBack():void{
+		override protected function callBack():void{
 			//回调后，把资源在本对象中处理
 		} 
 	}

@@ -54,6 +54,7 @@ package com.snsoft.tvc2.media{
 					this.dispatchEvent(new Event(EVENT_PLAYED));
 					if(playingMedia is MovieClip){
 						var mc:MovieClip = playingMedia as MovieClip;
+						mc.gotoAndStop(1);
 						mc.play();
 						playingMedia.addEventListener(Event.EXIT_FRAME,handlerMovieClipPlayExitFrame);
 					}

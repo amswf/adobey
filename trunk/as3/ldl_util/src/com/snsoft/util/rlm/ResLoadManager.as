@@ -280,8 +280,8 @@
 						var obj:Object = this.resDataList.findByName(url);
 						rdlist.push(obj);
 					}
-					res.resDataList = rdlist;
-					res.callBack();
+					res.rlm::setResDataList(rdlist);
+					res.rlm::loadCmpCallBack();
 				}
 			}
 		}

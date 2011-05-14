@@ -67,7 +67,7 @@
 			}
 		}
 		
-		override public function callBack():void{
+		override protected function callBack():void{
 			registerFont();
 		} 
 		
