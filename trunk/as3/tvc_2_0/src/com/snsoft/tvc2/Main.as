@@ -266,7 +266,7 @@
 													}
 												}
 												if (soundUrlV != null && soundUrlV.length > 0) {
-													for (var m2:int; m2 < soundUrlV.length; m2++) {
+													for (var m2:int = 0; m2 < soundUrlV.length; m2++) {
 														rsSound.addResUrl(soundUrlV[m2]);
 													}
 													soundDO.rsSound = rsSound;
@@ -356,15 +356,12 @@
 			}
 		}
 
-
-
 		private function handlerTimeLinePlayCmp(e:Event):void {
 			timeLinePlayCmpNum++;
 			if (timeLineNum == timeLinePlayCmpNum) {
 				this.dispatchEvent(new Event(Event.COMPLETE));
 			}
 		}
-
 
 		private function bizDistributeAreaSoundLoad(bizDO:BizDO):BizSoundDO {
 			var dataDO:DataDO = bizDO.dataDO;
@@ -440,7 +437,6 @@
 							break;
 						}
 					}
-
 
 					var priceExponentialTrend:int = NaN;
 					priceExponentialTrend = getTrend(currentValue, latestValue);
@@ -621,7 +617,6 @@
 					var tpdoHv:Vector.<TextPointDO>  = currentListDO.listHv;
 					var highPrice:Number = 0;
 					var lowPrice:Number = 10000;
-
 
 					for (var i2:int = tpdoHv.length - 1; i2 >= 0; i2--) {
 						var tpdo:TextPointDO = tpdoHv[i2];

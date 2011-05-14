@@ -37,7 +37,7 @@ package com.snsoft.tvc2.media {
 		}
 
 		private function playNextMp3s():void {
-
+			trace("_______________________________playNum:"+playNum);
 			if (soundsDO != null && soundsDO.soundDOHv != null) {
 				if (playNum < soundsDO.soundDOHv.length) {
 					if (mp3Player != null) {
