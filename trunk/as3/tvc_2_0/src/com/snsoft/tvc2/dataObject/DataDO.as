@@ -1,4 +1,6 @@
 package com.snsoft.tvc2.dataObject{
+	import com.snsoft.util.rlm.rs.RSSound;
+	
 	import flash.media.Sound;
 	
 	/**
@@ -37,6 +39,9 @@ package com.snsoft.tvc2.dataObject{
 		
 		//业务语音文本列表
 		private var _bizSoundTextList:Vector.<Vector.<String>> = null;
+		
+		//业务语音资源集
+		private var _resSetList:Vector.<RSSound> = null;
 		
 		public function DataDO()
 		{
@@ -140,6 +145,16 @@ package com.snsoft.tvc2.dataObject{
 		public function set des(value:Vector.<ListDO>):void
 		{
 			_des = value;
+		}
+
+		public function get resSetList():Vector.<RSSound>
+		{
+			return _resSetList;
+		}
+
+		public function set resSetList(value:Vector.<RSSound>):void
+		{
+			_resSetList = value;
 		}
 
 		 

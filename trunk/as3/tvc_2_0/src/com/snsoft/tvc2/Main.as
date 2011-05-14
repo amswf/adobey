@@ -30,8 +30,13 @@
 	import com.snsoft.tvc2.xml.XMLParse;
 	import com.snsoft.util.HashVector;
 	import com.snsoft.util.rlm.ResLoadManager;
+	import com.snsoft.util.rlm.loader.ResLoaderType;
 	import com.snsoft.util.rlm.rs.RSEmbedFonts;
+	import com.snsoft.util.rlm.rs.RSImages;
+	import com.snsoft.util.rlm.rs.RSSound;
+	import com.snsoft.util.rlm.rs.RSSwf;
 	import com.snsoft.util.rlm.rs.RSTextFile;
+	import com.snsoft.util.rlm.rs.ResSet;
 	import com.snsoft.util.text.TextStyle;
 	import com.snsoft.util.text.TextStyles;
 
@@ -43,6 +48,7 @@
 	import flash.media.Sound;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
+	import flash.sampler.NewObjectSample;
 	import flash.text.TextFormat;
 
 	/**
@@ -133,6 +139,7 @@
 			var stylers:RSTextFile = new RSTextFile();
 			stylers.addResUrl(styleXmlUrl);
 			rlm.addResSet(stylers);
+
 			rlm.addEventListener(Event.COMPLETE, handlerLoadXML);
 			rlm.load();
 		}
@@ -178,107 +185,19 @@
 
 			var rlm:ResLoadManager = new ResLoadManager();
 			rlm.addResSet(rsfont);
-			rlm.addEventListener(Event.COMPLETE, hanlerLoadEmbedFontCMP);
+			rlm.addEventListener(Event.COMPLETE, handlerLoadEmbedFontCMP);
 			rlm.load();
 		}
 
-		private function hanlerLoadEmbedFontCMP(e:Event):void {
-			//然后加载main资源
-		}
-
-		private function loadStylesXML():void {
-			if (styleXmlUrl != null) {
-				var req:URLRequest = new URLRequest(styleXmlUrl);
-				var loader:URLLoader = new URLLoader();
-				loader.load(req);
-				loader.addEventListener(Event.COMPLETE, handlerLoadStyleCmp);
-			}
-		}
-
-		private function handlerLoadStyleCmp(e:Event):void {
-			var loader:URLLoader = e.currentTarget as URLLoader;
-			var xml:XML = new XML(loader.data);
-			var parse:XMLParse = new XMLParse();
-			var hv:HashVector = parse.parseStyles(xml);
-			var fontNameV:Vector.<String> = new Vector.<String>();
-			var fontNameHv:HashVector = new HashVector();
-			for (var i:int = 0; i < hv.length; i++) {
-				var name:String = hv.findNameByIndex(i);
-				var textStyle:TextStyle = hv.findByIndex(i) as TextStyle;
-				TextStyles.pushTextStyle(name, textStyle);
-				var textFormat:TextFormat = textStyle.textFormat;
-				if (textFormat != null) {
-					var font:String = textFormat.font;
-					if (StringUtil.isEffective(font)) {
-						fontNameHv.push(font, font);
-					}
-				}
-			}
-			for (var i2:int = 0; i2 < fontNameHv.length; i2++) {
-				fontNameV.push(fontNameHv.findByIndex(i2) as String);
-			}
-			loadEmbedFonts(fontNameV);
-		}
-
-		private function loadEmbedFonts(fontNameV:Vector.<String>):void {
-			trace(fontNameV);
-			if (fontNameV != null && fontNameV.length > 0) {
-
-				var rs:RSEmbedFonts = new RSEmbedFonts();
-				for (var i:int = 0; i < fontNameV.length; i++) {
-					rs.addFontName(fontNameV[i]);
-				}
-
-				var rlm:ResLoadManager = new ResLoadManager();
-				rlm.addResSet(rs);
-				rlm.load();
-				rlm.addEventListener(Event.COMPLETE, handlerEmbedFontsCmp);
-			}
-		}
-
-		private function handlerEmbedFontsCmp(e:Event):void {
-			loadMarketXML();
-		}
-
-		private function loadMarketXML():void {
-			if (marketXmlUrl != null) {
-				var reqm:URLRequest = new URLRequest(marketXmlUrl);
-				var loaderm:URLLoader = new URLLoader();
-				loaderm.load(reqm);
-				loaderm.addEventListener(Event.COMPLETE, handlerLoaderMarketXmlCMP);
-			}
-		}
-
-		private function handlerLoaderMarketXmlCMP(e:Event):void {
-			var loader:URLLoader = e.currentTarget as URLLoader;
-			var xml:XML = new XML(loader.data);
-			var parse:XMLParse  = new XMLParse();
-			marketMainDO = parse.parseMarketCoordsMain(xml);
-			ChartSoundsManager;
-			loadMainXML();
-		}
-
-		private function loadMainXML():void {
-			if (mainXmlUrl != null) {
-				var req:URLRequest = new URLRequest(mainXmlUrl);
-				var loader:URLLoader = new URLLoader();
-				loader.load(req);
-				loader.addEventListener(Event.COMPLETE, handlerLoaderCMP);
-			}
-		}
-
-		private function handlerLoaderCMP(e:Event):void {
-			var loader:URLLoader = e.currentTarget as URLLoader;
-			var xml:XML = new XML(loader.data);
-			var parse:XMLParse  = new XMLParse();
-			mainDO = parse.parseTvcMainXML(xml);
+		private function handlerLoadEmbedFontCMP(e:Event):void {
+			//加载main资源
 			mainDOSourceLoad(mainDO);
 		}
 
 		private function mainDOSourceLoad(mainDO:MainDO):void {
+			var rlm:ResLoadManager = new ResLoadManager();
 			if (mainDO != null) {
 				var timeLineDOHv:HashVector = mainDO.timeLineDOHv;
-				var signLoad:Boolean = false;
 				if (timeLineDOHv != null) {
 					for (var i:int = 0; i < timeLineDOHv.length; i++) {
 						var timeLineDO:TimeLineDO = timeLineDOHv.findByIndex(i) as TimeLineDO;
@@ -291,35 +210,15 @@
 									var varDOHv:HashVector = bizDO.varDOHv;
 
 									if (varDOHv != null && varDOHv.length > 0) {
-
-										var gvalue:String = getVarAttribute(varDOHv, VAR_GOODS, XMLParse.ATT_VALUE);
-
 										var mapName:String = getVarAttribute(varDOHv, VAR_MAP_NAME, XMLParse.ATT_VALUE);
 										bizDO.mapName = mapName;
 
 										var mapFileName:String = getVarAttribute(varDOHv, VAR_MAP_File_NAME, XMLParse.ATT_VALUE);
 										if (StringUtil.isEffective(mapFileName)) {
-											var aml:AreaMapLoader = new AreaMapLoader(mapFileName, bizDO);
-											plusSourceCount();
-											aml.load();
-											signLoad = true;
-											aml.addEventListener(Event.COMPLETE, handlerLoadAreaMapComplete);
-											aml.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadIOError);
-										}
-
-
-										var distributeMapNameVarDO:VarDO = varDOHv.findByName(VAR_DISTRIBUTE_MAP_NAME) as VarDO;
-										if (distributeMapNameVarDO != null) {
-											var distributeMapName:String = distributeMapNameVarDO.getAttribute(XMLParse.ATT_VALUE) as String;
-											if (StringUtil.isEffective(distributeMapName)) {
-												var distributeMediaLoader:MediaLoader = new MediaLoader(bizDO);
-												var distributeUrlV:Vector.<String>   = new Vector.<String>();
-												distributeUrlV.push(distributeMapName);
-												plusSourceCount();
-												signLoad = true;
-												distributeMediaLoader.addEventListener(Event.COMPLETE, handlerDistributeMediaLoaderComplete);
-												distributeMediaLoader.loadList(distributeUrlV);
-											}
+											var maprs:RSTextFile = new RSTextFile();
+											maprs.addResUrl(mapFileName);
+											bizDO.mapRS = maprs;
+											rlm.addResSet(maprs);
 										}
 									}
 									var mediasHv:HashVector = bizDO.mediasHv;
@@ -329,17 +228,18 @@
 											var mediaDOHv:Vector.<MediaDO>  = mediasDO.mediaDOHv;
 											for (var l:int = 0; l < mediaDOHv.length; l++) {
 												var mediaDO:MediaDO = mediaDOHv[l];
-												var mediaLoader:MediaLoader = new MediaLoader(mediaDO);
-												var mediaUrlV:Vector.<String> = new Vector.<String>();
+												var resSet:ResSet = null;
 												var mediaUrl:String = mediaDO.url;
-												if (StringUtil.isEffective(mediaUrl)) {
-													mediaUrlV.push(mediaDO.url);
+												if (ResLoaderType.checkType(mediaUrl, ResLoaderType.IMAGE)) {
+													resSet = new RSImages();
 												}
-												if (mediaUrlV.length > 0) {
-													plusSourceCount();
-													signLoad = true;
-													mediaLoader.addEventListener(Event.COMPLETE, handlerMediaLoaderComplete);
-													mediaLoader.loadList(mediaUrlV);
+												else if (ResLoaderType.checkType(mediaUrl, ResLoaderType.SWF)) {
+													resSet = new RSSwf();
+												}
+												if (resSet != null) {
+													resSet.addResUrl(mediaUrl);
+													mediaDO.resSet = resSet;
+													rlm.addResSet(resSet);
 												}
 											}
 										}
@@ -352,24 +252,25 @@
 											var soundDOHv:Vector.<SoundDO>  = soundsDO.soundDOHv;
 											for (var l2:int = 0; l2 < soundDOHv.length; l2++) {
 												var soundDO:SoundDO = soundDOHv[l2];
-												var soundLoader:Mp3Loader = new Mp3Loader(soundDO);
 												var soundUrl:String = soundDO.url;
 												var soundText:String = soundDO.text;
+												var rsSound:RSSound = new RSSound();
 												var soundUrlV:Vector.<String> = new Vector.<String>();
 												if (StringUtil.isEffective(soundUrl)) {
 													soundUrlV.push(soundUrl);
-
-												} else if (StringUtil.isEffective(soundText)) {
+												}
+												else if (StringUtil.isEffective(soundText)) {
 													var n:Number = Number(soundText);
 													if (n > 0) {
 														soundUrlV = PriceUtils.toCNUpper(n, 2);
 													}
 												}
 												if (soundUrlV != null && soundUrlV.length > 0) {
-													soundLoader.loadList(soundUrlV);
-													plusSourceCount();
-													signLoad = true;
-													soundLoader.addEventListener(Event.COMPLETE, handlerSoundLoaderComplete);
+													for (var m2:int; m2 < soundUrlV.length; m2++) {
+														rsSound.addResUrl(soundUrlV[m2]);
+													}
+													soundDO.rsSound = rsSound;
+													rlm.addResSet(rsSound);
 												}
 											}
 										}
@@ -378,33 +279,39 @@
 									var dataDO:DataDO = bizDO.dataDO;
 									if (dataDO != null) {
 										var type:String = dataDO.type;
-
-
-
 										var bizSoundDO:BizSoundDO = null;
 										if (type == XMLParse.TAG_CHART) {
 											bizSoundDO = bizPriceSoundLoad(bizDO);
-										} else if (type == XMLParse.TAG_EXPONENTIAL) {
+										}
+										else if (type == XMLParse.TAG_EXPONENTIAL) {
 											bizSoundDO = bizExponentialSoundLoad(bizDO);
-										} else if (type == XMLParse.TAG_DISTRIBUTE) {
+										}
+										else if (type == XMLParse.TAG_DISTRIBUTE) {
 											bizSoundDO = bizDistributeSoundLoad(bizDO);
-										} else if (type == XMLParse.TAG_DISTRIBUTE_AREA) {
+										}
+										else if (type == XMLParse.TAG_DISTRIBUTE_AREA) {
 											bizSoundDO = bizDistributeAreaSoundLoad(bizDO);
 										}
 										if (bizSoundDO != null) {
-											var urlvv:Vector.<Vector.<String>>  = bizSoundDO.urlVV;
-											var textVV:Vector.<Vector.<String>>  = bizSoundDO.textVV;
-											var vvs:Vector.<Vector.<Sound>>    = new Vector.<Vector.<Sound>>();
+											var urlvv:Vector.<Vector.<String>> = bizSoundDO.urlVV;
+											var textVV:Vector.<Vector.<String>> = bizSoundDO.textVV;
+
+											var resSetList:Vector.<RSSound> = new Vector.<RSSound>();
+											dataDO.resSetList = resSetList;
+
+											var vvs:Vector.<Vector.<Sound>> = new Vector.<Vector.<Sound>>();
 											dataDO.bizSoundList = vvs;
 											if (urlvv != null) {
 												for (var k3:int = 0; k3 < urlvv.length; k3++) {
-													var disurlv:Vector.<String>  = urlvv[k3];
-													var vs:Vector.<Sound>      = new Vector.<Sound>();
-													vvs.push(vs);
-													var mp3Loader:Mp3Loader = new Mp3Loader(vs);
-													plusSourceCount();
-													mp3Loader.loadList(disurlv);
-													mp3Loader.addEventListener(Event.COMPLETE, handlerBizSoundCmp);
+													var disurlv:Vector.<String> = urlvv[k3];
+													if (disurlv != null) {
+														for (var l3:int = 0; l3 < disurlv.length; l3++) {
+															var brs:RSSound = new RSSound();
+															brs.addResUrl(disurlv[l3]);
+															resSetList.push(brs);
+															rlm.addResSet(brs);
+														}
+													}
 												}
 											}
 											if (textVV != null) {
@@ -417,10 +324,14 @@
 						}
 					}
 				}
-				if (!signLoad) {
-					play();
-				}
 			}
+			rlm.addEventListener(Event.COMPLETE, handlerLoadMainResCMP);
+			rlm.load();
+		}
+
+		private function handlerLoadMainResCMP(e:Event):void {
+			var rlm:ResLoadManager = e.currentTarget as ResLoadManager;
+			trace(rlm.length);
 		}
 
 		/**
@@ -498,7 +409,8 @@
 
 					if (name.indexOf(LIST_NAME_TYPE_CURRENT) >= 0) {
 						currentListDO = listDO;
-					} else if (name.indexOf(LIST_NAME_TYPE_FORECAST) >= 0) {
+					}
+					else if (name.indexOf(LIST_NAME_TYPE_FORECAST) >= 0) {
 						forecastListDO = listDO;
 					}
 				}
@@ -691,9 +603,11 @@
 					var name:String = listDO.name;
 					if (name.indexOf(LIST_NAME_TYPE_HISTORY) >= 0) {
 						historyListDO = listDO;
-					} else if (name.indexOf(LIST_NAME_TYPE_CURRENT) >= 0) {
+					}
+					else if (name.indexOf(LIST_NAME_TYPE_CURRENT) >= 0) {
 						currentListDO = listDO;
-					} else if (name.indexOf(LIST_NAME_TYPE_FORECAST) >= 0) {
+					}
+					else if (name.indexOf(LIST_NAME_TYPE_FORECAST) >= 0) {
 						forecastListDO = listDO;
 					}
 				}
@@ -850,9 +764,11 @@
 			var trend:int = 0;
 			if ((value - baseValue) / baseValue > 0.1) {
 				trend = 1;
-			} else if ((value - baseValue) / baseValue < -0.1) {
+			}
+			else if ((value - baseValue) / baseValue < -0.1) {
 				trend = -1;
-			} else {
+			}
+			else {
 				trend = 0;
 			}
 			return trend;

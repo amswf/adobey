@@ -2,6 +2,7 @@ package com.snsoft.tvc2.dataObject{
 	 
 	import com.snsoft.tvc2.map.MapView;
 	import com.snsoft.util.HashVector;
+	import com.snsoft.util.rlm.rs.RSTextFile;
 	
 	import flash.display.DisplayObject;
 	import flash.media.Sound;
@@ -39,6 +40,9 @@ package com.snsoft.tvc2.dataObject{
 		
 		//地图名称
 		private var _mapName:String = null;
+		
+		//地图XML资源集
+		private var _mapRS:RSTextFile = null;
 		
 		public function BizDO()
 		{
@@ -133,6 +137,17 @@ package com.snsoft.tvc2.dataObject{
 		{
 			_mapName = value;
 		}
+
+		public function get mapRS():RSTextFile
+		{
+			return _mapRS;
+		}
+
+		public function set mapRS(value:RSTextFile):void
+		{
+			_mapRS = value;
+		}
+
 
 	}
 }

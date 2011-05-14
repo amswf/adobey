@@ -1,4 +1,6 @@
 package com.snsoft.tvc2.dataObject{
+	import com.snsoft.util.rlm.rs.ResSet;
+	
 	import flash.display.DisplayObject;
 	import flash.geom.Point;
 
@@ -35,6 +37,8 @@ package com.snsoft.tvc2.dataObject{
 		
 		//图片、动画列表
 		private var _mediaList:Vector.<DisplayObject>;
+		
+		private var _resSet:ResSet;
 		
 		public function MediaDO()
 		{
@@ -128,6 +132,16 @@ package com.snsoft.tvc2.dataObject{
 		public function set placeType(value:String):void
 		{
 			_placeType = value;
+		}
+
+		public function get resSet():ResSet
+		{
+			return _resSet;
+		}
+
+		public function set resSet(value:ResSet):void
+		{
+			_resSet = value;
 		}
 
 
