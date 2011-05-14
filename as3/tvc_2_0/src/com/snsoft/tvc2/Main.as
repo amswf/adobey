@@ -331,7 +331,7 @@
 
 		private function handlerLoadMainResCMP(e:Event):void {
 			var rlm:ResLoadManager = e.currentTarget as ResLoadManager;
-			trace(rlm.length);
+			play();
 		}
 
 		/**
@@ -748,18 +748,6 @@
 			return null;
 		}
 
-		private function handlerBizSoundCmp(e:Event):void {
-			var mp3Loader:Mp3Loader = e.currentTarget as Mp3Loader;
-			var vs:Vector.<Sound>  = mp3Loader.dataObj as Vector.<Sound>;
-			var sl:Vector.<Sound>  = mp3Loader.soundList;
-			if (sl != null) {
-				for (var i:int = 0; i < sl.length; i++) {
-					vs.push(sl[i]);
-				}
-			}
-			subSourceCount();
-		}
-
 		private function getTrend(value:Number, baseValue:Number):int {
 			var trend:int = 0;
 			if ((value - baseValue) / baseValue > 0.1) {
@@ -773,48 +761,5 @@
 			}
 			return trend;
 		}
-
-		private function plusSourceCount():void {
-			sourceCount++;
-		}
-
-		private function subSourceCount():void {
-			sourceCount--;
-			if (sourceCount == 0) {
-				play();
-			}
-		}
-
-		private function handlerLoadAreaMapComplete(e:Event):void {
-			subSourceCount();
-		}
-
-
-		private function handlerLoadIOError(e:Event):void {
-			trace("地图数据地址错误");
-		}
-
-		private function handlerMediaLoaderComplete(e:Event):void {
-			var mediaLoader:MediaLoader = e.currentTarget as MediaLoader;
-			var mediaDO:MediaDO = mediaLoader.data as MediaDO;
-			mediaDO.mediaList = mediaLoader.mediaList;
-			subSourceCount();
-		}
-
-		private function handlerDistributeMediaLoaderComplete(e:Event):void {
-			var mediaLoader:MediaLoader = e.currentTarget as MediaLoader;
-			var bizDO:BizDO = mediaLoader.data as BizDO;
-			bizDO.distributeMap = mediaLoader.mediaList[0];
-			subSourceCount();
-		}
-
-
-		private function handlerSoundLoaderComplete(e:Event):void {
-			var mediaLoader:Mp3Loader = e.currentTarget as Mp3Loader;
-			var soundDO:SoundDO = mediaLoader.dataObj as SoundDO;
-			soundDO.soundList = mediaLoader.soundList;
-			subSourceCount();
-		}
-
 	}
 }

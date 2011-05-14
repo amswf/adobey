@@ -1,6 +1,6 @@
 package com.snsoft.util.rlm.rs {
 	import com.snsoft.util.HashVector;
-
+	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
@@ -14,7 +14,9 @@ package com.snsoft.util.rlm.rs {
 	 */
 	public class RSSwf extends ResSet {
 
-		private var swfList:HashVector = new HashVector();
+		private var swfHV:HashVector = new HashVector();
+		
+		private var _swfList:Vector.<MovieClip> = new Vector.<MovieClip>();
 
 		public function RSSwf() {
 
@@ -27,10 +29,10 @@ package com.snsoft.util.rlm.rs {
 		 *
 		 */
 		public function getImageByUrl(url:String):MovieClip {
-			return this.swfList.findByName(url) as MovieClip;
+			return this.swfHV.findByName(url) as MovieClip;
 		}
 
-		override public function callBack():void {
+		override protected function callBack():void {
 			var list:Vector.<String> = this.urlList;
 			if (list != null) {
 				for (var i:int = 0; i < list.length; i++) {
@@ -40,12 +42,18 @@ package com.snsoft.util.rlm.rs {
 						if (li != null) {
 							var dobj:DisplayObject = li.content;
 							if (dobj is MovieClip) {
-								swfList.push(dobj, name);
+								swfHV.push(dobj, name);
+								swfList.push(dobj);
 							}
 						}
 					}
 				}
 			}
+		}
+
+		public function get swfList():Vector.<MovieClip>
+		{
+			return _swfList;
 		}
 	}
 }

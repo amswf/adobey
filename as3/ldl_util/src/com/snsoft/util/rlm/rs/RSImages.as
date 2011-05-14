@@ -12,7 +12,9 @@ package com.snsoft.util.rlm.rs{
 	 */	
 	public class RSImages extends ResSet{
 		
-		private var imageBmdList:HashVector = new HashVector();
+		private var imageBmdHV:HashVector = new HashVector();
+		
+		private var _imageBmdList:Vector.<BitmapData> = new Vector.<BitmapData>();
 		
 		public function RSImages(){
 			
@@ -25,16 +27,23 @@ package com.snsoft.util.rlm.rs{
 		 * 
 		 */		
 		public function getImageByUrl(url:String):BitmapData{
-			return this.imageBmdList.findByName(url) as BitmapData;
+			return this.imageBmdHV.findByName(url) as BitmapData;
 		}
 		
-		override public function callBack():void{
+		override protected function callBack():void{
 			for(var i:int = 0;i < resDataList.length;i ++){
 				var info:LoaderInfo = resDataList[i] as LoaderInfo;
 				var bm:Bitmap = info.content as Bitmap;
 				var bmd:BitmapData = bm.bitmapData;
-				this.imageBmdList.push(bmd,urlList[i]);
+				this.imageBmdHV.push(bmd,urlList[i]);
+				imageBmdList.push(bmd);
 			}
 		} 
+
+		public function get imageBmdList():Vector.<BitmapData>
+		{
+			return _imageBmdList;
+		}
+
 	}
 }

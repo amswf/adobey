@@ -90,19 +90,19 @@
 					
 					var mediasHv:HashVector = bizDO.mediasHv;
 					if(mediasHv != null){ 
-						//trace("mediasHv.length",mediasHv.length);
+						trace("mediasHv.length",mediasHv.length);
 						counter.plus(mediasHv.length);
 					}
 					
 					var soundsHv:HashVector = bizDO.soundsHv;
 					if(soundsHv != null){ 
-						//trace("soundsHv.length",soundsHv.length);
+						trace("soundsHv.length",soundsHv.length);
 						counter.plus(soundsHv.length);
 					}
 					
 					var textOutsHv:HashVector = bizDO.textOutsHv;
 					if(textOutsHv != null){
-						//trace("textOutsHv.length",textOutsHv.length);
+						trace("textOutsHv.length",textOutsHv.length);
 						counter.plus(textOutsHv.length);
 					}
 					

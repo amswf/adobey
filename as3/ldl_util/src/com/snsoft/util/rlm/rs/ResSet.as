@@ -1,5 +1,6 @@
 package com.snsoft.util.rlm.rs{
 	import com.snsoft.util.AbstractBase;
+	import com.snsoft.util.rlm.rlm;
 
 	/**
 	 * 资源集
@@ -16,7 +17,7 @@ package com.snsoft.util.rlm.rs{
 		
 		private var _urlList:Vector.<String> = new Vector.<String>();
 		
-		private var _resDataList:Vector.<Object> = new Vector.<Object>();
+		protected var resDataList:Vector.<Object> = new Vector.<Object>();
 		
 		public function ResSet(){
 			createAbstractClass(ResSet);
@@ -30,22 +31,20 @@ package com.snsoft.util.rlm.rs{
 		 * 需要重写此方法,完成对象的其它操作 
 		 * 
 		 */		
-		public function callBack():void{
+		protected function callBack():void{
 			createAbstractMethod("ResBase.callBack");
+		}
+		rlm function loadCmpCallBack():void{
+			callBack();
+		}
+		
+		rlm function setResDataList(resDataList:Vector.<Object>):void{
+			this.resDataList = resDataList;
 		}
 		
 		public function get urlList():Vector.<String>
 		{
 			return _urlList;
 		}
-		
-		public function set resDataList(resDataList:Vector.<Object>):void{
-			this._resDataList = resDataList;
-		}
-		
-		public function get resDataList():Vector.<Object>{
-			return this._resDataList;
-		}
-
 	}
 }
