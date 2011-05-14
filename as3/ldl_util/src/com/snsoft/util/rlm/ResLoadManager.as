@@ -109,35 +109,11 @@
 		public function addResUrl(url:String, resLoadType:String = null):void {
 			if (!isLoading && url != null) {
 				if (resLoadType == null) {
-					resLoadType = getLoaderType(url);
+					resLoadType = ResLoaderType.getType(url);
 				}
 				this.urlList.push(url);
 				this.loadTypeList.push(resLoadType);
 			}
-		}
-
-		/**
-		 * 扩展名判断加载类型
-		 * @param url
-		 * @return
-		 *
-		 */
-		private function getLoaderType(url:String):String {
-			var type:String = ResLoaderType.URL;
-			var dotIndex:int = url.lastIndexOf(".");
-			if (dotIndex > 0) {
-				var eName:String = url.substring(dotIndex + 1, url.length);
-				if (eName.toLocaleLowerCase() == "swf") {
-					type = ResLoaderType.SWF;
-				}
-				else if (eName.toLocaleLowerCase() == "png" || eName.toLocaleLowerCase() == "jpg" || eName.toLocaleLowerCase() == "gif") {
-					type = ResLoaderType.IMAGE;
-				}
-				else if (eName.toLocaleLowerCase() == "mp3") {
-					type = ResLoaderType.SOUND;
-				}
-			}
-			return type;
 		}
 
 		/**
