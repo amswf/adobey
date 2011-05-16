@@ -194,6 +194,7 @@
 		}
 
 		private function handlerLoadEmbedFontCMP(e:Event):void {
+			trace("handlerLoadEmbedFontCMP");
 			//加载main资源
 			mainDOSourceLoad(mainDO);
 		}
@@ -335,6 +336,7 @@
 		}
 
 		private function handlerLoadMainResCMP(e:Event):void {
+			trace("handlerLoadMainResCMP");
 			creatMaps();
 		}
 
@@ -349,13 +351,17 @@
 					ambs.push(amb);
 				}
 			}
-			for (var i2:int = 0; i2 < ambs.length; i2++) {
-				var amb2:AreaMapBuilder = ambs[i2];
-				amb2.build();
-			}
+
 			if (mapNum == 0) {
 				play();
 			}
+			else {
+				for (var i2:int = 0; i2 < ambs.length; i2++) {
+					var amb2:AreaMapBuilder = ambs[i2];
+					amb2.build();
+				}
+			}
+
 		}
 
 		private function handlerBuildMapCmp(e:Event):void {
