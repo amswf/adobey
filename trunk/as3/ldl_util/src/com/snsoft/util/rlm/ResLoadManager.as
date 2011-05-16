@@ -155,7 +155,7 @@
 				return bld / this.bytesTotal;
 			}
 			else {
-				return this.loadCmpCount / this.urlList.length + this.bytesLoaded / this.bytesTotal * this.urlList.length;
+				return this.loadCmpCount / this.urlList.length + this.bytesLoaded / (this.bytesTotal * this.urlList.length);
 			}
 		}
 

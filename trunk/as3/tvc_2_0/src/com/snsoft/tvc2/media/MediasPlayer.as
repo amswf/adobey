@@ -80,7 +80,7 @@ package com.snsoft.tvc2.media {
 							}
 						}
 					}
-					trace(mediaList.length);
+
 					mediaPlayer = new MediaPlayer(mediaList, mediaDO.timeOffset, mediaDO.timeLength, mediaDO.timeout);
 					mediaPlayer.addEventListener(Event.COMPLETE, handlerMediaPlayerCMP);
 
