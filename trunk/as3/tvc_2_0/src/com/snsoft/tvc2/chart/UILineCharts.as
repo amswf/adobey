@@ -3,13 +3,10 @@
 	import com.snsoft.tvc2.dataObject.ListDO;
 	import com.snsoft.tvc2.dataObject.TextPointDO;
 	import com.snsoft.tvc2.media.Mp3Player;
-	import com.snsoft.util.text.EffectText;
-	import com.snsoft.util.text.TextStyles;
 	import com.snsoft.tvc2.util.NumberUtil;
 	import com.snsoft.tvc2.util.StringUtil;
-	import com.snsoft.util.ColorTransformUtil;
-	import com.snsoft.util.StringUtil;
-	import com.snsoft.util.TextFieldUtil;
+	import com.snsoft.util.text.EffectText;
+	import com.snsoft.util.text.TextStyles;
 	
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
@@ -17,13 +14,10 @@
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.filters.DropShadowFilter;
-	import flash.geom.ColorTransform;
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	import flash.media.Sound;
 	import flash.text.TextField;
-	import flash.text.TextFormat;
+	import flash.text.TextFormat;	
 	
 	/**
 	 * 折线图业务 

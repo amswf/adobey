@@ -24,7 +24,7 @@
 	import com.snsoft.tvc2.dataObject.VarDO;
 	import com.snsoft.tvc2.media.MediaLoader;
 	import com.snsoft.tvc2.media.Mp3Loader;
-	import com.snsoft.tvc2.source.AreaMapLoader;
+	import com.snsoft.tvc2.source.AreaMapBuilder;
 	import com.snsoft.tvc2.util.PriceUtils;
 	import com.snsoft.tvc2.util.StringUtil;
 	import com.snsoft.tvc2.xml.XMLParse;
@@ -96,6 +96,10 @@
 		private var timeLineNum:int = 0;
 
 		private var timeLinePlayCmpNum:int = 0;
+
+		private var bizDOV:Vector.<BizDO> = new Vector.<BizDO>();
+
+		private var mapNum:int = 0;
 
 		public function Main(mainXmlUrl:String, marketXmlUrl:String, styleXmlUrl:String) {
 			super();
@@ -207,6 +211,7 @@
 							if (bizDOHv != null) {
 								for (var j:int = 0; j < bizDOHv.length; j++) {
 									var bizDO:BizDO = bizDOHv.findByIndex(j) as BizDO;
+									bizDOV.push(bizDO);
 									var varDOHv:HashVector = bizDO.varDOHv;
 
 									if (varDOHv != null && varDOHv.length > 0) {
@@ -305,12 +310,12 @@
 												for (var k3:int = 0; k3 < urlvv.length; k3++) {
 													var disurlv:Vector.<String> = urlvv[k3];
 													if (disurlv != null) {
+														var brs:RSSound = new RSSound();
 														for (var l3:int = 0; l3 < disurlv.length; l3++) {
-															var brs:RSSound = new RSSound();
 															brs.addResUrl(disurlv[l3]);
-															resSetList.push(brs);
-															rlm.addResSet(brs);
 														}
+														resSetList.push(brs);
+														rlm.addResSet(brs);
 													}
 												}
 											}
@@ -330,8 +335,34 @@
 		}
 
 		private function handlerLoadMainResCMP(e:Event):void {
-			var rlm:ResLoadManager = e.currentTarget as ResLoadManager;
-			play();
+			creatMaps();
+		}
+
+		private function creatMaps():void {
+			var ambs:Vector.<AreaMapBuilder> = new Vector.<AreaMapBuilder>();
+			for (var i:int = 0; i < bizDOV.length; i++) {
+				var bizdo:BizDO = bizDOV[i];
+				if (bizdo.mapName != null && bizdo.mapRS != null) {
+					mapNum++;
+					var amb:AreaMapBuilder = new AreaMapBuilder(bizdo);
+					amb.addEventListener(Event.COMPLETE, handlerBuildMapCmp);
+					ambs.push(amb);
+				}
+			}
+			for (var i2:int = 0; i2 < ambs.length; i2++) {
+				var amb2:AreaMapBuilder = ambs[i2];
+				amb2.build();
+			}
+			if (mapNum == 0) {
+				play();
+			}
+		}
+
+		private function handlerBuildMapCmp(e:Event):void {
+			mapNum--;
+			if (mapNum == 0) {
+				play();
+			}
 		}
 
 		/**
