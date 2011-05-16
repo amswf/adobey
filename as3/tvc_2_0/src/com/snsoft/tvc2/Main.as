@@ -45,11 +45,14 @@
 
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.events.ProgressEvent;
 	import flash.media.Sound;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.sampler.NewObjectSample;
+	import flash.text.TextField;
 	import flash.text.TextFormat;
+	import flash.text.TextFormatAlign;
 
 	/**
 	 * 主入口类
@@ -101,6 +104,8 @@
 
 		private var mapNum:int = 0;
 
+		private var proTfd:TextField;
+
 		public function Main(mainXmlUrl:String, marketXmlUrl:String, styleXmlUrl:String) {
 			super();
 
@@ -124,9 +129,29 @@
 		 *
 		 */
 		override protected function draw():void {
+			var tft:TextFormat = new TextFormat();
+			tft.color = 0xffffff;
+			tft.size = 14;
+			tft.align = TextFormatAlign.CENTER;
+
+			proTfd = new TextField();
+			proTfd.defaultTextFormat = tft;
+			proTfd.selectable = false;
+			proTfd.width = 400;
+			proTfd.height = 20;
+			proTfd.x = (stage.stageWidth - proTfd.width) / 2;
+			proTfd.y = (stage.stageHeight - proTfd.height) / 2;
+
+			this.addChild(proTfd);
+
 			//首先 loadStylesXML 然后loadEmbedFonts() 然后是 loadMarketXML() 和 loadMainXML();
 			//loadStylesXML();
 			loadXML();
+		}
+
+		private function setProTfdText(title:String, pvalue:Number):void {
+			var v:int = int(pvalue * 100)
+			proTfd.text = title + ":" + v + "%";
 		}
 
 		private function loadXML():void {
@@ -145,7 +170,13 @@
 			rlm.addResSet(stylers);
 
 			rlm.addEventListener(Event.COMPLETE, handlerLoadXML);
+			rlm.addEventListener(ProgressEvent.PROGRESS, handlerLoadXMLProgress);
 			rlm.load();
+		}
+
+		private function handlerLoadXMLProgress(e:Event):void {
+			var rlm:ResLoadManager = e.currentTarget as ResLoadManager;
+			setProTfdText("加载数据", rlm.getProgressValue());
 		}
 
 		private function handlerLoadXML(e:Event):void {
@@ -190,7 +221,13 @@
 			var rlm:ResLoadManager = new ResLoadManager();
 			rlm.addResSet(rsfont);
 			rlm.addEventListener(Event.COMPLETE, handlerLoadEmbedFontCMP);
+			rlm.addEventListener(ProgressEvent.PROGRESS, handlerLoadEmbedFontProgress);
 			rlm.load();
+		}
+
+		private function handlerLoadEmbedFontProgress(e:Event):void {
+			var rlm:ResLoadManager = e.currentTarget as ResLoadManager;
+			setProTfdText("加载字体", rlm.getProgressValue());
 		}
 
 		private function handlerLoadEmbedFontCMP(e:Event):void {
@@ -332,7 +369,13 @@
 				}
 			}
 			rlm.addEventListener(Event.COMPLETE, handlerLoadMainResCMP);
+			rlm.addEventListener(ProgressEvent.PROGRESS, handlerLoadMainResProgress);
 			rlm.load();
+		}
+
+		private function handlerLoadMainResProgress(e:Event):void {
+			var rlm:ResLoadManager = e.currentTarget as ResLoadManager;
+			setProTfdText("加载媒体资源", rlm.getProgressValue());
 		}
 
 		private function handlerLoadMainResCMP(e:Event):void {
@@ -377,6 +420,7 @@
 		 */
 		private function play():void {
 			trace("main.play()");
+			proTfd.visible = false;
 			if (mainDO != null) {
 				var timeLineDOHv:HashVector = mainDO.timeLineDOHv;
 				if (timeLineDOHv != null) {
