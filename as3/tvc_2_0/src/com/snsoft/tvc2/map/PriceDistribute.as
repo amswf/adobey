@@ -284,7 +284,7 @@
 				var cutLineMC:MovieClip = getDisplayObjectInstance(getStyleValue(SMALL_POINT_DEFAULT_SKIN)) as MovieClip;
 				cutLineMC.y = - cutLineMC.height - cutLine.height;
 				cutLineMC.x = cutLineMC.width / 2;
-				ColorTransformUtil.setColor(cutLineMC,color);
+				ColorTransformUtil.setColor(cutLineMC,color,1,1);
 				
 				var text:String = listDO.text;
 				var tfd:TextField = EffectText.creatTextByStyleName(text,TextStyles.STYLE_CUTLINE_TEXT,color);
@@ -391,7 +391,7 @@
 					switchAddTimer.start();
 					
 					var listMC:Sprite = new Sprite();
-					ColorTransformUtil.setColor(listMC,color);
+					ColorTransformUtil.setColor(listMC,color,1,1);
 					
 					var tpdov:Vector.<TextPointDO> = listDO.listHv;
 					for(var jj:int = 0;jj<tpdov.length;jj++){
@@ -577,7 +577,7 @@
 				var lname:String = listDO.name;
 				
 				var listMC:Sprite = new Sprite();
-				ColorTransformUtil.setColor(listMC,color);
+				ColorTransformUtil.setColor(listMC,color,1,1);
 				var tpdov:Vector.<TextPointDO> = listDO.listHv;
 				var jj:int = broadcastCount;
 				broadcastCount ++;
@@ -628,7 +628,7 @@
 				ppdobj.height = pbdobj.height;
 				ppdobj.width = this.lineLength(new Point(bpdobj.x,bpdobj.y),new Point(priceMC.x,priceMC.y + pbdobj.height / 2));
 				ppdobj.rotation = this.lineRate(new Point(bpdobj.x,bpdobj.y),new Point(priceMC.x,priceMC.y + pbdobj.height / 2));
-				ColorTransformUtil.setColor(ppdobj,color);
+				ColorTransformUtil.setColor(ppdobj,color,1,1);
 				pricePointersMC.addChild(ppdobj);
 				
 				var marketName:TextField = EffectText.creatTextByStyleName(marketCoordDO.text,TextStyles.STYLE_DATA_TEXT,color);

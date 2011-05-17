@@ -163,7 +163,7 @@ package com.snsoft.tvc2.map{
 				
 				var cutLineMC:MovieClip = getDisplayObjectInstance(getStyleValue(CUTLINE_DEFAULT_SKIN)) as MovieClip;
 				cutLineMC.y = - cutLineMC.height - cutLine.height;
-				ColorTransformUtil.setColor(cutLineMC,color);
+				ColorTransformUtil.setColor(cutLineMC,color,1,1);
 				cutLine.addChild(cutLineMC);
 				var name:String = listDO.name;
 				var tfd:TextField = EffectText.creatTextByStyleName(name,TextStyles.STYLE_CUTLINE_TEXT,color);
