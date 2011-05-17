@@ -1,16 +1,28 @@
-package com.snsoft.util{
+package com.snsoft.util {
 	import fl.motion.Color;
-	
+
 	import flash.display.Sprite;
 	import flash.geom.ColorTransform;
-	
-	public class ColorTransformUtil{
-		public function ColorTransformUtil()
-		{
+
+	/**
+	 * 着色器
+	 * @author Administrator
+	 *
+	 */
+	public class ColorTransformUtil {
+		public function ColorTransformUtil() {
 		}
-		
-		public static function setColor(mc:Sprite = null,color:uint = 0xffffff,alpha:Number = 1,mult:Number = 0):void{
-			if(mc != null){
+
+		/**
+		 * 着色方法
+		 * @param mc  被着色对象
+		 * @param color 着色色彩
+		 * @param alpha 透明度
+		 * @param mult 混合度
+		 *
+		 */
+		public static function setColor(mc:Sprite = null, color:uint = 0xffffff, alpha:Number = 1, mult:Number = 0):void {
+			if (mc != null) {
 				mc.alpha = alpha;
 				var ct:ColorTransform = mc.transform.colorTransform;
 				var cl:Color = new Color();
