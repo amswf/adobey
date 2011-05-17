@@ -114,7 +114,7 @@ package com.snsoft.util.log{
 			}
 			_logMsg +="\r";
 			
-			if(_logMsg.length > 2000){
+			if(_logMsg.length > 50000){
 				_logMsg = _logMsg.substring(_logMsg.length-1-200,_logMsg.length-1);
 			}
 		}
