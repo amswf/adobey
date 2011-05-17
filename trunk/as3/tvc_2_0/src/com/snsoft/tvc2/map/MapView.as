@@ -115,9 +115,9 @@ package com.snsoft.tvc2.map{
 				PointUtil.deleteAllChild(lightShapesLayer);
 				
 				this.addChild(backLayer);
-				this.addChild(mapLinesLayer);
 				this.addChild(areaBtnsLayer);
 				this.addChild(lightShapesLayer);
+				this.addChild(mapLinesLayer);
 				
 				mapAreaViewHv = new HashVector();
 				var wsdo:WorkSpaceDO = this.workSpaceDO;

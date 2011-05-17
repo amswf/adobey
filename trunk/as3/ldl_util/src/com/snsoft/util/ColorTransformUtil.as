@@ -9,7 +9,7 @@ package com.snsoft.util{
 		{
 		}
 		
-		public static function setColor(mc:Sprite = null,color:uint = 0xffffff,alpha:Number = 1):void{
+		public static function setColor(mc:Sprite = null,color:uint = 0xffffff,alpha:Number = 1,mult:Number = 0):void{
 			if(mc != null){
 				mc.alpha = alpha;
 				var ct:ColorTransform = mc.transform.colorTransform;
@@ -18,9 +18,9 @@ package com.snsoft.util{
 				ct.redOffset = cl.redOffset;
 				ct.greenOffset = cl.greenOffset;
 				ct.blueOffset = cl.blueOffset;
-				ct.redMultiplier = 0;
-				ct.greenMultiplier = 0;
-				ct.blueMultiplier = 0;
+				ct.redMultiplier = mult;
+				ct.greenMultiplier = mult;
+				ct.blueMultiplier = mult;
 				mc.transform.colorTransform = ct;
 			}
 		}
