@@ -6,6 +6,7 @@ package com.snsoft.util.rlm.rs {
 	import flash.display.DisplayObject;
 	import flash.display.LoaderInfo;
 	import flash.display.MovieClip;
+	import flash.media.SoundMixer;
 
 	/**
 	 * 图片资源集
@@ -40,10 +41,11 @@ package com.snsoft.util.rlm.rs {
 					if (name != null && name.length > 0) {
 						var li:LoaderInfo = this.resDataList[i] as LoaderInfo;
 						if (li != null) {
-							var dobj:DisplayObject = li.content;
-							if (dobj is MovieClip) {
-								swfHV.push(dobj, name);
-								swfList.push(dobj);
+							var mc:MovieClip = li.content as MovieClip;
+							if (mc != null ) {
+								mc.gotoAndStop(1);
+								swfHV.push(mc, name);
+								swfList.push(mc);
 							}
 						}
 					}
