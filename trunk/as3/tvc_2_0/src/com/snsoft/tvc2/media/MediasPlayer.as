@@ -5,6 +5,7 @@ package com.snsoft.tvc2.media {
 	import com.snsoft.tvc2.dataObject.MediasDO;
 	import com.snsoft.tvc2.util.PlaceType;
 	import com.snsoft.tvc2.util.StringUtil;
+	import com.snsoft.util.SpriteUtil;
 	import com.snsoft.util.rlm.rs.RSImages;
 	import com.snsoft.util.rlm.rs.RSSwf;
 
@@ -39,12 +40,22 @@ package com.snsoft.tvc2.media {
 		 *
 		 */
 		override protected function play():void {
+			this.addEventListener(Event.REMOVED_FROM_STAGE, handlerRemove);
 			playNum = 0;
 			playNextMedias();
 		}
 
+		private function handlerRemove(e:Event):void {
+			stopTimer();
+			if(mediaPlayer != null){
+				mediaPlayer.stopTimer();
+			}
+			isRemoved = true;
+			SpriteUtil.deleteAllChild(this);
+		}
+
 		private function playNextMedias():void {
-			if (mediasDO != null && mediasDO.mediaDOHv != null) {
+			if (mediasDO != null && mediasDO.mediaDOHv != null && !isRemoved) {
 				if (playNum < mediasDO.mediaDOHv.length) {
 					if (mediaPlayer != null) {
 						this.removeChild(mediaPlayer);

@@ -29,6 +29,7 @@
 	import com.snsoft.tvc2.util.StringUtil;
 	import com.snsoft.tvc2.xml.XMLParse;
 	import com.snsoft.util.HashVector;
+	import com.snsoft.util.SpriteUtil;
 	import com.snsoft.util.rlm.ResLoadManager;
 	import com.snsoft.util.rlm.loader.ResLoaderType;
 	import com.snsoft.util.rlm.rs.RSEmbedFonts;
@@ -40,10 +41,10 @@
 	import com.snsoft.util.text.TextStyle;
 	import com.snsoft.util.text.TextStyles;
 	import com.snsoft.util.xmldom.XMLFastConfig;
-
+	
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
-
+	
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
@@ -109,6 +110,15 @@
 		private var mapNum:int = 0;
 
 		private var proTfd:TextField;
+		
+		private var isRemoved:Boolean = false;
+		
+		private var rlmXML:ResLoadManager;
+		
+		private var rlmFont:ResLoadManager;
+		
+		private var rlmRes:ResLoadManager;
+		
 
 		public function Main(mainXmlUrl:String, marketXmlUrl:String, styleXmlUrl:String, cftXmlUrl:String) {
 			super();
@@ -133,6 +143,8 @@
 		 *
 		 */
 		override protected function draw():void {
+			this.addEventListener(Event.REMOVED_FROM_STAGE,handlerRemove);
+			
 			var tft:TextFormat = new TextFormat();
 			tft.color = 0xffffff;
 			tft.size = 14;
@@ -151,6 +163,20 @@
 			//loadStylesXML();
 			loadXML();
 		}
+		
+		private function handlerRemove(e:Event):void{
+			isRemoved = true;
+			if(rlmXML != null){
+				rlmXML.stop();
+			}
+			if(rlmFont != null){
+				rlmFont.stop();
+			}
+			if(rlmRes != null){
+				rlmRes.stop();
+			}
+			SpriteUtil.deleteAllChild(this);
+		}
 
 		private function setProTfdText(title:String, pvalue:Number):void {
 			var v:int = int(pvalue * 100)
@@ -158,27 +184,27 @@
 		}
 
 		private function loadXML():void {
-			var rlm:ResLoadManager = new ResLoadManager();
+			rlmXML = new ResLoadManager();
 
 			var mainrs:RSTextFile = new RSTextFile();
 			mainrs.addResUrl(mainXmlUrl);
-			rlm.addResSet(mainrs);
+			rlmXML.addResSet(mainrs);
 
 			var marketrs:RSTextFile = new RSTextFile();
 			marketrs.addResUrl(marketXmlUrl);
-			rlm.addResSet(marketrs);
+			rlmXML.addResSet(marketrs);
 
 			var stylers:RSTextFile = new RSTextFile();
 			stylers.addResUrl(styleXmlUrl);
-			rlm.addResSet(stylers);
+			rlmXML.addResSet(stylers);
 
 			var cfgs:RSTextFile = new RSTextFile();
 			cfgs.addResUrl(cftXmlUrl);
-			rlm.addResSet(cfgs);
+			rlmXML.addResSet(cfgs);
 
-			rlm.addEventListener(Event.COMPLETE, handlerLoadXML);
-			rlm.addEventListener(ProgressEvent.PROGRESS, handlerLoadXMLProgress);
-			rlm.load();
+			rlmXML.addEventListener(Event.COMPLETE, handlerLoadXML);
+			rlmXML.addEventListener(ProgressEvent.PROGRESS, handlerLoadXMLProgress);
+			rlmXML.load();
 		}
 
 		private function handlerLoadXMLProgress(e:Event):void {
@@ -237,11 +263,11 @@
 				}
 			}
 
-			var rlm:ResLoadManager = new ResLoadManager();
-			rlm.addResSet(rsfont);
-			rlm.addEventListener(Event.COMPLETE, handlerLoadEmbedFontCMP);
-			rlm.addEventListener(ProgressEvent.PROGRESS, handlerLoadEmbedFontProgress);
-			rlm.load();
+			rlmFont = new ResLoadManager();
+			rlmFont.addResSet(rsfont);
+			rlmFont.addEventListener(Event.COMPLETE, handlerLoadEmbedFontCMP);
+			rlmFont.addEventListener(ProgressEvent.PROGRESS, handlerLoadEmbedFontProgress);
+			rlmFont.load();
 		}
 
 		private function handlerLoadEmbedFontProgress(e:Event):void {
@@ -256,7 +282,7 @@
 		}
 
 		private function mainDOSourceLoad(mainDO:MainDO):void {
-			var rlm:ResLoadManager = new ResLoadManager();
+			rlmRes = new ResLoadManager();
 			if (mainDO != null) {
 				var timeLineDOHv:HashVector = mainDO.timeLineDOHv;
 				if (timeLineDOHv != null) {
@@ -280,7 +306,7 @@
 											var maprs:RSTextFile = new RSTextFile();
 											maprs.addResUrl(mapFileName);
 											bizDO.mapRS = maprs;
-											rlm.addResSet(maprs);
+											rlmRes.addResSet(maprs);
 										}
 									}
 									var mediasHv:HashVector = bizDO.mediasHv;
@@ -301,7 +327,7 @@
 												if (resSet != null) {
 													resSet.addResUrl(mediaUrl);
 													mediaDO.resSet = resSet;
-													rlm.addResSet(resSet);
+													rlmRes.addResSet(resSet);
 												}
 											}
 										}
@@ -332,7 +358,7 @@
 														rsSound.addResUrl(soundUrlV[m2]);
 													}
 													soundDO.rsSound = rsSound;
-													rlm.addResSet(rsSound);
+													rlmRes.addResSet(rsSound);
 												}
 											}
 										}
@@ -372,7 +398,7 @@
 															brs.addResUrl(disurlv[l3]);
 														}
 														resSetList.push(brs);
-														rlm.addResSet(brs);
+														rlmRes.addResSet(brs);
 													}
 												}
 											}
@@ -387,9 +413,9 @@
 					}
 				}
 			}
-			rlm.addEventListener(Event.COMPLETE, handlerLoadMainResCMP);
-			rlm.addEventListener(ProgressEvent.PROGRESS, handlerLoadMainResProgress);
-			rlm.load();
+			rlmRes.addEventListener(Event.COMPLETE, handlerLoadMainResCMP);
+			rlmRes.addEventListener(ProgressEvent.PROGRESS, handlerLoadMainResProgress);
+			rlmRes.load();
 		}
 
 		private function handlerLoadMainResProgress(e:Event):void {
@@ -440,7 +466,7 @@
 		private function play():void {
 			trace("main.play()");
 			proTfd.visible = false;
-			if (mainDO != null) {
+			if (mainDO != null && !isRemoved) {
 				var timeLineDOHv:HashVector = mainDO.timeLineDOHv;
 				if (timeLineDOHv != null) {
 					for (var i:int = 0; i < timeLineDOHv.length; i++) {

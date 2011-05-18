@@ -80,7 +80,12 @@
 		 *
 		 */
 		override protected function draw():void {
+			this.addEventListener(Event.REMOVED_FROM_STAGE,handlerRemove);
 			play();
+		}
+		
+		private function handlerRemove(e:Event):void{
+			SpriteUtil.deleteAllChild(this);
 		}
 
 		private function play():void {
