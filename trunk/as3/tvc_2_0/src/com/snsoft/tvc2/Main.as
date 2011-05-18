@@ -39,6 +39,7 @@
 	import com.snsoft.util.rlm.rs.ResSet;
 	import com.snsoft.util.text.TextStyle;
 	import com.snsoft.util.text.TextStyles;
+	import com.snsoft.util.xmldom.XMLFastConfig;
 
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
@@ -46,6 +47,7 @@
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
+	import flash.geom.Point;
 	import flash.media.Sound;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
@@ -71,6 +73,8 @@
 		private var marketXmlUrl:String;
 
 		private var styleXmlUrl:String;
+
+		private var cftXmlUrl:String;
 
 		private var mainDO:MainDO;
 
@@ -106,12 +110,13 @@
 
 		private var proTfd:TextField;
 
-		public function Main(mainXmlUrl:String, marketXmlUrl:String, styleXmlUrl:String) {
+		public function Main(mainXmlUrl:String, marketXmlUrl:String, styleXmlUrl:String, cftXmlUrl:String) {
 			super();
 
 			this.mainXmlUrl = mainXmlUrl;
 			this.marketXmlUrl = marketXmlUrl;
 			this.styleXmlUrl = styleXmlUrl;
+			this.cftXmlUrl = cftXmlUrl;
 		}
 
 		/**
@@ -169,6 +174,10 @@
 			stylers.addResUrl(styleXmlUrl);
 			rlm.addResSet(stylers);
 
+			var cfgs:RSTextFile = new RSTextFile();
+			cfgs.addResUrl(cftXmlUrl);
+			rlm.addResSet(cfgs);
+
 			rlm.addEventListener(Event.COMPLETE, handlerLoadXML);
 			rlm.addEventListener(ProgressEvent.PROGRESS, handlerLoadXMLProgress);
 			rlm.load();
@@ -194,8 +203,20 @@
 			var mainXML:XML = new XML(rlm.getResByResUrl(mainXmlUrl));
 			mainDO = parse.parseTvcMainXML(mainXML);
 
+			//配置XML
+			var cfgXML:XML = new XML(rlm.getResByResUrl(cftXmlUrl));
+			XMLFastConfig.instanceByXML(cfgXML);
+
+			//设置
+			setCfg();
+
 			//加载字体
 			loadFont(fontXML);
+		}
+
+		private function setCfg():void {
+			SystemConfig.stageSize.x = XMLFastConfig.getCfgInt("stageWidth");
+			SystemConfig.stageSize.y = XMLFastConfig.getCfgInt("stageHeight");
 		}
 
 		private function loadFont(fontXML:XML):void {

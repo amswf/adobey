@@ -21,6 +21,7 @@
 	import com.snsoft.util.rlm.rs.RSSound;
 	import com.snsoft.util.text.EffectText;
 	import com.snsoft.util.text.TextStyles;
+	import com.snsoft.util.xmldom.XMLFastConfig;
 
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
@@ -139,14 +140,14 @@
 							uilcs.width = 400;
 							uilcs.height = 260;
 							uilcs.x = 120;
-							uilcs.y = 220;
+							uilcs.y = XMLFastConfig.getCfgInt("chartY");
 						}
 						else if (type == BIZ_TYPE_PILLAR) {
 							uilcs = new UIPillarCharts(dataDO, delayTime, 6000);
 							uilcs.width = 400;
 							uilcs.height = 260;
 							uilcs.x = 120;
-							uilcs.y = 220;
+							uilcs.y = XMLFastConfig.getCfgInt("chartY");
 						}
 						else if (type == BIZ_TYPE_DISTRIBUTE) {
 							var marketMap:MarketMap = new MarketMap();
@@ -186,15 +187,14 @@
 							uilcs.width = 400;
 							uilcs.height = 260;
 							uilcs.x = 60;
-							uilcs.y = 130;
-
+							uilcs.y = XMLFastConfig.getCfgInt("mapY");
 						}
 						else if (type == BIZ_TYPE_DISTRIBUTE_AREA) {
 							uilcs = new PriceMapArea(dataDO, bizDO.mapName, marketMainDO, bizDO.mapView, delayTime);
 							uilcs.width = 400;
 							uilcs.height = 260;
 							uilcs.x = 60;
-							uilcs.y = 130;
+							uilcs.y = uilcs.y = XMLFastConfig.getCfgInt("mapY");
 						}
 
 						if (uilcs != null) {
@@ -236,7 +236,7 @@
 					}
 
 					var titleVDO:VarDO = bizDO.varDOHv.findByName("title") as VarDO;
-					var baseY:Number = 35;
+					var baseY:Number = XMLFastConfig.getCfgInt("baseY");
 					if (titleVDO != null) {
 						var titleVar:String = titleVDO.getAttribute("text") as String;
 						if (StringUtil.isEffective(titleVar)) {
@@ -245,7 +245,6 @@
 							titleTfd.x = (SystemConfig.stageSize.x - titleTfd.width) / 2;
 							titleTfd.y = baseY;
 							this.addChild(titleTfd);
-
 							baseY = titleTfd.getRect(this).bottom;
 						}
 					}
