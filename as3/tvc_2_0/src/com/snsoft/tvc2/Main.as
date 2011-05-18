@@ -112,7 +112,6 @@
 
 		public function Main(mainXmlUrl:String, marketXmlUrl:String, styleXmlUrl:String, cftXmlUrl:String) {
 			super();
-
 			this.mainXmlUrl = mainXmlUrl;
 			this.marketXmlUrl = marketXmlUrl;
 			this.styleXmlUrl = styleXmlUrl;
@@ -146,7 +145,6 @@
 			proTfd.height = 20;
 			proTfd.x = (stage.stageWidth - proTfd.width) / 2;
 			proTfd.y = (stage.stageHeight - proTfd.height) / 2;
-
 			this.addChild(proTfd);
 
 			//首先 loadStylesXML 然后loadEmbedFonts() 然后是 loadMarketXML() 和 loadMainXML();
