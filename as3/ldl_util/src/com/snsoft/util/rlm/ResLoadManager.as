@@ -77,6 +77,8 @@
 		 */
 		private var bytesLoadedList:HashVector = new HashVector(true);
 
+		private var isStop:Boolean = false;
+
 		/**
 		 *
 		 * @param type ResLoadManagerType.ORDERED / UNORDERED
@@ -98,6 +100,10 @@
 				var url:String = urlList[i];
 				this.addResUrl(url);
 			}
+		}
+
+		public function stop():void {
+			isStop = true;
 		}
 
 		/**
@@ -168,6 +174,9 @@
 				if (this.type == ResLoadManagerType.UNORDERED) {
 					//非顺序加载
 					for (var i:int = 0; i < this.urlList.length; i++) {
+						if(isStop){
+							break;
+						}
 						loadNext(i);
 					}
 				}
@@ -178,33 +187,35 @@
 		}
 
 		private function loadNext(i:int):void {
-			var url:String = this.urlList[i];
-			var loadType:String = this.loadTypeList[i];
-			if (url != null && url.length > 0) {
-				if (loadType == ResLoaderType.SWF || loadType == ResLoaderType.IMAGE) {
-					var rl:ResLoader = new ResLoader;
-					rl.addEventListener(ResLoaderEvent.IS_RECEIVE_BYTES_TOTAL, handlerIsReceiveBytes);
-					var rlinfo:LoaderInfo = rl.contentLoaderInfo;
-					rlinfo.addEventListener(Event.COMPLETE, handlerLoadComplete);
-					rlinfo.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadIoError);
-					rlinfo.addEventListener(ProgressEvent.PROGRESS, handlerProgress);
-					rl.load(new URLRequest(url));
-				}
-				else if (loadType == ResLoaderType.URL) {
-					var rul:ResURLLoader = new ResURLLoader;
-					rul.addEventListener(ResLoaderEvent.IS_RECEIVE_BYTES_TOTAL, handlerIsReceiveBytes);
-					rul.addEventListener(Event.COMPLETE, handlerLoadComplete);
-					rul.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadIoError);
-					rul.addEventListener(ProgressEvent.PROGRESS, handlerProgress);
-					rul.load(new URLRequest(url));
-				}
-				else if (loadType == ResLoaderType.SOUND) {
-					var rsl:ResSoundLoader = new ResSoundLoader();
-					rsl.addEventListener(ResLoaderEvent.IS_RECEIVE_BYTES_TOTAL, handlerIsReceiveBytes);
-					rsl.addEventListener(Event.COMPLETE, handlerLoadComplete);
-					rsl.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadIoError);
-					rsl.addEventListener(ProgressEvent.PROGRESS, handlerProgress);
-					rsl.load(new URLRequest(url));
+			if (!isStop) {
+				var url:String = this.urlList[i];
+				var loadType:String = this.loadTypeList[i];
+				if (url != null && url.length > 0) {
+					if (loadType == ResLoaderType.SWF || loadType == ResLoaderType.IMAGE) {
+						var rl:ResLoader = new ResLoader;
+						rl.addEventListener(ResLoaderEvent.IS_RECEIVE_BYTES_TOTAL, handlerIsReceiveBytes);
+						var rlinfo:LoaderInfo = rl.contentLoaderInfo;
+						rlinfo.addEventListener(Event.COMPLETE, handlerLoadComplete);
+						rlinfo.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadIoError);
+						rlinfo.addEventListener(ProgressEvent.PROGRESS, handlerProgress);
+						rl.load(new URLRequest(url));
+					}
+					else if (loadType == ResLoaderType.URL) {
+						var rul:ResURLLoader = new ResURLLoader;
+						rul.addEventListener(ResLoaderEvent.IS_RECEIVE_BYTES_TOTAL, handlerIsReceiveBytes);
+						rul.addEventListener(Event.COMPLETE, handlerLoadComplete);
+						rul.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadIoError);
+						rul.addEventListener(ProgressEvent.PROGRESS, handlerProgress);
+						rul.load(new URLRequest(url));
+					}
+					else if (loadType == ResLoaderType.SOUND) {
+						var rsl:ResSoundLoader = new ResSoundLoader();
+						rsl.addEventListener(ResLoaderEvent.IS_RECEIVE_BYTES_TOTAL, handlerIsReceiveBytes);
+						rsl.addEventListener(Event.COMPLETE, handlerLoadComplete);
+						rsl.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadIoError);
+						rsl.addEventListener(ProgressEvent.PROGRESS, handlerProgress);
+						rsl.load(new URLRequest(url));
+					}
 				}
 			}
 		}

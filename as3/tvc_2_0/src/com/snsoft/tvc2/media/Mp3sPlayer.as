@@ -2,6 +2,7 @@ package com.snsoft.tvc2.media {
 	import com.snsoft.tvc2.Business;
 	import com.snsoft.tvc2.dataObject.SoundDO;
 	import com.snsoft.tvc2.dataObject.SoundsDO;
+	import com.snsoft.util.SpriteUtil;
 	import com.snsoft.util.rlm.rs.RSSound;
 	
 	import flash.events.Event;
@@ -32,13 +33,23 @@ package com.snsoft.tvc2.media {
 		 *
 		 */
 		override protected function play():void {
+			this.addEventListener(Event.REMOVED_FROM_STAGE, handlerRemove);
 			playNum = 0;
 			playNextMp3s();
 		}
 
+		private function handlerRemove(e:Event):void {
+			isRemoved = true;
+			stopTimer();
+			if(mp3Player != null){
+				mp3Player.stopTimer();
+			}
+			SpriteUtil.deleteAllChild(this);
+		}
+
 		private function playNextMp3s():void {
 			//trace("_______________________________playNum:"+playNum);
-			if (soundsDO != null && soundsDO.soundDOHv != null) {
+			if (soundsDO != null && soundsDO.soundDOHv != null && !isRemoved) {
 				if (playNum < soundsDO.soundDOHv.length) {
 					if (mp3Player != null) {
 						this.removeChild(mp3Player);

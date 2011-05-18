@@ -2,12 +2,14 @@ package com.snsoft.tvc2.media{
 	import com.snsoft.tvc2.Business;
 	import com.snsoft.tvc2.SystemConfig;
 	import com.snsoft.tvc2.util.FrameTimer;
+	import com.snsoft.util.SpriteUtil;
 	
 	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.media.SoundTransform;
 	
 	/**
 	 * 多媒体（图片、动画）播放 
@@ -35,16 +37,25 @@ package com.snsoft.tvc2.media{
 			this.playNum = 0;
 		}
 		
+		override protected function play():void{
+			this.addEventListener(Event.REMOVED_FROM_STAGE,handlerRemove);
+			playNext();
+		}
 		
+		private function handlerRemove(e:Event):void{
+			isRemoved = true;
+			stopTimer();
+			SpriteUtil.deleteAllChild(this);
+		}
 		
 		/**
 		 * 播放
 		 * @return 
 		 * 
 		 */
-		override protected function play():void{
+		private function playNext():void{
 			
-			if(this.mediaList != null ){
+			if(this.mediaList != null && !isRemoved){
 				if(this.playNum < this.mediaList.length){
 					if(playingMedia != null){
 						this.removeChild(playingMedia);
@@ -54,9 +65,10 @@ package com.snsoft.tvc2.media{
 					this.dispatchEvent(new Event(EVENT_PLAYED));
 					if(playingMedia is MovieClip){
 						var mc:MovieClip = playingMedia as MovieClip;
+						mc.addEventListener(Event.REMOVED_FROM_STAGE,handlerSwfRemove);
 						mc.gotoAndStop(1);
 						mc.play();
-						playingMedia.addEventListener(Event.EXIT_FRAME,handlerMovieClipPlayExitFrame);
+						mc.addEventListener(Event.EXIT_FRAME,handlerMovieClipPlayExitFrame);
 					}
 					else if(playingMedia is Bitmap){
 						var ft:FrameTimer = new FrameTimer(SystemConfig.stageFrameRate,1000,this);
@@ -71,6 +83,14 @@ package com.snsoft.tvc2.media{
 			}
 		}
 		
+		private function handlerSwfRemove(e:Event):void{
+			var mc:MovieClip = e.currentTarget as MovieClip;
+			mc.stop();
+			var stf:SoundTransform = mc.soundTransform;
+			stf.volume = 0;
+			mc.soundTransform = stf;
+		}
+		
 		/**
 		 * 事件 
 		 * @param e
@@ -80,7 +100,7 @@ package com.snsoft.tvc2.media{
 			var ft:FrameTimer = e.currentTarget as FrameTimer;
 			ft.removeEventListener(Event.COMPLETE,handlerBitmapPlayComplete);
 			this.playNum ++;
-			this.play();
+			this.playNext();
 		}
 		
 		/**
@@ -93,7 +113,7 @@ package com.snsoft.tvc2.media{
 			if(mc.currentFrame >= mc.totalFrames){
 				playingMedia.removeEventListener(Event.EXIT_FRAME,handlerMovieClipPlayExitFrame);
 				this.playNum ++;
-				this.play();
+				this.playNext();
 			}
 		}
 		
