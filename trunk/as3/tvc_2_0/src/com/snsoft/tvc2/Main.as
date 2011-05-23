@@ -43,10 +43,10 @@
 	import com.snsoft.util.text.TextStyle;
 	import com.snsoft.util.text.TextStyles;
 	import com.snsoft.util.xmldom.XMLFastConfig;
-	
+
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
-	
+
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
@@ -73,19 +73,15 @@
 
 		private var mainXmlUrl:String;
 
-		private var marketXmlUrl:String;
+		private var mapDataXmlUrl:String;
 
 		private var styleXmlUrl:String;
 
 		private var cftXmlUrl:String;
 
-		private var mapsXMLUrl:String;
-
 		private var mainDO:MainDO;
 
 		private var marketMainDO:MarketMainDO;
-
-		private var mapDesesDO:MapsDesesDO;
 
 		private var sourceCount:int = 0;
 
@@ -125,13 +121,12 @@
 
 		private var rlmRes:ResLoadManager;
 
-		public function Main(mainXmlUrl:String, marketXmlUrl:String, styleXmlUrl:String, cftXmlUrl:String, mapsXMLUrl:String) {
+		public function Main(mainXmlUrl:String, mapDataXmlUrl:String, styleXmlUrl:String, cftXmlUrl:String) {
 			super();
 			this.mainXmlUrl = mainXmlUrl;
-			this.marketXmlUrl = marketXmlUrl;
+			this.mapDataXmlUrl = mapDataXmlUrl;
 			this.styleXmlUrl = styleXmlUrl;
 			this.cftXmlUrl = cftXmlUrl;
-			this.mapsXMLUrl = mapsXMLUrl;
 		}
 
 		/**
@@ -196,9 +191,9 @@
 			mainrs.addResUrl(mainXmlUrl);
 			rlmXML.addResSet(mainrs);
 
-			var marketrs:RSTextFile = new RSTextFile();
-			marketrs.addResUrl(marketXmlUrl);
-			rlmXML.addResSet(marketrs);
+			var mapDataRs:RSTextFile = new RSTextFile();
+			mapDataRs.addResUrl(mapDataXmlUrl);
+			rlmXML.addResSet(mapDataRs);
 
 			var stylers:RSTextFile = new RSTextFile();
 			stylers.addResUrl(styleXmlUrl);
@@ -207,10 +202,6 @@
 			var cfgs:RSTextFile = new RSTextFile();
 			cfgs.addResUrl(cftXmlUrl);
 			rlmXML.addResSet(cfgs);
-
-			var maps:RSTextFile = new RSTextFile();
-			maps.addResUrl(this.mapsXMLUrl);
-			rlmXML.addResSet(maps);
 
 			rlmXML.addEventListener(Event.COMPLETE, handlerLoadXML);
 			rlmXML.addEventListener(ProgressEvent.PROGRESS, handlerLoadXMLProgress);
@@ -227,8 +218,8 @@
 			var parse:XMLParse  = new XMLParse();
 
 			//市场数据XML
-			var marketXML:XML = new XML(rlm.getResByResUrl(marketXmlUrl));
-			marketMainDO = parse.parseMarketCoordsMain(marketXML);
+			var mapDataXML:XML = new XML(rlm.getResByResUrl(mapDataXmlUrl));
+			marketMainDO = parse.parseMarketCoordsMain(mapDataXML);
 
 			//字体数据XML
 			var fontXML:XML = new XML(rlm.getResByResUrl(styleXmlUrl));
@@ -240,10 +231,6 @@
 			//配置XML
 			var cfgXML:XML = new XML(rlm.getResByResUrl(cftXmlUrl));
 			XMLFastConfig.instanceByXML(cfgXML);
-			
-			//地图列表描述信息
-			var mapsDesXML:XML = new XML(rlm.getResByResUrl(mapsXMLUrl));
-			mapDesesDO = parse.parseMapsDes(mapsDesXML);
 
 			//设置
 			setCfg();
@@ -313,16 +300,16 @@
 
 									if (varDOHv != null && varDOHv.length > 0) {
 										var mapName:String = getVarAttribute(varDOHv, VAR_MAP_NAME, XMLParse.ATT_VALUE);
-										bizDO.mapName = mapName;
-										
-										var mapDesDO:MapDesDO = mapDesesDO.findMapDesDOByName(mapName);
-										
-										var mapFileName:String = mapDesDO.file;
-										if (StringUtil.isEffective(mapFileName)) {
-											var maprs:RSTextFile = new RSTextFile();
-											maprs.addResUrl(mapFileName);
-											bizDO.mapRS = maprs;
-											rlmRes.addResSet(maprs);
+										if (StringUtil.isEffective(mapName)) {
+											bizDO.mapName = mapName;
+											var mcdo:MarketCoordsDO = marketMainDO.findMarketCoordsDO(mapName);
+											var mapFileName:String = mcdo.file;
+											if (StringUtil.isEffective(mapFileName)) {
+												var maprs:RSTextFile = new RSTextFile();
+												maprs.addResUrl(mapFileName);
+												bizDO.mapRS = maprs;
+												rlmRes.addResSet(maprs);
+											}
 										}
 									}
 									var mediasHv:HashVector = bizDO.mediasHv;

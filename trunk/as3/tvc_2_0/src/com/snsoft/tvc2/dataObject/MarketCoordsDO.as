@@ -21,6 +21,9 @@ package com.snsoft.tvc2.dataObject{
 		//文本
 		private var _text:String;
 		
+		//地图文件
+		private var _file:String;
+		
 		//显示坐标 X
 		private var _x:Number;
 		
@@ -153,6 +156,16 @@ package com.snsoft.tvc2.dataObject{
 		public function set imageList(value:Vector.<DisplayObject>):void
 		{
 			_imageList = value;
+		}
+
+		public function get file():String
+		{
+			return _file;
+		}
+
+		public function set file(value:String):void
+		{
+			_file = value;
 		}
 
 
