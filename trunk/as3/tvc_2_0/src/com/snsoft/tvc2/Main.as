@@ -12,6 +12,8 @@
 	import com.snsoft.tvc2.dataObject.DataDO;
 	import com.snsoft.tvc2.dataObject.ListDO;
 	import com.snsoft.tvc2.dataObject.MainDO;
+	import com.snsoft.tvc2.dataObject.MapDesDO;
+	import com.snsoft.tvc2.dataObject.MapsDesesDO;
 	import com.snsoft.tvc2.dataObject.MarketCoordDO;
 	import com.snsoft.tvc2.dataObject.MarketCoordsDO;
 	import com.snsoft.tvc2.dataObject.MarketMainDO;
@@ -77,9 +79,13 @@
 
 		private var cftXmlUrl:String;
 
+		private var mapsXMLUrl:String;
+
 		private var mainDO:MainDO;
 
 		private var marketMainDO:MarketMainDO;
+
+		private var mapDesesDO:MapsDesesDO;
 
 		private var sourceCount:int = 0;
 
@@ -110,22 +116,22 @@
 		private var mapNum:int = 0;
 
 		private var proTfd:TextField;
-		
-		private var isRemoved:Boolean = false;
-		
-		private var rlmXML:ResLoadManager;
-		
-		private var rlmFont:ResLoadManager;
-		
-		private var rlmRes:ResLoadManager;
-		
 
-		public function Main(mainXmlUrl:String, marketXmlUrl:String, styleXmlUrl:String, cftXmlUrl:String) {
+		private var isRemoved:Boolean = false;
+
+		private var rlmXML:ResLoadManager;
+
+		private var rlmFont:ResLoadManager;
+
+		private var rlmRes:ResLoadManager;
+
+		public function Main(mainXmlUrl:String, marketXmlUrl:String, styleXmlUrl:String, cftXmlUrl:String, mapsXMLUrl:String) {
 			super();
 			this.mainXmlUrl = mainXmlUrl;
 			this.marketXmlUrl = marketXmlUrl;
 			this.styleXmlUrl = styleXmlUrl;
 			this.cftXmlUrl = cftXmlUrl;
+			this.mapsXMLUrl = mapsXMLUrl;
 		}
 
 		/**
@@ -143,8 +149,8 @@
 		 *
 		 */
 		override protected function draw():void {
-			this.addEventListener(Event.REMOVED_FROM_STAGE,handlerRemove);
-			
+			this.addEventListener(Event.REMOVED_FROM_STAGE, handlerRemove);
+
 			var tft:TextFormat = new TextFormat();
 			tft.color = 0xffffff;
 			tft.size = 14;
@@ -163,16 +169,16 @@
 			//loadStylesXML();
 			loadXML();
 		}
-		
-		private function handlerRemove(e:Event):void{
+
+		private function handlerRemove(e:Event):void {
 			isRemoved = true;
-			if(rlmXML != null){
+			if (rlmXML != null) {
 				rlmXML.stop();
 			}
-			if(rlmFont != null){
+			if (rlmFont != null) {
 				rlmFont.stop();
 			}
-			if(rlmRes != null){
+			if (rlmRes != null) {
 				rlmRes.stop();
 			}
 			SpriteUtil.deleteAllChild(this);
@@ -202,6 +208,10 @@
 			cfgs.addResUrl(cftXmlUrl);
 			rlmXML.addResSet(cfgs);
 
+			var maps:RSTextFile = new RSTextFile();
+			maps.addResUrl(this.mapsXMLUrl);
+			rlmXML.addResSet(maps);
+
 			rlmXML.addEventListener(Event.COMPLETE, handlerLoadXML);
 			rlmXML.addEventListener(ProgressEvent.PROGRESS, handlerLoadXMLProgress);
 			rlmXML.load();
@@ -230,6 +240,10 @@
 			//配置XML
 			var cfgXML:XML = new XML(rlm.getResByResUrl(cftXmlUrl));
 			XMLFastConfig.instanceByXML(cfgXML);
+			
+			//地图列表描述信息
+			var mapsDesXML:XML = new XML(rlm.getResByResUrl(mapsXMLUrl));
+			mapDesesDO = parse.parseMapsDes(mapsDesXML);
 
 			//设置
 			setCfg();
@@ -300,8 +314,10 @@
 									if (varDOHv != null && varDOHv.length > 0) {
 										var mapName:String = getVarAttribute(varDOHv, VAR_MAP_NAME, XMLParse.ATT_VALUE);
 										bizDO.mapName = mapName;
-
-										var mapFileName:String = getVarAttribute(varDOHv, VAR_MAP_File_NAME, XMLParse.ATT_VALUE);
+										
+										var mapDesDO:MapDesDO = mapDesesDO.findMapDesDOByName(mapName);
+										
+										var mapFileName:String = mapDesDO.file;
 										if (StringUtil.isEffective(mapFileName)) {
 											var maprs:RSTextFile = new RSTextFile();
 											maprs.addResUrl(mapFileName);
