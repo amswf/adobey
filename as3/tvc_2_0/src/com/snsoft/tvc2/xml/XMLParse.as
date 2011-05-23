@@ -257,6 +257,7 @@
 				marketCoordsDO.name = String(mcsaHv.findByName(ATT_NAME));
 				marketCoordsDO.value = String(mcsaHv.findByName(ATT_VALUE));
 				marketCoordsDO.text = String(mcsaHv.findByName(ATT_TEXT));
+				marketCoordsDO.file = String(mcsaHv.findByName(ATT_FILE));
 				marketCoordsDO.x = Number(mcsaHv.findByName(ATT_X));
 				marketCoordsDO.y = Number(mcsaHv.findByName(ATT_Y));
 				marketCoordsDO.z = Number(mcsaHv.findByName(ATT_Z));
