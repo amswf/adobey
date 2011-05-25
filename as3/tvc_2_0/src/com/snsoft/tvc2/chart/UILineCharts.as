@@ -182,6 +182,7 @@
 						
 						var pr:Point = this.transPoint(uic,null,ycd,p2);
 						var cpdo:CharPointDO = new CharPointDO();
+						cpdo.style = tpd2.name;
 						cpdo.point = pr;
 						cpdo.pointText = String(p2.y.toFixed(2));
 						cpdov.push(cpdo);

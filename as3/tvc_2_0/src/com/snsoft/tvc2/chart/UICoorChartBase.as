@@ -38,6 +38,7 @@ package com.snsoft.tvc2.chart{
 				var cpdovClone:Vector.<CharPointDO> = new Vector.<CharPointDO>();
 				for(var jj:int =0;jj<cpdov.length;jj++){
 					var cpdo:CharPointDO = new CharPointDO();
+					cpdo.style = cpdov[jj].style;
 					cpdo.point = cpdov[jj].point.clone();
 					cpdo.pointText = cpdov[jj].pointText;
 					cpdovClone.push(cpdo); 
