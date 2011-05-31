@@ -16,10 +16,10 @@
 	import com.snsoft.util.text.EffectText;
 	import com.snsoft.util.text.TextStyles;
 	import com.snsoft.util.xmldom.XMLFastConfig;
-	
+
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
-	
+
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -400,8 +400,8 @@
 						var name:String = tpdo.name;
 						var marketCoordDO:MarketCoordDO = marketCoordsDO.getRealCoordMarketCoordDO(name);
 						var spdobj:MovieClip = getDisplayObjectInstance(getStyleValue(SMALL_POINT_DEFAULT_SKIN)) as MovieClip;
-						spdobj.x = (marketCoordDO.x - this.marketMap.x) * this.marketMap.s;
-						spdobj.y = (marketCoordDO.y - this.marketMap.y) * this.marketMap.s;
+						spdobj.x = (marketCoordDO.x) * this.marketCoordsDO.s + this.marketCoordsDO.x;
+						spdobj.y = (marketCoordDO.y) * this.marketCoordsDO.s + this.marketCoordsDO.y;
 						listMC.addChild(spdobj);
 					}
 
@@ -618,8 +618,8 @@
 				pmtimer.addEventListener(TimerEvent.TIMER_COMPLETE, handlerPriceMaskTimerCmp);
 				pmtimer.start();
 
-				bpdobj.x = (marketCoordDO.x - this.marketMap.x) * this.marketMap.s;
-				bpdobj.y = (marketCoordDO.y - this.marketMap.y) * this.marketMap.s;
+				bpdobj.x = (marketCoordDO.x) * this.marketCoordsDO.s + this.marketCoordsDO.x;
+				bpdobj.y = (marketCoordDO.y) * this.marketCoordsDO.s + this.marketCoordsDO.y;
 
 				ppdobj.x = bpdobj.x;
 				ppdobj.y = bpdobj.y;
