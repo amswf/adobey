@@ -61,10 +61,7 @@ package com.snsoft.tvc2.dataObject{
 		
 		public function getRealCoordMarketCoordDO(marketCoordName:String):MarketCoordDO{
 			var mcdo:MarketCoordDO = findMarketCoordDO(marketCoordName);
-			if(mcdo != null){
-				mcdo.x = (mcdo.x - this.x) * this.s;
-				mcdo.y = (mcdo.y - this.y) * this.s;
-			}
+			 
 			return mcdo;
 		}
 
