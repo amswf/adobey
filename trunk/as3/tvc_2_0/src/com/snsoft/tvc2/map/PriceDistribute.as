@@ -399,10 +399,12 @@
 						var tpdo:TextPointDO = tpdov[jj];
 						var name:String = tpdo.name;
 						var marketCoordDO:MarketCoordDO = marketCoordsDO.getRealCoordMarketCoordDO(name);
-						var spdobj:MovieClip = getDisplayObjectInstance(getStyleValue(SMALL_POINT_DEFAULT_SKIN)) as MovieClip;
-						spdobj.x = (marketCoordDO.x) * this.marketCoordsDO.s + this.marketCoordsDO.x;
-						spdobj.y = (marketCoordDO.y) * this.marketCoordsDO.s + this.marketCoordsDO.y;
-						listMC.addChild(spdobj);
+						if (marketCoordDO != null) {
+							var spdobj:MovieClip = getDisplayObjectInstance(getStyleValue(SMALL_POINT_DEFAULT_SKIN)) as MovieClip;
+							spdobj.x = (marketCoordDO.x) * this.marketCoordsDO.s + this.marketCoordsDO.x;
+							spdobj.y = (marketCoordDO.y) * this.marketCoordsDO.s + this.marketCoordsDO.y;
+							listMC.addChild(spdobj);
+						}
 					}
 
 					//测试显示大量元件时性能
