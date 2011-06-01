@@ -128,8 +128,9 @@ package com.snsoft.tvc2.bizSounds{
 							descurlTextv.push("、");
 						}
 						else {
-							descurlv.push(baseUrl + "diqu.mp3");
-							descurlTextv.push("地区，");
+							//descurlv.push(baseUrl + "diqu.mp3");
+							//descurlTextv.push("地区，");
+							descurlTextv.push("，");
 						}
 					}
 					
@@ -146,8 +147,9 @@ package com.snsoft.tvc2.bizSounds{
 							descurlTextv.push("、");
 						}
 						else {
-							descurlv.push(baseUrl + "diqu.mp3");
-							descurlTextv.push("地区，");
+							//descurlv.push(baseUrl + "diqu.mp3");
+							//descurlTextv.push("地区，");
+							descurlTextv.push("，");
 						}
 					}
 					
