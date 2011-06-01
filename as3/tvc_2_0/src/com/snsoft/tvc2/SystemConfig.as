@@ -6,6 +6,11 @@ package com.snsoft.tvc2{
 	 * 
 	 */
 	public class SystemConfig{
+
+		/**
+		 * 价格精确值，小数点后2位
+		 */
+		public static const PRICE_VALID_MIN_VALUE:Number = 0.01;
 		
 		/**
 		 * 小数计算比较时，小于这个数视为相等
