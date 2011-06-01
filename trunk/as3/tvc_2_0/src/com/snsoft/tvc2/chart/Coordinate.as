@@ -106,7 +106,9 @@
 				}
 				cali = (caliTemp / power);
 				//trace(cali,minNum,maxNum);
-				
+				if(cali < SystemConfig.PRICE_VALID_MIN_VALUE){
+					cali = SystemConfig.PRICE_VALID_MIN_VALUE;
+				}
 				//坐标值列表计算
 				//caliList
 				var minIndex:int = int(minNum / cali);
