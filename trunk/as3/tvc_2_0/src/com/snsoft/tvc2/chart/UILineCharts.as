@@ -206,17 +206,17 @@
 					var lineSkin:String = "Line_default_skin";
 					var pointSkin:String = "Point_default_skin";
 					if(i4 == 0){
-						color4 = 0xFF7F00;
+						color4 = 0x6ad700;
 						lineSkin = "Line_yello_skin";
 						pointSkin = "Point_yello_skin";
 					}
 					else if(i4 == 1){
-						color4 = 0x007F00;
+						color4 = 0x3a89e2;
 						lineSkin = "Line_green_skin";
 						pointSkin = "Point_green_skin";
 					}
 					else if(i4 == 2){
-						color4 = 0x7F0000; 
+						color4 = 0xe45623; 
 						lineSkin = "Line_red_skin";
 						pointSkin = "Point_red_skin";
 					}
