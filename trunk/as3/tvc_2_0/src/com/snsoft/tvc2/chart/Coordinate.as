@@ -91,11 +91,11 @@
 				//计算最大值的单位值，比如3.5 最大单位值为1，0.7最大单位置为0.1
 				while (maxTemp < 1) {
 					maxTemp *= 10;
-					mpower *= 10;
+					mpower /= 10;
 				}
 				while (maxTemp > 10) {
 					maxTemp /= 10;
-					mpower /= 10;
+					mpower *= 10;
 				}
 				//刻度单位值
 				var cali:Number = 1;
