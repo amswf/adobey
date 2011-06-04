@@ -260,8 +260,8 @@
 					}
 					
 					var tfdUnitX:TextField = EffectText.creatTextByStyleName(this.unitX,TextStyles.STYLE_COOR_TEXT);
-					tfdUnitX.x = coorWidth;
-					tfdUnitX.y = - tfdUnitX.height;
+					tfdUnitX.x = coorWidth + 15;
+					tfdUnitX.y = 10;
 					this.coorSprite.addChild(tfdUnitX);
 					//y刻度文字
 					for(var jj:int = 0;jj < ygn;jj++){
