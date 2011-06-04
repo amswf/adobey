@@ -162,6 +162,7 @@
 
 			//首先 loadStylesXML 然后loadEmbedFonts() 然后是 loadMarketXML() 和 loadMainXML();
 			//loadStylesXML();
+			proTfd.text = "初始化数据，请稍等...";
 			loadXML();
 		}
 
