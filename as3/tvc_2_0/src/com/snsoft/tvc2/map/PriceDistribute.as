@@ -260,8 +260,10 @@
 							var tpdo:TextPointDO = tpdov[j];
 							var name:String = tpdo.name;
 							var marketCoordDO:MarketCoordDO = marketCoordsDO.getRealCoordMarketCoordDO(name);
-							var my:Number = marketCoordDO.y;
-							yv.push(my);
+							if(marketCoordDO != null){
+								var my:Number = marketCoordDO.y;
+								yv.push(my);
+							}
 						}
 					}
 				}
