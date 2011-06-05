@@ -260,7 +260,7 @@
 							var tpdo:TextPointDO = tpdov[j];
 							var name:String = tpdo.name;
 							var marketCoordDO:MarketCoordDO = marketCoordsDO.getRealCoordMarketCoordDO(name);
-							if(marketCoordDO != null){
+							if (marketCoordDO != null) {
 								var my:Number = marketCoordDO.y;
 								yv.push(my);
 							}
@@ -516,9 +516,6 @@
 		 */
 		private function playStartBigGroupPoint():void {
 			if (priceMaskMoveCmp && bigPlayCmp && bigSoundsCmp) {
-				bigPlayCmp = false;
-				bigSoundsCmp = false;
-				priceMaskMoveCmp = false;
 				var index:int = this.broadcastListCount;
 				if (index < broadcastListDOV.length) {
 					if (broadcastCount == 0) {
@@ -595,62 +592,72 @@
 				var tpdo:TextPointDO = tpdov[jj];
 				var name:String = tpdo.name;
 				var marketCoordDO:MarketCoordDO = marketCoordsDO.getRealCoordMarketCoordDO(name);
-				var ppdobj:MovieClip = getDisplayObjectInstance(getStyleValue(PRICEPOINTER_DEFAULT_SKIN)) as MovieClip;
-				var bpdobj:MovieClip = getDisplayObjectInstance(getStyleValue(BIG_POINT_DEFAULT_SKIN)) as MovieClip;
-				var pbdobj:MovieClip = getDisplayObjectInstance(getStyleValue(PRICEBACK_DEFAULT_SKIN)) as MovieClip;
-				var pmdobj:MovieClip = getDisplayObjectInstance(getStyleValue(PRICEMASK_DEFAULT_SKIN)) as MovieClip;
+				if (marketCoordDO != null) {
+					
+					bigPlayCmp = false;
+					bigSoundsCmp = false;
+					priceMaskMoveCmp = false;
 
-				pbdobj.width = 100;
-				pbdobj.height = 50;
+					var ppdobj:MovieClip = getDisplayObjectInstance(getStyleValue(PRICEPOINTER_DEFAULT_SKIN)) as MovieClip;
+					var bpdobj:MovieClip = getDisplayObjectInstance(getStyleValue(BIG_POINT_DEFAULT_SKIN)) as MovieClip;
+					var pbdobj:MovieClip = getDisplayObjectInstance(getStyleValue(PRICEBACK_DEFAULT_SKIN)) as MovieClip;
+					var pmdobj:MovieClip = getDisplayObjectInstance(getStyleValue(PRICEMASK_DEFAULT_SKIN)) as MovieClip;
 
-				var n:int = priceCardOrder[broadcastNum];
-				broadcastNum++;
-				var priceMC:Sprite = new Sprite();
-				this.addChild(priceMC);
-				priceMC.x = rect.x + rect.width;
-				priceMC.y = n * (pbdobj.height + 5);
-				priceMC.addChild(pbdobj);
+					pbdobj.width = 100;
+					pbdobj.height = 50;
 
-				pmdobj.x = rect.x + rect.width - pmdobj.width;
-				pmdobj.y = n * (pbdobj.height + 5);
-				priceMC.mask = pmdobj;
-				priceMask = pmdobj;
+					var n:int = priceCardOrder[broadcastNum];
+					broadcastNum++;
+					var priceMC:Sprite = new Sprite();
+					this.addChild(priceMC);
+					priceMC.x = rect.x + rect.width;
+					priceMC.y = n * (pbdobj.height + 5);
+					priceMC.addChild(pbdobj);
 
-				priceMaskMoveCmp = false;
-				var pmtimer:Timer = new Timer(priceMaskTimerDelay, priceMaskTimerRepeatCount);
-				pmtimer.addEventListener(TimerEvent.TIMER, handlerPriceMaskTimer);
-				pmtimer.addEventListener(TimerEvent.TIMER_COMPLETE, handlerPriceMaskTimerCmp);
-				pmtimer.start();
+					pmdobj.x = rect.x + rect.width - pmdobj.width;
+					pmdobj.y = n * (pbdobj.height + 5);
+					priceMC.mask = pmdobj;
+					priceMask = pmdobj;
 
-				bpdobj.x = (marketCoordDO.x) * this.marketCoordsDO.s + this.marketCoordsDO.x;
-				bpdobj.y = (marketCoordDO.y) * this.marketCoordsDO.s + this.marketCoordsDO.y;
+					priceMaskMoveCmp = false;
+					var pmtimer:Timer = new Timer(priceMaskTimerDelay, priceMaskTimerRepeatCount);
+					pmtimer.addEventListener(TimerEvent.TIMER, handlerPriceMaskTimer);
+					pmtimer.addEventListener(TimerEvent.TIMER_COMPLETE, handlerPriceMaskTimerCmp);
+					pmtimer.start();
 
-				ppdobj.x = bpdobj.x;
-				ppdobj.y = bpdobj.y;
-				ppdobj.height = pbdobj.height;
-				ppdobj.width = this.lineLength(new Point(bpdobj.x, bpdobj.y), new Point(priceMC.x, priceMC.y + pbdobj.height / 2));
-				ppdobj.rotation = this.lineRate(new Point(bpdobj.x, bpdobj.y), new Point(priceMC.x, priceMC.y + pbdobj.height / 2));
-				ColorTransformUtil.setColor(ppdobj, color, 1, 1);
-				pricePointersMC.addChild(ppdobj);
+					bpdobj.x = (marketCoordDO.x) * this.marketCoordsDO.s + this.marketCoordsDO.x;
+					bpdobj.y = (marketCoordDO.y) * this.marketCoordsDO.s + this.marketCoordsDO.y;
 
-				var marketName:TextField = EffectText.creatTextByStyleName(marketCoordDO.text, TextStyles.STYLE_DATA_TEXT, color);
-				marketName.x = 4;
-				marketName.y = 4;
-				var value:String = String(Number(tpdo.value).toFixed(2)) + "元";
-				var marketPrice:TextField = EffectText.creatTextByStyleName(value, TextStyles.STYLE_DATA_TEXT, color);
-				marketPrice.x = marketName.x;
-				marketPrice.y = marketName.y + marketName.height;
-				priceMC.addChild(marketName);
-				priceMC.addChild(marketPrice);
+					ppdobj.x = bpdobj.x;
+					ppdobj.y = bpdobj.y;
+					ppdobj.height = pbdobj.height;
+					ppdobj.width = this.lineLength(new Point(bpdobj.x, bpdobj.y), new Point(priceMC.x, priceMC.y + pbdobj.height / 2));
+					ppdobj.rotation = this.lineRate(new Point(bpdobj.x, bpdobj.y), new Point(priceMC.x, priceMC.y + pbdobj.height / 2));
+					ColorTransformUtil.setColor(ppdobj, color, 1, 1);
+					pricePointersMC.addChild(ppdobj);
 
-				this.addChild(pmdobj);
-				listMC.addChild(bpdobj);
-				priceBigPointsMC.addChild(listMC);
-				currentBroadcastListMC = listMC;
+					var marketName:TextField = EffectText.creatTextByStyleName(marketCoordDO.text, TextStyles.STYLE_DATA_TEXT, color);
+					marketName.x = 4;
+					marketName.y = 4;
+					var value:String = String(Number(tpdo.value).toFixed(2)) + "元";
+					var marketPrice:TextField = EffectText.creatTextByStyleName(value, TextStyles.STYLE_DATA_TEXT, color);
+					marketPrice.x = marketName.x;
+					marketPrice.y = marketName.y + marketName.height;
+					priceMC.addChild(marketName);
+					priceMC.addChild(marketPrice);
 
-				var timer:Timer = new Timer(500, 1);
-				timer.addEventListener(TimerEvent.TIMER_COMPLETE, handlerListBigStartTimerCMP);
-				timer.start();
+					this.addChild(pmdobj);
+					listMC.addChild(bpdobj);
+					priceBigPointsMC.addChild(listMC);
+					currentBroadcastListMC = listMC;
+
+					var timer:Timer = new Timer(500, 1);
+					timer.addEventListener(TimerEvent.TIMER_COMPLETE, handlerListBigStartTimerCMP);
+					timer.start();
+				}
+				else {
+					playNextBigGroup();
+				}
 			}
 		}
 
@@ -697,6 +704,10 @@
 		}
 
 		private function handlerListBigEndTimerCMP(e:Event):void {
+			playNextBigGroup();
+		}
+
+		public function playNextBigGroup():void {
 			forwardText = currentText;
 			if (switchBigPointSign && forwardText != null) {
 				switchRemoveTimer = new Timer(switchTimerDelay, switchTimerRepeatCount);
