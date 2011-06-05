@@ -1,6 +1,4 @@
 ﻿package com.snsoft.tvc2 {
-	import com.snsoft.font.EmbedFonts;
-	import com.snsoft.font.EmbedFontsEvent;
 	import com.snsoft.tvc2.bizSounds.BizSoundDO;
 	import com.snsoft.tvc2.bizSounds.ChartSoundsDO;
 	import com.snsoft.tvc2.bizSounds.ChartSoundsManager;
@@ -12,8 +10,6 @@
 	import com.snsoft.tvc2.dataObject.DataDO;
 	import com.snsoft.tvc2.dataObject.ListDO;
 	import com.snsoft.tvc2.dataObject.MainDO;
-	import com.snsoft.tvc2.dataObject.MapDesDO;
-	import com.snsoft.tvc2.dataObject.MapsDesesDO;
 	import com.snsoft.tvc2.dataObject.MarketCoordDO;
 	import com.snsoft.tvc2.dataObject.MarketCoordsDO;
 	import com.snsoft.tvc2.dataObject.MarketMainDO;
@@ -24,8 +20,6 @@
 	import com.snsoft.tvc2.dataObject.TextPointDO;
 	import com.snsoft.tvc2.dataObject.TimeLineDO;
 	import com.snsoft.tvc2.dataObject.VarDO;
-	import com.snsoft.tvc2.media.MediaLoader;
-	import com.snsoft.tvc2.media.Mp3Loader;
 	import com.snsoft.tvc2.source.AreaMapBuilder;
 	import com.snsoft.tvc2.util.PriceUtils;
 	import com.snsoft.tvc2.util.StringUtil;
@@ -50,11 +44,7 @@
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
-	import flash.geom.Point;
 	import flash.media.Sound;
-	import flash.net.URLLoader;
-	import flash.net.URLRequest;
-	import flash.sampler.NewObjectSample;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
@@ -162,7 +152,8 @@
 
 			//首先 loadStylesXML 然后loadEmbedFonts() 然后是 loadMarketXML() 和 loadMainXML();
 			//loadStylesXML();
-			proTfd.text = "初始化数据，请稍等...";
+
+			setProTfdText("初始化数据，请稍等...");
 			loadXML();
 		}
 
@@ -180,9 +171,13 @@
 			SpriteUtil.deleteAllChild(this);
 		}
 
-		private function setProTfdText(title:String, pvalue:Number):void {
-			var v:int = int(pvalue * 100)
-			proTfd.text = title + ":" + v + "%";
+		private function setProTfdText(title:String, pvalue:Number = NaN):void {
+			var pstr:String = "";
+			if (!isNaN(pvalue)) {
+				var v:int = int(pvalue * 100);
+				pstr = ":" + v + "%";
+			}
+			proTfd.text = title + pstr;
 		}
 
 		private function loadXML():void {
@@ -206,7 +201,13 @@
 
 			rlmXML.addEventListener(Event.COMPLETE, handlerLoadXML);
 			rlmXML.addEventListener(ProgressEvent.PROGRESS, handlerLoadXMLProgress);
+			rlmXML.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadXMLIOError);
 			rlmXML.load();
+		}
+
+		private function handlerLoadXMLIOError(e:Event):void {
+			rlmXML.stop();
+			setProTfdText("服务器忙，加载数据失败...");
 		}
 
 		private function handlerLoadXMLProgress(e:Event):void {
@@ -269,7 +270,13 @@
 			rlmFont.addResSet(rsfont);
 			rlmFont.addEventListener(Event.COMPLETE, handlerLoadEmbedFontCMP);
 			rlmFont.addEventListener(ProgressEvent.PROGRESS, handlerLoadEmbedFontProgress);
+			rlmFont.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadFontIOError);
 			rlmFont.load();
+		}
+
+		private function handlerLoadFontIOError(e:Event):void {
+			rlmFont.stop();
+			setProTfdText("丢失字体文件，请稍后重试...");
 		}
 
 		private function handlerLoadEmbedFontProgress(e:Event):void {
@@ -419,7 +426,13 @@
 			}
 			rlmRes.addEventListener(Event.COMPLETE, handlerLoadMainResCMP);
 			rlmRes.addEventListener(ProgressEvent.PROGRESS, handlerLoadMainResProgress);
+			rlmRes.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadResIOError);
 			rlmRes.load();
+		}
+
+		private function handlerLoadResIOError(e:Event):void {
+			rlmRes.stop();
+			setProTfdText("资源列表不完整，请稍后重试...");
 		}
 
 		private function handlerLoadMainResProgress(e:Event):void {
