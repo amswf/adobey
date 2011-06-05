@@ -6,7 +6,7 @@
 	import com.snsoft.util.rlm.loader.ResSoundLoader;
 	import com.snsoft.util.rlm.loader.ResURLLoader;
 	import com.snsoft.util.rlm.rs.ResSet;
-
+	
 	import flash.display.LoaderInfo;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -249,6 +249,7 @@
 		}
 
 		private function handlerLoadIoError(e:Event):void {
+			this.dispatchEvent(new Event(IOErrorEvent.IO_ERROR));
 			this.loadCmpCount++;
 			this.errorCount++;
 			checkLoadsCmp();
