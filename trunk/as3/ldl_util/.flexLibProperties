@@ -2,6 +2,8 @@
 <flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
   <includeClasses>
     <classEntry path="com.snsoft.aseditor.AsEditor"/>
+    <classEntry path="com.snsoft.effect.Ellipse"/>
+    <classEntry path="com.snsoft.effect.EllipseImage"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
