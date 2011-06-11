@@ -3,6 +3,11 @@ package com.snsoft.effect {
 
 	import flash.geom.Point;
 
+	/**
+	 * 椭圆上的点 
+	 * @author Administrator
+	 * 
+	 */	
 	public class Ellipse {
 
 		private var x0:int;
@@ -10,7 +15,7 @@ package com.snsoft.effect {
 		private var a:int;
 		private var b:int;
 
-		public function Ellipse(x0:Number, y0:Number, a:Number, b:Number) {
+		public function Ellipse(a:Number, b:Number, x0:Number = 0, y0:Number = 0) {
 			this.x0 = x0;
 			this.y0 = y0;
 			this.a = a;
