@@ -6,12 +6,14 @@ package com.snsoft.effect {
 	import fl.core.UIComponent;
 	import fl.transitions.Tween;
 	import fl.transitions.TweenEvent;
+	import fl.transitions.easing.Regular;
 	import fl.transitions.easing.Strong;
 
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	import flash.text.TextField;
 
 	/**
 	 * 组件基本范例
@@ -26,6 +28,16 @@ package com.snsoft.effect {
 
 		private static const MOVIE_INDEX:String = "movieIndex";
 
+		private static const MOVIE_HELP_INDEX:String = "movieCurrentIndex";
+
+		private var currentIndex:int = 0;
+
+		private var a:int = 300;
+
+		private var b:int = 100;
+
+		private var moveFinished:int = 0;
+
 		public function EllipseImage() {
 			super();
 		}
@@ -36,11 +48,17 @@ package com.snsoft.effect {
 		 */
 		override protected function draw():void {
 
-			var el:Ellipse = new Ellipse(200, 100);
+			var el:Ellipse = new Ellipse(a, b);
 			elliPoints = el.getPoints();
 			var elen:int = elliPoints.length;
-			for (var i:int = 0; i < 3; i++) {
-				imags.push(SkinsUtil.createSkinByName("MC") as MovieClip);
+			for (var i:int = 0; i < 10; i++) {
+				var smc:MovieClip = SkinsUtil.createSkinByName("MC") as MovieClip;
+				var tfd:TextField = new TextField();
+				tfd.name = "tfd";
+				tfd.text = "" + i;
+				tfd.mouseEnabled = false;
+				smc.addChild(tfd);
+				imags.push(smc);
 			}
 
 			var n:int = imags.length;
@@ -49,43 +67,67 @@ package com.snsoft.effect {
 				var mc:MovieClip = imags[i] as MovieClip;
 				var m:int = (elen * i) / (n);
 				mc[MOVIE_INDEX] = m;
+				mc[MOVIE_HELP_INDEX] = 0;
 				mc.x = elliPoints[m].x;
 				mc.y = elliPoints[m].y;
+				var scale:Number = (mc.y + b * 3) / (b * 4);
+				mc.scaleX = scale;
+				mc.scaleY = scale;
 				this.addChild(mc);
 				mc.addEventListener(MouseEvent.CLICK, handler);
 			}
 		}
 
 		private function handler(e:Event):void {
+			//this.mouseEnabled = false;
+			//this.mouseChildren = false;
+
 			var elen:int = elliPoints.length;
 			var mc:MovieClip = e.currentTarget as MovieClip;
+			var tfd:TextField = mc.getChildByName("tfd") as TextField;
 			var n:int = getIndex(int(mc[MOVIE_INDEX]), elen);
-			if(n * 2 > elen){
+			if (n * 2 > elen) {
 				n = n - elen;
 			}
-			for (var i:int = 0; i < imags.length; i++) {
-				var imc:MovieClip = imags[i];
-				var m:int = getIndex(int(imc[MOVIE_INDEX]), elen);
-				var tw:Tween = new Tween(imc, MOVIE_INDEX, Strong.easeOut, m, m - n, 50);
-				tw.addEventListener(TweenEvent.MOTION_CHANGE, handlerChange);
-					//tw.addEventListener(TweenEvent.MOTION_FINISH, handlerFinish);
-			}
+
+			//trace("称动：");
+
+			moveFinished = imags.length;
+ 
+			currentIndex = n;
+			var tw:Tween = new Tween(mc, MOVIE_HELP_INDEX, Regular.easeOut, n, 0, 50);
+			tw.addEventListener(TweenEvent.MOTION_CHANGE, handlerChange);
+			tw.addEventListener(TweenEvent.MOTION_FINISH, handlerFinish);
 		}
 
 		private function handlerChange(e:TweenEvent):void {
 			var tw:Tween = e.currentTarget as Tween;
 			var mc:MovieClip = tw.obj as MovieClip;
-			var i:int = getIndex(int(mc[MOVIE_INDEX]), elliPoints.length);
-			mc.x = elliPoints[i].x;
-			mc.y = elliPoints[i].y;
-
+			var m:int = int(mc[MOVIE_INDEX]);
+			var n:int = int(e.position);
+			trace(m, n);
+			for (var i:int = 0; i < imags.length; i++) {
+				var img:MovieClip = imags[i];
+				var index:int = int(img[MOVIE_INDEX]) - m + n;
+				var nindex:int = getIndex(index, elliPoints.length);
+				img.x = elliPoints[nindex].x;
+				img.y = elliPoints[nindex].y;
+				var scale:Number = (img.y + b * 3) / (b * 4);
+				img.scaleX = scale;
+				img.scaleY = scale;
+			}
 		}
 
 		private function handlerFinish(e:TweenEvent):void {
 			var tw:Tween = e.currentTarget as Tween;
 			var mc:MovieClip = tw.obj as MovieClip;
-			var i:int = int(mc[MOVIE_INDEX] % elliPoints.length);
-			mc[MOVIE_INDEX] = i;
+			var m:int = int(mc[MOVIE_INDEX]);
+			for (var i:int = 0; i < imags.length; i++) {
+				var img:MovieClip = imags[i];
+				var index:int = int(img[MOVIE_INDEX]) - m;
+				var nindex:int = getIndex(index, elliPoints.length);
+				img[MOVIE_INDEX] = nindex;
+			}
 		}
 
 		private function getIndex(index:int, length:int):int {
