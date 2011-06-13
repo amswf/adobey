@@ -32,6 +32,8 @@ package com.snsoft.effect {
 
 		private var currentIndex:int = 0;
 
+		private var lock:Boolean = false;
+
 		private var a:int = 300;
 
 		private var b:int = 100;
@@ -79,25 +81,22 @@ package com.snsoft.effect {
 		}
 
 		private function handler(e:Event):void {
-			//this.mouseEnabled = false;
-			//this.mouseChildren = false;
+			if (!lock) {
+				lock = true;
 
-			var elen:int = elliPoints.length;
-			var mc:MovieClip = e.currentTarget as MovieClip;
-			var tfd:TextField = mc.getChildByName("tfd") as TextField;
-			var n:int = getIndex(int(mc[MOVIE_INDEX]), elen);
-			if (n * 2 > elen) {
-				n = n - elen;
+				var elen:int = elliPoints.length;
+				var mc:MovieClip = e.currentTarget as MovieClip;
+				var tfd:TextField = mc.getChildByName("tfd") as TextField;
+				var n:int = getIndex(int(mc[MOVIE_INDEX]), elen);
+				if (n * 2 > elen) {
+					n = n - elen;
+				}
+				moveFinished = imags.length;
+				currentIndex = n;
+				var tw:Tween = new Tween(mc, MOVIE_HELP_INDEX, Regular.easeOut, n, 0, 50);
+				tw.addEventListener(TweenEvent.MOTION_CHANGE, handlerChange);
+				tw.addEventListener(TweenEvent.MOTION_FINISH, handlerFinish);
 			}
-
-			//trace("称动：");
-
-			moveFinished = imags.length;
- 
-			currentIndex = n;
-			var tw:Tween = new Tween(mc, MOVIE_HELP_INDEX, Regular.easeOut, n, 0, 50);
-			tw.addEventListener(TweenEvent.MOTION_CHANGE, handlerChange);
-			tw.addEventListener(TweenEvent.MOTION_FINISH, handlerFinish);
 		}
 
 		private function handlerChange(e:TweenEvent):void {
@@ -105,7 +104,6 @@ package com.snsoft.effect {
 			var mc:MovieClip = tw.obj as MovieClip;
 			var m:int = int(mc[MOVIE_INDEX]);
 			var n:int = int(e.position);
-			trace(m, n);
 			for (var i:int = 0; i < imags.length; i++) {
 				var img:MovieClip = imags[i];
 				var index:int = int(img[MOVIE_INDEX]) - m + n;
@@ -128,6 +126,7 @@ package com.snsoft.effect {
 				var nindex:int = getIndex(index, elliPoints.length);
 				img[MOVIE_INDEX] = nindex;
 			}
+			lock = false;
 		}
 
 		private function getIndex(index:int, length:int):int {
