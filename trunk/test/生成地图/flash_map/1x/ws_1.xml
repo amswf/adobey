@@ -1,2144 +1,1459 @@
-<map image="C:\Documents and Settings\Administrator\桌面\test\high.png">
+<map image="C:\Documents and Settings\Administrator\桌面\COLORENGs.jpg">
   
   <areas>
     
-    <area areaId="ws_1_1" areaName="河北" areaCode="null" areaUrl="null">
+    <area areaId="ws_1_1" areaName="中国" areaCode="null" areaUrl="null">
       
-      <areaNamePoint x="-14" y="13"/>
+      <areaNamePoint x="3" y="9"/>
       <areaPoints>
         
-        <point x="392" y="167"/>
-        <point x="397" y="164"/>
-        <point x="402" y="160"/>
-        <point x="406" y="154"/>
-        <point x="407" y="152"/>
-        <point x="401" y="152"/>
-        <point x="400" y="150"/>
-        <point x="395" y="150"/>
-        <point x="393" y="147"/>
-        <point x="393" y="144"/>
-        <point x="389" y="144"/>
-        <point x="387" y="140"/>
-        <point x="385" y="139"/>
-        <point x="385" y="133"/>
-        <point x="380" y="129"/>
-        <point x="377" y="129"/>
-        <point x="374" y="130"/>
-        <point x="372" y="134"/>
-        <point x="372" y="137"/>
-        <point x="366" y="138"/>
-        <point x="359" y="141"/>
-        <point x="355" y="140"/>
-        <point x="355" y="136"/>
-        <point x="353" y="136"/>
-        <point x="350" y="138"/>
-        <point x="348" y="141"/>
-        <point x="348" y="154"/>
-        <point x="348" y="156"/>
-        <point x="350" y="157"/>
-        <point x="352" y="157"/>
-        <point x="352" y="158"/>
-        <point x="350" y="161"/>
-        <point x="350" y="163"/>
-        <point x="354" y="167"/>
-        <point x="354" y="169"/>
-        <point x="351" y="171"/>
-        <point x="349" y="175"/>
-        <point x="348" y="179"/>
-        <point x="349" y="182"/>
-        <point x="352" y="184"/>
-        <point x="354" y="187"/>
-        <point x="353" y="190"/>
-        <point x="351" y="192"/>
-        <point x="350" y="195"/>
-        <point x="349" y="197"/>
-        <point x="349" y="200"/>
-        <point x="354" y="205"/>
-        <point x="358" y="206"/>
-        <point x="363" y="207"/>
-        <point x="366" y="206"/>
-        <point x="370" y="203"/>
-        <point x="370" y="199"/>
-        <point x="371" y="194"/>
-        <point x="373" y="192"/>
-        <point x="375" y="189"/>
-        <point x="378" y="186"/>
-        <point x="378" y="183"/>
-        <point x="381" y="183"/>
-        <point x="385" y="183"/>
-        <point x="386" y="181"/>
-        <point x="387" y="179"/>
-        <point x="386" y="175"/>
-        <point x="384" y="174"/>
-        <point x="380" y="174"/>
-        <point x="378" y="174"/>
-        <point x="377" y="173"/>
-        <point x="377" y="169"/>
-        <point x="377" y="167"/>
-        <point x="375" y="166"/>
-        <point x="376" y="162"/>
-        <point x="377" y="158"/>
-        <point x="379" y="157"/>
-        <point x="381" y="156"/>
-        <point x="380" y="159"/>
-        <point x="380" y="162"/>
-        <point x="378" y="164"/>
-        <point x="376" y="165"/>
-        <point x="374" y="166"/>
-        <point x="372" y="166"/>
-        <point x="368" y="165"/>
-        <point x="364" y="165"/>
-        <point x="363" y="165"/>
-        <point x="364" y="161"/>
-        <point x="365" y="160"/>
-        <point x="366" y="157"/>
-        <point x="366" y="155"/>
-        <point x="364" y="154"/>
-        <point x="363" y="153"/>
-        <point x="365" y="151"/>
-        <point x="368" y="150"/>
-        <point x="378" y="150"/>
-        <point x="380" y="154"/>
-        <point x="380" y="156"/>
-        <point x="383" y="157"/>
-        <point x="382" y="160"/>
-        <point x="382" y="163"/>
-        <point x="381" y="165"/>
-        <point x="382" y="167"/>
-        <point x="383" y="168"/>
-        <point x="385" y="168"/>
-        <point x="386" y="166"/>
-        <point x="390" y="166"/>
+        <point x="204" y="168"/>
+        <point x="209" y="167"/>
+        <point x="213" y="164"/>
+        <point x="217" y="162"/>
+        <point x="217" y="159"/>
+        <point x="216" y="155"/>
+        <point x="221" y="156"/>
+        <point x="222" y="151"/>
+        <point x="228" y="151"/>
+        <point x="230" y="145"/>
+        <point x="234" y="148"/>
+        <point x="237" y="149"/>
+        <point x="238" y="155"/>
+        <point x="243" y="155"/>
+        <point x="249" y="161"/>
+        <point x="257" y="162"/>
+        <point x="264" y="164"/>
+        <point x="269" y="163"/>
+        <point x="275" y="162"/>
+        <point x="278" y="158"/>
+        <point x="282" y="158"/>
+        <point x="287" y="156"/>
+        <point x="291" y="153"/>
+        <point x="295" y="154"/>
+        <point x="293" y="150"/>
+        <point x="287" y="149"/>
+        <point x="288" y="145"/>
+        <point x="293" y="144"/>
+        <point x="295" y="139"/>
+        <point x="295" y="135"/>
+        <point x="302" y="135"/>
+        <point x="307" y="136"/>
+        <point x="310" y="140"/>
+        <point x="309" y="144"/>
+        <point x="313" y="145"/>
+        <point x="317" y="149"/>
+        <point x="324" y="149"/>
+        <point x="323" y="153"/>
+        <point x="319" y="157"/>
+        <point x="317" y="160"/>
+        <point x="312" y="162"/>
+        <point x="310" y="166"/>
+        <point x="306" y="165"/>
+        <point x="302" y="168"/>
+        <point x="298" y="170"/>
+        <point x="294" y="167"/>
+        <point x="292" y="171"/>
+        <point x="288" y="172"/>
+        <point x="292" y="174"/>
+        <point x="299" y="174"/>
+        <point x="300" y="177"/>
+        <point x="293" y="178"/>
+        <point x="298" y="183"/>
+        <point x="298" y="191"/>
+        <point x="294" y="198"/>
+        <point x="296" y="200"/>
+        <point x="298" y="200"/>
+        <point x="299" y="200"/>
+        <point x="298" y="203"/>
+        <point x="297" y="205"/>
+        <point x="295" y="206"/>
+        <point x="294" y="204"/>
+        <point x="296" y="201"/>
+        <point x="293" y="199"/>
+        <point x="292" y="201"/>
+        <point x="288" y="203"/>
+        <point x="285" y="204"/>
+        <point x="282" y="205"/>
+        <point x="280" y="206"/>
+        <point x="278" y="207"/>
+        <point x="276" y="209"/>
+        <point x="277" y="210"/>
+        <point x="274" y="211"/>
+        <point x="273" y="213"/>
+        <point x="275" y="214"/>
+        <point x="277" y="212"/>
+        <point x="276" y="211"/>
+        <point x="275" y="209"/>
+        <point x="275" y="207"/>
+        <point x="270" y="207"/>
+        <point x="269" y="205"/>
+        <point x="267" y="203"/>
+        <point x="265" y="203"/>
+        <point x="263" y="205"/>
+        <point x="260" y="204"/>
+        <point x="257" y="206"/>
+        <point x="254" y="204"/>
+        <point x="253" y="197"/>
+        <point x="252" y="193"/>
+        <point x="245" y="193"/>
+        <point x="237" y="193"/>
+        <point x="231" y="193"/>
+        <point x="222" y="187"/>
+        <point x="215" y="186"/>
+        <point x="213" y="183"/>
+        <point x="212" y="178"/>
+        <point x="210" y="173"/>
+        <point x="205" y="173"/>
       
       </areaPoints>
     
     </area>
     
-    <area areaId="ws_1_2" areaName="北京" areaCode="null" areaUrl="null">
+    <area areaId="ws_1_2" areaName="" areaCode="null" areaUrl="null">
+      
+      <areaNamePoint x="0" y="0"/>
+      <areaPoints>
+        
+        <point x="302" y="168"/>
+        <point x="304" y="168"/>
+        <point x="306" y="170"/>
+        <point x="306" y="174"/>
+        <point x="310" y="176"/>
+        <point x="308" y="181"/>
+        <point x="312" y="180"/>
+        <point x="315" y="177"/>
+        <point x="314" y="172"/>
+        <point x="312" y="168"/>
+        <point x="313" y="165"/>
+        <point x="317" y="160"/>
+        <point x="312" y="162"/>
+        <point x="310" y="166"/>
+        <point x="306" y="165"/>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area areaId="ws_1_3" areaName="俄罗斯" areaCode="null" areaUrl="null">
+      
+      <areaNamePoint x="-4" y="8"/>
+      <areaPoints>
+        
+        <point x="317" y="160"/>
+        <point x="322" y="161"/>
+        <point x="328" y="156"/>
+        <point x="334" y="148"/>
+        <point x="336" y="138"/>
+        <point x="334" y="132"/>
+        <point x="328" y="133"/>
+        <point x="324" y="132"/>
+        <point x="338" y="120"/>
+        <point x="353" y="120"/>
+        <point x="358" y="117"/>
+        <point x="361" y="121"/>
+        <point x="369" y="113"/>
+        <point x="376" y="112"/>
+        <point x="376" y="115"/>
+        <point x="381" y="110"/>
+        <point x="386" y="110"/>
+        <point x="380" y="116"/>
+        <point x="366" y="129"/>
+        <point x="368" y="143"/>
+        <point x="381" y="128"/>
+        <point x="379" y="121"/>
+        <point x="386" y="114"/>
+        <point x="395" y="115"/>
+        <point x="407" y="108"/>
+        <point x="413" y="109"/>
+        <point x="412" y="105"/>
+        <point x="407" y="104"/>
+        <point x="414" y="98"/>
+        <point x="427" y="105"/>
+        <point x="432" y="99"/>
+        <point x="421" y="94"/>
+        <point x="408" y="88"/>
+        <point x="391" y="88"/>
+        <point x="373" y="86"/>
+        <point x="359" y="82"/>
+        <point x="347" y="77"/>
+        <point x="338" y="76"/>
+        <point x="334" y="73"/>
+        <point x="327" y="66"/>
+        <point x="331" y="64"/>
+        <point x="336" y="69"/>
+        <point x="336" y="73"/>
+        <point x="334" y="81"/>
+        <point x="329" y="80"/>
+        <point x="325" y="82"/>
+        <point x="320" y="80"/>
+        <point x="318" y="83"/>
+        <point x="313" y="80"/>
+        <point x="310" y="81"/>
+        <point x="311" y="75"/>
+        <point x="313" y="74"/>
+        <point x="303" y="69"/>
+        <point x="300" y="74"/>
+        <point x="295" y="75"/>
+        <point x="291" y="73"/>
+        <point x="270" y="74"/>
+        <point x="262" y="76"/>
+        <point x="280" y="66"/>
+        <point x="278" y="60"/>
+        <point x="268" y="64"/>
+        <point x="266" y="58"/>
+        <point x="260" y="59"/>
+        <point x="255" y="64"/>
+        <point x="256" y="67"/>
+        <point x="252" y="63"/>
+        <point x="241" y="63"/>
+        <point x="230" y="67"/>
+        <point x="229" y="75"/>
+        <point x="220" y="73"/>
+        <point x="217" y="75"/>
+        <point x="224" y="80"/>
+        <point x="223" y="85"/>
+        <point x="216" y="78"/>
+        <point x="211" y="78"/>
+        <point x="212" y="82"/>
+        <point x="207" y="82"/>
+        <point x="207" y="77"/>
+        <point x="204" y="79"/>
+        <point x="205" y="92"/>
+        <point x="202" y="100"/>
+        <point x="196" y="98"/>
+        <point x="202" y="95"/>
+        <point x="200" y="76"/>
+        <point x="195" y="76"/>
+        <point x="191" y="82"/>
+        <point x="191" y="88"/>
+        <point x="195" y="89"/>
+        <point x="193" y="92"/>
+        <point x="188" y="91"/>
+        <point x="177" y="84"/>
+        <point x="169" y="82"/>
+        <point x="168" y="76"/>
+        <point x="176" y="69"/>
+        <point x="187" y="64"/>
+        <point x="194" y="64"/>
+        <point x="195" y="61"/>
+        <point x="192" y="60"/>
+        <point x="180" y="62"/>
+        <point x="170" y="65"/>
+        <point x="165" y="73"/>
+        <point x="159" y="79"/>
+        <point x="165" y="83"/>
+        <point x="173" y="84"/>
+        <point x="178" y="88"/>
+        <point x="176" y="92"/>
+        <point x="167" y="92"/>
+        <point x="162" y="90"/>
+        <point x="153" y="92"/>
+        <point x="148" y="96"/>
+        <point x="139" y="98"/>
+        <point x="133" y="104"/>
+        <point x="127" y="104"/>
+        <point x="126" y="99"/>
+        <point x="121" y="95"/>
+        <point x="126" y="96"/>
+        <point x="136" y="98"/>
+        <point x="139" y="95"/>
+        <point x="133" y="90"/>
+        <point x="123" y="87"/>
+        <point x="115" y="92"/>
+        <point x="116" y="101"/>
+        <point x="120" y="112"/>
+        <point x="114" y="120"/>
+        <point x="114" y="126"/>
+        <point x="119" y="133"/>
+        <point x="129" y="142"/>
+        <point x="134" y="144"/>
+        <point x="136" y="145"/>
+        <point x="137" y="149"/>
+        <point x="130" y="155"/>
+        <point x="137" y="161"/>
+        <point x="142" y="163"/>
+        <point x="154" y="163"/>
+        <point x="150" y="156"/>
+        <point x="154" y="151"/>
+        <point x="150" y="149"/>
+        <point x="150" y="142"/>
+        <point x="158" y="140"/>
+        <point x="163" y="141"/>
+        <point x="176" y="142"/>
+        <point x="179" y="135"/>
+        <point x="194" y="131"/>
+        <point x="205" y="136"/>
+        <point x="208" y="134"/>
+        <point x="220" y="140"/>
+        <point x="228" y="145"/>
+        <point x="230" y="145"/>
+        <point x="234" y="144"/>
+        <point x="241" y="142"/>
+        <point x="245" y="144"/>
+        <point x="251" y="145"/>
+        <point x="254" y="139"/>
+        <point x="263" y="142"/>
+        <point x="272" y="144"/>
+        <point x="283" y="145"/>
+        <point x="288" y="145"/>
+        <point x="293" y="144"/>
+        <point x="295" y="139"/>
+        <point x="295" y="135"/>
+        <point x="302" y="135"/>
+        <point x="307" y="136"/>
+        <point x="310" y="140"/>
+        <point x="309" y="144"/>
+        <point x="313" y="145"/>
+        <point x="317" y="149"/>
+        <point x="324" y="149"/>
+        <point x="323" y="153"/>
+        <point x="319" y="157"/>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area areaId="ws_1_4" areaName="蒙古" areaCode="null" areaUrl="null">
       
       <areaNamePoint x="0" y="-1"/>
       <areaPoints>
         
-        <point x="381" y="156"/>
-        <point x="380" y="156"/>
-        <point x="380" y="154"/>
-        <point x="378" y="150"/>
-        <point x="368" y="150"/>
-        <point x="365" y="151"/>
-        <point x="363" y="153"/>
-        <point x="364" y="154"/>
-        <point x="366" y="155"/>
-        <point x="366" y="157"/>
-        <point x="365" y="160"/>
-        <point x="364" y="161"/>
-        <point x="363" y="165"/>
-        <point x="364" y="165"/>
-        <point x="368" y="165"/>
-        <point x="372" y="166"/>
-        <point x="374" y="166"/>
-        <point x="375" y="165"/>
-        <point x="376" y="162"/>
-        <point x="377" y="158"/>
-        <point x="379" y="157"/>
+        <point x="243" y="155"/>
+        <point x="238" y="155"/>
+        <point x="237" y="149"/>
+        <point x="234" y="148"/>
+        <point x="230" y="145"/>
+        <point x="234" y="144"/>
+        <point x="241" y="142"/>
+        <point x="245" y="144"/>
+        <point x="251" y="145"/>
+        <point x="254" y="139"/>
+        <point x="263" y="142"/>
+        <point x="272" y="144"/>
+        <point x="283" y="145"/>
+        <point x="288" y="145"/>
+        <point x="287" y="149"/>
+        <point x="293" y="150"/>
+        <point x="295" y="154"/>
+        <point x="291" y="153"/>
+        <point x="287" y="156"/>
+        <point x="282" y="158"/>
+        <point x="278" y="158"/>
+        <point x="275" y="162"/>
+        <point x="269" y="163"/>
+        <point x="264" y="164"/>
+        <point x="257" y="162"/>
+        <point x="249" y="161"/>
       
       </areaPoints>
     
     </area>
     
-    <area areaId="ws_1_3" areaName="天津" areaCode="null" areaUrl="null">
+    <area areaId="ws_1_5" areaName="日本" areaCode="null" areaUrl="null">
       
-      <areaNamePoint x="15" y="10"/>
+      <areaNamePoint x="18" y="14"/>
       <areaPoints>
         
-        <point x="384" y="174"/>
-        <point x="380" y="174"/>
-        <point x="378" y="174"/>
-        <point x="377" y="173"/>
-        <point x="377" y="169"/>
-        <point x="377" y="167"/>
-        <point x="375" y="166"/>
-        <point x="375" y="165"/>
-        <point x="376" y="165"/>
-        <point x="378" y="164"/>
-        <point x="380" y="162"/>
-        <point x="380" y="159"/>
-        <point x="381" y="156"/>
-        <point x="383" y="157"/>
-        <point x="382" y="160"/>
-        <point x="382" y="163"/>
-        <point x="381" y="165"/>
-        <point x="382" y="167"/>
-        <point x="383" y="168"/>
-        <point x="385" y="168"/>
-        <point x="385" y="170"/>
-        <point x="385" y="172"/>
-      
-      </areaPoints>
-    
-    </area>
-    
-    <area areaId="ws_1_4" areaName="辽宁" areaCode="null" areaUrl="null">
-      
-      <areaNamePoint x="7" y="-4"/>
-      <areaPoints>
-        
-        <point x="407" y="152"/>
-        <point x="401" y="152"/>
-        <point x="400" y="150"/>
-        <point x="395" y="150"/>
-        <point x="393" y="147"/>
-        <point x="393" y="144"/>
-        <point x="396" y="142"/>
-        <point x="398" y="136"/>
-        <point x="403" y="136"/>
-        <point x="404" y="133"/>
-        <point x="409" y="132"/>
-        <point x="410" y="127"/>
-        <point x="414" y="127"/>
-        <point x="419" y="122"/>
-        <point x="427" y="118"/>
-        <point x="427" y="116"/>
-        <point x="429" y="113"/>
-        <point x="433" y="117"/>
-        <point x="439" y="117"/>
-        <point x="443" y="123"/>
-        <point x="445" y="130"/>
-        <point x="449" y="139"/>
-        <point x="444" y="147"/>
-        <point x="436" y="154"/>
-        <point x="432" y="154"/>
-        <point x="426" y="160"/>
-        <point x="424" y="163"/>
-        <point x="423" y="167"/>
-        <point x="420" y="169"/>
-        <point x="416" y="169"/>
-        <point x="415" y="167"/>
-        <point x="416" y="165"/>
-        <point x="420" y="164"/>
-        <point x="420" y="160"/>
-        <point x="418" y="159"/>
-        <point x="418" y="154"/>
-        <point x="421" y="154"/>
-        <point x="421" y="151"/>
-        <point x="420" y="144"/>
-        <point x="414" y="142"/>
-        <point x="409" y="147"/>
-      
-      </areaPoints>
-    
-    </area>
-    
-    <area areaId="ws_1_5" areaName="吉林" areaCode="null" areaUrl="null">
-      
-      <areaNamePoint x="5" y="1"/>
-      <areaPoints>
-        
-        <point x="427" y="116"/>
-        <point x="424" y="111"/>
-        <point x="422" y="108"/>
-        <point x="420" y="101"/>
-        <point x="416" y="103"/>
-        <point x="410" y="96"/>
-        <point x="410" y="88"/>
-        <point x="416" y="82"/>
-        <point x="419" y="81"/>
-        <point x="425" y="90"/>
-        <point x="429" y="90"/>
-        <point x="436" y="87"/>
-        <point x="441" y="90"/>
-        <point x="449" y="92"/>
-        <point x="454" y="94"/>
-        <point x="457" y="99"/>
-        <point x="462" y="96"/>
-        <point x="468" y="104"/>
-        <point x="471" y="103"/>
-        <point x="471" y="98"/>
-        <point x="474" y="97"/>
-        <point x="478" y="98"/>
-        <point x="482" y="100"/>
-        <point x="488" y="100"/>
-        <point x="489" y="105"/>
-        <point x="487" y="109"/>
-        <point x="485" y="113"/>
-        <point x="482" y="113"/>
-        <point x="479" y="111"/>
-        <point x="479" y="108"/>
-        <point x="477" y="109"/>
-        <point x="476" y="117"/>
-        <point x="469" y="122"/>
-        <point x="469" y="124"/>
-        <point x="471" y="125"/>
-        <point x="468" y="129"/>
-        <point x="457" y="129"/>
-        <point x="453" y="136"/>
-        <point x="449" y="139"/>
-        <point x="445" y="130"/>
-        <point x="443" y="123"/>
-        <point x="439" y="117"/>
-        <point x="433" y="117"/>
-        <point x="429" y="113"/>
-      
-      </areaPoints>
-    
-    </area>
-    
-    <area areaId="ws_1_6" areaName="黑龙江" areaCode="null" areaUrl="null">
-      
-      <areaNamePoint x="12" y="18"/>
-      <areaPoints>
-        
-        <point x="419" y="81"/>
-        <point x="418" y="78"/>
-        <point x="417" y="76"/>
-        <point x="413" y="76"/>
-        <point x="408" y="68"/>
-        <point x="409" y="65"/>
-        <point x="415" y="58"/>
-        <point x="422" y="47"/>
-        <point x="422" y="27"/>
-        <point x="423" y="22"/>
-        <point x="419" y="22"/>
-        <point x="415" y="19"/>
-        <point x="412" y="23"/>
-        <point x="407" y="27"/>
-        <point x="401" y="27"/>
-        <point x="400" y="25"/>
-        <point x="400" y="18"/>
-        <point x="397" y="17"/>
-        <point x="393" y="16"/>
-        <point x="391" y="12"/>
-        <point x="387" y="13"/>
-        <point x="386" y="10"/>
-        <point x="388" y="8"/>
-        <point x="388" y="4"/>
-        <point x="394" y="1"/>
-        <point x="401" y="1"/>
-        <point x="412" y="1"/>
-        <point x="416" y="4"/>
-        <point x="427" y="16"/>
-        <point x="428" y="20"/>
-        <point x="435" y="27"/>
-        <point x="438" y="36"/>
-        <point x="441" y="37"/>
-        <point x="450" y="37"/>
-        <point x="463" y="41"/>
-        <point x="467" y="44"/>
-        <point x="469" y="48"/>
-        <point x="476" y="48"/>
-        <point x="499" y="30"/>
-        <point x="503" y="30"/>
-        <point x="503" y="40"/>
-        <point x="498" y="68"/>
-        <point x="494" y="82"/>
-        <point x="489" y="81"/>
-        <point x="483" y="81"/>
-        <point x="483" y="86"/>
-        <point x="486" y="89"/>
-        <point x="488" y="100"/>
-        <point x="482" y="100"/>
-        <point x="478" y="98"/>
-        <point x="474" y="97"/>
-        <point x="471" y="98"/>
-        <point x="471" y="103"/>
-        <point x="468" y="104"/>
-        <point x="462" y="96"/>
-        <point x="457" y="99"/>
-        <point x="454" y="94"/>
-        <point x="449" y="92"/>
-        <point x="441" y="90"/>
-        <point x="436" y="87"/>
-        <point x="429" y="90"/>
-        <point x="425" y="90"/>
-      
-      </areaPoints>
-    
-    </area>
-    
-    <area areaId="ws_1_7" areaName="内蒙古" areaCode="null" areaUrl="null">
-      
-      <areaNamePoint x="35" y="22"/>
-      <areaPoints>
-        
-        <point x="348" y="156"/>
+        <point x="317" y="187"/>
+        <point x="323" y="183"/>
+        <point x="336" y="179"/>
+        <point x="340" y="170"/>
         <point x="342" y="158"/>
-        <point x="337" y="161"/>
-        <point x="335" y="159"/>
-        <point x="325" y="165"/>
-        <point x="324" y="172"/>
-        <point x="320" y="175"/>
-        <point x="313" y="175"/>
-        <point x="308" y="181"/>
-        <point x="308" y="188"/>
-        <point x="305" y="191"/>
-        <point x="299" y="191"/>
-        <point x="297" y="189"/>
-        <point x="291" y="187"/>
-        <point x="290" y="179"/>
-        <point x="291" y="173"/>
-        <point x="288" y="172"/>
-        <point x="282" y="176"/>
-        <point x="282" y="186"/>
-        <point x="276" y="192"/>
-        <point x="266" y="193"/>
-        <point x="261" y="191"/>
-        <point x="261" y="183"/>
-        <point x="266" y="178"/>
-        <point x="267" y="171"/>
-        <point x="263" y="169"/>
-        <point x="260" y="175"/>
-        <point x="250" y="174"/>
-        <point x="250" y="179"/>
-        <point x="244" y="178"/>
-        <point x="240" y="172"/>
-        <point x="231" y="167"/>
-        <point x="231" y="163"/>
-        <point x="233" y="159"/>
-        <point x="232" y="156"/>
-        <point x="218" y="156"/>
-        <point x="212" y="145"/>
-        <point x="212" y="139"/>
-        <point x="209" y="132"/>
-        <point x="219" y="132"/>
-        <point x="245" y="132"/>
-        <point x="255" y="140"/>
-        <point x="271" y="141"/>
-        <point x="274" y="143"/>
-        <point x="278" y="143"/>
-        <point x="287" y="137"/>
-        <point x="300" y="134"/>
-        <point x="312" y="134"/>
-        <point x="325" y="122"/>
-        <point x="325" y="117"/>
-        <point x="323" y="114"/>
-        <point x="324" y="108"/>
-        <point x="329" y="105"/>
-        <point x="338" y="104"/>
-        <point x="341" y="106"/>
-        <point x="349" y="99"/>
-        <point x="357" y="97"/>
-        <point x="361" y="90"/>
-        <point x="365" y="86"/>
-        <point x="375" y="82"/>
-        <point x="382" y="78"/>
-        <point x="381" y="73"/>
-        <point x="376" y="71"/>
-        <point x="369" y="74"/>
-        <point x="362" y="75"/>
-        <point x="358" y="76"/>
-        <point x="354" y="75"/>
-        <point x="353" y="66"/>
-        <point x="357" y="47"/>
-        <point x="365" y="48"/>
-        <point x="371" y="46"/>
-        <point x="375" y="42"/>
-        <point x="377" y="28"/>
-        <point x="381" y="23"/>
-        <point x="381" y="18"/>
-        <point x="376" y="17"/>
-        <point x="376" y="12"/>
-        <point x="381" y="7"/>
-        <point x="388" y="4"/>
-        <point x="388" y="8"/>
-        <point x="386" y="10"/>
-        <point x="387" y="13"/>
-        <point x="391" y="12"/>
-        <point x="393" y="16"/>
-        <point x="397" y="17"/>
-        <point x="400" y="18"/>
-        <point x="400" y="25"/>
-        <point x="401" y="27"/>
-        <point x="407" y="27"/>
-        <point x="412" y="23"/>
-        <point x="415" y="19"/>
-        <point x="419" y="22"/>
-        <point x="423" y="22"/>
-        <point x="422" y="27"/>
-        <point x="422" y="47"/>
-        <point x="415" y="58"/>
-        <point x="409" y="65"/>
-        <point x="408" y="68"/>
-        <point x="413" y="76"/>
-        <point x="417" y="76"/>
-        <point x="418" y="78"/>
-        <point x="419" y="81"/>
-        <point x="416" y="82"/>
-        <point x="410" y="88"/>
-        <point x="410" y="96"/>
-        <point x="416" y="103"/>
-        <point x="420" y="101"/>
-        <point x="422" y="108"/>
-        <point x="424" y="111"/>
-        <point x="427" y="116"/>
-        <point x="427" y="118"/>
-        <point x="419" y="122"/>
-        <point x="414" y="127"/>
-        <point x="410" y="127"/>
-        <point x="409" y="132"/>
-        <point x="404" y="133"/>
-        <point x="403" y="136"/>
-        <point x="398" y="136"/>
-        <point x="396" y="142"/>
-        <point x="393" y="144"/>
-        <point x="389" y="144"/>
-        <point x="387" y="140"/>
-        <point x="385" y="139"/>
-        <point x="385" y="133"/>
-        <point x="380" y="129"/>
-        <point x="377" y="129"/>
-        <point x="374" y="130"/>
-        <point x="372" y="134"/>
-        <point x="372" y="137"/>
-        <point x="366" y="138"/>
-        <point x="359" y="141"/>
-        <point x="355" y="140"/>
-        <point x="355" y="136"/>
-        <point x="353" y="136"/>
-        <point x="350" y="138"/>
-        <point x="348" y="141"/>
-        <point x="348" y="154"/>
+        <point x="343" y="142"/>
+        <point x="340" y="133"/>
+        <point x="339" y="140"/>
+        <point x="339" y="149"/>
+        <point x="334" y="166"/>
+        <point x="330" y="174"/>
+        <point x="319" y="176"/>
+        <point x="316" y="183"/>
       
       </areaPoints>
     
     </area>
     
-    <area areaId="ws_1_8" areaName="宁夏" areaCode="null" areaUrl="null">
+    <area areaId="ws_1_6" areaName="" areaCode="null" areaUrl="null">
       
-      <areaNamePoint x="2" y="0"/>
+      <areaNamePoint x="-1" y="-18"/>
       <areaPoints>
         
-        <point x="297" y="189"/>
-        <point x="295" y="189"/>
-        <point x="294" y="192"/>
-        <point x="294" y="196"/>
-        <point x="294" y="198"/>
-        <point x="289" y="197"/>
-        <point x="288" y="200"/>
-        <point x="288" y="206"/>
-        <point x="291" y="209"/>
-        <point x="291" y="213"/>
-        <point x="288" y="213"/>
-        <point x="286" y="217"/>
-        <point x="283" y="216"/>
-        <point x="279" y="213"/>
-        <point x="278" y="206"/>
-        <point x="277" y="200"/>
-        <point x="272" y="198"/>
-        <point x="268" y="196"/>
-        <point x="266" y="193"/>
-        <point x="276" y="192"/>
-        <point x="282" y="186"/>
-        <point x="282" y="176"/>
-        <point x="288" y="172"/>
-        <point x="291" y="173"/>
-        <point x="290" y="179"/>
-        <point x="291" y="187"/>
+        <point x="270" y="207"/>
+        <point x="269" y="205"/>
+        <point x="267" y="203"/>
+        <point x="265" y="203"/>
+        <point x="263" y="205"/>
+        <point x="260" y="204"/>
+        <point x="257" y="206"/>
+        <point x="254" y="204"/>
+        <point x="253" y="197"/>
+        <point x="252" y="193"/>
+        <point x="247" y="196"/>
+        <point x="241" y="206"/>
+        <point x="244" y="214"/>
+        <point x="245" y="219"/>
+        <point x="252" y="223"/>
+        <point x="253" y="229"/>
+        <point x="254" y="235"/>
+        <point x="258" y="241"/>
+        <point x="263" y="246"/>
+        <point x="263" y="241"/>
+        <point x="260" y="236"/>
+        <point x="255" y="231"/>
+        <point x="257" y="224"/>
+        <point x="264" y="229"/>
+        <point x="266" y="233"/>
+        <point x="275" y="226"/>
+        <point x="273" y="219"/>
+        <point x="266" y="212"/>
       
       </areaPoints>
     
     </area>
     
-    <area areaId="ws_1_9" areaName="甘肃" areaCode="null" areaUrl="null">
+    <area areaId="ws_1_7" areaName="" areaCode="null" areaUrl="null">
       
-      <areaNamePoint x="29" y="32"/>
+      <areaNamePoint x="0" y="0"/>
       <areaPoints>
         
-        <point x="209" y="132"/>
-        <point x="204" y="130"/>
-        <point x="201" y="133"/>
-        <point x="200" y="140"/>
-        <point x="193" y="142"/>
-        <point x="182" y="151"/>
-        <point x="173" y="154"/>
-        <point x="170" y="157"/>
-        <point x="170" y="164"/>
-        <point x="171" y="169"/>
-        <point x="179" y="170"/>
-        <point x="186" y="170"/>
-        <point x="199" y="179"/>
-        <point x="203" y="179"/>
-        <point x="205" y="173"/>
-        <point x="211" y="173"/>
-        <point x="214" y="176"/>
-        <point x="220" y="175"/>
-        <point x="230" y="182"/>
-        <point x="233" y="182"/>
-        <point x="244" y="193"/>
-        <point x="248" y="191"/>
-        <point x="252" y="198"/>
-        <point x="254" y="208"/>
-        <point x="254" y="216"/>
-        <point x="250" y="220"/>
-        <point x="245" y="224"/>
-        <point x="243" y="225"/>
-        <point x="245" y="228"/>
-        <point x="245" y="231"/>
-        <point x="239" y="231"/>
-        <point x="238" y="234"/>
-        <point x="241" y="239"/>
-        <point x="243" y="241"/>
-        <point x="247" y="243"/>
-        <point x="251" y="240"/>
-        <point x="249" y="235"/>
-        <point x="254" y="230"/>
-        <point x="258" y="236"/>
-        <point x="262" y="237"/>
-        <point x="265" y="236"/>
-        <point x="267" y="241"/>
-        <point x="269" y="243"/>
+        <point x="245" y="238"/>
+        <point x="261" y="247"/>
+        <point x="268" y="255"/>
+        <point x="266" y="260"/>
+        <point x="263" y="260"/>
+        <point x="254" y="250"/>
+        <point x="248" y="243"/>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area areaId="ws_1_8" areaName="" areaCode="null" areaUrl="null">
+      
+      <areaNamePoint x="0" y="0"/>
+      <areaPoints>
+        
+        <point x="270" y="258"/>
+        <point x="286" y="263"/>
+        <point x="304" y="265"/>
+        <point x="311" y="265"/>
+        <point x="308" y="268"/>
+        <point x="297" y="270"/>
+        <point x="291" y="268"/>
+        <point x="280" y="265"/>
+        <point x="269" y="264"/>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area areaId="ws_1_9" areaName="" areaCode="null" areaUrl="null">
+      
+      <areaNamePoint x="0" y="0"/>
+      <areaPoints>
+        
+        <point x="278" y="244"/>
+        <point x="289" y="237"/>
+        <point x="293" y="238"/>
+        <point x="291" y="247"/>
+        <point x="288" y="257"/>
+        <point x="284" y="257"/>
+        <point x="278" y="254"/>
+        <point x="273" y="252"/>
         <point x="272" y="248"/>
-        <point x="279" y="248"/>
-        <point x="281" y="244"/>
-        <point x="281" y="239"/>
-        <point x="282" y="236"/>
-        <point x="287" y="236"/>
-        <point x="288" y="233"/>
-        <point x="287" y="229"/>
-        <point x="287" y="224"/>
-        <point x="291" y="219"/>
-        <point x="294" y="220"/>
-        <point x="296" y="222"/>
-        <point x="299" y="222"/>
-        <point x="298" y="218"/>
-        <point x="300" y="216"/>
-        <point x="305" y="215"/>
-        <point x="307" y="213"/>
-        <point x="307" y="208"/>
-        <point x="306" y="205"/>
-        <point x="301" y="202"/>
-        <point x="296" y="200"/>
-        <point x="294" y="198"/>
-        <point x="289" y="197"/>
-        <point x="288" y="200"/>
-        <point x="288" y="206"/>
-        <point x="291" y="209"/>
-        <point x="291" y="213"/>
-        <point x="288" y="213"/>
-        <point x="286" y="217"/>
-        <point x="283" y="216"/>
-        <point x="279" y="213"/>
-        <point x="278" y="206"/>
-        <point x="277" y="200"/>
-        <point x="272" y="198"/>
-        <point x="268" y="196"/>
-        <point x="266" y="193"/>
-        <point x="261" y="191"/>
-        <point x="261" y="183"/>
-        <point x="266" y="178"/>
-        <point x="267" y="171"/>
-        <point x="263" y="169"/>
-        <point x="260" y="175"/>
-        <point x="250" y="174"/>
-        <point x="250" y="179"/>
-        <point x="244" y="178"/>
-        <point x="240" y="172"/>
-        <point x="231" y="167"/>
-        <point x="231" y="163"/>
-        <point x="233" y="159"/>
-        <point x="232" y="156"/>
-        <point x="218" y="156"/>
-        <point x="212" y="145"/>
-        <point x="212" y="139"/>
       
       </areaPoints>
     
     </area>
     
-    <area areaId="ws_1_10" areaName="新疆" areaCode="null" areaUrl="null">
-      
-      <areaNamePoint x="3" y="19"/>
-      <areaPoints>
-        
-        <point x="204" y="130"/>
-        <point x="199" y="118"/>
-        <point x="197" y="111"/>
-        <point x="191" y="109"/>
-        <point x="181" y="101"/>
-        <point x="170" y="100"/>
-        <point x="165" y="98"/>
-        <point x="167" y="90"/>
-        <point x="167" y="81"/>
-        <point x="165" y="70"/>
-        <point x="156" y="61"/>
-        <point x="153" y="61"/>
-        <point x="149" y="52"/>
-        <point x="140" y="48"/>
-        <point x="136" y="54"/>
-        <point x="125" y="58"/>
-        <point x="124" y="67"/>
-        <point x="120" y="71"/>
-        <point x="112" y="69"/>
-        <point x="109" y="64"/>
-        <point x="104" y="64"/>
-        <point x="96" y="83"/>
-        <point x="75" y="83"/>
-        <point x="77" y="103"/>
-        <point x="68" y="114"/>
-        <point x="55" y="118"/>
-        <point x="38" y="119"/>
-        <point x="22" y="121"/>
-        <point x="12" y="123"/>
-        <point x="3" y="132"/>
-        <point x="5" y="136"/>
-        <point x="5" y="142"/>
-        <point x="11" y="147"/>
-        <point x="11" y="152"/>
-        <point x="6" y="159"/>
-        <point x="16" y="179"/>
-        <point x="30" y="191"/>
-        <point x="31" y="197"/>
-        <point x="35" y="200"/>
-        <point x="45" y="201"/>
-        <point x="49" y="195"/>
-        <point x="52" y="192"/>
-        <point x="63" y="195"/>
-        <point x="74" y="191"/>
-        <point x="81" y="197"/>
-        <point x="98" y="197"/>
-        <point x="114" y="194"/>
-        <point x="126" y="195"/>
-        <point x="136" y="198"/>
-        <point x="142" y="199"/>
-        <point x="147" y="201"/>
-        <point x="149" y="195"/>
-        <point x="151" y="188"/>
-        <point x="146" y="185"/>
-        <point x="148" y="179"/>
-        <point x="144" y="175"/>
-        <point x="158" y="172"/>
-        <point x="163" y="169"/>
-        <point x="171" y="169"/>
-        <point x="170" y="164"/>
-        <point x="170" y="157"/>
-        <point x="173" y="154"/>
-        <point x="182" y="151"/>
-        <point x="193" y="142"/>
-        <point x="200" y="140"/>
-        <point x="201" y="133"/>
-      
-      </areaPoints>
-    
-    </area>
-    
-    <area areaId="ws_1_11" areaName="青海" areaCode="null" areaUrl="null">
+    <area areaId="ws_1_10" areaName="" areaCode="null" areaUrl="null">
       
       <areaNamePoint x="0" y="0"/>
       <areaPoints>
         
-        <point x="203" y="248"/>
-        <point x="202" y="253"/>
-        <point x="198" y="255"/>
-        <point x="194" y="253"/>
-        <point x="192" y="256"/>
-        <point x="186" y="256"/>
-        <point x="183" y="251"/>
-        <point x="180" y="245"/>
-        <point x="163" y="243"/>
-        <point x="147" y="235"/>
-        <point x="145" y="232"/>
-        <point x="141" y="234"/>
-        <point x="138" y="234"/>
-        <point x="138" y="230"/>
-        <point x="132" y="224"/>
-        <point x="135" y="220"/>
-        <point x="135" y="213"/>
-        <point x="132" y="211"/>
-        <point x="132" y="207"/>
-        <point x="136" y="205"/>
-        <point x="136" y="198"/>
-        <point x="142" y="199"/>
-        <point x="147" y="201"/>
-        <point x="149" y="195"/>
-        <point x="151" y="188"/>
-        <point x="146" y="185"/>
-        <point x="148" y="179"/>
-        <point x="144" y="175"/>
-        <point x="158" y="172"/>
-        <point x="163" y="169"/>
-        <point x="171" y="169"/>
-        <point x="179" y="170"/>
-        <point x="186" y="170"/>
-        <point x="199" y="179"/>
-        <point x="203" y="179"/>
+        <point x="296" y="246"/>
+        <point x="292" y="255"/>
+        <point x="296" y="260"/>
+        <point x="302" y="258"/>
+        <point x="303" y="251"/>
+        <point x="307" y="245"/>
+        <point x="301" y="245"/>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area areaId="ws_1_11" areaName="" areaCode="null" areaUrl="null">
+      
+      <areaNamePoint x="2" y="-1"/>
+      <areaPoints>
+        
+        <point x="317" y="251"/>
+        <point x="324" y="250"/>
+        <point x="336" y="253"/>
+        <point x="349" y="261"/>
+        <point x="357" y="270"/>
+        <point x="351" y="269"/>
+        <point x="345" y="263"/>
+        <point x="341" y="267"/>
+        <point x="336" y="266"/>
+        <point x="332" y="265"/>
+        <point x="331" y="266"/>
+        <point x="331" y="261"/>
+        <point x="329" y="257"/>
+        <point x="326" y="257"/>
+        <point x="322" y="260"/>
+        <point x="320" y="257"/>
+        <point x="318" y="255"/>
+        <point x="317" y="253"/>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area areaId="ws_1_12" areaName="" areaCode="null" areaUrl="null">
+      
+      <areaNamePoint x="0" y="0"/>
+      <areaPoints>
+        
+        <point x="297" y="212"/>
+        <point x="294" y="217"/>
+        <point x="298" y="224"/>
+        <point x="303" y="233"/>
+        <point x="304" y="237"/>
+        <point x="308" y="239"/>
+        <point x="311" y="237"/>
+        <point x="309" y="232"/>
+        <point x="307" y="227"/>
+        <point x="304" y="223"/>
+        <point x="302" y="221"/>
+        <point x="300" y="218"/>
+        <point x="300" y="216"/>
+        <point x="299" y="213"/>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area areaId="ws_1_13" areaName="" areaCode="null" areaUrl="null">
+      
+      <areaNamePoint x="0" y="0"/>
+      <areaPoints>
+        
+        <point x="319" y="271"/>
+        <point x="313" y="278"/>
+        <point x="309" y="276"/>
+        <point x="303" y="280"/>
+        <point x="300" y="280"/>
+        <point x="298" y="286"/>
+        <point x="293" y="289"/>
+        <point x="283" y="292"/>
+        <point x="283" y="299"/>
+        <point x="285" y="309"/>
+        <point x="287" y="316"/>
+        <point x="285" y="319"/>
+        <point x="292" y="320"/>
+        <point x="297" y="315"/>
+        <point x="301" y="317"/>
+        <point x="306" y="313"/>
+        <point x="314" y="311"/>
+        <point x="320" y="312"/>
+        <point x="325" y="316"/>
+        <point x="329" y="321"/>
+        <point x="337" y="326"/>
+        <point x="342" y="328"/>
+        <point x="344" y="325"/>
+        <point x="349" y="327"/>
+        <point x="351" y="330"/>
+        <point x="350" y="338"/>
+        <point x="345" y="335"/>
+        <point x="344" y="332"/>
+        <point x="350" y="331"/>
+        <point x="350" y="326"/>
+        <point x="357" y="319"/>
+        <point x="361" y="309"/>
+        <point x="360" y="301"/>
+        <point x="354" y="292"/>
+        <point x="348" y="285"/>
+        <point x="345" y="279"/>
+        <point x="343" y="276"/>
+        <point x="340" y="270"/>
+        <point x="337" y="272"/>
+        <point x="338" y="277"/>
+        <point x="337" y="283"/>
+        <point x="333" y="283"/>
+        <point x="329" y="281"/>
+        <point x="326" y="278"/>
+        <point x="327" y="275"/>
+        <point x="327" y="271"/>
+        <point x="324" y="273"/>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area areaId="ws_1_14" areaName="" areaCode="null" areaUrl="null">
+      
+      <areaNamePoint x="0" y="0"/>
+      <areaPoints>
+        
+        <point x="399" y="317"/>
+        <point x="402" y="326"/>
+        <point x="401" y="329"/>
+        <point x="389" y="341"/>
+        <point x="389" y="346"/>
+        <point x="391" y="347"/>
+        <point x="396" y="345"/>
+        <point x="402" y="337"/>
+        <point x="406" y="333"/>
+        <point x="412" y="326"/>
+        <point x="407" y="325"/>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area areaId="ws_1_15" areaName="" areaCode="null" areaUrl="null">
+      
+      <areaNamePoint x="0" y="0"/>
+      <areaPoints>
+        
+        <point x="441" y="90"/>
+        <point x="450" y="96"/>
+        <point x="440" y="99"/>
+        <point x="438" y="104"/>
+        <point x="448" y="108"/>
+        <point x="445" y="117"/>
+        <point x="440" y="126"/>
+        <point x="458" y="122"/>
+        <point x="451" y="129"/>
+        <point x="439" y="133"/>
+        <point x="436" y="138"/>
+        <point x="450" y="140"/>
+        <point x="461" y="134"/>
+        <point x="465" y="128"/>
+        <point x="468" y="122"/>
+        <point x="471" y="118"/>
+        <point x="482" y="119"/>
+        <point x="494" y="121"/>
+        <point x="506" y="125"/>
+        <point x="515" y="135"/>
+        <point x="522" y="143"/>
+        <point x="524" y="151"/>
+        <point x="525" y="157"/>
+        <point x="526" y="167"/>
+        <point x="530" y="174"/>
+        <point x="537" y="182"/>
+        <point x="541" y="187"/>
+        <point x="545" y="192"/>
+        <point x="550" y="199"/>
+        <point x="557" y="206"/>
+        <point x="563" y="210"/>
+        <point x="571" y="216"/>
+        <point x="584" y="222"/>
+        <point x="594" y="227"/>
+        <point x="611" y="235"/>
+        <point x="614" y="236"/>
+        <point x="607" y="230"/>
+        <point x="606" y="223"/>
+        <point x="605" y="218"/>
+        <point x="597" y="216"/>
+        <point x="596" y="210"/>
+        <point x="594" y="207"/>
+        <point x="589" y="210"/>
+        <point x="585" y="212"/>
+        <point x="579" y="208"/>
+        <point x="577" y="200"/>
+        <point x="581" y="192"/>
+        <point x="594" y="193"/>
+        <point x="606" y="192"/>
+        <point x="611" y="200"/>
+        <point x="611" y="193"/>
+        <point x="612" y="183"/>
+        <point x="622" y="175"/>
+        <point x="624" y="167"/>
+        <point x="630" y="160"/>
+        <point x="640" y="157"/>
+        <point x="646" y="157"/>
+        <point x="651" y="155"/>
+        <point x="660" y="144"/>
+        <point x="659" y="135"/>
+        <point x="650" y="123"/>
+        <point x="642" y="116"/>
+        <point x="623" y="109"/>
+        <point x="614" y="110"/>
+        <point x="615" y="121"/>
+        <point x="615" y="138"/>
+        <point x="611" y="142"/>
+        <point x="605" y="134"/>
+        <point x="596" y="129"/>
+        <point x="590" y="126"/>
+        <point x="585" y="121"/>
+        <point x="584" y="114"/>
+        <point x="590" y="108"/>
+        <point x="595" y="103"/>
+        <point x="602" y="99"/>
+        <point x="609" y="91"/>
+        <point x="597" y="87"/>
+        <point x="585" y="90"/>
+        <point x="580" y="78"/>
+        <point x="568" y="89"/>
+        <point x="560" y="90"/>
+        <point x="549" y="86"/>
+        <point x="541" y="86"/>
+        <point x="535" y="88"/>
+        <point x="528" y="87"/>
+        <point x="518" y="85"/>
+        <point x="506" y="88"/>
+        <point x="498" y="88"/>
+        <point x="491" y="87"/>
+        <point x="481" y="86"/>
+        <point x="469" y="83"/>
+        <point x="461" y="81"/>
+        <point x="449" y="84"/>
+        <point x="445" y="87"/>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area areaId="ws_1_16" areaName="" areaCode="null" areaUrl="null">
+      
+      <areaNamePoint x="0" y="0"/>
+      <areaPoints>
+        
+        <point x="530" y="71"/>
+        <point x="540" y="72"/>
+        <point x="537" y="77"/>
+        <point x="527" y="83"/>
+        <point x="519" y="77"/>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area areaId="ws_1_17" areaName="" areaCode="null" areaUrl="null">
+      
+      <areaNamePoint x="0" y="0"/>
+      <areaPoints>
+        
+        <point x="553" y="73"/>
+        <point x="570" y="83"/>
+        <point x="565" y="86"/>
+        <point x="556" y="85"/>
+        <point x="544" y="81"/>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area areaId="ws_1_18" areaName="" areaCode="null" areaUrl="null">
+      
+      <areaNamePoint x="0" y="0"/>
+      <areaPoints>
+        
+        <point x="545" y="58"/>
+        <point x="559" y="67"/>
+        <point x="542" y="69"/>
+        <point x="532" y="65"/>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area areaId="ws_1_19" areaName="" areaCode="null" areaUrl="null">
+      
+      <areaNamePoint x="0" y="0"/>
+      <areaPoints>
+        
+        <point x="582" y="45"/>
+        <point x="592" y="45"/>
+        <point x="599" y="50"/>
+        <point x="591" y="57"/>
+        <point x="582" y="53"/>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area areaId="ws_1_20" areaName="" areaCode="null" areaUrl="null">
+      
+      <areaNamePoint x="0" y="0"/>
+      <areaPoints>
+        
+        <point x="592" y="36"/>
+        <point x="626" y="32"/>
+        <point x="651" y="35"/>
+        <point x="630" y="46"/>
+        <point x="618" y="56"/>
+        <point x="598" y="60"/>
+        <point x="608" y="49"/>
+        <point x="621" y="41"/>
+        <point x="603" y="42"/>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area areaId="ws_1_21" areaName="" areaCode="null" areaUrl="null">
+      
+      <areaNamePoint x="0" y="0"/>
+      <areaPoints>
+        
+        <point x="585" y="62"/>
+        <point x="612" y="68"/>
+        <point x="640" y="88"/>
+        <point x="648" y="98"/>
+        <point x="642" y="110"/>
+        <point x="635" y="109"/>
+        <point x="624" y="104"/>
+        <point x="615" y="101"/>
+        <point x="627" y="95"/>
+        <point x="617" y="87"/>
+        <point x="603" y="84"/>
+        <point x="594" y="78"/>
+        <point x="590" y="73"/>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area areaId="ws_1_22" areaName="" areaCode="null" areaUrl="null">
+      
+      <areaNamePoint x="0" y="0"/>
+      <areaPoints>
+        
+        <point x="706" y="29"/>
+        <point x="697" y="29"/>
+        <point x="692" y="32"/>
+        <point x="684" y="34"/>
+        <point x="678" y="34"/>
+        <point x="673" y="38"/>
+        <point x="663" y="40"/>
+        <point x="654" y="40"/>
+        <point x="648" y="41"/>
+        <point x="643" y="46"/>
+        <point x="638" y="49"/>
+        <point x="635" y="53"/>
+        <point x="632" y="57"/>
+        <point x="633" y="62"/>
+        <point x="644" y="62"/>
+        <point x="652" y="62"/>
+        <point x="657" y="71"/>
+        <point x="662" y="76"/>
+        <point x="665" y="83"/>
+        <point x="665" y="91"/>
+        <point x="668" y="103"/>
+        <point x="674" y="112"/>
+        <point x="679" y="117"/>
+        <point x="691" y="121"/>
+        <point x="691" y="104"/>
+        <point x="701" y="97"/>
+        <point x="708" y="93"/>
+        <point x="709" y="31"/>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area areaId="ws_1_23" areaName="" areaCode="null" areaUrl="null">
+      
+      <areaNamePoint x="0" y="0"/>
+      <areaPoints>
+        
+        <point x="624" y="225"/>
+        <point x="618" y="230"/>
+        <point x="616" y="239"/>
+        <point x="612" y="251"/>
+        <point x="609" y="256"/>
+        <point x="610" y="263"/>
+        <point x="616" y="269"/>
+        <point x="619" y="274"/>
+        <point x="624" y="281"/>
+        <point x="631" y="287"/>
+        <point x="631" y="296"/>
+        <point x="631" y="303"/>
+        <point x="628" y="316"/>
+        <point x="625" y="326"/>
+        <point x="623" y="335"/>
+        <point x="623" y="345"/>
+        <point x="623" y="354"/>
+        <point x="624" y="363"/>
+        <point x="633" y="372"/>
+        <point x="645" y="370"/>
+        <point x="637" y="362"/>
+        <point x="637" y="353"/>
+        <point x="642" y="346"/>
+        <point x="645" y="335"/>
+        <point x="652" y="328"/>
+        <point x="658" y="324"/>
+        <point x="666" y="316"/>
+        <point x="669" y="312"/>
+        <point x="675" y="305"/>
+        <point x="678" y="298"/>
+        <point x="681" y="295"/>
+        <point x="686" y="294"/>
+        <point x="691" y="287"/>
+        <point x="695" y="278"/>
+        <point x="697" y="271"/>
+        <point x="700" y="268"/>
+        <point x="700" y="261"/>
+        <point x="690" y="253"/>
+        <point x="678" y="250"/>
+        <point x="668" y="243"/>
+        <point x="660" y="238"/>
+        <point x="654" y="233"/>
+        <point x="646" y="230"/>
+        <point x="637" y="229"/>
+        <point x="631" y="225"/>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area areaId="ws_1_24" areaName="" areaCode="null" areaUrl="null">
+      
+      <areaNamePoint x="0" y="0"/>
+      <areaPoints>
+        
+        <point x="604" y="205"/>
+        <point x="615" y="205"/>
+        <point x="630" y="211"/>
+        <point x="639" y="214"/>
+        <point x="652" y="220"/>
+        <point x="642" y="223"/>
+        <point x="630" y="217"/>
+        <point x="623" y="215"/>
+        <point x="613" y="212"/>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area areaId="ws_1_25" areaName="" areaCode="null" areaUrl="null">
+      
+      <areaNamePoint x="0" y="0"/>
+      <areaPoints>
+        
+        <point x="164" y="173"/>
+        <point x="162" y="169"/>
+        <point x="164" y="167"/>
+        <point x="164" y="165"/>
+        <point x="161" y="161"/>
+        <point x="159" y="158"/>
+        <point x="159" y="156"/>
+        <point x="162" y="154"/>
+        <point x="163" y="152"/>
+        <point x="161" y="149"/>
+        <point x="154" y="151"/>
+        <point x="150" y="149"/>
+        <point x="150" y="142"/>
+        <point x="158" y="140"/>
+        <point x="163" y="141"/>
+        <point x="176" y="142"/>
+        <point x="179" y="135"/>
+        <point x="194" y="131"/>
+        <point x="205" y="136"/>
+        <point x="208" y="134"/>
+        <point x="220" y="140"/>
+        <point x="228" y="145"/>
+        <point x="230" y="145"/>
+        <point x="228" y="151"/>
+        <point x="222" y="151"/>
+        <point x="221" y="156"/>
+        <point x="216" y="155"/>
+        <point x="217" y="159"/>
+        <point x="217" y="162"/>
+        <point x="213" y="164"/>
+        <point x="209" y="167"/>
+        <point x="204" y="168"/>
+        <point x="199" y="169"/>
+        <point x="193" y="169"/>
+        <point x="186" y="174"/>
+        <point x="181" y="178"/>
+        <point x="177" y="181"/>
+        <point x="176" y="175"/>
+        <point x="171" y="174"/>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area areaId="ws_1_26" areaName="" areaCode="null" areaUrl="null">
+      
+      <areaNamePoint x="0" y="0"/>
+      <areaPoints>
+        
+        <point x="178" y="186"/>
+        <point x="180" y="194"/>
+        <point x="181" y="198"/>
+        <point x="180" y="200"/>
+        <point x="184" y="200"/>
+        <point x="189" y="200"/>
+        <point x="191" y="201"/>
+        <point x="192" y="203"/>
+        <point x="194" y="205"/>
+        <point x="196" y="208"/>
+        <point x="197" y="208"/>
+        <point x="199" y="207"/>
+        <point x="202" y="206"/>
+        <point x="202" y="209"/>
+        <point x="203" y="214"/>
+        <point x="203" y="218"/>
+        <point x="204" y="223"/>
+        <point x="207" y="226"/>
+        <point x="210" y="231"/>
+        <point x="211" y="233"/>
+        <point x="214" y="228"/>
+        <point x="221" y="236"/>
+        <point x="219" y="239"/>
+        <point x="216" y="236"/>
+        <point x="216" y="227"/>
+        <point x="216" y="218"/>
+        <point x="219" y="216"/>
+        <point x="222" y="215"/>
+        <point x="227" y="212"/>
+        <point x="231" y="207"/>
+        <point x="234" y="205"/>
+        <point x="236" y="205"/>
+        <point x="239" y="206"/>
+        <point x="241" y="206"/>
+        <point x="247" y="196"/>
+        <point x="252" y="193"/>
+        <point x="245" y="193"/>
+        <point x="237" y="193"/>
+        <point x="231" y="193"/>
+        <point x="222" y="187"/>
+        <point x="215" y="186"/>
+        <point x="213" y="183"/>
+        <point x="212" y="178"/>
+        <point x="210" y="173"/>
         <point x="205" y="173"/>
-        <point x="211" y="173"/>
-        <point x="214" y="176"/>
-        <point x="220" y="175"/>
-        <point x="230" y="182"/>
-        <point x="233" y="182"/>
-        <point x="244" y="193"/>
-        <point x="248" y="191"/>
-        <point x="252" y="198"/>
-        <point x="254" y="208"/>
-        <point x="254" y="216"/>
-        <point x="250" y="220"/>
-        <point x="245" y="224"/>
-        <point x="243" y="225"/>
-        <point x="245" y="228"/>
-        <point x="245" y="231"/>
-        <point x="239" y="231"/>
-        <point x="238" y="234"/>
-        <point x="241" y="239"/>
-        <point x="243" y="241"/>
-        <point x="240" y="243"/>
-        <point x="238" y="247"/>
-        <point x="234" y="249"/>
-        <point x="232" y="250"/>
-        <point x="228" y="247"/>
-        <point x="223" y="247"/>
-        <point x="218" y="239"/>
-        <point x="215" y="232"/>
-        <point x="208" y="230"/>
-        <point x="204" y="233"/>
-        <point x="206" y="237"/>
-        <point x="207" y="240"/>
-        <point x="205" y="241"/>
-        <point x="205" y="245"/>
-        <point x="202" y="245"/>
+        <point x="204" y="168"/>
+        <point x="199" y="169"/>
+        <point x="193" y="169"/>
+        <point x="186" y="174"/>
+        <point x="181" y="178"/>
+        <point x="177" y="181"/>
       
       </areaPoints>
     
     </area>
     
-    <area areaId="ws_1_12" areaName="西藏" areaCode="null" areaUrl="null">
-      
-      <areaNamePoint x="-3" y="10"/>
-      <areaPoints>
-        
-        <point x="35" y="200"/>
-        <point x="29" y="209"/>
-        <point x="35" y="217"/>
-        <point x="32" y="222"/>
-        <point x="30" y="217"/>
-        <point x="27" y="218"/>
-        <point x="25" y="221"/>
-        <point x="26" y="228"/>
-        <point x="24" y="232"/>
-        <point x="27" y="240"/>
-        <point x="31" y="240"/>
-        <point x="34" y="246"/>
-        <point x="39" y="247"/>
-        <point x="44" y="255"/>
-        <point x="50" y="256"/>
-        <point x="52" y="254"/>
-        <point x="54" y="254"/>
-        <point x="58" y="262"/>
-        <point x="63" y="264"/>
-        <point x="73" y="274"/>
-        <point x="81" y="283"/>
-        <point x="88" y="288"/>
-        <point x="96" y="289"/>
-        <point x="99" y="292"/>
-        <point x="112" y="291"/>
-        <point x="113" y="298"/>
-        <point x="117" y="301"/>
-        <point x="121" y="298"/>
-        <point x="123" y="293"/>
-        <point x="129" y="292"/>
-        <point x="134" y="296"/>
-        <point x="140" y="295"/>
-        <point x="142" y="300"/>
-        <point x="144" y="302"/>
-        <point x="144" y="308"/>
-        <point x="163" y="309"/>
-        <point x="166" y="305"/>
-        <point x="171" y="304"/>
-        <point x="180" y="297"/>
-        <point x="187" y="295"/>
-        <point x="195" y="304"/>
-        <point x="197" y="305"/>
-        <point x="202" y="302"/>
-        <point x="200" y="298"/>
-        <point x="202" y="295"/>
-        <point x="204" y="295"/>
-        <point x="206" y="298"/>
-        <point x="206" y="303"/>
-        <point x="209" y="298"/>
-        <point x="211" y="296"/>
-        <point x="211" y="287"/>
-        <point x="215" y="291"/>
-        <point x="217" y="289"/>
-        <point x="216" y="281"/>
-        <point x="215" y="272"/>
-        <point x="213" y="269"/>
-        <point x="213" y="260"/>
-        <point x="209" y="254"/>
-        <point x="209" y="250"/>
-        <point x="203" y="248"/>
-        <point x="202" y="253"/>
-        <point x="198" y="255"/>
-        <point x="194" y="253"/>
-        <point x="192" y="256"/>
-        <point x="186" y="256"/>
-        <point x="183" y="251"/>
-        <point x="180" y="245"/>
-        <point x="163" y="243"/>
-        <point x="147" y="235"/>
-        <point x="145" y="232"/>
-        <point x="141" y="234"/>
-        <point x="138" y="234"/>
-        <point x="138" y="230"/>
-        <point x="132" y="224"/>
-        <point x="135" y="220"/>
-        <point x="135" y="213"/>
-        <point x="132" y="211"/>
-        <point x="132" y="207"/>
-        <point x="136" y="205"/>
-        <point x="136" y="198"/>
-        <point x="126" y="195"/>
-        <point x="114" y="194"/>
-        <point x="98" y="197"/>
-        <point x="81" y="197"/>
-        <point x="74" y="191"/>
-        <point x="63" y="195"/>
-        <point x="52" y="192"/>
-        <point x="49" y="195"/>
-        <point x="45" y="201"/>
-      
-      </areaPoints>
-    
-    </area>
-    
-    <area areaId="ws_1_13" areaName="云南" areaCode="null" areaUrl="null">
-      
-      <areaNamePoint x="-4" y="11"/>
-      <areaPoints>
-        
-        <point x="278" y="356"/>
-        <point x="270" y="360"/>
-        <point x="264" y="363"/>
-        <point x="259" y="362"/>
-        <point x="258" y="360"/>
-        <point x="253" y="365"/>
-        <point x="250" y="363"/>
-        <point x="245" y="363"/>
-        <point x="241" y="365"/>
-        <point x="242" y="369"/>
-        <point x="243" y="374"/>
-        <point x="242" y="378"/>
-        <point x="237" y="379"/>
-        <point x="232" y="374"/>
-        <point x="227" y="375"/>
-        <point x="222" y="372"/>
-        <point x="219" y="367"/>
-        <point x="213" y="367"/>
-        <point x="211" y="364"/>
-        <point x="216" y="358"/>
-        <point x="213" y="355"/>
-        <point x="210" y="354"/>
-        <point x="209" y="346"/>
-        <point x="198" y="346"/>
-        <point x="197" y="342"/>
-        <point x="197" y="335"/>
-        <point x="204" y="324"/>
-        <point x="208" y="322"/>
-        <point x="211" y="315"/>
-        <point x="210" y="306"/>
-        <point x="206" y="305"/>
-        <point x="206" y="303"/>
-        <point x="209" y="298"/>
-        <point x="211" y="296"/>
-        <point x="211" y="287"/>
-        <point x="215" y="291"/>
-        <point x="217" y="296"/>
-        <point x="219" y="300"/>
-        <point x="221" y="295"/>
-        <point x="224" y="293"/>
-        <point x="227" y="295"/>
-        <point x="227" y="299"/>
-        <point x="229" y="304"/>
-        <point x="230" y="300"/>
-        <point x="232" y="300"/>
-        <point x="235" y="303"/>
-        <point x="236" y="309"/>
-        <point x="238" y="313"/>
-        <point x="239" y="316"/>
-        <point x="238" y="319"/>
-        <point x="241" y="320"/>
-        <point x="242" y="325"/>
-        <point x="246" y="321"/>
-        <point x="252" y="320"/>
-        <point x="255" y="314"/>
-        <point x="253" y="311"/>
-        <point x="253" y="307"/>
-        <point x="257" y="307"/>
-        <point x="259" y="303"/>
-        <point x="259" y="298"/>
-        <point x="261" y="298"/>
-        <point x="263" y="294"/>
-        <point x="267" y="295"/>
-        <point x="269" y="299"/>
-        <point x="269" y="303"/>
-        <point x="272" y="302"/>
-        <point x="276" y="300"/>
-        <point x="277" y="303"/>
-        <point x="274" y="309"/>
-        <point x="271" y="309"/>
-        <point x="269" y="307"/>
-        <point x="266" y="309"/>
-        <point x="263" y="308"/>
-        <point x="261" y="311"/>
-        <point x="263" y="316"/>
-        <point x="266" y="315"/>
-        <point x="269" y="315"/>
-        <point x="271" y="319"/>
-        <point x="270" y="322"/>
-        <point x="268" y="325"/>
-        <point x="268" y="329"/>
-        <point x="271" y="330"/>
-        <point x="272" y="335"/>
-        <point x="270" y="337"/>
-        <point x="270" y="341"/>
-        <point x="275" y="340"/>
-        <point x="277" y="345"/>
-        <point x="282" y="345"/>
-        <point x="285" y="347"/>
-        <point x="284" y="351"/>
-      
-      </areaPoints>
-    
-    </area>
-    
-    <area areaId="ws_1_14" areaName="四川" areaCode="null" areaUrl="null">
-      
-      <areaNamePoint x="-2" y="-2"/>
-      <areaPoints>
-        
-        <point x="290" y="295"/>
-        <point x="290" y="300"/>
-        <point x="287" y="300"/>
-        <point x="283" y="298"/>
-        <point x="281" y="298"/>
-        <point x="278" y="295"/>
-        <point x="277" y="298"/>
-        <point x="276" y="300"/>
-        <point x="272" y="302"/>
-        <point x="269" y="303"/>
-        <point x="269" y="299"/>
-        <point x="267" y="295"/>
-        <point x="263" y="294"/>
-        <point x="261" y="298"/>
-        <point x="259" y="298"/>
-        <point x="259" y="303"/>
-        <point x="257" y="307"/>
-        <point x="253" y="307"/>
-        <point x="253" y="311"/>
-        <point x="255" y="314"/>
-        <point x="252" y="320"/>
-        <point x="246" y="321"/>
-        <point x="242" y="325"/>
-        <point x="241" y="320"/>
-        <point x="238" y="319"/>
-        <point x="239" y="316"/>
-        <point x="238" y="313"/>
-        <point x="236" y="309"/>
-        <point x="235" y="303"/>
-        <point x="232" y="300"/>
-        <point x="230" y="300"/>
-        <point x="229" y="304"/>
-        <point x="227" y="299"/>
-        <point x="227" y="295"/>
-        <point x="224" y="293"/>
-        <point x="221" y="295"/>
-        <point x="219" y="300"/>
-        <point x="217" y="296"/>
-        <point x="215" y="291"/>
-        <point x="217" y="289"/>
-        <point x="216" y="281"/>
-        <point x="215" y="272"/>
-        <point x="213" y="269"/>
-        <point x="213" y="260"/>
-        <point x="209" y="254"/>
-        <point x="209" y="250"/>
-        <point x="203" y="248"/>
-        <point x="202" y="245"/>
-        <point x="205" y="245"/>
-        <point x="205" y="241"/>
-        <point x="207" y="240"/>
-        <point x="206" y="237"/>
-        <point x="204" y="233"/>
-        <point x="208" y="230"/>
-        <point x="215" y="232"/>
-        <point x="218" y="239"/>
-        <point x="223" y="247"/>
-        <point x="228" y="247"/>
-        <point x="232" y="250"/>
-        <point x="234" y="249"/>
-        <point x="238" y="247"/>
-        <point x="240" y="243"/>
-        <point x="243" y="241"/>
-        <point x="247" y="243"/>
-        <point x="251" y="240"/>
-        <point x="249" y="235"/>
-        <point x="254" y="230"/>
-        <point x="258" y="236"/>
-        <point x="262" y="237"/>
-        <point x="265" y="236"/>
-        <point x="267" y="241"/>
-        <point x="269" y="243"/>
-        <point x="272" y="248"/>
-        <point x="279" y="248"/>
-        <point x="285" y="250"/>
-        <point x="289" y="249"/>
-        <point x="295" y="251"/>
-        <point x="301" y="254"/>
-        <point x="308" y="255"/>
-        <point x="305" y="257"/>
-        <point x="304" y="263"/>
-        <point x="299" y="269"/>
-        <point x="291" y="278"/>
-        <point x="283" y="278"/>
-        <point x="281" y="282"/>
-        <point x="281" y="285"/>
-        <point x="285" y="289"/>
-        <point x="286" y="294"/>
-      
-      </areaPoints>
-    
-    </area>
-    
-    <area areaId="ws_1_15" areaName="重庆" areaCode="null" areaUrl="null">
-      
-      <areaNamePoint x="0" y="1"/>
-      <areaPoints>
-        
-        <point x="319" y="257"/>
-        <point x="313" y="257"/>
-        <point x="312" y="255"/>
-        <point x="308" y="255"/>
-        <point x="305" y="257"/>
-        <point x="304" y="263"/>
-        <point x="299" y="269"/>
-        <point x="291" y="278"/>
-        <point x="283" y="278"/>
-        <point x="281" y="282"/>
-        <point x="281" y="285"/>
-        <point x="285" y="289"/>
-        <point x="286" y="294"/>
-        <point x="290" y="295"/>
-        <point x="293" y="292"/>
-        <point x="298" y="289"/>
-        <point x="298" y="286"/>
-        <point x="301" y="286"/>
-        <point x="302" y="290"/>
-        <point x="306" y="286"/>
-        <point x="308" y="288"/>
-        <point x="308" y="292"/>
-        <point x="314" y="298"/>
-        <point x="317" y="294"/>
-        <point x="316" y="286"/>
-        <point x="309" y="281"/>
-        <point x="309" y="277"/>
-        <point x="306" y="275"/>
-        <point x="311" y="269"/>
-        <point x="317" y="269"/>
-        <point x="323" y="265"/>
-        <point x="323" y="261"/>
-      
-      </areaPoints>
-    
-    </area>
-    
-    <area areaId="ws_1_16" areaName="贵州" areaCode="null" areaUrl="null">
-      
-      <areaNamePoint x="2" y="4"/>
-      <areaPoints>
-        
-        <point x="319" y="323"/>
-        <point x="318" y="320"/>
-        <point x="316" y="318"/>
-        <point x="317" y="314"/>
-        <point x="316" y="311"/>
-        <point x="313" y="310"/>
-        <point x="313" y="308"/>
-        <point x="317" y="305"/>
-        <point x="316" y="301"/>
-        <point x="317" y="294"/>
-        <point x="314" y="298"/>
-        <point x="308" y="292"/>
-        <point x="308" y="288"/>
-        <point x="306" y="286"/>
-        <point x="302" y="290"/>
-        <point x="301" y="286"/>
-        <point x="298" y="286"/>
-        <point x="298" y="289"/>
-        <point x="293" y="292"/>
-        <point x="290" y="295"/>
-        <point x="290" y="300"/>
-        <point x="287" y="300"/>
-        <point x="283" y="298"/>
-        <point x="281" y="298"/>
-        <point x="278" y="295"/>
-        <point x="277" y="298"/>
-        <point x="276" y="300"/>
-        <point x="277" y="303"/>
-        <point x="274" y="309"/>
-        <point x="271" y="309"/>
-        <point x="269" y="307"/>
-        <point x="266" y="309"/>
-        <point x="263" y="308"/>
-        <point x="261" y="311"/>
-        <point x="263" y="316"/>
-        <point x="266" y="315"/>
-        <point x="269" y="315"/>
-        <point x="271" y="319"/>
-        <point x="270" y="322"/>
-        <point x="268" y="325"/>
-        <point x="268" y="329"/>
-        <point x="271" y="330"/>
-        <point x="272" y="335"/>
-        <point x="275" y="335"/>
-        <point x="280" y="336"/>
-        <point x="285" y="336"/>
-        <point x="291" y="331"/>
-        <point x="295" y="330"/>
-        <point x="296" y="327"/>
-        <point x="302" y="331"/>
-        <point x="307" y="328"/>
-        <point x="312" y="327"/>
-        <point x="316" y="325"/>
-      
-      </areaPoints>
-    
-    </area>
-    
-    <area areaId="ws_1_17" areaName="广西" areaCode="null" areaUrl="null">
-      
-      <areaNamePoint x="2" y="3"/>
-      <areaPoints>
-        
-        <point x="325" y="374"/>
-        <point x="327" y="370"/>
-        <point x="330" y="365"/>
-        <point x="333" y="364"/>
-        <point x="334" y="358"/>
-        <point x="339" y="356"/>
-        <point x="339" y="351"/>
-        <point x="345" y="346"/>
-        <point x="345" y="334"/>
-        <point x="340" y="333"/>
-        <point x="335" y="330"/>
-        <point x="338" y="325"/>
-        <point x="337" y="317"/>
-        <point x="330" y="317"/>
-        <point x="327" y="322"/>
-        <point x="323" y="320"/>
-        <point x="319" y="323"/>
-        <point x="316" y="325"/>
-        <point x="312" y="327"/>
-        <point x="307" y="328"/>
-        <point x="302" y="331"/>
-        <point x="296" y="327"/>
-        <point x="295" y="330"/>
-        <point x="291" y="331"/>
-        <point x="285" y="336"/>
-        <point x="280" y="336"/>
-        <point x="275" y="335"/>
-        <point x="272" y="335"/>
-        <point x="270" y="337"/>
-        <point x="270" y="341"/>
-        <point x="275" y="340"/>
-        <point x="277" y="345"/>
-        <point x="282" y="345"/>
-        <point x="285" y="347"/>
-        <point x="284" y="351"/>
-        <point x="278" y="356"/>
-        <point x="289" y="359"/>
-        <point x="289" y="366"/>
-        <point x="296" y="372"/>
-        <point x="307" y="372"/>
-        <point x="311" y="370"/>
-        <point x="318" y="374"/>
-        <point x="321" y="370"/>
-        <point x="324" y="371"/>
-      
-      </areaPoints>
-    
-    </area>
-    
-    <area areaId="ws_1_18" areaName="广东" areaCode="null" areaUrl="null">
-      
-      <areaNamePoint x="2" y="-12"/>
-      <areaPoints>
-        
-        <point x="345" y="334"/>
-        <point x="348" y="330"/>
-        <point x="352" y="331"/>
-        <point x="355" y="332"/>
-        <point x="355" y="329"/>
-        <point x="354" y="328"/>
-        <point x="357" y="325"/>
-        <point x="361" y="326"/>
-        <point x="365" y="325"/>
-        <point x="367" y="327"/>
-        <point x="371" y="325"/>
-        <point x="375" y="326"/>
-        <point x="372" y="330"/>
-        <point x="369" y="332"/>
-        <point x="370" y="335"/>
-        <point x="376" y="333"/>
-        <point x="378" y="331"/>
-        <point x="383" y="331"/>
-        <point x="383" y="334"/>
-        <point x="387" y="336"/>
-        <point x="394" y="336"/>
-        <point x="399" y="341"/>
-        <point x="399" y="348"/>
-        <point x="396" y="349"/>
-        <point x="393" y="351"/>
-        <point x="390" y="353"/>
-        <point x="386" y="354"/>
-        <point x="375" y="353"/>
-        <point x="371" y="359"/>
-        <point x="369" y="359"/>
-        <point x="366" y="358"/>
-        <point x="366" y="354"/>
-        <point x="364" y="352"/>
-        <point x="360" y="350"/>
-        <point x="357" y="353"/>
-        <point x="357" y="355"/>
-        <point x="360" y="356"/>
-        <point x="359" y="359"/>
-        <point x="359" y="366"/>
-        <point x="355" y="366"/>
-        <point x="353" y="364"/>
-        <point x="351" y="364"/>
-        <point x="351" y="368"/>
-        <point x="346" y="368"/>
-        <point x="342" y="372"/>
-        <point x="330" y="372"/>
-        <point x="331" y="376"/>
-        <point x="329" y="380"/>
-        <point x="332" y="381"/>
-        <point x="332" y="385"/>
-        <point x="328" y="386"/>
-        <point x="324" y="384"/>
-        <point x="325" y="374"/>
-        <point x="327" y="370"/>
-        <point x="330" y="365"/>
-        <point x="333" y="364"/>
-        <point x="334" y="358"/>
-        <point x="339" y="356"/>
-        <point x="339" y="351"/>
-        <point x="345" y="346"/>
-      
-      </areaPoints>
-    
-    </area>
-    
-    <area areaId="ws_1_19" areaName="香港" areaCode="null" areaUrl="null">
-      
-      <areaNamePoint x="21" y="6"/>
-      <areaPoints>
-        
-        <point x="367" y="360"/>
-        <point x="370" y="360"/>
-        <point x="373" y="358"/>
-        <point x="374" y="359"/>
-        <point x="373" y="361"/>
-        <point x="372" y="363"/>
-        <point x="370" y="364"/>
-        <point x="368" y="362"/>
-      
-      </areaPoints>
-    
-    </area>
-    
-    <area areaId="ws_1_20" areaName="澳门" areaCode="null" areaUrl="null">
-      
-      <areaNamePoint x="8" y="17"/>
-      <areaPoints>
-        
-        <point x="359" y="366"/>
-        <point x="355" y="366"/>
-        <point x="355" y="368"/>
-        <point x="356" y="370"/>
-        <point x="359" y="370"/>
-        <point x="360" y="367"/>
-      
-      </areaPoints>
-    
-    </area>
-    
-    <area areaId="ws_1_21" areaName="海南" areaCode="null" areaUrl="null">
+    <area areaId="ws_1_27" areaName="" areaCode="null" areaUrl="null">
       
       <areaNamePoint x="0" y="0"/>
       <areaPoints>
         
-        <point x="318" y="391"/>
-        <point x="323" y="391"/>
-        <point x="324" y="390"/>
-        <point x="327" y="390"/>
-        <point x="328" y="389"/>
-        <point x="331" y="389"/>
-        <point x="332" y="388"/>
-        <point x="336" y="388"/>
-        <point x="337" y="389"/>
-        <point x="337" y="393"/>
-        <point x="335" y="395"/>
-        <point x="335" y="398"/>
-        <point x="334" y="402"/>
-        <point x="331" y="405"/>
-        <point x="327" y="407"/>
-        <point x="324" y="410"/>
-        <point x="321" y="408"/>
-        <point x="316" y="407"/>
-        <point x="312" y="407"/>
-        <point x="312" y="399"/>
-        <point x="316" y="394"/>
-        <point x="318" y="393"/>
+        <point x="176" y="207"/>
+        <point x="171" y="213"/>
+        <point x="164" y="217"/>
+        <point x="157" y="221"/>
+        <point x="152" y="223"/>
+        <point x="146" y="223"/>
+        <point x="143" y="218"/>
+        <point x="136" y="209"/>
+        <point x="135" y="204"/>
+        <point x="132" y="198"/>
+        <point x="130" y="195"/>
+        <point x="126" y="192"/>
+        <point x="125" y="191"/>
+        <point x="124" y="188"/>
+        <point x="126" y="185"/>
+        <point x="128" y="182"/>
+        <point x="129" y="179"/>
+        <point x="128" y="175"/>
+        <point x="125" y="176"/>
+        <point x="122" y="178"/>
+        <point x="120" y="179"/>
+        <point x="116" y="176"/>
+        <point x="112" y="173"/>
+        <point x="111" y="169"/>
+        <point x="113" y="167"/>
+        <point x="117" y="165"/>
+        <point x="121" y="165"/>
+        <point x="129" y="166"/>
+        <point x="137" y="165"/>
+        <point x="141" y="166"/>
+        <point x="144" y="165"/>
+        <point x="150" y="166"/>
+        <point x="153" y="167"/>
+        <point x="155" y="170"/>
+        <point x="155" y="172"/>
+        <point x="156" y="174"/>
+        <point x="159" y="174"/>
+        <point x="164" y="173"/>
+        <point x="171" y="174"/>
+        <point x="176" y="175"/>
+        <point x="177" y="181"/>
+        <point x="178" y="186"/>
+        <point x="180" y="194"/>
+        <point x="181" y="198"/>
+        <point x="180" y="200"/>
+        <point x="174" y="200"/>
+        <point x="170" y="198"/>
+        <point x="169" y="195"/>
+        <point x="163" y="194"/>
+        <point x="160" y="195"/>
+        <point x="159" y="193"/>
+        <point x="155" y="189"/>
+        <point x="152" y="187"/>
+        <point x="151" y="188"/>
+        <point x="150" y="191"/>
+        <point x="156" y="193"/>
+        <point x="159" y="196"/>
+        <point x="160" y="199"/>
+        <point x="160" y="202"/>
+        <point x="163" y="204"/>
+        <point x="166" y="204"/>
+        <point x="167" y="202"/>
+        <point x="168" y="199"/>
+        <point x="170" y="200"/>
+        <point x="171" y="203"/>
+        <point x="176" y="204"/>
       
       </areaPoints>
     
     </area>
     
-    <area areaId="ws_1_22" areaName="台湾" areaCode="null" areaUrl="null">
-      
-      <areaNamePoint x="5" y="7"/>
-      <areaPoints>
-        
-        <point x="445" y="319"/>
-        <point x="442" y="319"/>
-        <point x="440" y="319"/>
-        <point x="437" y="322"/>
-        <point x="435" y="325"/>
-        <point x="435" y="328"/>
-        <point x="434" y="331"/>
-        <point x="434" y="332"/>
-        <point x="432" y="332"/>
-        <point x="431" y="334"/>
-        <point x="431" y="338"/>
-        <point x="431" y="343"/>
-        <point x="430" y="345"/>
-        <point x="430" y="346"/>
-        <point x="432" y="348"/>
-        <point x="432" y="350"/>
-        <point x="435" y="352"/>
-        <point x="436" y="355"/>
-        <point x="438" y="357"/>
-        <point x="439" y="356"/>
-        <point x="439" y="352"/>
-        <point x="440" y="350"/>
-        <point x="440" y="346"/>
-        <point x="442" y="344"/>
-        <point x="442" y="340"/>
-        <point x="445" y="336"/>
-        <point x="445" y="327"/>
-        <point x="446" y="326"/>
-        <point x="446" y="321"/>
-      
-      </areaPoints>
-    
-    </area>
-    
-    <area areaId="ws_1_23" areaName="山西" areaCode="null" areaUrl="null">
-      
-      <areaNamePoint x="0" y="9"/>
-      <areaPoints>
-        
-        <point x="326" y="225"/>
-        <point x="323" y="224"/>
-        <point x="323" y="218"/>
-        <point x="324" y="212"/>
-        <point x="323" y="205"/>
-        <point x="322" y="199"/>
-        <point x="324" y="193"/>
-        <point x="322" y="189"/>
-        <point x="323" y="182"/>
-        <point x="327" y="177"/>
-        <point x="327" y="171"/>
-        <point x="334" y="167"/>
-        <point x="337" y="161"/>
-        <point x="342" y="158"/>
-        <point x="348" y="156"/>
-        <point x="350" y="157"/>
-        <point x="352" y="157"/>
-        <point x="352" y="158"/>
-        <point x="350" y="161"/>
-        <point x="350" y="163"/>
-        <point x="354" y="167"/>
-        <point x="354" y="169"/>
-        <point x="351" y="171"/>
-        <point x="349" y="175"/>
-        <point x="348" y="179"/>
-        <point x="349" y="182"/>
-        <point x="352" y="184"/>
-        <point x="354" y="187"/>
-        <point x="353" y="190"/>
-        <point x="351" y="192"/>
-        <point x="350" y="195"/>
-        <point x="349" y="197"/>
-        <point x="349" y="200"/>
-        <point x="354" y="205"/>
-        <point x="352" y="206"/>
-        <point x="352" y="211"/>
-        <point x="350" y="215"/>
-        <point x="346" y="216"/>
-        <point x="341" y="217"/>
-        <point x="340" y="220"/>
-        <point x="334" y="221"/>
-        <point x="330" y="223"/>
-      
-      </areaPoints>
-    
-    </area>
-    
-    <area areaId="ws_1_24" areaName="陕西" areaCode="null" areaUrl="null">
-      
-      <areaNamePoint x="-3" y="27"/>
-      <areaPoints>
-        
-        <point x="330" y="239"/>
-        <point x="327" y="241"/>
-        <point x="320" y="241"/>
-        <point x="318" y="244"/>
-        <point x="321" y="247"/>
-        <point x="318" y="248"/>
-        <point x="318" y="252"/>
-        <point x="319" y="257"/>
-        <point x="313" y="257"/>
-        <point x="312" y="255"/>
-        <point x="308" y="255"/>
-        <point x="301" y="254"/>
-        <point x="295" y="251"/>
-        <point x="289" y="249"/>
-        <point x="285" y="250"/>
-        <point x="279" y="248"/>
-        <point x="281" y="244"/>
-        <point x="281" y="239"/>
-        <point x="282" y="236"/>
-        <point x="287" y="236"/>
-        <point x="288" y="233"/>
-        <point x="287" y="229"/>
-        <point x="287" y="224"/>
-        <point x="291" y="219"/>
-        <point x="294" y="220"/>
-        <point x="296" y="222"/>
-        <point x="299" y="222"/>
-        <point x="298" y="218"/>
-        <point x="300" y="216"/>
-        <point x="305" y="215"/>
-        <point x="307" y="213"/>
-        <point x="307" y="208"/>
-        <point x="306" y="205"/>
-        <point x="301" y="202"/>
-        <point x="296" y="200"/>
-        <point x="294" y="198"/>
-        <point x="294" y="196"/>
-        <point x="294" y="192"/>
-        <point x="295" y="189"/>
-        <point x="297" y="189"/>
-        <point x="299" y="191"/>
-        <point x="305" y="191"/>
-        <point x="308" y="188"/>
-        <point x="308" y="181"/>
-        <point x="313" y="175"/>
-        <point x="320" y="175"/>
-        <point x="324" y="172"/>
-        <point x="325" y="165"/>
-        <point x="335" y="159"/>
-        <point x="337" y="161"/>
-        <point x="334" y="167"/>
-        <point x="327" y="171"/>
-        <point x="327" y="177"/>
-        <point x="323" y="182"/>
-        <point x="322" y="189"/>
-        <point x="324" y="193"/>
-        <point x="322" y="199"/>
-        <point x="323" y="205"/>
-        <point x="324" y="212"/>
-        <point x="323" y="218"/>
-        <point x="323" y="224"/>
-        <point x="326" y="225"/>
-        <point x="326" y="230"/>
-        <point x="327" y="234"/>
-        <point x="330" y="235"/>
-      
-      </areaPoints>
-    
-    </area>
-    
-    <area areaId="ws_1_25" areaName="山东" areaCode="null" areaUrl="null">
-      
-      <areaNamePoint x="-4" y="2"/>
-      <areaPoints>
-        
-        <point x="392" y="179"/>
-        <point x="391" y="182"/>
-        <point x="388" y="182"/>
-        <point x="387" y="179"/>
-        <point x="386" y="181"/>
-        <point x="385" y="183"/>
-        <point x="381" y="183"/>
-        <point x="378" y="183"/>
-        <point x="378" y="186"/>
-        <point x="375" y="189"/>
-        <point x="373" y="192"/>
-        <point x="371" y="194"/>
-        <point x="370" y="199"/>
-        <point x="370" y="203"/>
-        <point x="369" y="206"/>
-        <point x="373" y="206"/>
-        <point x="375" y="207"/>
-        <point x="372" y="209"/>
-        <point x="370" y="211"/>
-        <point x="366" y="214"/>
-        <point x="367" y="217"/>
-        <point x="369" y="220"/>
-        <point x="373" y="221"/>
-        <point x="379" y="221"/>
-        <point x="382" y="218"/>
-        <point x="386" y="218"/>
-        <point x="390" y="220"/>
-        <point x="392" y="217"/>
-        <point x="399" y="217"/>
-        <point x="402" y="211"/>
-        <point x="406" y="211"/>
-        <point x="406" y="206"/>
-        <point x="409" y="204"/>
-        <point x="411" y="203"/>
-        <point x="411" y="199"/>
-        <point x="414" y="197"/>
-        <point x="417" y="197"/>
-        <point x="417" y="195"/>
-        <point x="415" y="193"/>
-        <point x="417" y="192"/>
-        <point x="421" y="191"/>
-        <point x="429" y="186"/>
-        <point x="430" y="182"/>
-        <point x="426" y="181"/>
-        <point x="421" y="181"/>
-        <point x="420" y="182"/>
-        <point x="416" y="182"/>
-        <point x="414" y="179"/>
-        <point x="410" y="183"/>
-        <point x="409" y="184"/>
-        <point x="408" y="188"/>
-        <point x="405" y="190"/>
-        <point x="399" y="190"/>
-        <point x="396" y="190"/>
-        <point x="396" y="187"/>
-        <point x="399" y="186"/>
-        <point x="398" y="182"/>
-        <point x="397" y="180"/>
-      
-      </areaPoints>
-    
-    </area>
-    
-    <area areaId="ws_1_26" areaName="河南" areaCode="null" areaUrl="null">
-      
-      <areaNamePoint x="0" y="4"/>
-      <areaPoints>
-        
-        <point x="373" y="255"/>
-        <point x="369" y="255"/>
-        <point x="365" y="253"/>
-        <point x="363" y="252"/>
-        <point x="360" y="254"/>
-        <point x="357" y="252"/>
-        <point x="357" y="248"/>
-        <point x="354" y="247"/>
-        <point x="353" y="248"/>
-        <point x="345" y="247"/>
-        <point x="341" y="248"/>
-        <point x="340" y="246"/>
-        <point x="333" y="243"/>
-        <point x="330" y="239"/>
-        <point x="330" y="235"/>
-        <point x="327" y="234"/>
-        <point x="326" y="230"/>
-        <point x="326" y="225"/>
-        <point x="330" y="223"/>
-        <point x="334" y="221"/>
-        <point x="340" y="220"/>
-        <point x="341" y="217"/>
-        <point x="346" y="216"/>
-        <point x="350" y="215"/>
-        <point x="352" y="211"/>
-        <point x="352" y="206"/>
-        <point x="354" y="205"/>
-        <point x="358" y="206"/>
-        <point x="363" y="207"/>
-        <point x="366" y="206"/>
-        <point x="370" y="203"/>
-        <point x="369" y="206"/>
-        <point x="373" y="206"/>
-        <point x="375" y="207"/>
-        <point x="372" y="209"/>
-        <point x="370" y="211"/>
-        <point x="366" y="214"/>
-        <point x="367" y="217"/>
-        <point x="369" y="220"/>
-        <point x="373" y="221"/>
-        <point x="379" y="221"/>
-        <point x="380" y="224"/>
-        <point x="381" y="227"/>
-        <point x="381" y="229"/>
-        <point x="376" y="229"/>
-        <point x="373" y="233"/>
-        <point x="370" y="238"/>
-        <point x="371" y="242"/>
-        <point x="373" y="245"/>
-        <point x="378" y="245"/>
-        <point x="379" y="249"/>
-        <point x="375" y="252"/>
-      
-      </areaPoints>
-    
-    </area>
-    
-    <area areaId="ws_1_27" areaName="上海" areaCode="null" areaUrl="null">
-      
-      <areaNamePoint x="26" y="-2"/>
-      <areaPoints>
-        
-        <point x="435" y="253"/>
-        <point x="431" y="250"/>
-        <point x="429" y="249"/>
-        <point x="427" y="247"/>
-        <point x="425" y="247"/>
-        <point x="422" y="249"/>
-        <point x="419" y="252"/>
-        <point x="418" y="255"/>
-        <point x="421" y="258"/>
-        <point x="426" y="258"/>
-        <point x="429" y="258"/>
-        <point x="431" y="259"/>
-        <point x="434" y="256"/>
-      
-      </areaPoints>
-    
-    </area>
-    
-    <area areaId="ws_1_28" areaName="江苏" areaCode="null" areaUrl="null">
-      
-      <areaNamePoint x="13" y="-7"/>
-      <areaPoints>
-        
-        <point x="414" y="256"/>
-        <point x="409" y="255"/>
-        <point x="405" y="252"/>
-        <point x="401" y="252"/>
-        <point x="401" y="246"/>
-        <point x="402" y="243"/>
-        <point x="405" y="241"/>
-        <point x="407" y="239"/>
-        <point x="408" y="236"/>
-        <point x="405" y="235"/>
-        <point x="401" y="237"/>
-        <point x="400" y="239"/>
-        <point x="398" y="237"/>
-        <point x="396" y="235"/>
-        <point x="395" y="229"/>
-        <point x="392" y="226"/>
-        <point x="386" y="226"/>
-        <point x="382" y="222"/>
-        <point x="382" y="218"/>
-        <point x="386" y="218"/>
-        <point x="390" y="220"/>
-        <point x="392" y="217"/>
-        <point x="399" y="217"/>
-        <point x="402" y="211"/>
-        <point x="406" y="211"/>
-        <point x="407" y="214"/>
-        <point x="410" y="216"/>
-        <point x="416" y="219"/>
-        <point x="422" y="227"/>
-        <point x="427" y="237"/>
-        <point x="430" y="238"/>
-        <point x="433" y="241"/>
-        <point x="435" y="244"/>
-        <point x="434" y="248"/>
-        <point x="429" y="249"/>
-        <point x="427" y="247"/>
-        <point x="425" y="247"/>
-        <point x="422" y="249"/>
-        <point x="419" y="252"/>
-        <point x="418" y="255"/>
-      
-      </areaPoints>
-    
-    </area>
-    
-    <area areaId="ws_1_29" areaName="安徽" areaCode="null" areaUrl="null">
+    <area areaId="ws_1_28" areaName="" areaCode="null" areaUrl="null">
       
       <areaNamePoint x="0" y="0"/>
       <areaPoints>
         
-        <point x="403" y="276"/>
-        <point x="397" y="275"/>
-        <point x="395" y="272"/>
-        <point x="390" y="277"/>
-        <point x="388" y="275"/>
-        <point x="390" y="273"/>
-        <point x="388" y="270"/>
-        <point x="384" y="274"/>
-        <point x="381" y="267"/>
-        <point x="381" y="260"/>
-        <point x="379" y="258"/>
-        <point x="376" y="259"/>
-        <point x="373" y="255"/>
-        <point x="375" y="252"/>
-        <point x="379" y="249"/>
-        <point x="378" y="245"/>
-        <point x="373" y="245"/>
-        <point x="371" y="242"/>
-        <point x="370" y="238"/>
-        <point x="373" y="233"/>
-        <point x="376" y="229"/>
-        <point x="381" y="229"/>
-        <point x="381" y="227"/>
-        <point x="380" y="224"/>
-        <point x="379" y="221"/>
-        <point x="382" y="218"/>
-        <point x="382" y="222"/>
-        <point x="386" y="226"/>
-        <point x="392" y="226"/>
-        <point x="395" y="229"/>
-        <point x="396" y="235"/>
-        <point x="398" y="237"/>
-        <point x="400" y="239"/>
-        <point x="401" y="237"/>
-        <point x="405" y="235"/>
-        <point x="408" y="236"/>
-        <point x="407" y="239"/>
-        <point x="405" y="241"/>
-        <point x="402" y="243"/>
-        <point x="401" y="246"/>
-        <point x="401" y="252"/>
-        <point x="405" y="252"/>
-        <point x="409" y="255"/>
-        <point x="414" y="256"/>
-        <point x="418" y="255"/>
-        <point x="415" y="257"/>
-        <point x="413" y="259"/>
-        <point x="412" y="263"/>
-        <point x="408" y="265"/>
-        <point x="409" y="269"/>
-        <point x="406" y="273"/>
+        <point x="136" y="145"/>
+        <point x="135" y="149"/>
+        <point x="131" y="150"/>
+        <point x="129" y="152"/>
+        <point x="127" y="152"/>
+        <point x="127" y="156"/>
+        <point x="127" y="158"/>
+        <point x="125" y="157"/>
+        <point x="123" y="156"/>
+        <point x="119" y="152"/>
+        <point x="117" y="153"/>
+        <point x="115" y="155"/>
+        <point x="116" y="159"/>
+        <point x="114" y="163"/>
+        <point x="111" y="167"/>
+        <point x="106" y="167"/>
+        <point x="105" y="170"/>
+        <point x="105" y="172"/>
+        <point x="104" y="175"/>
+        <point x="107" y="178"/>
+        <point x="107" y="179"/>
+        <point x="102" y="176"/>
+        <point x="99" y="174"/>
+        <point x="98" y="170"/>
+        <point x="96" y="168"/>
+        <point x="94" y="165"/>
+        <point x="90" y="160"/>
+        <point x="88" y="158"/>
+        <point x="86" y="157"/>
+        <point x="85" y="160"/>
+        <point x="86" y="162"/>
+        <point x="88" y="164"/>
+        <point x="93" y="167"/>
+        <point x="93" y="169"/>
+        <point x="91" y="171"/>
+        <point x="88" y="171"/>
+        <point x="88" y="170"/>
+        <point x="84" y="165"/>
+        <point x="82" y="163"/>
+        <point x="78" y="160"/>
+        <point x="76" y="158"/>
+        <point x="78" y="162"/>
+        <point x="78" y="165"/>
+        <point x="76" y="169"/>
+        <point x="74" y="169"/>
+        <point x="75" y="164"/>
+        <point x="75" y="162"/>
+        <point x="74" y="160"/>
+        <point x="71" y="162"/>
+        <point x="68" y="161"/>
+        <point x="67" y="160"/>
+        <point x="63" y="164"/>
+        <point x="60" y="167"/>
+        <point x="57" y="168"/>
+        <point x="56" y="171"/>
+        <point x="55" y="174"/>
+        <point x="48" y="176"/>
+        <point x="43" y="175"/>
+        <point x="40" y="173"/>
+        <point x="40" y="168"/>
+        <point x="40" y="158"/>
+        <point x="50" y="159"/>
+        <point x="55" y="159"/>
+        <point x="56" y="153"/>
+        <point x="48" y="150"/>
+        <point x="49" y="147"/>
+        <point x="61" y="143"/>
+        <point x="45" y="144"/>
+        <point x="50" y="137"/>
+        <point x="50" y="133"/>
+        <point x="50" y="131"/>
+        <point x="46" y="131"/>
+        <point x="46" y="137"/>
+        <point x="39" y="141"/>
+        <point x="39" y="137"/>
+        <point x="41" y="134"/>
+        <point x="43" y="130"/>
+        <point x="48" y="130"/>
+        <point x="46" y="125"/>
+        <point x="47" y="120"/>
+        <point x="49" y="120"/>
+        <point x="52" y="122"/>
+        <point x="52" y="125"/>
+        <point x="52" y="128"/>
+        <point x="55" y="131"/>
+        <point x="57" y="132"/>
+        <point x="58" y="133"/>
+        <point x="60" y="135"/>
+        <point x="61" y="137"/>
+        <point x="61" y="139"/>
+        <point x="62" y="142"/>
+        <point x="67" y="137"/>
+        <point x="72" y="134"/>
+        <point x="76" y="133"/>
+        <point x="78" y="133"/>
+        <point x="76" y="127"/>
+        <point x="79" y="124"/>
+        <point x="80" y="125"/>
+        <point x="80" y="132"/>
+        <point x="87" y="134"/>
+        <point x="99" y="132"/>
+        <point x="101" y="126"/>
+        <point x="106" y="122"/>
+        <point x="106" y="120"/>
+        <point x="104" y="116"/>
+        <point x="101" y="113"/>
+        <point x="101" y="107"/>
+        <point x="103" y="104"/>
+        <point x="107" y="100"/>
+        <point x="105" y="98"/>
+        <point x="102" y="99"/>
+        <point x="101" y="103"/>
+        <point x="98" y="105"/>
+        <point x="93" y="107"/>
+        <point x="92" y="109"/>
+        <point x="90" y="112"/>
+        <point x="90" y="115"/>
+        <point x="94" y="118"/>
+        <point x="92" y="123"/>
+        <point x="89" y="129"/>
+        <point x="83" y="124"/>
+        <point x="81" y="120"/>
+        <point x="82" y="117"/>
+        <point x="74" y="120"/>
+        <point x="71" y="122"/>
+        <point x="68" y="116"/>
+        <point x="69" y="111"/>
+        <point x="77" y="105"/>
+        <point x="85" y="100"/>
+        <point x="90" y="95"/>
+        <point x="94" y="87"/>
+        <point x="101" y="84"/>
+        <point x="105" y="84"/>
+        <point x="109" y="84"/>
+        <point x="116" y="81"/>
+        <point x="120" y="84"/>
+        <point x="123" y="87"/>
+        <point x="115" y="92"/>
+        <point x="116" y="101"/>
+        <point x="120" y="112"/>
+        <point x="114" y="120"/>
+        <point x="114" y="126"/>
+        <point x="119" y="133"/>
+        <point x="129" y="142"/>
+        <point x="134" y="144"/>
       
       </areaPoints>
     
     </area>
     
-    <area areaId="ws_1_30" areaName="浙江" areaCode="null" areaUrl="null">
-      
-      <areaNamePoint x="6" y="1"/>
-      <areaPoints>
-        
-        <point x="405" y="284"/>
-        <point x="403" y="280"/>
-        <point x="403" y="276"/>
-        <point x="406" y="273"/>
-        <point x="409" y="269"/>
-        <point x="408" y="265"/>
-        <point x="412" y="263"/>
-        <point x="413" y="259"/>
-        <point x="415" y="257"/>
-        <point x="418" y="255"/>
-        <point x="421" y="258"/>
-        <point x="426" y="258"/>
-        <point x="429" y="258"/>
-        <point x="431" y="259"/>
-        <point x="428" y="261"/>
-        <point x="427" y="263"/>
-        <point x="427" y="265"/>
-        <point x="432" y="263"/>
-        <point x="436" y="263"/>
-        <point x="439" y="266"/>
-        <point x="435" y="269"/>
-        <point x="435" y="272"/>
-        <point x="439" y="271"/>
-        <point x="441" y="274"/>
-        <point x="438" y="275"/>
-        <point x="434" y="276"/>
-        <point x="437" y="280"/>
-        <point x="436" y="285"/>
-        <point x="432" y="286"/>
-        <point x="431" y="291"/>
-        <point x="426" y="291"/>
-        <point x="419" y="289"/>
-        <point x="414" y="288"/>
-        <point x="413" y="284"/>
-      
-      </areaPoints>
-    
-    </area>
-    
-    <area areaId="ws_1_31" areaName="湖北" areaCode="null" areaUrl="null">
+    <area areaId="ws_1_29" areaName="" areaCode="null" areaUrl="null">
       
       <areaNamePoint x="0" y="0"/>
       <areaPoints>
         
-        <point x="363" y="286"/>
-        <point x="360" y="286"/>
-        <point x="358" y="283"/>
-        <point x="358" y="279"/>
-        <point x="353" y="280"/>
-        <point x="351" y="277"/>
-        <point x="345" y="282"/>
-        <point x="342" y="279"/>
-        <point x="338" y="279"/>
-        <point x="332" y="275"/>
-        <point x="328" y="276"/>
-        <point x="328" y="280"/>
-        <point x="327" y="283"/>
-        <point x="324" y="280"/>
-        <point x="320" y="282"/>
-        <point x="316" y="286"/>
-        <point x="309" y="281"/>
-        <point x="309" y="277"/>
-        <point x="306" y="275"/>
-        <point x="311" y="269"/>
-        <point x="317" y="269"/>
-        <point x="323" y="265"/>
-        <point x="323" y="261"/>
-        <point x="319" y="257"/>
-        <point x="318" y="252"/>
-        <point x="318" y="248"/>
-        <point x="321" y="247"/>
-        <point x="318" y="244"/>
-        <point x="320" y="241"/>
-        <point x="327" y="241"/>
-        <point x="330" y="239"/>
-        <point x="333" y="243"/>
-        <point x="340" y="246"/>
-        <point x="341" y="248"/>
-        <point x="345" y="247"/>
-        <point x="353" y="248"/>
-        <point x="354" y="247"/>
-        <point x="357" y="248"/>
-        <point x="357" y="252"/>
-        <point x="360" y="254"/>
-        <point x="363" y="252"/>
-        <point x="365" y="253"/>
-        <point x="369" y="255"/>
-        <point x="373" y="255"/>
-        <point x="376" y="259"/>
-        <point x="379" y="258"/>
-        <point x="381" y="260"/>
-        <point x="381" y="267"/>
-        <point x="384" y="274"/>
-        <point x="383" y="276"/>
-        <point x="380" y="276"/>
-        <point x="377" y="278"/>
-        <point x="375" y="281"/>
-        <point x="370" y="280"/>
-        <point x="366" y="282"/>
+        <point x="25" y="97"/>
+        <point x="33" y="100"/>
+        <point x="31" y="108"/>
+        <point x="16" y="112"/>
+        <point x="11" y="107"/>
+        <point x="8" y="99"/>
+        <point x="20" y="97"/>
       
       </areaPoints>
     
     </area>
     
-    <area areaId="ws_1_32" areaName="湖南" areaCode="null" areaUrl="null">
+    <area areaId="ws_1_30" areaName="" areaCode="null" areaUrl="null">
       
       <areaNamePoint x="0" y="0"/>
       <areaPoints>
         
-        <point x="365" y="292"/>
-        <point x="363" y="296"/>
-        <point x="360" y="300"/>
-        <point x="360" y="305"/>
-        <point x="363" y="305"/>
-        <point x="363" y="310"/>
-        <point x="365" y="316"/>
-        <point x="365" y="325"/>
-        <point x="361" y="326"/>
-        <point x="357" y="325"/>
-        <point x="354" y="328"/>
-        <point x="355" y="329"/>
-        <point x="355" y="332"/>
-        <point x="352" y="331"/>
-        <point x="348" y="330"/>
-        <point x="345" y="334"/>
-        <point x="339" y="333"/>
-        <point x="335" y="330"/>
-        <point x="338" y="325"/>
-        <point x="337" y="317"/>
-        <point x="330" y="317"/>
-        <point x="327" y="322"/>
-        <point x="323" y="320"/>
-        <point x="319" y="323"/>
-        <point x="318" y="320"/>
-        <point x="316" y="318"/>
-        <point x="317" y="314"/>
-        <point x="316" y="311"/>
-        <point x="313" y="310"/>
-        <point x="313" y="308"/>
-        <point x="317" y="305"/>
-        <point x="316" y="301"/>
-        <point x="317" y="294"/>
-        <point x="316" y="286"/>
-        <point x="320" y="282"/>
-        <point x="324" y="280"/>
-        <point x="327" y="283"/>
-        <point x="328" y="280"/>
-        <point x="328" y="276"/>
-        <point x="332" y="275"/>
-        <point x="338" y="279"/>
-        <point x="342" y="279"/>
-        <point x="345" y="282"/>
-        <point x="351" y="277"/>
-        <point x="353" y="280"/>
-        <point x="358" y="279"/>
-        <point x="358" y="283"/>
-        <point x="360" y="286"/>
-        <point x="363" y="286"/>
-        <point x="365" y="289"/>
+        <point x="84" y="51"/>
+        <point x="98" y="46"/>
+        <point x="106" y="48"/>
+        <point x="109" y="52"/>
+        <point x="104" y="59"/>
+        <point x="94" y="63"/>
+        <point x="82" y="55"/>
+        <point x="81" y="49"/>
       
       </areaPoints>
     
     </area>
     
-    <area areaId="ws_1_33" areaName="江西" areaCode="null" areaUrl="null">
-      
-      <areaNamePoint x="0" y="-7"/>
-      <areaPoints>
-        
-        <point x="405" y="284"/>
-        <point x="404" y="288"/>
-        <point x="399" y="292"/>
-        <point x="397" y="290"/>
-        <point x="394" y="293"/>
-        <point x="390" y="295"/>
-        <point x="390" y="300"/>
-        <point x="392" y="302"/>
-        <point x="390" y="304"/>
-        <point x="387" y="305"/>
-        <point x="387" y="309"/>
-        <point x="387" y="312"/>
-        <point x="388" y="313"/>
-        <point x="386" y="316"/>
-        <point x="386" y="319"/>
-        <point x="384" y="322"/>
-        <point x="384" y="325"/>
-        <point x="384" y="327"/>
-        <point x="383" y="331"/>
-        <point x="378" y="331"/>
-        <point x="376" y="333"/>
-        <point x="370" y="335"/>
-        <point x="369" y="332"/>
-        <point x="372" y="330"/>
-        <point x="375" y="326"/>
-        <point x="371" y="325"/>
-        <point x="367" y="327"/>
-        <point x="365" y="325"/>
-        <point x="365" y="316"/>
-        <point x="363" y="310"/>
-        <point x="363" y="305"/>
-        <point x="360" y="305"/>
-        <point x="360" y="300"/>
-        <point x="363" y="296"/>
-        <point x="365" y="292"/>
-        <point x="365" y="289"/>
-        <point x="363" y="286"/>
-        <point x="366" y="282"/>
-        <point x="370" y="280"/>
-        <point x="375" y="281"/>
-        <point x="377" y="278"/>
-        <point x="380" y="276"/>
-        <point x="383" y="276"/>
-        <point x="384" y="274"/>
-        <point x="388" y="270"/>
-        <point x="390" y="273"/>
-        <point x="388" y="275"/>
-        <point x="390" y="277"/>
-        <point x="395" y="272"/>
-        <point x="397" y="275"/>
-        <point x="403" y="276"/>
-        <point x="403" y="280"/>
-      
-      </areaPoints>
-    
-    </area>
-    
-    <area areaId="ws_1_34" areaName="福建" areaCode="null" areaUrl="null">
+    <area areaId="ws_1_31" areaName="" areaCode="null" areaUrl="null">
       
       <areaNamePoint x="0" y="0"/>
       <areaPoints>
         
-        <point x="435" y="295"/>
-        <point x="435" y="298"/>
-        <point x="428" y="303"/>
-        <point x="431" y="306"/>
-        <point x="428" y="310"/>
-        <point x="429" y="319"/>
-        <point x="428" y="323"/>
-        <point x="425" y="320"/>
-        <point x="422" y="320"/>
-        <point x="423" y="328"/>
-        <point x="416" y="334"/>
-        <point x="408" y="345"/>
-        <point x="406" y="349"/>
-        <point x="402" y="349"/>
-        <point x="399" y="348"/>
-        <point x="399" y="341"/>
-        <point x="394" y="336"/>
-        <point x="387" y="336"/>
-        <point x="383" y="334"/>
-        <point x="383" y="331"/>
-        <point x="384" y="327"/>
-        <point x="384" y="325"/>
-        <point x="384" y="322"/>
-        <point x="386" y="319"/>
-        <point x="386" y="316"/>
-        <point x="388" y="313"/>
-        <point x="387" y="312"/>
-        <point x="387" y="309"/>
-        <point x="387" y="305"/>
-        <point x="390" y="304"/>
-        <point x="392" y="302"/>
-        <point x="390" y="300"/>
-        <point x="390" y="295"/>
-        <point x="394" y="293"/>
-        <point x="397" y="290"/>
-        <point x="399" y="292"/>
-        <point x="404" y="288"/>
-        <point x="405" y="284"/>
-        <point x="413" y="284"/>
-        <point x="414" y="288"/>
-        <point x="419" y="289"/>
-        <point x="426" y="291"/>
-        <point x="431" y="291"/>
+        <point x="3" y="29"/>
+        <point x="15" y="36"/>
+        <point x="29" y="39"/>
+        <point x="34" y="41"/>
+        <point x="32" y="50"/>
+        <point x="23" y="67"/>
+        <point x="19" y="79"/>
+        <point x="14" y="86"/>
+        <point x="8" y="92"/>
+        <point x="0" y="92"/>
+        <point x="0" y="90"/>
+        <point x="0" y="30"/>
       
       </areaPoints>
     
     </area>
     
-    <area areaId="ws_1_35" areaName="钓鱼岛" areaCode="null" areaUrl="null">
+    <area areaId="ws_1_32" areaName="" areaCode="null" areaUrl="null">
       
-      <areaNamePoint x="25" y="13"/>
+      <areaNamePoint x="0" y="0"/>
       <areaPoints>
         
-        <point x="454" y="313"/>
-        <point x="455" y="312"/>
-        <point x="455" y="313"/>
+        <point x="159" y="226"/>
+        <point x="144" y="229"/>
+        <point x="141" y="224"/>
+        <point x="134" y="217"/>
+        <point x="129" y="210"/>
+        <point x="125" y="202"/>
+        <point x="122" y="194"/>
+        <point x="124" y="188"/>
+        <point x="118" y="187"/>
+        <point x="107" y="188"/>
+        <point x="103" y="186"/>
+        <point x="99" y="186"/>
+        <point x="95" y="189"/>
+        <point x="87" y="184"/>
+        <point x="83" y="182"/>
+        <point x="78" y="179"/>
+        <point x="77" y="175"/>
+        <point x="67" y="173"/>
+        <point x="63" y="175"/>
+        <point x="57" y="177"/>
+        <point x="46" y="180"/>
+        <point x="39" y="187"/>
+        <point x="35" y="193"/>
+        <point x="34" y="196"/>
+        <point x="26" y="203"/>
+        <point x="26" y="212"/>
+        <point x="26" y="221"/>
+        <point x="28" y="230"/>
+        <point x="36" y="240"/>
+        <point x="49" y="243"/>
+        <point x="60" y="243"/>
+        <point x="70" y="242"/>
+        <point x="77" y="245"/>
+        <point x="79" y="251"/>
+        <point x="80" y="260"/>
+        <point x="84" y="266"/>
+        <point x="85" y="272"/>
+        <point x="83" y="278"/>
+        <point x="82" y="283"/>
+        <point x="84" y="295"/>
+        <point x="91" y="304"/>
+        <point x="93" y="309"/>
+        <point x="98" y="317"/>
+        <point x="108" y="320"/>
+        <point x="114" y="317"/>
+        <point x="122" y="312"/>
+        <point x="128" y="299"/>
+        <point x="128" y="292"/>
+        <point x="132" y="284"/>
+        <point x="138" y="280"/>
+        <point x="138" y="275"/>
+        <point x="156" y="274"/>
+        <point x="155" y="288"/>
+        <point x="148" y="298"/>
+        <point x="144" y="295"/>
+        <point x="147" y="285"/>
+        <point x="149" y="279"/>
+        <point x="151" y="276"/>
+        <point x="138" y="271"/>
+        <point x="136" y="263"/>
+        <point x="135" y="257"/>
+        <point x="142" y="251"/>
+        <point x="147" y="245"/>
+        <point x="155" y="238"/>
+        <point x="156" y="235"/>
+        <point x="158" y="232"/>
       
       </areaPoints>
     
     </area>
     
-    <area areaId="ws_1_36" areaName="赤尾屿" areaCode="null" areaUrl="null">
+    <area areaId="ws_1_33" areaName="" areaCode="null" areaUrl="null">
       
-      <areaNamePoint x="29" y="-6"/>
+      <areaNamePoint x="0" y="0"/>
       <areaPoints>
         
-        <point x="460" y="309"/>
-        <point x="461" y="309"/>
-        <point x="460" y="310"/>
+        <point x="245" y="41"/>
+        <point x="255" y="44"/>
+        <point x="258" y="47"/>
+        <point x="258" y="53"/>
+        <point x="251" y="53"/>
+        <point x="247" y="51"/>
+        <point x="240" y="46"/>
       
       </areaPoints>
     
     </area>
     
-    <area areaId="ws_1_37" areaName="南海诸岛" areaCode="null" areaUrl="null">
+    <area areaId="ws_1_34" areaName="" areaCode="null" areaUrl="null">
       
-      <areaNamePoint x="-8" y="1"/>
+      <areaNamePoint x="0" y="0"/>
       <areaPoints>
         
-        <point x="385" y="432"/>
-        <point x="386" y="431"/>
-        <point x="386" y="433"/>
+        <point x="353" y="65"/>
+        <point x="357" y="69"/>
+        <point x="350" y="69"/>
+        <point x="347" y="66"/>
+      
+      </areaPoints>
+    
+    </area>
+    
+    <area areaId="ws_1_35" areaName="" areaCode="null" areaUrl="null">
+      
+      <areaNamePoint x="0" y="0"/>
+      <areaPoints>
+        
+        <point x="146" y="42"/>
+        <point x="153" y="41"/>
+        <point x="155" y="46"/>
+        <point x="162" y="44"/>
+        <point x="169" y="46"/>
+        <point x="171" y="42"/>
+        <point x="180" y="47"/>
+        <point x="186" y="42"/>
+        <point x="183" y="41"/>
+        <point x="173" y="47"/>
+        <point x="165" y="41"/>
+        <point x="161" y="47"/>
+        <point x="157" y="41"/>
+        <point x="149" y="47"/>
       
       </areaPoints>
     
