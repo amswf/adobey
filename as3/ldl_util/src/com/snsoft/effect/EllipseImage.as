@@ -24,7 +24,7 @@ package com.snsoft.effect {
 
 		private var elliPoints:Vector.<Point>;
 
-		private var imags:Vector.<MovieClip> = new Vector.<MovieClip>();
+		private var images:Vector.<MovieClip> = new Vector.<MovieClip>();
 
 		private static const MOVIE_INDEX:String = "movieIndex";
 
@@ -40,7 +40,10 @@ package com.snsoft.effect {
 
 		private var moveFinished:int = 0;
 
-		public function EllipseImage() {
+		public function EllipseImage(a:int, b:int, images:Vector.<MovieClip>) {
+			this.a = a;
+			this.b = b;
+			this.images = images;
 			super();
 		}
 
@@ -49,34 +52,26 @@ package com.snsoft.effect {
 		 * 绘制组件显示
 		 */
 		override protected function draw():void {
+			if (images != null) {
+				var el:Ellipse = new Ellipse(a, b);
+				elliPoints = el.getPoints();
+				var elen:int = elliPoints.length;
 
-			var el:Ellipse = new Ellipse(a, b);
-			elliPoints = el.getPoints();
-			var elen:int = elliPoints.length;
-			for (var i:int = 0; i < 10; i++) {
-				var smc:MovieClip = SkinsUtil.createSkinByName("MC") as MovieClip;
-				var tfd:TextField = new TextField();
-				tfd.name = "tfd";
-				tfd.text = "" + i;
-				tfd.mouseEnabled = false;
-				smc.addChild(tfd);
-				imags.push(smc);
-			}
+				var n:int = images.length;
 
-			var n:int = imags.length;
-
-			for (i = 0; i < imags.length; i++) {
-				var mc:MovieClip = imags[i] as MovieClip;
-				var m:int = (elen * i) / (n);
-				mc[MOVIE_INDEX] = m;
-				mc[MOVIE_HELP_INDEX] = 0;
-				mc.x = elliPoints[m].x;
-				mc.y = elliPoints[m].y;
-				var scale:Number = (mc.y + b * 3) / (b * 4);
-				mc.scaleX = scale;
-				mc.scaleY = scale;
-				this.addChild(mc);
-				mc.addEventListener(MouseEvent.CLICK, handler);
+				for (var i:int = 0; i < images.length; i++) {
+					var mc:MovieClip = images[i] as MovieClip;
+					var m:int = (elen * i) / (n);
+					mc[MOVIE_INDEX] = m;
+					mc[MOVIE_HELP_INDEX] = 0;
+					mc.x = elliPoints[m].x;
+					mc.y = elliPoints[m].y;
+					var scale:Number = (mc.y + b * 3) / (b * 4);
+					mc.scaleX = scale;
+					mc.scaleY = scale;
+					this.addChild(mc);
+					mc.addEventListener(MouseEvent.CLICK, handler);
+				}
 			}
 		}
 
@@ -91,7 +86,7 @@ package com.snsoft.effect {
 				if (n * 2 > elen) {
 					n = n - elen;
 				}
-				moveFinished = imags.length;
+				moveFinished = images.length;
 				currentIndex = n;
 				var tw:Tween = new Tween(mc, MOVIE_HELP_INDEX, Regular.easeOut, n, 0, 50);
 				tw.addEventListener(TweenEvent.MOTION_CHANGE, handlerChange);
@@ -104,8 +99,8 @@ package com.snsoft.effect {
 			var mc:MovieClip = tw.obj as MovieClip;
 			var m:int = int(mc[MOVIE_INDEX]);
 			var n:int = int(e.position);
-			for (var i:int = 0; i < imags.length; i++) {
-				var img:MovieClip = imags[i];
+			for (var i:int = 0; i < images.length; i++) {
+				var img:MovieClip = images[i];
 				var index:int = int(img[MOVIE_INDEX]) - m + n;
 				var nindex:int = getIndex(index, elliPoints.length);
 				img.x = elliPoints[nindex].x;
@@ -120,8 +115,8 @@ package com.snsoft.effect {
 			var tw:Tween = e.currentTarget as Tween;
 			var mc:MovieClip = tw.obj as MovieClip;
 			var m:int = int(mc[MOVIE_INDEX]);
-			for (var i:int = 0; i < imags.length; i++) {
-				var img:MovieClip = imags[i];
+			for (var i:int = 0; i < images.length; i++) {
+				var img:MovieClip = images[i];
 				var index:int = int(img[MOVIE_INDEX]) - m;
 				var nindex:int = getIndex(index, elliPoints.length);
 				img[MOVIE_INDEX] = nindex;
