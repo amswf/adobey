@@ -243,6 +243,9 @@
 				this.mapBackLayer.doubleClickEnabled = true;
 				this.mapBackLayer.addEventListener(MouseEvent.DOUBLE_CLICK,handlerMapBackDoubleClick);
 			}
+			else if(Config.AREA_MOUSE_EVENT_TYPE_CLICK == Config.areaMouseEventType){
+				this.mapBackLayer.addEventListener(MouseEvent.CLICK,handlerMapBackDoubleClick);
+			}
 			
 			if(this.mapView != null){
 				newMapLayer.removeChild(this.mapView);
