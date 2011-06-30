@@ -54,18 +54,11 @@ package com.snsoft.ltree {
 								this.addChild(bm);
 								bm.x = baseX;
 							}
-
 							baseX += BMD_SIZE.x;
 						}
 						baseX -= BMD_SIZE.x;
 
-						var mpBmd:BitmapData = null;
-						if (place == LNodePlaceType.NOLINE) {
-							mpBmd = lNodeDO.plusNoLine;
-						}
-						else {
-							mpBmd = lNodeDO.plusBottom;
-						}
+						var mpBmd:BitmapData = lNodeDO.plusRoot;
 						minusOrPlusImage = new Bitmap(mpBmd, "auto", true);
 						minusOrPlusImage.x = baseX;
 						baseX += BMD_SIZE.x;
@@ -89,22 +82,8 @@ package com.snsoft.ltree {
 			}
 		}
 
-		public function getSkin(placeType:int):BitmapData {
-			if (placeType == LNodePlaceType.BOTTOM) {
-				return lNodeDO.lineBottom;
-			}
-			else if (placeType == LNodePlaceType.CENTER) {
-				return lNodeDO.lineConn;
-			}
-			return null;
-		}
+		private function changeMinusOrPlusImage():void {
 
-		public function setMinusOrPlusImage(bmd:BitmapData):void {
-			var mx:int = minusOrPlusImage.x;
-			this.removeChild(minusOrPlusImage);
-			minusOrPlusImage = new Bitmap(bmd, "auto", true);
-			minusOrPlusImage.x = mx;
-			this.addChild(minusOrPlusImage);
 		}
 	}
 }
