@@ -182,54 +182,5 @@ package com.snsoft.ltree {
 			}
 			return placeType;
 		}
-
-		private function getLNodeImage(node:Node, nodeList:NodeList, nodeIndex:int, layer:int = 0):BitmapData {
-			var bmd:BitmapData = null;
-			var skin:LTreeCommonSkin = lTreeDO.lTreeCommonSkin;
-			var url:String = null;
-			if (node != null && skin != null) {
-				var open:Boolean = ("true" == node.getAttributeByName("open") ? true : false);
-				if (nodeList != null && nodeList.length() > 0) {
-					if (open) {
-						if (layer == 0 && nodeList.length() == 1) {
-							url = skin.minusRoot;
-						}
-						else if (layer == 0 && nodeIndex == 0) {
-							url = skin.minusTop;
-						}
-						else if (nodeIndex == 0) {
-							url = skin.minusCenter;
-						}
-						else if (nodeIndex == nodeList.length() - 1) {
-							url = skin.minusBottom;
-						}
-						else {
-							url = skin.minusCenter;
-						}
-					}
-					else {
-						if (layer == 0 && nodeList.length() == 1) {
-							url = skin.plusRoot;
-						}
-						else if (layer == 0 && nodeIndex == 0) {
-							url = skin.plusTop;
-						}
-						else if (nodeIndex == 0) {
-							url = skin.plusCenter;
-						}
-						else if (nodeIndex == nodeList.length() - 1) {
-							url = skin.plusBottom;
-						}
-						else {
-							url = skin.plusCenter;
-						}
-					}
-				}
-			}
-			if (url != null) {
-				bmd = lTreeDO.rsImages.getImageByUrl(url);
-			}
-			return bmd;
-		}
 	}
 }
