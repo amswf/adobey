@@ -10,6 +10,7 @@ package com.snsoft.ltree {
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
 
+	import flash.display.BitmapData;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -19,6 +20,8 @@ package com.snsoft.ltree {
 		private var lTreeDO:LTreeDO = new LTreeDO;
 
 		private var nodeList:NodeList = null;
+
+		private var nodeNum:int = 0;
 
 		public function LTree() {
 			super();
@@ -95,15 +98,138 @@ package com.snsoft.ltree {
 		}
 
 		private function handlerLoadImageCmp(e:Event):void {
+			addLNodes(nodeList);
+		}
 
+		private function addLNodes(nodeList:NodeList, parentLNodeDO:LNodeDO = null):void {
 			if (nodeList) {
+
+				var ltcs:LTreeCommonSkin = lTreeDO.lTreeCommonSkin;
 				for (var i:int = 0; i < nodeList.length(); i++) {
+
 					var node:Node = nodeList.getNode(i);
-					var lp:LPanel = new LPanel(node, lTreeDO);
-					this.addChild(lp);
+
+					var lndo:LNodeDO = new LNodeDO();
+					lndo.node = node;
+					lndo.parentLNodeDO = parentLNodeDO;
+					setLNodeDOImages(lndo, lTreeDO.rsImages, ltcs);
+					var isRoot:Boolean = (parentLNodeDO == null);
+					var placeType:int = getPlaceType(node, nodeList, i, isRoot);
+					lndo.placeType = placeType;
+
+					var pptl:Vector.<int> = null;
+					if (parentLNodeDO != null) {
+						pptl = parentLNodeDO.placeTypeList;
+					}
+
+					var list:Vector.<int> = creatPlaceTypeList(pptl, placeType);
+					lndo.placeTypeList = list;
+					trace(list);
+
+					var lnode:LNode = new LNode(lndo);
+					lnode.y = lnode.height * nodeNum;
+					this.addChild(lnode);
+					nodeNum++;
+					addLNodes(node.getNodeList("node"), lndo);
 				}
 			}
 		}
 
+		private function creatPlaceTypeList(list:Vector.<int>, placeType:int):Vector.<int> {
+			var cv:Vector.<int> = new Vector.<int>();
+			if (list != null) {
+				for (var i:int = 0; i < list.length; i++) {
+					var type:int = list[i];
+					cv.push(type);
+				}
+			}
+			cv.push(placeType);
+			return cv;
+		}
+
+		private function setLNodeDOImages(lNodeDO:LNodeDO, rsImages:RSImages, ltcs:LTreeCommonSkin):void {
+			var op:ObjectProperty = new ObjectProperty(ltcs);
+			var list:Vector.<String> = op.propertyNames;
+			for (var i:int = 0; i < list.length; i++) {
+				var name:String = list[i];
+				lNodeDO[name] = rsImages.getImageByUrl(ltcs[name]);
+			}
+		}
+
+		private function getPlaceType(node:Node, nodeList:NodeList, nodeIndex:int, isRoot:Boolean):int {
+			var bmd:BitmapData = null;
+			var skin:LTreeCommonSkin = lTreeDO.lTreeCommonSkin;
+			var placeType:int = 0;
+			if (node != null && skin != null) {
+
+				if (nodeList != null && nodeList.length() > 0) {
+					if (isRoot && nodeIndex == 0 && nodeList.length() == 1) {
+						placeType = LNodePlaceType.NOLINE;
+					}
+					else if (isRoot && nodeIndex == 0) {
+						placeType = LNodePlaceType.TOP;
+					}
+					else if (nodeList.length() == 1) {
+						placeType = LNodePlaceType.BOTTOM;
+					}
+					else if (nodeIndex == nodeList.length() - 1) {
+						placeType = LNodePlaceType.BOTTOM
+					}
+					else {
+						placeType = LNodePlaceType.CENTER;
+					}
+				}
+			}
+			return placeType;
+		}
+
+		private function getLNodeImage(node:Node, nodeList:NodeList, nodeIndex:int, layer:int = 0):BitmapData {
+			var bmd:BitmapData = null;
+			var skin:LTreeCommonSkin = lTreeDO.lTreeCommonSkin;
+			var url:String = null;
+			if (node != null && skin != null) {
+				var open:Boolean = ("true" == node.getAttributeByName("open") ? true : false);
+				if (nodeList != null && nodeList.length() > 0) {
+					if (open) {
+						if (layer == 0 && nodeList.length() == 1) {
+							url = skin.minusRoot;
+						}
+						else if (layer == 0 && nodeIndex == 0) {
+							url = skin.minusTop;
+						}
+						else if (nodeIndex == 0) {
+							url = skin.minusCenter;
+						}
+						else if (nodeIndex == nodeList.length() - 1) {
+							url = skin.minusBottom;
+						}
+						else {
+							url = skin.minusCenter;
+						}
+					}
+					else {
+						if (layer == 0 && nodeList.length() == 1) {
+							url = skin.plusRoot;
+						}
+						else if (layer == 0 && nodeIndex == 0) {
+							url = skin.plusTop;
+						}
+						else if (nodeIndex == 0) {
+							url = skin.plusCenter;
+						}
+						else if (nodeIndex == nodeList.length() - 1) {
+							url = skin.plusBottom;
+						}
+						else {
+							url = skin.plusCenter;
+						}
+					}
+				}
+			}
+			if (url != null) {
+				bmd = lTreeDO.rsImages.getImageByUrl(url);
+			}
+			return bmd;
+		}
 	}
 }
