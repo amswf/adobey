@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xml>
+	<node name="n" id="m" text="根结点" open="true" parent="true" dync="true" icon="skin/image/remove.png">
+		<node name="n" id="m" text="根结点" open="true" parent="true" dync="true">
+			<node name="n" id="m" text="根结点" open="true" parent="true" dync="true">
+				<node name="n" id="m" text="根结点" open="true" parent="true" dync="true">
+					<node name="n" id="m" text="根结点" open="true" parent="true" dync="true">
+					</node>
+					<node name="n" id="m" text="根结点" open="true" parent="true" dync="true">
+					</node>
+					<node name="n" id="m" text="根结点" open="true" parent="true" dync="true">
+					</node>
+					<node name="n" id="m" text="根结点" open="true" parent="true" dync="true">
+					</node>
+				</node>
+			</node>
+			<node name="n" id="m" text="根结点" open="true" parent="true" dync="true">
+			</node>
+			<node name="n" id="m" text="根结点" open="true" parent="true" dync="true">
+			</node>
+			<node name="n" id="m" text="根结点" open="true" parent="true" dync="true">
+			</node>
+		</node>
+		<node name="n" id="m" text="根结点" open="true" parent="true" dync="true">
+			<node name="n" id="m" text="根结点" open="true" parent="true" dync="true">
+			</node>
+			<node name="n" id="m" text="根结点" open="true" parent="true" dync="true">
+			</node>
+			<node name="n" id="m" text="根结点" open="true" parent="true" dync="true">
+			</node>
+			<node name="n" id="m" text="根结点" open="true" parent="true" dync="true">
+				<node name="n" id="m" text="根结点" open="true" parent="true" dync="true">
+					<node name="n" id="m" text="根结点" open="true" parent="true" dync="true">
+					</node>
+					<node name="n" id="m" text="根结点" open="true" parent="true" dync="true">
+					</node>
+					<node name="n" id="m" text="根结点" open="true" parent="true" dync="true">
+					</node>
+					<node name="n" id="m" text="根结点" open="true" parent="true" dync="true">
+					</node>
+				</node>
+			</node>
+		</node>
+	</node>
+</xml>
