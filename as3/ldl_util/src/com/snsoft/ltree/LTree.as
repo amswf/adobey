@@ -23,6 +23,8 @@ package com.snsoft.ltree {
 
 		private var nodeNum:int = 0;
 
+		private var baseLNode:LNode = new LNode(null);
+
 		public function LTree() {
 			super();
 		}
@@ -103,7 +105,6 @@ package com.snsoft.ltree {
 
 		private function addLNodes(nodeList:NodeList, parentLNodeDO:LNodeDO = null):void {
 			if (nodeList) {
-
 				var ltcs:LTreeCommonSkin = lTreeDO.lTreeCommonSkin;
 				for (var i:int = 0; i < nodeList.length(); i++) {
 
@@ -128,11 +129,12 @@ package com.snsoft.ltree {
 
 					var list:Vector.<int> = creatPlaceTypeList(pptl, placeType);
 					lndo.placeTypeList = list;
-					trace(list);
 
 					var lnode:LNode = new LNode(lndo);
+					lnode.orderNum = i;
 					lnode.y = lnode.height * nodeNum;
 					this.addChild(lnode);
+					baseLNode.addChildNode(lnode);
 					nodeNum++;
 					addLNodes(node.getNodeList("node"), lndo);
 				}
