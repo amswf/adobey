@@ -11,6 +11,7 @@
     <classEntry path="com.snsoft.ltree.LTreeDO"/>
     <classEntry path="com.snsoft.ltree.LNodeDO"/>
     <classEntry path="com.snsoft.ltree.LNodePlaceType"/>
+    <classEntry path="com.snsoft.ltree.LNodeImgs"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
