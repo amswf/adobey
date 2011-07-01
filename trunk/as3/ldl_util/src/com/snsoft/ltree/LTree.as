@@ -110,9 +110,13 @@ package com.snsoft.ltree {
 					var node:Node = nodeList.getNode(i);
 
 					var lndo:LNodeDO = new LNodeDO();
-					lndo.node = node;
+
 					lndo.parentLNodeDO = parentLNodeDO;
-					setLNodeDOImages(lndo, lTreeDO.rsImages, ltcs);
+					node.attrToObj(lndo);
+
+					var images:LNodeImgs = new LNodeImgs();
+					setLNodeDOImages(images, lTreeDO.rsImages, ltcs);
+					lndo.images = images;
 					var isRoot:Boolean = (parentLNodeDO == null);
 					var placeType:int = getPlaceType(node, nodeList, i, isRoot);
 					lndo.placeType = placeType;
@@ -147,12 +151,12 @@ package com.snsoft.ltree {
 			return cv;
 		}
 
-		private function setLNodeDOImages(lNodeDO:LNodeDO, rsImages:RSImages, ltcs:LTreeCommonSkin):void {
+		private function setLNodeDOImages(images:LNodeImgs, rsImages:RSImages, ltcs:LTreeCommonSkin):void {
 			var op:ObjectProperty = new ObjectProperty(ltcs);
 			var list:Vector.<String> = op.propertyNames;
 			for (var i:int = 0; i < list.length; i++) {
 				var name:String = list[i];
-				lNodeDO[name] = rsImages.getImageByUrl(ltcs[name]);
+				images[name] = rsImages.getImageByUrl(ltcs[name]);
 			}
 		}
 
