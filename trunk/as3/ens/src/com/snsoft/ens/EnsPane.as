@@ -27,11 +27,10 @@ package com.snsoft.ens {
 		}
 
 		private function init():void {
-			trace("EnsPane");
 			shape = new Shape();
 			this.addChild(shape);
 			var gra:Graphics = shape.graphics;
-			gra.lineStyle(1, 0x000000);
+			gra.lineStyle(1, 0xaaaaaa);
 			gra.beginFill(0xffffff, 1);
 			gra.drawRect(0, 0, _ensPaneDO.width, _ensPaneDO.height);
 			gra.endFill();
@@ -40,24 +39,24 @@ package com.snsoft.ens {
 			shape2.visible = false;
 			this.addChild(shape2);
 			var gra2:Graphics = shape2.graphics;
-			gra2.lineStyle(1, 0x0000ff);
-			gra2.beginFill(0xdddddd, 1);
+			gra2.lineStyle(0, 0xaaaaaa);
+			gra2.beginFill(0xeeeeee, 1);
 			gra2.drawRect(0, 0, _ensPaneDO.width, _ensPaneDO.height);
 			gra2.endFill();
 
-			//this.addEventListener(MouseEvent.MOUSE_OVER, handlerMouseOver);
-			//this.addEventListener(MouseEvent.MOUSE_OUT, handlerMouseOut);
+			this.addEventListener(MouseEvent.MOUSE_OVER, handlerMouseOver);
+			this.addEventListener(MouseEvent.MOUSE_OUT, handlerMouseOut);
 		}
 
-//		private function handlerMouseOver(e:Event):void {
-//			shape.visible = false;
-//			shape2.visible = true;
-//		}
-//
-//		private function handlerMouseOut(e:Event):void {
-//			shape.visible = true;
-//			shape2.visible = false;
-//		}
+		private function handlerMouseOver(e:Event):void {
+			shape.visible = false;
+			shape2.visible = true;
+		}
+
+		private function handlerMouseOut(e:Event):void {
+			shape.visible = true;
+			shape2.visible = false;
+		}
 
 		public function get ensPaneDO():EnsPaneDO {
 			return _ensPaneDO;

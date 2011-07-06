@@ -6,6 +6,10 @@
     <classEntry path="com.snsoft.ens.EnsPane"/>
     <classEntry path="com.snsoft.ens.EnsPaneDO"/>
     <classEntry path="com.snsoft.ens.EnsSpaceDO"/>
+    <classEntry path="com.snsoft.ens.EnsToolBtn"/>
+    <classEntry path="com.snsoft.ens.EnsToolsBar"/>
+    <classEntry path="com.snsoft.ens.EnsToolBtnDO"/>
+    <classEntry path="com.snsoft.ens.EnsToolType"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

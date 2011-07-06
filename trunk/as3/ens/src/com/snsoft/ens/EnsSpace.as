@@ -1,5 +1,7 @@
 ﻿package com.snsoft.ens {
 	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
 
 	/**
 	 * 展位空间
@@ -7,6 +9,8 @@
 	 *
 	 */
 	public class EnsSpace extends Sprite {
+
+		public static const EVENT_SELECT_PANE:String = "EVENT_SELECT_PANE";
 
 		/**
 		 * 行数
@@ -23,6 +27,8 @@
 		private var paneHeight:int;
 
 		private var vv:Vector.<Vector.<EnsPane>> = new Vector.<Vector.<EnsPane>>();
+
+		private var _currentPane:EnsPane;
 
 		/**
 		 *
@@ -68,12 +74,14 @@
 						var ensp:EnsPaneDO = new EnsPaneDO();
 						ensp.width = paneWidth;
 						ensp.height = paneHeight;
+						ensp.row = row + i;
+						ensp.col = j;
 						var ep:EnsPane = new EnsPane(ensp);
 						ep.x = j * paneWidth;
 						ep.y = (row + i) * paneHeight;
-						trace(ep.x, ep.y);
 						this.addChild(ep);
 						v.push(ep);
+						ep.addEventListener(MouseEvent.CLICK, hanlderPaneMouseClick);
 					}
 					this.vv.push(v);
 					sign = true;
@@ -82,7 +90,9 @@
 					if (this.vv.length > 1) {
 						var v2:Vector.<EnsPane> = this.vv.pop();
 						for (var j2:int = 0; j2 < v2.length; j2++) {
-							this.removeChild(v2[j2]);
+							var dp:EnsPane = v2[j2];
+							this.removeChild(dp);
+							dp.removeEventListener(MouseEvent.CLICK, hanlderPaneMouseClick);
 						}
 						sign = true;
 					}
@@ -107,12 +117,14 @@
 						var ensp:EnsPaneDO = new EnsPaneDO();
 						ensp.width = paneWidth;
 						ensp.height = paneHeight;
+						ensp.row = i;
+						ensp.col = col + j;
 						var ep:EnsPane = new EnsPane(ensp);
 						this.addChild(ep);
 						ep.x = (j + col) * paneWidth;
 						ep.y = i * paneHeight;
-						trace(ep.x, ep.y);
 						v.push(ep);
+						ep.addEventListener(MouseEvent.CLICK, hanlderPaneMouseClick);
 					}
 					sign = true;
 				}
@@ -120,6 +132,7 @@
 					if (v.length > 1) {
 						var dp:EnsPane = v.pop();
 						this.removeChild(dp);
+						dp.removeEventListener(MouseEvent.CLICK, hanlderPaneMouseClick);
 						sign = true;
 					}
 				}
@@ -127,6 +140,15 @@
 			if (sign) {
 				this.col += num;
 			}
+		}
+
+		private function hanlderPaneMouseClick(e:Event):void {
+			_currentPane = e.currentTarget as EnsPane;
+			this.dispatchEvent(new Event(EVENT_SELECT_PANE));
+		}
+
+		public function get currentPane():EnsPane {
+			return _currentPane;
 		}
 
 	}
