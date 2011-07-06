@@ -14,6 +14,10 @@ package com.snsoft.ens {
 
 		private var _value:String;
 
+		private var _row:int;
+
+		private var _col:int;
+
 		public function EnsPaneDO() {
 		}
 
@@ -64,6 +68,27 @@ package com.snsoft.ens {
 		public function set value(value:String):void {
 			_value = value;
 		}
+
+		public function get row():int
+		{
+			return _row;
+		}
+
+		public function set row(value:int):void
+		{
+			_row = value;
+		}
+
+		public function get col():int
+		{
+			return _col;
+		}
+
+		public function set col(value:int):void
+		{
+			_col = value;
+		}
+
 
 	}
 }
