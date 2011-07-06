@@ -1,7 +1,9 @@
 package com.snsoft.ens {
+	import com.snsoft.util.SpriteUtil;
+	
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
-
+	
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -56,6 +58,7 @@ package com.snsoft.ens {
 		 * 绘制组件显示
 		 */
 		override protected function draw():void {
+			SpriteUtil.deleteAllChild(this);
 			this.setStyle("defaultSkin", btndo.defaultSkin);
 			this.setStyle("downSkin", btndo.downSkin);
 			this.setStyle("overSkin", btndo.overSkin);
@@ -98,7 +101,7 @@ package com.snsoft.ens {
 		}
 
 		private function visibleSkin(skin:MovieClip):void {
-			if (btndo.selected) {
+			if (_btndo.selected) {
 				over.visible = false;
 				down.visible = true;
 				def.visible = false;

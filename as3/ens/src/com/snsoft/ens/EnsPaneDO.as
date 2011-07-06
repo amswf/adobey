@@ -18,6 +18,8 @@ package com.snsoft.ens {
 
 		private var _col:int;
 
+		private var _id:String;
+
 		public function EnsPaneDO() {
 		}
 
@@ -69,26 +71,29 @@ package com.snsoft.ens {
 			_value = value;
 		}
 
-		public function get row():int
-		{
+		public function get row():int {
 			return _row;
 		}
 
-		public function set row(value:int):void
-		{
+		public function set row(value:int):void {
 			_row = value;
 		}
 
-		public function get col():int
-		{
+		public function get col():int {
 			return _col;
 		}
 
-		public function set col(value:int):void
-		{
+		public function set col(value:int):void {
 			_col = value;
 		}
 
+		public function get id():String {
+			return _id;
+		}
+
+		public function set id(value:String):void {
+			_id = value;
+		}
 
 	}
 }
