@@ -37,6 +37,8 @@ package com.snsoft.ens {
 
 		private var currentBooth:Sprite = null;
 
+		private var ensSpace:EnsSpace;
+
 		public function Ens() {
 			super();
 			this.addChild(workLayer);
@@ -68,7 +70,31 @@ package com.snsoft.ens {
 
 		private function handlerMenuState(e:Event):void {
 			var ensm:EnsMenu = e.currentTarget as EnsMenu;
-			trace("asdf:", ensm.state);
+			var state:String = ensm.state;
+			switch (state) {
+				case EnsMenu.STATE_OUT:  {
+					break;
+				}
+				case EnsMenu.STATE_IN:  {
+					break;
+				}
+				case EnsMenu.STATE_ADD_ROW:  {
+					ensSpace.addRow(1);
+					break;
+				}
+				case EnsMenu.STATE_DEL_ROW:  {
+					ensSpace.addRow(-1);
+					break;
+				}
+				case EnsMenu.STATE_ADD_COL:  {
+					ensSpace.addCol(1);
+					break;
+				}
+				case EnsMenu.STATE_DEL_COL:  {
+					ensSpace.addCol(-1);
+					break;
+				}
+			}
 		}
 
 		private function initWork():void {
@@ -104,11 +130,11 @@ package com.snsoft.ens {
 		}
 
 		private function initMap():void {
-			var enss:EnsSpace = new EnsSpace(10, 15, paneWidth, paneHeight);
-			mapLayer.addChild(enss);
+			ensSpace = new EnsSpace(10, 15, paneWidth, paneHeight);
+			mapLayer.addChild(ensSpace);
 			workLayer.addEventListener(MouseEvent.MOUSE_DOWN, handlerMapMouseDown);
 			workLayer.addEventListener(MouseEvent.MOUSE_UP, handlerMapMouseUp);
-			enss.addEventListener(EnsSpace.EVENT_SELECT_PANE, handlerBoothPane);
+			ensSpace.addEventListener(EnsSpace.EVENT_SELECT_PANE, handlerBoothPane);
 
 		}
 
