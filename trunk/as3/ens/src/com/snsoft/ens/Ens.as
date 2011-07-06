@@ -23,6 +23,8 @@ package com.snsoft.ens {
 
 		private var boothArrLayer:Sprite = new Sprite();
 
+		private var menuLayer:Sprite = new Sprite();
+
 		private var penLayer:Sprite = new Sprite();
 
 		private var toolType:String;
@@ -41,6 +43,7 @@ package com.snsoft.ens {
 			workLayer.addChild(mapLayer);
 			workLayer.addChild(boothsLayer);
 			this.addChild(boothArrLayer);
+			this.addChild(menuLayer);
 			this.addChild(toolBtnsLayer);
 			this.addChild(penLayer);
 			init();
@@ -49,8 +52,28 @@ package com.snsoft.ens {
 		private function init():void {
 			initToolsBar();
 			initPen();
+			initWork();
 			initMap();
 			initBoothAttr();
+			initMenuLayer();
+		}
+
+		private function initMenuLayer():void {
+			var ensm:EnsMenu = new EnsMenu();
+			menuLayer.addChild(ensm);
+			ensm.x = 50;
+			ensm.y = 10;
+			ensm.addEventListener(EnsMenu.EVENT_STATE, handlerMenuState);
+		}
+
+		private function handlerMenuState(e:Event):void {
+			var ensm:EnsMenu = e.currentTarget as EnsMenu;
+			trace("asdf:", ensm.state);
+		}
+
+		private function initWork():void {
+			workLayer.x = 50;
+			workLayer.y = 50;
 		}
 
 		private function initBoothAttr():void {
@@ -60,7 +83,6 @@ package com.snsoft.ens {
 			boothArrLayer.addChild(be);
 			be.addEventListener(BoothEditer.EVENT_CMP, handlerBoothCmpClick);
 			be.addEventListener(BoothEditer.EVENT_DEL, handlerBoothDelClick);
-
 		}
 
 		private function handlerBoothCmpClick(e:Event):void {

@@ -13,8 +13,12 @@ package com.snsoft.ens {
 		public static const EVENT_DEL:String = "EVENT_DEL";
 
 		private var dtfd:TextField;
+
 		private var dcmp:Button;
+
 		private var ddel:Button;
+
+		private var _text:String;
 
 		public function BoothEditer() {
 			super();
@@ -33,11 +37,23 @@ package com.snsoft.ens {
 		}
 
 		private function handlerCmpClick(e:Event):void {
+			if (dtfd.text != null && dtfd.text.length > 0) {
+				_text = dtfd.text;
+			}
+			else {
+				_text = "";
+			}
+			dtfd.text = "";
 			this.dispatchEvent(new Event(EVENT_CMP));
 		}
 
 		private function handlerDelClick(e:Event):void {
 			this.dispatchEvent(new Event(EVENT_DEL));
 		}
+
+		public function get text():String {
+			return _text;
+		}
+
 	}
 }
