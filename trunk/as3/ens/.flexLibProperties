@@ -10,6 +10,7 @@
     <classEntry path="com.snsoft.ens.EnsToolsBar"/>
     <classEntry path="com.snsoft.ens.EnsToolBtnDO"/>
     <classEntry path="com.snsoft.ens.EnsToolType"/>
+    <classEntry path="com.snsoft.ens.BoothEditer"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

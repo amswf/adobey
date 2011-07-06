@@ -6,6 +6,8 @@ package com.snsoft.ens {
 
 		public static const DRAG:String = "PenDragDefaultSkin";
 
+		public static const BOOTH:String = "PenLineDefaultSkin";
+
 		public function EnsToolType() {
 		}
 	}

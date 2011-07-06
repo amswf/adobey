@@ -50,13 +50,14 @@
 			ensp.height = paneHeight;
 			var ep:EnsPane = new EnsPane(ensp);
 			this.addChild(ep);
+			ep.addEventListener(MouseEvent.CLICK, hanlderPaneMouseClick);
 			v.push(ep);
 			vv.push(v);
 			this.row = 1;
 			this.col = 1;
 
-			addRow(row);
-			addCol(col);
+			addRow(row - 1);
+			addCol(col - 1);
 
 		}
 

@@ -1,4 +1,5 @@
 package com.snsoft.ens {
+	import com.snsoft.util.AbstractBase;
 	import com.snsoft.util.ColorTransformUtil;
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.SpriteUtil;
@@ -7,6 +8,7 @@ package com.snsoft.ens {
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.filters.DropShadowFilter;
 	import flash.ui.Mouse;
 
 	public class Ens extends Sprite {
@@ -19,6 +21,8 @@ package com.snsoft.ens {
 
 		private var workLayer:Sprite = new Sprite();
 
+		private var boothArrLayer:Sprite = new Sprite();
+
 		private var penLayer:Sprite = new Sprite();
 
 		private var toolType:String;
@@ -27,11 +31,18 @@ package com.snsoft.ens {
 
 		private var paneHeight:int = 30;
 
+		private var booths:Vector.<Sprite> = new Vector.<Sprite>();
+
+		private var currentBooth:Sprite = null;
+
+		private var currentPanes:Vector.<EnsPane> = null;
+
 		public function Ens() {
 			super();
 			this.addChild(workLayer);
 			workLayer.addChild(mapLayer);
 			workLayer.addChild(boothsLayer);
+			this.addChild(boothArrLayer);
 			this.addChild(toolBtnsLayer);
 			this.addChild(penLayer);
 			init();
@@ -41,10 +52,37 @@ package com.snsoft.ens {
 			initToolsBar();
 			initPen();
 			initMap();
+			initBoothAttr();
 		}
 
-		private function initWorkLayer():void {
+		private function initBoothAttr():void {
+			var be:BoothEditer = new BoothEditer();
+			be.x = stage.stageWidth - 194;
+			be.y = 10;
+			boothArrLayer.addChild(be);
+			be.addEventListener(BoothEditer.EVENT_CMP, handlerBoothCmpClick);
+			be.addEventListener(BoothEditer.EVENT_DEL, handlerBoothDelClick);
 
+		}
+
+		private function handlerBoothCmpClick(e:Event):void {
+			clearCurrentBooth();
+		}
+
+		private function clearCurrentBooth():void {
+			if (currentBooth != null) {
+				setBoothUnSelectedFilters(currentBooth);
+				currentBooth = null;
+				currentPanes = null;
+			}
+		}
+
+		private function handlerBoothDelClick(e:Event):void {
+			if (currentBooth != null) {
+				boothsLayer.removeChild(currentBooth);
+				currentBooth = null;
+				currentPanes = null;
+			}
 		}
 
 		private function initMap():void {
@@ -52,7 +90,7 @@ package com.snsoft.ens {
 			mapLayer.addChild(enss);
 			enss.addEventListener(MouseEvent.MOUSE_DOWN, handlerMapMouseDown);
 			enss.addEventListener(MouseEvent.MOUSE_UP, handlerMapMouseUp);
-			enss.addEventListener(EnsSpace.EVENT_SELECT_PANE, handlerMapSelectPane);
+			enss.addEventListener(EnsSpace.EVENT_SELECT_PANE, handlerBoothPane);
 
 		}
 
@@ -68,24 +106,78 @@ package com.snsoft.ens {
 			}
 		}
 
-		private function handlerMapSelectPane(e:Event):void {
-			if (toolType == EnsToolType.SELECT) {
-				trace("adsf");
+		private function handlerBoothPane(e:Event):void {
+			if (toolType == EnsToolType.BOOTH) {
 				var enss:EnsSpace = e.currentTarget as EnsSpace;
 				var pane:EnsPane = enss.currentPane;
 				drawBooth(pane);
 			}
+			else if (toolType == EnsToolType.SELECT) {
+				clearCurrentBooth();
+			}
 		}
 
 		private function drawBooth(ensPane:EnsPane):void {
+			if (currentBooth == null || currentPanes == null) {
+				currentBooth = new Sprite();
+				boothsLayer.addChild(currentBooth);
+				booths.push(currentBooth);
+				currentPanes = new Vector.<EnsPane>();
+				setBoothSelectedFilters(currentBooth);
+				currentBooth.addEventListener(MouseEvent.CLICK, handlerBoothMouseClick);
+			}
+
 			var enspdo:EnsPaneDO = new EnsPaneDO();
 			enspdo.width = paneWidth;
 			enspdo.height = paneHeight;
+			enspdo.row = ensPane.ensPaneDO.row;
+			enspdo.col = ensPane.ensPaneDO.col;
 			var ensp:EnsPane = new EnsPane(enspdo);
 			ensp.x = ensPane.x;
 			ensp.y = ensPane.y;
-			ColorTransformUtil.setColor(ensp, 0x000000, 1, 0);
-			boothsLayer.addChild(ensp);
+			ColorTransformUtil.setColor(ensp, 0xdddddd, 1, 0);
+			currentBooth.addChild(ensp);
+			ensp.addEventListener(MouseEvent.CLICK, handlerRemoveBoothPane);
+		}
+
+		private function handlerBoothMouseClick(e:Event):void {
+			var booth:Sprite = e.currentTarget as Sprite;
+			if (toolType == EnsToolType.SELECT) {
+				if (booth != currentBooth) {
+					if (currentBooth != null) {
+						setBoothUnSelectedFilters(currentBooth);
+					}
+					currentBooth = booth;
+					setBoothSelectedFilters(currentBooth);
+					boothsLayer.setChildIndex(currentBooth, boothsLayer.numChildren - 1);
+				}
+			}
+		}
+
+		private function setBoothSelectedFilters(booth:Sprite):void {
+			var array:Array = new Array();
+			array.push(new DropShadowFilter(0, 0, 0xffffff, 3, 2, 2, 255));
+			array.push(new DropShadowFilter(0, 0, 0x000000, 3, 4, 4, 1));
+			booth.filters = array;
+		}
+
+		private function setBoothUnSelectedFilters(booth:Sprite):void {
+			var array:Array = new Array();
+			array.push(new DropShadowFilter(0, 0, 0x999999, 3, 2, 2, 255, 1, true));
+			booth.filters = array;
+		}
+
+		private function handlerRemoveBoothPane(e:Event):void {
+			if (toolType == EnsToolType.BOOTH) {
+				try {
+					var ensp:EnsPane = e.currentTarget as EnsPane;
+					currentBooth.removeChild(ensp);
+					ensp.removeEventListener(MouseEvent.CLICK, handlerRemoveBoothPane);
+				}
+				catch (e:Error) {
+
+				}
+			}
 		}
 
 		private function initPen():void {
@@ -105,6 +197,7 @@ package com.snsoft.ens {
 			var etb:EnsToolsBar = new EnsToolsBar();
 			etb.addBtn(new EnsToolBtnDO("ToolSelectDefaultSkin", "ToolSelectDownSkin", "ToolSelectOverSkin", true, EnsToolType.SELECT));
 			etb.addBtn(new EnsToolBtnDO("ToolDragDefaultSkin", "ToolDragDownSkin", "ToolDragOverSkin", false, EnsToolType.DRAG));
+			etb.addBtn(new EnsToolBtnDO("ToolLineDefaultSkin", "ToolLineDownSkin", "ToolLineOverSkin", false, EnsToolType.BOOTH));
 			etb.x = 10;
 			etb.y = 10;
 			toolBtnsLayer.addChild(etb);

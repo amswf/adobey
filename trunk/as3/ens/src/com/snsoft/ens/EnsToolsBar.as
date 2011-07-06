@@ -80,6 +80,7 @@ package com.snsoft.ens {
 
 			for (var i:int = 0; i < btnList.length; i++) {
 				var btn:EnsToolBtn = btnList[i];
+				
 				if (btn.order != cbtn.order) {
 					btn.setStateDefault();
 				}
