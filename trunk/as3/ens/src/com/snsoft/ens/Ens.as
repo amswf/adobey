@@ -23,6 +23,8 @@ package com.snsoft.ens {
 
 		private var boothArrLayer:Sprite = new Sprite();
 
+		private var boothEditer:BoothEditer = new BoothEditer();
+
 		private var menuLayer:Sprite = new Sprite();
 
 		private var penLayer:Sprite = new Sprite();
@@ -35,7 +37,7 @@ package com.snsoft.ens {
 
 		private var booths:Vector.<Sprite> = new Vector.<Sprite>();
 
-		private var currentBooth:Sprite = null;
+		private var currentBooth:EnsBooth = null;
 
 		private var ensSpace:EnsSpace;
 
@@ -103,15 +105,19 @@ package com.snsoft.ens {
 		}
 
 		private function initBoothAttr():void {
-			var be:BoothEditer = new BoothEditer();
-			be.x = stage.stageWidth - 194;
-			be.y = 10;
-			boothArrLayer.addChild(be);
-			be.addEventListener(BoothEditer.EVENT_CMP, handlerBoothCmpClick);
-			be.addEventListener(BoothEditer.EVENT_DEL, handlerBoothDelClick);
+			boothEditer = new BoothEditer();
+			boothEditer.x = stage.stageWidth - 194;
+			boothEditer.y = 10;
+			boothArrLayer.addChild(boothEditer);
+			boothEditer.addEventListener(BoothEditer.EVENT_CMP, handlerBoothCmpClick);
+			boothEditer.addEventListener(BoothEditer.EVENT_DEL, handlerBoothDelClick);
 		}
 
 		private function handlerBoothCmpClick(e:Event):void {
+			var be:BoothEditer = e.currentTarget as BoothEditer;
+			if (currentBooth != null) {
+				currentBooth.id = be.text;
+			}
 			clearCurrentBooth();
 		}
 
@@ -163,11 +169,12 @@ package com.snsoft.ens {
 
 		private function drawBooth(ensPane:EnsPane):void {
 			if (currentBooth == null) {
-				currentBooth = new Sprite();
+				currentBooth = new EnsBooth();
 				boothsLayer.addChild(currentBooth);
 				booths.push(currentBooth);
 				setBoothSelectedFilters(currentBooth);
 				currentBooth.addEventListener(MouseEvent.CLICK, handlerBoothMouseClick);
+				boothEditer.text = "";
 			}
 
 			var enspdo:EnsPaneDO = new EnsPaneDO();
@@ -184,7 +191,7 @@ package com.snsoft.ens {
 		}
 
 		private function handlerBoothMouseClick(e:Event):void {
-			var booth:Sprite = e.currentTarget as Sprite;
+			var booth:EnsBooth = e.currentTarget as EnsBooth;
 			if (toolType == EnsToolType.SELECT) {
 				if (booth != currentBooth) {
 					if (currentBooth != null) {
@@ -192,6 +199,7 @@ package com.snsoft.ens {
 					}
 					currentBooth = booth;
 					setBoothSelectedFilters(currentBooth);
+					boothEditer.text = currentBooth.id;
 					boothsLayer.setChildIndex(currentBooth, boothsLayer.numChildren - 1);
 				}
 			}
