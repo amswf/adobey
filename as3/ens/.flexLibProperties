@@ -11,6 +11,7 @@
     <classEntry path="com.snsoft.ens.EnsToolBtnDO"/>
     <classEntry path="com.snsoft.ens.EnsToolType"/>
     <classEntry path="com.snsoft.ens.BoothEditer"/>
+    <classEntry path="com.snsoft.ens.EnsMenu"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
