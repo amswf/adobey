@@ -75,6 +75,8 @@ package com.snsoft.ens {
 			var state:String = ensm.state;
 			switch (state) {
 				case EnsMenu.STATE_OUT:  {
+					ensSpace.row;
+					ensSpace.col;
 					break;
 				}
 				case EnsMenu.STATE_IN:  {

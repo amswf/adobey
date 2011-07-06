@@ -12,15 +12,9 @@
 
 		public static const EVENT_SELECT_PANE:String = "EVENT_SELECT_PANE";
 
-		/**
-		 * 行数
-		 */
-		private var row:int = 0;
+		private var _row:int = 0;
 
-		/**
-		 * 列数
-		 */
-		private var col:int = 0;
+		private var _col:int = 0;
 
 		private var paneWidth:int;
 
@@ -53,8 +47,8 @@
 			ep.addEventListener(MouseEvent.CLICK, hanlderPaneMouseClick);
 			v.push(ep);
 			vv.push(v);
-			this.row = 1;
-			this.col = 1;
+			this._row = 1;
+			this._col = 1;
 
 			addRow(row - 1);
 			addCol(col - 1);
@@ -100,7 +94,7 @@
 				}
 			}
 			if (sign) {
-				this.row += num;
+				this._row += num;
 			}
 		}
 
@@ -139,7 +133,7 @@
 				}
 			}
 			if (sign) {
-				this.col += num;
+				this._col += num;
 			}
 		}
 
@@ -150,6 +144,20 @@
 
 		public function get currentPane():EnsPane {
 			return _currentPane;
+		}
+
+		/**
+		 * 行数
+		 */
+		public function get row():int {
+			return _row;
+		}
+
+		/**
+		 * 列数
+		 */
+		public function get col():int {
+			return _col;
 		}
 
 	}

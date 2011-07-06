@@ -1,6 +1,7 @@
 package com.snsoft.util {
 	import fl.motion.Color;
 
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.geom.ColorTransform;
 
@@ -21,7 +22,7 @@ package com.snsoft.util {
 		 * @param mult 混合度
 		 *
 		 */
-		public static function setColor(mc:Sprite = null, color:uint = 0xffffff, alpha:Number = 1, mult:Number = 0):void {
+		public static function setColor(mc:DisplayObject = null, color:uint = 0xffffff, alpha:Number = 1, mult:Number = 0):void {
 			if (mc != null) {
 				mc.alpha = alpha;
 				var ct:ColorTransform = mc.transform.colorTransform;
