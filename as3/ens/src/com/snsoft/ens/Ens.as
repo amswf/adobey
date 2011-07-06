@@ -35,8 +35,6 @@ package com.snsoft.ens {
 
 		private var currentBooth:Sprite = null;
 
-		private var currentPanes:Vector.<EnsPane> = null;
-
 		public function Ens() {
 			super();
 			this.addChild(workLayer);
@@ -73,7 +71,6 @@ package com.snsoft.ens {
 			if (currentBooth != null) {
 				setBoothUnSelectedFilters(currentBooth);
 				currentBooth = null;
-				currentPanes = null;
 			}
 		}
 
@@ -81,15 +78,14 @@ package com.snsoft.ens {
 			if (currentBooth != null) {
 				boothsLayer.removeChild(currentBooth);
 				currentBooth = null;
-				currentPanes = null;
 			}
 		}
 
 		private function initMap():void {
 			var enss:EnsSpace = new EnsSpace(10, 15, paneWidth, paneHeight);
 			mapLayer.addChild(enss);
-			enss.addEventListener(MouseEvent.MOUSE_DOWN, handlerMapMouseDown);
-			enss.addEventListener(MouseEvent.MOUSE_UP, handlerMapMouseUp);
+			workLayer.addEventListener(MouseEvent.MOUSE_DOWN, handlerMapMouseDown);
+			workLayer.addEventListener(MouseEvent.MOUSE_UP, handlerMapMouseUp);
 			enss.addEventListener(EnsSpace.EVENT_SELECT_PANE, handlerBoothPane);
 
 		}
@@ -118,11 +114,10 @@ package com.snsoft.ens {
 		}
 
 		private function drawBooth(ensPane:EnsPane):void {
-			if (currentBooth == null || currentPanes == null) {
+			if (currentBooth == null) {
 				currentBooth = new Sprite();
 				boothsLayer.addChild(currentBooth);
 				booths.push(currentBooth);
-				currentPanes = new Vector.<EnsPane>();
 				setBoothSelectedFilters(currentBooth);
 				currentBooth.addEventListener(MouseEvent.CLICK, handlerBoothMouseClick);
 			}
@@ -183,12 +178,12 @@ package com.snsoft.ens {
 		private function initPen():void {
 			penLayer.mouseEnabled = false;
 			penLayer.mouseChildren = false;
-			Mouse.hide();
 			refreshPen();
 			stage.addEventListener(MouseEvent.MOUSE_MOVE, handlerMouseMove);
 		}
 
 		private function handlerMouseMove(e:Event):void {
+			Mouse.hide();
 			penLayer.x = mouseX;
 			penLayer.y = mouseY;
 		}
