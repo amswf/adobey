@@ -55,5 +55,16 @@ package com.snsoft.ens {
 			return _text;
 		}
 
+		public function set text(value:String):void {
+			if (value != null) {
+				_text = value;
+
+			}
+			else {
+				_text = "";
+			}
+			this.dtfd.text = _text;
+		}
+
 	}
 }
