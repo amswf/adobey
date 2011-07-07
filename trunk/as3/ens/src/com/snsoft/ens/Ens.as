@@ -51,9 +51,9 @@
 
 		private var xmlUrl:String = "data.xml";
 
-		private var esRow:int = 1;
+		private var esRow:int = 15;
 
-		private var esCol:int = 1;
+		private var esCol:int = 18;
 
 		public function Ens() {
 			super();
@@ -64,57 +64,6 @@
 			this.addChild(menuLayer);
 			this.addChild(toolBtnsLayer);
 			this.addChild(penLayer);
-
-			loadXML();
-		}
-
-		private function loadXML():void {
-			rsxml = new RSTextFile();
-			rsxml.addResUrl(xmlUrl);
-
-			var rsm:ResLoadManager = new ResLoadManager();
-			rsm.addResSet(rsxml);
-			rsm.addEventListener(Event.COMPLETE, handlerLoadXMLCmp);
-			rsm.load();
-		}
-
-		private function handlerLoadXMLCmp(e:Event):void {
-			var xmlStr:String = rsxml.getTextByUrl(xmlUrl);
-			var xml:XML = new XML(xmlStr);
-			var xdom:XMLDom = new XMLDom(xml);
-			var node:Node = xdom.parse();
-			var ensNode:Node = node.getNodeListFirstNode("ens");
-			esRow = parseInt(ensNode.getAttributeByName("row"));
-			esCol = parseInt(ensNode.getAttributeByName("col"));
-
-			var boothList:NodeList = ensNode.getNodeList("booth");
-			if (boothList != null) {
-				for (var i:int = 0; i < boothList.length(); i++) {
-					var boothNode:Node = boothList.getNode(i);
-					var ensb:EnsBooth = new EnsBooth();
-					ensb.id = boothNode.getAttributeByName("value");
-					ensb.text = boothNode.getAttributeByName("name");
-					setBoothUnSelectedFilters(ensb);
-					boothsLayer.addChild(ensb);
-					ensb.addEventListener(MouseEvent.CLICK, handlerBoothMouseClick);
-
-					var paneList:NodeList = boothNode.getNodeList("pane");
-					for (var j:int = 0; j < paneList.length(); j++) {
-						var paneNode:Node = paneList.getNode(j);
-						var pdo:EnsPaneDO = new EnsPaneDO();
-						pdo.row = parseInt(paneNode.getAttributeByName("row")) - 1;
-						pdo.col = parseInt(paneNode.getAttributeByName("col")) - 1;
-						pdo.width = paneWidth;
-						pdo.height = paneHeight;
-						var ensp:EnsPane = new EnsPane(pdo);
-						ensp.x = pdo.col * paneWidth;
-						ensp.y = pdo.row * paneHeight;
-						ColorTransformUtil.setColor(ensp, 0xdddddd, 1, 0);
-						ensb.addChild(ensp);
-						ensp.addEventListener(MouseEvent.CLICK, handlerRemoveBoothPane);
-					}
-				}
-			}
 
 			init();
 		}
@@ -146,6 +95,7 @@
 					break;
 				}
 				case EnsMenu.STATE_IN:  {
+					loadXML();
 					break;
 				}
 				case EnsMenu.STATE_ADD_ROW:  {
@@ -165,6 +115,59 @@
 					break;
 				}
 			}
+		}
+
+		private function loadXML():void {
+			rsxml = new RSTextFile();
+			rsxml.addResUrl(xmlUrl);
+
+			var rsm:ResLoadManager = new ResLoadManager();
+			rsm.addResSet(rsxml);
+			rsm.addEventListener(Event.COMPLETE, handlerLoadXMLCmp);
+			rsm.load();
+		}
+
+		private function handlerLoadXMLCmp(e:Event):void {
+			SpriteUtil.deleteAllChild(boothsLayer);
+
+			var xmlStr:String = rsxml.getTextByUrl(xmlUrl);
+			var xml:XML = new XML(xmlStr);
+			var xdom:XMLDom = new XMLDom(xml);
+			var node:Node = xdom.parse();
+			var ensNode:Node = node.getNodeListFirstNode("ens");
+			esRow = parseInt(ensNode.getAttributeByName("row"));
+			esCol = parseInt(ensNode.getAttributeByName("col"));
+
+			var boothList:NodeList = ensNode.getNodeList("booth");
+			currentBooth = null;
+			if (boothList != null) {
+				for (var i:int = 0; i < boothList.length(); i++) {
+					var boothNode:Node = boothList.getNode(i);
+					var ensb:EnsBooth = new EnsBooth();
+					ensb.id = boothNode.getAttributeByName("value");
+					ensb.text = boothNode.getAttributeByName("name");
+					setBoothUnSelectedFilters(ensb);
+					boothsLayer.addChild(ensb);
+					ensb.addEventListener(MouseEvent.CLICK, handlerBoothMouseClick);
+
+					var paneList:NodeList = boothNode.getNodeList("pane");
+					for (var j:int = 0; j < paneList.length(); j++) {
+						var paneNode:Node = paneList.getNode(j);
+						var pdo:EnsPaneDO = new EnsPaneDO();
+						pdo.row = parseInt(paneNode.getAttributeByName("row")) - 1;
+						pdo.col = parseInt(paneNode.getAttributeByName("col")) - 1;
+						pdo.width = paneWidth;
+						pdo.height = paneHeight;
+						var ensp:EnsPane = new EnsPane(pdo);
+						ensp.x = pdo.col * paneWidth;
+						ensp.y = pdo.row * paneHeight;
+						ColorTransformUtil.setColor(ensp, 0xdddddd, 1, 0);
+						ensb.addChild(ensp);
+						ensp.addEventListener(MouseEvent.CLICK, handlerRemoveBoothPane);
+					}
+				}
+			}
+			initMap();
 		}
 
 		private function outXML():void {
@@ -236,12 +239,17 @@
 		}
 
 		private function initMap():void {
+			SpriteUtil.deleteAllChild(mapLayer);
+			workLayer.removeEventListener(MouseEvent.MOUSE_DOWN, handlerMapMouseDown);
+			workLayer.removeEventListener(MouseEvent.MOUSE_UP, handlerMapMouseUp);
+			if (ensSpace != null) {
+				ensSpace.removeEventListener(EnsSpace.EVENT_SELECT_PANE, handlerBoothPane);
+			}
 			ensSpace = new EnsSpace(esRow, esCol, paneWidth, paneHeight);
 			mapLayer.addChild(ensSpace);
 			workLayer.addEventListener(MouseEvent.MOUSE_DOWN, handlerMapMouseDown);
 			workLayer.addEventListener(MouseEvent.MOUSE_UP, handlerMapMouseUp);
 			ensSpace.addEventListener(EnsSpace.EVENT_SELECT_PANE, handlerBoothPane);
-
 		}
 
 		private function handlerMapMouseDown(e:Event):void {
