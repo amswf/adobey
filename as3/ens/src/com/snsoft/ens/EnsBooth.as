@@ -4,6 +4,8 @@ package com.snsoft.ens {
 	public class EnsBooth extends Sprite {
 
 		private var _id:String;
+		
+		private var _text:String;
 
 		public function EnsBooth() {
 			super();
@@ -18,6 +20,17 @@ package com.snsoft.ens {
 		{
 			_id = value;
 		}
+
+		public function get text():String
+		{
+			return _text;
+		}
+
+		public function set text(value:String):void
+		{
+			_text = value;
+		}
+
 
 	}
 }

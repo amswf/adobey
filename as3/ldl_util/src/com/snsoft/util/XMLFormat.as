@@ -1,16 +1,9 @@
-﻿package com.snsoft.util
-{
-	/**
-	 * xml格式化,目前不支持含有CDADA标签
-	 * @author Administrator
-	 * 
-	 */	
-	public class XMLUtil
-	{
-		public function XMLUtil()
-		{
+package com.snsoft.util {
+
+	public class XMLFormat {
+		public function XMLFormat() {
 		}
-		
+
 		public static function formatXML(xml:XML):String {
 			var tagNum:int = 0;
 			var fstr:String = "";
@@ -49,8 +42,7 @@
 			}
 			return fstr;
 		}
-		
-		
+
 		//生成回车，空格
 		private static function getTagStr(tageNum:int):String {
 			var str:String = "";
@@ -59,7 +51,7 @@
 			}
 			return "\r\n" + str;
 		}
-		
+
 		//获得当前字符之前的最后标签
 		private static function getLeftTagType(list:Array, index:Number):String {
 			if (index >= 0 && index <= list.length) {
@@ -82,11 +74,10 @@
 			}
 			return null;
 		}
-		
-		
+
 		//获得当前字符之后的第一个标签
 		private static function getRightTagType(list:Array, index:Number):String {
-			
+
 			if (index + 1 <= list.length) {
 				for (var i:int = index + 1; i < list.length; i++) {
 					if (list[i] == ">") {
