@@ -153,25 +153,26 @@
 
 		private function findWay(boothDO:EnsvBoothDO):void {
 			var pv:Vector.<EnsvPaneDO> = boothDO.paneDOs;
-			var minv:Vector.<Point>;
+			var minv:Vector.<Point> = null;
 			var min:int = int.MAX_VALUE;
 			for (var j:int = 0; j < pv.length; j++) {
 				var pdo:EnsvPaneDO = pv[j];
-				var v:Vector.<Point> = wayFinding.find(new Point(8, 0), new Point(pdo.col, pdo.row));
-				trace(v.length);
+				var v:Vector.<Point> = wayFinding.find(new Point(8, 4), new Point(pdo.col, pdo.row));
 				if (v.length < min && v.length > 0) {
 					minv = v;
 					min = v.length;
 				}
 			}
-			trace(minv.length);
 			SpriteUtil.deleteAllChild(wayLayer);
-			for (var i:int = 0; i < minv.length; i++) {
-				var mc:MovieClip = SkinsUtil.createSkinByName("WayPoint");
-				var p:Point = minv[i];
-				mc.x = p.x * paneWidth;
-				mc.y = p.y * paneHeight;
-				wayLayer.addChild(mc);
+
+			if (minv != null) {
+				for (var i:int = 0; i < minv.length; i++) {
+					var mc:MovieClip = SkinsUtil.createSkinByName("WayPoint");
+					var p:Point = minv[i];
+					mc.x = p.x * paneWidth;
+					mc.y = p.y * paneHeight;
+					wayLayer.addChild(mc);
+				}
 			}
 		}
 

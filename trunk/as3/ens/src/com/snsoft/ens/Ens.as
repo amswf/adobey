@@ -197,8 +197,6 @@
 
 			str += '	</ens>\n';
 			str += '</xml>\n';
-
-			trace(str);
 		}
 
 		private function initWork():void {
