@@ -13,6 +13,8 @@
     <classEntry path="com.snsoft.ens.BoothEditer"/>
     <classEntry path="com.snsoft.ens.EnsMenu"/>
     <classEntry path="com.snsoft.ens.EnsBooth"/>
+    <classEntry path="com.snsoft.ensview.EnsvBoothDO"/>
+    <classEntry path="com.snsoft.ensview.Ensv"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
