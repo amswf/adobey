@@ -12,13 +12,17 @@ package com.snsoft.ens {
 
 		public static const EVENT_DEL:String = "EVENT_DEL";
 
-		private var dtfd:TextField;
+		private var dId:TextField;
+
+		private var dText:TextField;
 
 		private var dcmp:Button;
 
 		private var ddel:Button;
 
 		private var _text:String;
+
+		private var _id:String;
 
 		public function BoothEditer() {
 			super();
@@ -28,7 +32,8 @@ package com.snsoft.ens {
 		private function handlerEnterFrame(e:Event):void {
 			this.removeEventListener(Event.ENTER_FRAME, handlerEnterFrame);
 
-			dtfd = this.getChildByName("tfd") as TextField;
+			dId = this.getChildByName("tfd") as TextField;
+			dText = this.getChildByName("ttfd") as TextField;
 			dcmp = this.getChildByName("cmp") as Button;
 			ddel = this.getChildByName("del") as Button;
 
@@ -37,13 +42,21 @@ package com.snsoft.ens {
 		}
 
 		private function handlerCmpClick(e:Event):void {
-			if (dtfd.text != null && dtfd.text.length > 0) {
-				_text = dtfd.text;
+			if (dId.text != null && dId.text.length > 0) {
+				_id = dId.text;
+			}
+			else {
+				_id = "";
+			}
+			dId.text = "";
+
+			if (dText.text != null && dText.text.length > 0) {
+				_text = dText.text;
 			}
 			else {
 				_text = "";
 			}
-			dtfd.text = "";
+			dText.text = "";
 			this.dispatchEvent(new Event(EVENT_CMP));
 		}
 
@@ -58,12 +71,25 @@ package com.snsoft.ens {
 		public function set text(value:String):void {
 			if (value != null) {
 				_text = value;
-
 			}
 			else {
 				_text = "";
 			}
-			this.dtfd.text = _text;
+			this.dText.text = _text;
+		}
+
+		public function get id():String {
+			return _id;
+		}
+
+		public function set id(value:String):void {
+			if (value != null) {
+				_id = value;
+			}
+			else {
+				_id = "";
+			}
+			this.dId.text = _id;
 		}
 
 	}

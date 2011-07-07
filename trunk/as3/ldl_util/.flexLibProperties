@@ -13,6 +13,7 @@
     <classEntry path="com.snsoft.ltree.LNodePlaceType"/>
     <classEntry path="com.snsoft.ltree.LNodeImgs"/>
     <classEntry path="com.snsoft.util.bg.IBGButton"/>
+    <classEntry path="com.snsoft.util.XMLFormat"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
