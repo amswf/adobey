@@ -51,7 +51,6 @@
 			dDelRowBtn = this.getChildByName("delRowBtn") as Button;
 			dAddColBtn = this.getChildByName("addColBtn") as Button;
 			dDelColBtn = this.getChildByName("delColBtn") as Button;
-			//trace(dOutBtn, dInBtn, dAddRowBtn, dDelRowBtn, dAddColBtn, dDelColBtn);
 
 			dOutBtn.addEventListener(MouseEvent.CLICK, handlerBtnClick);
 			dInBtn.addEventListener(MouseEvent.CLICK, handlerBtnClick);
