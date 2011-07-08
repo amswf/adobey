@@ -166,11 +166,116 @@
 			SpriteUtil.deleteAllChild(wayLayer);
 
 			if (minv != null) {
-				for (var i:int = 0; i < minv.length; i++) {
-					var mc:MovieClip = SkinsUtil.createSkinByName("WayPoint");
-					var p:Point = minv[i];
-					mc.x = p.x * paneWidth;
-					mc.y = p.y * paneHeight;
+				for (var i:int = 0; i < minv.length - 1; i++) {
+
+					var pp:Point = null;
+					var p:Point = null;
+					var np:Point = null;
+
+					p = minv[i];
+					if ((i - 1) >= 0) {
+						pp = minv[i - 1];
+					}
+					if ((i + 1) < minv.length) {
+						np = minv[i + 1];
+					}
+
+					var rotation:int = 0;
+					var skinName:String = "";
+					if (pp == null && np != null) {
+						skinName = "FootD";
+						if (np.x > p.x) {
+							rotation = 0;
+						}
+						else if (np.x < p.x) {
+							rotation = 180;
+						}
+						else if (np.y > p.y) {
+							rotation = 90;
+						}
+						else if (np.y < p.y) {
+							rotation = -90;
+						}
+					}
+					else if (pp != null && np == null) {
+						skinName = "FootD";
+						if (p.x > pp.x) {
+							rotation = 0;
+						}
+						else if (p.x < pp.x) {
+							rotation = 180;
+						}
+						else if (p.y > pp.y) {
+							rotation = 90;
+						}
+						else if (p.y < pp.y) {
+							rotation = -90;
+						}
+					}
+					else if (pp != null && np != null) {
+						if (p.x == pp.x && pp.x == np.x) {
+							skinName = "FootD";
+							if (pp.y < np.y) {
+								rotation = 90;
+							}
+							else if (pp.y > np.y) {
+								rotation = -90;
+							}
+						}
+						else if (p.y == pp.y && pp.y == np.y) {
+							skinName = "FootD";
+							if (pp.x < np.x) {
+								rotation = 0;
+							}
+							else if (pp.x > np.x) {
+								rotation = 180;
+							}
+						}
+						else {
+
+							if (p.x > pp.x && np.y > p.y) {
+								skinName = "FootR";
+								rotation = 0;
+							}
+							else if (p.y > pp.y && np.x < p.x) {
+								skinName = "FootR";
+								rotation = 90;
+							}
+							else if (p.x < pp.x && np.y < p.y) {
+								skinName = "FootR";
+								rotation = 180;
+							}
+							else if (p.y < pp.y && np.x > p.x) {
+								skinName = "FootR";
+								rotation = -90;
+							}
+							else if (p.x > pp.x && np.y < p.y) {
+								skinName = "FootL";
+								rotation = 0;
+							}
+							else if (p.y < pp.y && np.x < p.x) {
+								skinName = "FootL";
+								rotation = -90;
+							}
+							else if (p.x < pp.x && np.y > p.y) {
+								skinName = "FootL";
+								rotation = -180;
+							}
+							else if (p.y > pp.y && np.x > p.x) {
+								skinName = "FootL";
+								rotation = 90;
+							}
+						}
+					}
+					var mc:MovieClip = new MovieClip();
+
+					var skin:MovieClip = SkinsUtil.createSkinByName(skinName);
+					skin.x = -15;
+					skin.y = -15;
+					mc.addChild(skin);
+					mc.rotation = rotation;
+					mc.x = p.x * paneWidth + 15;
+					mc.y = p.y * paneHeight + 15;
 					wayLayer.addChild(mc);
 				}
 			}
