@@ -10,6 +10,8 @@
 	import com.snsoft.util.xmldom.NodeList;
 	import com.snsoft.util.xmldom.XMLDom;
 
+	import fl.controls.TextArea;
+
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -34,6 +36,10 @@
 		private var menuLayer:Sprite = new Sprite();
 
 		private var penLayer:Sprite = new Sprite();
+
+		private var textAreaLayer:Sprite = new Sprite();
+
+		private var outTextArea:TextArea = new TextArea();
 
 		private var toolType:String;
 
@@ -62,6 +68,7 @@
 			workLayer.addChild(boothsLayer);
 			this.addChild(boothArrLayer);
 			this.addChild(menuLayer);
+			this.addChild(textAreaLayer);
 			this.addChild(toolBtnsLayer);
 			this.addChild(penLayer);
 
@@ -75,6 +82,7 @@
 			initMap();
 			initBoothAttr();
 			initMenuLayer();
+			initTextArea();
 
 		}
 
@@ -197,6 +205,18 @@
 
 			str += '	</ens>\n';
 			str += '</xml>\n';
+
+			outTextArea.text = str;
+
+		}
+
+		private function initTextArea():void {
+			outTextArea = new TextArea();
+			outTextArea.width = 400;
+			outTextArea.height = 100;
+			outTextArea.x = 10;
+			outTextArea.y = 500;
+			textAreaLayer.addChild(outTextArea);
 		}
 
 		private function initWork():void {
