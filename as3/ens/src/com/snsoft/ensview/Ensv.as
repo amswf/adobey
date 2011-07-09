@@ -14,6 +14,7 @@
 	import flash.events.MouseEvent;
 	import flash.filters.DropShadowFilter;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 
 	public class Ensv extends Sprite {
 
@@ -43,12 +44,14 @@
 
 		private var mapLayer:Sprite = new Sprite();
 
+		private var cardLayer:Sprite = new Sprite();
+
 		public function Ensv() {
 			super();
 
 			this.addChild(mapLayer);
 			this.addChild(wayLayer);
-
+			this.addChild(cardLayer);
 			loadXML();
 		}
 
@@ -117,7 +120,39 @@
 				booths.push(booth);
 				setBoothUnSelectedFilters(booth);
 				booth.addEventListener(MouseEvent.CLICK, handlerBoothClick);
+				booth.addEventListener(MouseEvent.MOUSE_OVER, handlerBoothMouseOver);
+				booth.addEventListener(MouseEvent.MOUSE_OUT, handlerBoothMouseOut);
 			}
+		}
+
+		private function handlerBoothMouseOut(e:Event):void {
+			var cbooth:EnsvBooth = e.currentTarget as EnsvBooth;
+			SpriteUtil.deleteAllChild(cardLayer);
+		}
+
+		private function handlerBoothMouseOver(e:Event):void {
+			cardLayer.mouseChildren = false;
+			cardLayer.mouseEnabled = false;
+
+			var cbooth:EnsvBooth = e.currentTarget as EnsvBooth;
+			SpriteUtil.deleteAllChild(cardLayer);
+			var ebc:EnsvBoothCard = new EnsvBoothCard();
+			ebc.dName = "你好";
+			ebc.dText = "你好啊";
+			cardLayer.addChild(ebc);
+
+			var firstPane:EnsvPane = cbooth.panes[0];
+
+			var fprect:Rectangle = firstPane.getRect(this);
+			fprect.x += fprect.width / 2;
+			fprect.y += fprect.height / 2;
+
+			var p:Point = McEffect.getCuntryLablePoint(ebc.getRect(this), fprect, mapLayer.getRect(this));
+			ebc.x = p.x;
+			ebc.y = p.y;
+
+			var cc:MovieClip = McEffect.createLightFace(ebc.getRect(this), fprect, mapLayer.getRect(this), new Point());
+			cardLayer.addChild(cc);
 		}
 
 		private function handlerBoothClick(e:Event):void {
@@ -183,7 +218,7 @@
 					var rotation:int = 0;
 					var skinName:String = "";
 					if (pp == null && np != null) {
-						skinName = "FootD";
+						skinName = "WayPoint";
 						if (np.x > p.x) {
 							rotation = 0;
 						}
@@ -270,12 +305,12 @@
 					var mc:MovieClip = new MovieClip();
 
 					var skin:MovieClip = SkinsUtil.createSkinByName(skinName);
-					skin.x = -15;
-					skin.y = -15;
+					skin.x = -skin.width / 2;
+					skin.y = -skin.height / 2;
 					mc.addChild(skin);
 					mc.rotation = rotation;
-					mc.x = p.x * paneWidth + 15;
-					mc.y = p.y * paneHeight + 15;
+					mc.x = p.x * paneWidth + skin.width / 2;
+					mc.y = p.y * paneHeight + skin.height / 2;
 					wayLayer.addChild(mc);
 				}
 			}
