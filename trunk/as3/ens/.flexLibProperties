@@ -15,6 +15,8 @@
     <classEntry path="com.snsoft.ens.EnsBooth"/>
     <classEntry path="com.snsoft.ensview.EnsvBoothDO"/>
     <classEntry path="com.snsoft.ensview.Ensv"/>
+    <classEntry path="com.snsoft.ensview.EnsvBoothCard"/>
+    <classEntry path="com.snsoft.ensview.McEffect"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

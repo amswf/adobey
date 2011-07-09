@@ -10,6 +10,12 @@ package com.snsoft.ensview {
 
 		private var _order:int;
 
+		private var _panes:Vector.<EnsvPane> = new Vector.<EnsvPane>();
+
+		public function paneNum():int {
+			return panes.length;
+		}
+
 		public function EnsvBooth(ensvBoothDO:EnsvBoothDO) {
 			super();
 			this.ensvBoothDO = ensvBoothDO;
@@ -27,6 +33,7 @@ package com.snsoft.ensview {
 					pane.x = pdo.col * pdo.width;
 					pane.y = pdo.row * pdo.height;
 					this.addChild(pane);
+					panes.push(pane);
 				}
 
 				if (paneDOs.length > 0) {
@@ -44,14 +51,16 @@ package com.snsoft.ensview {
 			}
 		}
 
-		public function get order():int
-		{
+		public function get order():int {
 			return _order;
 		}
 
-		public function set order(value:int):void
-		{
+		public function set order(value:int):void {
 			_order = value;
+		}
+
+		public function get panes():Vector.<EnsvPane> {
+			return _panes;
 		}
 
 	}
