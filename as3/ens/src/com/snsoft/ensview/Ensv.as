@@ -17,6 +17,8 @@
 	import flash.filters.DropShadowFilter;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
 
 	public class Ensv extends Sprite {
 
@@ -165,6 +167,18 @@
 				booth.addEventListener(MouseEvent.MOUSE_OUT, handlerBoothMouseOut);
 			}
 
+			for (var j:int = 0; j < esCol; j++) {
+				for (var k:int = 0; k < esRow; k++) {
+					var tfd:TextField = new TextField();
+					tfd.autoSize = TextFieldAutoSize.LEFT;
+					tfd.text = "" + j + "" + k;
+					tfd.x = j * 30;
+					tfd.y = k * 30;
+					tfd.mouseEnabled = false;
+					mapLayer.addChild(tfd);
+				}
+			}
+
 			dragLimit = new Sprite();
 			dragLimit.graphics.beginFill(0x000000, 0);
 			dragLimit.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
@@ -176,6 +190,19 @@
 			vl.graphics.drawRect(0, 0, 200, 150);
 			vl.graphics.endFill();
 			viewLayer.addChild(vl);
+
+			var wp:MovieClip = SkinsUtil.createSkinByName("SmallCurrentPosition");
+			var wpx:int = vl.width * (currentPosition.x + 1) / esCol;
+			var wpy:int = vl.height * (currentPosition.y + 1) / esRow;
+			if (wpx >= vl.width - wp.width) {
+				wpx -= wp.width;
+			}
+			if (wpy >= vl.height - wp.height) {
+				wpy -= wp.height;
+			}
+			wp.x = wpx;
+			wp.y = wpy;
+			viewLayer.addChild(wp);
 
 			viewDrag = new Sprite();
 			viewDrag.graphics.beginFill(0x000000, 0.1);
