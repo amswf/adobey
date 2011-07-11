@@ -64,46 +64,38 @@ package com.snsoft.ensview {
 
 			var cp3:Point = new Point();
 
-			if (xb > xbs && yb > ybs) {
-				cp1.x = cl.x - cl.width / 2;
-				cp1.y = cl.y + cl.height / 2;
-				cp2.x = cl.x + cl.width / 2;
-				cp2.y = cl.y + cl.height / 2;
-				cp3.x = cl.x + cl.width / 2;
-				cp3.y = cl.y - cl.height / 2;
+			if (xb <= xbs && yb <= ybs) {
+				cp1.x = cl.x + cl.width;
+				cp1.y = cl.y;
+				cp2.x = cl.x;
+				cp2.y = cl.y;
+				cp3.x = cl.x;
+				cp3.y = cl.y + cl.height;
 			}
-			else if (xb > xbs && yb < ybs) {
-				cp1.x = cl.x + cl.width / 2;
-				cp1.y = cl.y + cl.height / 2;
-				cp2.x = cl.x + cl.width / 2;
-				cp2.y = cl.y - cl.height / 2;
-				cp3.x = cl.x - cl.width / 2;
-				cp3.y = cl.y - cl.height / 2;
+			else if (xb >= xbs && yb <= ybs) {
+				cp1.x = cl.x + cl.width;
+				cp1.y = cl.y + cl.height;
+				cp2.x = cl.x + cl.width;
+				cp2.y = cl.y;
+				cp3.x = cl.x;
+				cp3.y = cl.y;
 			}
-			else if (xb < xbs && yb > ybs) {
-				cp1.x = cl.x - cl.width / 2;
-				cp1.y = cl.y - cl.height / 2;
-				cp2.x = cl.x - cl.width / 2;
-				cp2.y = cl.y + cl.height / 2;
-				cp3.x = cl.x + cl.width / 2;
-				cp3.y = cl.y + cl.height / 2;
+			else if (xb <= xbs && yb >= ybs) {
+				cp1.x = cl.x;
+				cp1.y = cl.y;
+				cp2.x = cl.x;
+				cp2.y = cl.y + cl.height;
+				cp3.x = cl.x + cl.width;
+				cp3.y = cl.y + cl.height;
 			}
-			else if (xb < xbs && yb < ybs) {
-				cp1.x = cl.x + cl.width / 2;
-				cp1.y = cl.y - cl.height / 2;
-				cp2.x = cl.x - cl.width / 2;
-				cp2.y = cl.y - cl.height / 2;
-				cp3.x = cl.x - cl.width / 2;
-				cp3.y = cl.y + cl.height / 2;
-
+			else if (xb >= xbs && yb >= ybs) {
+				cp1.x = cl.x;
+				cp1.y = cl.y + cl.height;
+				cp2.x = cl.x + cl.width;
+				cp2.y = cl.y + cl.height;
+				cp3.x = cl.x + cl.width;
+				cp3.y = cl.y;
 			}
-
-			cp1.x += cl.width / 2;
-			cp1.y += cl.height / 2;
-			cp2.x += cl.width / 2;
-			cp2.y += cl.height / 2;
-			cp3.x += cl.width / 2;
-			cp3.y += cl.height / 2;
 
 			var sps:MovieClip = new MovieClip();
 			sps.addChild(drawLightFill(bp, cp1, cp2));
