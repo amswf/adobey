@@ -46,12 +46,15 @@
 
 		private var cardLayer:Sprite = new Sprite();
 
+		private var dragLayer:Sprite = new Sprite();
+
 		public function Ensv() {
 			super();
 
-			this.addChild(mapLayer);
-			this.addChild(wayLayer);
-			this.addChild(cardLayer);
+			this.addChild(dragLayer);
+			dragLayer.addChild(mapLayer);
+			dragLayer.addChild(wayLayer);
+			dragLayer.addChild(cardLayer);
 			loadXML();
 		}
 
@@ -109,10 +112,16 @@
 
 			wayFinding = new WayFinding(wayfvv);
 			initMap();
-
 		}
 
 		private function initMap():void {
+
+			var back:Sprite = new Sprite();
+			back.graphics.beginFill(0x000000, 0);
+			back.graphics.drawRect(0, 0, esCol * paneWidth, esRow * paneHeight);
+			back.graphics.endFill();
+			mapLayer.addChild(back);
+
 			for (var i:int = 0; i < boothDOs.length; i++) {
 				var booth:EnsvBooth = new EnsvBooth(boothDOs[i]);
 				booth.order = i;
@@ -123,6 +132,17 @@
 				booth.addEventListener(MouseEvent.MOUSE_OVER, handlerBoothMouseOver);
 				booth.addEventListener(MouseEvent.MOUSE_OUT, handlerBoothMouseOut);
 			}
+
+			dragLayer.addEventListener(MouseEvent.MOUSE_DOWN, handlerBoothMouseDown);
+			dragLayer.addEventListener(MouseEvent.MOUSE_UP, handlerBoothMouseUp);
+		}
+
+		private function handlerBoothMouseDown(e:Event):void {
+			dragLayer.startDrag();
+		}
+
+		private function handlerBoothMouseUp(e:Event):void {
+			dragLayer.stopDrag();
 		}
 
 		private function handlerBoothMouseOut(e:Event):void {
@@ -143,15 +163,15 @@
 
 			var firstPane:EnsvPane = cbooth.panes[0];
 
-			var fprect:Rectangle = firstPane.getRect(this);
+			var fprect:Rectangle = firstPane.getRect(dragLayer);
 			fprect.x += fprect.width / 2;
 			fprect.y += fprect.height / 2;
 
-			var p:Point = McEffect.getCuntryLablePoint(ebc.getRect(this), fprect, mapLayer.getRect(this));
+			var p:Point = McEffect.getCuntryLablePoint(ebc.getRect(dragLayer), fprect, mapLayer.getRect(dragLayer));
 			ebc.x = p.x;
 			ebc.y = p.y;
 
-			var cc:MovieClip = McEffect.createLightFace(ebc.getRect(this), fprect, mapLayer.getRect(this), new Point());
+			var cc:MovieClip = McEffect.createLightFace(ebc.getRect(dragLayer), fprect, mapLayer.getRect(dragLayer), new Point());
 			cardLayer.addChild(cc);
 		}
 
