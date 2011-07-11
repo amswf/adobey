@@ -1,6 +1,7 @@
 ﻿package com.snsoft.ensview {
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.SpriteUtil;
+	import com.snsoft.util.complexEvent.CplxMouseDrag;
 	import com.snsoft.util.rlm.ResLoadManager;
 	import com.snsoft.util.rlm.rs.RSTextFile;
 	import com.snsoft.util.wayfinding.WayFinding;
@@ -10,6 +11,7 @@
 
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import flash.display.StageAlign;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.filters.DropShadowFilter;
@@ -48,13 +50,29 @@
 
 		private var dragLayer:Sprite = new Sprite();
 
+		private var dragLimitLayer:Sprite = new Sprite();
+
+		private var dragLimit:Sprite = new Sprite();
+
+		private var viewLayer:Sprite = new Sprite();
+
+		private var viewDrag:Sprite = new Sprite();
+
 		public function Ensv() {
 			super();
+
+			stage.align = StageAlign.TOP_LEFT;
 
 			this.addChild(dragLayer);
 			dragLayer.addChild(mapLayer);
 			dragLayer.addChild(wayLayer);
 			dragLayer.addChild(cardLayer);
+			this.addChild(viewLayer);
+
+			stage.addEventListener(Event.RESIZE, handlerStageResize);
+
+			viewLayer.mouseEnabled = false;
+			viewLayer.mouseChildren = false;
 			loadXML();
 		}
 
@@ -117,7 +135,7 @@
 		private function initMap():void {
 
 			var back:Sprite = new Sprite();
-			back.graphics.beginFill(0x000000, 0);
+			back.graphics.beginFill(0x000000, 0.1);
 			back.graphics.drawRect(0, 0, esCol * paneWidth, esRow * paneHeight);
 			back.graphics.endFill();
 			mapLayer.addChild(back);
@@ -133,8 +151,48 @@
 				booth.addEventListener(MouseEvent.MOUSE_OUT, handlerBoothMouseOut);
 			}
 
-			dragLayer.addEventListener(MouseEvent.MOUSE_DOWN, handlerBoothMouseDown);
-			dragLayer.addEventListener(MouseEvent.MOUSE_UP, handlerBoothMouseUp);
+			dragLimit = new Sprite();
+			dragLimit.graphics.beginFill(0x000000, 0);
+			dragLimit.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
+			dragLimit.graphics.endFill();
+			dragLimitLayer.addChild(dragLimit);
+
+			var vl:Sprite = new Sprite();
+			vl.graphics.beginFill(0x000000, 0.1);
+			vl.graphics.drawRect(0, 0, 200, 150);
+			vl.graphics.endFill();
+			viewLayer.addChild(vl);
+
+			viewDrag = new Sprite();
+			viewDrag.graphics.beginFill(0x000000, 0.1);
+			viewDrag.graphics.drawRect(0, 0, 100, 75);
+			viewDrag.graphics.endFill();
+			viewLayer.addChild(viewDrag);
+			stateResizeSetState();
+
+			var cmd:CplxMouseDrag = new CplxMouseDrag();
+			cmd.addEvents(dragLayer, dragLimit, viewDrag, vl);
+		}
+
+		private function handlerStageResize(e:Event):void {
+			stateResizeSetState();
+		}
+
+		private function stateResizeSetState():void {
+			viewLayer.x = stage.stageWidth - viewLayer.width;
+			viewLayer.y = stage.stageHeight - viewLayer.height;
+
+			dragLayer.x = 0;
+			dragLayer.y = 0;
+
+			if (dragLimit != null) {
+				dragLimit.width = stage.stageWidth;
+				dragLimit.height = stage.stageHeight;
+			}
+			if (viewDrag != null) {
+				viewDrag.x = 0;
+				viewDrag.y = 0;
+			}
 		}
 
 		private function handlerBoothMouseDown(e:Event):void {
