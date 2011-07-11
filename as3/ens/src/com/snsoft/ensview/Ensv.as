@@ -139,10 +139,12 @@
 
 		private function handlerBoothMouseDown(e:Event):void {
 			dragLayer.startDrag();
+			cardLayer.visible = false;
 		}
 
 		private function handlerBoothMouseUp(e:Event):void {
 			dragLayer.stopDrag();
+			cardLayer.visible = true;
 		}
 
 		private function handlerBoothMouseOut(e:Event):void {
