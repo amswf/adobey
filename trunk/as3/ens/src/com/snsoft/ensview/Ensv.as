@@ -58,6 +58,8 @@
 
 		private var viewDrag:Sprite = new Sprite();
 
+		private var currentPosition:Point = new Point();
+
 		public function Ensv() {
 			super();
 
@@ -112,7 +114,17 @@
 					var ebdo:EnsvBoothDO = new EnsvBoothDO();
 					ebdo.id = boothNode.getAttributeByName("value");
 					ebdo.text = boothNode.getAttributeByName("name");
+					ebdo.isCurrentPosition = (boothNode.getAttributeByName("isCurrentPosition") == "true") ? true : false;
 					var paneList:NodeList = boothNode.getNodeList("pane");
+
+					if (ebdo.isCurrentPosition) {
+						if (paneList.length() > 0) {
+							var fPaneNode:Node = paneList.getNode(0);
+							currentPosition.y = parseInt(fPaneNode.getAttributeByName("row")) - 1;
+							currentPosition.x = parseInt(fPaneNode.getAttributeByName("col")) - 1;
+						}
+					}
+
 					for (var jj:int = 0; jj < paneList.length(); jj++) {
 						var paneNode:Node = paneList.getNode(jj);
 						var pdo:EnsvPaneDO = new EnsvPaneDO();
@@ -121,7 +133,9 @@
 						pdo.width = paneWidth;
 						pdo.height = paneHeight;
 						//矩阵设置
-						wayfvv[pdo.row][pdo.col] = false;
+						if (!ebdo.isCurrentPosition) {
+							wayfvv[pdo.row][pdo.col] = false;
+						}
 						ebdo.addPane(pdo);
 					}
 					boothDOs.push(ebdo);
@@ -272,7 +286,7 @@
 			var min:int = int.MAX_VALUE;
 			for (var j:int = 0; j < pv.length; j++) {
 				var pdo:EnsvPaneDO = pv[j];
-				var v:Vector.<Point> = wayFinding.find(new Point(8, 4), new Point(pdo.col, pdo.row));
+				var v:Vector.<Point> = wayFinding.find(currentPosition, new Point(pdo.col, pdo.row));
 				if (v.length < min && v.length > 0) {
 					minv = v;
 					min = v.length;

@@ -43,7 +43,9 @@ package com.snsoft.ensview {
 					tfd.autoSize = TextFieldAutoSize.LEFT;
 					tfd.mouseEnabled = false;
 					tfd.defaultTextFormat = tft;
-					tfd.text = ensvBoothDO.text;
+					if (ensvBoothDO.text != null) {
+						tfd.text = ensvBoothDO.text;
+					}
 					tfd.x = fpdo.col * fpdo.width;
 					tfd.y = fpdo.row * fpdo.height;
 					this.addChild(tfd);

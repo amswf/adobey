@@ -29,69 +29,70 @@
 		 *
 		 */
 		public function find(from:Point, to:Point):Vector.<Point> {
-			var pvv:Vector.<Vector.<Point>> = new Vector.<Vector.<Point>>();
-			var ivv:Vector.<Vector.<Boolean>> = copyVectorVectorBoolean(this.ivv);
-			var frompv:Vector.<Point> = new Vector.<Point>();
-			frompv.push(from);
-			var heap:Way = new Way(this.ivv);
-			heap.push(from);
-			var n1:Number = new Date().getTime();
-			finding(frompv, to, ivv, heap, pvv);
-			var n2:Number = new Date().getTime();
-
-			//长度最短的
-			var minpvv:Vector.<Vector.<Point>> = new Vector.<Vector.<Point>>();
-
-			var minl:int = int.MAX_VALUE;
-			for (var i:int = 0; i < pvv.length; i++) {
-				var pv:Vector.<Point> = pvv[i];
-				if (pv.length < minl) {
-					minl = pv.length;
-				}
-			}
-
-			for (var j:int = 0; j < pvv.length; j++) {
-				var mpv:Vector.<Point> = pvv[j];
-				if (mpv.length == minl) {
-					minpvv.push(mpv);
-				}
-			}
-
 			//拐弯最少的
 			var rpv:Vector.<Point> = new Vector.<Point>();
+			if (from != to) {
+				var pvv:Vector.<Vector.<Point>> = new Vector.<Vector.<Point>>();
+				var ivv:Vector.<Vector.<Boolean>> = copyVectorVectorBoolean(this.ivv);
+				var frompv:Vector.<Point> = new Vector.<Point>();
+				frompv.push(from);
+				var heap:Way = new Way(this.ivv);
+				heap.push(from);
+				var n1:Number = new Date().getTime();
+				finding(frompv, to, ivv, heap, pvv);
+				var n2:Number = new Date().getTime();
 
-			var minBend:int = int.MAX_VALUE;
+				//长度最短的
+				var minpvv:Vector.<Vector.<Point>> = new Vector.<Vector.<Point>>();
 
-			for (var k:int = 0; k < minpvv.length; k++) {
-				var minpv:Vector.<Point> = minpvv[k];
-
-				var ADDX:int = 1;
-				var ADDY:int = 2;
-
-				var add:int = 0;
-				var prevp:Point = null;
-				var bendNum:int = 0;
-
-				for (var i2:int = 0; i2 < minpv.length; i2++) {
-					if (i2 > 0) {
-						var p:Point = minpv[i2];
-						var n:int = 0;
-						if (p.x == prevp.x) {
-							n = ADDY;
-						}
-						else if (p.y == prevp.y) {
-							n = ADDX;
-						}
-						if (add > 0 && add != n) {
-							bendNum++;
-						}
-						add = n;
+				var minl:int = int.MAX_VALUE;
+				for (var i:int = 0; i < pvv.length; i++) {
+					var pv:Vector.<Point> = pvv[i];
+					if (pv.length < minl) {
+						minl = pv.length;
 					}
-					prevp = minpv[i2];
 				}
-				if (bendNum < minBend) {
-					minBend = bendNum;
-					rpv = minpv;
+
+				for (var j:int = 0; j < pvv.length; j++) {
+					var mpv:Vector.<Point> = pvv[j];
+					if (mpv.length == minl) {
+						minpvv.push(mpv);
+					}
+				}
+
+				var minBend:int = int.MAX_VALUE;
+
+				for (var k:int = 0; k < minpvv.length; k++) {
+					var minpv:Vector.<Point> = minpvv[k];
+
+					var ADDX:int = 1;
+					var ADDY:int = 2;
+
+					var add:int = 0;
+					var prevp:Point = null;
+					var bendNum:int = 0;
+
+					for (var i2:int = 0; i2 < minpv.length; i2++) {
+						if (i2 > 0) {
+							var p:Point = minpv[i2];
+							var n:int = 0;
+							if (p.x == prevp.x) {
+								n = ADDY;
+							}
+							else if (p.y == prevp.y) {
+								n = ADDX;
+							}
+							if (add > 0 && add != n) {
+								bendNum++;
+							}
+							add = n;
+						}
+						prevp = minpv[i2];
+					}
+					if (bendNum < minBend) {
+						minBend = bendNum;
+						rpv = minpv;
+					}
 				}
 			}
 
