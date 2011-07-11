@@ -1,5 +1,6 @@
 package com.snsoft.ens {
 	import fl.controls.Button;
+	import fl.controls.CheckBox;
 
 	import flash.display.MovieClip;
 	import flash.events.Event;
@@ -20,9 +21,13 @@ package com.snsoft.ens {
 
 		private var ddel:Button;
 
+		private var dcbox:CheckBox;
+
 		private var _text:String;
 
 		private var _id:String;
+
+		private var _isCurrentPosition:Boolean = false;
 
 		public function BoothEditer() {
 			super();
@@ -36,6 +41,7 @@ package com.snsoft.ens {
 			dText = this.getChildByName("ttfd") as TextField;
 			dcmp = this.getChildByName("cmp") as Button;
 			ddel = this.getChildByName("del") as Button;
+			dcbox = this.getChildByName("cBox") as CheckBox;
 
 			dcmp.addEventListener(MouseEvent.CLICK, handlerCmpClick);
 			ddel.addEventListener(MouseEvent.CLICK, handlerDelClick);
@@ -57,6 +63,8 @@ package com.snsoft.ens {
 				_text = "";
 			}
 			dText.text = "";
+
+			isCurrentPosition = dcbox.selected;
 			this.dispatchEvent(new Event(EVENT_CMP));
 		}
 
@@ -90,6 +98,15 @@ package com.snsoft.ens {
 				_id = "";
 			}
 			this.dId.text = _id;
+		}
+
+		public function get isCurrentPosition():Boolean {
+			return _isCurrentPosition;
+		}
+
+		public function set isCurrentPosition(value:Boolean):void {
+			_isCurrentPosition = value;
+			this.dcbox.selected = value;
 		}
 
 	}

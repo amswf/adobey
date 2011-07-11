@@ -1,9 +1,7 @@
 ﻿package com.snsoft.ens {
-	import com.snsoft.util.AbstractBase;
 	import com.snsoft.util.ColorTransformUtil;
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.SpriteUtil;
-	import com.snsoft.util.XMLFormat;
 	import com.snsoft.util.rlm.ResLoadManager;
 	import com.snsoft.util.rlm.rs.RSTextFile;
 	import com.snsoft.util.xmldom.Node;
@@ -17,6 +15,7 @@
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.filters.DropShadowFilter;
+	import flash.geom.ColorTransform;
 	import flash.ui.Mouse;
 
 	public class Ens extends Sprite {
@@ -47,7 +46,7 @@
 
 		private var paneHeight:int = 30;
 
-		private var booths:Vector.<Sprite> = new Vector.<Sprite>();
+		private var booths:Vector.<EnsBooth> = new Vector.<EnsBooth>();
 
 		private var currentBooth:EnsBooth = null;
 
@@ -154,6 +153,7 @@
 					var ensb:EnsBooth = new EnsBooth();
 					ensb.id = boothNode.getAttributeByName("value");
 					ensb.text = boothNode.getAttributeByName("name");
+					ensb.isCurrentPosition = (boothNode.getAttributeByName("isCurrentPosition") == "true") ? true : false;
 					setBoothUnSelectedFilters(ensb);
 					boothsLayer.addChild(ensb);
 					ensb.addEventListener(MouseEvent.CLICK, handlerBoothMouseClick);
@@ -190,7 +190,7 @@
 			for (var i:int = 0; i < boothsLayer.numChildren; i++) {
 				var booth:EnsBooth = boothsLayer.getChildAt(i) as EnsBooth;
 				if (booth != null) {
-					str += '		<booth name="' + booth.text + '" value="' + booth.id + '" text="' + "" + '" >\n';
+					str += '		<booth name="' + booth.text + '" value="' + booth.id + '" text="' + '' + '"' + ' isCurrentPosition="' + booth.isCurrentPosition + '"  >\n';
 					for (var j:int = 0; j < booth.numChildren; j++) {
 						var pane:EnsPane = booth.getChildAt(j) as EnsPane;
 						pane.ensPaneDO.row
@@ -238,6 +238,20 @@
 			if (currentBooth != null) {
 				currentBooth.id = be.id;
 				currentBooth.text = be.text;
+				currentBooth.isCurrentPosition = be.isCurrentPosition;
+				for (var i:int = 0; i < booths.length; i++) {
+					var booth:EnsBooth = booths[i];
+					if (booth != currentBooth) {
+						booth.isCurrentPosition = false;
+					}
+
+					if (booth.isCurrentPosition) {
+						setBoothCurrentPlaceFilters(booth);
+					}
+					else {
+						setBoothUnCurrentPlaceFilters(booth);
+					}
+				}
 			}
 			clearCurrentBooth();
 		}
@@ -302,6 +316,7 @@
 				currentBooth.addEventListener(MouseEvent.CLICK, handlerBoothMouseClick);
 				boothEditer.id = "";
 				boothEditer.text = "";
+				boothEditer.isCurrentPosition = false;
 			}
 
 			var enspdo:EnsPaneDO = new EnsPaneDO();
@@ -328,6 +343,7 @@
 					setBoothSelectedFilters(currentBooth);
 					boothEditer.id = currentBooth.id;
 					boothEditer.text = currentBooth.text;
+					boothEditer.isCurrentPosition = currentBooth.isCurrentPosition;
 					boothsLayer.setChildIndex(currentBooth, boothsLayer.numChildren - 1);
 				}
 			}
@@ -344,6 +360,14 @@
 			var array:Array = new Array();
 			array.push(new DropShadowFilter(0, 0, 0x999999, 3, 2, 2, 255, 1, true));
 			booth.filters = array;
+		}
+
+		private function setBoothCurrentPlaceFilters(booth:Sprite):void {
+			ColorTransformUtil.setColor(booth, 0xff0000, 0.5, 0);
+		}
+
+		private function setBoothUnCurrentPlaceFilters(booth:Sprite):void {
+			booth.transform.colorTransform = new ColorTransform();
 		}
 
 		private function handlerRemoveBoothPane(e:Event):void {
