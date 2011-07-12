@@ -31,7 +31,7 @@ package com.snsoft.util.wayfinding {
 		}
 
 		public static function findBendNum(minpv:Vector.<Point>):int {
-			var bendNum:int = -1;
+			var bendNum:int = 0;
 			var prevp:Point = null;
 			var ADDX:int = 1;
 			var ADDY:int = 2;
