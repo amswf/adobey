@@ -167,17 +167,17 @@
 				booth.addEventListener(MouseEvent.MOUSE_OUT, handlerBoothMouseOut);
 			}
 
-			for (var j:int = 0; j < esCol; j++) {
-				for (var k:int = 0; k < esRow; k++) {
-					var tfd:TextField = new TextField();
-					tfd.autoSize = TextFieldAutoSize.LEFT;
-					tfd.text = "" + j + "" + k;
-					tfd.x = j * 30;
-					tfd.y = k * 30;
-					tfd.mouseEnabled = false;
-					mapLayer.addChild(tfd);
-				}
-			}
+//			for (var j:int = 0; j < esCol; j++) {
+//				for (var k:int = 0; k < esRow; k++) {
+//					var tfd:TextField = new TextField();
+//					tfd.autoSize = TextFieldAutoSize.LEFT;
+//					tfd.text = "" + j + "" + k;
+//					tfd.x = j * 30;
+//					tfd.y = k * 30;
+//					tfd.mouseEnabled = false;
+//					mapLayer.addChild(tfd);
+//				}
+//			}
 
 			dragLimit = new Sprite();
 			dragLimit.graphics.beginFill(0x000000, 0);
