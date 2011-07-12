@@ -192,13 +192,21 @@
 			viewLayer.addChild(vl);
 
 			var wp:MovieClip = SkinsUtil.createSkinByName("SmallCurrentPosition");
-			var wpx:int = vl.width * (currentPosition.x + 1) / esCol;
-			var wpy:int = vl.height * (currentPosition.y + 1) / esRow;
-			if (wpx >= vl.width - wp.width) {
-				wpx -= wp.width;
+			var wpw:int = wp.width / 2;
+			var wph:int = wp.height / 2;
+			var wpx:int = vl.width * (currentPosition.x + 1) / esCol - wpw;
+			var wpy:int = vl.height * (currentPosition.y + 1) / esRow - wph;
+			if (wpx >= vl.width - wpw) {
+				wpx -= wpw;
 			}
-			if (wpy >= vl.height - wp.height) {
-				wpy -= wp.height;
+			else if (wpx <= wpw) {
+				wpx += wpw;
+			}
+			if (wpy >= vl.height - wph) {
+				wpy -= wph;
+			}
+			else if (wpy <= wph) {
+				wpy += wph;
 			}
 			wp.x = wpx;
 			wp.y = wpy;
@@ -213,6 +221,11 @@
 
 			var cmd:CplxMouseDrag = new CplxMouseDrag();
 			cmd.addEvents(dragLayer, dragLimit, viewDrag, vl);
+
+			var cp:MovieClip = SkinsUtil.createSkinByName("SmallCurrentPosition");
+			cp.x = currentPosition.x * cp.width;
+			cp.y = currentPosition.y * cp.height;
+			wayLayer.addChild(cp);
 		}
 
 		private function handlerStageResize(e:Event):void {
