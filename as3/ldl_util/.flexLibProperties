@@ -15,7 +15,6 @@
     <classEntry path="com.snsoft.util.bg.IBGButton"/>
     <classEntry path="com.snsoft.util.XMLFormat"/>
     <classEntry path="com.snsoft.util.wayfinding.WayUtil"/>
-    <classEntry path="com.snsoft.util.wayfd.WayFinding"/>
     <classEntry path="com.snsoft.util.wayfd.WayPoint"/>
     <classEntry path="com.snsoft.util.wayfd.WayUtil"/>
   </includeClasses>
