@@ -1,4 +1,4 @@
-package com.snsoft.util.wayfinding {
+﻿package com.snsoft.util.wayfinding {
 	import flash.geom.Point;
 
 	/**
@@ -40,25 +40,37 @@ package com.snsoft.util.wayfinding {
 			var cwn:WayNode = nodevv[current.y][current.x];
 			if (cwn != null) {
 				sign = false;
-				var pwn:WayNode = nodevv[current.y][current.x];
-				if (pwn != null && pwn.length < cwn.length) {
+				var pwn:WayNode = nodevv[parent.y][parent.x];
+				if (pwn != null && (pwn.length + 1) < cwn.length) {
 					sign = true;
 				}
-				else if (pwn != null && pwn.length == cwn.length) {
-					if (pwn.bendNum < cwn.bendNum) {
+				else if (pwn != null && (pwn.length + 1) == cwn.length) {
+					if (pwn.bendNum + 1 < cwn.bendNum) {
 						sign = true;
+					}
+					else if (pwn.bendNum + 1 == cwn.bendNum) {
+						var bnum:int = 0;
+						if (pwn.parentPoint != null) {
+							var bv:Vector.<Point> = new Vector.<Point>();
+							bv.push(pwn.parentPoint);
+							bv.push(pwn.point);
+							bv.push(current);
+							bnum = WayUtil.findBendNum(bv);
+						}
+						if (pwn.bendNum + bnum < cwn.bendNum) {
+							sign = true;
+						}
 					}
 				}
 			}
 
 			if (sign) {
-
 				var l:int = 1;
 				var pWayNode:WayNode = null;
 				if (parent != null) {
 					pWayNode = nodevv[parent.y][parent.x];
 					if (pWayNode != null) {
-						l = pWayNode.bendNum;
+						l = pWayNode.length;
 					}
 				}
 
@@ -66,7 +78,7 @@ package com.snsoft.util.wayfinding {
 				var parentName:String = null;
 				wayNode.parentPoint = parent;
 				wayNode.point = current;
-				wayNode.length = l;
+				wayNode.length = l + 1;
 
 				var bendNum:int = 0;
 				if (wayNode.length >= 3) {
