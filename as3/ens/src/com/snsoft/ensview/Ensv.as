@@ -12,6 +12,8 @@
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
+	import flash.display.StageDisplayState;
+	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.filters.DropShadowFilter;
@@ -20,7 +22,7 @@
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 
-	public class Ensv extends Sprite {
+	public class Ensv extends MovieClip {
 
 		private var rsxml:RSTextFile;
 
@@ -62,21 +64,32 @@
 
 		private var currentPosition:Point = new Point();
 
-		public function Ensv() {
-			super();
+		private var stageWidth:int = 0;
 
-			stage.align = StageAlign.TOP_LEFT;
+		private var stageHeight:int = 0;
+
+		public function Ensv(stageWidth:int, stageHeight:int) {
+			super();
+			this.stageWidth = stageWidth;
+			this.stageHeight = stageHeight;
 
 			this.addChild(dragLayer);
 			dragLayer.addChild(mapLayer);
 			dragLayer.addChild(wayLayer);
 			dragLayer.addChild(cardLayer);
 			this.addChild(viewLayer);
-
-			stage.addEventListener(Event.RESIZE, handlerStageResize);
-
 			viewLayer.mouseEnabled = false;
 			viewLayer.mouseChildren = false;
+			this.addEventListener(Event.ENTER_FRAME, handlerEnterFrame);
+		}
+
+		private function handlerEnterFrame(e:Event):void {
+			this.removeEventListener(Event.ENTER_FRAME, handlerEnterFrame);
+			init();
+		}
+
+		private function init():void {
+			//stage.addEventListener(Event.RESIZE, handlerStageResize);
 			loadXML();
 		}
 
@@ -181,7 +194,7 @@
 
 			dragLimit = new Sprite();
 			dragLimit.graphics.beginFill(0x000000, 0);
-			dragLimit.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
+			dragLimit.graphics.drawRect(0, 0, stageWidth, stageHeight);
 			dragLimit.graphics.endFill();
 			dragLimitLayer.addChild(dragLimit);
 
@@ -221,6 +234,8 @@
 
 			var cmd:CplxMouseDrag = new CplxMouseDrag();
 			cmd.addEvents(dragLayer, dragLimit, viewDrag, vl);
+			cmd.addEventListener(CplxMouseDrag.DRAG_MOVE_EVENT, handlerCplxDragMove);
+			cmd.addEventListener(CplxMouseDrag.DRAG_COMPLETE_EVENT, handlerCplxDragCmp);
 
 			var cp:MovieClip = SkinsUtil.createSkinByName("SmallCurrentPosition");
 			cp.x = currentPosition.x * cp.width;
@@ -228,35 +243,33 @@
 			wayLayer.addChild(cp);
 		}
 
+		private function handlerCplxDragMove(e:Event):void {
+			cardLayer.visible = false;
+		}
+
+		private function handlerCplxDragCmp(e:Event):void {
+			cardLayer.visible = true;
+		}
+
 		private function handlerStageResize(e:Event):void {
 			stateResizeSetState();
 		}
 
-		private function stateResizeSetState():void {
-			viewLayer.x = stage.stageWidth - viewLayer.width;
-			viewLayer.y = stage.stageHeight - viewLayer.height;
+		public function stateResizeSetState():void {
+			viewLayer.x = stageWidth - viewLayer.width;
+			viewLayer.y = stageHeight - viewLayer.height;
 
 			dragLayer.x = 0;
 			dragLayer.y = 0;
 
 			if (dragLimit != null) {
-				dragLimit.width = stage.stageWidth;
-				dragLimit.height = stage.stageHeight;
+				dragLimit.width = stageWidth;
+				dragLimit.height = stageHeight;
 			}
 			if (viewDrag != null) {
 				viewDrag.x = 0;
 				viewDrag.y = 0;
 			}
-		}
-
-		private function handlerBoothMouseDown(e:Event):void {
-			dragLayer.startDrag();
-			cardLayer.visible = false;
-		}
-
-		private function handlerBoothMouseUp(e:Event):void {
-			dragLayer.stopDrag();
-			cardLayer.visible = true;
 		}
 
 		private function handlerBoothMouseOut(e:Event):void {
