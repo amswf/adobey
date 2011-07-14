@@ -5,6 +5,10 @@ package com.snsoft.ensview {
 	import com.snsoft.util.rlm.rs.RSTextFile;
 	import com.snsoft.util.xmldom.XMLFastConfig;
 
+	import fl.containers.ScrollPane;
+	import fl.controls.ScrollPolicy;
+
+	import flash.display.MovieClip;
 	import flash.display.NativeWindow;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
@@ -43,7 +47,15 @@ package com.snsoft.ensview {
 		public function EnsvAir() {
 			super();
 
-			initConfig();
+			//initConfig();
+
+			var sb:ScrollBar = new ScrollBar(300, 600);
+			this.addChild(sb);
+			sb.addEventListener(ScrollBar.EVENT_SCROLLING, handlerScrolling);
+		}
+
+		private function handlerScrolling(e:Event):void {
+			trace("asdfasdf");
 		}
 
 		private function initConfig():void {
