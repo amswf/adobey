@@ -6,7 +6,7 @@ package com.snsoft.ensview {
 
 	public class EnsvBooth extends Sprite {
 
-		private var ensvBoothDO:EnsvBoothDO;
+		private var _ensvBoothDO:EnsvBoothDO;
 
 		private var _order:int;
 
@@ -18,7 +18,7 @@ package com.snsoft.ensview {
 
 		public function EnsvBooth(ensvBoothDO:EnsvBoothDO) {
 			super();
-			this.ensvBoothDO = ensvBoothDO;
+			this._ensvBoothDO = ensvBoothDO;
 			init();
 		}
 
@@ -63,6 +63,10 @@ package com.snsoft.ensview {
 
 		public function get panes():Vector.<EnsvPane> {
 			return _panes;
+		}
+
+		public function get ensvBoothDO():EnsvBoothDO {
+			return _ensvBoothDO;
 		}
 
 	}

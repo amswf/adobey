@@ -10,6 +10,8 @@ package com.snsoft.ensview {
 
 		private var _paneDOs:Vector.<EnsvPaneDO> = new Vector.<EnsvPaneDO>();
 
+		private var _msg:EnsvBoothMsgDO;
+
 		public function EnsvBoothDO() {
 		}
 
@@ -41,14 +43,22 @@ package com.snsoft.ensview {
 			_paneDOs = value;
 		}
 
-		public function get isCurrentPosition():Boolean
-		{
+		public function get isCurrentPosition():Boolean {
 			return _isCurrentPosition;
 		}
 
-		public function set isCurrentPosition(value:Boolean):void
-		{
+		public function set isCurrentPosition(value:Boolean):void {
 			_isCurrentPosition = value;
+		}
+
+		public function get msg():EnsvBoothMsgDO
+		{
+			return _msg;
+		}
+
+		public function set msg(value:EnsvBoothMsgDO):void
+		{
+			_msg = value;
 		}
 
 
