@@ -94,6 +94,7 @@
 			fl.transitions.easing.None;
 			fl.transitions.easing.Regular;
 			fl.transitions.easing.Strong;
+			fl.containers.ScrollPane;
 		}
 	}
 	
