@@ -154,8 +154,14 @@
 					ensb.id = boothNode.getAttributeByName("value");
 					ensb.text = boothNode.getAttributeByName("name");
 					ensb.isCurrentPosition = (boothNode.getAttributeByName("isCurrentPosition") == "true") ? true : false;
-					setBoothUnSelectedFilters(ensb);
+					if (ensb.isCurrentPosition) {
+						setBoothCurrentPlaceFilters(ensb);
+					}
+					else {
+						setBoothUnSelectedFilters(ensb);
+					}
 					boothsLayer.addChild(ensb);
+					booths.push(ensb);
 					ensb.addEventListener(MouseEvent.CLICK, handlerBoothMouseClick);
 
 					var paneList:NodeList = boothNode.getNodeList("pane");
