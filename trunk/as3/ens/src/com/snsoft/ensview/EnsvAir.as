@@ -1,5 +1,9 @@
 package com.snsoft.ensview {
 	import com.snsoft.util.SpriteUtil;
+	import com.snsoft.util.XMLFormat;
+	import com.snsoft.util.rlm.ResLoadManager;
+	import com.snsoft.util.rlm.rs.RSTextFile;
+	import com.snsoft.util.xmldom.XMLFastConfig;
 
 	import flash.display.NativeWindow;
 	import flash.display.Sprite;
@@ -7,6 +11,10 @@ package com.snsoft.ensview {
 	import flash.display.StageDisplayState;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.events.ProgressEvent;
+	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
 	import flash.geom.Point;
 	import flash.system.Capabilities;
 
@@ -26,8 +34,23 @@ package com.snsoft.ensview {
 
 		private var mainSize:Point = new Point(550, 400);
 
+		private var boothDownloadUrl:String;
+
+		private var downloadRstf:RSTextFile;
+
+		private var ensvStart:EnsvStart;
+
 		public function EnsvAir() {
 			super();
+
+			initConfig();
+		}
+
+		private function initConfig():void {
+			XMLFastConfig.instance("config.xml", handlerConfigLoadCmp);
+		}
+
+		private function handlerConfigLoadCmp(e:Event):void {
 			init();
 		}
 
@@ -36,6 +59,8 @@ package com.snsoft.ensview {
 			win.title = "ensv 1.0";
 			win.x = (Capabilities.screenResolutionX - stage.stageWidth) / 2;
 			win.y = (Capabilities.screenResolutionY - stage.stageHeight) / 2;
+			var file:File = File.applicationStorageDirectory;
+			trace(file.nativePath);
 
 			this.addChild(backLayer);
 			this.addChild(startLayer);
@@ -75,15 +100,59 @@ package com.snsoft.ensview {
 		}
 
 		private function initStart():void {
-			var ensvs:EnsvStart = new EnsvStart();
-			ensvs.x = 10;
-			ensvs.y = 10;
-			startLayer.addChild(ensvs);
-			ensvs.addEventListener(EnsvStart.EVENT_START, handlerStart);
+			ensvStart = new EnsvStart();
+			ensvStart.x = 10;
+			ensvStart.y = 10;
+			startLayer.addChild(ensvStart);
+			ensvStart.addEventListener(EnsvStart.EVENT_DOWNLOAD, handlerDownload);
+			ensvStart.addEventListener(EnsvStart.EVENT_START, handlerStart);
+			ensvStart.addEventListener(EnsvStart.EVENT_CLOSE, handlerClose);
+		}
+
+		private function handlerDownload(e:Event):void {
+			downloadFile();
+		}
+
+		private function downloadFile():void {
+			var res:ResLoadManager = new ResLoadManager();
+			boothDownloadUrl = XMLFastConfig.getConfig("downloadBoothMsgUrl");
+			downloadRstf = new RSTextFile();
+			downloadRstf.addResUrl(boothDownloadUrl);
+			res.addResSet(downloadRstf);
+			res.addEventListener(Event.COMPLETE, handlerResLoadCmp);
+			res.addEventListener(ProgressEvent.PROGRESS, handlerResLoading);
+			res.load();
+			ensvStart.setMsg("准备下载数据...");
+		}
+
+		private function handlerResLoading(e:Event):void {
+			var res:ResLoadManager = e.currentTarget as ResLoadManager;
+			ensvStart.setMsg("正在下载：" + int(res.getProgressValue() * 100) + "%");
+		}
+
+		private function handlerResLoadCmp(e:Event):void {
+			ensvStart.setMsg("");
+			var appPath:String = File.applicationDirectory.nativePath + File.separator;
+
+			var boothMsg:String = downloadRstf.getTextByUrl(boothDownloadUrl);
+
+			var boothFilePath:String = appPath + "boothMsg.xml";
+			var boothFile:File = new File(boothFilePath);
+			if (boothFile.exists) {
+				boothFile.deleteFile();
+			}
+			var fs:FileStream = new FileStream();
+			fs.open(boothFile, FileMode.WRITE);
+			fs.writeUTFBytes(boothMsg);
+			fs.close();
 		}
 
 		private function handlerStart(e:Event):void {
 			stage.displayState = StageDisplayState.FULL_SCREEN;
+		}
+
+		private function handlerClose(e:Event):void {
+			win.close();
 		}
 
 		private function initEns():void {

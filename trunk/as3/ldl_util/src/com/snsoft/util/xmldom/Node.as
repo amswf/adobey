@@ -58,6 +58,21 @@ package com.snsoft.util.xmldom {
 		}
 
 		/**
+		 * 当前结点的属性值用子文本结点表示时适用
+		 * @param obj
+		 *
+		 */
+		public function childNodeTextTObj(obj:Object):void {
+			if (obj != null) {
+				for (var i:int = 0; i < childNodeLists.length; i++) {
+					var name:String = childNodeLists.findNameByIndex(i);
+					var cNode:Node = this.getNodeListFirstNode(name);
+					obj[name] = cNode.text;
+				}
+			}
+		}
+
+		/**
 		 * 根据类，把 XML属性映射 (ORM)对象数据
 		 * @param OrmClass
 		 *

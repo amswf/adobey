@@ -1,4 +1,5 @@
 ﻿package com.snsoft.ensview {
+	import com.snsoft.util.HashVector;
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.SpriteUtil;
 	import com.snsoft.util.complexEvent.CplxMouseDrag;
@@ -26,7 +27,9 @@
 
 		private var rsxml:RSTextFile;
 
-		private var xmlUrl:String = "data.xml";
+		private var dataXMLUrl:String = "data.xml";
+
+		private var boothMsgXMLUrl:String = "boothMsg.xml";
 
 		private var esRow:int = 1;
 
@@ -68,6 +71,8 @@
 
 		private var stageHeight:int = 0;
 
+		private var ensvBoothMsgDOHV:HashVector = new HashVector();
+
 		public function Ensv(stageWidth:int, stageHeight:int) {
 			super();
 			this.stageWidth = stageWidth;
@@ -77,6 +82,8 @@
 			dragLayer.addChild(mapLayer);
 			dragLayer.addChild(wayLayer);
 			dragLayer.addChild(cardLayer);
+			cardLayer.mouseChildren = false;
+			cardLayer.mouseEnabled = false;
 			this.addChild(viewLayer);
 			viewLayer.mouseEnabled = false;
 			viewLayer.mouseChildren = false;
@@ -95,7 +102,8 @@
 
 		private function loadXML():void {
 			rsxml = new RSTextFile();
-			rsxml.addResUrl(xmlUrl);
+			rsxml.addResUrl(dataXMLUrl);
+			rsxml.addResUrl(boothMsgXMLUrl);
 
 			var rsm:ResLoadManager = new ResLoadManager();
 			rsm.addResSet(rsxml);
@@ -104,7 +112,27 @@
 		}
 
 		private function handlerLoadXMLCmp(e:Event):void {
-			var xmlStr:String = rsxml.getTextByUrl(xmlUrl);
+			parseBoothMsg();
+			parseMapMsg();
+		}
+
+		private function parseBoothMsg():void {
+			var xmlStr:String = rsxml.getTextByUrl(boothMsgXMLUrl);
+			var xml:XML = new XML(xmlStr);
+			var xdom:XMLDom = new XMLDom(xml);
+			var node:Node = xdom.parse();
+			var recordNodeList:NodeList = node.getNodeList("record");
+			for (var i:int = 0; i < recordNodeList.length(); i++) {
+				var rNode:Node = recordNodeList.getNode(i);
+				var ebmdo:EnsvBoothMsgDO = new EnsvBoothMsgDO();
+				rNode.attrToObj(ebmdo);
+				rNode.childNodeTextTObj(ebmdo);
+				ensvBoothMsgDOHV.push(ebmdo, ebmdo.id);
+			}
+		}
+
+		private function parseMapMsg():void {
+			var xmlStr:String = rsxml.getTextByUrl(dataXMLUrl);
 			var xml:XML = new XML(xmlStr);
 			var xdom:XMLDom = new XMLDom(xml);
 			var node:Node = xdom.parse();
@@ -131,6 +159,11 @@
 					ebdo.text = boothNode.getAttributeByName("name");
 					ebdo.isCurrentPosition = (boothNode.getAttributeByName("isCurrentPosition") == "true") ? true : false;
 					var paneList:NodeList = boothNode.getNodeList("pane");
+					var ebmdo:EnsvBoothMsgDO = ensvBoothMsgDOHV.findByName(ebdo.id) as EnsvBoothMsgDO;
+
+					if (ebmdo != null) {
+						ebdo.msg = ebmdo;
+					}
 
 					if (ebdo.isCurrentPosition) {
 						if (paneList.length() > 0) {
@@ -278,28 +311,35 @@
 		}
 
 		private function handlerBoothMouseOver(e:Event):void {
-			cardLayer.mouseChildren = false;
-			cardLayer.mouseEnabled = false;
 
 			var cbooth:EnsvBooth = e.currentTarget as EnsvBooth;
 			SpriteUtil.deleteAllChild(cardLayer);
-			var ebc:EnsvBoothCard = new EnsvBoothCard();
-			ebc.dName = "你好";
-			ebc.dText = "你好啊";
-			cardLayer.addChild(ebc);
 
-			var firstPane:EnsvPane = cbooth.panes[0];
+			if (cbooth.ensvBoothDO != null && cbooth.ensvBoothDO.msg != null) {
+				var dName:String = "";
+				var dText:String = "";
 
-			var fprect:Rectangle = firstPane.getRect(dragLayer);
-			fprect.x += fprect.width / 2;
-			fprect.y += fprect.height / 2;
+				dName = cbooth.ensvBoothDO.msg.text;
+				dText = cbooth.ensvBoothDO.msg.goods;
 
-			var p:Point = McEffect.getCuntryLablePoint(ebc.getRect(dragLayer), fprect, mapLayer.getRect(dragLayer));
-			ebc.x = p.x;
-			ebc.y = p.y;
+				var ebc:EnsvBoothCard = new EnsvBoothCard();
+				ebc.dName = dName;
+				ebc.dText = dText;
+				cardLayer.addChild(ebc);
 
-			var cc:MovieClip = McEffect.createLightFace(ebc.getRect(dragLayer), fprect, mapLayer.getRect(dragLayer), new Point());
-			cardLayer.addChild(cc);
+				var firstPane:EnsvPane = cbooth.panes[0];
+
+				var fprect:Rectangle = firstPane.getRect(dragLayer);
+				fprect.x += fprect.width / 2;
+				fprect.y += fprect.height / 2;
+
+				var p:Point = McEffect.getCuntryLablePoint(ebc.getRect(dragLayer), fprect, mapLayer.getRect(dragLayer));
+				ebc.x = p.x;
+				ebc.y = p.y;
+
+				var cc:MovieClip = McEffect.createLightFace(ebc.getRect(dragLayer), fprect, mapLayer.getRect(dragLayer), new Point());
+				cardLayer.addChild(cc);
+			}
 		}
 
 		private function handlerBoothClick(e:Event):void {
