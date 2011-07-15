@@ -73,6 +73,8 @@
 
 		private var searchListLayer:Sprite = new Sprite();
 
+		private var boothMsgLayer:Sprite = new Sprite();
+
 		private var currentPosition:Point = new Point();
 
 		private var stageWidth:int = 0;
@@ -102,6 +104,8 @@
 			this.addChild(searchLayer);
 			searchLayer.x = stageWidth - 510;
 			searchLayer.y = 80;
+
+			this.addChild(boothMsgLayer);
 
 			this.addChild(searchListLayer);
 			searchListLayer.x = stageWidth - 290;
@@ -279,6 +283,29 @@
 			var eli:EnsvListItem  = e.currentTarget as EnsvListItem;
 			eli.ensvBooth.dispatchEvent(new Event(MouseEvent.CLICK));
 			SpriteUtil.deleteAllChild(cardLayer);
+
+			if (eli.ensvBooth != null) {
+				viewEnsvBoothMsg(eli.ensvBooth);
+			}
+		}
+
+		private function viewEnsvBoothMsg(booth:EnsvBooth):void {
+			if (booth != null && booth.ensvBoothDO != null && booth.ensvBoothDO.msg != null) {
+				SpriteUtil.deleteAllChild(boothMsgLayer);
+
+				var msk:MovieClip = new MovieClip();
+				msk.graphics.beginFill(0x000000, 0.1);
+				msk.graphics.drawRect(0, 0, stageWidth, stageHeight);
+				msk.graphics.endFill();
+				boothMsgLayer.addChild(msk);
+
+				var msg:EnsvBoothMsgDO = booth.ensvBoothDO.msg;
+				var ebm:EnsvBoothMsg = new EnsvBoothMsg(msg);
+				ebm.x = (stageWidth - ebm.width) / 2;
+				ebm.y = (stageHeight - ebm.height) / 2;
+				boothMsgLayer.addChild(ebm);
+				ebm.addEventListener(EnsvBoothMsg.EVENT_CLOSE, function():void {SpriteUtil.deleteAllChild(boothMsgLayer);});
+			}
 		}
 
 		private function handlerSearchList(e:Event):void {
@@ -301,6 +328,9 @@
 				boothsLayer.addChild(booth);
 				booths.push(booth);
 				setBoothUnSelectedFilters(booth);
+				booth.doubleClickEnabled = true;
+
+				booth.addEventListener(MouseEvent.DOUBLE_CLICK, handlerBoothDoubleClick);
 				booth.addEventListener(MouseEvent.CLICK, handlerBoothClick);
 				booth.addEventListener(MouseEvent.MOUSE_OVER, handlerBoothMouseOver);
 				booth.addEventListener(MouseEvent.MOUSE_OUT, handlerBoothMouseOut);
@@ -433,6 +463,11 @@
 				var cc:MovieClip = McEffect.createLightFace(ebc.getRect(dragLayer), fprect, mapLayer.getRect(dragLayer), new Point());
 				cardLayer.addChild(cc);
 			}
+		}
+
+		private function handlerBoothDoubleClick(e:Event):void {
+			var booth:EnsvBooth = e.currentTarget as EnsvBooth;
+			viewEnsvBoothMsg(booth);
 		}
 
 		private function handlerBoothClick(e:Event):void {
