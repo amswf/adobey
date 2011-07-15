@@ -97,7 +97,7 @@ package com.snsoft.ensview {
 		private function initBack():void {
 			mainback = new Sprite();
 			mainback.visible = false;
-			mainback.graphics.beginFill(0xffffff, 1);
+			mainback.graphics.beginFill(0xeeeeee, 1);
 			mainback.graphics.drawRect(0, 0, mainSize.x, mainSize.y);
 			mainback.graphics.endFill();
 			backLayer.addChild(mainback);
