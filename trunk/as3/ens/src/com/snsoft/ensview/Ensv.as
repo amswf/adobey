@@ -94,14 +94,18 @@
 			dragLayer.addChild(cardLayer);
 			cardLayer.mouseChildren = false;
 			cardLayer.mouseEnabled = false;
-			mapLayer.addChild(boothsLayer);
 			this.addChild(viewLayer);
 			viewLayer.mouseEnabled = false;
 			viewLayer.mouseChildren = false;
 			this.addEventListener(Event.ENTER_FRAME, handlerEnterFrame);
 
 			this.addChild(searchLayer);
+			searchLayer.x = stageWidth - 510;
+			searchLayer.y = 80;
+
 			this.addChild(searchListLayer);
+			searchListLayer.x = stageWidth - 290;
+			searchListLayer.y = 120;
 		}
 
 		private function handlerEnterFrame(e:Event):void {
@@ -206,7 +210,7 @@
 
 			wayFinding = new WayFinding(wayfvv);
 			initMap();
-			//initSearch();
+			initSearch();
 			stateResizeSetState();
 		}
 
@@ -218,44 +222,59 @@
 		}
 
 		private function handlerSearch(e:Event):void {
+			searchBooths = new Vector.<EnsvBooth>();
+
 			var sb:SearchBar = e.currentTarget as SearchBar;
 			var stext:String = sb.searchText;
 
 			var searchListHeight:int = 0;
+			var searchListItemLayer:Sprite = new Sprite();
 			if (stext != null) {
 				stext = StringUtilities.trim(stext);
 				if (stext.length > 0) {
 					SpriteUtil.deleteAllChild(searchListLayer);
 					searchListLayer.visible = true;
 
-					searchBooths = new Vector.<EnsvBooth>();
-					var searchListItemLayer:Sprite = new Sprite();
-
+					var n:int = 0;
 					for (var i:int = 0; i < boothDOs.length; i++) {
 						var bdo:EnsvBoothDO = boothDOs[i];
 						var msg:EnsvBoothMsgDO = bdo.msg;
 						if (msg != null) {
-							if ((msg.text != null && msg.text.indexOf(stext)) || (msg.des != null && msg.des.indexOf(stext))) {
+							if ((msg.text != null && msg.text.indexOf(stext) >= 0) || (msg.des != null && msg.des.indexOf(stext) >= 0)) {
 								var eli:EnsvListItem = new EnsvListItem(msg.text);
-								eli.y = eli.height * i;
+								eli.y = eli.height * n;
 								searchListHeight += eli.height;
 								searchListItemLayer.addChild(eli);
 								var ensvb:EnsvBooth = boothsLayer.getChildAt(i) as EnsvBooth;
 								searchBooths.push(ensvb);
+								n++;
 							}
 						}
 					}
 				}
 			}
 
-			var sbar:ScrollBar = new ScrollBar(500, searchListHeight);
-			sbar.x = 210;
-			searchListLayer.addChild(sbar);
+			if (searchBooths.length > 0) {
+				var barh:int = viewLayer.y - searchListLayer.y - 20;
+				var sbar:ScrollBar = new ScrollBar(barh, searchListHeight);
+				sbar.x = 210;
+				searchListLayer.addChild(sbar);
+				searchListLayer.addChild(searchListItemLayer);
+
+				var msk:MovieClip = new MovieClip();
+				msk.graphics.beginFill(0x000000, 1);
+				msk.graphics.drawRect(-16, -1, 226, barh + 2);
+				msk.graphics.endFill();
+				searchListLayer.addChild(msk);
+				searchListItemLayer.mask = msk;
+
+				sbar.addEventListener(ScrollBar.EVENT_SCROLLING, function():void {searchListItemLayer.y = -int(searchListHeight - 500) * sbar.getScrollValue()});
+			}
 		}
 
 		private function handlerSearchList(e:Event):void {
 			var sb:SearchBar = e.currentTarget as SearchBar;
-			searchListLayer.visible = sb.isViewList;
+			searchListLayer.visible = !searchListLayer.visible;
 		}
 
 		private function initMap():void {
@@ -265,6 +284,7 @@
 			back.graphics.drawRect(0, 0, esCol * paneWidth, esRow * paneHeight);
 			back.graphics.endFill();
 			mapLayer.addChild(back);
+			mapLayer.addChild(boothsLayer);
 
 			for (var i:int = 0; i < boothDOs.length; i++) {
 				var booth:EnsvBooth = new EnsvBooth(boothDOs[i]);
@@ -352,8 +372,6 @@
 		}
 
 		public function stateResizeSetState():void {
-			searchLayer.x = stageWidth - searchLayer.width - 50;
-			searchLayer.y = 80;
 
 			viewLayer.x = stageWidth - viewLayer.width;
 			viewLayer.y = stageHeight - viewLayer.height;

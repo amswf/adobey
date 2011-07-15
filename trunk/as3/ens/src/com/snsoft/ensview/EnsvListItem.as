@@ -25,6 +25,8 @@ package com.snsoft.ensview {
 
 		public function EnsvListItem(text:String) {
 			super();
+			this.height = 30;
+			this.width = 215;
 			if (text) {
 				this.text = text;
 			}
@@ -71,7 +73,6 @@ package com.snsoft.ensview {
 			this.addChild(def);
 
 			tfd = new TextField();
-			tfd.autoSize = TextFieldAutoSize.LEFT;
 			tfd.text = this.text;
 			tfd.width = 196;
 			tfd.height = 18;
@@ -82,9 +83,9 @@ package com.snsoft.ensview {
 
 			this.mouseChildren = false;
 			this.buttonMode = true;
-			
+
 			defState();
-			
+
 			this.addEventListener(MouseEvent.MOUSE_OVER, handlerOver);
 			this.addEventListener(MouseEvent.MOUSE_OUT, handlerOut);
 		}
