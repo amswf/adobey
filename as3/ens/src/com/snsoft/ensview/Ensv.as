@@ -241,12 +241,15 @@
 						var msg:EnsvBoothMsgDO = bdo.msg;
 						if (msg != null) {
 							if ((msg.text != null && msg.text.indexOf(stext) >= 0) || (msg.des != null && msg.des.indexOf(stext) >= 0)) {
-								var eli:EnsvListItem = new EnsvListItem(msg.text);
-								eli.y = eli.height * n;
-								searchListHeight += eli.height;
-								searchListItemLayer.addChild(eli);
 								var ensvb:EnsvBooth = boothsLayer.getChildAt(i) as EnsvBooth;
 								searchBooths.push(ensvb);
+
+								var eli:EnsvListItem = new EnsvListItem(msg.text);
+								eli.ensvBooth = ensvb;
+								eli.y = eli.height * n;
+								eli.addEventListener(MouseEvent.CLICK, handlerEnsvListItemClick);
+								searchListHeight += eli.height;
+								searchListItemLayer.addChild(eli);
 								n++;
 							}
 						}
@@ -270,6 +273,12 @@
 
 				sbar.addEventListener(ScrollBar.EVENT_SCROLLING, function():void {searchListItemLayer.y = -int(searchListHeight - 500) * sbar.getScrollValue()});
 			}
+		}
+
+		private function handlerEnsvListItemClick(e:Event):void {
+			var eli:EnsvListItem  = e.currentTarget as EnsvListItem;
+			eli.ensvBooth.dispatchEvent(new Event(MouseEvent.CLICK));
+			SpriteUtil.deleteAllChild(cardLayer);
 		}
 
 		private function handlerSearchList(e:Event):void {
