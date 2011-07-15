@@ -23,6 +23,8 @@ package com.snsoft.ensview {
 
 		private var overtft:TextFormat = new TextFormat("", 13, 0xffffff);
 
+		private var _ensvBooth:EnsvBooth;
+
 		public function EnsvListItem(text:String) {
 			super();
 			this.height = 30;
@@ -109,5 +111,16 @@ package com.snsoft.ensview {
 			ovr.visible = false;
 			tfd.setTextFormat(deftft);
 		}
+
+		public function get ensvBooth():EnsvBooth
+		{
+			return _ensvBooth;
+		}
+
+		public function set ensvBooth(value:EnsvBooth):void
+		{
+			_ensvBooth = value;
+		}
+
 	}
 }
