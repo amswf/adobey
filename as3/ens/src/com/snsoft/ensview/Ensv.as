@@ -1,4 +1,6 @@
 ﻿package com.snsoft.ensview {
+	import ascb.util.StringUtilities;
+
 	import com.snsoft.util.HashVector;
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.SpriteUtil;
@@ -53,6 +55,8 @@
 
 		private var mapLayer:Sprite = new Sprite();
 
+		private var boothsLayer:Sprite = new Sprite();
+
 		private var cardLayer:Sprite = new Sprite();
 
 		private var dragLayer:Sprite = new Sprite();
@@ -65,6 +69,10 @@
 
 		private var viewDrag:Sprite = new Sprite();
 
+		private var searchLayer:Sprite = new Sprite();
+
+		private var searchListLayer:Sprite = new Sprite();
+
 		private var currentPosition:Point = new Point();
 
 		private var stageWidth:int = 0;
@@ -72,6 +80,8 @@
 		private var stageHeight:int = 0;
 
 		private var ensvBoothMsgDOHV:HashVector = new HashVector();
+
+		private var searchBooths:Vector.<EnsvBooth>;
 
 		public function Ensv(stageWidth:int, stageHeight:int) {
 			super();
@@ -84,10 +94,14 @@
 			dragLayer.addChild(cardLayer);
 			cardLayer.mouseChildren = false;
 			cardLayer.mouseEnabled = false;
+			mapLayer.addChild(boothsLayer);
 			this.addChild(viewLayer);
 			viewLayer.mouseEnabled = false;
 			viewLayer.mouseChildren = false;
 			this.addEventListener(Event.ENTER_FRAME, handlerEnterFrame);
+
+			this.addChild(searchLayer);
+			this.addChild(searchListLayer);
 		}
 
 		private function handlerEnterFrame(e:Event):void {
@@ -192,6 +206,56 @@
 
 			wayFinding = new WayFinding(wayfvv);
 			initMap();
+			//initSearch();
+			stateResizeSetState();
+		}
+
+		private function initSearch():void {
+			var sb:SearchBar = new SearchBar();
+			searchLayer.addChild(sb);
+			sb.addEventListener(SearchBar.EVENT_VIEW_LIST, handlerSearchList);
+			sb.addEventListener(SearchBar.EVENT_SEARCH, handlerSearch);
+		}
+
+		private function handlerSearch(e:Event):void {
+			var sb:SearchBar = e.currentTarget as SearchBar;
+			var stext:String = sb.searchText;
+
+			var searchListHeight:int = 0;
+			if (stext != null) {
+				stext = StringUtilities.trim(stext);
+				if (stext.length > 0) {
+					SpriteUtil.deleteAllChild(searchListLayer);
+					searchListLayer.visible = true;
+
+					searchBooths = new Vector.<EnsvBooth>();
+					var searchListItemLayer:Sprite = new Sprite();
+
+					for (var i:int = 0; i < boothDOs.length; i++) {
+						var bdo:EnsvBoothDO = boothDOs[i];
+						var msg:EnsvBoothMsgDO = bdo.msg;
+						if (msg != null) {
+							if ((msg.text != null && msg.text.indexOf(stext)) || (msg.des != null && msg.des.indexOf(stext))) {
+								var eli:EnsvListItem = new EnsvListItem(msg.text);
+								eli.y = eli.height * i;
+								searchListHeight += eli.height;
+								searchListItemLayer.addChild(eli);
+								var ensvb:EnsvBooth = boothsLayer.getChildAt(i) as EnsvBooth;
+								searchBooths.push(ensvb);
+							}
+						}
+					}
+				}
+			}
+
+			var sbar:ScrollBar = new ScrollBar(500, searchListHeight);
+			sbar.x = 210;
+			searchListLayer.addChild(sbar);
+		}
+
+		private function handlerSearchList(e:Event):void {
+			var sb:SearchBar = e.currentTarget as SearchBar;
+			searchListLayer.visible = sb.isViewList;
 		}
 
 		private function initMap():void {
@@ -205,7 +269,7 @@
 			for (var i:int = 0; i < boothDOs.length; i++) {
 				var booth:EnsvBooth = new EnsvBooth(boothDOs[i]);
 				booth.order = i;
-				mapLayer.addChild(booth);
+				boothsLayer.addChild(booth);
 				booths.push(booth);
 				setBoothUnSelectedFilters(booth);
 				booth.addEventListener(MouseEvent.CLICK, handlerBoothClick);
@@ -263,7 +327,6 @@
 			viewDrag.graphics.drawRect(0, 0, 100, 75);
 			viewDrag.graphics.endFill();
 			viewLayer.addChild(viewDrag);
-			stateResizeSetState();
 
 			var cmd:CplxMouseDrag = new CplxMouseDrag();
 			cmd.addEvents(dragLayer, dragLimit, viewDrag, vl);
@@ -289,6 +352,9 @@
 		}
 
 		public function stateResizeSetState():void {
+			searchLayer.x = stageWidth - searchLayer.width - 50;
+			searchLayer.y = 80;
+
 			viewLayer.x = stageWidth - viewLayer.width;
 			viewLayer.y = stageHeight - viewLayer.height;
 

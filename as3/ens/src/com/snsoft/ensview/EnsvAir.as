@@ -22,7 +22,7 @@ package com.snsoft.ensview {
 	import flash.geom.Point;
 	import flash.system.Capabilities;
 
-	public class EnsvAir extends Sprite {
+	public class EnsvAir extends MovieClip {
 
 		private var win:NativeWindow;
 
@@ -47,15 +47,8 @@ package com.snsoft.ensview {
 		public function EnsvAir() {
 			super();
 
-			//initConfig();
+			initConfig();
 
-			var sb:ScrollBar = new ScrollBar(300, 600);
-			this.addChild(sb);
-			sb.addEventListener(ScrollBar.EVENT_SCROLLING, handlerScrolling);
-		}
-
-		private function handlerScrolling(e:Event):void {
-			trace("asdfasdf");
 		}
 
 		private function initConfig():void {
@@ -72,7 +65,6 @@ package com.snsoft.ensview {
 			win.x = (Capabilities.screenResolutionX - stage.stageWidth) / 2;
 			win.y = (Capabilities.screenResolutionY - stage.stageHeight) / 2;
 			var file:File = File.applicationStorageDirectory;
-			trace(file.nativePath);
 
 			this.addChild(backLayer);
 			this.addChild(startLayer);
@@ -87,7 +79,7 @@ package com.snsoft.ensview {
 		}
 
 		private function handlerFullScreen(e:Event):void {
-			if (stage.displayState == StageDisplayState.FULL_SCREEN) {
+			if (stage.displayState == StageDisplayState.FULL_SCREEN_INTERACTIVE) {
 				ensLayer.visible = true;
 				mainback.visible = true;
 				startLayer.visible = false;
@@ -160,7 +152,7 @@ package com.snsoft.ensview {
 		}
 
 		private function handlerStart(e:Event):void {
-			stage.displayState = StageDisplayState.FULL_SCREEN;
+			stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
 		}
 
 		private function handlerClose(e:Event):void {

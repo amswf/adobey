@@ -98,6 +98,10 @@ package com.snsoft.ensview {
 			stage.addEventListener(MouseEvent.MOUSE_MOVE, handlerMouseMove);
 		}
 
+		public function getScrollValue():Number {
+			return Number(thumbskin.y - thumbMinY) / Number(thumbMaxY - thumbMinY);
+		}
+
 		private function handlerDownMouseClick(e:Event):void {
 			setBtnskinY(thumbskin.y + 4);
 		}
