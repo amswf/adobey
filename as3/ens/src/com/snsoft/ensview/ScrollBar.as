@@ -28,6 +28,8 @@ package com.snsoft.ensview {
 
 		private var thumbMaxY:int;
 
+		private var lastThumbY:int;
+
 		public function ScrollBar(scrollHeight:int, sourceHeight:int) {
 
 			this.scrollHeight = scrollHeight;
@@ -89,13 +91,20 @@ package com.snsoft.ensview {
 
 			thumbskin.buttonMode = true;
 			thumbskin.y = upskin.height;
+			var th:int = 0;
 
-			thumbskin.height = Math.pow((scrollHeight - downskin.height - upskin.height), 2) / sourceHeight;
+			if (sourceHeight > scrollHeight) {
+				th = Math.pow((scrollHeight - downskin.height - upskin.height), 2) / sourceHeight;
+				thumbskin.addEventListener(MouseEvent.MOUSE_DOWN, handlerMouseDown);
+				stage.addEventListener(MouseEvent.MOUSE_UP, handlerMouseUp);
+				stage.addEventListener(MouseEvent.MOUSE_MOVE, handlerMouseMove);
+			}
+			else {
+				th = scrollHeight - downskin.height - thumbskin.height;
+			}
+			thumbskin.height = th;
 			thumbMinY = upskin.height;
 			thumbMaxY = scrollHeight - downskin.height - thumbskin.height;
-			thumbskin.addEventListener(MouseEvent.MOUSE_DOWN, handlerMouseDown);
-			stage.addEventListener(MouseEvent.MOUSE_UP, handlerMouseUp);
-			stage.addEventListener(MouseEvent.MOUSE_MOVE, handlerMouseMove);
 		}
 
 		public function getScrollValue():Number {
@@ -135,7 +144,10 @@ package com.snsoft.ensview {
 			else if (thumbskin.y > thumbMaxY) {
 				thumbskin.y = thumbMaxY;
 			}
-			this.dispatchEvent(new Event(EVENT_SCROLLING));
+			if (lastThumbY != thumbskin.y) {
+				this.dispatchEvent(new Event(EVENT_SCROLLING));
+			}
+			lastThumbY = thumbskin.y;
 		}
 
 		private function setBtnskinY(y:int):void {
@@ -146,7 +158,10 @@ package com.snsoft.ensview {
 				y = thumbMaxY;
 			}
 			thumbskin.y = y;
-			this.dispatchEvent(new Event(EVENT_SCROLLING));
+			if (lastThumbY != thumbskin.y) {
+				this.dispatchEvent(new Event(EVENT_SCROLLING));
+			}
+			lastThumbY = thumbskin.y;
 		}
 	}
 }
