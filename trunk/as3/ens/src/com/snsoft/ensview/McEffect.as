@@ -9,14 +9,14 @@ package com.snsoft.ensview {
 	public class McEffect {
 
 		//光影三角形颜色
-		private static const LIGHT_FILL_COLOR:uint = 0x999999;
+		private static const LIGHT_FILL_COLOR:uint = 0xf4eec9;
 
-		private static const LIGHT_FILL_ALPHA:Number = 0.2;
+		private static const LIGHT_FILL_ALPHA:Number = 0.3;
 
 		//光影线框颜色
-		private static const LIGHT_LINE_COLOR:uint = 0x000000;
+		private static const LIGHT_LINE_COLOR:uint = 0xf4eec9;
 
-		private static const LIGHT_LINE_ALPHA:Number = 0.1;
+		private static const LIGHT_LINE_ALPHA:Number = 0.6;
 
 		private static const LIGHT_LINE_BOADER:int = 1;
 

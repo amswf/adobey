@@ -105,11 +105,11 @@
 			searchLayer.x = stageWidth - 510;
 			searchLayer.y = 80;
 
-			this.addChild(boothMsgLayer);
-
 			this.addChild(searchListLayer);
 			searchListLayer.x = stageWidth - 290;
 			searchListLayer.y = 120;
+
+			this.addChild(boothMsgLayer);
 		}
 
 		private function handlerEnterFrame(e:Event):void {
@@ -226,6 +226,9 @@
 		}
 
 		private function handlerSearch(e:Event):void {
+			SpriteUtil.deleteAllChild(searchListLayer);
+			searchListLayer.visible = true;
+			
 			searchBooths = new Vector.<EnsvBooth>();
 
 			var sb:SearchBar = e.currentTarget as SearchBar;
@@ -236,8 +239,6 @@
 			if (stext != null) {
 				stext = StringUtilities.trim(stext);
 				if (stext.length > 0) {
-					SpriteUtil.deleteAllChild(searchListLayer);
-					searchListLayer.visible = true;
 
 					var n:int = 0;
 					for (var i:int = 0; i < boothDOs.length; i++) {
@@ -263,9 +264,7 @@
 
 			if (searchBooths.length > 0) {
 				var barh:int = viewLayer.y - searchListLayer.y - 20;
-				var sbar:ScrollBar = new ScrollBar(barh, searchListHeight);
-				sbar.x = 210;
-				searchListLayer.addChild(sbar);
+
 				searchListLayer.addChild(searchListItemLayer);
 
 				var msk:MovieClip = new MovieClip();
@@ -275,7 +274,12 @@
 				searchListLayer.addChild(msk);
 				searchListItemLayer.mask = msk;
 
-				sbar.addEventListener(ScrollBar.EVENT_SCROLLING, function():void {searchListItemLayer.y = -int(searchListHeight - 500) * sbar.getScrollValue()});
+				if (barh <= searchListHeight) {
+					var sbar:ScrollBar = new ScrollBar(barh, searchListHeight);
+					sbar.x = 210;
+					searchListLayer.addChild(sbar);
+					sbar.addEventListener(ScrollBar.EVENT_SCROLLING, function():void {searchListItemLayer.y = -int(searchListHeight - 500) * sbar.getScrollValue()});
+				}
 			}
 		}
 
@@ -316,7 +320,8 @@
 		private function initMap():void {
 
 			var back:Sprite = new Sprite();
-			back.graphics.beginFill(0x000000, 0.1);
+			back.graphics.lineStyle(2, 0x000000, 1);
+			back.graphics.beginFill(0xfffffff, 1);
 			back.graphics.drawRect(0, 0, esCol * paneWidth, esRow * paneHeight);
 			back.graphics.endFill();
 			mapLayer.addChild(back);

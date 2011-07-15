@@ -28,7 +28,7 @@ package com.snsoft.ensview {
 			shape = new Shape();
 			this.addChild(shape);
 			var gra2:Graphics = shape.graphics;
-			gra2.beginFill(0xdddddd, 1);
+			gra2.beginFill(0xf6f1d2, 1);
 			gra2.drawRect(0, 0, _ensPaneDO.width, _ensPaneDO.height);
 			gra2.endFill();
 		}

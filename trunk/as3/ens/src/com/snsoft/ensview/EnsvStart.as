@@ -1,5 +1,4 @@
 package com.snsoft.ensview {
-	import fl.controls.Button;
 
 	import flash.display.MovieClip;
 	import flash.events.Event;
@@ -9,11 +8,11 @@ package com.snsoft.ensview {
 
 	public class EnsvStart extends MovieClip {
 
-		private var dDownLoadBtn:Button;
+		private var dDownLoadBtn:MovieClip;
 
-		private var dStartBtn:Button;
+		private var dStartBtn:MovieClip;
 
-		private var dCloseBtn:Button;
+		private var dCloseBtn:MovieClip;
 
 		private var dMsgTfd:TextField;
 
@@ -31,14 +30,19 @@ package com.snsoft.ensview {
 		private function handlerEnterFrame(e:Event):void {
 			this.removeEventListener(Event.ENTER_FRAME, handlerEnterFrame);
 
-			dDownLoadBtn = this.getChildByName("downLoadBtn") as Button;
-			dStartBtn = this.getChildByName("startBtn") as Button;
-			dCloseBtn = this.getChildByName("closeBtn") as Button;
-			dMsgTfd = this.getChildByName("msgTfd") as TextField;
-			var tft:TextFormat = new TextFormat("黑体", 16);
-			dDownLoadBtn.setStyle("textFormat", tft);
-			dStartBtn.setStyle("textFormat", tft);
-			dCloseBtn.setStyle("textFormat", tft);
+			dDownLoadBtn = this.getChildByName("downLoadBtn") as MovieClip;
+			dStartBtn = this.getChildByName("startBtn") as MovieClip;
+			dCloseBtn = this.getChildByName("closeBtn") as MovieClip;
+			
+			dDownLoadBtn.buttonMode = true;
+			dStartBtn.buttonMode = true;
+			dCloseBtn.buttonMode = true;
+			
+//			dMsgTfd = this.getChildByName("msgTfd") as TextField;
+//			var tft:TextFormat = new TextFormat("黑体", 16);
+//			dDownLoadBtn.setStyle("textFormat", tft);
+//			dStartBtn.setStyle("textFormat", tft);
+//			dCloseBtn.setStyle("textFormat", tft);
 
 			dDownLoadBtn.addEventListener(MouseEvent.CLICK, handlerDownloadMouseClick);
 			dStartBtn.addEventListener(MouseEvent.CLICK, handlerStartMouseClick);
