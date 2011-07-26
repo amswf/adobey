@@ -17,6 +17,10 @@
     <classEntry path="com.snsoft.util.wayfinding.WayUtil"/>
     <classEntry path="com.snsoft.util.wayfd.WayPoint"/>
     <classEntry path="com.snsoft.util.wayfd.WayUtil"/>
+    <classEntry path="com.snsoft.util.netPathfinding.NetNode"/>
+    <classEntry path="com.snsoft.util.netPathfinding.NetPathfinding"/>
+    <classEntry path="com.snsoft.util.netPathfinding.BranchPath"/>
+    <classEntry path="com.snsoft.util.netPathfinding.BranchNode"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
