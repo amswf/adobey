@@ -1,4 +1,4 @@
-package com.snsoft.util.netPathfinding {
+﻿package com.snsoft.util.netPathfinding {
 	import com.snsoft.fmc.test.vi.PubNetStream;
 	import com.snsoft.util.HashVector;
 
@@ -24,126 +24,149 @@ package com.snsoft.util.netPathfinding {
 
 		public function finding(fromNode:NetNode, toNode:NetNode):void {
 			var branchHV:HashVector = new HashVector();
-			var forkNodes:HashVector = new HashVector();
-			var paths:Vector.<BranchPath> = new Vector.<BranchPath>();
-			var pathsv:Vector.<Vector.<BranchPath>> = new Vector.<Vector.<BranchPath>>();
 
-			find(pathsv, branchHV, paths, forkNodes, toNode, fromNode, null);
-			//trace(branchHV.length);
-
-			for (var i:int = 0; i < branchHV.length; i++) {
-				var bp:BranchPath = branchHV.findByIndex(i) as BranchPath;
-				trace(bp.hashName);
-				for (var j:int = 0; j < bp.nodes.length; j++) {
-					var node:NetNode = bp.nodes[j];
-					trace(node.point);
-				}
-			}
-
-			outPathsv(pathsv);
-		}
-
-		private function outPathsv(pathsv:Vector.<Vector.<BranchPath>>):void {
-			trace("outPathsv");
-			for (var i:int = 0; i < pathsv.length; i++) {
-				trace("pathsv.length-------------------------------------------------");
-				var paths:Vector.<BranchPath> = pathsv[i];
-				for (var j:int = 0; j < paths.length; j++) {
-					var bp:BranchPath = paths[j];
-					trace(bp.hashName);
-					for (var k:int = 0; k < bp.nodes.length; k++) {
-						var node:NetNode = bp.nodes[k];
-						trace(node.point);
-					}
-				}
-
-			}
+			find(fromNode, toNode, branchHV);
 
 		}
 
-		private function find(pathsv:Vector.<Vector.<BranchPath>>, branchHV:HashVector, paths:Vector.<BranchPath>, forkNodes:HashVector, toNode:NetNode, currentNode:NetNode, prevNode:NetNode = null):void {
+		private function find(forkNode:NetNode, toNode:NetNode, branchHV:HashVector, parentBranch:Branch = null, prevNode:NetNode = null):void {
+			trace(forkNode.point, "-----------------------------------------------------");
+			var branchs:Vector.<Branch> = findBranchs(forkNode, toNode, branchHV, prevNode);
+			for (var i:int = 0; i < branchs.length; i++) {
+				var ppb:Branch = branchs[i];
+				ppb.parent = parentBranch;
+				var ppn:String = getBranchName(ppb.nodes);
+				branchHV.push(ppb, ppn);
+			}
+			for (i = 0; i < branchs.length; i++) {
+				var branch:Branch = branchs[i];
+				branch.parent = parentBranch;
 
-			var nextNodes:Vector.<NetNode> = currentNode.getNextNodes(prevNode);
+				var nfnode:NetNode = branch.getLastNode();
+				var npnode:NetNode = branch.getLastPrevNode();
+				find(nfnode, toNode, branchHV, branch, npnode);
+			}
+		}
+
+		/**
+		 * 从某个点开始查找整个分支上的点
+		 * @param toNode
+		 * @param node
+		 * @param prevNode
+		 * @return
+		 *
+		 */
+		private function findBranchs(forkNode:NetNode, toNode:NetNode, branchHV:HashVector, prevNode:NetNode = null):Vector.<Branch> {
+			trace("findBranchs: " + forkNode.point);
+			var branchs:Vector.<Branch> = new Vector.<Branch>();
+			var nextNodes:Vector.<NetNode> = getNextNodes(forkNode, prevNode);
 			for (var i:int = 0; i < nextNodes.length; i++) {
 				var nnode:NetNode = nextNodes[i];
-				//trace("nnode:" + nnode.point);
-				var bp:BranchPath = findBranch(toNode, nnode, currentNode);
-				var obp:BranchPath = branchHV.findByName(bp.hashName) as BranchPath;
-				//trace(bp.hashName);
-				if (obp == null || obp.pathLen > bp.pathLen) {
-					var ncnode:NetNode = bp.getLastNode();
-					var npnode:NetNode = bp.getLastPrevNode();
-					var nfnode:NetNode = bp.getFirstNode();
-					//trace("ncnode:" + ncnode.point);
 
-					var sign:Boolean = true;
-					var forkNode:NetNode = forkNodes.findByName(getNodeName(ncnode)) as NetNode;
-					if (forkNode != null) {
-						var name:String = get2PointHashName(ncnode.point, nfnode.point);
-						if (branchHV.findByName(name) != null) {
-							sign = false;
-						}
+				var n:int = 1;
+				var len:int = 0;
+
+				var success:Boolean = false;
+
+				var branch:Branch = new Branch();
+				branch.addNode(forkNode);
+
+				var pnode:NetNode = forkNode;
+				var cnode:NetNode = nnode;
+
+				while (true) {
+					//branch.isEnd 加速
+					if (!branch.isEnd && toNode.point.equals(cnode.point)) {
+						branch.isEnd = true;
 					}
 
-					if (sign) {
-						forkNodes.push(ncnode, getNodeName(ncnode));
-						branchHV.push(bp, bp.hashName);
-						var npaths:Vector.<BranchPath> = clonePaths(paths);
-						npaths.push(bp);
-						if (!bp.isEnd) {
-							find(pathsv, branchHV, npaths, forkNodes, toNode, ncnode, npnode);
-						}
-						else {
-							pathsv.push(npaths);
-						}
+					var nodes:Vector.<NetNode> = getNextNodes(cnode, pnode);
+					n = nodes.length;
+
+					var bnode:NetNode = null;
+
+					if (n > 0) {
+						bnode = nodes[0];
+					}
+					if (!cnode.point.equals(forkNode.point) && (n >= 1 || (n == 0 && branch.isEnd))) {
+						len += Point.distance(pnode.point, cnode.point);
+						branch.addNode(cnode);
+						pnode = cnode;
+						cnode = bnode;
+					}
+					else {
+						break;
+					}
+
+					if (n == 0) {
+						success = true;
+						break;
+					}
+					else if (n >= 2) {
+						success = true;
+						break;
 					}
 				}
+				var nname:String = getDeBranchName(branch.nodes);
+				if (success && branch.nodes.length > 1 && branchHV.findByName(nname) == null) {
+					branch.hashName = getBranchName(branch.nodes);
+					branch.pathLen = len;
+					branchs.push(branch);
+				}
+
 			}
+
+			for (i = 0; i < branchs.length; i++) {
+				var b:Branch = branchs[i];
+				var str:String = "";
+				for (var j:int = 0; j < b.nodes.length; j++) {
+					var nd:NetNode = b.nodes[j];
+					str += nd.point.toString() + " , ";
+				}
+				trace(b.hashName);
+				trace(str);
+			}
+			return branchs;
 		}
 
-		private function clonePaths(paths:Vector.<BranchPath>):Vector.<BranchPath> {
-			var v:Vector.<BranchPath> = new Vector.<BranchPath>();
-			for (var i:int = 0; i < paths.length; i++) {
-				v.push(paths[i]);
+		/**
+		 * 去掉父结点的子关联结点列表
+		 * @param prevNetNode
+		 * @return
+		 *
+		 */
+		public function getOpenNextNodes(node:NetNode, branchHV:HashVector):Vector.<NetNode> {
+			//prevNetNode==null 时可加速，直接反回，不做for 处理
+			//trace("getNextNodes: ", node.point, branchHV.length);
+			var nodes:Vector.<NetNode> = new Vector.<NetNode>();
+			for (var i:int = 0; i < node.linkNodes.length; i++) {
+				var nnode:NetNode = node.linkNodes[i];
+				//trace(nnode.point);
+				var name:String = getNodeName(nnode);
+				if (branchHV.findByName(name) == null) {
+					nodes.push(nnode);
+				}
 			}
-			return v;
+			return nodes;
 		}
 
-		private function findBranch(toNode:NetNode, node:NetNode, prevNode:NetNode):BranchPath {
-			var n:int = 1;
-			var len:int = 0;
+		public function getNextNodes(node:NetNode, prevNode:NetNode = null):Vector.<NetNode> {
+			//prevNetNode==null 时可加速，直接反回，不做for 处理
+			//trace("getNextNodes: ", node.point, branchHV.length);
+			var nodes:Vector.<NetNode> = new Vector.<NetNode>();
+			for (var i:int = 0; i < node.linkNodes.length; i++) {
+				var nnode:NetNode = node.linkNodes[i];
+				//trace(nnode.point);
 
-			var pnode:NetNode = prevNode;
-			var cnode:NetNode = node;
-
-			var branchNodes:Vector.<NetNode> = new Vector.<NetNode>();
-			branchNodes.push(prevNode);
-			branchNodes.push(node);
-			len += Point.distance(prevNode.point, node.point);
-
-			var branchPath:BranchPath = new BranchPath();
-			while (n == 1) {
-				if (cnode.point.equals(toNode.point)) {
-					branchPath.isEnd = true;
-				}
-				var nextNodes:Vector.<NetNode> = cnode.getNextNodes(pnode);
-				n = nextNodes.length;
-				if (n == 1) {
-					var nnode:NetNode =  nextNodes[0];
-					len += Point.distance(cnode.point, nnode.point);
-					pnode = cnode;
-					cnode = nnode;
-					branchNodes.push(nnode);
+				if (!(prevNode != null && nnode.point.equals(prevNode.point))) {
+					nodes.push(nnode);
 				}
 			}
-			branchPath.nodes = branchNodes;
-			branchPath.pathLen = len;
-			branchPath.hashName = getBranchName(branchNodes);
-			return branchPath;
+			return nodes;
 		}
 
 		private function getNodeName(node:NetNode):String {
-			return node.point.x + "," + node.point.y;
+			return "" + node.point.x + "," + node.point.y;
 		}
 
 		private function getBranchName(nodes:Vector.<NetNode>):String {
@@ -152,6 +175,16 @@ package com.snsoft.util.netPathfinding {
 				var p1:Point = nodes[0].point;
 				var p2:Point = nodes[nodes.length - 1].point;
 				name = get2PointHashName(p1, p2);
+			}
+			return name;
+		}
+
+		private function getDeBranchName(nodes:Vector.<NetNode>):String {
+			var name:String = null;
+			if (nodes.length > 1) {
+				var p1:Point = nodes[0].point;
+				var p2:Point = nodes[nodes.length - 1].point;
+				name = get2PointHashName(p2, p1);
 			}
 			return name;
 		}
