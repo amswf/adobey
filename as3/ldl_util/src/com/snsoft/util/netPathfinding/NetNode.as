@@ -24,25 +24,6 @@
 		}
 
 		/**
-		 * 去掉父结点的子关联结点列表
-		 * @param prevNetNode
-		 * @return
-		 *
-		 */
-		public function getNextNodes(prevNetNode:NetNode = null):Vector.<NetNode> {
-			//prevNetNode==null 时可加速，直接反回，不做for 处理
-
-			var nodes:Vector.<NetNode> = new Vector.<NetNode>();
-			for (var i:int = 0; i < linkNodes.length; i++) {
-				var node:NetNode = linkNodes[i];
-				if (prevNetNode == null || !node.point.equals(prevNetNode.point)) {
-					nodes.push(node);
-				}
-			}
-			return nodes;
-		}
-
-		/**
 		 * 添加关联结点
 		 * @param netNode
 		 *

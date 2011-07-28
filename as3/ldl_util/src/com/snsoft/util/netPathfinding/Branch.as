@@ -1,6 +1,6 @@
 package com.snsoft.util.netPathfinding {
 
-	public class BranchPath {
+	public class Branch {
 
 		private var _hashName:String;
 
@@ -10,7 +10,13 @@ package com.snsoft.util.netPathfinding {
 
 		private var _isEnd:Boolean;
 
-		public function BranchPath() {
+		private var _parent:Branch;
+
+		public function Branch() {
+		}
+
+		public function addNode(node:NetNode):void {
+			nodes.push(node);
 		}
 
 		public function getLastPrevNode():NetNode {
@@ -61,6 +67,14 @@ package com.snsoft.util.netPathfinding {
 
 		public function set isEnd(value:Boolean):void {
 			_isEnd = value;
+		}
+
+		public function get parent():Branch {
+			return _parent;
+		}
+
+		public function set parent(value:Branch):void {
+			_parent = value;
 		}
 
 	}
