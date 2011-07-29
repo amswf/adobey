@@ -468,7 +468,7 @@
 		}
 
 		private function creatXML(ws:WorkSpace):String {
-			var madoa:HashVector = ws.manager.mapAreaDOAry as HashVector;
+			var madoa:HashVector = ws.areaManager.mapAreaDOAry as HashVector;
 			var image:String = "";
 			if (ws.mapImage != null && ws.mapImage.imageUrl != null) {
 				image = ws.mapImage.imageUrl;
