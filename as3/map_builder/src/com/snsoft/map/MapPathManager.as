@@ -1,4 +1,5 @@
 package com.snsoft.map {
+	import com.snsoft.util.HashVector;
 	import com.snsoft.util.hitTest.HitTest;
 
 	import flash.geom.Point;
@@ -16,9 +17,36 @@ package com.snsoft.map {
 
 		private var _currentPoint:Point = null;
 
+		private var pathNodes:HashVector = new HashVector();
+
 		public function MapPathManager(workSizePoint:Point, hitTestDvaluePoint:Point) {
 			hitTest = new HitTest(workSizePoint, HIT_TEST_STEP_VALUE_POINT);
 			this.hitTestDvaluePoint = hitTestDvaluePoint;
+		}
+
+		public function addSection(point:Point, section:MapPathSection):void {
+			var name:String = MapUtil.pointName(point);
+			var node:MapPathNode = pathNodes.findByName(name) as MapPathNode;
+			if (node == null) {
+				node = new MapPathNode(point);
+				pathNodes.push(node, node.name);
+			}
+		}
+
+		public function removeSection(point:Point, section:MapPathSection):void {
+			var name:String = MapUtil.pointName(point);
+			var node:MapPathNode = pathNodes.findByName(name) as MapPathNode;
+			if (node != null) {
+				node.removeSection(section);
+			}
+		}
+
+		public function removeNode(point:Point):void {
+			var name:String = MapUtil.pointName(point);
+			var node:MapPathNode = pathNodes.findByName(name) as MapPathNode;
+			if (node != null) {
+				pathNodes.removeByName(name);
+			}
 		}
 
 		public function setHitTest(size:Point):void {
