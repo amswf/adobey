@@ -206,12 +206,22 @@
 				}
 			}
 			//刷新当前画线
-			var mll:MovieClip = this.mapsLayer;
+			var mll:MovieClip = this.linesLayer;
 			for (var iMll:int = 0; iMll < mll.numChildren; iMll++) {
 				var ml:MapLine = mll.getChildAt(iMll) as MapLine;
-				if (ma != null) {
-					ma.scalePoint = this.scalePoint;
-					ma.refresh();
+				if (ml != null) {
+					ml.scalePoint = this.scalePoint;
+					ml.refresh();
+				}
+			}
+
+			//刷新当前路径
+			var mpl:MovieClip = this.pathLayer;
+			for (var iMpl:int = 0; iMpl < mpl.numChildren; iMpl++) {
+				var mp:MapLine = mpl.getChildAt(iMpl) as MapLine;
+				if (mp != null) {
+					mp.scalePoint = this.scalePoint;
+					mp.refresh();
 				}
 			}
 
@@ -374,6 +384,10 @@
 			if (this.pen.penState == Pen.PEN_STATE_START) { //画笔状态是开始画：起点未画，末点未画
 				this.pen.penState = Pen.PEN_STATE_DOING;
 				p2 = PointUtil.creatInverseSaclePoint(mousep, this.scalePoint);
+				var pf:Point = pathManager.findHitPoint(p2);
+				if (pf != null) {
+					p2 = pf;
+				}
 			}
 			else if (this.pen.penState == Pen.PEN_STATE_DOING) { //画笔状态是正在画：起点画完，末点未画
 
@@ -613,26 +627,21 @@
 		}
 
 		private function viewPath(mouseScaleP:Point):void {
+			var p1:Point = this.pathManager.currentPoint;
+			var p2:Point = this.pathManager.findHitPoint(mouseScaleP);
+			if (p2 == null) {
+				this.pen.penSkin = Pen.PEN_PATH_DEFAULT_SKIN;
+				p2 = mouseScaleP;
+			}
+			else {
+				this.pen.penSkin = Pen.PEN_PATH_POINT_SKIN;
+			}
+
+			PointUtil.deleteAllChild(this.fastViewLayer);
 			if (this.pen.penState == Pen.PEN_STATE_DOING) { //画笔状态是正在画：起点画完，末点未画
-
-				var p1:Point = this.pathManager.currentPoint;
-				var p2:Point = this.pathManager.findHitPoint(mouseScaleP);
-				if (p2 == null) {
-					this.pen.penSkin = Pen.PEN_PATH_DEFAULT_SKIN;
-					p2 = mouseScaleP;
-				}
-				else {
-					this.pen.penSkin = Pen.PEN_PATH_POINT_SKIN;
-				}
-
-				PointUtil.deleteAllChild(this.fastViewLayer);
 				var ml:MapLine = new MapLine(p1, p2, VIEW_COLOR, VIEW_COLOR, VIEW_FILL_COLOR, this.scalePoint);
 				this.fastViewLayer.addChild(ml);
 				this.suggest.endPoint = p2;
-			}
-			else {
-				PointUtil.deleteAllChild(this.fastViewLayer);
-				this.pen.penSkin = Pen.PEN_PATH_DEFAULT_SKIN;
 			}
 			this.pen.refresh();
 		}
