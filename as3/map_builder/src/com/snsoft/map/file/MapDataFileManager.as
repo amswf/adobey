@@ -1,5 +1,6 @@
 ﻿package com.snsoft.map.file {
 	import com.snsoft.map.MapAreaDO;
+	import com.snsoft.map.MapPathSection;
 	import com.snsoft.map.MapPointsManager;
 	import com.snsoft.map.WorkSpace;
 	import com.snsoft.map.WorkSpaceDO;
@@ -388,7 +389,7 @@
 			wsdo.wsName = wsName;
 
 			//工作区地图块数据对象列表
-			var madoha:HashVector = new HashVector;
+			var madoha:Vector.<MapAreaDO> = new Vector.<MapAreaDO>;
 			//<areas>
 			var areasNode:Node = mapNode.getNodeListFirstNode("areas");
 			var areaList:NodeList = areasNode.getNodeList("area");
@@ -448,11 +449,31 @@
 						}
 						mado.pointArray = pha;
 						var haName:String = MapPointsManager.creatHashArrayHashName(pha);
-						madoha.push(mado, haName);
+						madoha.push(mado);
 					}
 				}
 			}
-			wsdo.mapAreaDOHashArray = madoha;
+			wsdo.mapAreaDOs = madoha;
+
+			var pathsNode:Node = mapNode.getNodeListFirstNode("sections");
+			var pathList:NodeList = pathsNode.getNodeList("section");
+
+			var sections:Vector.<MapPathSection> = new Vector.<MapPathSection>();
+			if (pathList != null) {
+				for (var k:int = 0; k < pathList.length(); k++) {
+					var pathNode:Node = pathList.getNode(k);
+					var p1:Point = new Point();
+					p1.x = parseInt(pathNode.getAttributeByName("from_x"));
+					p1.y = parseInt(pathNode.getAttributeByName("from_y"));
+
+					var p2:Point = new Point();
+					p2.x = parseInt(pathNode.getAttributeByName("to_x"));
+					p2.y = parseInt(pathNode.getAttributeByName("to_y"));
+					var section:MapPathSection = new MapPathSection(p1, p2);
+					sections.push(section);
+				}
+			}
+			wsdo.sections = sections;
 			return wsdo;
 		}
 
@@ -468,13 +489,14 @@
 		}
 
 		private function creatXML(ws:WorkSpace):String {
+			var xml:String = new String();
+			xml = xml.concat('<map image="' + image + '">');
+
 			var madoa:HashVector = ws.areaManager.mapAreaDOAry as HashVector;
 			var image:String = "";
 			if (ws.mapImage != null && ws.mapImage.imageUrl != null) {
 				image = ws.mapImage.imageUrl;
 			}
-			var xml:String = new String();
-			xml = xml.concat('<map image="' + image + '">');
 
 			xml = xml.concat("<areas>");
 			if (madoa != null) {
@@ -500,6 +522,17 @@
 				}
 			}
 			xml = xml.concat("</areas>");
+
+			var sections:HashVector = ws.pathManager.sections;
+			xml = xml.concat("<sections>");
+			if (sections != null) {
+				for (var k:int = 0; k < sections.length; k++) {
+					var section:MapPathSection = sections.findByIndex(k) as MapPathSection;
+					xml = xml.concat('<section' + ' from_x="' + section.from.x + '"' + ' from_y="' + section.from.y + '"' + ' to_x="' + section.to.x + '"' + ' to_y="' + section.to.y + '"' + ' />');
+				}
+			}
+			xml = xml.concat("</sections>");
+
 			xml = xml.concat("</map>");
 			return xml;
 		}

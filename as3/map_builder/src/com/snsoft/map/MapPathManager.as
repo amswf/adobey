@@ -17,7 +17,7 @@ package com.snsoft.map {
 
 		private var _currentPoint:Point = null;
 
-		private var sections:HashVector = new HashVector();
+		private var _sections:HashVector = new HashVector();
 
 		public function MapPathManager(workSizePoint:Point, hitTestDvaluePoint:Point) {
 			hitTest = new HitTest(workSizePoint, HIT_TEST_STEP_VALUE_POINT);
@@ -105,6 +105,10 @@ package com.snsoft.map {
 
 		public function set currentPoint(value:Point):void {
 			_currentPoint = value;
+		}
+
+		public function get sections():HashVector {
+			return _sections;
 		}
 
 	}
