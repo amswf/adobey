@@ -76,6 +76,10 @@
 
 		private static const LINE_FILL_COLOR:int = 0xffffff;
 
+		private static const PATH_COLOR:int = 0x000000;
+
+		private static const PATH_FILL_COLOR:int = 0xffffff;
+
 		private static const AREA_LINE_COLOR:int = 0x0000ff;
 
 		private static const AREA_FILL_COLOR:int = 0xffff00;
@@ -392,8 +396,13 @@
 			else if (this.pen.penState == Pen.PEN_STATE_DOING) { //画笔状态是正在画：起点画完，末点未画
 
 				if (!p1.equals(p2)) {
-					var ml:MapLine = new MapLine(p1, p2, VIEW_COLOR, VIEW_COLOR, VIEW_FILL_COLOR, this.scalePoint);
+					var ml:MapLine = new MapLine(p1, p2, PATH_COLOR, PATH_COLOR, PATH_FILL_COLOR, this.scalePoint);
+					pathManager.addSection(p1, p2);
 					pathLayer.addChild(ml);
+					ml.addEventListener(MouseEvent.MOUSE_OVER, handlerPathMouseOver);
+					ml.addEventListener(MouseEvent.MOUSE_OUT, handlerPathMouseOut);
+					ml.addEventListener(MouseEvent.CLICK, handlerPathMouseClick);
+
 				}
 				else {
 					this.pen.penState = Pen.PEN_STATE_START;
@@ -401,6 +410,28 @@
 			}
 			pathManager.addPoint(p2);
 			this.suggest.startPoint = p2;
+		}
+
+		private function handlerPathMouseOut(e:Event):void {
+			if (this.toolEventType == ToolsBar.TOOL_TYPE_SELECT) {
+				this.pen.penSkin = Pen.PEN_SELECT_DEFAULT_SKIN;
+				this.pen.refresh();
+			}
+		}
+
+		private function handlerPathMouseOver(e:Event):void {
+			if (this.toolEventType == ToolsBar.TOOL_TYPE_SELECT) {
+				this.pen.penSkin = Pen.PEN_SELECT_DELETE_SKIN;
+				this.pen.refresh();
+			}
+		}
+
+		private function handlerPathMouseClick(e:Event):void {
+			if (this.toolEventType == ToolsBar.TOOL_TYPE_SELECT) {
+				var ml:MapLine = e.currentTarget as MapLine;
+				pathLayer.removeChild(ml);
+				pathManager.removeSection(ml.startPoint, ml.endPoint);
+			}
 		}
 
 		private function drawArea():void {
@@ -434,6 +465,9 @@
 					for (var i:int = sn; i < cpa.length; i++) {
 						var p2:Point = cpa.findByIndex(i) as Point;
 						var fml:MapLine = new MapLine(p1, p2, VIEW_COLOR, VIEW_COLOR, VIEW_FILL_COLOR, this.scalePoint);
+						fml.mouseEnabled = false;
+						fml.buttonMode = false;
+						fml.mouseChildren = false;
 						fml.refresh();
 						this.linesLayer.addChild(fml);
 						p1 = p2;
@@ -441,6 +475,9 @@
 				}
 				else {
 					var ml:MapLine = new MapLine(this.suggest.startPoint, this.suggest.endPoint, VIEW_COLOR, VIEW_COLOR, VIEW_FILL_COLOR, this.scalePoint);
+					ml.mouseEnabled = false;
+					ml.buttonMode = false;
+					ml.mouseChildren = false;
 					this.linesLayer.addChild(ml);
 				}
 
@@ -640,6 +677,9 @@
 			PointUtil.deleteAllChild(this.fastViewLayer);
 			if (this.pen.penState == Pen.PEN_STATE_DOING) { //画笔状态是正在画：起点画完，末点未画
 				var ml:MapLine = new MapLine(p1, p2, VIEW_COLOR, VIEW_COLOR, VIEW_FILL_COLOR, this.scalePoint);
+				ml.mouseEnabled = false;
+				ml.buttonMode = false;
+				ml.mouseChildren = false;
 				this.fastViewLayer.addChild(ml);
 				this.suggest.endPoint = p2;
 			}
@@ -675,6 +715,9 @@
 					for (var i:int = 0; i < fpa.length; i++) {
 						var p2:Point = fpa.findByIndex(i) as Point;
 						var ml:MapLine = new MapLine(p1, p2, VIEW_COLOR, VIEW_COLOR, VIEW_FILL_COLOR, this.scalePoint);
+						ml.mouseEnabled = false;
+						ml.buttonMode = false;
+						ml.mouseChildren = false;
 						ml.refresh();
 						this.fastViewLayer.addChild(ml);
 						p1 = p2;
