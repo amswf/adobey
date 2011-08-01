@@ -579,7 +579,30 @@
 		 *
 		 */
 		private function mapBackImageLoadFromSaveDataIOError(e:Event):void {
+			initMapPathFromSaveData();
 			initMapAreasFromSaveData();
+		}
+
+		private function initMapPathFromSaveData():void {
+			var sections:Vector.<MapPathSection> = workSpaceDO.sections;
+			if (sections != null) {
+				for (var i:int = 0; i < sections.length; i++) {
+					var section:MapPathSection = sections[i];
+					var p1:Point = section.from;
+					var p2:Point = section.to;
+
+					pathManager.addPoint(p1);
+					pathManager.addPoint(p2);
+					pathManager.addSection(p1, p2);
+
+					var ml:MapLine = new MapLine(p1, p2, PATH_COLOR, PATH_COLOR, PATH_FILL_COLOR, this.scalePoint);
+					pathManager.addSection(p1, p2);
+					pathLayer.addChild(ml);
+					ml.addEventListener(MouseEvent.MOUSE_OVER, handlerPathMouseOver);
+					ml.addEventListener(MouseEvent.MOUSE_OUT, handlerPathMouseOut);
+					ml.addEventListener(MouseEvent.CLICK, handlerPathMouseClick);
+				}
+			}
 		}
 
 		/**
@@ -587,10 +610,10 @@
 		 *
 		 */
 		private function initMapAreasFromSaveData():void {
-			var mapAreaDoHashArray:HashVector = workSpaceDO.mapAreaDOHashArray;
-			if (mapAreaDoHashArray != null) {
-				for (var i:int = 0; i < mapAreaDoHashArray.length; i++) {
-					var mapAreaDo:MapAreaDO = mapAreaDoHashArray.findByIndex(i) as MapAreaDO;
+			var mapAreaDOs:Vector.<MapAreaDO> = workSpaceDO.mapAreaDOs;
+			if (mapAreaDOs != null) {
+				for (var i:int = 0; i < mapAreaDOs.length; i++) {
+					var mapAreaDo:MapAreaDO = mapAreaDOs[i];
 					if (mapAreaDo != null) {
 						this.addMapArea(mapAreaDo);
 						var pha:HashVector = mapAreaDo.pointArray;
