@@ -51,9 +51,9 @@ package com.snsoft.map
 				this.scalePoint = scalePoint;
 			}
 			
-			this.mouseEnabled = false;
-			this.buttonMode = false;
-			this.mouseChildren = false;
+			this.mouseEnabled = true;
+			this.buttonMode = true;
+			this.mouseChildren = true;
 			
 			//基类方法
 			super();

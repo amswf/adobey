@@ -17,38 +17,65 @@ package com.snsoft.map {
 
 		private var _currentPoint:Point = null;
 
-		private var pathNodes:HashVector = new HashVector();
+		private var sections:HashVector = new HashVector();
 
 		public function MapPathManager(workSizePoint:Point, hitTestDvaluePoint:Point) {
 			hitTest = new HitTest(workSizePoint, HIT_TEST_STEP_VALUE_POINT);
 			this.hitTestDvaluePoint = hitTestDvaluePoint;
 		}
 
-		public function addSection(point:Point, section:MapPathSection):void {
-			var name:String = MapUtil.pointName(point);
-			var node:MapPathNode = pathNodes.findByName(name) as MapPathNode;
-			if (node == null) {
-				node = new MapPathNode(point);
-				pathNodes.push(node, node.name);
+		/**
+		 *
+		 * @param p1
+		 * @param p2
+		 *
+		 */
+		public function addSection(p1:Point, p2:Point):void {
+			var section:MapPathSection = new MapPathSection(p1, p2);
+			if (sections.findByName(section.name) == null && sections.findByName(section.dename) == null) {
+				sections.push(section, section.name);
 			}
 		}
 
-		public function removeSection(point:Point, section:MapPathSection):void {
-			var name:String = MapUtil.pointName(point);
-			var node:MapPathNode = pathNodes.findByName(name) as MapPathNode;
-			if (node != null) {
-				node.removeSection(section);
+		/**
+		 *
+		 * @param p1
+		 * @param p2
+		 * @return
+		 *
+		 */
+		public function getSection(p1:Point, p2:Point):MapPathSection {
+			var section:MapPathSection = new MapPathSection(p1, p2);
+			var sec:MapPathSection = sections.findByName(section.name) as MapPathSection;
+			if (sec != null) {
+				return sec;
 			}
+			var dsec:MapPathSection = sections.findByName(section.dename) as MapPathSection;
+			if (dsec != null) {
+				return dsec;
+			}
+			return null;
 		}
 
-		public function removeNode(point:Point):void {
-			var name:String = MapUtil.pointName(point);
-			var node:MapPathNode = pathNodes.findByName(name) as MapPathNode;
-			if (node != null) {
-				pathNodes.removeByName(name);
-			}
+		/**
+		 *
+		 * @param p1
+		 * @param p2
+		 *
+		 */
+		public function removeSection(p1:Point, p2:Point):void {
+			var section:MapPathSection = new MapPathSection(p1, p2);
+			sections.removeByName(section.name);
+			sections.removeByName(section.dename);
+
+			trace(sections.length);
 		}
 
+		/**
+		 *
+		 * @param size
+		 *
+		 */
 		public function setHitTest(size:Point):void {
 			if (hitTest != null) {
 				hitTest = hitTest.createCopy(size, HIT_TEST_STEP_VALUE_POINT);
