@@ -117,6 +117,11 @@
 		private var currentPathMapAreaMouseOver:Boolean = false;
 
 		/**
+		 *  地图上表示当前位置的区块
+		 */
+		private var currentPositionMapArea:MapArea = null;
+
+		/**
 		 * 构造方法
 		 *
 		 */
@@ -289,7 +294,17 @@
 				if (areaAttribute.getareaNameY() != null) {
 					ma.mapAreaDO.areaNamePlace.y = Number(areaAttribute.getareaNameY());
 				}
+				ma.mapAreaDO.isCurrent = areaAttribute.getIsCurrent();
 				ma.refresh();
+
+				if (ma.mapAreaDO.isCurrent) {
+					if (currentPositionMapArea != null) {
+						currentPositionMapArea.mapAreaDO.isCurrent = false;
+						currentPositionMapArea.refresh();
+					}
+					currentPositionMapArea = ma;
+				}
+
 				var hv:HashVector = ma.mapAreaDO.pointArray;
 				var name:String = MapPointsManager.creatHashArrayHashName(hv);
 				this.areaManager.mapAreaDOAry.push(ma.mapAreaDO, name);

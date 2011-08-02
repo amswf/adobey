@@ -1,10 +1,14 @@
 ﻿package com.snsoft.ensview {
 	import ascb.util.StringUtilities;
 
+	import com.snsoft.mapview.dataObj.WorkSpaceDO;
+	import com.snsoft.mapview.util.MapViewXMLLoader;
 	import com.snsoft.util.HashVector;
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.SpriteUtil;
 	import com.snsoft.util.complexEvent.CplxMouseDrag;
+	import com.snsoft.util.netPathfinding.NetNode;
+	import com.snsoft.util.netPathfinding.NetPathfinding;
 	import com.snsoft.util.rlm.ResLoadManager;
 	import com.snsoft.util.rlm.rs.RSTextFile;
 	import com.snsoft.util.wayfinding.WayFinding;
@@ -29,9 +33,9 @@
 
 		private var rsxml:RSTextFile;
 
-		private var dataXMLUrl:String = "data.xml";
-
 		private var boothMsgXMLUrl:String = "boothMsg.xml";
+
+		private var mapXMLUrl:String = "flash_map/1x/ws_1.xml";
 
 		private var esRow:int = 1;
 
@@ -124,8 +128,8 @@
 
 		private function loadXML():void {
 			rsxml = new RSTextFile();
-			rsxml.addResUrl(dataXMLUrl);
 			rsxml.addResUrl(boothMsgXMLUrl);
+			rsxml.addResUrl(mapXMLUrl);
 
 			var rsm:ResLoadManager = new ResLoadManager();
 			rsm.addResSet(rsxml);
@@ -154,66 +158,16 @@
 		}
 
 		private function parseMapMsg():void {
-			var xmlStr:String = rsxml.getTextByUrl(dataXMLUrl);
+			var xmlStr:String = rsxml.getTextByUrl(mapXMLUrl);
 			var xml:XML = new XML(xmlStr);
-			var xdom:XMLDom = new XMLDom(xml);
-			var node:Node = xdom.parse();
-			var ensNode:Node = node.getNodeListFirstNode("ens");
-			esRow = parseInt(ensNode.getAttributeByName("row"));
-			esCol = parseInt(ensNode.getAttributeByName("col"));
+			var wsdo:WorkSpaceDO = MapViewXMLLoader.creatWorkSpaceDO(xml, this.mapXMLUrl);
 
-			//初始化矩阵
-			for (var i:int = 0; i < esRow; i++) {
-				var v:Vector.<Boolean> = new Vector.<Boolean>();
-				for (var j:int = 0; j < esCol; j++) {
-					v.push(true);
-				}
-				wayfvv.push(v);
-			}
+			var netNode:NetNode = new NetNode();
+			var npf:NetPathfinding = new NetPathfinding(netNode);
+			
+			
 
-			var boothList:NodeList = ensNode.getNodeList("booth");
-
-			if (boothList != null) {
-				for (var ii:int = 0; ii < boothList.length(); ii++) {
-					var boothNode:Node = boothList.getNode(ii);
-					var ebdo:EnsvBoothDO = new EnsvBoothDO();
-					ebdo.id = boothNode.getAttributeByName("value");
-					ebdo.text = boothNode.getAttributeByName("name");
-					ebdo.isCurrentPosition = (boothNode.getAttributeByName("isCurrentPosition") == "true") ? true : false;
-					var paneList:NodeList = boothNode.getNodeList("pane");
-					var ebmdo:EnsvBoothMsgDO = ensvBoothMsgDOHV.findByName(ebdo.id) as EnsvBoothMsgDO;
-
-					if (ebmdo != null) {
-						ebdo.msg = ebmdo;
-					}
-
-					if (ebdo.isCurrentPosition) {
-						if (paneList.length() > 0) {
-							var fPaneNode:Node = paneList.getNode(0);
-							currentPosition.y = parseInt(fPaneNode.getAttributeByName("row")) - 1;
-							currentPosition.x = parseInt(fPaneNode.getAttributeByName("col")) - 1;
-						}
-					}
-
-					for (var jj:int = 0; jj < paneList.length(); jj++) {
-						var paneNode:Node = paneList.getNode(jj);
-						var pdo:EnsvPaneDO = new EnsvPaneDO();
-						pdo.row = parseInt(paneNode.getAttributeByName("row")) - 1;
-						pdo.col = parseInt(paneNode.getAttributeByName("col")) - 1;
-						pdo.width = paneWidth;
-						pdo.height = paneHeight;
-						//矩阵设置
-						if (!ebdo.isCurrentPosition) {
-							wayfvv[pdo.row][pdo.col] = false;
-						}
-						ebdo.addPane(pdo);
-					}
-					boothDOs.push(ebdo);
-				}
-			}
-
-			wayFinding = new WayFinding(wayfvv);
-			initMap();
+			initMap(wsdo);
 			initSearch();
 			stateResizeSetState();
 		}
@@ -228,7 +182,7 @@
 		private function handlerSearch(e:Event):void {
 			SpriteUtil.deleteAllChild(searchListLayer);
 			searchListLayer.visible = true;
-			
+
 			searchBooths = new Vector.<EnsvBooth>();
 
 			var sb:SearchBar = e.currentTarget as SearchBar;
@@ -317,7 +271,7 @@
 			searchListLayer.visible = !searchListLayer.visible;
 		}
 
-		private function initMap():void {
+		private function initMap(wsdo:WorkSpaceDO):void {
 
 			var back:Sprite = new Sprite();
 			back.graphics.lineStyle(2, 0x000000, 1);
@@ -327,31 +281,14 @@
 			mapLayer.addChild(back);
 			mapLayer.addChild(boothsLayer);
 
-			for (var i:int = 0; i < boothDOs.length; i++) {
-				var booth:EnsvBooth = new EnsvBooth(boothDOs[i]);
-				booth.order = i;
-				boothsLayer.addChild(booth);
-				booths.push(booth);
-				setBoothUnSelectedFilters(booth);
-				booth.doubleClickEnabled = true;
-
-				booth.addEventListener(MouseEvent.DOUBLE_CLICK, handlerBoothDoubleClick);
-				booth.addEventListener(MouseEvent.CLICK, handlerBoothClick);
-				booth.addEventListener(MouseEvent.MOUSE_OVER, handlerBoothMouseOver);
-				booth.addEventListener(MouseEvent.MOUSE_OUT, handlerBoothMouseOut);
-			}
-
-//			for (var j:int = 0; j < esCol; j++) {
-//				for (var k:int = 0; k < esRow; k++) {
-//					var tfd:TextField = new TextField();
-//					tfd.autoSize = TextFieldAutoSize.LEFT;
-//					tfd.text = "" + j + "" + k;
-//					tfd.x = j * 30;
-//					tfd.y = k * 30;
-//					tfd.mouseEnabled = false;
-//					mapLayer.addChild(tfd);
-//				}
-//			}
+			var mapView:MapView = new MapView();
+			mapView.workSpaceDO = wsdo;
+			mapView.drawNow();
+			boothsLayer.addChild(mapView);
+			mapView.addEventListener(MapView.AREA_CLICK_EVENT, handlerAreaClick);
+			mapView.addEventListener(MapView.AREA_DOUBLE_CLICK_EVENT, handlerAreaDoubleClick);
+			mapView.addEventListener(MapView.AREA_MOUSE_OUT_EVENT, handlerAreaMouseOut);
+			mapView.addEventListener(MapView.AREA_MOUSE_OVER_EVENT, handlerAreaMouseOver);
 
 			dragLimit = new Sprite();
 			dragLimit.graphics.beginFill(0x000000, 0);
@@ -401,6 +338,22 @@
 			cp.x = currentPosition.x * cp.width;
 			cp.y = currentPosition.y * cp.height;
 			wayLayer.addChild(cp);
+		}
+
+		private function handlerAreaClick(e:Event):void {
+
+		}
+
+		private function handlerAreaDoubleClick(e:Event):void {
+
+		}
+
+		private function handlerAreaMouseOut(e:Event):void {
+
+		}
+
+		private function handlerAreaMouseOver(e:Event):void {
+
 		}
 
 		private function handlerCplxDragMove(e:Event):void {
