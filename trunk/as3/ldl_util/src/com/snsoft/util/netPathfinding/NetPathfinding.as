@@ -22,14 +22,28 @@
 			this.netNode = netNode;
 		}
 
-		public function finding(fromNode:NetNode, toNode:NetNode):void {
+		public function finding(fromNode:NetNode, toNode:NetNode):Vector.<Point> {
 			var branchHV:HashVector = new HashVector();
+			var paths:Vector.<Path> = new Vector.<Path>();
+			find(paths, fromNode, toNode, branchHV);
 
-			find(fromNode, toNode, branchHV);
+			var min:int = int.MAX_VALUE;
+			var n:int = -1;
+			for (var i:int = 0; i < paths.length; i++) {
+				var p:Path = paths[i];
+				if (p.distance < min) {
+					n = i;
+				}
+			}
 
+			var points:Vector.<Point> = null;
+			if (n >= 0) {
+				points = paths[n].points;
+			}
+			return points;
 		}
 
-		private function find(forkNode:NetNode, toNode:NetNode, branchHV:HashVector, parentBranch:Branch = null, prevNode:NetNode = null):void {
+		private function find(paths:Vector.<Path>, forkNode:NetNode, toNode:NetNode, branchHV:HashVector, parentBranch:Branch = null, prevNode:NetNode = null):void {
 			trace(forkNode.point, "-----------------------------------------------------");
 			var branchs:Vector.<Branch> = findBranchs(forkNode, toNode, branchHV, prevNode);
 			for (var i:int = 0; i < branchs.length; i++) {
@@ -40,12 +54,54 @@
 			}
 			for (i = 0; i < branchs.length; i++) {
 				var branch:Branch = branchs[i];
-				branch.parent = parentBranch;
 
-				var nfnode:NetNode = branch.getLastNode();
-				var npnode:NetNode = branch.getLastPrevNode();
-				find(nfnode, toNode, branchHV, branch, npnode);
+				if (!branch.isEnd) {
+					branch.parent = parentBranch;
+					var nfnode:NetNode = branch.getLastNode();
+					var npnode:NetNode = branch.getLastPrevNode();
+					find(paths, nfnode, toNode, branchHV, branch, npnode);
+				}
+				else {
+					var path:Path = getPath(branch, toNode);
+					trace("path:", path.points.toString());
+					paths.push(path);
+				}
 			}
+		}
+
+		private function getPath(branch:Branch, toNode:NetNode):Path {
+			var bra:Branch = branch;
+			trace(bra.parent);
+			var points:Vector.<Point> = new Vector.<Point>();
+			var sign:Boolean = false;
+
+			var distance:int = 0;
+			while (bra != null) {
+
+				//每一个杈和父杈有重的点，所以父杈不为空时，不添加杈的第一个结点
+				var n:int = (bra.parent == null) ? 0 : 1;
+				for (var i:int = bra.nodes.length - 1; i >= n; i--) {
+					var node:NetNode = bra.nodes[i];
+					if (!sign && node.point.equals(toNode.point)) {
+						sign = true;
+					}
+					if (sign) {
+						points.push(node.point);
+					}
+				}
+				distance += bra.pathLen;
+				bra = bra.parent;
+			}
+
+			var path:Path = new Path();
+			path.distance = distance;
+
+			for (var j:int = points.length - 1; j >= 0; j--) {
+				var p:Point = points[j];
+				path.addPoint(p);
+			}
+
+			return path;
 		}
 
 		/**
