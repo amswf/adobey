@@ -469,7 +469,10 @@
 					var p2:Point = new Point();
 					p2.x = parseInt(pathNode.getAttributeByName("to_x"));
 					p2.y = parseInt(pathNode.getAttributeByName("to_y"));
+
+					var areaName:String = pathNode.getAttributeByName("areaName");
 					var section:MapPathSection = new MapPathSection(p1, p2);
+					section.areaName = areaName;
 					sections.push(section);
 				}
 			}
@@ -528,7 +531,11 @@
 			if (sections != null) {
 				for (var k:int = 0; k < sections.length; k++) {
 					var section:MapPathSection = sections.findByIndex(k) as MapPathSection;
-					xml = xml.concat('<section' + ' from_x="' + section.from.x + '"' + ' from_y="' + section.from.y + '"' + ' to_x="' + section.to.x + '"' + ' to_y="' + section.to.y + '"' + ' />');
+					var areaName:String = "";
+					if (section.areaName != null) {
+						areaName = section.areaName;
+					}
+					xml = xml.concat('<section' + ' areaName="' + areaName + '"' + ' from_x="' + section.from.x + '"' + ' from_y="' + section.from.y + '"' + ' to_x="' + section.to.x + '"' + ' to_y="' + section.to.y + '"' + ' />');
 				}
 			}
 			xml = xml.concat("</sections>");

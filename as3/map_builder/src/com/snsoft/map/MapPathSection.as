@@ -7,6 +7,8 @@ package com.snsoft.map {
 
 		private var _to:Point;
 
+		private var _areaName:String = null;
+
 		public function MapPathSection(from:Point, to:Point) {
 			this._from = from;
 			this._to = to;
@@ -35,6 +37,17 @@ package com.snsoft.map {
 		public function set to(value:Point):void {
 			_to = value;
 		}
+
+		public function get areaName():String
+		{
+			return _areaName;
+		}
+
+		public function set areaName(value:String):void
+		{
+			_areaName = value;
+		}
+
 
 	}
 }

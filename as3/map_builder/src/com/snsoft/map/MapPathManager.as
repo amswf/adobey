@@ -1,7 +1,7 @@
 package com.snsoft.map {
 	import com.snsoft.util.HashVector;
 	import com.snsoft.util.hitTest.HitTest;
-
+	
 	import flash.geom.Point;
 
 	public class MapPathManager {
@@ -30,8 +30,9 @@ package com.snsoft.map {
 		 * @param p2
 		 *
 		 */
-		public function addSection(p1:Point, p2:Point):void {
+		public function addSection(p1:Point, p2:Point,areaName:String):void {
 			var section:MapPathSection = new MapPathSection(p1, p2);
+			section.areaName = areaName;
 			if (sections.findByName(section.name) == null && sections.findByName(section.dename) == null) {
 				sections.push(section, section.name);
 			}

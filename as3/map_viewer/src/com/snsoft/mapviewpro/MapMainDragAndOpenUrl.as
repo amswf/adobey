@@ -1,6 +1,5 @@
 package com.snsoft.mapviewpro{
 	import com.snsoft.mapview.Config;
-	import com.snsoft.mapview.MapView;
 	import com.snsoft.mapview.dataObj.WorkSpaceDO;
 	import com.snsoft.mapview.util.MapViewDraw;
 	import com.snsoft.mapview.util.MapViewXMLLoader;
