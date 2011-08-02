@@ -1,4 +1,4 @@
-package com.snsoft.mapview {
+package com.snsoft.mapviewpro {
 	import com.snsoft.mapview.dataObj.MapAreaDO;
 	import com.snsoft.mapview.dataObj.WorkSpaceDO;
 	import com.snsoft.mapview.util.MapViewDraw;
@@ -19,6 +19,10 @@ package com.snsoft.mapview {
 	import flash.geom.Rectangle;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
+	import com.snsoft.mapview.AreaNameView;
+	import com.snsoft.mapview.AreaView;
+	import com.snsoft.mapview.Config;
+	import com.snsoft.mapview.CuntyLable;
 
 	[Style(name = "backSkin", type = "Class")]
 

@@ -112,6 +112,10 @@
 		//工作区数据对象
 		private var workSpaceDO:WorkSpaceDO = null;
 
+		private var currentPathMapArea:MapArea = null;
+
+		private var currentPathMapAreaMouseOver:Boolean = false;
+
 		/**
 		 * 构造方法
 		 *
@@ -372,7 +376,7 @@
 				if (this.toolEventType == ToolsBar.TOOL_TYPE_LINE) {
 					drawArea();
 				}
-				else if (this.toolEventType == ToolsBar.TOOL_TYPE_PATH) {
+				else if (this.toolEventType == ToolsBar.TOOL_TYPE_PATH && !(this.pen.penState == Pen.PEN_STATE_START && currentPathMapAreaMouseOver)) {
 					drawPath();
 				}
 			}
@@ -397,11 +401,17 @@
 
 				if (!p1.equals(p2)) {
 					var ml:MapLine = new MapLine(p1, p2, PATH_COLOR, PATH_COLOR, PATH_FILL_COLOR, this.scalePoint);
-					pathManager.addSection(p1, p2);
-					pathLayer.addChild(ml);
 					ml.addEventListener(MouseEvent.MOUSE_OVER, handlerPathMouseOver);
 					ml.addEventListener(MouseEvent.MOUSE_OUT, handlerPathMouseOut);
 					ml.addEventListener(MouseEvent.CLICK, handlerPathMouseClick);
+					pathLayer.addChild(ml);
+
+					var areaName:String = null;
+					if (currentPathMapArea != null && fastViewLayer.hitTestObject(currentPathMapArea)) {
+						areaName = currentPathMapArea.mapAreaDO.areaId;
+						this.pen.penState = Pen.PEN_STATE_START;
+					}
+					pathManager.addSection(p1, p2, areaName);
 
 				}
 				else {
@@ -530,6 +540,7 @@
 			ma.childWorkSpace = cws;
 			cws.wsName = wsName;
 			this.addMapAreaEvent(ma);
+
 		}
 
 		/**
@@ -593,10 +604,10 @@
 
 					pathManager.addPoint(p1);
 					pathManager.addPoint(p2);
-					pathManager.addSection(p1, p2);
+					pathManager.addSection(p1, p2, section.areaName);
 
 					var ml:MapLine = new MapLine(p1, p2, PATH_COLOR, PATH_COLOR, PATH_FILL_COLOR, this.scalePoint);
-					pathManager.addSection(p1, p2);
+					pathManager.addSection(p1, p2, section.areaName);
 					pathLayer.addChild(ml);
 					ml.addEventListener(MouseEvent.MOUSE_OVER, handlerPathMouseOver);
 					ml.addEventListener(MouseEvent.MOUSE_OUT, handlerPathMouseOut);
@@ -828,6 +839,7 @@
 		 *
 		 */
 		private function handlerMapAreaMouseOver(e:Event):void {
+			var ma:MapArea = e.currentTarget as MapArea;
 			if (this.toolEventType == null) {
 				return;
 			}
@@ -836,9 +848,49 @@
 				this.removeEventListener(MouseEvent.CLICK, handerMouseClickWorkSpace);
 				this.removeEventListener(MouseEvent.MOUSE_MOVE, handlerMouseMoveWorkSpase);
 				this.removeEventListener(MouseEvent.MOUSE_OUT, handlerMouseOutWorkSpase);
-				var ma:MapArea = e.currentTarget as MapArea;
+
+			}
+
+			if (this.toolEventType == ToolsBar.TOOL_TYPE_PATH) {
+				currentPathMapArea = ma;
+				currentPathMapAreaMouseOver = true;
+			}
+
+			if (this.toolEventType == ToolsBar.TOOL_TYPE_SELECT || this.toolEventType == ToolsBar.TOOL_TYPE_PATH) {
+
 				if (ma != null) {
 					ma.fillColor = AREA_FILL_MOUSE_OVER_COLOR;
+					ma.refresh();
+				}
+			}
+
+		}
+
+		/**
+		 *
+		 * @param e
+		 *
+		 */
+		private function handlerMapAreaMouseOut(e:Event):void {
+			var ma:MapArea = e.currentTarget as MapArea;
+			if (this.toolEventType == null) {
+				return;
+			}
+
+			if (this.toolEventType == ToolsBar.TOOL_TYPE_SELECT) {
+				this.addEventListener(MouseEvent.MOUSE_OVER, handlerMouseOverWorkSpace);
+				this.addEventListener(MouseEvent.CLICK, handerMouseClickWorkSpace);
+				this.addEventListener(MouseEvent.MOUSE_MOVE, handlerMouseMoveWorkSpase);
+				this.addEventListener(MouseEvent.MOUSE_OUT, handlerMouseOutWorkSpase);
+			}
+
+			if (this.toolEventType == ToolsBar.TOOL_TYPE_PATH) {
+				currentPathMapAreaMouseOver = false;
+			}
+
+			if (this.toolEventType == ToolsBar.TOOL_TYPE_SELECT || this.toolEventType == ToolsBar.TOOL_TYPE_PATH) {
+				if (ma != null) {
+					ma.fillColor = AREA_FILL_COLOR;
 					ma.refresh();
 				}
 			}
@@ -851,26 +903,6 @@
 		 */
 		private function handlerMapAreaMouseDoubleClick(e:Event):void {
 			this.dispatchEvent(new Event(EVENT_MAP_AREA_DOUBLE_CLICK));
-		}
-
-		/**
-		 *
-		 * @param e
-		 *
-		 */
-		private function handlerMapAreaMouseOut(e:Event):void {
-			if (this.toolEventType == null || this.toolEventType != ToolsBar.TOOL_TYPE_SELECT) {
-				return;
-			}
-			var ma:MapArea = e.currentTarget as MapArea;
-			if (ma != null) {
-				ma.fillColor = AREA_FILL_COLOR;
-				ma.refresh();
-			}
-			this.addEventListener(MouseEvent.MOUSE_OVER, handlerMouseOverWorkSpace);
-			this.addEventListener(MouseEvent.CLICK, handerMouseClickWorkSpace);
-			this.addEventListener(MouseEvent.MOUSE_MOVE, handlerMouseMoveWorkSpase);
-			this.addEventListener(MouseEvent.MOUSE_OUT, handlerMouseOutWorkSpase);
 		}
 
 		public function get toolEventType():String {

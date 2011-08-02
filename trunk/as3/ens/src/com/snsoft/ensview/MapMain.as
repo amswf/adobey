@@ -1,4 +1,4 @@
-﻿package com.snsoft.mapview{
+﻿package com.snsoft.ensview{
 	import com.snsoft.mapview.dataObj.WorkSpaceDO;
 	import com.snsoft.util.PointUtil;
 	import com.snsoft.mapview.util.MapViewDraw;
@@ -25,6 +25,7 @@
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.utils.Timer;
+	import com.snsoft.mapview.Config;
 	
 	[Style(name="viewDagSkin", type="Class")]
 	

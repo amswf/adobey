@@ -1,10 +1,13 @@
-package com.snsoft.mapviewpro{
-	import com.snsoft.mapview.Config;
+﻿package com.snsoft.mapviewpro{
 	import com.snsoft.mapview.dataObj.WorkSpaceDO;
+	import com.snsoft.util.PointUtil;
 	import com.snsoft.mapview.util.MapViewDraw;
 	import com.snsoft.mapview.util.MapViewXMLLoader;
 	import com.snsoft.util.HashVector;
-	import com.snsoft.util.PointUtil;
+	import com.snsoft.util.complexEvent.CplxMouseDrag;
+	import com.snsoft.util.xmldom.Node;
+	import com.snsoft.util.xmldom.NodeList;
+	import com.snsoft.util.xmldom.XMLDom;
 	import com.snsoft.util.xmldom.XMLFastConfig;
 	
 	import fl.core.InvalidationType;
@@ -18,20 +21,17 @@ package com.snsoft.mapviewpro{
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.utils.Timer;
+	import com.snsoft.mapview.Config;
 	
 	[Style(name="viewDagSkin", type="Class")]
 	
 	[Style(name="viewDagLimitSkin", type="Class")]
 	
-	/**
-	 * 科技进村3的主页flash，把原来的换成地图点击进入，当前对应龙口项目。 
-	 * @author Administrator
-	 * 
-	 */	
-	public class MapMainLONGKOU extends UIComponent{
+	public class MapMain extends UIComponent{
 		
 		//XML文件文件根目录
 		private var _baseUrl:String = "flash_map";
@@ -88,7 +88,7 @@ package com.snsoft.mapviewpro{
 		
 		private var oldMapMaskLayer:Sprite = null;
 		
-		public function MapMainLONGKOU()
+		public function MapMain()
 		{
 			super();
 		}
@@ -147,6 +147,16 @@ package com.snsoft.mapviewpro{
 			this.oldMapLayer = new Sprite();
 			this.addChild(oldMapLayer);
 			this.oldMapLayer.mask = this.oldMapMaskLayer;
+			
+			this.viewDragLimit = getDisplayObjectInstance(getStyleValue("viewDagLimitSkin"));
+			var viewPlace:Point = PointUtil.subSize(this,this.viewDragLimit);
+			viewPlace.x = 0;
+			PointUtil.setSpritePlace(viewDragLimit,viewPlace);
+			this.addChild(this.viewDragLimit);
+			
+			this.viewDrag = getDisplayObjectInstance(getStyleValue("viewDagSkin"));
+			PointUtil.setSpritePlace(viewDrag,viewPlace);
+			this.addChild(this.viewDrag);
 			
 			configXmlUrl = "viewcfg.xml";			
 			XMLFastConfig.instance(configXmlUrl,handlerConfigLoadComplete);
@@ -228,9 +238,14 @@ package com.snsoft.mapviewpro{
 			
 			var shape:Shape = MapViewDraw.drawRect(new Point(this.width,this.height));
 			PointUtil.deleteAllChild(this.mapBackLayer);
+			this.mapBackLayer.addChild(shape);
+			shape.alpha = 0.2;
 			if(Config.AREA_MOUSE_EVENT_TYPE_DOUBLE_CLICK == Config.areaMouseEventType){
 				this.mapBackLayer.doubleClickEnabled = true;
 				this.mapBackLayer.addEventListener(MouseEvent.DOUBLE_CLICK,handlerMapBackDoubleClick);
+			}
+			else if(Config.AREA_MOUSE_EVENT_TYPE_CLICK == Config.areaMouseEventType){
+				this.mapBackLayer.addEventListener(MouseEvent.CLICK,handlerMapBackDoubleClick);
 			}
 			
 			if(this.mapView != null){
@@ -259,6 +274,14 @@ package com.snsoft.mapviewpro{
 			
 			this.mapView.addEventListener(MapView.AREA_DOUBLE_CLICK_EVENT,handlerMapAreaDoubleClick);
 			newMapLayer.addChild(this.mapView);	
+			
+			var sma:CplxMouseDrag = new CplxMouseDrag();
+			var mapViewRect:Rectangle = this.mapView.backMaskRec;
+			var vdlp:Point = PointUtil.getSpriteSize(this.viewDragLimit);
+			var dragAlterRect:Rectangle = new Rectangle(vdlp.x,vdlp.y,-vdlp.x,-vdlp.y);
+			
+			PointUtil.setSpriteSize(mapView,mapViewRect.bottomRight);
+			sma.addEvents(this.mapView,this.mapBackLayer,this.viewDrag,this.viewDragLimit,mapViewRect);
 		}
 		
 		/**
