@@ -124,21 +124,9 @@ package com.snsoft.ensview {
 						areaNamesLayer.addChild(anv);
 						anv.addEventListener(MouseEvent.MOUSE_OVER, handlerAreaNameViewMouseOver);
 						anv.addEventListener(MouseEvent.MOUSE_OUT, handlerAreaNameViewMouseOut);
-
-						if (Config.areaMouseEventType == Config.AREA_MOUSE_EVENT_TYPE_LINK) {
-							var url:String = anv.mapAreaDO.areaUrl;
-							if (url != null && url.toLocaleLowerCase() != "null" && url.length > 0) {
-								anv.addEventListener(MouseEvent.CLICK, handlerAreaViewClick);
-							}
-						}
-						if (Config.areaMouseEventType == Config.AREA_MOUSE_EVENT_TYPE_DOUBLE_CLICK) {
-							anv.doubleClickEnabled = true;
-							anv.addEventListener(MouseEvent.DOUBLE_CLICK, handlerAreaViewDoubleClick);
-						}
-						else if (Config.areaMouseEventType == Config.AREA_MOUSE_EVENT_TYPE_CLICK) {
-							anv.doubleClickEnabled = true;
-							anv.addEventListener(MouseEvent.CLICK, handlerAreaViewDoubleClick);
-						}
+						anv.addEventListener(MouseEvent.CLICK, handlerAreaViewClick);
+						anv.doubleClickEnabled = true;
+						anv.addEventListener(MouseEvent.DOUBLE_CLICK, handlerAreaViewDoubleClick);
 					}
 				}
 
