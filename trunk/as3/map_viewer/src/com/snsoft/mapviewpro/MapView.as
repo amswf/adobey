@@ -124,9 +124,10 @@ package com.snsoft.mapviewpro {
 
 			var wsdo:WorkSpaceDO = this.workSpaceDO;
 			if (wsdo != null) {
-				var madohv:HashVector = wsdo.mapAreaDOHashArray;
+				var madohv:Vector.<MapAreaDO> = wsdo.mapAreaDOs;
+
 				for (var i:int = 0; i < madohv.length; i++) {
-					var mado:MapAreaDO = madohv.findByIndex(i) as MapAreaDO;
+					var mado:MapAreaDO = madohv[i];
 					if (mado != null) {
 						var av:AreaView = new AreaView();
 						av.mapAreaDO = mado;
@@ -193,9 +194,10 @@ package com.snsoft.mapviewpro {
 		private function drawBackMask(workSpaceDO:WorkSpaceDO):Sprite {
 			if (workSpaceDO != null) {
 				var sprite:Sprite = new Sprite();
-				var madohv:HashVector = workSpaceDO.mapAreaDOHashArray;
+				var madohv:Vector.<MapAreaDO> = workSpaceDO.mapAreaDOs;
+
 				for (var i:int = 0; i < madohv.length; i++) {
-					var mado:MapAreaDO = madohv.findByIndex(i) as MapAreaDO;
+					var mado:MapAreaDO = madohv[i];
 					var ary:Array = mado.pointArray.toArray();
 					var shape:Shape = MapViewDraw.drawFill(0xffffff, 1, ary);
 					sprite.addChild(shape);
@@ -208,9 +210,10 @@ package com.snsoft.mapviewpro {
 		private function drawMapLines(workSpaceDO:WorkSpaceDO):Sprite {
 			if (workSpaceDO != null) {
 				var sprite:Sprite = new Sprite();
-				var madohv:HashVector = workSpaceDO.mapAreaDOHashArray;
+				var madohv:Vector.<MapAreaDO> = workSpaceDO.mapAreaDOs;
+
 				for (var i:int = 0; i < madohv.length; i++) {
-					var mado:MapAreaDO = madohv.findByIndex(i) as MapAreaDO;
+					var mado:MapAreaDO = madohv[i];
 					var ary:Array = mado.pointArray.toArray();
 					var shape:Shape = MapViewDraw.drawCloseLines(0xffffff, ary);
 					sprite.addChild(shape);

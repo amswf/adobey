@@ -345,6 +345,8 @@
 			areaAttribute.setareaUrl(au);
 			areaAttribute.setareaNameX(String(mado.areaNamePlace.x));
 			areaAttribute.setareaNameY(String(mado.areaNamePlace.y));
+			areaAttribute.setIsCurrent(mado.isCurrent);
+
 			this.workSpaceHashVector.push(this.ws, this.ws.wsName);
 		}
 

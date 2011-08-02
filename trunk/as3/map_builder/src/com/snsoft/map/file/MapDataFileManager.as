@@ -414,6 +414,13 @@
 						//<areaUrl>
 						mado.areaUrl = areaNode.getAttributeByName("areaUrl");
 
+						var isCurStr:String = areaNode.getAttributeByName("isCurrent");
+						var isCurrent:Boolean = false;
+						if (isCurStr != null && isCurStr == "true") {
+							isCurrent = true;
+						}
+						mado.isCurrent = isCurrent;
+
 						//<areaNamePoint>
 						var areaNamePointNode:Node = areaNode.getNodeListFirstNode("areaNamePoint");
 						if (areaNamePointNode != null) {
@@ -511,7 +518,7 @@
 					var id:String = mado.areaId;
 					var placeP:Point = mado.areaNamePlace;
 					var pha:HashVector = mado.pointArray;
-					xml = xml.concat('<area areaId="' + id + '" areaName="' + name + '" areaCode="' + code + '" areaUrl="' + url + '" >');
+					xml = xml.concat('<area areaId="' + id + '" areaName="' + name + '" areaCode="' + code + '" areaUrl="' + url + '" isCurrent="' + mado.isCurrent + '" >');
 					xml = xml.concat('<areaNamePoint x="' + int(placeP.x) + '" y="' + int(placeP.y) + '" />');
 					xml = xml.concat("<areaPoints>");
 					if (pha != null) {

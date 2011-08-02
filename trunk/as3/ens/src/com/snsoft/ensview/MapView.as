@@ -2,7 +2,6 @@ package com.snsoft.ensview {
 	import com.snsoft.mapview.AreaNameView;
 	import com.snsoft.mapview.AreaView;
 	import com.snsoft.mapview.Config;
-	import com.snsoft.mapview.CuntyLable;
 	import com.snsoft.mapview.dataObj.MapAreaDO;
 	import com.snsoft.mapview.dataObj.WorkSpaceDO;
 	import com.snsoft.mapview.util.MapViewDraw;
@@ -35,7 +34,13 @@ package com.snsoft.ensview {
 
 		public static const AREA_DOUBLE_CLICK_EVENT:String = "AREA_DOUBLE_CLICK_EVENT";
 
-		private var _doubleClickAreaView:AreaNameView;
+		public static const AREA_CLICK_EVENT:String = "AREA_CLICK_EVENT";
+
+		public static const AREA_MOUSE_OVER_EVENT:String = "AREA_MOUSE_OVER_EVENT";
+
+		public static const AREA_MOUSE_OUT_EVENT:String = "AREA_MOUSE_OUT_EVENT";
+
+		private var _currentAreaView:AreaNameView;
 
 		private var _workSpaceDO:WorkSpaceDO = null;
 
@@ -46,14 +51,6 @@ package com.snsoft.ensview {
 		private var mapLinesLayer:Sprite = new Sprite();
 
 		private var backLayer:Sprite = new Sprite();
-
-		private var cuntyLableLayer:Sprite = new Sprite();
-
-		private var cuntyLable:CuntyLable = new CuntyLable("", "");
-
-		private var lightShapesLayer:Sprite = new Sprite();
-
-		private var LIGHT_SPACE:Number = 40;
 
 		private var _backMaskRec:Rectangle = null;
 
@@ -81,15 +78,6 @@ package com.snsoft.ensview {
 		 */
 		override protected function configUI():void {
 
-			cuntyLableLayer.visible = false;
-			cuntyLableLayer.mouseChildren = false;
-			cuntyLableLayer.mouseEnabled = false;
-			cuntyLableLayer.buttonMode = false;
-
-			lightShapesLayer.mouseChildren = false;
-			lightShapesLayer.mouseEnabled = false;
-			lightShapesLayer.buttonMode = false;
-
 			mapLinesLayer.mouseChildren = false;
 			mapLinesLayer.mouseEnabled = false;
 			mapLinesLayer.buttonMode = false;
@@ -110,23 +98,18 @@ package com.snsoft.ensview {
 			PointUtil.deleteAllChild(areaBtnsLayer);
 			PointUtil.deleteAllChild(areaNamesLayer);
 			PointUtil.deleteAllChild(mapLinesLayer);
-			PointUtil.deleteAllChild(lightShapesLayer);
-			PointUtil.deleteAllChild(cuntyLableLayer);
 
 			this.addChild(backLayer);
 			this.addChild(areaBtnsLayer);
 			this.addChild(mapLinesLayer);
 			this.addChild(areaNamesLayer);
-			this.addChild(lightShapesLayer);
-			this.addChild(cuntyLableLayer);
-
-			cuntyLableLayer.addChild(cuntyLable);
 
 			var wsdo:WorkSpaceDO = this.workSpaceDO;
 			if (wsdo != null) {
-				var madohv:HashVector = wsdo.mapAreaDOHashArray;
+				var madohv:Vector.<MapAreaDO> = wsdo.mapAreaDOs;
+
 				for (var i:int = 0; i < madohv.length; i++) {
-					var mado:MapAreaDO = madohv.findByIndex(i) as MapAreaDO;
+					var mado:MapAreaDO = madohv[i];
 					if (mado != null) {
 						var av:AreaView = new AreaView();
 						av.mapAreaDO = mado;
@@ -193,9 +176,9 @@ package com.snsoft.ensview {
 		private function drawBackMask(workSpaceDO:WorkSpaceDO):Sprite {
 			if (workSpaceDO != null) {
 				var sprite:Sprite = new Sprite();
-				var madohv:HashVector = workSpaceDO.mapAreaDOHashArray;
+				var madohv:Vector.<MapAreaDO> = workSpaceDO.mapAreaDOs;
 				for (var i:int = 0; i < madohv.length; i++) {
-					var mado:MapAreaDO = madohv.findByIndex(i) as MapAreaDO;
+					var mado:MapAreaDO = madohv[i];
 					var ary:Array = mado.pointArray.toArray();
 					var shape:Shape = MapViewDraw.drawFill(0xffffff, 1, ary);
 					sprite.addChild(shape);
@@ -208,9 +191,9 @@ package com.snsoft.ensview {
 		private function drawMapLines(workSpaceDO:WorkSpaceDO):Sprite {
 			if (workSpaceDO != null) {
 				var sprite:Sprite = new Sprite();
-				var madohv:HashVector = workSpaceDO.mapAreaDOHashArray;
+				var madohv:Vector.<MapAreaDO> = workSpaceDO.mapAreaDOs;
 				for (var i:int = 0; i < madohv.length; i++) {
-					var mado:MapAreaDO = madohv.findByIndex(i) as MapAreaDO;
+					var mado:MapAreaDO = madohv[i];
 					var ary:Array = mado.pointArray.toArray();
 					var shape:Shape = MapViewDraw.drawCloseLines(0xffffff, ary);
 					sprite.addChild(shape);
@@ -222,20 +205,8 @@ package com.snsoft.ensview {
 
 		private function handlerAreaViewClick(e:Event):void {
 			var av:AreaNameView = e.currentTarget as AreaNameView;
-			var url:String = av.mapAreaDO.areaUrl;
-
-			var urlTarget:String = XMLFastConfig.getConfig("urlTarget");
-			if (urlTarget == null || urlTarget.length == 0) {
-				urlTarget = "_self";
-			}
-			try {
-				var req:URLRequest = new URLRequest(url);
-				navigateToURL(req, urlTarget);
-				trace(urlTarget);
-			}
-			catch (e:Error) {
-				trace("打开链接出错：" + url);
-			}
+			this._currentAreaView = av;
+			this.dispatchEvent(new Event(AREA_CLICK_EVENT));
 		}
 
 		/**
@@ -245,7 +216,7 @@ package com.snsoft.ensview {
 		 */
 		private function handlerAreaViewDoubleClick(e:Event):void {
 			var av:AreaNameView = e.currentTarget as AreaNameView;
-			this._doubleClickAreaView = av;
+			this._currentAreaView = av;
 			this.dispatchEvent(new Event(AREA_DOUBLE_CLICK_EVENT));
 		}
 
@@ -255,72 +226,9 @@ package com.snsoft.ensview {
 		 *
 		 */
 		private function handlerAreaNameViewMouseOver(e:Event):void {
-			var anv:AreaNameView = e.currentTarget as AreaNameView;
-			var av:AreaView = anv.areaView;
-			var mado:MapAreaDO = av.mapAreaDO;
-			cuntyLable.nameStr = mado.areaName;
-			var mapRect:Rectangle = areaBtnsLayer.getRect(this);
-			var areaBtnRect:Rectangle = av.areaBtnLayer.getRect(this);
-			var areaNamebRect:Rectangle = av.areaNameView.areaNameLayer.getRect(this);
-
-			var mapCenterP:Point = new Point();
-			mapCenterP.x = mapRect.x + mapRect.width / 2;
-			mapCenterP.y = mapRect.y + mapRect.height / 2;
-
-			var areaCenterP:Point = new Point();
-			if (areaNamebRect.right < areaBtnRect.left || areaNamebRect.left > areaBtnRect.right || areaNamebRect.bottom < areaBtnRect.top || areaNamebRect.top > areaBtnRect.bottom) {
-				areaCenterP.x = areaBtnRect.x + areaBtnRect.width / 2;
-				areaCenterP.y = areaBtnRect.y + areaBtnRect.height / 2;
-			}
-			else {
-				areaCenterP.x = areaNamebRect.x + areaNamebRect.width / 2;
-				areaCenterP.y = areaNamebRect.y + areaNamebRect.height / 2;
-			}
-
-			//cuntyLable的四边形四个顶点中与areaCenterP最近点的相对于 cuntyLable坐标的坐标
-			var np:Point = new Point();
-
-			if (areaCenterP.x > mapCenterP.x) {
-				np.x = cuntyLable.width;
-				cuntyLable.x = areaCenterP.x - (LIGHT_SPACE + np.x);
-			}
-			else {
-				np.x = 0;
-				cuntyLable.x = areaCenterP.x + (LIGHT_SPACE + np.x);
-			}
-
-			if (areaCenterP.y > mapCenterP.y) {
-				np.y = cuntyLable.height;
-				cuntyLable.y = areaCenterP.y - (LIGHT_SPACE + np.y);
-			}
-			else {
-				np.y = 0;
-				cuntyLable.y = areaCenterP.y + (LIGHT_SPACE + np.y);
-			}
-
-			//x 轴方向两点
-			var px1:Point = new Point(cuntyLable.x, cuntyLable.y + np.y);
-			var px2:Point = new Point(cuntyLable.x + cuntyLable.width, cuntyLable.y + np.y);
-
-			//y 轴方向两点
-			var py1:Point = new Point(cuntyLable.x + np.x, cuntyLable.y);
-			var py2:Point = new Point(cuntyLable.x + np.x, cuntyLable.y + cuntyLable.height);
-
-			var aryx:Array = new Array();
-			aryx.push(px1, px2, areaCenterP);
-
-			var aryy:Array = new Array();
-			aryy.push(py1, py2, areaCenterP);
-
-			var shapeX:Shape = MapViewDraw.drawFill(0xffffff, 0.5, aryx);
-			var shapeY:Shape = MapViewDraw.drawFill(0xffffff, 0.5, aryy);
-
-			PointUtil.deleteAllChild(this.lightShapesLayer);
-
-			this.lightShapesLayer.addChild(shapeX);
-			this.lightShapesLayer.addChild(shapeY);
-			this.lightShapesLayer.visible = true;
-			cuntyLableLayer.visible = true;
+			var av:AreaNameView = e.currentTarget as AreaNameView;
+			this._currentAreaView = av;
+			this.dispatchEvent(new Event(AREA_MOUSE_OVER_EVENT));
 		}
 
 		/**
@@ -329,8 +237,9 @@ package com.snsoft.ensview {
 		 *
 		 */
 		private function handlerAreaNameViewMouseOut(e:Event):void {
-			this.lightShapesLayer.visible = false;
-			cuntyLableLayer.visible = false;
+			var av:AreaNameView = e.currentTarget as AreaNameView;
+			this._currentAreaView = av;
+			this.dispatchEvent(new Event(AREA_MOUSE_OUT_EVENT));
 		}
 
 		public function get workSpaceDO():WorkSpaceDO {
@@ -341,16 +250,8 @@ package com.snsoft.ensview {
 			_workSpaceDO = value;
 		}
 
-		public function get backMaskRec():Rectangle {
-			return _backMaskRec;
-		}
-
-		public function get doubleClickAreaView():AreaNameView {
-			return _doubleClickAreaView;
-		}
-
-		public function set doubleClickAreaView(value:AreaNameView):void {
-			_doubleClickAreaView = value;
+		public function get currentAreaView():AreaNameView {
+			return _currentAreaView;
 		}
 
 	}
