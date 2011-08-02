@@ -1,6 +1,7 @@
 ﻿package com.snsoft.ensview {
 	import ascb.util.StringUtilities;
 
+	import com.snsoft.mapview.dataObj.MapPathSection;
 	import com.snsoft.mapview.dataObj.WorkSpaceDO;
 	import com.snsoft.mapview.util.MapViewXMLLoader;
 	import com.snsoft.util.HashVector;
@@ -28,6 +29,8 @@
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
+
+	import flashx.textLayout.tlf_internal;
 
 	public class Ensv extends MovieClip {
 
@@ -162,10 +165,55 @@
 			var xml:XML = new XML(xmlStr);
 			var wsdo:WorkSpaceDO = MapViewXMLLoader.creatWorkSpaceDO(xml, this.mapXMLUrl);
 
-			var netNode:NetNode = new NetNode();
+			var nodeHV:HashVector = new HashVector();
+
+			var sections:Vector.<MapPathSection> = wsdo.sections;
+
+			var netNode:NetNode = null;
+			for (var i:int = 0; i < sections.length; i++) {
+				var section:MapPathSection = sections[i];
+
+				var sign:Boolean = false;
+
+				var from:Point = section.from;
+				var fromName:String = from.toString();
+				var fromNode:NetNode = nodeHV.findByName(fromName) as NetNode;
+				if (fromNode == null) {
+					fromNode = new NetNode(from.x, from.y);
+					nodeHV.push(fromNode, fromName);
+				}
+				else {
+					sign = true;
+				}
+
+				var to:Point = section.to;
+				var toName:String = to.toString();
+				var toNode:NetNode = nodeHV.findByName(toName) as NetNode;
+				if (toNode == null) {
+					toNode = new NetNode(to.x, to.y);
+					nodeHV.push(toNode, toName);
+				}
+				else {
+					sign = true;
+				}
+
+				fromNode.addLinkNode(toNode);
+
+				if (i == 0) {
+					netNode = fromNode;
+				}
+			}
+
+			for (var j:int = 0; j < nodeHV.length; j++) {
+				var node:NetNode = nodeHV.findByIndex(j) as NetNode;
+			}
+
 			var npf:NetPathfinding = new NetPathfinding(netNode);
-			
-			
+
+			var n1:NetNode = new NetNode();
+			var n2:NetNode = new NetNode();
+
+			npf.finding(n1, n2);
 
 			initMap(wsdo);
 			initSearch();
