@@ -357,7 +357,6 @@
 					wayLayer.graphics.lineTo(p.x, p.y);
 				}
 			}
-
 		}
 
 		private function handlerAreaDoubleClick(e:Event):void {
