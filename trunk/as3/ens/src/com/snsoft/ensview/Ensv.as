@@ -12,7 +12,6 @@
 	import com.snsoft.util.netPathfinding.NetNode;
 	import com.snsoft.util.rlm.ResLoadManager;
 	import com.snsoft.util.rlm.rs.RSTextFile;
-	import com.snsoft.util.wayfinding.WayFinding;
 	import com.snsoft.util.xmldom.Node;
 	import com.snsoft.util.xmldom.NodeList;
 	import com.snsoft.util.xmldom.XMLDom;
@@ -42,8 +41,6 @@
 		private var booths:Vector.<EnsvBooth> = new Vector.<EnsvBooth>();
 
 		private var boothClickLock:Boolean = false;
-
-		private var wayFinding:WayFinding;
 
 		private var wayLayer:Sprite = new Sprite();
 
@@ -82,6 +79,8 @@
 		private var mapPathManager:MapPathManager = null;
 
 		private var mapView:MapView = null;
+
+		private var startNode:NetNode = null;
 
 		public function Ensv(stageWidth:int, stageHeight:int) {
 			super();
@@ -155,8 +154,6 @@
 			var xmlStr:String = rsxml.getTextByUrl(mapXMLUrl);
 			var xml:XML = new XML(xmlStr);
 			var wsdo:WorkSpaceDO = MapViewXMLLoader.creatWorkSpaceDO(xml, this.mapXMLUrl);
-
-			mapPathManager = new MapPathManager(wsdo.sections);
 
 			initMap(wsdo);
 			initSearch();
@@ -266,6 +263,13 @@
 			mapView.addEventListener(MapView.AREA_MOUSE_OUT_EVENT, handlerAreaMouseOut);
 			mapView.addEventListener(MapView.AREA_MOUSE_OVER_EVENT, handlerAreaMouseOver);
 
+			mapPathManager = new MapPathManager(wsdo.sections);
+
+			
+			var areaCode:String = mapView.currentPositionAreaView.mapAreaDO.areaId;
+			trace(areaCode);
+			startNode = mapPathManager.findNodeByAreaName(areaCode);
+			trace(startNode.point);
 			currentPosition.x = mapView.currentPositionAreaView.center.x;
 			currentPosition.y = mapView.currentPositionAreaView.center.y;
 
@@ -335,8 +339,7 @@
 			var areaView:AreaNameView = mapView.currentAreaView;
 			var areaDO:MapAreaDO = areaView.mapAreaDO;
 
-			var n1:NetNode = mapPathManager.findNodeByPosition(new Point(239, 463));
-			//var n2:NetNode = mapPathManager.findNodeByPosition(new Point(121, 43));
+			var n1:NetNode = startNode;
 			var n2:NetNode = mapPathManager.findNodeByAreaName(areaDO.areaId);
 			var points:Vector.<Point> = mapPathManager.findPath(n1, n2);
 
