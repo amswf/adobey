@@ -265,7 +265,6 @@
 
 			mapPathManager = new MapPathManager(wsdo.sections);
 
-			
 			var areaCode:String = mapView.currentPositionAreaView.mapAreaDO.areaId;
 			trace(areaCode);
 			startNode = mapPathManager.findNodeByAreaName(areaCode);
@@ -341,18 +340,20 @@
 
 			var n1:NetNode = startNode;
 			var n2:NetNode = mapPathManager.findNodeByAreaName(areaDO.areaId);
-			var points:Vector.<Point> = mapPathManager.findPath(n1, n2);
+			var points:Vector.<Point> = mapPathManager.findPath(n2, n1);
 
 			wayLayer.graphics.clear();
-			for (var i:int = 0; i < points.length; i++) {
-				var p:Point = points[i];
+			if (points != null) {
+				for (var i:int = 0; i < points.length; i++) {
+					var p:Point = points[i];
 
-				wayLayer.graphics.lineStyle(2, 0x000000);
-				if (i == 0) {
-					wayLayer.graphics.moveTo(p.x, p.y);
-				}
-				else {
-					wayLayer.graphics.lineTo(p.x, p.y);
+					wayLayer.graphics.lineStyle(2, 0x000000);
+					if (i == 0) {
+						wayLayer.graphics.moveTo(p.x, p.y);
+					}
+					else {
+						wayLayer.graphics.lineTo(p.x, p.y);
+					}
 				}
 			}
 		}

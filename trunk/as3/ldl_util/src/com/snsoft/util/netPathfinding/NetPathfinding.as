@@ -23,28 +23,29 @@
 		}
 
 		public function finding(fromNode:NetNode, toNode:NetNode):Vector.<Point> {
-			var branchHV:HashVector = new HashVector();
-			var paths:Vector.<Path> = new Vector.<Path>();
-			find(paths, fromNode, toNode, branchHV);
-
-			var min:int = int.MAX_VALUE;
-			var n:int = -1;
-			for (var i:int = 0; i < paths.length; i++) {
-				var p:Path = paths[i];
-				if (p.distance < min) {
-					n = i;
-				}
-			}
-
 			var points:Vector.<Point> = null;
-			if (n >= 0) {
-				points = paths[n].points;
+			if (fromNode != null && toNode != null) {
+				var branchHV:HashVector = new HashVector();
+				var paths:Vector.<Path> = new Vector.<Path>();
+				find(paths, fromNode, toNode, branchHV);
+
+				var min:int = int.MAX_VALUE;
+				var n:int = -1;
+				for (var i:int = 0; i < paths.length; i++) {
+					var p:Path = paths[i];
+					if (p.distance < min) {
+						n = i;
+					}
+				}
+				if (n >= 0) {
+					points = paths[n].points;
+				}
 			}
 			return points;
 		}
 
 		private function find(paths:Vector.<Path>, forkNode:NetNode, toNode:NetNode, branchHV:HashVector, parentBranch:Branch = null, prevNode:NetNode = null):void {
-			trace(forkNode.point, "-----------------------------------------------------");
+			//trace(forkNode.point, "-----------------------------------------------------");
 			var branchs:Vector.<Branch> = findBranchs(forkNode, toNode, branchHV, prevNode);
 			for (var i:int = 0; i < branchs.length; i++) {
 				var ppb:Branch = branchs[i];
@@ -63,15 +64,16 @@
 				}
 				else {
 					var path:Path = getPath(branch, toNode);
-					trace("path:", path.points.toString());
+					//trace("path:", path.points.toString());
 					paths.push(path);
+					break; //只找到一个就结束，提高速度哇，去掉时，则找多个。
 				}
 			}
 		}
 
 		private function getPath(branch:Branch, toNode:NetNode):Path {
 			var bra:Branch = branch;
-			trace(bra.parent);
+			//trace(bra.parent);
 			var points:Vector.<Point> = new Vector.<Point>();
 			var sign:Boolean = false;
 
@@ -113,7 +115,7 @@
 		 *
 		 */
 		private function findBranchs(forkNode:NetNode, toNode:NetNode, branchHV:HashVector, prevNode:NetNode = null):Vector.<Branch> {
-			trace("findBranchs: " + forkNode.point);
+			//trace("findBranchs: " + forkNode.point);
 			var branchs:Vector.<Branch> = new Vector.<Branch>();
 			var nextNodes:Vector.<NetNode> = getNextNodes(forkNode, prevNode);
 			for (var i:int = 0; i < nextNodes.length; i++) {
@@ -179,8 +181,8 @@
 					var nd:NetNode = b.nodes[j];
 					str += nd.point.toString() + " , ";
 				}
-				trace(b.hashName);
-				trace(str);
+					//trace(b.hashName);
+					//trace(str);
 			}
 			return branchs;
 		}
