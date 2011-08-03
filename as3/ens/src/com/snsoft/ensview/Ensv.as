@@ -27,19 +27,13 @@
 
 	public class Ensv extends MovieClip {
 
+		private var boader:int = 10;
+
 		private var rsxml:RSTextFile;
 
 		private var boothMsgXMLUrl:String = "boothMsg.xml";
 
 		private var mapXMLUrl:String = "flash_map/1x/ws_1.xml";
-
-		private var esRow:int = 1;
-
-		private var esCol:int = 1;
-
-		private var paneWidth:int = 30;
-
-		private var paneHeight:int = 30;
 
 		private var boothDOs:Vector.<EnsvBoothDO> = new Vector.<EnsvBoothDO>();
 
@@ -263,14 +257,6 @@
 
 		private function initMap(wsdo:WorkSpaceDO):void {
 
-			var back:Sprite = new Sprite();
-			back.graphics.lineStyle(2, 0x000000, 1);
-			back.graphics.beginFill(0xfffffff, 1);
-			back.graphics.drawRect(0, 0, esCol * paneWidth, esRow * paneHeight);
-			back.graphics.endFill();
-			mapLayer.addChild(back);
-			mapLayer.addChild(boothsLayer);
-
 			mapView = new MapView();
 			mapView.workSpaceDO = wsdo;
 			mapView.drawNow();
@@ -279,6 +265,19 @@
 			mapView.addEventListener(MapView.AREA_DOUBLE_CLICK_EVENT, handlerAreaDoubleClick);
 			mapView.addEventListener(MapView.AREA_MOUSE_OUT_EVENT, handlerAreaMouseOut);
 			mapView.addEventListener(MapView.AREA_MOUSE_OVER_EVENT, handlerAreaMouseOver);
+
+			currentPosition.x = mapView.currentPositionAreaView.center.x;
+			currentPosition.y = mapView.currentPositionAreaView.center.y;
+
+			var maprect:Rectangle = mapView.getRect(boothsLayer);
+
+			var back:Sprite = new Sprite();
+			back.graphics.lineStyle(2, 0x000000, 1);
+			back.graphics.beginFill(0xfffffff, 1);
+			back.graphics.drawRect(0, 0, maprect.width + maprect.x + boader, maprect.height + maprect.y + boader);
+			back.graphics.endFill();
+			mapLayer.addChild(back);
+			mapLayer.addChild(boothsLayer);
 
 			dragLimit = new Sprite();
 			dragLimit.graphics.beginFill(0x000000, 0);
@@ -293,10 +292,10 @@
 			viewLayer.addChild(vl);
 
 			var wp:MovieClip = SkinsUtil.createSkinByName("SmallCurrentPosition");
-			var wpw:int = wp.width / 2;
-			var wph:int = wp.height / 2;
-			var wpx:int = vl.width * (currentPosition.x + 1) / esCol - wpw;
-			var wpy:int = vl.height * (currentPosition.y + 1) / esRow - wph;
+			var wpw:int = wp.width;
+			var wph:int = wp.height;
+			var wpx:int = vl.width * (currentPosition.x) / maprect.width;
+			var wpy:int = vl.height * (currentPosition.y) / maprect.height;
 			if (wpx >= vl.width - wpw) {
 				wpx -= wpw;
 			}
@@ -309,8 +308,9 @@
 			else if (wpy <= wph) {
 				wpy += wph;
 			}
-			wp.x = wpx;
-			wp.y = wpy;
+			wp.x = wpx - wpw / 2;
+			wp.y = wpy - wph / 2;
+
 			viewLayer.addChild(wp);
 
 			viewDrag = new Sprite();
@@ -325,8 +325,8 @@
 			cmd.addEventListener(CplxMouseDrag.DRAG_COMPLETE_EVENT, handlerCplxDragCmp);
 
 			var cp:MovieClip = SkinsUtil.createSkinByName("SmallCurrentPosition");
-			cp.x = currentPosition.x * cp.width;
-			cp.y = currentPosition.y * cp.height;
+			cp.x = currentPosition.x - cp.width / 2;
+			cp.y = currentPosition.y - cp.height / 2;
 			wayLayer.addChild(cp);
 		}
 
@@ -479,29 +479,6 @@
 			}
 		}
 
-		private function handlerBoothDoubleClick(e:Event):void {
-			var booth:EnsvBooth = e.currentTarget as EnsvBooth;
-			viewEnsvBoothMsg(booth);
-		}
-
-		private function handlerBoothClick(e:Event):void {
-			if (!boothClickLock) {
-				boothClickLock = true;
-				var cbooth:EnsvBooth = e.currentTarget as EnsvBooth;
-				for (var i:int = 0; i < booths.length; i++) {
-					var booth:EnsvBooth = booths[i];
-					if (cbooth.order != i) {
-						setBoothUnSelectedFilters(booth);
-					}
-					else {
-						setBoothSelectedFilters(booth);
-					}
-				}
-				findWay(boothDOs[cbooth.order]);
-				boothClickLock = false;
-			}
-		}
-
 		private function setBoothSelectedFilters(booth:Sprite):void {
 			var array:Array = new Array();
 			array.push(new DropShadowFilter(0, 0, 0xffffff, 3, 2, 2, 255));
@@ -513,136 +490,6 @@
 			var array:Array = new Array();
 			array.push(new DropShadowFilter(0, 0, 0x666666, 3, 2, 2, 255, 1, true));
 			booth.filters = array;
-		}
-
-		private function findWay(boothDO:EnsvBoothDO):void {
-			var pv:Vector.<EnsvPaneDO> = boothDO.paneDOs;
-			var minv:Vector.<Point> = null;
-			var min:int = int.MAX_VALUE;
-			for (var j:int = 0; j < pv.length; j++) {
-				var pdo:EnsvPaneDO = pv[j];
-				var v:Vector.<Point> = wayFinding.find(currentPosition, new Point(pdo.col, pdo.row));
-				if (v.length < min && v.length > 0) {
-					minv = v;
-					min = v.length;
-				}
-			}
-			SpriteUtil.deleteAllChild(wayLayer);
-
-			if (minv != null) {
-				for (var i:int = 0; i < minv.length - 1; i++) {
-
-					var pp:Point = null;
-					var p:Point = null;
-					var np:Point = null;
-
-					p = minv[i];
-					if ((i - 1) >= 0) {
-						pp = minv[i - 1];
-					}
-					if ((i + 1) < minv.length) {
-						np = minv[i + 1];
-					}
-
-					var rotation:int = 0;
-					var skinName:String = "";
-					if (pp == null && np != null) {
-						skinName = "WayPoint";
-						if (np.x > p.x) {
-							rotation = 0;
-						}
-						else if (np.x < p.x) {
-							rotation = 180;
-						}
-						else if (np.y > p.y) {
-							rotation = 90;
-						}
-						else if (np.y < p.y) {
-							rotation = -90;
-						}
-					}
-					else if (pp != null && np == null) {
-						skinName = "FootD";
-						if (p.x > pp.x) {
-							rotation = 0;
-						}
-						else if (p.x < pp.x) {
-							rotation = 180;
-						}
-						else if (p.y > pp.y) {
-							rotation = 90;
-						}
-						else if (p.y < pp.y) {
-							rotation = -90;
-						}
-					}
-					else if (pp != null && np != null) {
-						if (p.x == pp.x && pp.x == np.x) {
-							skinName = "FootD";
-							if (pp.y < np.y) {
-								rotation = 90;
-							}
-							else if (pp.y > np.y) {
-								rotation = -90;
-							}
-						}
-						else if (p.y == pp.y && pp.y == np.y) {
-							skinName = "FootD";
-							if (pp.x < np.x) {
-								rotation = 0;
-							}
-							else if (pp.x > np.x) {
-								rotation = 180;
-							}
-						}
-						else {
-
-							if (p.x > pp.x && np.y > p.y) {
-								skinName = "FootR";
-								rotation = 0;
-							}
-							else if (p.y > pp.y && np.x < p.x) {
-								skinName = "FootR";
-								rotation = 90;
-							}
-							else if (p.x < pp.x && np.y < p.y) {
-								skinName = "FootR";
-								rotation = 180;
-							}
-							else if (p.y < pp.y && np.x > p.x) {
-								skinName = "FootR";
-								rotation = -90;
-							}
-							else if (p.x > pp.x && np.y < p.y) {
-								skinName = "FootL";
-								rotation = 0;
-							}
-							else if (p.y < pp.y && np.x < p.x) {
-								skinName = "FootL";
-								rotation = -90;
-							}
-							else if (p.x < pp.x && np.y > p.y) {
-								skinName = "FootL";
-								rotation = -180;
-							}
-							else if (p.y > pp.y && np.x > p.x) {
-								skinName = "FootL";
-								rotation = 90;
-							}
-						}
-					}
-					var mc:MovieClip = new MovieClip();
-
-					var skin:MovieClip = SkinsUtil.createSkinByName(skinName);
-					skin.x = -skin.width / 2;
-					skin.y = -skin.height / 2;
-					mc.addChild(skin);
-					mc.rotation = rotation;
-					mc.x = p.x * paneWidth + skin.width / 2;
-					mc.y = p.y * paneHeight + skin.height / 2;
-					wayLayer.addChild(mc);
-				}
-			}
 		}
 
 	}
