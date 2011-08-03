@@ -1,9 +1,9 @@
 package com.snsoft.mapview {
 	import com.snsoft.mapview.CuntryName;
 	import com.snsoft.mapview.dataObj.MapAreaDO;
-	import com.snsoft.util.PointUtil;
 	import com.snsoft.mapview.util.MapViewDraw;
 	import com.snsoft.util.ColorTransformUtil;
+	import com.snsoft.util.PointUtil;
 
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
@@ -12,19 +12,22 @@ package com.snsoft.mapview {
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
 	public class AreaNameView extends UIComponent {
 
-		private var _mapAreaDO:MapAreaDO=null;
+		private var _mapAreaDO:MapAreaDO = null;
 
-		private var _areaBtnLayer:Sprite=new Sprite();
+		private var _areaBtnLayer:Sprite = new Sprite();
 
-		private var _areaNameLayer:Sprite=new Sprite();
+		private var _areaNameLayer:Sprite = new Sprite();
 
-		private var cuntryName:CuntryName=new CuntryName("");
+		private var cuntryName:CuntryName = new CuntryName("");
 
 		private var _areaView:AreaView;
+
+		private var _center:Point = new Point();
 
 		/**
 		 *
@@ -41,7 +44,7 @@ package com.snsoft.mapview {
 		override protected function configUI():void {
 
 			this.setMouseOutColor();
-			this.buttonMode=true;
+			this.buttonMode = true;
 			this.invalidate(InvalidationType.ALL, true);
 			this.invalidate(InvalidationType.SIZE, true);
 			super.configUI();
@@ -58,25 +61,36 @@ package com.snsoft.mapview {
 			this.addChild(areaNameLayer);
 			this.addChild(areaBtnLayer);
 
-			var mado:MapAreaDO=this.mapAreaDO;
+			var mado:MapAreaDO = this.mapAreaDO;
 			if (mado != null) {
-				var pointAry:Array=mado.pointArray.toArray();
-				var cl:Shape=MapViewDraw.drawFill(0x000000, 0, pointAry);
+				var pointAry:Array = mado.pointArray.toArray();
+				var cl:Shape = MapViewDraw.drawFill(0x000000, 0, pointAry);
 				areaBtnLayer.addChild(cl);
 
-				var dobj:Rectangle=cl.getRect(this);
-				var cn:CuntryName=this.cuntryName;
-				cn.lableText=mado.areaName;
-				cn.x=dobj.x + (dobj.width - cn.width) * 0.5 + mado.areaNamePlace.x;
-				cn.y=dobj.y + (dobj.height - cn.height) * 0.5 + mado.areaNamePlace.y;
+				var dobj:Rectangle = cl.getRect(this);
+				var cn:CuntryName = this.cuntryName;
+				cn.lableText = mado.areaName;
+				cn.x = dobj.x + (dobj.width - cn.width) * 0.5 + mado.areaNamePlace.x;
+				cn.y = dobj.y + (dobj.height - cn.height) * 0.5 + mado.areaNamePlace.y;
+
+				var rect:Rectangle = cn.getRect(this);
+				_center.x = cn.x + cn.width / 2;
+				_center.y = cn.y + cn.height / 2;
+
 				areaNameLayer.addChild(cn);
 				this.addEventListener(MouseEvent.MOUSE_OVER, handlerAreaViewMouseOver);
 				this.addEventListener(MouseEvent.MOUSE_OUT, handlerAreaViewMouseOut);
-			} else {
+			}
+			else {
 				trace("mapAreaDO:" + mapAreaDO);
 			}
 		}
-		
+
+		override public function set doubleClickEnabled(value:Boolean):void {
+			super.doubleClickEnabled = true;
+			areaBtnLayer.doubleClickEnabled = value;
+		}
+
 		/**
 		 * 事件
 		 * @param e
@@ -85,7 +99,7 @@ package com.snsoft.mapview {
 		private function handlerAreaViewMouseOver(e:Event):void {
 			this.setMouseOverColor();
 		}
-		
+
 		/**
 		 * 事件
 		 * @param e
@@ -96,7 +110,7 @@ package com.snsoft.mapview {
 		}
 
 		public function setMouseOverColor():void {
-			var cn:CuntryName=this.cuntryName;
+			var cn:CuntryName = this.cuntryName;
 			cn.setColor(0xbb0000);
 			if (areaView != null) {
 				this.areaView.setMouseOverColor();
@@ -104,7 +118,7 @@ package com.snsoft.mapview {
 		}
 
 		public function setMouseOutColor():void {
-			var cn:CuntryName=this.cuntryName;
+			var cn:CuntryName = this.cuntryName;
 			cn.setColor(0x000000);
 			if (areaView != null) {
 				this.areaView.setMouseOutColor();
@@ -116,10 +130,8 @@ package com.snsoft.mapview {
 		}
 
 		public function set mapAreaDO(value:MapAreaDO):void {
-			_mapAreaDO=value;
+			_mapAreaDO = value;
 		}
-
-
 
 		public function get areaNameLayer():Sprite {
 			return _areaNameLayer;
@@ -130,13 +142,16 @@ package com.snsoft.mapview {
 		}
 
 		public function set areaView(value:AreaView):void {
-			_areaView=value;
+			_areaView = value;
 		}
 
 		public function get areaBtnLayer():Sprite {
 			return _areaBtnLayer;
 		}
 
+		public function get center():Point {
+			return _center;
+		}
 
 	}
 }

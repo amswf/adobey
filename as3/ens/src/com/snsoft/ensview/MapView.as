@@ -54,6 +54,8 @@ package com.snsoft.ensview {
 
 		private var _backMaskRec:Rectangle = null;
 
+		private var _areaNameViewHV:HashVector = new HashVector();
+
 		public function MapView() {
 			super();
 		}
@@ -122,10 +124,11 @@ package com.snsoft.ensview {
 						av.areaNameView = anv;
 						anv.areaView = av;
 						areaNamesLayer.addChild(anv);
+						areaNameViewHV.push(anv, mado.areaCode);
+						anv.doubleClickEnabled = true;
 						anv.addEventListener(MouseEvent.MOUSE_OVER, handlerAreaNameViewMouseOver);
 						anv.addEventListener(MouseEvent.MOUSE_OUT, handlerAreaNameViewMouseOut);
 						anv.addEventListener(MouseEvent.CLICK, handlerAreaViewClick);
-						anv.doubleClickEnabled = true;
 						anv.addEventListener(MouseEvent.DOUBLE_CLICK, handlerAreaViewDoubleClick);
 					}
 				}
@@ -240,6 +243,10 @@ package com.snsoft.ensview {
 
 		public function get currentAreaView():AreaNameView {
 			return _currentAreaView;
+		}
+
+		public function get areaNameViewHV():HashVector {
+			return _areaNameViewHV;
 		}
 
 	}

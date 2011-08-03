@@ -87,6 +87,8 @@
 
 		private var mapPathManager:MapPathManager = null;
 
+		private var mapView:MapView = null;
+
 		public function Ensv(stageWidth:int, stageHeight:int) {
 			super();
 			this.stageWidth = stageWidth;
@@ -178,28 +180,22 @@
 			SpriteUtil.deleteAllChild(searchListLayer);
 			searchListLayer.visible = true;
 
-			searchBooths = new Vector.<EnsvBooth>();
-
 			var sb:SearchBar = e.currentTarget as SearchBar;
 			var stext:String = sb.searchText;
 
 			var searchListHeight:int = 0;
 			var searchListItemLayer:Sprite = new Sprite();
+			var n:int = 0;
 			if (stext != null) {
 				stext = StringUtilities.trim(stext);
 				if (stext.length > 0) {
-
-					var n:int = 0;
-					for (var i:int = 0; i < boothDOs.length; i++) {
-						var bdo:EnsvBoothDO = boothDOs[i];
-						var msg:EnsvBoothMsgDO = bdo.msg;
+					for (var i:int = 0; i < ensvBoothMsgDOHV.length; i++) {
+						var msg:EnsvBoothMsgDO = ensvBoothMsgDOHV.findByIndex(i) as EnsvBoothMsgDO;
 						if (msg != null) {
 							if ((msg.text != null && msg.text.indexOf(stext) >= 0) || (msg.des != null && msg.des.indexOf(stext) >= 0)) {
-								var ensvb:EnsvBooth = boothsLayer.getChildAt(i) as EnsvBooth;
-								searchBooths.push(ensvb);
-
 								var eli:EnsvListItem = new EnsvListItem(msg.text);
-								eli.ensvBooth = ensvb;
+
+								eli.id = msg.id;
 								eli.y = eli.height * n;
 								eli.addEventListener(MouseEvent.CLICK, handlerEnsvListItemClick);
 								searchListHeight += eli.height;
@@ -211,7 +207,7 @@
 				}
 			}
 
-			if (searchBooths.length > 0) {
+			if (n > 0) {
 				var barh:int = viewLayer.y - searchListLayer.y - 20;
 
 				searchListLayer.addChild(searchListItemLayer);
@@ -233,12 +229,11 @@
 		}
 
 		private function handlerEnsvListItemClick(e:Event):void {
-			var eli:EnsvListItem  = e.currentTarget as EnsvListItem;
-			eli.ensvBooth.dispatchEvent(new Event(MouseEvent.CLICK));
-			SpriteUtil.deleteAllChild(cardLayer);
-
-			if (eli.ensvBooth != null) {
-				viewEnsvBoothMsg(eli.ensvBooth);
+			var eli:EnsvListItem = e.currentTarget as EnsvListItem;
+			var anv:AreaNameView = mapView.areaNameViewHV.findByName(eli.id) as AreaNameView;
+			if (anv != null) {
+				anv.dispatchEvent(new Event(MouseEvent.CLICK));
+				anv.dispatchEvent(new Event(MouseEvent.DOUBLE_CLICK));
 			}
 		}
 
@@ -276,7 +271,7 @@
 			mapLayer.addChild(back);
 			mapLayer.addChild(boothsLayer);
 
-			var mapView:MapView = new MapView();
+			mapView = new MapView();
 			mapView.workSpaceDO = wsdo;
 			mapView.drawNow();
 			boothsLayer.addChild(mapView);
@@ -360,14 +355,60 @@
 		}
 
 		private function handlerAreaDoubleClick(e:Event):void {
+			SpriteUtil.deleteAllChild(boothMsgLayer);
+			var mapView:MapView = e.currentTarget as MapView;
+			var areaView:AreaNameView = mapView.currentAreaView;
+			var areaDO:MapAreaDO = areaView.mapAreaDO;
+			var msg:EnsvBoothMsgDO = ensvBoothMsgDOHV.findByName(areaDO.areaCode) as EnsvBoothMsgDO;
+			if (msg != null) {
+				var msk:MovieClip = new MovieClip();
+				msk.graphics.beginFill(0x000000, 0.1);
+				msk.graphics.drawRect(0, 0, stageWidth, stageHeight);
+				msk.graphics.endFill();
+				boothMsgLayer.addChild(msk);
 
+				var ebm:EnsvBoothMsg = new EnsvBoothMsg(msg);
+				ebm.x = (stageWidth - ebm.width) / 2;
+				ebm.y = (stageHeight - ebm.height) / 2;
+				boothMsgLayer.addChild(ebm);
+				ebm.addEventListener(EnsvBoothMsg.EVENT_CLOSE, function():void {SpriteUtil.deleteAllChild(boothMsgLayer);});
+			}
 		}
 
 		private function handlerAreaMouseOut(e:Event):void {
-
+			SpriteUtil.deleteAllChild(cardLayer);
 		}
 
 		private function handlerAreaMouseOver(e:Event):void {
+			SpriteUtil.deleteAllChild(cardLayer);
+			var mapView:MapView = e.currentTarget as MapView;
+			var areaView:AreaNameView = mapView.currentAreaView;
+			var areaDO:MapAreaDO = areaView.mapAreaDO;
+			var msg:EnsvBoothMsgDO = ensvBoothMsgDOHV.findByName(areaDO.areaCode) as EnsvBoothMsgDO;
+
+			if (msg != null) {
+				var dName:String = "";
+				var dText:String = "";
+
+				dName = msg.text;
+				dText = msg.goods;
+
+				var ebc:EnsvBoothCard = new EnsvBoothCard();
+				ebc.dName = dName;
+				ebc.dText = dText;
+				cardLayer.addChild(ebc);
+
+				var firstPane:EnsvPane; /////////////////////////////
+
+				var fprect:Rectangle = new Rectangle(areaView.center.x, areaView.center.y);
+
+				var p:Point = McEffect.getCuntryLablePoint(ebc.getRect(dragLayer), fprect, mapLayer.getRect(dragLayer));
+				ebc.x = p.x;
+				ebc.y = p.y;
+
+				var cc:MovieClip = McEffect.createLightFace(ebc.getRect(dragLayer), fprect, mapLayer.getRect(dragLayer), new Point());
+				cardLayer.addChild(cc);
+			}
 
 		}
 

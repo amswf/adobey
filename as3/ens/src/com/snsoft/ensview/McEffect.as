@@ -25,10 +25,13 @@ package com.snsoft.ensview {
 
 		//通过县区的按钮位置及大小计算出县信息标签显示位置
 		public static function getCuntryLablePoint(cl:Rectangle, btn:Rectangle, btns:Rectangle):Point {
-			var xb:Number = btn.x;
-			var yb:Number = btn.y;
+
 			var xbs:Number = btns.width / 2;
 			var ybs:Number = btns.height / 2;
+
+			var xb:Number = btn.x;
+			var yb:Number = btn.y;
+
 			var p:Point = new Point();
 			if (xb > xbs) {
 				p.x = xb - cl.width - cl.width / 2;
