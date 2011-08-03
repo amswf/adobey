@@ -56,6 +56,8 @@ package com.snsoft.ensview {
 
 		private var _areaNameViewHV:HashVector = new HashVector();
 
+		private var _currentPositionAreaView:AreaNameView;
+
 		public function MapView() {
 			super();
 		}
@@ -113,6 +115,7 @@ package com.snsoft.ensview {
 				for (var i:int = 0; i < madohv.length; i++) {
 					var mado:MapAreaDO = madohv[i];
 					if (mado != null) {
+
 						var av:AreaView = new AreaView();
 						av.mapAreaDO = mado;
 						av.drawNow();
@@ -130,6 +133,10 @@ package com.snsoft.ensview {
 						anv.addEventListener(MouseEvent.MOUSE_OUT, handlerAreaNameViewMouseOut);
 						anv.addEventListener(MouseEvent.CLICK, handlerAreaViewClick);
 						anv.addEventListener(MouseEvent.DOUBLE_CLICK, handlerAreaViewDoubleClick);
+
+						if (mado.isCurrent) {
+							_currentPositionAreaView = anv;
+						}
 					}
 				}
 
@@ -248,6 +255,12 @@ package com.snsoft.ensview {
 		public function get areaNameViewHV():HashVector {
 			return _areaNameViewHV;
 		}
+
+		public function get currentPositionAreaView():AreaNameView
+		{
+			return _currentPositionAreaView;
+		}
+
 
 	}
 }
