@@ -500,13 +500,13 @@
 
 		private function creatXML(ws:WorkSpace):String {
 			var xml:String = new String();
-			xml = xml.concat('<map image="' + image + '">');
 
 			var madoa:HashVector = ws.areaManager.mapAreaDOAry as HashVector;
 			var image:String = "";
 			if (ws.mapImage != null && ws.mapImage.imageUrl != null) {
 				image = ws.mapImage.imageUrl;
 			}
+			xml = xml.concat('<map image="' + image + '">');
 
 			xml = xml.concat("<areas>");
 			if (madoa != null) {

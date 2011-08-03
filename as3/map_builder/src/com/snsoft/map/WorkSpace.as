@@ -121,6 +121,8 @@
 		 */
 		private var currentPositionMapArea:MapArea = null;
 
+		private var isInitFromData:Boolean = false;
+
 		/**
 		 * 构造方法
 		 *
@@ -164,7 +166,10 @@
 			this._mapImage = new MapBackImage(wsSize);
 			this.mapImageLayer.addChild(this.mapImage); //背景图片
 			this.mapImage.scalePoint = this.scalePoint;
-			this.mapImage.addEventListener(Event.COMPLETE, mapBackImageLoadComplete);
+			this.mapImage.addEventListener(Event.COMPLETE, mapBackImageLoadFromSaveDataComplete);
+			this.mapImage.addEventListener(IOErrorEvent.IO_ERROR, mapBackImageLoadFromSaveDataIOError);
+			this.mapImage.loadImage();
+
 			this.backLayer.addChild(this.back); //背影
 			this.refreshMapBack(null);
 
@@ -271,7 +276,6 @@
 			var h:Number = this.height;
 			if (imageUrl != null) {
 				this.mapImage.imageUrl = imageUrl;
-				this.mapImage.addEventListener(Event.COMPLETE, mapBackImageLoadComplete);
 				this.mapImage.loadImage();
 			}
 		}
@@ -350,18 +354,6 @@
 				}
 			}
 			return areaId;
-		}
-
-		/**
-		 * 事件 加载图片完成
-		 * @param e
-		 *
-		 */
-		public function mapBackImageLoadComplete(e:Event):void {
-			var wsSize:Point = new Point(this.mapImage.width, this.mapImage.height);
-			PointUtil.setSpriteSize(this, wsSize);
-			this.areaManager.setHitTest(wsSize);
-			this.mapImage.removeEventListener(Event.COMPLETE, mapBackImageLoadComplete);
 		}
 
 		/**
@@ -579,12 +571,10 @@
 			var imageUrl:String = workSpaceDO.image;
 			var w:Number = this.width;
 			var h:Number = this.height;
-			if (imageUrl != null) {
-				this.mapImage.imageUrl = imageUrl;
-				this.mapImage.addEventListener(Event.COMPLETE, mapBackImageLoadFromSaveDataComplete);
-				this.mapImage.addEventListener(IOErrorEvent.IO_ERROR, mapBackImageLoadFromSaveDataIOError);
-				this.mapImage.loadImage();
-			}
+
+			isInitFromData = true;
+			this.mapImage.imageUrl = imageUrl;
+			this.mapImage.loadImage();
 		}
 
 		/**
@@ -596,7 +586,8 @@
 			var wsSize:Point = new Point(this.mapImage.width, this.mapImage.height);
 			PointUtil.setSpriteSize(this, wsSize);
 			this.areaManager.setHitTest(wsSize);
-			initMapAreasFromSaveData();
+			this.pathManager.setHitTest(wsSize);
+			initFromData();
 		}
 
 		/**
@@ -605,8 +596,14 @@
 		 *
 		 */
 		private function mapBackImageLoadFromSaveDataIOError(e:Event):void {
-			initMapPathFromSaveData();
-			initMapAreasFromSaveData();
+			initFromData();
+		}
+
+		private function initFromData():void {
+			if (isInitFromData) {
+				initMapPathFromSaveData();
+				initMapAreasFromSaveData();
+			}
 		}
 
 		private function initMapPathFromSaveData():void {
