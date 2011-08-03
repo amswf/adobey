@@ -23,7 +23,7 @@ package com.snsoft.ensview {
 
 		private var overtft:TextFormat = new TextFormat("", 13, 0xffffff);
 
-		private var _ensvBooth:EnsvBooth;
+		private var _id:String;
 
 		public function EnsvListItem(text:String) {
 			super();
@@ -112,15 +112,16 @@ package com.snsoft.ensview {
 			tfd.setTextFormat(deftft);
 		}
 
-		public function get ensvBooth():EnsvBooth
+		public function get id():String
 		{
-			return _ensvBooth;
+			return _id;
 		}
 
-		public function set ensvBooth(value:EnsvBooth):void
+		public function set id(value:String):void
 		{
-			_ensvBooth = value;
+			_id = value;
 		}
+
 
 	}
 }
