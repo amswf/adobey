@@ -6,6 +6,7 @@
 	import com.snsoft.mapview.dataObj.WorkSpaceDO;
 	import com.snsoft.mapview.util.MapViewXMLLoader;
 	import com.snsoft.util.HashVector;
+	import com.snsoft.util.Math.Polar;
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.SpriteUtil;
 	import com.snsoft.util.complexEvent.CplxMouseDrag;
@@ -43,6 +44,8 @@
 		private var boothClickLock:Boolean = false;
 
 		private var wayLayer:Sprite = new Sprite();
+
+		private var pathLayer:Sprite = new Sprite();
 
 		private var mapLayer:Sprite = new Sprite();
 
@@ -107,6 +110,8 @@
 			searchListLayer.y = 120;
 
 			this.addChild(boothMsgLayer);
+
+			wayLayer.addChild(pathLayer);
 		}
 
 		private function handlerEnterFrame(e:Event):void {
@@ -342,17 +347,38 @@
 			var n2:NetNode = mapPathManager.findNodeByAreaName(areaDO.areaId);
 			var points:Vector.<Point> = mapPathManager.findPath(n2, n1);
 
-			wayLayer.graphics.clear();
+			SpriteUtil.deleteAllChild(pathLayer);
 			if (points != null) {
-				for (var i:int = 0; i < points.length; i++) {
-					var p:Point = points[i];
+				if (points.length >= 2) {
+					for (var i:int = points.length - 1; i >= 1; i--) {
+						var p1:Point = points[i];
+						var p2:Point = points[i - 1];
 
-					wayLayer.graphics.lineStyle(2, 0x000000);
-					if (i == 0) {
-						wayLayer.graphics.moveTo(p.x, p.y);
-					}
-					else {
-						wayLayer.graphics.lineTo(p.x, p.y);
+						var sp:Point = p2.subtract(p1);
+
+						var po:Polar = Polar.point(sp.x, sp.y);
+						trace("sp:", sp);
+						trace("po:", po.rotation);
+
+						var w:int = 30;
+
+						var len:int = 0;
+						while (len + 15 < po.len) {
+
+							var mc:MovieClip = SkinsUtil.createSkinByName("FootO");
+
+							var p:Point = Point.polar(len, po.angle);
+							trace(len, int(po.rotation));
+
+							trace("point:" + int(p.x), int(p.y));
+							var np:Point = p1.add(p);
+							mc.x = np.x;
+							mc.y = np.y;
+							mc.rotation = po.rotation;
+							pathLayer.addChild(mc);
+							len += w;
+						}
+
 					}
 				}
 			}

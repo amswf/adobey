@@ -16,7 +16,7 @@ package com.snsoft.util.Math {
 
 		public static function point(x:Number, y:int):Polar {
 
-			var angle:Number = Math.atan2(x, y);
+			var angle:Number = Math.atan2(y, x);
 			var len:Number = Math.sqrt(x * x + y * y);
 			return new Polar(len, angle);
 		}
