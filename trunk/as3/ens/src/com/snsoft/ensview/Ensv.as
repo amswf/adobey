@@ -298,24 +298,27 @@
 			viewLayer.addChild(vl);
 
 			var wp:MovieClip = SkinsUtil.createSkinByName("SmallCurrentPosition");
+
 			var wpw:int = wp.width;
 			var wph:int = wp.height;
-			var wpx:int = vl.width * (currentPosition.x) / maprect.width;
-			var wpy:int = vl.height * (currentPosition.y) / maprect.height;
-			if (wpx >= vl.width - wpw) {
-				wpx -= wpw;
+			trace(vl.width, maprect.width, currentPosition.x);
+			var wpx:int = vl.width * currentPosition.x / (maprect.width + maprect.x);
+			var wpy:int = vl.height * currentPosition.y / (maprect.height + maprect.y);
+
+			if (wpx > vl.width - wpw) {
+				wpx = vl.width - wpw;
 			}
-			else if (wpx <= wpw) {
-				wpx += wpw;
+			else if (wpx < 0) {
+				wpx = 0;
 			}
-			if (wpy >= vl.height - wph) {
-				wpy -= wph;
+			if (wpy > vl.height - wph) {
+				wpy = vl.height - wph;
 			}
-			else if (wpy <= wph) {
-				wpy += wph;
+			else if (wpy < 0) {
+				wpy = 0;
 			}
-			wp.x = wpx - wpw / 2;
-			wp.y = wpy - wph / 2;
+			wp.x = wpx;
+			wp.y = wpy;
 
 			viewLayer.addChild(wp);
 
