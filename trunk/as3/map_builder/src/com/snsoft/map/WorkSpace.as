@@ -414,7 +414,7 @@
 					pathLayer.addChild(ml);
 
 					var areaName:String = null;
-					if (currentPathMapArea != null && fastViewLayer.hitTestObject(currentPathMapArea)) {
+					if (currentPathMapArea != null && penLayer.hitTestObject(currentPathMapArea)) {
 						areaName = currentPathMapArea.mapAreaDO.areaId;
 						this.pen.penState = Pen.PEN_STATE_START;
 					}
@@ -652,6 +652,7 @@
 						mado.areaName = mapAreaDo.areaName;
 						mado.areaId = mapAreaDo.areaId;
 						mado.areaNamePlace = mapAreaDo.areaNamePlace;
+						mado.isCurrent = mapAreaDo.isCurrent;
 					}
 				}
 			}
