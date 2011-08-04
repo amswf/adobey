@@ -271,9 +271,7 @@
 			mapPathManager = new MapPathManager(wsdo.sections);
 
 			var areaCode:String = mapView.currentPositionAreaView.mapAreaDO.areaId;
-			trace(areaCode);
 			startNode = mapPathManager.findNodeByAreaName(areaCode);
-			trace(startNode.point);
 			currentPosition.x = mapView.currentPositionAreaView.center.x;
 			currentPosition.y = mapView.currentPositionAreaView.center.y;
 
@@ -357,8 +355,6 @@
 						var sp:Point = p2.subtract(p1);
 
 						var po:Polar = Polar.point(sp.x, sp.y);
-						trace("sp:", sp);
-						trace("po:", po.rotation);
 
 						var w:int = 30;
 
@@ -368,9 +364,6 @@
 							var mc:MovieClip = SkinsUtil.createSkinByName("FootO");
 
 							var p:Point = Point.polar(len, po.angle);
-							trace(len, int(po.rotation));
-
-							trace("point:" + int(p.x), int(p.y));
 							var np:Point = p1.add(p);
 							mc.x = np.x;
 							mc.y = np.y;
