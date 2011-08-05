@@ -104,7 +104,9 @@
 
 		private var _scalePoint:Point = new Point(1, 1);
 
-		private var hitTestDvaluePoint:Point = new Point(5, 5);
+		private var hitTestAreaDvaluePoint:Point = new Point(5, 5);
+
+		private var hitTestPathDvaluePoint:Point = new Point(10, 10);
 
 		//工作区名称
 		private var _wsName:String = null;
@@ -113,8 +115,6 @@
 		private var workSpaceDO:WorkSpaceDO = null;
 
 		private var currentPathMapArea:MapArea = null;
-
-		private var currentPathMapAreaMouseOver:Boolean = false;
 
 		/**
 		 *  地图上表示当前位置的区块
@@ -143,9 +143,10 @@
 		public function init():void {
 
 			//点管理器
-			var scaleHtdP:Point = PointUtil.creatInverseSaclePoint(hitTestDvaluePoint, this.scalePoint);
-			this._areaManager = new MapPointsManager(new Point(this.width, this.height), scaleHtdP);
-			this._pathManager = new MapPathManager(new Point(this.width, this.height), scaleHtdP);
+			var areaScaleHtdP:Point = PointUtil.creatInverseSaclePoint(hitTestAreaDvaluePoint, this.scalePoint);
+			var pathScaleHtdP:Point = PointUtil.creatInverseSaclePoint(hitTestPathDvaluePoint, this.scalePoint);
+			this._areaManager = new MapPointsManager(new Point(this.width, this.height), areaScaleHtdP);
+			this._pathManager = new MapPathManager(new Point(this.width, this.height), pathScaleHtdP);
 
 			//显示对象层
 			this.addChild(mapImageLayer); //背景图片
@@ -156,6 +157,12 @@
 			this.addChild(viewLayer); //提示
 			this.addChild(fastViewLayer); //快速画线
 			this.addChild(penLayer); //画笔
+
+			penLayer.mouseEnabled = false;
+			penLayer.mouseChildren = false;
+
+			fastViewLayer.mouseEnabled = false;
+			fastViewLayer.mouseChildren = false;
 
 			//显示对象
 			this.penLayer.addChild(this.pen); //画笔
@@ -248,7 +255,9 @@
 			this.suggest.refresh();
 
 			//刷新碰撞检测的碰撞阈值
-			this.areaManager.hitTestDvaluePoint = PointUtil.creatInverseSaclePoint(this.hitTestDvaluePoint, this.scalePoint);
+			this.areaManager.hitTestDvaluePoint = PointUtil.creatInverseSaclePoint(this.hitTestAreaDvaluePoint, this.scalePoint);
+			this.pathManager.hitTestDvaluePoint = PointUtil.creatInverseSaclePoint(this.hitTestPathDvaluePoint, this.scalePoint);
+			
 			var sizeP:Point = PointUtil.creatInverseSaclePoint(new Point(this.width, this.height), this.scalePoint);
 			this.width = sizeP.x;
 			this.height = sizeP.y;
@@ -383,7 +392,7 @@
 				if (this.toolEventType == ToolsBar.TOOL_TYPE_LINE) {
 					drawArea();
 				}
-				else if (this.toolEventType == ToolsBar.TOOL_TYPE_PATH && !(this.pen.penState == Pen.PEN_STATE_START && currentPathMapAreaMouseOver)) {
+				else if (this.toolEventType == ToolsBar.TOOL_TYPE_PATH && !(this.pen.penState == Pen.PEN_STATE_START && currentPathMapArea != null)) {
 					drawPath();
 				}
 			}
@@ -414,7 +423,7 @@
 					pathLayer.addChild(ml);
 
 					var areaName:String = null;
-					if (currentPathMapArea != null && penLayer.hitTestObject(currentPathMapArea)) {
+					if (currentPathMapArea != null) {
 						areaName = currentPathMapArea.mapAreaDO.areaId;
 						this.pen.penState = Pen.PEN_STATE_START;
 					}
@@ -866,7 +875,6 @@
 
 			if (this.toolEventType == ToolsBar.TOOL_TYPE_PATH) {
 				currentPathMapArea = ma;
-				currentPathMapAreaMouseOver = true;
 			}
 
 			if (this.toolEventType == ToolsBar.TOOL_TYPE_SELECT || this.toolEventType == ToolsBar.TOOL_TYPE_PATH) {
@@ -886,6 +894,9 @@
 		 */
 		private function handlerMapAreaMouseOut(e:Event):void {
 			var ma:MapArea = e.currentTarget as MapArea;
+
+			currentPathMapArea = null;
+
 			if (this.toolEventType == null) {
 				return;
 			}
@@ -895,10 +906,6 @@
 				this.addEventListener(MouseEvent.CLICK, handerMouseClickWorkSpace);
 				this.addEventListener(MouseEvent.MOUSE_MOVE, handlerMouseMoveWorkSpase);
 				this.addEventListener(MouseEvent.MOUSE_OUT, handlerMouseOutWorkSpase);
-			}
-
-			if (this.toolEventType == ToolsBar.TOOL_TYPE_PATH) {
-				currentPathMapAreaMouseOver = false;
 			}
 
 			if (this.toolEventType == ToolsBar.TOOL_TYPE_SELECT || this.toolEventType == ToolsBar.TOOL_TYPE_PATH) {
