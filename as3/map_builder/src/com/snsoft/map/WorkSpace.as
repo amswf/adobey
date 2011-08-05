@@ -706,6 +706,9 @@
 				}
 				else if (this.toolEventType == ToolsBar.TOOL_TYPE_SELECT) {
 
+					pathLayer.mouseEnabled = true;
+					pathLayer.mouseChildren = true;
+					
 					if (selectType == SELECT_TYPE_DEF) {
 						this.pen.penSkin = Pen.PEN_SELECT_DEFAULT_SKIN;
 					}
@@ -725,6 +728,9 @@
 					viewLine(mouseScaleP);
 				}
 				else if (this.toolEventType == ToolsBar.TOOL_TYPE_PATH) {
+					pathLayer.mouseEnabled = false;
+					pathLayer.mouseChildren = false;
+					pathLayer;
 					viewPath(mouseScaleP);
 				}
 			}
