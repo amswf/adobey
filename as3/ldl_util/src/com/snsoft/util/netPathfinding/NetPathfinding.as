@@ -25,9 +25,13 @@
 		public function finding(fromNode:NetNode, toNode:NetNode):Vector.<Point> {
 			var points:Vector.<Point> = null;
 			if (fromNode != null && toNode != null) {
+
+				var branchHVs:Vector.<HashVector> = new Vector.<HashVector>();
 				var branchHV:HashVector = new HashVector();
+				branchHVs.push(branchHV);
+
 				var paths:Vector.<Path> = new Vector.<Path>();
-				find(paths, fromNode, toNode, branchHV);
+				find(paths, fromNode, toNode, branchHVs);
 
 				var min:int = int.MAX_VALUE;
 				var n:int = -1;
@@ -44,15 +48,21 @@
 			return points;
 		}
 
-		private function find(paths:Vector.<Path>, forkNode:NetNode, toNode:NetNode, branchHV:HashVector, parentBranch:Branch = null, prevNode:NetNode = null):void {
+		private function find(paths:Vector.<Path>, forkNode:NetNode, toNode:NetNode, branchHVs:Vector.<HashVector>, layer:int = 0, parentBranch:Branch = null, prevNode:NetNode = null):void {
 			//trace(forkNode.point, "-----------------------------------------------------");
-			var branchs:Vector.<Branch> = findBranchs(forkNode, toNode, branchHV, prevNode);
+			var ly:int = layer + 1;
+
+			var branchHV:HashVector = new HashVector();
+			var branchs:Vector.<Branch> = findBranchs(forkNode, toNode, branchHVs, layer, prevNode);
+
 			for (var i:int = 0; i < branchs.length; i++) {
 				var ppb:Branch = branchs[i];
 				ppb.parent = parentBranch;
 				var ppn:String = getBranchName(ppb.nodes);
 				branchHV.push(ppb, ppn);
 			}
+			branchHVs.push(branchHV);
+
 			for (i = 0; i < branchs.length; i++) {
 				var branch:Branch = branchs[i];
 
@@ -60,13 +70,13 @@
 					branch.parent = parentBranch;
 					var nfnode:NetNode = branch.getLastNode();
 					var npnode:NetNode = branch.getLastPrevNode();
-					find(paths, nfnode, toNode, branchHV, branch, npnode);
+					find(paths, nfnode, toNode, branchHVs, ly, branch, npnode);
 				}
 				else {
 					var path:Path = getPath(branch, toNode);
 					//trace("path:", path.points.toString());
 					paths.push(path);
-					//break; //只找到一个就结束，提高速度哇，去掉时，则找多个。
+						//break; //只找到一个就结束，提高速度哇，去掉时，则找多个。
 				}
 			}
 		}
@@ -114,8 +124,12 @@
 		 * @return
 		 *
 		 */
-		private function findBranchs(forkNode:NetNode, toNode:NetNode, branchHV:HashVector, prevNode:NetNode = null):Vector.<Branch> {
-			//trace("findBranchs: " + forkNode.point);
+		private function findBranchs(forkNode:NetNode, toNode:NetNode, branchHVs:Vector.<HashVector>, layer:int = 0, prevNode:NetNode = null):Vector.<Branch> {
+//			trace("findBranchs: forkNode: ", forkNode.point);
+//			if (prevNode) {
+//				trace("findBranchs: prevNode", prevNode.point);
+//			}
+
 			var branchs:Vector.<Branch> = new Vector.<Branch>();
 			var nextNodes:Vector.<NetNode> = getNextNodes(forkNode, prevNode);
 			for (var i:int = 0; i < nextNodes.length; i++) {
@@ -165,25 +179,36 @@
 						break;
 					}
 				}
+
 				var nname:String = getDeBranchName(branch.nodes);
-				if (success && branch.nodes.length > 1 && branchHV.findByName(nname) == null) {
-					branch.hashName = getBranchName(branch.nodes);
-					branch.pathLen = len;
-					branchs.push(branch);
-				}
 
+				if (success && branch.nodes.length > 1) {
+					var sign:Boolean = false;
+					for (var k:int = 0; k < layer && k < branchHVs.length; k++) {
+						var branchHV:HashVector = branchHVs[k];
+						if (branchHV.findByName(nname) != null) {
+							sign = true;
+							break;
+						}
+					}
+					if (!sign) {
+						branch.hashName = getBranchName(branch.nodes);
+						branch.pathLen = len;
+						branchs.push(branch);
+					}
+				}
 			}
 
-			for (i = 0; i < branchs.length; i++) {
-				var b:Branch = branchs[i];
-				var str:String = "";
-				for (var j:int = 0; j < b.nodes.length; j++) {
-					var nd:NetNode = b.nodes[j];
-					str += nd.point.toString() + " , ";
-				}
-					//trace(b.hashName);
-					//trace(str);
-			}
+//			for (i = 0; i < branchs.length; i++) {
+//				var b:Branch = branchs[i];
+//				var str:String = "";
+//				for (var j:int = 0; j < b.nodes.length; j++) {
+//					var nd:NetNode = b.nodes[j];
+//					str += nd.point.toString() + " , ";
+//				}
+//				trace(b.hashName);
+//				trace(str);
+//			}
 			return branchs;
 		}
 
