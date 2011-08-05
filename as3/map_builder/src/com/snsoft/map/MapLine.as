@@ -74,7 +74,10 @@ package com.snsoft.map {
 		override protected function draw():void {
 			if (this.startPoint != null && this.endPoint != null) {
 
-				var l:Shape = ShapeUtil.drawShape(this.startPoint, this.endPoint, 1, 0x000000, 1);
+				var sp:Point = new Point(startPoint.x * scalePoint.x, startPoint.y * scalePoint.y);
+				var ep:Point = new Point(endPoint.x * scalePoint.x, endPoint.y * scalePoint.y);
+
+				var l:Shape = ShapeUtil.drawShape(sp, ep, 1, 0x000000, 1);
 				this.addChild(l);
 
 				var s:Sprite = MapDraw.drawPoint(this.startPoint, 0, 2, this.pointColor, this.pointFillColor, this.scalePoint);
@@ -82,7 +85,7 @@ package com.snsoft.map {
 				var e:Sprite = MapDraw.drawPoint(this.endPoint, 0, 2, this.pointColor, this.pointFillColor, this.scalePoint);
 				this.addChild(e);
 
-				var h:Shape = ShapeUtil.drawShape(this.startPoint, this.endPoint, this.thikness, 0x000000, 0);
+				var h:Shape = ShapeUtil.drawShape(sp, ep, this.thikness, 0x000000, 0);
 				this.addChild(h);
 			}
 		}
