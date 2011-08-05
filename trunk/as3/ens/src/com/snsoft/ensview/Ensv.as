@@ -93,6 +93,8 @@
 			this.addChild(dragLayer);
 			dragLayer.addChild(mapLayer);
 			dragLayer.addChild(wayLayer);
+			wayLayer.mouseEnabled = false;
+			wayLayer.mouseChildren = false;
 			dragLayer.addChild(cardLayer);
 			cardLayer.mouseChildren = false;
 			cardLayer.mouseEnabled = false;
