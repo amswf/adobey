@@ -66,7 +66,7 @@
 					var path:Path = getPath(branch, toNode);
 					//trace("path:", path.points.toString());
 					paths.push(path);
-					break; //只找到一个就结束，提高速度哇，去掉时，则找多个。
+					//break; //只找到一个就结束，提高速度哇，去掉时，则找多个。
 				}
 			}
 		}
