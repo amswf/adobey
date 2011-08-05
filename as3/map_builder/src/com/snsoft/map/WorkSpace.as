@@ -65,6 +65,8 @@
 		//工具类型
 		private var _toolEventType:String = null;
 
+		private var pathSize:int = 10;
+
 		//所有点的数组的数组
 		private var pointAryAry:Array = new Array();
 
@@ -122,6 +124,12 @@
 		private var currentPositionMapArea:MapArea = null;
 
 		private var isInitFromData:Boolean = false;
+
+		private var selectType:int = 0;
+
+		private var SELECT_TYPE_DEF:int = 0;
+
+		private var SELECT_TYPE_DEL:int = 1;
 
 		/**
 		 * 构造方法
@@ -257,7 +265,7 @@
 			//刷新碰撞检测的碰撞阈值
 			this.areaManager.hitTestDvaluePoint = PointUtil.creatInverseSaclePoint(this.hitTestAreaDvaluePoint, this.scalePoint);
 			this.pathManager.hitTestDvaluePoint = PointUtil.creatInverseSaclePoint(this.hitTestPathDvaluePoint, this.scalePoint);
-			
+
 			var sizeP:Point = PointUtil.creatInverseSaclePoint(new Point(this.width, this.height), this.scalePoint);
 			this.width = sizeP.x;
 			this.height = sizeP.y;
@@ -416,7 +424,7 @@
 			else if (this.pen.penState == Pen.PEN_STATE_DOING) { //画笔状态是正在画：起点画完，末点未画
 
 				if (!p1.equals(p2)) {
-					var ml:MapLine = new MapLine(p1, p2, PATH_COLOR, PATH_COLOR, PATH_FILL_COLOR, this.scalePoint);
+					var ml:MapLine = new MapLine(p1, p2, PATH_COLOR, PATH_COLOR, PATH_FILL_COLOR, this.scalePoint, pathSize);
 					ml.addEventListener(MouseEvent.MOUSE_OVER, handlerPathMouseOver);
 					ml.addEventListener(MouseEvent.MOUSE_OUT, handlerPathMouseOut);
 					ml.addEventListener(MouseEvent.CLICK, handlerPathMouseClick);
@@ -440,15 +448,13 @@
 
 		private function handlerPathMouseOut(e:Event):void {
 			if (this.toolEventType == ToolsBar.TOOL_TYPE_SELECT) {
-				this.pen.penSkin = Pen.PEN_SELECT_DEFAULT_SKIN;
-				this.pen.refresh();
+				selectType = SELECT_TYPE_DEF;
 			}
 		}
 
 		private function handlerPathMouseOver(e:Event):void {
 			if (this.toolEventType == ToolsBar.TOOL_TYPE_SELECT) {
-				this.pen.penSkin = Pen.PEN_SELECT_DELETE_SKIN;
-				this.pen.refresh();
+				selectType = SELECT_TYPE_DEL;
 			}
 		}
 
@@ -627,7 +633,7 @@
 					pathManager.addPoint(p2);
 					pathManager.addSection(p1, p2, section.areaName);
 
-					var ml:MapLine = new MapLine(p1, p2, PATH_COLOR, PATH_COLOR, PATH_FILL_COLOR, this.scalePoint);
+					var ml:MapLine = new MapLine(p1, p2, PATH_COLOR, PATH_COLOR, PATH_FILL_COLOR, this.scalePoint, pathSize);
 					pathManager.addSection(p1, p2, section.areaName);
 					pathLayer.addChild(ml);
 					ml.addEventListener(MouseEvent.MOUSE_OVER, handlerPathMouseOver);
@@ -699,7 +705,13 @@
 					return;
 				}
 				else if (this.toolEventType == ToolsBar.TOOL_TYPE_SELECT) {
-					this.pen.penSkin = Pen.PEN_SELECT_DEFAULT_SKIN;
+
+					if (selectType == SELECT_TYPE_DEF) {
+						this.pen.penSkin = Pen.PEN_SELECT_DEFAULT_SKIN;
+					}
+					else if (selectType == SELECT_TYPE_DEL) {
+						this.pen.penSkin = Pen.PEN_SELECT_DELETE_SKIN;
+					}
 					this.pen.refresh();
 					return;
 				}
@@ -732,7 +744,7 @@
 
 			PointUtil.deleteAllChild(this.fastViewLayer);
 			if (this.pen.penState == Pen.PEN_STATE_DOING) { //画笔状态是正在画：起点画完，末点未画
-				var ml:MapLine = new MapLine(p1, p2, VIEW_COLOR, VIEW_COLOR, VIEW_FILL_COLOR, this.scalePoint);
+				var ml:MapLine = new MapLine(p1, p2, VIEW_COLOR, VIEW_COLOR, VIEW_FILL_COLOR, this.scalePoint, pathSize);
 				ml.mouseEnabled = false;
 				ml.buttonMode = false;
 				ml.mouseChildren = false;
