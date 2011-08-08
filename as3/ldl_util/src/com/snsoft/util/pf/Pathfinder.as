@@ -49,6 +49,7 @@
 			var d:Vector.<int> = new Vector.<int>(nodeNum);
 			path = new Vector.<Node>(nodeNum);
 
+			//trace(nodeNum, borders.length,startNodeIndex);
 			dijkstra(g, d, path, startNodeIndex, nodeNum);
 			//printPath(d, path, startNodeIndex, nodeNum);
 		}

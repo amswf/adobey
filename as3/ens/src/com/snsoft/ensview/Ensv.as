@@ -83,8 +83,6 @@
 
 		private var mapView:MapView = null;
 
-		private var startNode:NetNode = null;
-
 		public function Ensv(stageWidth:int, stageHeight:int) {
 			super();
 			this.stageWidth = stageWidth;
@@ -270,12 +268,11 @@
 			mapView.addEventListener(MapView.AREA_MOUSE_OUT_EVENT, handlerAreaMouseOut);
 			mapView.addEventListener(MapView.AREA_MOUSE_OVER_EVENT, handlerAreaMouseOver);
 
-			mapPathManager = new MapPathManager(wsdo.sections);
-
 			var areaCode:String = mapView.currentPositionAreaView.mapAreaDO.areaId;
-			startNode = mapPathManager.findNodeByAreaName(areaCode);
 			currentPosition.x = mapView.currentPositionAreaView.center.x;
 			currentPosition.y = mapView.currentPositionAreaView.center.y;
+
+			mapPathManager = new MapPathManager(wsdo.sections, areaCode);
 
 			var maprect:Rectangle = mapView.getRect(boothsLayer);
 
@@ -346,28 +343,20 @@
 			var areaView:AreaNameView = mapView.currentAreaView;
 			var areaDO:MapAreaDO = areaView.mapAreaDO;
 
-			var n1:NetNode = startNode;
-			var n2:NetNode = mapPathManager.findNodeByAreaName(areaDO.areaId);
-			var points:Vector.<Point> = mapPathManager.findPath(n2, n1);
+			var points:Vector.<Point> = mapPathManager.findPath(areaDO.areaId);
 
 			SpriteUtil.deleteAllChild(pathLayer);
 			if (points != null) {
 				if (points.length >= 2) {
-					for (var i:int = points.length - 1; i >= 1; i--) {
+					for (var i:int = 0; i < points.length - 1; i++) {
 						var p1:Point = points[i];
-						var p2:Point = points[i - 1];
-
+						var p2:Point = points[i + 1];
 						var sp:Point = p2.subtract(p1);
-
 						var po:Polar = Polar.point(sp.x, sp.y);
-
 						var w:int = 30;
-
 						var len:int = 0;
 						while (len + 15 < po.len) {
-
 							var mc:MovieClip = SkinsUtil.createSkinByName("FootO");
-
 							var p:Point = Point.polar(len, po.angle);
 							var np:Point = p1.add(p);
 							mc.x = np.x;
