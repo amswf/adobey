@@ -1,8 +1,8 @@
 package com.snsoft.ensview {
 	import com.snsoft.mapview.dataObj.MapPathSection;
 	import com.snsoft.util.HashVector;
-	import com.snsoft.util.netPathfinding.NetNode;
-	import com.snsoft.util.netPathfinding.NetPathfinding;
+	import com.snsoft.util.pf.Border;
+	import com.snsoft.util.pf.Pathfinder;
 
 	import flash.geom.Point;
 
@@ -10,78 +10,84 @@ package com.snsoft.ensview {
 
 		private var sections:Vector.<MapPathSection>;
 
-		private var netPathfinding:NetPathfinding;
+		private var pathfinding:Pathfinder;
 
-		private var mapAreaNodeHV:HashVector = new HashVector();
+		private var pointHV:HashVector = new HashVector();
 
-		private var pointNodeHV:HashVector = new HashVector();
+		private var currentPositionAreaCode:String;
 
-		public function MapPathManager(sections:Vector.<MapPathSection>) {
+		private var sectionHV:HashVector = new HashVector();
+
+		public function MapPathManager(sections:Vector.<MapPathSection>, currentPositionAreaCode:String) {
 			this.sections = sections;
+			this.currentPositionAreaCode = currentPositionAreaCode;
 			init();
-		}
-
-		public function findNodeByAreaName(areaName:String):NetNode {
-			return mapAreaNodeHV.findByName(areaName) as NetNode;
-		}
-
-		public function findNodeByPosition(point:Point):NetNode {
-			return pointNodeHV.findByName(pointName(point)) as NetNode;
-		}
-
-		public function findPath(fromNode:NetNode, toNode:NetNode):Vector.<Point> {
-			return netPathfinding.finding(fromNode, toNode);
 		}
 
 		private function init():void {
 
 			var sections:Vector.<MapPathSection> = this.sections;
+			initPointHV();
+			initPathFinder();
+		}
 
-			var netNode:NetNode = null;
+		public function findPath(areaId:String):Vector.<Point> {
+			var points:Vector.<Point> = new Vector.<Point>();
+			var section:MapPathSection = sectionHV.findByName(areaId) as MapPathSection;
+			if (section != null) {
+				var eindex:int = pointHV.findIndexByName(pointName(section.to)) as int;
+				if (!isNaN(eindex)) {
+					var v:Vector.<int> = pathfinding.getPath(eindex);
+
+					if (v != null) {
+						for (var i:int = 0; i < v.length; i++) {
+							var index:int = v[i];
+							var point:Point = pointHV.findByIndex(index) as Point;
+							points.push(point);
+						}
+					}
+				}
+			}
+			return points;
+		}
+
+		private function initPathFinder():void {
+			var borders:Vector.<Border> = new Vector.<Border>();
+			var currentPoint:Point = null;
+			for (var i:int = 0; i < sections.length; i++) {
+				var section:MapPathSection = sections[i];
+				sectionHV.push(section, section.areaName);
+
+				var from:Point = section.from;
+				var fromIndex:int = pointHV.findIndexByName(pointName(from));
+
+				var to:Point = section.to;
+				var toIndex:int = pointHV.findIndexByName(pointName(to));
+
+				var value:int = Point.distance(from, to);
+				var border:Border = new Border(fromIndex, toIndex, value);
+				borders.push(border);
+
+				if (section.areaName == currentPositionAreaCode) {
+					currentPoint = section.to;
+				}
+			}
+
+			var startIndex:int = pointHV.findIndexByName(pointName(currentPoint));
+			pathfinding = new Pathfinder(borders, startIndex);
+
+		}
+
+		private function initPointHV():void {
 			for (var i:int = 0; i < sections.length; i++) {
 				var section:MapPathSection = sections[i];
 
-				var sign:Boolean = false;
-
 				var from:Point = section.from;
-				var fromName:String = pointName(from);
-				var fromNode:NetNode = pointNodeHV.findByName(fromName) as NetNode;
-				if (fromNode == null) {
-					fromNode = new NetNode(from.x, from.y);
-					pointNodeHV.push(fromNode, fromName);
-				}
-				else {
-					sign = true;
-				}
+				pointHV.push(from, pointName(from));
 
 				var to:Point = section.to;
-				var toName:String = pointName(to);
-				var toNode:NetNode = pointNodeHV.findByName(toName) as NetNode;
-				if (toNode == null) {
-					toNode = new NetNode(to.x, to.y);
-					pointNodeHV.push(toNode, toName);
-				}
-				else {
-					sign = true;
-				}
-
-				fromNode.addLinkNode(toNode);
-
-				var areaName:String = section.areaName;
-				if (areaName != null) {
-					mapAreaNodeHV.push(toNode, areaName);
-				}
-
-				if (i == 0) {
-					netNode = fromNode;
-				}
+				pointHV.push(to, pointName(to));
 			}
-
-			for (var j:int = 0; j < pointNodeHV.length; j++) {
-				var node:NetNode = pointNodeHV.findByIndex(j) as NetNode;
-			}
-
-			netPathfinding = new NetPathfinding(netNode);
 		}
 
 		private function pointName(point:Point):String {
