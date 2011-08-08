@@ -21,6 +21,9 @@
     <classEntry path="com.snsoft.util.netPathfinding.NetPathfinding"/>
     <classEntry path="com.snsoft.util.netPathfinding.Branch"/>
     <classEntry path="com.snsoft.util.netPathfinding.Path"/>
+    <classEntry path="com.snsoft.util.DistanceParent"/>
+    <classEntry path="com.snsoft.util.pf.Node"/>
+    <classEntry path="com.snsoft.util.pf.Border"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
