@@ -420,6 +420,7 @@
 				if (pf != null) {
 					p2 = pf;
 				}
+				pathManager.addPoint(p2);
 			}
 			else if (this.pen.penState == Pen.PEN_STATE_DOING) { //画笔状态是正在画：起点画完，末点未画
 
@@ -436,13 +437,14 @@
 						this.pen.penState = Pen.PEN_STATE_START;
 					}
 					pathManager.addSection(p1, p2, areaName);
+					pathManager.addPoint(p1);
+					pathManager.addPoint(p2);
 
 				}
 				else {
 					this.pen.penState = Pen.PEN_STATE_START;
 				}
 			}
-			pathManager.addPoint(p2);
 			this.suggest.startPoint = p2;
 		}
 
@@ -463,6 +465,9 @@
 				var ml:MapLine = e.currentTarget as MapLine;
 				pathLayer.removeChild(ml);
 				pathManager.removeSection(ml.startPoint, ml.endPoint);
+				pathManager.delPoint(ml.startPoint);
+				pathManager.delPoint(ml.endPoint);
+
 			}
 		}
 
@@ -708,7 +713,7 @@
 
 					pathLayer.mouseEnabled = true;
 					pathLayer.mouseChildren = true;
-					
+
 					if (selectType == SELECT_TYPE_DEF) {
 						this.pen.penSkin = Pen.PEN_SELECT_DEFAULT_SKIN;
 					}
