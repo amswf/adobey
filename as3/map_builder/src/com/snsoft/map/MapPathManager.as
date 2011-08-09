@@ -90,6 +90,10 @@ package com.snsoft.map {
 			this.hitTest.addPoint(point);
 		}
 
+		public function delPoint(point:Point):void {
+			this.hitTest.deletePoint(point);
+		}
+
 		public function get hitTestDvaluePoint():Point {
 			return _hitTestDvaluePoint;
 		}
