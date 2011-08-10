@@ -1,6 +1,6 @@
 ﻿package com.snsoft.ensview {
 	import ascb.util.StringUtilities;
-
+	
 	import com.snsoft.mapview.AreaNameView;
 	import com.snsoft.mapview.dataObj.MapAreaDO;
 	import com.snsoft.mapview.dataObj.WorkSpaceDO;
@@ -10,13 +10,12 @@
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.SpriteUtil;
 	import com.snsoft.util.complexEvent.CplxMouseDrag;
-	import com.snsoft.util.netPathfinding.NetNode;
 	import com.snsoft.util.rlm.ResLoadManager;
 	import com.snsoft.util.rlm.rs.RSTextFile;
 	import com.snsoft.util.xmldom.Node;
 	import com.snsoft.util.xmldom.NodeList;
 	import com.snsoft.util.xmldom.XMLDom;
-
+	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
