@@ -17,9 +17,7 @@
     <classEntry path="com.snsoft.util.wayfinding.WayUtil"/>
     <classEntry path="com.snsoft.util.wayfd.WayPoint"/>
     <classEntry path="com.snsoft.util.wayfd.WayUtil"/>
-    <classEntry path="com.snsoft.util.netPathfinding.NetNode"/>
     <classEntry path="com.snsoft.util.netPathfinding.NetPathfinding"/>
-    <classEntry path="com.snsoft.util.netPathfinding.Branch"/>
     <classEntry path="com.snsoft.util.netPathfinding.Path"/>
     <classEntry path="com.snsoft.util.DistanceParent"/>
     <classEntry path="com.snsoft.util.pf.Node"/>
