@@ -22,6 +22,8 @@
     <classEntry path="com.snsoft.util.DistanceParent"/>
     <classEntry path="com.snsoft.util.pf.Node"/>
     <classEntry path="com.snsoft.util.pf.Border"/>
+    <classEntry path="com.snsoft.util.pf.Dijkstra"/>
+    <classEntry path="com.snsoft.util.pf.Main"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
