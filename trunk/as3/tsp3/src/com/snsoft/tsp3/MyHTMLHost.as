@@ -23,6 +23,7 @@ package com.snsoft.tsp3 {
 			windowCreateOptions.x = NativeWindow.systemMaxSize.x;
 			windowCreateOptions.y = NativeWindow.systemMaxSize.y;
 			var ldr:HTMLLoader = super.createWindow(windowCreateOptions);
+			ldr.htmlHost = new MyHTMLHost(parent);
 			NativeApplication.nativeApplication.openedWindows[1].close();
 			parent.addChild(ldr);
 			ldr.width = 800;
