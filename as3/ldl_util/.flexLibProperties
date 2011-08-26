@@ -24,6 +24,7 @@
     <classEntry path="com.snsoft.util.pf.Border"/>
     <classEntry path="com.snsoft.util.pf.Dijkstra"/>
     <classEntry path="com.snsoft.util.pf.Main"/>
+    <classEntry path="com.snsoft.effect.betrachter3d.Betrachter3D"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
