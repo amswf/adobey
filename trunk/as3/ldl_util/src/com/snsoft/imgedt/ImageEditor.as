@@ -1,18 +1,19 @@
-package com.snsoft.imgedt{
+package com.snsoft.imgedt {
 	import com.adobe.crypto.MD5;
 	import com.adobe.images.JPGEncoder;
 	import com.snsoft.util.FileUtil;
 	import com.snsoft.util.GridImageUtil;
-	import com.snsoft.util.images.ImageLoader;
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.SpriteUtil;
 	import com.snsoft.util.complexEvent.CplxMouseDrag;
 	import com.snsoft.util.complexEvent.CplxMousePressing;
+	import com.snsoft.util.rlm.ResLoadManager;
+	import com.snsoft.util.rlm.rs.RSImages;
 	import com.snsoft.util.text.EffectText;
-	
+
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
-	
+
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
@@ -36,170 +37,170 @@ package com.snsoft.imgedt{
 	import flash.text.TextFormat;
 	import flash.utils.ByteArray;
 	import flash.utils.Timer;
-	
-	public class ImageEditor extends UIComponent{
-		
+
+	public class ImageEditor extends UIComponent {
+
 		public static const SAVE_COMPLETE:String = "SAVE_COMPLETE";
-		
+
 		private static var IMAGE_FRAME_SIZE_REVISE:Number = 4;
-		
+
 		private var rootUrl:String = "http://127.0.0.1:8080/image-upload/";
-		
-		private var uploadFile:String = "upload.jsp"; 
-		
+
+		private var uploadFile:String = "upload.jsp";
+
 		private var uploadBaseUrl:String = "admin/upload/";
-		
+
 		private var saveFile:String = "save.jsp";
-		
+
 		private var saveBaseUrl:String = "admin/save/";
-		
+
 		private var frameWidth:Number;
-		
+
 		private var frameHeight:Number;
-		
+
 		private var btnsLayer:Sprite = new Sprite();
-		
+
 		private var editorLayer:Sprite = new Sprite();
-		
+
 		private var waitEffectLayer:Sprite = new Sprite();
-		
+
 		private var msgLayer:Sprite = new Sprite();
-		
+
 		private var assistImagLayer:Sprite = new Sprite();
-		
+
 		private var assistImagDragLimitLayer:Sprite = new Sprite();
-		
+
 		private var assistImagRotationLayer:Sprite = new Sprite();
-		
+
 		private var assistMaskLayer:Sprite = new Sprite();
-		
+
 		private var assistTopGridLayer:Sprite = new Sprite();
-		
+
 		private var assistBackGridLayer:Sprite = new Sprite();
-		
+
 		private var mainImagLayer:Sprite = new Sprite();
-		
+
 		private var mainImagRotationLayer:Sprite = new Sprite();
-		
+
 		private var mainMaskLayer:Sprite = new Sprite();
-		
+
 		private var mainFrameLayer:Sprite = new Sprite();
-		
+
 		private var mainFrame:MovieClip;
-		
+
 		private var dragLimit:MovieClip;
-		
+
 		private var fileReference:FileReference = new FileReference();
-		
-		private var fileFilterArray:Array = new Array(new FileFilter("图片 (*.jpg,*.png)","*.jpg;*.png"));
-		
+
+		private var fileFilterArray:Array = new Array(new FileFilter("图片 (*.jpg,*.png)", "*.jpg;*.png"));
+
 		private var editorWidth:Number;
-		
+
 		private var editorHeight:Number;
-		
+
 		private var currentSoleMD5FileName:String;
-		
+
 		private var currentImageBmd:BitmapData;
-		
+
 		private var waiting:Boolean = false;
-		
+
 		//private var waitTimer:Timer = new Timer(15000,1);
-		
+
 		private var waitEffect:Sprite;
-		
+
 		private var msgmc:Sprite = new Sprite();
-		
+
 		private var msgTextField:TextField;
-		
-		private var msgTimer:Timer = new Timer(3000,1);
-		
+
+		private var msgTimer:Timer = new Timer(3000, 1);
+
 		private var _saveFileUrl:String;
-		
+
+		private var rsimgs:RSImages = new RSImages();
+
 		public function ImageEditor(frameWidth:Number = 124,
-									frameHeight:Number = 124,
-									rootUrl:String = null,
-									uploadFile:String = null,
-									uploadBaseUrl:String = null,
-									saveFile:String = null,
-									saveBaseUrl:String = null){
+			frameHeight:Number = 124,
+			rootUrl:String = null,
+			uploadFile:String = null,
+			uploadBaseUrl:String = null,
+			saveFile:String = null,
+			saveBaseUrl:String = null) {
 			super();
 			this.width = 320;
 			this.height = 320;
 			this.frameWidth = frameWidth;
 			this.frameHeight = frameHeight;
-			
-			if(rootUrl != null){
+
+			if (rootUrl != null) {
 				this.rootUrl = rootUrl;
 			}
-			if(uploadFile != null){
+			if (uploadFile != null) {
 				this.uploadFile = uploadFile;
 			}
-			if(uploadBaseUrl != null){
+			if (uploadBaseUrl != null) {
 				this.uploadBaseUrl = uploadBaseUrl;
 			}
-			if(saveFile != null){
+			if (saveFile != null) {
 				this.saveFile = saveFile;
 			}
-			if(saveBaseUrl != null){
+			if (saveBaseUrl != null) {
 				this.saveBaseUrl = saveBaseUrl;
 			}
 		}
-		
+
 		/**
-		 * 
-		 */			
+		 *
+		 */
 		private static var defaultStyles:Object = {
-			
-			rotationRightBtnDefaultSkin:"RotationRightBtn_defaultSkin",
-			rotationLeftBtnDefaultSkin:"RotationLeftBtn_defaultSkin",
-			saveBtnDefaultSkin:"SaveBtn_defaultSkin",
-			zoomInBtnDefaultSkin:"ZoomInBtn_defaultSkin",
-			zoomOutBtnDefaultSkin:"ZoomOutBtn_defaultSkin",
-			resetBtnDefaultSkin:"ResetBtn_defaultSkin",
-			openBtnDefaultSkin:"OpenBtn_defaultSkin",
-			imageFrameDefaultSkin:"ImageFrame_defaultSkin",
-			assistRect:"AssistRect",
-			waitBackDefaultSkin:"WaitBack_defaultSkin",
-			msgBackDefaultSkin:"MsgBack_defaultSkin"
-			
-			
-		};
-		
+
+				rotationRightBtnDefaultSkin: "RotationRightBtn_defaultSkin",
+				rotationLeftBtnDefaultSkin: "RotationLeftBtn_defaultSkin",
+				saveBtnDefaultSkin: "SaveBtn_defaultSkin",
+				zoomInBtnDefaultSkin: "ZoomInBtn_defaultSkin",
+				zoomOutBtnDefaultSkin: "ZoomOutBtn_defaultSkin",
+				resetBtnDefaultSkin: "ResetBtn_defaultSkin",
+				openBtnDefaultSkin: "OpenBtn_defaultSkin",
+				imageFrameDefaultSkin: "ImageFrame_defaultSkin",
+				assistRect: "AssistRect",
+				waitBackDefaultSkin: "WaitBack_defaultSkin",
+				msgBackDefaultSkin: "MsgBack_defaultSkin"
+
+
+			};
+
 		private static var rotationRightBtnDefaultSkin:String = "rotationRightBtnDefaultSkin";
-		
+
 		private static var rotationLeftBtnDefaultSkin:String = "rotationLeftBtnDefaultSkin";
-		
+
 		private static var saveBtnDefaultSkin:String = "saveBtnDefaultSkin";
-		
+
 		private static var zoomInBtnDefaultSkin:String = "zoomInBtnDefaultSkin";
-		
+
 		private static var zoomOutBtnDefaultSkin:String = "zoomOutBtnDefaultSkin";
-		
+
 		private static var resetBtnDefaultSkin:String = "resetBtnDefaultSkin";
-		
+
 		private static var openBtnDefaultSkin:String = "openBtnDefaultSkin";
-		
+
 		private static var imageFrameDefaultSkin:String = "imageFrameDefaultSkin";
-		
+
 		private static var assistRect:String = "assistRect";
-		
+
 		private static var waitBackDefaultSkin:String = "waitBackDefaultSkin";
-		
+
 		private static var msgBackDefaultSkin:String = "msgBackDefaultSkin";
-		
-		
-		
+
 		/**
-		 * 
+		 *
 		 * 绘制组件显示
-		 */		
-		override protected function draw():void{
-			
+		 */
+		override protected function draw():void {
+
 			var btnsHeight:Number = 35;
-			
+
 			editorWidth = this.width;
 			editorHeight = this.height - btnsHeight;
-			
+
 			this.addChild(editorLayer);
 			editorLayer.y = btnsHeight;
 			this.addChild(btnsLayer);
@@ -211,19 +212,19 @@ package com.snsoft.imgedt{
 			initWaitEffect();
 			initMsgEffect();
 			//waitTimer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerWaitTimerCmp);
-			msgTimer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerMsgTimerCmp);
+			msgTimer.addEventListener(TimerEvent.TIMER_COMPLETE, handlerMsgTimerCmp);
 		}
-		
-		private function handlerWaitTimerCmp(e:Event):void{
+
+		private function handlerWaitTimerCmp(e:Event):void {
 			setWaitEffect(false);
 			setMsg("链接超时！");
 		}
-		
-		private function handlerMsgTimerCmp(e:Event):void{
+
+		private function handlerMsgTimerCmp(e:Event):void {
 			msgmc.visible = false;
 		}
-		
-		private function initEditor():void{
+
+		private function initEditor():void {
 			editorLayer.addChild(assistBackGridLayer);
 			editorLayer.addChild(assistImagRotationLayer);
 			editorLayer.addChild(assistImagDragLimitLayer);
@@ -232,10 +233,10 @@ package com.snsoft.imgedt{
 			editorLayer.addChild(mainFrameLayer);
 			editorLayer.addChild(mainImagRotationLayer);
 			editorLayer.addChild(mainMaskLayer);
-			
+
 			assistImagRotationLayer.addChild(assistImagLayer);
 			mainImagRotationLayer.addChild(mainImagLayer);
-			
+
 			assistTopGridLayer.mouseEnabled = false;
 			assistTopGridLayer.mouseChildren = false;
 			mainFrameLayer.mouseEnabled = false;
@@ -244,61 +245,59 @@ package com.snsoft.imgedt{
 			mainImagRotationLayer.mouseChildren = false;
 			mainMaskLayer.mouseEnabled = false;
 			mainMaskLayer.mouseChildren = false;
-			
+
 			assistImagRotationLayer.x = editorWidth / 2;
 			assistImagRotationLayer.y = editorHeight / 2;
-			
+
 			assistImagDragLimitLayer.x = editorWidth / 2;
 			assistImagDragLimitLayer.y = editorHeight / 2;
 			assistImagDragLimitLayer.mouseEnabled = false;
 			assistImagDragLimitLayer.mouseChildren = false;
-			
+
 			//assistImagRotationLayer.rotation = 45;
-			
+
 			mainImagRotationLayer.x = assistImagRotationLayer.x;
 			mainImagRotationLayer.y = assistImagRotationLayer.y;
 			//mainImagRotationLayer.rotation = 45;
-			
+
 			mainImagLayer.mask = mainMaskLayer;
 			assistImagLayer.mask = assistMaskLayer;
-			
-			var assistBackBmd:BitmapData = GridImageUtil.drawShepherdSheck(editorWidth,editorHeight,8,8,0xffffffff,0xffbbbbbb);
+
+			var assistBackBmd:BitmapData = GridImageUtil.drawShepherdSheck(editorWidth, editorHeight, 8, 8, 0xffffffff, 0xffbbbbbb);
 			var assistBackbm:Bitmap = new Bitmap(assistBackBmd);
 			assistBackGridLayer.addChild(assistBackbm);
-			
-			var assistTopGridBmd:BitmapData = GridImageUtil.drawGridLine(editorWidth,editorHeight);
+
+			var assistTopGridBmd:BitmapData = GridImageUtil.drawGridLine(editorWidth, editorHeight);
 			var assistTopGridbm:Bitmap = new Bitmap(assistTopGridBmd);
-			
+
 			assistTopGridLayer.addChild(assistTopGridbm);
-			
+
 			var assistMask:MovieClip = getDisplayObjectInstance(getStyleValue(assistRect)) as MovieClip;
 			assistMask.width = editorWidth;
 			assistMask.height = editorHeight;
 			assistMaskLayer.addChild(assistMask);
-			
-			mainImagLayer.x = - mainImagRotationLayer.x;
-			mainImagLayer.y = - mainImagRotationLayer.y;
-			
-			assistImagLayer.x = - assistImagRotationLayer.x;
-			assistImagLayer.y = - assistImagRotationLayer.y;
-			
-			
-			
+
+			mainImagLayer.x = -mainImagRotationLayer.x;
+			mainImagLayer.y = -mainImagRotationLayer.y;
+
+			assistImagLayer.x = -assistImagRotationLayer.x;
+			assistImagLayer.y = -assistImagRotationLayer.y;
+
 			dragLimit = getDisplayObjectInstance(getStyleValue(assistRect)) as MovieClip;
-			setDragLimit(dragLimit,1);
+			setDragLimit(dragLimit, 1);
 			assistImagDragLimitLayer.addChild(dragLimit);
-			
+
 			var cplxd:CplxMouseDrag = new CplxMouseDrag();
-			cplxd.addEvents(assistImagLayer,dragLimit);
-			cplxd.addEventListener(CplxMouseDrag.DRAG_MOVE_EVENT,handlerDragMove);
-			
+			cplxd.addEvents(assistImagLayer, dragLimit);
+			cplxd.addEventListener(CplxMouseDrag.DRAG_MOVE_EVENT, handlerDragMove);
+
 			mainFrame = getDisplayObjectInstance(getStyleValue(imageFrameDefaultSkin)) as MovieClip;
 			mainFrame.width = frameWidth + IMAGE_FRAME_SIZE_REVISE;
 			mainFrame.height = frameHeight + IMAGE_FRAME_SIZE_REVISE;
 			mainFrame.x = (editorWidth - frameWidth) / 2;
 			mainFrame.y = (editorHeight - frameHeight) / 2;
 			mainFrameLayer.addChild(mainFrame);
-			
+
 			var mainMask:MovieClip = getDisplayObjectInstance(getStyleValue(assistRect)) as MovieClip;
 			mainMask.x = mainFrame.x;
 			mainMask.y = mainFrame.y;
@@ -306,27 +305,27 @@ package com.snsoft.imgedt{
 			mainMask.height = frameWidth;
 			mainMaskLayer.addChild(mainMask);
 		}
-		
-		private function handlerDragMove(e:Event):void{
+
+		private function handlerDragMove(e:Event):void {
 			var cplxd:CplxMouseDrag = e.currentTarget as CplxMouseDrag;
 			var rect:Rectangle = cplxd.getDragRect();
 			mainImagLayer.x = rect.x;
 			mainImagLayer.y = rect.y;
 		}
-		
-		private function initFileReference():void{
-			fileReference.addEventListener(Event.SELECT,handlerFileReferenceSelect);
-			fileReference.addEventListener(Event.COMPLETE,handlerFileReferenceCmp);
-			fileReference.addEventListener(IOErrorEvent.IO_ERROR,handlerIOError);
+
+		private function initFileReference():void {
+			fileReference.addEventListener(Event.SELECT, handlerFileReferenceSelect);
+			fileReference.addEventListener(Event.COMPLETE, handlerFileReferenceCmp);
+			fileReference.addEventListener(IOErrorEvent.IO_ERROR, handlerIOError);
 		}
-		
-		private function initMsgEffect():void{
-			
+
+		private function initMsgEffect():void {
+
 			var msgBack:MovieClip = getDisplayObjectInstance(getStyleValue(msgBackDefaultSkin)) as MovieClip;
 			msgBack.width = this.width;
 			msgBack.height = 25;
 			msgmc.addChild(msgBack);
-			msgTextField = EffectText.creatShadowTextField("",new TextFormat());
+			msgTextField = EffectText.creatShadowTextField("", new TextFormat());
 			msgTextField.width = this.width;
 			msgTextField.height = 25;
 			msgTextField.x = this.width / 2;
@@ -334,43 +333,43 @@ package com.snsoft.imgedt{
 			msgTextField.autoSize = TextFieldAutoSize.CENTER;
 			msgmc.addChild(msgTextField);
 			msgmc.x = 0;
-			msgmc.y = this.height - msgBack.height; 
+			msgmc.y = this.height - msgBack.height;
 			msgmc.visible = false;
 			msgLayer.addChild(msgmc);
 		}
-		
-		public function setMsg(msg:String):void{
+
+		public function setMsg(msg:String):void {
 			msgTextField.text = msg;
-			var tft:TextFormat = new TextFormat(null,14,0x000000);
+			var tft:TextFormat = new TextFormat(null, 14, 0x000000);
 			msgTextField.setTextFormat(tft);
 			msgmc.visible = true;
 			msgTimer.stop();
 			msgTimer.start();
 		}
-		
-		private function initWaitEffect():void{
+
+		private function initWaitEffect():void {
 			waitEffect = new Sprite();
 			var waitBack:MovieClip = getDisplayObjectInstance(getStyleValue(waitBackDefaultSkin)) as MovieClip;
 			waitBack.width = this.width;
 			waitBack.height = this.height;
 			waitEffect.addChild(waitBack);
-			
+
 			var loading:MovieClip = SkinsUtil.createSkinByName("Loading");
 			waitEffect.addChild(loading);
-			loading.x = editorWidth / 2 + editorLayer.x ;
+			loading.x = editorWidth / 2 + editorLayer.x;
 			loading.y = editorHeight / 2 + editorLayer.y;
-			
+
 			waitEffect.visible = false;
 			waitEffectLayer.addChild(waitEffect);
 		}
-		
-		private function setWaitEffect(b:Boolean):void{
+
+		private function setWaitEffect(b:Boolean):void {
 			//waitTimer.start();
 			waiting = b;
 			waitEffect.visible = b;
 		}
-		
-		private function initBtns():void{
+
+		private function initBtns():void {
 			var openBtn:MovieClip = getDisplayObjectInstance(getStyleValue(openBtnDefaultSkin)) as MovieClip;
 			openBtn.buttonMode = true;
 			var saveBtn:MovieClip = getDisplayObjectInstance(getStyleValue(saveBtnDefaultSkin)) as MovieClip;
@@ -385,139 +384,139 @@ package com.snsoft.imgedt{
 			rotationRightBtn.buttonMode = true;
 			var resetBtn:MovieClip = getDisplayObjectInstance(getStyleValue(resetBtnDefaultSkin)) as MovieClip;
 			resetBtn.buttonMode = true;
-			
+
 			btnsLayer.addChild(openBtn);
 			btnsLayer.addChild(saveBtn);
-			setBtnPlace(btnsLayer,saveBtn,10);
+			setBtnPlace(btnsLayer, saveBtn, 10);
 			btnsLayer.addChild(zoomInBtn);
-			setBtnPlace(btnsLayer,zoomInBtn,10);
+			setBtnPlace(btnsLayer, zoomInBtn, 10);
 			btnsLayer.addChild(zoomOutBtn);
-			setBtnPlace(btnsLayer,zoomOutBtn,10);
+			setBtnPlace(btnsLayer, zoomOutBtn, 10);
 			btnsLayer.addChild(rotationLeftBtn);
-			setBtnPlace(btnsLayer,rotationLeftBtn,10);
+			setBtnPlace(btnsLayer, rotationLeftBtn, 10);
 			btnsLayer.addChild(rotationRightBtn);
-			setBtnPlace(btnsLayer,rotationRightBtn,10);
+			setBtnPlace(btnsLayer, rotationRightBtn, 10);
 			btnsLayer.addChild(resetBtn);
-			setBtnPlace(btnsLayer,resetBtn,10);
-			
-			openBtn.addEventListener(MouseEvent.CLICK,handlerOpenBtnClick);
-			saveBtn.addEventListener(MouseEvent.CLICK,handlerSaveBtnClick);
-			 
-			resetBtn.addEventListener(MouseEvent.CLICK,handlerRotationResetBtnClick);
-			
+			setBtnPlace(btnsLayer, resetBtn, 10);
+
+			openBtn.addEventListener(MouseEvent.CLICK, handlerOpenBtnClick);
+			saveBtn.addEventListener(MouseEvent.CLICK, handlerSaveBtnClick);
+
+			resetBtn.addEventListener(MouseEvent.CLICK, handlerRotationResetBtnClick);
+
 			var cmprl:CplxMousePressing = new CplxMousePressing(rotationLeftBtn);
 			var cmprr:CplxMousePressing = new CplxMousePressing(rotationRightBtn);
 			var cmpzi:CplxMousePressing = new CplxMousePressing(zoomInBtn);
 			var cmpzo:CplxMousePressing = new CplxMousePressing(zoomOutBtn);
-			
-			cmprl.addEventListener(MouseEvent.CLICK,handlerRotationLeftBtnClick);
-			cmprr.addEventListener(MouseEvent.CLICK,handlerRotationRightBtnClick);
-			cmpzi.addEventListener(MouseEvent.CLICK,handlerZoomInBtnClick);
-			cmpzo.addEventListener(MouseEvent.CLICK,handlerZoomOutBtnClick);
-			
-			cmprl.addEventListener(CplxMousePressing.MOUSEEVENT_PRESSING,handlerRotationLeftBtnPressing);
-			cmprr.addEventListener(CplxMousePressing.MOUSEEVENT_PRESSING,handlerRotationRightBtnPressing);
-			cmpzi.addEventListener(CplxMousePressing.MOUSEEVENT_PRESSING,handlerZoomInBtnPressing);
-			cmpzo.addEventListener(CplxMousePressing.MOUSEEVENT_PRESSING,handlerZoomOutBtnPressing);
-			
+
+			cmprl.addEventListener(MouseEvent.CLICK, handlerRotationLeftBtnClick);
+			cmprr.addEventListener(MouseEvent.CLICK, handlerRotationRightBtnClick);
+			cmpzi.addEventListener(MouseEvent.CLICK, handlerZoomInBtnClick);
+			cmpzo.addEventListener(MouseEvent.CLICK, handlerZoomOutBtnClick);
+
+			cmprl.addEventListener(CplxMousePressing.MOUSEEVENT_PRESSING, handlerRotationLeftBtnPressing);
+			cmprr.addEventListener(CplxMousePressing.MOUSEEVENT_PRESSING, handlerRotationRightBtnPressing);
+			cmpzi.addEventListener(CplxMousePressing.MOUSEEVENT_PRESSING, handlerZoomInBtnPressing);
+			cmpzo.addEventListener(CplxMousePressing.MOUSEEVENT_PRESSING, handlerZoomOutBtnPressing);
+
 		}
-		
-		private function handlerZoomInBtnPressing(e:Event):void{
+
+		private function handlerZoomInBtnPressing(e:Event):void {
 			imageZoom(0.01);
 		}
-		
-		private function handlerZoomOutBtnPressing(e:Event):void{
+
+		private function handlerZoomOutBtnPressing(e:Event):void {
 			imageZoom(-0.01);
 		}
-		
-		private function handlerRotationLeftBtnPressing(e:Event):void{
+
+		private function handlerRotationLeftBtnPressing(e:Event):void {
 			imageRotation(-0.5);
 		}
-		
-		private function handlerRotationRightBtnPressing(e:Event):void{
+
+		private function handlerRotationRightBtnPressing(e:Event):void {
 			imageRotation(0.5);
 		}
-		
-		private function handlerZoomInBtnClick(e:Event):void{
+
+		private function handlerZoomInBtnClick(e:Event):void {
 			imageZoom(0.1);
 		}
-		
-		private function handlerZoomOutBtnClick(e:Event):void{
+
+		private function handlerZoomOutBtnClick(e:Event):void {
 			imageZoom(-0.1);
 		}
-		
-		private function handlerRotationLeftBtnClick(e:Event):void{
+
+		private function handlerRotationLeftBtnClick(e:Event):void {
 			imageRotation(-0.5);
 		}
-		
-		private function handlerRotationRightBtnClick(e:Event):void{
+
+		private function handlerRotationRightBtnClick(e:Event):void {
 			imageRotation(0.5);
 		}
-		
-		private function handlerRotationResetBtnClick(e:Event):void{
+
+		private function handlerRotationResetBtnClick(e:Event):void {
 			resetImage();
 		}
-		
-		private function resetImage():void{
+
+		private function resetImage():void {
 			mainImagRotationLayer.rotation = 0;
 			mainImagRotationLayer.scaleX = 1;
 			mainImagRotationLayer.scaleY = 1;
-			
+
 			assistImagRotationLayer.rotation = 0;
 			assistImagRotationLayer.scaleX = 1;
 			assistImagRotationLayer.scaleY = 1;
-			
+
 			mainImagLayer.x = -mainImagRotationLayer.x;
 			mainImagLayer.y = -mainImagRotationLayer.y;
-			
+
 			assistImagLayer.x = -assistImagRotationLayer.x;
 			assistImagLayer.y = -assistImagRotationLayer.y;
-			
-			setDragLimit(dragLimit,1);
+
+			setDragLimit(dragLimit, 1);
 		}
-		
-		private function imageRotation(rotation:Number):void{
+
+		private function imageRotation(rotation:Number):void {
 			mainImagRotationLayer.rotation += rotation;
 			assistImagRotationLayer.rotation += rotation;
 		}
-		
-		private function imageZoom(scale:Number):void{
-			
-			if(mainImagRotationLayer.scaleX < 10){
+
+		private function imageZoom(scale:Number):void {
+
+			if (mainImagRotationLayer.scaleX < 10) {
 				var p:Number = 100;
 				scale = scale + 1;
 				mainImagRotationLayer.scaleX *= scale;
 				mainImagRotationLayer.scaleY *= scale;
-				
+
 				assistImagRotationLayer.scaleX *= scale;
 				assistImagRotationLayer.scaleY *= scale;
-				
-				setDragLimit(dragLimit,1 / mainImagRotationLayer.scaleX);
+
+				setDragLimit(dragLimit, 1 / mainImagRotationLayer.scaleX);
 			}
 		}
-		
-		private function setDragLimit(dragLimit:Sprite,scale:Number):void{
+
+		private function setDragLimit(dragLimit:Sprite, scale:Number):void {
 			var dragWidth:Number = frameWidth * scale;
 			var dragHeight:Number = frameHeight * scale;
-			dragLimit.x = - dragWidth / 2;
-			dragLimit.y = - dragWidth / 2;
+			dragLimit.x = -dragWidth / 2;
+			dragLimit.y = -dragWidth / 2;
 			dragLimit.width = dragWidth;
 			dragLimit.height = dragHeight;
 		}
-		
-		private function handlerSaveBtnClick(e:Event):void{
-			if(!waiting){
-				if(mainImagLayer.numChildren > 0){
+
+		private function handlerSaveBtnClick(e:Event):void {
+			if (!waiting) {
+				if (mainImagLayer.numChildren > 0) {
 					setWaitEffect(true);
 					var rect:Rectangle = new Rectangle();
 					rect.x = assistImagDragLimitLayer.x - assistImagLayer.x;
 					rect.y = assistImagDragLimitLayer.y - assistImagLayer.y;
 					rect.width = frameWidth;
 					rect.height = frameHeight;
-					var ilc:BitmapData = new BitmapData(frameWidth,frameHeight,true,0x00ffffffff);
+					var ilc:BitmapData = new BitmapData(frameWidth, frameHeight, true, 0x00ffffffff);
 					var matrix:Matrix = new Matrix();
-					matrix.translate(-mainFrame.x ,-mainFrame.y );
-					ilc.draw(editorLayer,matrix);
+					matrix.translate(-mainFrame.x, -mainFrame.y);
+					ilc.draw(editorLayer, matrix);
 					var jpge:JPGEncoder = new JPGEncoder(100);
 					var bytes:ByteArray = jpge.encode(ilc);
 					var url:String = rootUrl + saveFile + "?fileName=" + currentSoleMD5FileName;
@@ -526,8 +525,8 @@ package com.snsoft.imgedt{
 					request.method = URLRequestMethod.POST;
 					request.contentType = "application/octet-stream";
 					var loader:URLLoader = new URLLoader();
-					loader.addEventListener(Event.COMPLETE,handlerSaveImageCmp);
-					loader.addEventListener(IOErrorEvent.IO_ERROR,handlerIOError);
+					loader.addEventListener(Event.COMPLETE, handlerSaveImageCmp);
+					loader.addEventListener(IOErrorEvent.IO_ERROR, handlerIOError);
 					loader.load(request);
 				}
 				else {
@@ -535,20 +534,20 @@ package com.snsoft.imgedt{
 				}
 			}
 		}
-		
-		private function handlerSaveImageCmp(e:Event):void{
+
+		private function handlerSaveImageCmp(e:Event):void {
 			setMsg("图片保存成功！");
 			this.dispatchEvent(new Event(SAVE_COMPLETE));
 			this.saveFileUrl = rootUrl + saveBaseUrl + currentSoleMD5FileName;
 			setWaitEffect(false);
 		}
-		
-		private function handlerOpenBtnClick(e:Event):void{
+
+		private function handlerOpenBtnClick(e:Event):void {
 			fileReference.browse(fileFilterArray);
 		}
-		
-		private function handlerFileReferenceSelect(e:Event):void{
-			if(!waiting){
+
+		private function handlerFileReferenceSelect(e:Event):void {
+			if (!waiting) {
 				setWaitEffect(true);
 				var url:String = rootUrl + uploadFile;
 				var req:URLRequest = new URLRequest(url);
@@ -559,70 +558,73 @@ package com.snsoft.imgedt{
 				fileReference.upload(req);
 			}
 		}
-		
-		private function handlerIOError(e:Event):void{
+
+		private function handlerIOError(e:Event):void {
 			setWaitEffect(false);
 			setMsg("链接服务器出错！");
 		}
-		
-		private function handlerFileReferenceCmp(e:Event):void{
+
+		private function handlerFileReferenceCmp(e:Event):void {
 			var url:String = rootUrl + uploadBaseUrl + currentSoleMD5FileName;
-			var il:ImageLoader = new ImageLoader();
-			il.loadImage(url);
-			il.addEventListener(Event.COMPLETE,handlerLoadUploadImgCmp);
-			il.addEventListener(IOErrorEvent.IO_ERROR,handlerIOError);
+
+			rsimgs.addResUrl(url);
+
+			var rlm:ResLoadManager = new ResLoadManager();
+			rlm.addEventListener(Event.COMPLETE, handlerLoadUploadImgCmp);
+			rlm.addEventListener(IOErrorEvent.IO_ERROR, handlerIOError);
+			rlm.load();
 		}
-		
-		private function handlerLoadUploadImgCmp(e:Event):void{
+
+		private function handlerLoadUploadImgCmp(e:Event):void {
 			resetImage();
-			var il:ImageLoader = e.currentTarget as ImageLoader;
-			currentImageBmd = il.bitmapData.clone();
-			var mainbm:Bitmap = new Bitmap(il.bitmapData,"auto",true);
+
+			var url:String = rootUrl + uploadBaseUrl + currentSoleMD5FileName;
+
+			var bmd:BitmapData = rsimgs.getImageByUrl(url);
+
+			var mainbm:Bitmap = new Bitmap(bmd, "auto", true);
 			SpriteUtil.deleteAllChild(mainImagLayer);
 			mainImagLayer.addChild(mainbm);
-			
-			var assistbm:Bitmap = new Bitmap(il.bitmapData,"auto",true);
+
+			var assistbm:Bitmap = new Bitmap(bmd, "auto", true);
 			SpriteUtil.deleteAllChild(assistImagLayer);
 			assistImagLayer.addChild(assistbm);
 			setWaitEffect(false);
 			setMsg("图片上传成功！");
 		}
-		
-		public function setBtnPlace(baseObj:DisplayObject,obj:DisplayObject,space:Number):void{
+
+		public function setBtnPlace(baseObj:DisplayObject, obj:DisplayObject, space:Number):void {
 			var rect:Rectangle = baseObj.getRect(this);
 			obj.x = rect.right + space;
 			obj.y = 0;
 		}
-		
+
 		/**
-		 * 
-		 * @return 
-		 * 
-		 */		
-		public static function getStyleDefinition():Object { 
+		 *
+		 * @return
+		 *
+		 */
+		public static function getStyleDefinition():Object {
 			return UIComponent.mergeStyles(UIComponent.getStyleDefinition(), defaultStyles);
-		}	
-		
+		}
+
 		/**
-		 *  
-		 * 
-		 */				
-		override protected function configUI():void{			
-			this.invalidate(InvalidationType.ALL,true);
-			this.invalidate(InvalidationType.SIZE,true);
+		 *
+		 *
+		 */
+		override protected function configUI():void {
+			this.invalidate(InvalidationType.ALL, true);
+			this.invalidate(InvalidationType.SIZE, true);
 			super.configUI();
 		}
-		
-		public function get saveFileUrl():String
-		{
+
+		public function get saveFileUrl():String {
 			return _saveFileUrl;
 		}
-		
-		public function set saveFileUrl(value:String):void
-		{
+
+		public function set saveFileUrl(value:String):void {
 			_saveFileUrl = value;
 		}
-		
-		
+
 	}
 }
