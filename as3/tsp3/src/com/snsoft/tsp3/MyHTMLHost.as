@@ -15,7 +15,6 @@ package com.snsoft.tsp3 {
 			super(defaultBehaviors);
 		}
 
-		
 		override public function createWindow(windowCreateOptions:HTMLWindowCreateOptions):HTMLLoader {
 			trace("createWindow");
 			windowCreateOptions.height = 0;

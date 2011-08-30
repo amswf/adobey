@@ -1,7 +1,7 @@
 ﻿package com.snsoft.tsp3 {
 	import com.snsoft.util.rlm.ResLoadManager;
 	import com.snsoft.util.rlm.rs.RSImages;
-	
+
 	import fl.transitions.Tween;
 	import fl.transitions.easing.Regular;
 	
