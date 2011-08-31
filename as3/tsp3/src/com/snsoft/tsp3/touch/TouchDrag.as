@@ -49,15 +49,13 @@ package com.snsoft.tsp3.touch {
 
 		private var sensitivity:int = 0;
 
-		private var dragMin:int;
+		private var isClick:Boolean = false;
 
-		public function TouchDrag(dragObj:Sprite, stage:Stage, size:int, dragType:String = "horizontal", sensitivity:int = 5, dragMin:int = 0) {
+		public function TouchDrag(dragObj:Sprite, stage:Stage, size:int, dragType:String = "horizontal", sensitivity:int = 5) {
 			this.dragObj = dragObj;
 			this.stage = stage;
 			this.dragType = dragType;
 			this.sensitivity = sensitivity;
-
-			this.dragMin = dragMin;
 
 			if (dragType == DRAG_TYPE_VERTICAL) {
 				dragBounds.height = size;
@@ -81,12 +79,8 @@ package com.snsoft.tsp3.touch {
 		private function handlerClickObjMouseUp(e:Event):void {
 			var s:Sprite = e.currentTarget as Sprite;
 			if (s == cDownObj) {
-				_clickObj = cDownObj;
+				isClick = true;
 			}
-			else {
-				_clickObj = null;
-			}
-			cDownObj = null;
 		}
 
 		private function init():void {
@@ -95,6 +89,9 @@ package com.snsoft.tsp3.touch {
 		}
 
 		private function handlerDragObjMouseDown(e:Event):void {
+			isClick = false;
+			this._clickObj = null;
+
 			ddp.x = dragObj.x;
 			ddp.y = dragObj.y;
 
@@ -128,16 +125,15 @@ package com.snsoft.tsp3.touch {
 				end = ddp.x;
 			}
 
-			if (sign && _clickObj != null) {
+			if (sign && isClick) {
+				this._clickObj = cDownObj;
 				this.dispatchEvent(new Event(MouseEvent.CLICK));
 				var twn:Tween = new Tween(dragObj, property, Regular.easeOut, start, end, 0.3, true);
 				twn.start();
 			}
-			else if (Math.abs(start - end) < dragMin) {
-				var twn2:Tween = new Tween(dragObj, property, Regular.easeOut, start, end, 0.3, true);
-				twn2.start();
-			}
+			else {
 
+			}
 			dragObj.stopDrag();
 		}
 
