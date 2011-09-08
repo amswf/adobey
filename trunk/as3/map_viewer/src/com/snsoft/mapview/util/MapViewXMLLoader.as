@@ -111,27 +111,28 @@ package com.snsoft.mapview.util {
 			wsdo.mapAreaDOs = madoha;
 
 			var pathsNode:Node = mapNode.getNodeListFirstNode("sections");
-			var pathList:NodeList = pathsNode.getNodeList("section");
+			if (pathsNode != null) {
+				var pathList:NodeList = pathsNode.getNodeList("section");
+				var sections:Vector.<MapPathSection> = new Vector.<MapPathSection>();
+				if (pathList != null) {
+					for (var k:int = 0; k < pathList.length(); k++) {
+						var pathNode:Node = pathList.getNode(k);
+						var p1:Point = new Point();
+						p1.x = parseInt(pathNode.getAttributeByName("from_x"));
+						p1.y = parseInt(pathNode.getAttributeByName("from_y"));
 
-			var sections:Vector.<MapPathSection> = new Vector.<MapPathSection>();
-			if (pathList != null) {
-				for (var k:int = 0; k < pathList.length(); k++) {
-					var pathNode:Node = pathList.getNode(k);
-					var p1:Point = new Point();
-					p1.x = parseInt(pathNode.getAttributeByName("from_x"));
-					p1.y = parseInt(pathNode.getAttributeByName("from_y"));
+						var p2:Point = new Point();
+						p2.x = parseInt(pathNode.getAttributeByName("to_x"));
+						p2.y = parseInt(pathNode.getAttributeByName("to_y"));
 
-					var p2:Point = new Point();
-					p2.x = parseInt(pathNode.getAttributeByName("to_x"));
-					p2.y = parseInt(pathNode.getAttributeByName("to_y"));
-
-					var areaName:String = pathNode.getAttributeByName("areaName");
-					var section:MapPathSection = new MapPathSection(p1, p2);
-					section.areaName = areaName;
-					sections.push(section);
+						var areaName:String = pathNode.getAttributeByName("areaName");
+						var section:MapPathSection = new MapPathSection(p1, p2);
+						section.areaName = areaName;
+						sections.push(section);
+					}
 				}
+				wsdo.sections = sections;
 			}
-			wsdo.sections = sections;
 			return wsdo;
 		}
 	}
