@@ -1,4 +1,5 @@
 package com.snsoft.ensview {
+	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.SpriteUtil;
 	import com.snsoft.util.XMLFormat;
 	import com.snsoft.util.rlm.ResLoadManager;
@@ -32,6 +33,10 @@ package com.snsoft.ensview {
 
 		private var backLayer:Sprite = new Sprite();
 
+		private var mainTextLayer:Sprite = new Sprite();
+
+		private var introTextLayer:Sprite = new Sprite();
+
 		private var mainback:Sprite;
 
 		private var winBoader:int = 10;
@@ -43,6 +48,8 @@ package com.snsoft.ensview {
 		private var downloadRstf:RSTextFile;
 
 		private var ensvStart:EnsvStart;
+
+		private var visibleLayer:Sprite;
 
 		public function EnsvAir() {
 			super();
@@ -69,27 +76,36 @@ package com.snsoft.ensview {
 			this.addChild(backLayer);
 			this.addChild(startLayer);
 			this.addChild(ensLayer);
+			this.addChild(mainTextLayer);
+			this.addChild(introTextLayer);
+
+			ensLayer.visible = false;
+			mainTextLayer.visible = false;
+			introTextLayer.visible = false;
 
 			stage.addEventListener(Event.FULLSCREEN, handlerFullScreen);
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 
+			visibleLayer = mainTextLayer;
 			initBack();
 			initStart();
 		}
 
 		private function handlerFullScreen(e:Event):void {
 			if (stage.displayState == StageDisplayState.FULL_SCREEN_INTERACTIVE) {
-				ensLayer.visible = true;
+				visibleLayer.visible = true;
 				mainback.visible = true;
 				startLayer.visible = false;
 				mainback.width = stage.stageWidth;
 				mainback.height = stage.stageHeight;
+
+				initText();
 				initEns();
 			}
 			else {
 				mainback.visible = false;
-				ensLayer.visible = false;
+				visibleLayer.visible = false;
 				startLayer.visible = true;
 			}
 		}
@@ -159,10 +175,70 @@ package com.snsoft.ensview {
 			win.close();
 		}
 
+		private function initText():void {
+			SpriteUtil.deleteAllChild(mainTextLayer);
+			var mainBack:MovieClip = SkinsUtil.createSkinByName("GreenBack");
+			mainBack.width = stage.stageWidth;
+			mainBack.height = stage.stageHeight;
+			mainTextLayer.addChild(mainBack);
+			var tm:TextMain = new TextMain();
+			mainTextLayer.addChild(tm);
+			tm.x = (stage.stageWidth - tm.width) / 2;
+			tm.y = (stage.stageHeight - tm.height) / 2;
+			tm.addEventListener(TextMain.EVENT_BTN, handlerTextMainBtnClick);
+
+			SpriteUtil.deleteAllChild(introTextLayer);
+			var introBack:MovieClip = SkinsUtil.createSkinByName("GreenBack");
+			introBack.width = stage.stageWidth;
+			introBack.height = stage.stageHeight;
+			introTextLayer.addChild(introBack);
+			var ti:TextIntroduction = new TextIntroduction();
+			introTextLayer.addChild(ti);
+			ti.x = (stage.stageWidth - ti.width) / 2;
+			ti.y = (stage.stageHeight - ti.height) / 2;
+			ti.addEventListener(TextIntroduction.EVENT_BTN, handlerTextIntroBtnClick);
+		}
+
+		private function handlerTextMainBtnClick(e:Event):void {
+
+			var tm:TextMain = e.currentTarget as TextMain;
+
+			visibleLayer.visible = false;
+			if (tm.getBtnType() == TextMain.BTN_TYPE_INTRO) {
+				visibleLayer = introTextLayer;
+			}
+			else if (tm.getBtnType() == TextMain.BTN_TYPE_MAP) {
+				visibleLayer = ensLayer;
+			}
+			visibleLayer.visible = true;
+		}
+
+		private function handlerTextIntroBtnClick(e:Event):void {
+			var ti:TextIntroduction = e.currentTarget as TextIntroduction;
+			visibleLayer.visible = false;
+			if (ti.getBtnType() == TextIntroduction.BTN_TYPE_BACK) {
+				visibleLayer = mainTextLayer;
+			}
+			else if (ti.getBtnType() == TextIntroduction.BTN_TYPE_MAP) {
+				visibleLayer = ensLayer;
+			}
+			visibleLayer.visible = true;
+		}
+
 		private function initEns():void {
 			SpriteUtil.deleteAllChild(ensLayer);
 			var ensv:Ensv = new Ensv(stage.stageWidth, stage.stageHeight);
 			ensLayer.addChild(ensv);
+			ensv.addEventListener(Ensv.EVENT_BTN, handlerBackBtnClick);
+		}
+
+		private function handlerBackBtnClick(e:Event):void {
+			var ensv:Ensv = e.currentTarget as Ensv;
+			visibleLayer.visible = false;
+			if (ensv.getBtnType() == Ensv.BTN_TYPE_BACK) {
+				visibleLayer = mainTextLayer;
+			}
+			visibleLayer.visible = true;
 		}
 	}
 }

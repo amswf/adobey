@@ -1,6 +1,6 @@
 ﻿package com.snsoft.ensview {
 	import ascb.util.StringUtilities;
-	
+
 	import com.snsoft.mapview.AreaNameView;
 	import com.snsoft.mapview.dataObj.MapAreaDO;
 	import com.snsoft.mapview.dataObj.WorkSpaceDO;
@@ -15,7 +15,7 @@
 	import com.snsoft.util.xmldom.Node;
 	import com.snsoft.util.xmldom.NodeList;
 	import com.snsoft.util.xmldom.XMLDom;
-	
+
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -25,6 +25,12 @@
 	import flash.geom.Rectangle;
 
 	public class Ensv extends MovieClip {
+
+		public static const EVENT_BTN:String = "EVENT_BTN";
+
+		public static const BTN_TYPE_BACK:String = "back";
+
+		private var btnType:String;
 
 		private var boader:int = 10;
 
@@ -68,6 +74,8 @@
 
 		private var boothMsgLayer:Sprite = new Sprite();
 
+		private var btnsLayer:Sprite = new Sprite();
+
 		private var currentPosition:Point = new Point();
 
 		private var stageWidth:int = 0;
@@ -108,9 +116,15 @@
 			searchListLayer.x = stageWidth - 290;
 			searchListLayer.y = 120;
 
+			this.addChild(btnsLayer);
+
 			this.addChild(boothMsgLayer);
 
 			wayLayer.addChild(pathLayer);
+		}
+
+		public function getBtnType():String {
+			return btnType;
 		}
 
 		private function handlerEnterFrame(e:Event):void {
@@ -119,8 +133,20 @@
 		}
 
 		private function init():void {
+			var backBtn:MovieClip = SkinsUtil.createSkinByName("BackBtn");
+			backBtn.x = stage.stageWidth - backBtn.width;
+			backBtn.y = 0;
+			backBtn.buttonMode = true;
+			btnsLayer.addChild(backBtn);
+			backBtn.addEventListener(MouseEvent.CLICK, handlerBackBtnClick);
+
 			//stage.addEventListener(Event.RESIZE, handlerStageResize);
 			loadXML();
+		}
+
+		private function handlerBackBtnClick(e:Event):void {
+			this.btnType = BTN_TYPE_BACK;
+			this.dispatchEvent(new Event(EVENT_BTN));
 		}
 
 		private function loadXML():void {
