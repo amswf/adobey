@@ -33,16 +33,12 @@ package com.snsoft.ensview {
 			dDownLoadBtn = this.getChildByName("downLoadBtn") as MovieClip;
 			dStartBtn = this.getChildByName("startBtn") as MovieClip;
 			dCloseBtn = this.getChildByName("closeBtn") as MovieClip;
-			
+
 			dDownLoadBtn.buttonMode = true;
 			dStartBtn.buttonMode = true;
 			dCloseBtn.buttonMode = true;
-			
-//			dMsgTfd = this.getChildByName("msgTfd") as TextField;
-//			var tft:TextFormat = new TextFormat("黑体", 16);
-//			dDownLoadBtn.setStyle("textFormat", tft);
-//			dStartBtn.setStyle("textFormat", tft);
-//			dCloseBtn.setStyle("textFormat", tft);
+
+			dMsgTfd = this.getChildByName("msgTfd") as TextField;
 
 			dDownLoadBtn.addEventListener(MouseEvent.CLICK, handlerDownloadMouseClick);
 			dStartBtn.addEventListener(MouseEvent.CLICK, handlerStartMouseClick);
