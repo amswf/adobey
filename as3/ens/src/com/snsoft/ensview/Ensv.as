@@ -134,7 +134,7 @@
 
 		private function init():void {
 			var backBtn:MovieClip = SkinsUtil.createSkinByName("BackBtn");
-			backBtn.x = stage.stageWidth - backBtn.width;
+			backBtn.x = stage.stageWidth - backBtn.width-50;
 			backBtn.y = 0;
 			backBtn.buttonMode = true;
 			btnsLayer.addChild(backBtn);
