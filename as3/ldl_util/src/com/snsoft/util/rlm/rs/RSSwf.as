@@ -1,6 +1,6 @@
 package com.snsoft.util.rlm.rs {
 	import com.snsoft.util.HashVector;
-	
+
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
@@ -16,21 +16,29 @@ package com.snsoft.util.rlm.rs {
 	public class RSSwf extends ResSet {
 
 		private var swfHV:HashVector = new HashVector();
-		
+
+		private var infoHV:HashVector = new HashVector();
+
 		private var _swfList:Vector.<MovieClip> = new Vector.<MovieClip>();
+
+		private var _infoList:Vector.<LoaderInfo> = new Vector.<LoaderInfo>();
 
 		public function RSSwf() {
 
 		}
 
 		/**
-		 * 取出图片
+		 * 取出swf
 		 * @param url
 		 * @return
 		 *
 		 */
-		public function getImageByUrl(url:String):MovieClip {
+		public function getSwfByUrl(url:String):MovieClip {
 			return this.swfHV.findByName(url) as MovieClip;
+		}
+
+		public function getInfoByUrl(url:String):LoaderInfo {
+			return this.infoHV.findByName(url) as LoaderInfo;
 		}
 
 		override protected function callBack():void {
@@ -42,10 +50,12 @@ package com.snsoft.util.rlm.rs {
 						var li:LoaderInfo = this.resDataList[i] as LoaderInfo;
 						if (li != null) {
 							var mc:MovieClip = li.content as MovieClip;
-							if (mc != null ) {
+							if (mc != null) {
 								mc.gotoAndStop(1);
 								swfHV.push(mc, name);
 								swfList.push(mc);
+								infoHV.push(li, name);
+								infoList.push(li);
 							}
 						}
 					}
@@ -53,9 +63,13 @@ package com.snsoft.util.rlm.rs {
 			}
 		}
 
-		public function get swfList():Vector.<MovieClip>
-		{
+		public function get swfList():Vector.<MovieClip> {
 			return _swfList;
 		}
+
+		public function get infoList():Vector.<LoaderInfo> {
+			return _infoList;
+		}
+
 	}
 }
