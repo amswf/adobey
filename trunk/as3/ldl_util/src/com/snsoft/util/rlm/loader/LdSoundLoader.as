@@ -14,13 +14,13 @@
 	 * @author Administrator
 	 *
 	 */
-	public class ResSoundLoader extends Sound {
+	public class LdSoundLoader extends Sound {
 
 		private var _url:String;
 
 		private var isReceiveBytesTotal:Boolean = false;
 
-		public function ResSoundLoader() {
+		public function LdSoundLoader() {
 			super();
 			this.addEventListener(ProgressEvent.PROGRESS, handlerProgress);
 		}
@@ -45,7 +45,7 @@
 			if (!isReceiveBytesTotal && this.bytesTotal > 0) {
 				isReceiveBytesTotal = true;
 				this.removeEventListener(ProgressEvent.PROGRESS, handlerProgress);
-				this.dispatchEvent(new Event(ResLoaderEvent.IS_RECEIVE_BYTES_TOTAL));
+				this.dispatchEvent(new Event(LdLoaderEvent.IS_RECEIVE_BYTES_TOTAL));
 			}
 		}
 
