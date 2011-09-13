@@ -134,7 +134,7 @@
 
 		private function init():void {
 			var backBtn:MovieClip = SkinsUtil.createSkinByName("BackBtn");
-			backBtn.x = stage.stageWidth - backBtn.width-50;
+			backBtn.x = stage.stageWidth - backBtn.width - 50;
 			backBtn.y = 0;
 			backBtn.buttonMode = true;
 			btnsLayer.addChild(backBtn);
@@ -471,16 +471,16 @@
 			viewLayer.x = stageWidth - viewLayer.width;
 			viewLayer.y = stageHeight - viewLayer.height;
 
-			dragLayer.x = 0;
-			dragLayer.y = 0;
+			dragLayer.x = (stageWidth - dragLayer.width) / 2;
+			dragLayer.y = (stageHeight - dragLayer.height) / 2;
 
 			if (dragLimit != null) {
 				dragLimit.width = stageWidth;
 				dragLimit.height = stageHeight;
 			}
 			if (viewDrag != null) {
-				viewDrag.x = 0;
-				viewDrag.y = 0;
+				viewDrag.x = (dragLimit.width - viewDrag.width) / 2;
+				viewDrag.y = (dragLimit.height - viewDrag.height) / 2;
 			}
 		}
 
