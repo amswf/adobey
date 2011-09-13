@@ -10,13 +10,13 @@ package com.snsoft.util.rlm.loader{
 	 * @author Administrator
 	 * 
 	 */	
-	public class ResURLLoader extends URLLoader{
+	public class LdURLLoader extends URLLoader{
 		
 		private var _url:String;
 		
 		private var isReceiveBytesTotal:Boolean = false;
 		
-		public function ResURLLoader(request:URLRequest = null){
+		public function LdURLLoader(request:URLRequest = null){
 			super(request);
 			this.addEventListener(ProgressEvent.PROGRESS,handlerProgress);
 		}
@@ -30,7 +30,7 @@ package com.snsoft.util.rlm.loader{
 			if(!isReceiveBytesTotal && this.bytesTotal > 0 ){
 				isReceiveBytesTotal = true;
 				this.removeEventListener(ProgressEvent.PROGRESS,handlerProgress);
-				this.dispatchEvent(new Event(ResLoaderEvent.IS_RECEIVE_BYTES_TOTAL));
+				this.dispatchEvent(new Event(LdLoaderEvent.IS_RECEIVE_BYTES_TOTAL));
 			}
 		}
 

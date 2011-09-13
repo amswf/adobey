@@ -5,7 +5,7 @@ package com.snsoft.util.rlm.loader {
 	 * @author Administrator
 	 *
 	 */
-	public class ResLoaderType {
+	public class LdLoaderType {
 
 		/**
 		 * SWF 文件
@@ -27,7 +27,7 @@ package com.snsoft.util.rlm.loader {
 		 */
 		public static const SOUND:String = "sound";
 
-		public function ResLoaderType() {
+		public function LdLoaderType() {
 
 		}
 
@@ -53,18 +53,18 @@ package com.snsoft.util.rlm.loader {
 		 *
 		 */
 		public static function getType(url:String):String {
-			var type:String = ResLoaderType.URL;
+			var type:String = LdLoaderType.URL;
 			var dotIndex:int = url.lastIndexOf(".");
 			if (dotIndex > 0) {
 				var eName:String = url.substring(dotIndex + 1, url.length);
 				if (eName.toLocaleLowerCase() == "swf") {
-					type = ResLoaderType.SWF;
+					type = LdLoaderType.SWF;
 				}
 				else if (eName.toLocaleLowerCase() == "png" || eName.toLocaleLowerCase() == "jpg" || eName.toLocaleLowerCase() == "gif") {
-					type = ResLoaderType.IMAGE;
+					type = LdLoaderType.IMAGE;
 				}
 				else if (eName.toLocaleLowerCase() == "mp3") {
-					type = ResLoaderType.SOUND;
+					type = LdLoaderType.SOUND;
 				}
 			}
 			return type;

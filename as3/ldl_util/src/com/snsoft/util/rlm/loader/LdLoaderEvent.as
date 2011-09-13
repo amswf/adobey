@@ -6,14 +6,14 @@ package com.snsoft.util.rlm.loader{
 	 * @author Administrator
 	 * 
 	 */	
-	public class ResLoaderEvent extends Event{
+	public class LdLoaderEvent extends Event{
 		
 		/**
 		 * 获得了总字节数 
 		 */		
 		public static const IS_RECEIVE_BYTES_TOTAL:String = "isReceiveBytesTotal";
 		
-		public function ResLoaderEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false)
+		public function LdLoaderEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false)
 		{
 			super(type, bubbles, cancelable);
 		}

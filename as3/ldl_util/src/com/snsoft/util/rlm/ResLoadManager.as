@@ -1,10 +1,10 @@
 ﻿package com.snsoft.util.rlm {
 	import com.snsoft.util.HashVector;
-	import com.snsoft.util.rlm.loader.ResLoader;
-	import com.snsoft.util.rlm.loader.ResLoaderEvent;
-	import com.snsoft.util.rlm.loader.ResLoaderType;
-	import com.snsoft.util.rlm.loader.ResSoundLoader;
-	import com.snsoft.util.rlm.loader.ResURLLoader;
+	import com.snsoft.util.rlm.loader.LdLoader;
+	import com.snsoft.util.rlm.loader.LdLoaderEvent;
+	import com.snsoft.util.rlm.loader.LdLoaderType;
+	import com.snsoft.util.rlm.loader.LdSoundLoader;
+	import com.snsoft.util.rlm.loader.LdURLLoader;
 	import com.snsoft.util.rlm.rs.ResSet;
 	
 	import flash.display.LoaderInfo;
@@ -115,7 +115,7 @@
 		public function addResUrl(url:String, resLoadType:String = null):void {
 			if (!isLoading && url != null) {
 				if (resLoadType == null) {
-					resLoadType = ResLoaderType.getType(url);
+					resLoadType = LdLoaderType.getType(url);
 				}
 				this.urlList.push(url);
 				this.loadTypeList.push(resLoadType);
@@ -191,26 +191,26 @@
 				var url:String = this.urlList[i];
 				var loadType:String = this.loadTypeList[i];
 				if (url != null && url.length > 0) {
-					if (loadType == ResLoaderType.SWF || loadType == ResLoaderType.IMAGE) {
-						var rl:ResLoader = new ResLoader;
-						rl.addEventListener(ResLoaderEvent.IS_RECEIVE_BYTES_TOTAL, handlerIsReceiveBytes);
+					if (loadType == LdLoaderType.SWF || loadType == LdLoaderType.IMAGE) {
+						var rl:LdLoader = new LdLoader;
+						rl.addEventListener(LdLoaderEvent.IS_RECEIVE_BYTES_TOTAL, handlerIsReceiveBytes);
 						var rlinfo:LoaderInfo = rl.contentLoaderInfo;
 						rlinfo.addEventListener(Event.COMPLETE, handlerLoadComplete);
 						rlinfo.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadIoError);
 						rlinfo.addEventListener(ProgressEvent.PROGRESS, handlerProgress);
 						rl.load(new URLRequest(url));
 					}
-					else if (loadType == ResLoaderType.URL) {
-						var rul:ResURLLoader = new ResURLLoader;
-						rul.addEventListener(ResLoaderEvent.IS_RECEIVE_BYTES_TOTAL, handlerIsReceiveBytes);
+					else if (loadType == LdLoaderType.URL) {
+						var rul:LdURLLoader = new LdURLLoader;
+						rul.addEventListener(LdLoaderEvent.IS_RECEIVE_BYTES_TOTAL, handlerIsReceiveBytes);
 						rul.addEventListener(Event.COMPLETE, handlerLoadComplete);
 						rul.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadIoError);
 						rul.addEventListener(ProgressEvent.PROGRESS, handlerProgress);
 						rul.load(new URLRequest(url));
 					}
-					else if (loadType == ResLoaderType.SOUND) {
-						var rsl:ResSoundLoader = new ResSoundLoader();
-						rsl.addEventListener(ResLoaderEvent.IS_RECEIVE_BYTES_TOTAL, handlerIsReceiveBytes);
+					else if (loadType == LdLoaderType.SOUND) {
+						var rsl:LdSoundLoader = new LdSoundLoader();
+						rsl.addEventListener(LdLoaderEvent.IS_RECEIVE_BYTES_TOTAL, handlerIsReceiveBytes);
 						rsl.addEventListener(Event.COMPLETE, handlerLoadComplete);
 						rsl.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadIoError);
 						rsl.addEventListener(ProgressEvent.PROGRESS, handlerProgress);
@@ -233,16 +233,16 @@
 			this.loadCmpCount++;
 			if (e.currentTarget is LoaderInfo) {
 				var li:LoaderInfo = e.currentTarget as LoaderInfo;
-				var rl:ResLoader = li.loader as ResLoader;
+				var rl:LdLoader = li.loader as LdLoader;
 				this.resDataList.push(li, rl.url);
 			}
-			else if (e.currentTarget is ResURLLoader) {
-				var rul:ResURLLoader = e.currentTarget as ResURLLoader;
+			else if (e.currentTarget is LdURLLoader) {
+				var rul:LdURLLoader = e.currentTarget as LdURLLoader;
 				bytesLoaded = rul.bytesLoaded;
 				this.resDataList.push(rul.data, rul.url);
 			}
-			else if (e.currentTarget is ResSoundLoader) {
-				var rsl:ResSoundLoader = e.currentTarget as ResSoundLoader;
+			else if (e.currentTarget is LdSoundLoader) {
+				var rsl:LdSoundLoader = e.currentTarget as LdSoundLoader;
 				this.resDataList.push(rsl, rsl.url);
 			}
 			checkLoadsCmp();
@@ -306,16 +306,16 @@
 		 */
 		private function getLoaderBytesTotal(e:Event):uint {
 			var bytesTotal:uint = 0;
-			if (e.currentTarget is ResLoader) {
-				var rl:ResLoader = e.currentTarget as ResLoader;
+			if (e.currentTarget is LdLoader) {
+				var rl:LdLoader = e.currentTarget as LdLoader;
 				bytesTotal = rl.contentLoaderInfo.bytesTotal;
 			}
-			else if (e.currentTarget is ResURLLoader) {
-				var rul:ResURLLoader = e.currentTarget as ResURLLoader;
+			else if (e.currentTarget is LdURLLoader) {
+				var rul:LdURLLoader = e.currentTarget as LdURLLoader;
 				bytesTotal = rul.bytesTotal;
 			}
-			else if (e.currentTarget is ResSoundLoader) {
-				var rsl:ResSoundLoader = e.currentTarget as ResSoundLoader;
+			else if (e.currentTarget is LdSoundLoader) {
+				var rsl:LdSoundLoader = e.currentTarget as LdSoundLoader;
 				bytesTotal = rsl.bytesTotal;
 			}
 			return bytesTotal;
@@ -333,12 +333,12 @@
 				var li:LoaderInfo = e.currentTarget as LoaderInfo;
 				bytesLoaded = li.bytesLoaded;
 			}
-			else if (e.currentTarget is ResURLLoader) {
-				var rul:ResURLLoader = e.currentTarget as ResURLLoader;
+			else if (e.currentTarget is LdURLLoader) {
+				var rul:LdURLLoader = e.currentTarget as LdURLLoader;
 				bytesLoaded = rul.bytesLoaded;
 			}
-			else if (e.currentTarget is ResSoundLoader) {
-				var rsl:ResSoundLoader = e.currentTarget as ResSoundLoader;
+			else if (e.currentTarget is LdSoundLoader) {
+				var rsl:LdSoundLoader = e.currentTarget as LdSoundLoader;
 				bytesLoaded = rsl.bytesLoaded;
 			}
 			return bytesLoaded;
@@ -348,15 +348,15 @@
 			var url:String = null;
 			if (e.currentTarget is LoaderInfo) {
 				var li:LoaderInfo = e.currentTarget as LoaderInfo;
-				var rl:ResLoader = li.loader as ResLoader;
+				var rl:LdLoader = li.loader as LdLoader;
 				url = rl.url;
 			}
-			else if (e.currentTarget is ResURLLoader) {
-				var rul:ResURLLoader = e.currentTarget as ResURLLoader;
+			else if (e.currentTarget is LdURLLoader) {
+				var rul:LdURLLoader = e.currentTarget as LdURLLoader;
 				url = rul.url;
 			}
-			else if (e.currentTarget is ResSoundLoader) {
-				var rsl:ResSoundLoader = e.currentTarget as ResSoundLoader;
+			else if (e.currentTarget is LdSoundLoader) {
+				var rsl:LdSoundLoader = e.currentTarget as LdSoundLoader;
 				url = rsl.url;
 			}
 			return url;
