@@ -3,7 +3,7 @@
 	import com.snsoft.fmc.NSPublishType;
 	import com.snsoft.fmc.test.vi.Seat;
 	import com.snsoft.util.ComboBoxUtil;
-	import com.snsoft.util.xmldom.XMLFastConfig;
+	import com.snsoft.util.xmldom.XMLStaticConfig;
 	
 	import fl.controls.Button;
 	import fl.controls.ComboBox;
@@ -83,7 +83,7 @@
 		}
 		
 		public function loadConfig():void{
-			XMLFastConfig.instance("config.xml",handlerXMLFastConfigComplete);
+			XMLStaticConfig.instance("config.xml",handlerXMLFastConfigComplete);
 		}
 		
 		public function handlerXMLFastConfigComplete(e:Event):void{
@@ -91,7 +91,7 @@
 		}
 		
 		public function initComBox():void{
-			rtmp = XMLFastConfig.getConfig("url");
+			rtmp = XMLStaticConfig.getConfig("url");
 			
 			userNameTfd = new TextField();
 			userNameTfd.type = TextFieldType.INPUT;

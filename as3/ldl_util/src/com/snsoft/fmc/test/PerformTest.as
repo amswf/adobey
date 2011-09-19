@@ -8,7 +8,7 @@ package com.snsoft.fmc.test{
 	import com.snsoft.util.ComboBoxUtil;
 	import com.snsoft.util.SpriteUtil;
 	import com.snsoft.util.UUID;
-	import com.snsoft.util.xmldom.XMLFastConfig;
+	import com.snsoft.util.xmldom.XMLStaticConfig;
 	
 	import fl.controls.Button;
 	import fl.controls.CheckBox;
@@ -109,7 +109,7 @@ package com.snsoft.fmc.test{
 			clearMsgBtn.addEventListener(MouseEvent.CLICK,handlerClearMsgBtnClick);
 			
 			//加载配置
-			XMLFastConfig.instance("config.xml",handlerXMLFastConfigComplete);
+			XMLStaticConfig.instance("config.xml",handlerXMLFastConfigComplete);
 			
 		}
 		
@@ -121,7 +121,7 @@ package com.snsoft.fmc.test{
 		 */		
 		public function handlerXMLFastConfigComplete(e:Event):void{
 			//初始化参数
-			rtmpUrl = XMLFastConfig.getConfig(CFG_URL);
+			rtmpUrl = XMLStaticConfig.getConfig(CFG_URL);
 		}
 		
 		/**

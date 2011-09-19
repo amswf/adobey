@@ -4,7 +4,7 @@ package com.snsoft.ensview {
 	import com.snsoft.util.XMLFormat;
 	import com.snsoft.util.rlm.ResLoadManager;
 	import com.snsoft.util.rlm.rs.RSTextFile;
-	import com.snsoft.util.xmldom.XMLFastConfig;
+	import com.snsoft.util.xmldom.XMLStaticConfig;
 
 	import fl.containers.ScrollPane;
 	import fl.controls.ScrollPolicy;
@@ -59,7 +59,7 @@ package com.snsoft.ensview {
 		}
 
 		private function initConfig():void {
-			XMLFastConfig.instance("config.xml", handlerConfigLoadCmp);
+			XMLStaticConfig.instance("config.xml", handlerConfigLoadCmp);
 		}
 
 		private function handlerConfigLoadCmp(e:Event):void {
@@ -135,7 +135,7 @@ package com.snsoft.ensview {
 
 		private function downloadFile():void {
 			var res:ResLoadManager = new ResLoadManager();
-			boothDownloadUrl = XMLFastConfig.getConfig("downloadBoothMsgUrl");
+			boothDownloadUrl = XMLStaticConfig.getConfig("downloadBoothMsgUrl");
 			downloadRstf = new RSTextFile();
 			downloadRstf.addResUrl(boothDownloadUrl);
 			res.addResSet(downloadRstf);

@@ -4,7 +4,7 @@ package com.snsoft.mapviewpro {
 	import com.snsoft.mapview.util.MapViewDraw;
 	import com.snsoft.util.HashVector;
 	import com.snsoft.util.PointUtil;
-	import com.snsoft.util.xmldom.XMLFastConfig;
+	import com.snsoft.util.xmldom.XMLStaticConfig;
 
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
@@ -227,7 +227,7 @@ package com.snsoft.mapviewpro {
 			var av:AreaNameView = e.currentTarget as AreaNameView;
 			var url:String = av.mapAreaDO.areaUrl;
 
-			var urlTarget:String = XMLFastConfig.getConfig("urlTarget");
+			var urlTarget:String = XMLStaticConfig.getConfig("urlTarget");
 			if (urlTarget == null || urlTarget.length == 0) {
 				urlTarget = "_self";
 			}

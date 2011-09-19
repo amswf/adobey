@@ -8,7 +8,7 @@
 	import com.snsoft.util.xmldom.Node;
 	import com.snsoft.util.xmldom.NodeList;
 	import com.snsoft.util.xmldom.XMLDom;
-	import com.snsoft.util.xmldom.XMLFastConfig;
+	import com.snsoft.util.xmldom.XMLStaticConfig;
 	
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
@@ -159,7 +159,7 @@
 			this.addChild(this.viewDrag);
 			
 			configXmlUrl = "viewcfg.xml";			
-			XMLFastConfig.instance(configXmlUrl,handlerConfigLoadComplete);
+			XMLStaticConfig.instance(configXmlUrl,handlerConfigLoadComplete);
 		}
 		
 		private function handlerConfigLoadIOError(e:Event):void{
@@ -183,7 +183,7 @@
 		 * 
 		 */		
 		private function parseConfig():void{
-			var clickType:String = XMLFastConfig.getConfig("clickType");
+			var clickType:String = XMLStaticConfig.getConfig("clickType");
 			Config.setAreaMouseEventType(clickType);
 		}
 		
