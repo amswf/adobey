@@ -6,7 +6,7 @@ package com.snsoft.fmc.test{
 	import com.snsoft.util.ComboBoxUtil;
 	import com.snsoft.util.HashVector;
 	import com.snsoft.util.di.DependencyInjection;
-	import com.snsoft.util.xmldom.XMLFastConfig;
+	import com.snsoft.util.xmldom.XMLStaticConfig;
 	
 	import fl.controls.Button;
 	import fl.controls.ComboBox;
@@ -186,7 +186,7 @@ package com.snsoft.fmc.test{
 		 * 
 		 */		
 		private function loadConfig():void{
-			XMLFastConfig.instance("config.xml",handlerXMLFastConfigComplete);
+			XMLStaticConfig.instance("config.xml",handlerXMLFastConfigComplete);
 			
 		}
 		
@@ -197,9 +197,9 @@ package com.snsoft.fmc.test{
 		 */		
 		public function handlerXMLFastConfigComplete(e:Event):void{
 			//初始化参数
-			rtmpUrl = XMLFastConfig.getConfig(CFG_URL);
+			rtmpUrl = XMLStaticConfig.getConfig(CFG_URL);
 			//选择用户端类型
-			var userType:String = XMLFastConfig.getConfig(CFG_USERTYPE);
+			var userType:String = XMLStaticConfig.getConfig(CFG_USERTYPE);
 			
 			if(userType == "one" || userType == "two"){
 				this.userType = userType;
@@ -273,7 +273,7 @@ package com.snsoft.fmc.test{
 				this.removeChild(tspBtn);
 			}
 			
-			var userName:String = XMLFastConfig.getConfig(CFG_USERNAME);
+			var userName:String = XMLStaticConfig.getConfig(CFG_USERNAME);
 			//用户名
 			userNameTfd = new TextField();
 			userNameTfd.type = TextFieldType.INPUT;
@@ -301,7 +301,7 @@ package com.snsoft.fmc.test{
 			roomComBox.x = 300;
 			roomComBox.y = 340;
 			
-			var userType:String = XMLFastConfig.getConfig(CFG_USERTYPE);
+			var userType:String = XMLStaticConfig.getConfig(CFG_USERTYPE);
 			if(userType == "one"){
 				roomComBox.visible =false;
 			}

@@ -7,7 +7,7 @@ package com.snsoft.ensview {
 	import com.snsoft.mapview.util.MapViewDraw;
 	import com.snsoft.util.HashVector;
 	import com.snsoft.util.PointUtil;
-	import com.snsoft.util.xmldom.XMLFastConfig;
+	import com.snsoft.util.xmldom.XMLStaticConfig;
 
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;

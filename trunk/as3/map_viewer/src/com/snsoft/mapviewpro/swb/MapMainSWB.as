@@ -6,7 +6,7 @@ package com.snsoft.mapviewpro.swb{
 	import com.snsoft.util.HashVector;
 	import com.snsoft.util.PointUtil;
 	import com.snsoft.util.SkinsUtil;
-	import com.snsoft.util.xmldom.XMLFastConfig;
+	import com.snsoft.util.xmldom.XMLStaticConfig;
 	
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
@@ -130,7 +130,7 @@ package com.snsoft.mapviewpro.swb{
 			waitTimer.addEventListener(TimerEvent.TIMER_COMPLETE,handlerTimerCmp);
 			
 			configXmlUrl = "viewcfg.xml";			
-			XMLFastConfig.instance(configXmlUrl,handlerConfigLoadComplete);
+			XMLStaticConfig.instance(configXmlUrl,handlerConfigLoadComplete);
 		}
 		
 		
@@ -255,9 +255,9 @@ package com.snsoft.mapviewpro.swb{
 		 * 
 		 */		
 		private function parseConfig():void{
-			var clickType:String = XMLFastConfig.getConfig("clickType");
+			var clickType:String = XMLStaticConfig.getConfig("clickType");
 			Config.setAreaMouseEventType(clickType);
-			var window:String = XMLFastConfig.getConfig("window");
+			var window:String = XMLStaticConfig.getConfig("window");
 			if(window != null && window.length > 0){
 				WINDOW = window;
 			}

@@ -5,7 +5,7 @@ package com.snsoft.mapviewpro{
 	import com.snsoft.mapview.util.MapViewXMLLoader;
 	import com.snsoft.util.HashVector;
 	import com.snsoft.util.PointUtil;
-	import com.snsoft.util.xmldom.XMLFastConfig;
+	import com.snsoft.util.xmldom.XMLStaticConfig;
 	
 	import fl.core.InvalidationType;
 	import fl.core.UIComponent;
@@ -149,7 +149,7 @@ package com.snsoft.mapviewpro{
 			this.oldMapLayer.mask = this.oldMapMaskLayer;
 			
 			configXmlUrl = "viewcfg.xml";			
-			XMLFastConfig.instance(configXmlUrl,handlerConfigLoadComplete);
+			XMLStaticConfig.instance(configXmlUrl,handlerConfigLoadComplete);
 		}
 		
 		private function handlerConfigLoadIOError(e:Event):void{
@@ -173,7 +173,7 @@ package com.snsoft.mapviewpro{
 		 * 
 		 */		
 		private function parseConfig():void{
-			var clickType:String = XMLFastConfig.getConfig("clickType");
+			var clickType:String = XMLStaticConfig.getConfig("clickType");
 			Config.setAreaMouseEventType(clickType);
 		}
 		
