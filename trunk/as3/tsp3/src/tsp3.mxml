@@ -7,16 +7,18 @@
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
-			import com.snsoft.tsp3.test.Skins;
-			import com.snsoft.tsp3.test.Test;
+			import com.snsoft.tsp3.PluginLoader;
 			import com.snsoft.tsp3.Tsp;
 			import com.snsoft.tsp3.plugin.desktop.Desktop;
+			import com.snsoft.tsp3.test.Skins;
+			import com.snsoft.tsp3.test.Test;
 
 			public function init():void {
 				Test;
 				Skins;
 				Tsp;
 				Desktop;
+				PluginLoader;
 			}
 		]]>
 	</fx:Script>
