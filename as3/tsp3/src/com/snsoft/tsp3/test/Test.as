@@ -1,4 +1,4 @@
-package com.snsoft.tsp3 {
+package com.snsoft.tsp3.test {
 	import com.snsoft.tsp3.compatible.CompatibleAir;
 	import com.snsoft.tsp3.compatible.CompatibleIE;
 	import com.snsoft.tsp3.compatible.ICompatible;
