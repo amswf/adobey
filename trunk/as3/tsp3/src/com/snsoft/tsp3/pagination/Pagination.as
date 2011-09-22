@@ -1,8 +1,13 @@
 package com.snsoft.tsp3.pagination {
 	import com.snsoft.util.SkinsUtil;
+	import com.snsoft.util.SpriteUtil;
 
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
+
+	[Event(name = "click", type = "flash.events.MouseEvent")]
 
 	/**
 	 * 分页标签
@@ -16,10 +21,7 @@ package com.snsoft.tsp3.pagination {
 		 */
 		private var pageBtnNum:int;
 
-		/**
-		 *页号
-		 */
-		private var pageNum:int
+		private var _pageNum:int
 
 		/**
 		 * 总页数
@@ -55,6 +57,12 @@ package com.snsoft.tsp3.pagination {
 
 		private var middleBtns:Vector.<PaginationBtn>;
 
+		private var back:MovieClip;
+
+		private var firstSep:MovieClip;
+
+		private var lastSep:MovieClip;
+
 		/**
 		 *
 		 * @param pageBtnNum 显示的页号数量
@@ -71,9 +79,9 @@ package com.snsoft.tsp3.pagination {
 		 * 绘制组件显示
 		 */
 		private function init():void {
-			var back:MovieClip =  SkinsUtil.createSkinByName("PaginationBack_defSkin");
+			back = SkinsUtil.createSkinByName("PaginationBack_defSkin");
 			this.addChild(back);
-			var pbtn:PaginationBtn = new PaginationBtn("");
+			var pbtn:PaginationBtn = new PaginationBtn();
 			w = pbtn.width + boader;
 			back.width = (pageBtnNum + more * 2) * w + boader;
 
@@ -83,21 +91,25 @@ package com.snsoft.tsp3.pagination {
 			firstBtn.visible = false;
 			firstBtn.x = boader;
 			firstBtn.y = boader;
+			firstBtn.btnNum = 1;
 			this.addChild(firstBtn);
+			firstBtn.addEventListener(MouseEvent.CLICK, handlerBtnClick);
 
 			lastBtn = new PaginationBtn(String(pageCount));
 			lastBtn.visible = false;
 			lastBtn.x = back.width - w;
 			lastBtn.y = boader;
+			lastBtn.btnNum = pageCount;
 			this.addChild(lastBtn);
+			lastBtn.addEventListener(MouseEvent.CLICK, handlerBtnClick);
 
-			var firstSep:MovieClip = SkinsUtil.createSkinByName("PaginationSep_defSkin");
+			firstSep = SkinsUtil.createSkinByName("PaginationSep_defSkin");
 			firstSep.visible = false;
 			firstSep.x = boader + w;
 			firstSep.y = boader;
 			this.addChild(firstSep);
 
-			var lastSep:MovieClip = SkinsUtil.createSkinByName("PaginationSep_defSkin");
+			lastSep = SkinsUtil.createSkinByName("PaginationSep_defSkin");
 			lastSep.visible = false;
 			lastSep.x = back.width - w - w;
 			lastSep.y = boader;
@@ -116,16 +128,29 @@ package com.snsoft.tsp3.pagination {
 			pageNum = Math.max(1, pageNum);
 			pageNum = Math.min(pageCount, pageNum);
 
+			lastBtn.setStateText(String(pageCount));
+			lastBtn.btnNum = pageCount;
+
 			if (pageCount != this.pageCount) {
+				SpriteUtil.deleteAllChild(middleBtnsLayer);
+				if (middleBtns != null) {
+					for (var j:int = 0; j < middleBtns.length; j++) {
+						var btnd:PaginationBtn = middleBtns[j];
+						btnd.removeEventListener(MouseEvent.CLICK, handlerBtnClick);
+					}
+				}
+
 				middleBtns = new Vector.<PaginationBtn>();
 				var min:int = pageBtnNum <= pageCount ? pageBtnNum : pageCount;
 				for (var i:int = 0; i < min; i++) {
-					var btn:PaginationBtn =  new PaginationBtn("");
+					var btn:PaginationBtn =  new PaginationBtn();
 					btn.x = w * i;
 					btn.y = boader;
-					this.addChild(btn);
+					middleBtnsLayer.addChild(btn);
+					btn.addEventListener(MouseEvent.CLICK, handlerBtnClick);
 					middleBtns.push(btn);
 				}
+				middleBtnsLayer.x = (back.width - middleBtnsLayer.width) / 2;
 			}
 
 			var d:int = (pageBtnNum / 2);
@@ -140,13 +165,36 @@ package com.snsoft.tsp3.pagination {
 
 			var fn:int = pageNum - cl;
 			for (var i2:int = 0; i2 < middleBtns.length; i2++) {
+				var n:int = fn + i2;
 				var btn2:PaginationBtn = middleBtns[i2];
-				btn2.setStateText(String(fn++));
+				btn2.setStateText(String(n));
+				btn2.btnNum = n;
+				var sed:Boolean = (n == pageNum);
+				btn2.setStateSelect(sed);
 			}
 
-			if (pageNum != this.pageNum) {
-				this.pageNum = pageNum;
-			}
+			var fvsb:Boolean = (fn != 1);
+			firstBtn.visible = fvsb;
+			firstSep.visible = fvsb;
+
+			var lvsb:Boolean = ((fn + pageBtnNum - 1) != pageCount);
+			lastBtn.visible = lvsb;
+			lastSep.visible = lvsb;
 		}
+
+		private function handlerBtnClick(e:Event):void {
+			var btn:PaginationBtn = e.currentTarget as PaginationBtn;
+			this._pageNum = btn.btnNum;
+
+			this.dispatchEvent(new Event(MouseEvent.CLICK));
+		}
+
+		/**
+		 *页号
+		 */
+		public function get pageNum():int {
+			return _pageNum;
+		}
+
 	}
 }

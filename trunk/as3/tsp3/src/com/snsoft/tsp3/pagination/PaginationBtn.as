@@ -11,6 +11,8 @@ package com.snsoft.tsp3.pagination {
 
 		private var btnText:String = "";
 
+		private var _btnNum:int = 0;
+
 		private var btnTfd:TextField;
 
 		private var defBtn:MovieClip;
@@ -21,7 +23,7 @@ package com.snsoft.tsp3.pagination {
 
 		private var btnTft:TextFormat;
 
-		public function PaginationBtn(btnText:String) {
+		public function PaginationBtn(btnText:String = "", btnNum:int = 0) {
 			this.btnText = btnText;
 			super();
 			init();
@@ -62,6 +64,14 @@ package com.snsoft.tsp3.pagination {
 			this.selected = b;
 			selBtn.visible = this.selected;
 			defBtn.visible = !this.selected;
+		}
+
+		public function get btnNum():int {
+			return _btnNum;
+		}
+
+		public function set btnNum(value:int):void {
+			_btnNum = value;
 		}
 
 	}

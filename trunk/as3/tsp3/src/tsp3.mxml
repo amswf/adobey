@@ -9,6 +9,8 @@
 		<![CDATA[
 			import com.snsoft.tsp3.PluginLoader;
 			import com.snsoft.tsp3.Tsp;
+			import com.snsoft.tsp3.pagination.Pagination;
+			import com.snsoft.tsp3.pagination.PaginationBtn;
 			import com.snsoft.tsp3.plugin.desktop.Desktop;
 			import com.snsoft.tsp3.test.Skins;
 			import com.snsoft.tsp3.test.Test;
@@ -19,6 +21,8 @@
 				Tsp;
 				Desktop;
 				PluginLoader;
+				Pagination;
+				PaginationBtn;
 			}
 		]]>
 	</fx:Script>
