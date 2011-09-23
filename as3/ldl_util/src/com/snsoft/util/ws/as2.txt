@@ -1,0 +1,55 @@
+import mx.services.WebService;
+
+var AVM_lc:LocalConnection = new LocalConnection();
+
+// stopAnimation event handler
+AVM_lc.stopAnimation = function() {
+	trace("stopAnimation");
+};
+
+// listen for events for "AVM2toAVM1"
+AVM_lc.connect("as2_2011_conn_server");
+
+var sender:LocalConnection = new LocalConnection();
+sender.send("static_as3_2011_conn_server","initCompleteCallBack");//访问AS3中的方法 jg 为参数
+
+AVM_lc.as2ws = function(as3ConnName:String, wsdlUrl:String, wsMethord:String, pms):Void  {
+	var prms:Array = new Array();
+
+	for (i = 0; i < 10; i++) {
+		if (pms != null && i < pms.length) {
+			prms.push(pms[i]);
+		}
+		else {
+			prms.push(null);
+		}
+	}
+
+	var ws:WebService = new WebService(wsdlUrl);
+
+	ws.onLoad = function(wsdl:Object) {
+
+		var mth = ws[wsMethord](prms[0], prms[1], prms[2], prms[3], prms[4], prms[5], prms[6], prms[7], prms[8], prms[9]);
+
+		mth.onResult = function(resObj:Object) {
+			//resObj则是成功后返回的数据 
+			sendAS3(as3ConnName,resObj,"methodSuccess");
+		};
+		mth.onFault = function(fault) {
+			trace("methodError");
+			//如果失败则会调用下面
+			sendAS3(as3ConnName,null,"methodError");
+		};
+
+	};
+	ws.onFault = function(err:Object) {
+		trace("wsdlError");
+		sendAS3(as3ConnName,null,"wsdlError");
+	};
+
+};
+
+function sendAS3(as3ConnName, dataObj, stateStr):Void {
+	var sender:LocalConnection = new LocalConnection();
+	sender.send(as3ConnName,"callBack",dataObj,stateStr);//访问AS3中的方法 jg 为参数
+}
