@@ -33,7 +33,7 @@ package com.snsoft.util.ws {
 
 		private static var initCmp:Boolean = false;
 
-		private static var staticAs3Server:LocalConnection
+		private static var staticAs3Server:LocalConnection;
 
 		public function WebService(wsdlUrl:String, as2swfUrl:String = "ws.as2.swf") {
 			this.wsdlUrl = wsdlUrl;
