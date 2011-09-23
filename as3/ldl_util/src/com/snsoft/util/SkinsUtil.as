@@ -28,7 +28,7 @@ package com.snsoft.util {
 				mc = new MClass() as MovieClip;
 			}
 			catch (e:Error) {
-				trace(" error SkinsUtil.createSkinByName() 动态加载找不到类：" + skinName);
+				trace(" error SkinsUtil.createSkinByName() 动态加载找不到皮肤：" + skinName);
 			}
 			return mc;
 		}
