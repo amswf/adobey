@@ -4,7 +4,7 @@ package com.snsoft.tsp3 {
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
 
-	public class PromptMsg extends MyMovieClip {
+	public class PromptMsg extends MovieClip {
 
 		public static const EVENT_BTN_CLICK:String = "event_btn_click";
 
@@ -14,14 +14,14 @@ package com.snsoft.tsp3 {
 
 		public function PromptMsg() {
 			super();
-		}
-
-		override protected function init():void {
 			msgTfd = this.getChildByName("msg") as TextField;
 			btnMc = this.getChildByName("btn") as MovieClip;
-			btnMc.mouseChildren = false;
-			btnMc.buttonMode = true;
-			btnMc.addEventListener(MouseEvent.CLICK, handlerBtnClick);
+
+			if (btnMc != null) {
+				btnMc.mouseChildren = false;
+				btnMc.buttonMode = true;
+				btnMc.addEventListener(MouseEvent.CLICK, handlerBtnClick);
+			}
 		}
 
 		private function handlerBtnClick(e:Event):void {
@@ -29,7 +29,9 @@ package com.snsoft.tsp3 {
 		}
 
 		public function setMsg(msg:String):void {
-			this.msgTfd.text = msg;
+			if (this.msgTfd != null) {
+				this.msgTfd.text = msg;
+			}
 		}
 	}
 }

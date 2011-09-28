@@ -1,12 +1,8 @@
 package com.snsoft.tsp3 {
-	import com.snsoft.util.rlm.ResLoadManager;
-	import com.snsoft.util.rlm.rs.RSSwf;
-
 	import flash.display.MovieClip;
 	import flash.events.Event;
 
 	public class MyMovieClip extends MovieClip {
-
 		public function MyMovieClip() {
 			super();
 			this.addEventListener(Event.ENTER_FRAME, handlerEnterFrame);
@@ -20,6 +16,5 @@ package com.snsoft.tsp3 {
 		protected function init():void {
 			trace("需要重写 init方法！");
 		}
-
 	}
 }
