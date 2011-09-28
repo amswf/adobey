@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xml>
-	<group>
+	<quick>
 		<btn type="" plugin="" disobj="" imgUrl="">
-			<params><![CDATA[asdf]]>
-</params>
+			<params/>
 		</btn>
-	</group>
+	</quick>
+	<task>
+		<btn type="" plugin="" disobj="" imgUrl="">
+			<params/>
+		</btn>
+	</task>
+	<state>
+		<btn type="" plugin="" disobj="" imgUrl="">
+			<params/>
+		</btn>
+	</state>
 </xml>
