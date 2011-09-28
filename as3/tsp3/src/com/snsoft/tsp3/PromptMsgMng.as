@@ -6,22 +6,33 @@ package com.snsoft.tsp3 {
 	import flash.events.Event;
 
 	/**
-	 * 提示信息管理类
+	 * 提示信息管理类  单例类 请使用 instance初始化
 	 * @author Administrator
 	 *
 	 */
 	public class PromptMsgMng {
 
-		private static var parent:DisplayObjectContainer = null;
+		private var parent:DisplayObjectContainer = null;
 
-		private static var pmsg:PromptMsg = new PromptMsg();
+		private var pmsg:PromptMsg = new PromptMsg();
 
-		private static var pmsgMask:Sprite = new Sprite();
+		private var pmsgMask:Sprite = new Sprite();
 
-		private static var isInit:Boolean = false;
+		private var isInit:Boolean = false;
+
+		private var lock:Boolean = false;
+
+		private static var pmm:PromptMsgMng = new PromptMsgMng();
 
 		public function PromptMsgMng() {
-			trace("PromptMsgMng 不能new 创建，属于静态类！");
+			if (lock) {
+				throw new Error("PromptMsgMng can not be new");
+			}
+			lock = true;
+		}
+
+		public static function instance():PromptMsgMng {
+			return pmm;
 		}
 
 		/**
@@ -29,16 +40,17 @@ package com.snsoft.tsp3 {
 		 * @param parent
 		 *
 		 */
-		public static function init(parent:DisplayObjectContainer):void {
+		public function init(parent:Stage):void {
 
 			if (!isInit) {
-				PromptMsgMng.parent = parent;
-				isInit = true;
+				this.parent = parent;
+				this.isInit = true;
 				pmsgMask = new Sprite();
-				pmsgMask.visible = false;
+
 				pmsgMask.graphics.beginFill(0xffffff, 0.2);
 				pmsgMask.graphics.drawRect(0, 0, 100, 100);
 				pmsgMask.graphics.endFill();
+				pmsgMask.visible = false;
 				parent.addChild(pmsgMask);
 
 				pmsg.visible = false;
@@ -48,7 +60,7 @@ package com.snsoft.tsp3 {
 			}
 		}
 
-		public static function setMsg(msg:String):void {
+		public function setMsg(msg:String):void {
 			if (isInit) {
 				pmsg.setMsg(msg);
 				pmsg.visible = true;
@@ -59,12 +71,12 @@ package com.snsoft.tsp3 {
 			}
 		}
 
-		private static function handlerBtnClick(e:Event):void {
+		private function handlerBtnClick(e:Event):void {
 			pmsgMask.visible = false;
 			pmsg.visible = false;
 		}
 
-		private static function handlerEnterFrame(e:Event):void {
+		private function handlerEnterFrame(e:Event):void {
 			pmsg.removeEventListener(Event.ENTER_FRAME, handlerEnterFrame);
 			var stage:Stage = parent.stage;
 

@@ -1,12 +1,13 @@
 package com.snsoft.tsp3 {
 	import com.snsoft.tsp3.plugin.BPlugin;
 	import com.snsoft.util.xmldom.XMLConfig;
-
+	
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
+	import flash.net.URLRequest;
 
 	[Event(name = "complete", type = "flash.events.Event")]
 	[Event(name = "ioError", type = "flash.events.IOErrorEvent")]
@@ -19,7 +20,7 @@ package com.snsoft.tsp3 {
 
 		private static const PLUGIN_XML_NAME:String = "version.xml";
 
-		private static const XML_CFG_PLUGIN:String = "plugin";
+		private static const XML_CFG_PLUGIN:String = "start";
 
 		private var errorMsg:String = "";
 
@@ -29,7 +30,7 @@ package com.snsoft.tsp3 {
 
 		private var pluginUrl:String;
 
-		private var plugin:BPlugin;
+		private var _plugin:BPlugin;
 
 		public function PluginLoader(basePath:String, pluginName:String) {
 			this.basePath = basePath;
@@ -50,17 +51,17 @@ package com.snsoft.tsp3 {
 		}
 
 		private function handlerLoadXMLCMP(e:Event):void {
-			var pluginName:String = xc.getConfig(XML_CFG_PLUGIN);
+			var swfName:String = xc.getConfig(XML_CFG_PLUGIN);
 			if (pluginName == null) {
-				dispatchError("加载插件[" + pluginName + "]出错：找不到配置项 " + XML_CFG_PLUGIN);
+				dispatchError("加载插件[" + swfName + "]出错：找不到配置项 " + XML_CFG_PLUGIN);
 			}
 			else {
-				pluginUrl = basePath + "/" + pluginName + "/" + pluginName;
+				pluginUrl = basePath + "/" + pluginName + "/" + swfName;
 
 				var loader:Loader = new Loader();
-
 				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, handlerLoadPluginCmp);
-				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, handlerLoadPluginError);
+				loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadPluginError);
+				loader.load(new URLRequest(pluginUrl));
 			}
 		}
 
@@ -71,7 +72,7 @@ package com.snsoft.tsp3 {
 				dispatchError("加载插件[" + pluginName + "]出错:swf文件不是插件。");
 			}
 			else {
-				plugin = bp;
+				_plugin = bp;
 				dispatchCmp();
 			}
 		}
@@ -89,6 +90,12 @@ package com.snsoft.tsp3 {
 		private function dispatchCmp():void {
 			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
+
+		public function get plugin():BPlugin
+		{
+			return _plugin;
+		}
+
 
 	}
 }
