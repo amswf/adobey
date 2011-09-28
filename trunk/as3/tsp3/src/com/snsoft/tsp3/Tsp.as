@@ -55,7 +55,7 @@ package com.snsoft.tsp3 {
 		}
 
 		private function handlerStart(e:Event):void {
-			//welcome.visible = false;
+			welcome.visible = false;
 			initTsp();
 		}
 
