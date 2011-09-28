@@ -124,6 +124,20 @@ package com.snsoft.util.xmldom {
 		}
 
 		/**
+		 * 属性
+		 * @param index
+		 * @return
+		 *
+		 */
+		public function getAttributeNameByIndex(index:int):String {
+			return attribute.getNameByIndex(index);
+		}
+
+		public function attributeLen():int {
+			return attribute.length();
+		}
+
+		/**
 		 * 名为name子结点列表
 		 * @param name
 		 * @return

@@ -1,8 +1,13 @@
-﻿package com.snsoft.util{
-
+﻿package com.snsoft.util {
 
 	import flash.utils.*;
 
+	/**
+	 * 构造方法里 createAbstractClass(当前类);
+	 * 抽象方法里 createAbstractMethod("类名.方法");
+	 * @author Administrator
+	 *
+	 */
 	public class AbstractBase {
 		private var _className:String;
 		private var _objectClass:Class;
