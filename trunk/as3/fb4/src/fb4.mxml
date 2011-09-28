@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   minWidth="955"
+			   minHeight="600"
+			   addedToStage="init(event);">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.snsoft.wsfb.WSM;
+			import com.snsoft.wsfb.WSStatus;
+			import com.snsoft.wsfb.WSfb3;
+
+			private function init(event:Event):void {
+				var wsm:WSM = WSM.instance();
+				wsm.wsfb3 = new WSfb3();
+
+				var wss:WSStatus = new WSStatus();
+				wss.wsdl = "http://127.0.0.1:8080/cxf/service/HelloWorld?wsdl";
+				wss.method = "sayHello";
+				wss.params = new Array("你好<a></a>", "<b></b>");
+				wsm.wsfb3.ws(wss);
+				trace("init");
+			}
+		]]>
+	</fx:Script>
+	<s:Button x="45" y="31" label="Button"/>
+</s:Application>
