@@ -14,7 +14,7 @@ package com.snsoft.tsp3 {
 
 		private var parent:DisplayObjectContainer = null;
 
-		private var pmsg:PromptMsg = new PromptMsg();
+		private static var pmsg:PromptMsg = new PromptMsg();
 
 		private var pmsgMask:Sprite = new Sprite();
 

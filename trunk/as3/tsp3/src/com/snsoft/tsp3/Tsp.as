@@ -63,7 +63,8 @@ package com.snsoft.tsp3 {
 			backSpr = ViewUtil.creatRect(100, 100, 0xffffff, 1);
 			backLayer.addChild(backSpr);
 
-			PromptMsgMng.instance().setMsg("a");
+			//PromptMsgMng.instance().setMsg("a");
+
 			welcome = new Welcome();
 			welcomeLayer.addChild(welcome);
 			welcome.addEventListener(Welcome.EVENT_CLICK_START, handlerStart);
