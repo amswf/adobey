@@ -37,6 +37,8 @@ package com.snsoft.tsp3 {
 
 		private var backSpr:Sprite;
 
+		private var isLoadedPlugin:Boolean = false;
+
 		public function Tsp() {
 			//注册动态调用的类
 			com.snsoft.util.rlm.rs.RSImages;
@@ -69,8 +71,6 @@ package com.snsoft.tsp3 {
 			welcomeLayer.addChild(welcome);
 			welcome.addEventListener(Welcome.EVENT_CLICK_START, handlerStart);
 
-			initTsp();
-
 			stage.nativeWindow.x = (stage.fullScreenWidth - welcome.width) / 2;
 			stage.nativeWindow.y = (stage.fullScreenHeight - welcome.height) / 2;
 
@@ -89,12 +89,16 @@ package com.snsoft.tsp3 {
 
 		private function handlerStart(e:Event):void {
 			stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+			initTsp();
 		}
 
 		private function initTsp():void {
-			xmlConfig = new XMLConfig();
-			xmlConfig.addEventListener(Event.COMPLETE, handlerLoadCfgCmp);
-			xmlConfig.load("config.xml");
+			if (!isLoadedPlugin) {
+				isLoadedPlugin = true;
+				xmlConfig = new XMLConfig();
+				xmlConfig.addEventListener(Event.COMPLETE, handlerLoadCfgCmp);
+				xmlConfig.load("config.xml");
+			}
 		}
 
 		private function handlerLoadCfgCmp(e:Event):void {
@@ -110,7 +114,6 @@ package com.snsoft.tsp3 {
 			trace("handlerLoadPluginCmp");
 			var pld:PluginLoader = e.currentTarget as PluginLoader;
 			var plg:BPlugin = pld.plugin;
-			BPlugin.setPluginSize(plg, stage);
 			pluginLayer.addChild(plg);
 		}
 	}
