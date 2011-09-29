@@ -56,6 +56,7 @@ package com.snsoft.tsp3 {
 				pmsg.visible = false;
 				parent.addChild(pmsg);
 				pmsg.addEventListener(Event.ENTER_FRAME, handlerEnterFrame);
+				parent.stage.addEventListener(Event.RESIZE, handlerEnterFrame);
 				pmsg.addEventListener(PromptMsg.EVENT_BTN_CLICK, handlerBtnClick);
 			}
 		}
@@ -79,7 +80,6 @@ package com.snsoft.tsp3 {
 		private function handlerEnterFrame(e:Event):void {
 			pmsg.removeEventListener(Event.ENTER_FRAME, handlerEnterFrame);
 			var stage:Stage = parent.stage;
-
 			pmsg.x = (stage.stageWidth - pmsg.width) / 2;
 			pmsg.y = (stage.stageHeight - pmsg.height) / 2;
 			pmsgMask.width = stage.stageWidth;

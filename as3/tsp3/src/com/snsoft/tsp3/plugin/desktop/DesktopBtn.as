@@ -47,7 +47,7 @@ package com.snsoft.tsp3.plugin.desktop {
 			tfd.defaultTextFormat = tft;
 			tfd.width = w;
 			tfd.height = 17;
-			//tfd.autoSize = TextFieldAutoSize.LEFT;
+			tfd.autoSize = TextFieldAutoSize.CENTER;
 			tfd.text = text;
 			ViewUtil.filterTfd(tfd);
 			this.addChild(tfd);
@@ -56,7 +56,7 @@ package com.snsoft.tsp3.plugin.desktop {
 			tfd.y = boader + imgSize.y + boader2;
 
 			var h:int = boader + imgSize.y + boader2 + tfd.height + boader;
-			var back:Sprite = ViewUtil.creatHiddenRect(w, h);
+			var back:Sprite = ViewUtil.creatRect(w, h);
 			this.addChild(back);
 		}
 
