@@ -110,6 +110,7 @@ package com.snsoft.tsp3 {
 			trace("handlerLoadPluginCmp");
 			var pld:PluginLoader = e.currentTarget as PluginLoader;
 			var plg:BPlugin = pld.plugin;
+			BPlugin.setPluginSize(plg, stage);
 			pluginLayer.addChild(plg);
 		}
 	}
