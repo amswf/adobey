@@ -10,6 +10,8 @@
 
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.net.URLLoader;
@@ -32,6 +34,8 @@
 
 		override protected function init():void {
 			trace("Desktop");
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.align = StageAlign.TOP_LEFT;
 
 			PromptMsgMng.instance().setMsg("Desktop");
 
@@ -86,14 +90,14 @@
 
 			var tb:int = 0;
 			var startToolBar:BtnBar = new BtnBar(startBarBtnDTOList);
-			tb = stage.fullScreenHeight - startToolBar.height;
+			tb = this.pluginHeight - startToolBar.height;
 			startToolBar.y = tb;
 			var quickToolBar:BtnBar = new BtnBar(quickBarBtnDTOList);
 			quickToolBar.y = tb;
 			quickToolBar.x = startToolBar.width;
 			var stateToolBar:BtnBar = new BtnBar(stateBarBtnDTOList);
 			stateToolBar.y = tb;
-			stateToolBar.x = stage.fullScreenWidth - stateToolBar.width;
+			stateToolBar.x = this.pluginWidth - stateToolBar.width;
 
 			this.addChild(startToolBar);
 			this.addChild(quickToolBar);
