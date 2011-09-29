@@ -90,14 +90,14 @@
 
 			var tb:int = 0;
 			var startToolBar:BtnBar = new BtnBar(startBarBtnDTOList);
-			tb = this.pluginHeight - startToolBar.height;
+			tb = stage.stageHeight - startToolBar.height;
 			startToolBar.y = tb;
 			var quickToolBar:BtnBar = new BtnBar(quickBarBtnDTOList);
 			quickToolBar.y = tb;
 			quickToolBar.x = startToolBar.width;
 			var stateToolBar:BtnBar = new BtnBar(stateBarBtnDTOList);
 			stateToolBar.y = tb;
-			stateToolBar.x = this.pluginWidth - stateToolBar.width;
+			stateToolBar.x = stage.stageWidth - stateToolBar.width;
 
 			this.addChild(startToolBar);
 			this.addChild(quickToolBar);
