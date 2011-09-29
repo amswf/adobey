@@ -6,7 +6,7 @@
 	import com.snsoft.util.rlm.loader.LdSoundLoader;
 	import com.snsoft.util.rlm.loader.LdURLLoader;
 	import com.snsoft.util.rlm.rs.ResSet;
-	
+
 	import flash.display.LoaderInfo;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -14,6 +14,9 @@
 	import flash.events.ProgressEvent;
 	import flash.net.URLRequest;
 
+	[Event(name = "complete", type = "flash.events.Event")]
+	[Event(name = "progress", type = "flash.events.ProgressEvent")]
+	[Event(name = "ioError", type = "flash.events.IOErrorEvent")]
 	/**
 	 * 资源加载管理器
 	 * resources load manager
@@ -174,7 +177,7 @@
 				if (this.type == ResLoadManagerType.UNORDERED) {
 					//非顺序加载
 					for (var i:int = 0; i < this.urlList.length; i++) {
-						if(isStop){
+						if (isStop) {
 							break;
 						}
 						loadNext(i);

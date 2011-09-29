@@ -1,5 +1,6 @@
 package com.snsoft.tsp3 {
 	import com.snsoft.tsp3.plugin.BPlugin;
+	import com.snsoft.util.rlm.rs.*;
 	import com.snsoft.util.rlm.rs.RSSwf;
 	import com.snsoft.util.xmldom.XMLConfig;
 
@@ -26,18 +27,30 @@ package com.snsoft.tsp3 {
 
 		private var welcome:Welcome;
 
+		private var backLayer:Sprite = new Sprite();
+
 		private var welcomeLayer:Sprite = new Sprite();
 
 		private var pluginLayer:Sprite = new Sprite();
 
 		private var promptMsgLayer:Sprite = new Sprite();
 
+		private var backSpr:Sprite;
+
 		public function Tsp() {
+			//注册动态调用的类
+			com.snsoft.util.rlm.rs.RSImages;
+			com.snsoft.util.rlm.rs.RSEmbedFonts;
+			com.snsoft.util.rlm.rs.RSSound;
+			com.snsoft.util.rlm.rs.RSSwf;
+			com.snsoft.util.rlm.rs.RSTextFile;
+
 			super();
-			stage.displayState = StageDisplayState.FULL_SCREEN;
+
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 
+			this.addChild(backLayer);
 			this.addChild(welcomeLayer);
 			this.addChild(pluginLayer);
 			this.addChild(promptMsgLayer);
@@ -46,17 +59,35 @@ package com.snsoft.tsp3 {
 		}
 
 		override protected function init():void {
+
+			backSpr = ViewUtil.creatRect(100, 100, 0xffffff, 1);
+			backLayer.addChild(backSpr);
+
 			PromptMsgMng.instance().setMsg("a");
 			welcome = new Welcome();
-			welcome.x = (stage.stageWidth - welcome.width) / 2;
-			welcome.y = (stage.stageHeight - welcome.height) / 2;
 			welcomeLayer.addChild(welcome);
 			welcome.addEventListener(Welcome.EVENT_CLICK_START, handlerStart);
+
+			initTsp();
+
+			stage.nativeWindow.x = (stage.fullScreenWidth - welcome.width) / 2;
+			stage.nativeWindow.y = (stage.fullScreenHeight - welcome.height) / 2;
+
+			stage.addEventListener(Event.RESIZE, handlerStageResize);
+		}
+
+		private function handlerStageResize(e:Event):void {
+			backSpr.width = stage.stageWidth;
+			backSpr.height = stage.stageHeight;
+
+			var sign:Boolean = stage.displayState == StageDisplayState.FULL_SCREEN_INTERACTIVE;
+			welcome.visible = !sign;
+			pluginLayer.visible = sign;
+			backSpr.visible = sign;
 		}
 
 		private function handlerStart(e:Event):void {
-			welcome.visible = false;
-			initTsp();
+			stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
 		}
 
 		private function initTsp():void {
@@ -78,7 +109,6 @@ package com.snsoft.tsp3 {
 			trace("handlerLoadPluginCmp");
 			var pld:PluginLoader = e.currentTarget as PluginLoader;
 			var plg:BPlugin = pld.plugin;
-			plg.promptMsgMng
 			pluginLayer.addChild(plg);
 		}
 	}

@@ -8,19 +8,19 @@ package com.snsoft.tsp3 {
 
 		}
 
-		public static function creatHiddenRect(width:int, height:int):Sprite {
+		public static function creatRect(width:int, height:int, color:uint = 0xffffff, alpha:Number = 0):Sprite {
 			var spr:Sprite = new Sprite();
-			spr.graphics.beginFill(0xffffff, 0);
+			spr.graphics.beginFill(color, alpha);
 			spr.graphics.drawRect(0, 0, width, height);
 			spr.graphics.endFill();
 			return spr;
 		}
-		
-		public static function filterTfd(tfd:TextField):void{
+
+		public static function filterTfd(tfd:TextField):void {
 			var fary:Array = new Array();
-			var f1:DropShadowFilter = new DropShadowFilter (0, 0, 0xffffff, 1, 2, 2,10);
+			var f1:DropShadowFilter = new DropShadowFilter(0, 0, 0xffffff, 1, 2, 2, 10);
 			fary.push(f1);
-			var f2:DropShadowFilter = new DropShadowFilter (0, 0, 0x000000, 1, 4, 4,1);
+			var f2:DropShadowFilter = new DropShadowFilter(0, 0, 0x000000, 1, 4, 4, 1);
 			fary.push(f2);
 			tfd.filters = fary;
 		}
