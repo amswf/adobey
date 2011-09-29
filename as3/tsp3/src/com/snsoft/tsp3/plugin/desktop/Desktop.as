@@ -33,7 +33,7 @@
 		override protected function init():void {
 			trace("Desktop");
 
-			PromptMsgMng.instance().setMsg("b");
+			PromptMsgMng.instance().setMsg("Desktop");
 
 			loadBarsXML();
 		}
