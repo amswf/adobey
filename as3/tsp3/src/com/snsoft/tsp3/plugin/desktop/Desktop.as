@@ -1,11 +1,11 @@
 ﻿package com.snsoft.tsp3.plugin.desktop {
-	import com.snsoft.tsp3.Common;
 	import com.snsoft.tsp3.PromptMsgMng;
 	import com.snsoft.tsp3.XMLData;
 	import com.snsoft.tsp3.plugin.BPlugin;
 	import com.snsoft.tsp3.plugin.desktop.dto.DesktopBtnDTO;
 	import com.snsoft.util.rlm.ResLoadManager;
 	import com.snsoft.util.rlm.rs.RSImages;
+	import com.snsoft.util.rlm.rs.RSTextFile;
 	import com.snsoft.util.xmldom.Node;
 	import com.snsoft.util.xmldom.NodeList;
 	import com.snsoft.util.xmldom.XMLDom;
@@ -16,17 +16,20 @@
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
-	import flash.events.IOErrorEvent;
-	import flash.geom.Point;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
-	import flash.sampler.Sample;
 
 	public class Desktop extends BPlugin {
 
 		private var toolBtnImgRS:RSImages = new RSImages();
 
+		private var boardImgRS:RSImages = new RSImages();
+
 		private var imgRS:RSImages = new RSImages();
+
+		private var xmlDataRS:RSTextFile = new RSTextFile();
+
+		private var boardBtnDTOLL:Vector.<Vector.<DesktopBtnDTO>> = new Vector.<Vector.<DesktopBtnDTO>>();
 
 		private var startBarBtnDTOList:Vector.<DesktopBtnDTO> = new Vector.<DesktopBtnDTO>();
 
@@ -35,6 +38,8 @@
 		private var stateBarBtnDTOList:Vector.<DesktopBtnDTO> = new Vector.<DesktopBtnDTO>();
 
 		private var _toolBarDataUrl:String;
+
+		private var _boardDataUrl:String;
 
 		private var _backImgUrl:String;
 
@@ -45,6 +50,8 @@
 		private var toolBarBackLayer:Sprite = new Sprite();
 
 		private var backLayer:Sprite = new Sprite();
+
+		private var boardLayer:Sprite = new Sprite();
 
 		public function Desktop() {
 			super();
@@ -58,6 +65,7 @@
 
 			this.addChild(backLayer);
 			this.addChild(toolBarBackLayer);
+			this.addChild(boardLayer);
 			this.addChild(toolBarLayer);
 
 			imgRS.addResUrl(toolBarBackImgUrl);
@@ -69,50 +77,84 @@
 		}
 
 		private function loadBarsXML():void {
-			var ul:URLLoader = new URLLoader(new URLRequest(dataBaseUrl + toolBarDataUrl));
-			ul.addEventListener(Event.COMPLETE, handlerLoadToolbarXMLCmp);
+
+			xmlDataRS.addResUrl(dataBaseUrl + toolBarDataUrl);
+			xmlDataRS.addResUrl(dataBaseUrl + boardDataUrl);
+
+			var rlm:ResLoadManager = new ResLoadManager();
+			rlm.addEventListener(Event.COMPLETE, handlerLoadXMLDataCmp);
+			rlm.addResSet(xmlDataRS);
+			rlm.load();
+
 		}
 
-		private function handlerLoadToolbarXMLCmp(e:Event):void {
-			var ul:URLLoader = e.currentTarget as URLLoader;
-			var xml:XML = new XML(ul.data);
-			var xd:XMLDom = new XMLDom(xml);
-			var xmlNode:Node = xd.parse();
-			var xmlData:XMLData = new XMLData(xmlNode);
+		private function handlerLoadXMLDataCmp(e:Event):void {
+			parseXMLData();
+		}
 
-			var bodyNode:Node = xmlData.bodyNode;
-			if (xmlData.isCmp) {
+		private function parseXMLData():void {
 
-				var startNode:Node = bodyNode.getNodeListFirstNode("start");
-				var startBtnNode:Node = startNode.getNodeListFirstNode("btn");
-				var startDTO:DesktopBtnDTO = creatToolBarBtnDTO(startBtnNode);
-				startBarBtnDTOList.push(startDTO);
-				toolBtnImgRS.addResUrl(startDTO.imgUrl);
+			var tbstr:String = xmlDataRS.getTextByUrl(dataBaseUrl + toolBarDataUrl);
+			var bstr:String = xmlDataRS.getTextByUrl(dataBaseUrl + boardDataUrl);
 
-				var quickNode:Node = bodyNode.getNodeListFirstNode("quick");
-				var quickList:NodeList = quickNode.getNodeList("btn");
-				for (var i:int = 0; i < quickList.length(); i++) {
-					var quickBtnNode:Node = quickList.getNode(i);
-					var quickDTO:DesktopBtnDTO = creatToolBarBtnDTO(quickBtnNode);
-					quickBarBtnDTOList.push(quickDTO);
-					toolBtnImgRS.addResUrl(quickDTO.imgUrl);
-				}
+			var tbxd:XMLData = new XMLData(tbstr);
+			var bxd:XMLData = new XMLData(bstr);
 
-				var stateNode:Node = bodyNode.getNodeListFirstNode("state");
-				var stateList:NodeList = stateNode.getNodeList("btn");
-				for (var j:int = 0; j < stateList.length(); j++) {
-					var stateBtnNode:Node = stateList.getNode(j);
-					var stateDTO:DesktopBtnDTO = creatToolBarBtnDTO(stateBtnNode);
-					stateBarBtnDTOList.push(stateDTO);
-					toolBtnImgRS.addResUrl(stateDTO.imgUrl);
-				}
+			if (tbxd.isCmp && bxd.isCmp) {
+				parseToolBtnXMLData(tbxd);
+				parseBoardXMLData(bxd);
 				loadImgs();
+			}
+		}
+
+		private function parseBoardXMLData(xmlData:XMLData):void {
+			var bodyNode:Node = xmlData.bodyNode;
+			var groupList:NodeList = bodyNode.getNodeList("group");
+			for (var i:int = 0; i < groupList.length(); i++) {
+				var boardBtnDTOList:Vector.<DesktopBtnDTO> = new Vector.<DesktopBtnDTO>();
+				var groupNode:Node = groupList.getNode(i);
+				var btnList:NodeList = groupNode.getNodeList("btn");
+				for (var j:int = 0; j < btnList.length(); j++) {
+					var btnNode:Node = btnList.getNode(j);
+					var dto:DesktopBtnDTO = creatToolBarBtnDTO(btnNode);
+					boardImgRS.addResUrl(dto.imgUrl);
+					boardBtnDTOList.push(dto);
+				}
+				boardBtnDTOLL.push(boardBtnDTOList);
+			}
+		}
+
+		private function parseToolBtnXMLData(xmlData:XMLData):void {
+			var bodyNode:Node = xmlData.bodyNode;
+			var startNode:Node = bodyNode.getNodeListFirstNode("start");
+			var startBtnNode:Node = startNode.getNodeListFirstNode("btn");
+			var startDTO:DesktopBtnDTO = creatToolBarBtnDTO(startBtnNode);
+			startBarBtnDTOList.push(startDTO);
+			toolBtnImgRS.addResUrl(startDTO.imgUrl);
+
+			var quickNode:Node = bodyNode.getNodeListFirstNode("quick");
+			var quickList:NodeList = quickNode.getNodeList("btn");
+			for (var i:int = 0; i < quickList.length(); i++) {
+				var quickBtnNode:Node = quickList.getNode(i);
+				var quickDTO:DesktopBtnDTO = creatToolBarBtnDTO(quickBtnNode);
+				quickBarBtnDTOList.push(quickDTO);
+				toolBtnImgRS.addResUrl(quickDTO.imgUrl);
+			}
+
+			var stateNode:Node = bodyNode.getNodeListFirstNode("state");
+			var stateList:NodeList = stateNode.getNodeList("btn");
+			for (var j:int = 0; j < stateList.length(); j++) {
+				var stateBtnNode:Node = stateList.getNode(j);
+				var stateDTO:DesktopBtnDTO = creatToolBarBtnDTO(stateBtnNode);
+				stateBarBtnDTOList.push(stateDTO);
+				toolBtnImgRS.addResUrl(stateDTO.imgUrl);
 			}
 		}
 
 		private function loadImgs():void {
 			var rlm:ResLoadManager = new ResLoadManager();
 			rlm.addResSet(toolBtnImgRS);
+			rlm.addResSet(boardImgRS);
 			rlm.addResSet(imgRS);
 			rlm.addEventListener(Event.COMPLETE, handlerLoadImgsCmp);
 			rlm.load();
@@ -130,7 +172,10 @@
 			backbm.height = stage.stageHeight;
 			backLayer.addChild(backbm);
 
-			trace(backImgUrl, backbmd);
+			for (var i:int = 0; i < boardBtnDTOLL.length; i++) {
+				var bbdlist:Vector.<DesktopBtnDTO> = boardBtnDTOLL[i];
+				dtoListSetImg(bbdlist, boardImgRS);
+			}
 
 			dtoListSetImg(startBarBtnDTOList, toolBtnImgRS);
 			dtoListSetImg(quickBarBtnDTOList, toolBtnImgRS);
@@ -157,6 +202,13 @@
 			toolbm.height = toolBarLayer.height;
 			toolbm.y = stage.stageHeight - toolbm.height;
 			toolBarBackLayer.addChild(toolbm);
+
+			var bbv:Vector.<BtnBoard> = new Vector.<BtnBoard>();
+			for (var j:int = 0; j < boardBtnDTOLL.length; j++) {
+				var btnBoard:BtnBoard = new BtnBoard(boardBtnDTOLL[j], stage.stageWidth, stage.stageHeight - toolbm.height - 50, 80, 100);
+				bbv.push(btnBoard);
+			}
+			boardLayer.addChild(bbv[0]);
 		}
 
 		private function dtoListSetImg(v:Vector.<DesktopBtnDTO>, rs:RSImages):void {
@@ -201,6 +253,14 @@
 
 		public function set toolBarBackImgUrl(value:String):void {
 			_toolBarBackImgUrl = value;
+		}
+
+		public function get boardDataUrl():String {
+			return _boardDataUrl;
+		}
+
+		public function set boardDataUrl(value:String):void {
+			_boardDataUrl = value;
 		}
 
 	}
