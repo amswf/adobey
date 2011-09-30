@@ -2,6 +2,8 @@
 	import com.snsoft.tsp3.PromptMsgMng;
 	import com.snsoft.tsp3.ViewUtil;
 	import com.snsoft.tsp3.XMLData;
+	import com.snsoft.tsp3.pagination.Pagination;
+	import com.snsoft.tsp3.pagination.PaginationEvent;
 	import com.snsoft.tsp3.plugin.BPlugin;
 	import com.snsoft.tsp3.plugin.desktop.dto.DesktopBtnDTO;
 	import com.snsoft.tsp3.touch.TouchDrag;
@@ -14,6 +16,7 @@
 	import com.snsoft.util.xmldom.XMLDom;
 
 	import fl.transitions.Tween;
+	import fl.transitions.TweenEvent;
 	import fl.transitions.easing.Regular;
 
 	import flash.display.Bitmap;
@@ -28,6 +31,8 @@
 	import flash.net.URLRequest;
 
 	public class Desktop extends BPlugin {
+
+		private var pagin:Pagination = new Pagination();
 
 		private var toolBtnImgRS:RSImages = new RSImages();
 
@@ -61,6 +66,10 @@
 
 		private var boardLayer:Sprite = new Sprite();
 
+		private var paginLayer:Sprite = new Sprite();
+
+		private var moveBoardLock:Boolean = false;
+
 		public function Desktop() {
 			super();
 		}
@@ -74,6 +83,7 @@
 			this.addChild(backLayer);
 			this.addChild(toolBarBackLayer);
 			this.addChild(boardLayer);
+			this.addChild(paginLayer);
 			this.addChild(toolBarLayer);
 
 			imgRS.addResUrl(toolBarBackImgUrl);
@@ -211,8 +221,14 @@
 			toolbm.y = stage.stageHeight - toolbm.height;
 			toolBarBackLayer.addChild(toolbm);
 
+			pagin = new Pagination();
+			pagin.x = (stage.stageWidth - pagin.width) / 2;
+			pagin.y = stage.stageHeight - toolbm.height - pagin.height - 10;
+			pagin.setPageNum(1, boardBtnDTOLL.length);
+			paginLayer.addChild(pagin);
+
 			var boardw:int = stage.stageWidth;
-			var boardh:int = stage.stageHeight - toolbm.height - 50;
+			var boardh:int = pagin.y;
 
 			var bbv:Vector.<BtnBoard> = new Vector.<BtnBoard>();
 			for (var j:int = 0; j < boardBtnDTOLL.length; j++) {
@@ -243,6 +259,16 @@
 			var dragBounds:Rectangle = new Rectangle(dbx, 0, dbw, 0);
 			var td:TouchDrag = new TouchDrag(boardLayer, stage, dragBounds);
 			td.addEventListener(TouchDragEvent.TOUCH_DRAG_MOUSE_UP, handlerDragMouseUp);
+
+			pagin.addEventListener(PaginationEvent.PAGIN_CLICK, handlerPaginClick);
+
+		}
+
+		private function handlerPaginClick(e:Event):void {
+			var start:Number = boardLayer.x;
+			var end:Number = -(pagin.pageNum - 1) * stage.stageWidth;
+			pagin.setPageNum(pagin.pageNum, boardBtnDTOLL.length);
+			moveBoardLayer(start, end);
 		}
 
 		private function handlerDragMouseUp(e:Event):void {
@@ -255,16 +281,33 @@
 			var start:Number = boardLayer.x;
 			var end:Number = boardLayer.x;
 
-			trace(dist);
-			if (dist > 100) {
+			var pn:int = pagin.pageNum - sign;
+
+			trace(pn);
+			if (dist > 100 && pn >= 1 && pn <= boardBtnDTOLL.length) {
 				end = boardLayer.x + sign * (stage.stageWidth - dist);
+
+				pagin.setPageNum(pn, boardBtnDTOLL.length);
 			}
 			else {
 				end = boardLayer.x - sign * dist;
 			}
+			moveBoardLayer(start, end);
+		}
 
-			var twn:Tween = new Tween(boardLayer, "x", Regular.easeOut, start, end, 0.3, true);
-			twn.start();
+		private function moveBoardLayer(start:Number, end:Number):void {
+			if (!moveBoardLock) {
+				moveBoardLock = true;
+				var twn:Tween = new Tween(boardLayer, "x", Regular.easeOut, start, end, 0.3, true);
+				twn.addEventListener(TweenEvent.MOTION_FINISH, handlerMotionFinish);
+				twn.start();
+			}
+		}
+
+		private function handlerMotionFinish(e:Event):void {
+			var twn:Tween = e.currentTarget as Tween;
+			twn.removeEventListener(TweenEvent.MOTION_FINISH, handlerMotionFinish);
+			moveBoardLock = false;
 		}
 
 		private function dtoListSetImg(v:Vector.<DesktopBtnDTO>, rs:RSImages):void {

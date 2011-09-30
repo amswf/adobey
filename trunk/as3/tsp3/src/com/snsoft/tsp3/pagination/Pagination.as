@@ -7,7 +7,7 @@ package com.snsoft.tsp3.pagination {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 
-	[Event(name = "click", type = "flash.events.MouseEvent")]
+	[Event(name = "paginClick", type = "com.snsoft.tsp3.pagination.PaginationEvent")]
 
 	/**
 	 * 分页标签
@@ -125,6 +125,7 @@ package com.snsoft.tsp3.pagination {
 		 */
 		public function setPageNum(pageNum:int, pageCount:int):void {
 
+			this._pageNum = pageNum;
 			pageNum = Math.max(1, pageNum);
 			pageNum = Math.min(pageCount, pageNum);
 
@@ -185,8 +186,7 @@ package com.snsoft.tsp3.pagination {
 		private function handlerBtnClick(e:Event):void {
 			var btn:PaginationBtn = e.currentTarget as PaginationBtn;
 			this._pageNum = btn.btnNum;
-
-			this.dispatchEvent(new Event(MouseEvent.CLICK));
+			this.dispatchEvent(new Event(PaginationEvent.PAGIN_CLICK));
 		}
 
 		/**
