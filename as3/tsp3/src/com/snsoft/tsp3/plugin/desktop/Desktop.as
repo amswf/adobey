@@ -1,5 +1,7 @@
 ﻿package com.snsoft.tsp3.plugin.desktop {
+	import com.snsoft.tsp3.Common;
 	import com.snsoft.tsp3.PromptMsgMng;
+	import com.snsoft.tsp3.XMLData;
 	import com.snsoft.tsp3.plugin.BPlugin;
 	import com.snsoft.tsp3.plugin.desktop.dto.DesktopBtnDTO;
 	import com.snsoft.util.rlm.ResLoadManager;
@@ -28,12 +30,15 @@
 
 		private var stateBarBtnDTOList:Vector.<DesktopBtnDTO> = new Vector.<DesktopBtnDTO>();
 
+		private var _toolBarDataUrl:String;
+
 		public function Desktop() {
 			super();
 		}
 
 		override protected function init():void {
 			trace("Desktop");
+
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 
@@ -43,7 +48,7 @@
 		}
 
 		private function loadBarsXML():void {
-			var ul:URLLoader = new URLLoader(new URLRequest("toolbar.xml"));
+			var ul:URLLoader = new URLLoader(new URLRequest(dataBaseUrl + toolBarDataUrl));
 			ul.addEventListener(Event.COMPLETE, handlerLoadToolbarXMLCmp);
 		}
 
@@ -52,35 +57,40 @@
 			var xml:XML = new XML(ul.data);
 			var xd:XMLDom = new XMLDom(xml);
 			var xmlNode:Node = xd.parse();
+			var xmlData:XMLData = new XMLData(xmlNode);
 
-			var startNode:Node = xmlNode.getNodeListFirstNode("start");
-			var startBtnNode:Node = startNode.getNodeListFirstNode("btn");
-			var startDTO:DesktopBtnDTO = creatToolBarBtnDTO(startBtnNode);
-			startBarBtnDTOList.push(startDTO);
-			toolBtnImgRS.addResUrl(startDTO.imgUrl);
+			var bodyNode:Node = xmlData.bodyNode;
+			if (xmlData.isCmp) {
 
-			var quickNode:Node = xmlNode.getNodeListFirstNode("quick");
-			var quickList:NodeList = quickNode.getNodeList("btn");
-			for (var i:int = 0; i < quickList.length(); i++) {
-				var quickBtnNode:Node = quickList.getNode(i);
-				var quickDTO:DesktopBtnDTO = creatToolBarBtnDTO(quickBtnNode);
-				quickBarBtnDTOList.push(quickDTO);
-				toolBtnImgRS.addResUrl(quickDTO.imgUrl);
+				var startNode:Node = bodyNode.getNodeListFirstNode("start");
+				var startBtnNode:Node = startNode.getNodeListFirstNode("btn");
+				var startDTO:DesktopBtnDTO = creatToolBarBtnDTO(startBtnNode);
+				startBarBtnDTOList.push(startDTO);
+				toolBtnImgRS.addResUrl(startDTO.imgUrl);
+
+				var quickNode:Node = bodyNode.getNodeListFirstNode("quick");
+				var quickList:NodeList = quickNode.getNodeList("btn");
+				for (var i:int = 0; i < quickList.length(); i++) {
+					var quickBtnNode:Node = quickList.getNode(i);
+					var quickDTO:DesktopBtnDTO = creatToolBarBtnDTO(quickBtnNode);
+					quickBarBtnDTOList.push(quickDTO);
+					toolBtnImgRS.addResUrl(quickDTO.imgUrl);
+				}
+
+				var stateNode:Node = bodyNode.getNodeListFirstNode("state");
+				var stateList:NodeList = stateNode.getNodeList("btn");
+				for (var j:int = 0; j < stateList.length(); j++) {
+					var stateBtnNode:Node = stateList.getNode(j);
+					var stateDTO:DesktopBtnDTO = creatToolBarBtnDTO(stateBtnNode);
+					stateBarBtnDTOList.push(stateDTO);
+					toolBtnImgRS.addResUrl(stateDTO.imgUrl);
+				}
+
+				var rlm:ResLoadManager = new ResLoadManager();
+				rlm.addResSet(toolBtnImgRS);
+				rlm.addEventListener(Event.COMPLETE, handlerLoadToolBtnImgCmp);
+				rlm.load();
 			}
-
-			var stateNode:Node = xmlNode.getNodeListFirstNode("state");
-			var stateList:NodeList = stateNode.getNodeList("btn");
-			for (var j:int = 0; j < stateList.length(); j++) {
-				var stateBtnNode:Node = stateList.getNode(j);
-				var stateDTO:DesktopBtnDTO = creatToolBarBtnDTO(stateBtnNode);
-				stateBarBtnDTOList.push(stateDTO);
-				toolBtnImgRS.addResUrl(stateDTO.imgUrl);
-			}
-
-			var rlm:ResLoadManager = new ResLoadManager();
-			rlm.addResSet(toolBtnImgRS);
-			rlm.addEventListener(Event.COMPLETE, handlerLoadToolBtnImgCmp);
-			rlm.load();
 		}
 
 		private function handlerLoadToolBtnImgCmp(e:Event):void {
@@ -124,5 +134,14 @@
 			dto.params = params;
 			return dto;
 		}
+
+		public function get toolBarDataUrl():String {
+			return _toolBarDataUrl;
+		}
+
+		public function set toolBarDataUrl(value:String):void {
+			_toolBarDataUrl = value;
+		}
+
 	}
 }
