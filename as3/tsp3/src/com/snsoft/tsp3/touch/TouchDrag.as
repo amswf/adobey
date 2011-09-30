@@ -46,6 +46,8 @@ package com.snsoft.tsp3.touch {
 
 		private var isClick:Boolean = false;
 
+		private var isMouseDown:Boolean = false;
+
 		public function TouchDrag(dragObj:Sprite, stage:Stage, dragBounds:Rectangle, sensitivity:int = 5) {
 			this.dragObj = dragObj;
 			this.stage = stage;
@@ -77,6 +79,7 @@ package com.snsoft.tsp3.touch {
 		}
 
 		private function handlerDragObjMouseDown(e:Event):void {
+			isMouseDown = true;
 			isClick = false;
 			this._clickObj = null;
 
@@ -134,17 +137,19 @@ package com.snsoft.tsp3.touch {
 				this.dispatchEvent(new Event(TouchDragEvent.TOUCH_CLICK));
 				twe = true;
 			}
-			else if (dragSign) {
+			else if (dragSign && isMouseDown) {
 				this.dispatchEvent(new Event(TouchDragEvent.TOUCH_DRAG_MOUSE_UP));
 			}
 			else {
+
 				twe = true;
 			}
 
-			if (twe) {
+			if (twe && isMouseDown) {
 				var twn:Tween = new Tween(dragObj, property, Regular.easeOut, start, end, 0.3, true);
 				twn.start();
 			}
+			isMouseDown = false;
 		}
 
 		public function get clickObj():Sprite {
