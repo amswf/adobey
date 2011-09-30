@@ -1,7 +1,7 @@
 package com.snsoft.tsp3 {
 	import com.snsoft.tsp3.plugin.BPlugin;
 	import com.snsoft.util.xmldom.XMLConfig;
-	
+
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
 	import flash.events.Event;
@@ -32,10 +32,13 @@ package com.snsoft.tsp3 {
 
 		private var _plugin:BPlugin;
 
+		private var relativeUrl:String;
+
 		public function PluginLoader(basePath:String, pluginName:String) {
 			this.basePath = basePath;
 			this.pluginName = pluginName;
-			xmlUrl = basePath + "/" + pluginName + "/" + PLUGIN_XML_NAME;
+			relativeUrl = basePath + pluginName + "/";
+			xmlUrl = relativeUrl + PLUGIN_XML_NAME;
 		}
 
 		public function load():void {
@@ -72,6 +75,8 @@ package com.snsoft.tsp3 {
 				dispatchError("加载插件[" + pluginName + "]出错:swf文件不是插件。");
 			}
 			else {
+				
+				bp.pluginUrl = relativeUrl;
 				_plugin = bp;
 				dispatchCmp();
 			}
@@ -91,11 +96,9 @@ package com.snsoft.tsp3 {
 			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
 
-		public function get plugin():BPlugin
-		{
+		public function get plugin():BPlugin {
 			return _plugin;
 		}
-
 
 	}
 }

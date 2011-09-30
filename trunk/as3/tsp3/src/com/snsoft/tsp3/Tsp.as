@@ -19,7 +19,7 @@ package com.snsoft.tsp3 {
 
 		private var rss:RSSwf = new RSSwf();
 
-		private var PLUGIN_BASE_PATH:String = "plugin";
+		private var PLUGIN_BASE_PATH:String = "plugin/";
 
 		private var PLUGIN_SWF_NAME:String = "plugin.swf";
 
@@ -97,7 +97,7 @@ package com.snsoft.tsp3 {
 				isLoadedPlugin = true;
 				xmlConfig = new XMLConfig();
 				xmlConfig.addEventListener(Event.COMPLETE, handlerLoadCfgCmp);
-				xmlConfig.load("config.xml");
+				xmlConfig.load("tsp.xml");
 			}
 		}
 
