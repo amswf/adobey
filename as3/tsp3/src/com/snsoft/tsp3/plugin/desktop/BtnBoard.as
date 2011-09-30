@@ -1,4 +1,5 @@
 package com.snsoft.tsp3.plugin.desktop {
+	import com.snsoft.tsp3.ViewUtil;
 	import com.snsoft.tsp3.plugin.desktop.dto.DesktopBtnDTO;
 
 	import flash.display.BitmapData;
@@ -31,6 +32,11 @@ package com.snsoft.tsp3.plugin.desktop {
 		}
 
 		private function init():void {
+
+			var back:Sprite = ViewUtil.creatRect(100, 100,0xffffff);
+			back.width = boardWidth;
+			back.height = boardHeight;
+			this.addChild(back);
 
 			var nx:int = boardWidth / spaceX;
 			var ny:int = boardHeight / spaceY;

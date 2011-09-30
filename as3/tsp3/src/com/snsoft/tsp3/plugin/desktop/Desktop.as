@@ -1,8 +1,11 @@
 ﻿package com.snsoft.tsp3.plugin.desktop {
 	import com.snsoft.tsp3.PromptMsgMng;
+	import com.snsoft.tsp3.ViewUtil;
 	import com.snsoft.tsp3.XMLData;
 	import com.snsoft.tsp3.plugin.BPlugin;
 	import com.snsoft.tsp3.plugin.desktop.dto.DesktopBtnDTO;
+	import com.snsoft.tsp3.touch.TouchDrag;
+	import com.snsoft.tsp3.touch.TouchDragEvent;
 	import com.snsoft.util.rlm.ResLoadManager;
 	import com.snsoft.util.rlm.rs.RSImages;
 	import com.snsoft.util.rlm.rs.RSTextFile;
@@ -10,12 +13,17 @@
 	import com.snsoft.util.xmldom.NodeList;
 	import com.snsoft.util.xmldom.XMLDom;
 
+	import fl.transitions.Tween;
+	import fl.transitions.easing.Regular;
+
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.geom.Rectangle;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 
@@ -203,12 +211,60 @@
 			toolbm.y = stage.stageHeight - toolbm.height;
 			toolBarBackLayer.addChild(toolbm);
 
+			var boardw:int = stage.stageWidth;
+			var boardh:int = stage.stageHeight - toolbm.height - 50;
+
 			var bbv:Vector.<BtnBoard> = new Vector.<BtnBoard>();
 			for (var j:int = 0; j < boardBtnDTOLL.length; j++) {
-				var btnBoard:BtnBoard = new BtnBoard(boardBtnDTOLL[j], stage.stageWidth, stage.stageHeight - toolbm.height - 50, 80, 100);
+				var btnBoard:BtnBoard = new BtnBoard(boardBtnDTOLL[j], boardw, boardh, 80, 100);
+				btnBoard.x = j * boardw;
 				bbv.push(btnBoard);
+				boardLayer.addChild(btnBoard);
+
+					//var bmd:BitmapData = new BitmapData(boardw, boardh, true, 0x00ffffff);
+					//bmd.draw(btnBoard);
+					//
+
+					//var bm:Bitmap = new Bitmap(bmd, "auto", true);
+					//bm.x = j * stage.stageWidth;
+					//boardLayer.addChild(bm);
 			}
-			boardLayer.addChild(bbv[0]);
+
+			var boardleft:Sprite = ViewUtil.creatRect(boardw, boardh, 0xffffff);
+			boardleft.x = -boardw;
+			boardLayer.addChild(boardleft);
+
+			var boardright:Sprite = ViewUtil.creatRect(boardw, boardh, 0xffffff);
+			boardright.x = boardBtnDTOLL.length * boardw;
+			boardLayer.addChild(boardright);
+
+			var dbx:int = -boardw * (boardBtnDTOLL.length);
+			var dbw:int = boardw * (boardBtnDTOLL.length + 1);
+			var dragBounds:Rectangle = new Rectangle(dbx, 0, dbw, 0);
+			var td:TouchDrag = new TouchDrag(boardLayer, stage, dragBounds);
+			td.addEventListener(TouchDragEvent.TOUCH_DRAG_MOUSE_UP, handlerDragMouseUp);
+		}
+
+		private function handlerDragMouseUp(e:Event):void {
+			trace("handlerDragOver");
+			var td:TouchDrag = e.currentTarget as TouchDrag;
+
+			var sign:Number = td.mouseUpPoint.x > td.mouseDownPoint.x ? 1 : -1;
+			var dist:Number = Math.abs(td.mouseUpPoint.x - td.mouseDownPoint.x);
+
+			var start:Number = boardLayer.x;
+			var end:Number = boardLayer.x;
+
+			trace(dist);
+			if (dist > 100) {
+				end = boardLayer.x + sign * (stage.stageWidth - dist);
+			}
+			else {
+				end = boardLayer.x - sign * dist;
+			}
+
+			var twn:Tween = new Tween(boardLayer, "x", Regular.easeOut, start, end, 0.3, true);
+			twn.start();
 		}
 
 		private function dtoListSetImg(v:Vector.<DesktopBtnDTO>, rs:RSImages):void {
