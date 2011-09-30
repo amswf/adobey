@@ -133,6 +133,32 @@ package com.snsoft.util.xmldom {
 			return configHV.findByName(name) as String;
 		}
 
+		public function getConfigName(i:int):String {
+			return configHV.findNameByIndex(i);
+		}
+
+		public function getConfigByIndex(i:int):String {
+			return configHV.findByIndex(i) as String;
+		}
+
+		public function configToObj(obj:Object):void {
+			for (var i:int = 0; i < configHV.length; i++) {
+				var name:String = configHV.findNameByIndex(i);
+				trace(obj);
+				try {
+					obj[name] = configHV.findByIndex(i);
+					trace("hasOwnProperty", name);
+				}
+				catch (e:Error) {
+					trace(e.getStackTrace());
+				}
+			}
+		}
+
+		public function length():int {
+			return configHV.length;
+		}
+
 		/**
 		 * 获得配置项值
 		 * @param name
