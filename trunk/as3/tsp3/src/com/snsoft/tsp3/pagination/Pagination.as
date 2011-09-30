@@ -178,7 +178,7 @@ package com.snsoft.tsp3.pagination {
 			firstBtn.visible = fvsb;
 			firstSep.visible = fvsb;
 
-			var lvsb:Boolean = ((fn + pageBtnNum - 1) != pageCount);
+			var lvsb:Boolean = ((fn + pageBtnNum - 1) < pageCount);
 			lastBtn.visible = lvsb;
 			lastSep.visible = lvsb;
 		}
