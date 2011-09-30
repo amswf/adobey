@@ -1,5 +1,6 @@
 package com.snsoft.tsp3 {
 	import com.snsoft.util.xmldom.Node;
+	import com.snsoft.util.xmldom.XMLDom;
 
 	public class XMLData {
 
@@ -11,7 +12,10 @@ package com.snsoft.tsp3 {
 
 		private var _bodyNode:Node;
 
-		public function XMLData(xmlNode:Node) {
+		public function XMLData(xml:*) {
+			var x:XML = new XML(xml);
+			var xd:XMLDom = new XMLDom(x);
+			var xmlNode:Node = xd.parse();
 			var headNode:Node = xmlNode.getNodeListFirstNode("head");
 			headNode.childNodeTextTObj(this);
 			if (code == "200") {
