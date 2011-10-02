@@ -272,7 +272,10 @@
 		}
 
 		private function handlerDragMouseUp(e:Event):void {
-			trace("handlerDragOver");
+			trace("handlerDragMouseUp");
+			boardLayer.mouseEnabled = false;
+			boardLayer.mouseChildren = false;
+
 			var td:TouchDrag = e.currentTarget as TouchDrag;
 
 			var sign:Number = td.mouseUpPoint.x > td.mouseDownPoint.x ? 1 : -1;
@@ -283,7 +286,6 @@
 
 			var pn:int = pagin.pageNum - sign;
 
-			trace(pn);
 			if (dist > 100 && pn >= 1 && pn <= boardBtnDTOLL.length) {
 				end = boardLayer.x + sign * (stage.stageWidth - dist);
 
@@ -293,21 +295,20 @@
 				end = boardLayer.x - sign * dist;
 			}
 			moveBoardLayer(start, end);
+
 		}
 
 		private function moveBoardLayer(start:Number, end:Number):void {
-			if (!moveBoardLock) {
-				moveBoardLock = true;
-				var twn:Tween = new Tween(boardLayer, "x", Regular.easeOut, start, end, 0.3, true);
-				twn.addEventListener(TweenEvent.MOTION_FINISH, handlerMotionFinish);
-				twn.start();
-			}
+			var twn:Tween = new Tween(boardLayer, "x", Regular.easeOut, start, end, 3, true);
+			twn.addEventListener(TweenEvent.MOTION_FINISH, handlerMotionFinish);
+			twn.start();
 		}
 
 		private function handlerMotionFinish(e:Event):void {
 			var twn:Tween = e.currentTarget as Tween;
 			twn.removeEventListener(TweenEvent.MOTION_FINISH, handlerMotionFinish);
-			moveBoardLock = false;
+			boardLayer.mouseEnabled = true;
+			boardLayer.mouseChildren = true;
 		}
 
 		private function dtoListSetImg(v:Vector.<DesktopBtnDTO>, rs:RSImages):void {
