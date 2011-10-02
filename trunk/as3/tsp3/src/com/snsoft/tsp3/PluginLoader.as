@@ -59,7 +59,7 @@ package com.snsoft.tsp3 {
 				dispatchError("加载插件[" + swfName + "]出错：找不到配置项 " + XML_CFG_PLUGIN);
 			}
 			else {
-				pluginUrl = basePath + "/" + pluginName + "/" + swfName;
+				pluginUrl = relativeUrl + swfName;
 
 				var loader:Loader = new Loader();
 				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, handlerLoadPluginCmp);
@@ -75,7 +75,6 @@ package com.snsoft.tsp3 {
 				dispatchError("加载插件[" + pluginName + "]出错:swf文件不是插件。");
 			}
 			else {
-				
 				bp.pluginUrl = relativeUrl;
 				_plugin = bp;
 				dispatchCmp();
