@@ -26,12 +26,6 @@ package com.snsoft.tsp3 {
 
 		private static const XML_CFG_TYPE:String = "type";
 
-		private static const XML_CFG_TYPE_DESKTOP:String = "DESKTOP";
-
-		private static const XML_CFG_TYPE_FUNCTION:String = "FUNCTION";
-
-		private static const XML_CFG_TYPE_TOOL:String = "TOOL";
-
 		private var errorMsg:String = "";
 
 		private var xmlUrl:String;
