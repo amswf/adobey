@@ -9,7 +9,7 @@ package com.snsoft.tsp3 {
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 
-	public class Tsp extends MyMovieClip {
+	public class Tsp extends MyMovieClip implements ITsp {
 
 		private var xmlConfig:XMLConfig = null;
 
@@ -87,6 +87,8 @@ package com.snsoft.tsp3 {
 			pluginLayer.addChild(panelLayer);
 
 			PromptMsgMng.instance().init(stage);
+
+			Common.instance().initTsp(this);
 		}
 
 		override protected function init():void {

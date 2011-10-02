@@ -22,10 +22,6 @@ package com.snsoft.tsp3 {
 
 		private static const PLUGIN_XML_NAME:String = "version.xml";
 
-		private static const XML_CFG_PLUGIN:String = "start";
-
-		private static const XML_CFG_TYPE:String = "type";
-
 		private var errorMsg:String = "";
 
 		private var xmlUrl:String;
@@ -39,6 +35,8 @@ package com.snsoft.tsp3 {
 		private var relativeUrl:String;
 
 		private var params:Object;
+
+		private var plv:PluginVersion = new PluginVersion();
 
 		public function PluginLoader(basePath:String, pluginName:String, params:Object = null) {
 			this.basePath = basePath;
@@ -62,9 +60,19 @@ package com.snsoft.tsp3 {
 		}
 
 		private function handlerLoadXMLCMP(e:Event):void {
-			var swfName:String = xc.getConfig(XML_CFG_PLUGIN);
+
+			for (var i:int = 0; i < xc.length(); i++) {
+				var name:String = xc.getConfigName(i);
+				try {
+					plv[name] = xc.getConfigByIndex(i);
+				}
+				catch (e:Error) {
+				}
+			}
+
+			var swfName:String = plv.start;
 			if (pluginName == null) {
-				dispatchError("加载插件[" + swfName + "]出错：找不到配置项 " + XML_CFG_PLUGIN);
+				dispatchError("加载插件[" + swfName + "]出错：找不到配置项  [start]");
 			}
 			else {
 				pluginUrl = relativeUrl + swfName;
@@ -90,7 +98,7 @@ package com.snsoft.tsp3 {
 					bp.params = params;
 				}
 				bp.pluginUrl = relativeUrl;
-				bp.type = xc.getConfig(XML_CFG_TYPE);
+				bp.type = plv.type;
 				_plugin = bp;
 				dispatchCmp();
 			}

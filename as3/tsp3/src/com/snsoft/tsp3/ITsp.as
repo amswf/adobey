@@ -1,0 +1,6 @@
+package com.snsoft.tsp3 {
+
+	public interface ITsp {
+		function loadPlugin(pluginName:String, params:Object = null):void;
+	}
+}
