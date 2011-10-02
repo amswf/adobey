@@ -32,6 +32,10 @@
 
 	public class Desktop extends BPlugin {
 
+		public static const EVENT_TOOL_BTN_CLICK:String = "EVENT_TOOL_BTN_CLICK";
+
+		public static const EVENT_BOARD_BTN_CLICK:String = "EVENT_BOARD_BTN_CLICK";
+
 		private var pagin:Pagination = new Pagination();
 
 		private var toolBtnImgRS:RSImages = new RSImages();
@@ -69,6 +73,10 @@
 		private var paginLayer:Sprite = new Sprite();
 
 		private var moveBoardLock:Boolean = false;
+
+		private var _toolBtn:DesktopBtn;
+
+		private var _boardBtn:DesktopBtn;
 
 		public function Desktop() {
 			super();
@@ -203,12 +211,17 @@
 			var startToolBar:BtnBar = new BtnBar(startBarBtnDTOList);
 			tb = stage.stageHeight - startToolBar.height;
 			startToolBar.y = tb;
+			startToolBar.addEventListener(BtnBar.EVENT_BTN_CLICK, handlerBtnBarBtnClick);
+
 			var quickToolBar:BtnBar = new BtnBar(quickBarBtnDTOList);
 			quickToolBar.y = tb;
 			quickToolBar.x = startToolBar.width;
+			quickToolBar.addEventListener(BtnBar.EVENT_BTN_CLICK, handlerBtnBarBtnClick);
+
 			var stateToolBar:BtnBar = new BtnBar(stateBarBtnDTOList);
 			stateToolBar.y = tb;
 			stateToolBar.x = stage.stageWidth - stateToolBar.width;
+			stateToolBar.addEventListener(BtnBar.EVENT_BTN_CLICK, handlerBtnBarBtnClick);
 
 			toolBarLayer.addChild(startToolBar);
 			toolBarLayer.addChild(quickToolBar);
@@ -258,10 +271,30 @@
 			var dbw:int = boardw * (boardBtnDTOLL.length + 1);
 			var dragBounds:Rectangle = new Rectangle(dbx, 0, dbw, 0);
 			var td:TouchDrag = new TouchDrag(boardLayer, stage, dragBounds);
+			for (var k:int = 0; k < bbv.length; k++) {
+				var bb:BtnBoard = bbv[k];
+				var btnV:Vector.<DesktopBtn> = bb.btnV;
+				for (var i2:int = 0; i2 < btnV.length; i2++) {
+					var btn:DesktopBtn = btnV[i2];
+					btn.buttonMode = true;
+					td.addClickObj(btn);
+				}
+			}
+
 			td.addEventListener(TouchDragEvent.TOUCH_DRAG_MOUSE_UP, handlerDragMouseUp);
+			td.addEventListener(TouchDragEvent.TOUCH_CLICK, handlerDragClick);
 
 			pagin.addEventListener(PaginationEvent.PAGIN_CLICK, handlerPaginClick);
 
+		}
+
+		private function handlerBtnBarBtnClick(e:Event):void {
+			var btnBar:BtnBar = e.currentTarget as BtnBar;
+			var btn:DesktopBtn = btnBar.btn;
+			this._toolBtn = btn;
+			var dto:DesktopBtnDTO = btn.data as DesktopBtnDTO;
+			trace(dto.text);
+			this.dispatchEvent(new Event(EVENT_TOOL_BTN_CLICK));
 		}
 
 		private function handlerPaginClick(e:Event):void {
@@ -269,6 +302,15 @@
 			var end:Number = -(pagin.pageNum - 1) * stage.stageWidth;
 			pagin.setPageNum(pagin.pageNum, boardBtnDTOLL.length);
 			moveBoardLayer(start, end);
+		}
+
+		private function handlerDragClick(e:Event):void {
+			var td:TouchDrag = e.currentTarget as TouchDrag;
+			var btn:DesktopBtn = td.clickObj as DesktopBtn;
+			var dto:DesktopBtnDTO = btn.data as DesktopBtnDTO;
+			trace(dto.text);
+			this._boardBtn = btn;
+			this.dispatchEvent(new Event(EVENT_TOOL_BTN_CLICK));
 		}
 
 		private function handlerDragMouseUp(e:Event):void {
@@ -299,7 +341,7 @@
 		}
 
 		private function moveBoardLayer(start:Number, end:Number):void {
-			var twn:Tween = new Tween(boardLayer, "x", Regular.easeOut, start, end, 3, true);
+			var twn:Tween = new Tween(boardLayer, "x", Regular.easeOut, start, end, 0.3, true);
 			twn.addEventListener(TweenEvent.MOTION_FINISH, handlerMotionFinish);
 			twn.start();
 		}
@@ -361,6 +403,14 @@
 
 		public function set boardDataUrl(value:String):void {
 			_boardDataUrl = value;
+		}
+
+		public function get toolBtn():DesktopBtn {
+			return _toolBtn;
+		}
+
+		public function get boardBtn():DesktopBtn {
+			return _boardBtn;
 		}
 
 	}

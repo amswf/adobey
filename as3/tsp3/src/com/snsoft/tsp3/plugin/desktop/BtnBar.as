@@ -2,11 +2,17 @@
 	import com.snsoft.tsp3.plugin.desktop.dto.DesktopBtnDTO;
 
 	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.geom.Point;
 
 	public class BtnBar extends Sprite {
 
+		public static const EVENT_BTN_CLICK:String = "EVENT_BTN_CLICK";
+
 		private var dtoList:Vector.<DesktopBtnDTO>;
+
+		private var _btn:DesktopBtn;
 
 		public function BtnBar(dtoList:Vector.<DesktopBtnDTO>) {
 			super();
@@ -19,11 +25,28 @@
 			for (var i:int = 0; i < dtoList.length; i++) {
 				var dto:DesktopBtnDTO = dtoList[i];
 				var dbtn:DesktopBtn = new DesktopBtn(new Point(48, 48), dto.img, dto.text);
-				dbtn.data = dbtn;
+				dbtn.buttonMode = true;
+				dbtn.addEventListener(MouseEvent.CLICK, handlerBtnClick);
+				dbtn.data = dto;
 				dbtn.x = bx;
 				this.addChild(dbtn);
 				bx += dbtn.width;
 			}
 		}
+
+		private function handlerBtnClick(e:Event):void {
+			var dbtn:DesktopBtn = e.currentTarget as DesktopBtn;
+			_btn = dbtn;
+			this.dispatchEvent(new Event(EVENT_BTN_CLICK));
+		}
+
+		public function get btn():DesktopBtn {
+			return _btn;
+		}
+
+		public function set btn(value:DesktopBtn):void {
+			_btn = value;
+		}
+
 	}
 }
