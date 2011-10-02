@@ -32,10 +32,6 @@
 
 	public class Desktop extends BPlugin {
 
-		public static const EVENT_TOOL_BTN_CLICK:String = "EVENT_TOOL_BTN_CLICK";
-
-		public static const EVENT_BOARD_BTN_CLICK:String = "EVENT_BOARD_BTN_CLICK";
-
 		private var pagin:Pagination = new Pagination();
 
 		private var toolBtnImgRS:RSImages = new RSImages();
@@ -73,10 +69,6 @@
 		private var paginLayer:Sprite = new Sprite();
 
 		private var moveBoardLock:Boolean = false;
-
-		private var _toolBtn:DesktopBtn;
-
-		private var _boardBtn:DesktopBtn;
 
 		public function Desktop() {
 			super();
@@ -291,10 +283,7 @@
 		private function handlerBtnBarBtnClick(e:Event):void {
 			var btnBar:BtnBar = e.currentTarget as BtnBar;
 			var btn:DesktopBtn = btnBar.btn;
-			this._toolBtn = btn;
-			var dto:DesktopBtnDTO = btn.data as DesktopBtnDTO;
-			trace(dto.text);
-			this.dispatchEvent(new Event(EVENT_TOOL_BTN_CLICK));
+			btnClick(btn);
 		}
 
 		private function handlerPaginClick(e:Event):void {
@@ -307,10 +296,12 @@
 		private function handlerDragClick(e:Event):void {
 			var td:TouchDrag = e.currentTarget as TouchDrag;
 			var btn:DesktopBtn = td.clickObj as DesktopBtn;
+			btnClick(btn);
+		}
+
+		private function btnClick(btn:DesktopBtn):void {
 			var dto:DesktopBtnDTO = btn.data as DesktopBtnDTO;
 			trace(dto.text);
-			this._boardBtn = btn;
-			this.dispatchEvent(new Event(EVENT_TOOL_BTN_CLICK));
 		}
 
 		private function handlerDragMouseUp(e:Event):void {
@@ -403,14 +394,6 @@
 
 		public function set boardDataUrl(value:String):void {
 			_boardDataUrl = value;
-		}
-
-		public function get toolBtn():DesktopBtn {
-			return _toolBtn;
-		}
-
-		public function get boardBtn():DesktopBtn {
-			return _boardBtn;
 		}
 
 	}
