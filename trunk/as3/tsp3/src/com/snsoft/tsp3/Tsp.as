@@ -27,17 +27,41 @@ package com.snsoft.tsp3 {
 
 		private var welcome:Welcome;
 
+		/**
+		 * 背景层
+		 */
 		private var backLayer:Sprite = new Sprite();
 
+		/**
+		 * 启动界面层
+		 */
 		private var welcomeLayer:Sprite = new Sprite();
 
-		private var pluginLayer:Sprite = new Sprite();
+		/**
+		 * 桌面插件层
+		 */
+		private var desktopLayer:Sprite = new Sprite();
 
+		/**
+		 * 应用插件层
+		 */
+		private var windowLayer:Sprite = new Sprite();
+
+		/**
+		 * 辅助插件层
+		 */
+		private var panelLayer:Sprite = new Sprite();
+
+		/**
+		 * 弹出信息层
+		 */
 		private var promptMsgLayer:Sprite = new Sprite();
 
 		private var backSpr:Sprite;
 
 		private var isLoadedPlugin:Boolean = false;
+
+		private var plugins:Array = new Array();
 
 		public function Tsp() {
 			//注册动态调用的类
@@ -54,7 +78,7 @@ package com.snsoft.tsp3 {
 
 			this.addChild(backLayer);
 			this.addChild(welcomeLayer);
-			this.addChild(pluginLayer);
+			this.addChild(desktopLayer);
 			this.addChild(promptMsgLayer);
 
 			PromptMsgMng.instance().init(stage);
@@ -83,7 +107,7 @@ package com.snsoft.tsp3 {
 
 			var sign:Boolean = stage.displayState == StageDisplayState.FULL_SCREEN_INTERACTIVE;
 			welcome.visible = !sign;
-			pluginLayer.visible = sign;
+			desktopLayer.visible = sign;
 			backSpr.visible = sign;
 		}
 
@@ -114,7 +138,13 @@ package com.snsoft.tsp3 {
 			trace("handlerLoadPluginCmp");
 			var pld:PluginLoader = e.currentTarget as PluginLoader;
 			var plg:BPlugin = pld.plugin;
-			pluginLayer.addChild(plg);
+			desktopLayer.addChild(plg);
+		}
+
+		public function loadPlugin(pluginName:String, object:Object = null):void {
+			var pld:PluginLoader = new PluginLoader(PLUGIN_BASE_PATH, pluginName);
+			pld.addEventListener(Event.COMPLETE, handlerLoadPluginCmp);
+			pld.load();
 		}
 	}
 }
