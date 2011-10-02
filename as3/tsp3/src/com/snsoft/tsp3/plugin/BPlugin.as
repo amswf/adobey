@@ -18,6 +18,12 @@ package com.snsoft.tsp3.plugin {
 	 */
 	public class BPlugin extends MovieClip {
 
+		public static const TYPE_DESKTOP:String = "DESKTOP";
+
+		public static const TYPE_FUNCTION:String = "FUNCTION";
+
+		public static const TYPE_TOOL:String = "TOOL";
+
 		private var _promptMsgMng:PromptMsgMng;
 
 		private var _dataBaseUrl:String;
@@ -27,6 +33,8 @@ package com.snsoft.tsp3.plugin {
 		private var _params:Object;
 
 		protected var pluginCfg:Object;
+
+		private var _type:String;
 
 		public function BPlugin() {
 			super();
@@ -47,7 +55,7 @@ package com.snsoft.tsp3.plugin {
 				cfg.configToObj(pluginCfg);
 			}
 			else {
-				trace(this,"没有初始化pluginCfg属性");
+				trace(this, "没有初始化pluginCfg属性");
 			}
 			dataBaseUrl = Common.instance().dataBaseUrl;
 			init();
@@ -89,6 +97,17 @@ package com.snsoft.tsp3.plugin {
 		public function set params(value:Object):void {
 			_params = value;
 		}
+
+		public function get type():String
+		{
+			return _type;
+		}
+
+		public function set type(value:String):void
+		{
+			_type = value;
+		}
+
 
 	}
 }
