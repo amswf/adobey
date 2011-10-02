@@ -34,7 +34,6 @@ package com.snsoft.tsp3.plugin {
 			var cfg:XMLConfig = new XMLConfig();
 			cfg.addEventListener(Event.COMPLETE, handlerLoadConfigCmp);
 			cfg.load(pluginUrl + "config.xml");
-
 		}
 
 		private function handlerLoadConfigCmp(e:Event):void {

@@ -242,6 +242,12 @@
 				bbv.push(btnBoard);
 				boardLayer.addChild(btnBoard);
 
+				var back:Sprite = ViewUtil.creatRect(100, 100, 0xffffff);
+				back.x = j * boardw;
+				back.width = boardw;
+				back.height = toolbm.y;
+				boardLayer.addChild(back);
+
 					//var bmd:BitmapData = new BitmapData(boardw, boardh, true, 0x00ffffff);
 					//bmd.draw(btnBoard);
 					//
@@ -250,14 +256,6 @@
 					//bm.x = j * stage.stageWidth;
 					//boardLayer.addChild(bm);
 			}
-
-			var boardleft:Sprite = ViewUtil.creatRect(boardw, boardh, 0xffffff);
-			boardleft.x = -boardw;
-			boardLayer.addChild(boardleft);
-
-			var boardright:Sprite = ViewUtil.creatRect(boardw, boardh, 0xffffff);
-			boardright.x = boardBtnDTOLL.length * boardw;
-			boardLayer.addChild(boardright);
 
 			var dbx:int = -boardw * (boardBtnDTOLL.length);
 			var dbw:int = boardw * (boardBtnDTOLL.length + 1);
