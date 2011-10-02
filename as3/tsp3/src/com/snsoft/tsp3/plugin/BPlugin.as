@@ -7,6 +7,7 @@ package com.snsoft.tsp3.plugin {
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.Event;
+	import flash.utils.getDefinitionByName;
 
 	/**
 	 * 插件基类，伪抽象类
@@ -23,6 +24,10 @@ package com.snsoft.tsp3.plugin {
 
 		private var _pluginUrl:String = "";
 
+		private var _params:Object;
+
+		protected var pluginCfg:Object;
+
 		public function BPlugin() {
 			super();
 			this.addEventListener(Event.ENTER_FRAME, handlerEnterFrame);
@@ -38,7 +43,12 @@ package com.snsoft.tsp3.plugin {
 
 		private function handlerLoadConfigCmp(e:Event):void {
 			var cfg:XMLConfig = e.currentTarget as XMLConfig;
-			cfg.configToObj(this);
+			if (pluginCfg != null) {
+				cfg.configToObj(pluginCfg);
+			}
+			else {
+				trace(this,"没有初始化pluginCfg属性");
+			}
 			dataBaseUrl = Common.instance().dataBaseUrl;
 			init();
 		}
@@ -70,6 +80,14 @@ package com.snsoft.tsp3.plugin {
 
 		public function set pluginUrl(value:String):void {
 			_pluginUrl = value;
+		}
+
+		public function get params():Object {
+			return _params;
+		}
+
+		public function set params(value:Object):void {
+			_params = value;
 		}
 
 	}

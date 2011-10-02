@@ -50,14 +50,6 @@
 
 		private var stateBarBtnDTOList:Vector.<DesktopBtnDTO> = new Vector.<DesktopBtnDTO>();
 
-		private var _toolBarDataUrl:String;
-
-		private var _boardDataUrl:String;
-
-		private var _backImgUrl:String;
-
-		private var _toolBarBackImgUrl:String;
-
 		private var toolBarLayer:Sprite = new Sprite();
 
 		private var toolBarBackLayer:Sprite = new Sprite();
@@ -72,6 +64,7 @@
 
 		public function Desktop() {
 			super();
+			pluginCfg = new DesktopCfg();
 		}
 
 		override protected function init():void {
@@ -86,8 +79,8 @@
 			this.addChild(paginLayer);
 			this.addChild(toolBarLayer);
 
-			imgRS.addResUrl(toolBarBackImgUrl);
-			imgRS.addResUrl(backImgUrl);
+			imgRS.addResUrl(pluginCfg.toolBarBackImgUrl);
+			imgRS.addResUrl(pluginCfg.backImgUrl);
 
 			PromptMsgMng.instance().setMsg("Desktop");
 
@@ -96,8 +89,8 @@
 
 		private function loadBarsXML():void {
 
-			xmlDataRS.addResUrl(dataBaseUrl + toolBarDataUrl);
-			xmlDataRS.addResUrl(dataBaseUrl + boardDataUrl);
+			xmlDataRS.addResUrl(dataBaseUrl + pluginCfg.toolBarDataUrl);
+			xmlDataRS.addResUrl(dataBaseUrl + pluginCfg.boardDataUrl);
 
 			var rlm:ResLoadManager = new ResLoadManager();
 			rlm.addEventListener(Event.COMPLETE, handlerLoadXMLDataCmp);
@@ -112,8 +105,8 @@
 
 		private function parseXMLData():void {
 
-			var tbstr:String = xmlDataRS.getTextByUrl(dataBaseUrl + toolBarDataUrl);
-			var bstr:String = xmlDataRS.getTextByUrl(dataBaseUrl + boardDataUrl);
+			var tbstr:String = xmlDataRS.getTextByUrl(dataBaseUrl + pluginCfg.toolBarDataUrl);
+			var bstr:String = xmlDataRS.getTextByUrl(dataBaseUrl + pluginCfg.boardDataUrl);
 
 			var tbxd:XMLData = new XMLData(tbstr);
 			var bxd:XMLData = new XMLData(bstr);
@@ -184,7 +177,7 @@
 
 		private function initDesktop():void {
 
-			var backbmd:BitmapData = imgRS.getImageByUrl(backImgUrl);
+			var backbmd:BitmapData = imgRS.getImageByUrl(pluginCfg.backImgUrl);
 			var backbm:Bitmap = new Bitmap(backbmd, "auto", true);
 			backbm.width = stage.stageWidth;
 			backbm.height = stage.stageHeight;
@@ -219,7 +212,7 @@
 			toolBarLayer.addChild(quickToolBar);
 			toolBarLayer.addChild(stateToolBar);
 
-			var toolbmd:BitmapData = imgRS.getImageByUrl(toolBarBackImgUrl);
+			var toolbmd:BitmapData = imgRS.getImageByUrl(pluginCfg.toolBarBackImgUrl);
 			var toolbm:Bitmap = new Bitmap(toolbmd, "auto", true);
 			toolbm.width = stage.stageWidth;
 			toolbm.height = toolBarLayer.height;
@@ -242,7 +235,7 @@
 				back.width = boardw;
 				back.height = toolbm.y;
 				boardLayer.addChild(back);
-				
+
 				var btnBoard:BtnBoard = new BtnBoard(boardBtnDTOLL[j], boardw, boardh, 80, 100);
 				btnBoard.x = j * boardw;
 				bbv.push(btnBoard);
@@ -353,38 +346,6 @@
 			paramsNode.childNodeTextTObj(params);
 			dto.params = params;
 			return dto;
-		}
-
-		public function get toolBarDataUrl():String {
-			return _toolBarDataUrl;
-		}
-
-		public function set toolBarDataUrl(value:String):void {
-			_toolBarDataUrl = value;
-		}
-
-		public function get backImgUrl():String {
-			return _backImgUrl;
-		}
-
-		public function set backImgUrl(value:String):void {
-			_backImgUrl = value;
-		}
-
-		public function get toolBarBackImgUrl():String {
-			return _toolBarBackImgUrl;
-		}
-
-		public function set toolBarBackImgUrl(value:String):void {
-			_toolBarBackImgUrl = value;
-		}
-
-		public function get boardDataUrl():String {
-			return _boardDataUrl;
-		}
-
-		public function set boardDataUrl(value:String):void {
-			_boardDataUrl = value;
 		}
 
 	}
