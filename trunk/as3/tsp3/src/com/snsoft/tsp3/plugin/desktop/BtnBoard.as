@@ -20,6 +20,8 @@ package com.snsoft.tsp3.plugin.desktop {
 
 		private var coords:Vector.<Point> = new Vector.<Point>();
 
+		private var _btnV:Vector.<DesktopBtn> = new Vector.<DesktopBtn>();
+
 		public function BtnBoard(dtoList:Vector.<DesktopBtnDTO>, boardWidth:int, boardHeight:int, spaceX:int, spaceY:int) {
 			super();
 			this.dtoList = dtoList;
@@ -33,7 +35,7 @@ package com.snsoft.tsp3.plugin.desktop {
 
 		private function init():void {
 
-			var back:Sprite = ViewUtil.creatRect(100, 100,0xffffff);
+			var back:Sprite = ViewUtil.creatRect(100, 100, 0xffffff);
 			back.width = boardWidth;
 			back.height = boardHeight;
 			this.addChild(back);
@@ -55,9 +57,16 @@ package com.snsoft.tsp3.plugin.desktop {
 				var dbtn:DesktopBtn = new DesktopBtn(new Point(48, 48), dto.img, dto.text);
 				dbtn.x = coords[k].x - dbtn.width;
 				dbtn.y = coords[k].y;
+				dbtn.data = dto;
 				this.addChild(dbtn);
+				btnV.push(dbtn);
 			}
 
 		}
+
+		public function get btnV():Vector.<DesktopBtn> {
+			return _btnV;
+		}
+
 	}
 }
