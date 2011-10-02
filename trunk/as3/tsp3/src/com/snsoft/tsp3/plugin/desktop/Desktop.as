@@ -237,24 +237,17 @@
 
 			var bbv:Vector.<BtnBoard> = new Vector.<BtnBoard>();
 			for (var j:int = 0; j < boardBtnDTOLL.length; j++) {
-				var btnBoard:BtnBoard = new BtnBoard(boardBtnDTOLL[j], boardw, boardh, 80, 100);
-				btnBoard.x = j * boardw;
-				bbv.push(btnBoard);
-				boardLayer.addChild(btnBoard);
-
 				var back:Sprite = ViewUtil.creatRect(100, 100, 0xffffff);
 				back.x = j * boardw;
 				back.width = boardw;
 				back.height = toolbm.y;
 				boardLayer.addChild(back);
+				
+				var btnBoard:BtnBoard = new BtnBoard(boardBtnDTOLL[j], boardw, boardh, 80, 100);
+				btnBoard.x = j * boardw;
+				bbv.push(btnBoard);
+				boardLayer.addChild(btnBoard);
 
-					//var bmd:BitmapData = new BitmapData(boardw, boardh, true, 0x00ffffff);
-					//bmd.draw(btnBoard);
-					//
-
-					//var bm:Bitmap = new Bitmap(bmd, "auto", true);
-					//bm.x = j * stage.stageWidth;
-					//boardLayer.addChild(bm);
 			}
 
 			var dbx:int = -boardw * (boardBtnDTOLL.length);
