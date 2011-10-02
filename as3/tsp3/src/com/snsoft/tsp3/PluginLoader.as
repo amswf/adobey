@@ -1,5 +1,7 @@
 package com.snsoft.tsp3 {
 	import com.snsoft.tsp3.plugin.BPlugin;
+	import com.snsoft.util.di.DependencyInjection;
+	import com.snsoft.util.di.ObjectProperty;
 	import com.snsoft.util.xmldom.XMLConfig;
 
 	import flash.display.Loader;
@@ -22,6 +24,14 @@ package com.snsoft.tsp3 {
 
 		private static const XML_CFG_PLUGIN:String = "start";
 
+		private static const XML_CFG_TYPE:String = "type";
+
+		private static const XML_CFG_TYPE_DESKTOP:String = "DESKTOP";
+
+		private static const XML_CFG_TYPE_FUNCTION:String = "FUNCTION";
+
+		private static const XML_CFG_TYPE_TOOL:String = "TOOL";
+
 		private var errorMsg:String = "";
 
 		private var xmlUrl:String;
@@ -34,9 +44,13 @@ package com.snsoft.tsp3 {
 
 		private var relativeUrl:String;
 
-		public function PluginLoader(basePath:String, pluginName:String) {
+		private var params:Object;
+
+		public function PluginLoader(basePath:String, pluginName:String, params:Object = null) {
 			this.basePath = basePath;
 			this.pluginName = pluginName;
+			this.params = params;
+
 			relativeUrl = basePath + pluginName + "/";
 			xmlUrl = relativeUrl + PLUGIN_XML_NAME;
 		}
@@ -75,7 +89,14 @@ package com.snsoft.tsp3 {
 				dispatchError("加载插件[" + pluginName + "]出错:swf文件不是插件。");
 			}
 			else {
+				if (bp.params != null) {
+					DependencyInjection.diToObj(params, bp.params);
+				}
+				else {
+					bp.params = params;
+				}
 				bp.pluginUrl = relativeUrl;
+				bp.type = xc.getConfig(XML_CFG_TYPE);
 				_plugin = bp;
 				dispatchCmp();
 			}
