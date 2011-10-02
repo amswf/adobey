@@ -3,7 +3,7 @@ package com.snsoft.tsp3 {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 
-	public class Welcome extends MyMovieClip {
+	public class Welcome extends MySprite {
 
 		private var sBtn:MovieClip;
 

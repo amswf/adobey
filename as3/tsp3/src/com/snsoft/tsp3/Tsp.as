@@ -9,7 +9,7 @@ package com.snsoft.tsp3 {
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 
-	public class Tsp extends MyMovieClip implements ITsp {
+	public class Tsp extends MySprite implements ITsp {
 
 		private var xmlConfig:XMLConfig = null;
 

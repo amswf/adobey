@@ -2,8 +2,8 @@ package com.snsoft.tsp3 {
 	import flash.display.MovieClip;
 	import flash.events.Event;
 
-	public class MyMovieClip extends MovieClip {
-		public function MyMovieClip() {
+	public class MySprite extends MovieClip {
+		public function MySprite() {
 			super();
 			this.addEventListener(Event.ENTER_FRAME, handlerEnterFrame);
 		}
