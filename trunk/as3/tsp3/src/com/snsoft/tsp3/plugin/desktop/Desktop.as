@@ -1,4 +1,5 @@
 ﻿package com.snsoft.tsp3.plugin.desktop {
+	import com.snsoft.tsp3.Common;
 	import com.snsoft.tsp3.PromptMsgMng;
 	import com.snsoft.tsp3.ViewUtil;
 	import com.snsoft.tsp3.XMLData;
@@ -286,6 +287,8 @@
 		private function btnClick(btn:DesktopBtn):void {
 			var dto:DesktopBtnDTO = btn.data as DesktopBtnDTO;
 			trace(dto.text);
+
+			Common.instance().loadPlugin("news");
 		}
 
 		private function handlerDragMouseUp(e:Event):void {
