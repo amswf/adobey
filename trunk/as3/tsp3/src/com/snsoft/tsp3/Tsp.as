@@ -1,17 +1,13 @@
 package com.snsoft.tsp3 {
 	import com.snsoft.tsp3.plugin.BPlugin;
 	import com.snsoft.util.rlm.rs.*;
-	import com.snsoft.util.rlm.rs.RSSwf;
 	import com.snsoft.util.xmldom.XMLConfig;
 
-	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageDisplayState;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
-	import flash.events.MouseEvent;
-	import flash.system.System;
 
 	public class Tsp extends MyMovieClip {
 
@@ -36,6 +32,11 @@ package com.snsoft.tsp3 {
 		 * 启动界面层
 		 */
 		private var welcomeLayer:Sprite = new Sprite();
+
+		/**
+		 * 插件层
+		 */
+		private var pluginLayer:Sprite = new Sprite();
 
 		/**
 		 * 桌面插件层
@@ -78,8 +79,12 @@ package com.snsoft.tsp3 {
 
 			this.addChild(backLayer);
 			this.addChild(welcomeLayer);
-			this.addChild(desktopLayer);
+			this.addChild(pluginLayer);
 			this.addChild(promptMsgLayer);
+
+			pluginLayer.addChild(desktopLayer);
+			pluginLayer.addChild(windowLayer);
+			pluginLayer.addChild(panelLayer);
 
 			PromptMsgMng.instance().init(stage);
 		}
@@ -107,7 +112,7 @@ package com.snsoft.tsp3 {
 
 			var sign:Boolean = stage.displayState == StageDisplayState.FULL_SCREEN_INTERACTIVE;
 			welcome.visible = !sign;
-			desktopLayer.visible = sign;
+			pluginLayer.visible = sign;
 			backSpr.visible = sign;
 		}
 
@@ -129,7 +134,11 @@ package com.snsoft.tsp3 {
 			trace("handlerLoadCfgCmp");
 			var pluginName:String = xmlConfig.getConfig("plugin");
 
-			var pld:PluginLoader = new PluginLoader(PLUGIN_BASE_PATH, pluginName);
+			loadPlugin(pluginName);
+		}
+
+		public function loadPlugin(pluginName:String, params:Object = null):void {
+			var pld:PluginLoader = new PluginLoader(PLUGIN_BASE_PATH, pluginName, params);
 			pld.addEventListener(Event.COMPLETE, handlerLoadPluginCmp);
 			pld.load();
 		}
@@ -138,13 +147,21 @@ package com.snsoft.tsp3 {
 			trace("handlerLoadPluginCmp");
 			var pld:PluginLoader = e.currentTarget as PluginLoader;
 			var plg:BPlugin = pld.plugin;
-			desktopLayer.addChild(plg);
+
+			var type:String = plg.type;
+
+			var layer:Sprite;
+			if (type == BPlugin.TYPE_DESKTOP) {
+				layer = desktopLayer;
+			}
+			else if (type == BPlugin.TYPE_TOOL) {
+				layer = panelLayer;
+			}
+			else {
+				layer = windowLayer;
+			}
+			layer.addChild(plg);
 		}
 
-		public function loadPlugin(pluginName:String, object:Object = null):void {
-			var pld:PluginLoader = new PluginLoader(PLUGIN_BASE_PATH, pluginName);
-			pld.addEventListener(Event.COMPLETE, handlerLoadPluginCmp);
-			pld.load();
-		}
 	}
 }

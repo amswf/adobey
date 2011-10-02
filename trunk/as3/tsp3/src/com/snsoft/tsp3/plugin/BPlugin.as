@@ -34,7 +34,7 @@ package com.snsoft.tsp3.plugin {
 
 		protected var pluginCfg:Object;
 
-		private var _type:String;
+		protected var _type:String;
 
 		public function BPlugin() {
 			super();
@@ -98,16 +98,13 @@ package com.snsoft.tsp3.plugin {
 			_params = value;
 		}
 
-		public function get type():String
-		{
+		public function get type():String {
 			return _type;
 		}
 
-		public function set type(value:String):void
-		{
+		public function set type(value:String):void {
 			_type = value;
 		}
-
 
 	}
 }
