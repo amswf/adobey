@@ -38,11 +38,11 @@ package com.snsoft.tsp3.plugin {
 
 		public function BPlugin() {
 			super();
-			this.addEventListener(Event.ENTER_FRAME, handlerEnterFrame);
+			this.addEventListener(Event.ADDED_TO_STAGE, handlerEnterFrame);
 		}
 
 		private function handlerEnterFrame(e:Event):void {
-			this.removeEventListener(Event.ENTER_FRAME, handlerEnterFrame);
+			this.removeEventListener(Event.ADDED_TO_STAGE, handlerEnterFrame);
 
 			var cfg:XMLConfig = new XMLConfig();
 			cfg.addEventListener(Event.COMPLETE, handlerLoadConfigCmp);

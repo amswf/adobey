@@ -1,16 +1,15 @@
 package com.snsoft.tsp3 {
 	import flash.display.MovieClip;
-	import flash.display.Sprite;
 	import flash.events.Event;
 
-	public class MySprite extends Sprite {
-		public function MySprite() {
+	public class MyMC extends MovieClip {
+		public function MyMC() {
 			super();
-			this.addEventListener(Event.ADDED_TO_STAGE, handlerEnterFrame);
+			this.addEventListener(Event.ENTER_FRAME, handlerEnterFrame);
 		}
 
 		private function handlerEnterFrame(e:Event):void {
-			this.removeEventListener(Event.ADDED_TO_STAGE, handlerEnterFrame);
+			this.removeEventListener(Event.ENTER_FRAME, handlerEnterFrame);
 			init();
 		}
 
