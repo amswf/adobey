@@ -15,6 +15,7 @@ package com.snsoft.tsp3 {
 
 		protected function init():void {
 			trace("需要重写 init方法！");
+			throw new Error("需要重写 init方法！");
 		}
 	}
 }
