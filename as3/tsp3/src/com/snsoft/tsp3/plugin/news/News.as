@@ -1,5 +1,6 @@
 package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.plugin.BPlugin;
+	import com.snsoft.tsp3.plugin.news.dto.NewsTitleDTO;
 
 	import flash.display.BitmapData;
 	import flash.display.StageAlign;
@@ -18,6 +19,16 @@ package com.snsoft.tsp3.plugin.news {
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 
+			var nw:int = stage.stageWidth;
+			var nh:int = stage.stageHeight - 86;
+
+			var th:int = 100;
+			var ntdto:NewsTitleDTO = new NewsTitleDTO();
+			ntdto.text = "新闻资讯";
+			ntdto.titleImg = new BitmapData(48, 48);
+			var nt:NewsTitle = new NewsTitle(ntdto, stage.stageWidth, th);
+			this.addChild(nt);
+
 			var btnv:Vector.<NewsImgBtn> = new Vector.<NewsImgBtn>();
 			for (var i:int = 0; i < 20; i++) {
 				var nb:NewsImgBtn = new NewsImgBtn(new Point(48, 48), new BitmapData(100, 100), "这里的山路十八", 126);
@@ -30,9 +41,14 @@ package com.snsoft.tsp3.plugin.news {
 				btnv.push(nb);
 			}
 
-			var nbb:NewsBtnBox = new NewsBtnBox(btnv, 400);
+			var mh:int = nh - th;
+
+			var nbb:NewsBtnBox = new NewsBtnBox(btnv, mh);
 			this.addChild(nbb);
+			nbb.x = stage.stageWidth - nbb.width;
+			nbb.y = th;
 			nbb.addEventListener(NewsBtnBox.EVENT_BTN_CLICK, handlerBtnClick);
+
 		}
 
 		private function handlerBtnClick(e:Event):void {

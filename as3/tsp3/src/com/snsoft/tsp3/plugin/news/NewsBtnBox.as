@@ -28,6 +28,7 @@ package com.snsoft.tsp3.plugin.news {
 			super();
 			this.btnv = btnv;
 			this.boxHeight = boxHeight;
+
 		}
 
 		override protected function init():void {
