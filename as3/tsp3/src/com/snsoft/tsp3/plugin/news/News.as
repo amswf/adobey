@@ -18,9 +18,9 @@ package com.snsoft.tsp3.plugin.news {
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 
-			var btnv:Vector.<NewsBtn> = new Vector.<NewsBtn>();
+			var btnv:Vector.<NewsImgBtn> = new Vector.<NewsImgBtn>();
 			for (var i:int = 0; i < 20; i++) {
-				var nb:NewsBtn = new NewsBtn(new Point(48, 48), new BitmapData(100, 100), "这里的山路十八", 126);
+				var nb:NewsImgBtn = new NewsImgBtn(new Point(48, 48), new BitmapData(100, 100), "这里的山路十八", 126);
 				nb.buttonMode = true;
 
 				var dto:NewsBtnDTO = new NewsBtnDTO();
@@ -37,7 +37,7 @@ package com.snsoft.tsp3.plugin.news {
 
 		private function handlerBtnClick(e:Event):void {
 			var nbb:NewsBtnBox = e.currentTarget as NewsBtnBox;
-			var btn:NewsBtn = nbb.clickBtn;
+			var btn:NewsImgBtn = nbb.clickBtn;
 			var dto:NewsBtnDTO = btn.data as NewsBtnDTO;
 			trace(dto.text);
 		}

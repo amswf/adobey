@@ -10,7 +10,7 @@ package com.snsoft.tsp3.plugin.news {
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 
-	public class NewsBtn extends Sprite {
+	public class NewsImgBtn extends Sprite {
 
 		private var imgSize:Point = new Point();
 
@@ -30,7 +30,7 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var selBack:Sprite;
 
-		public function NewsBtn(imgSize:Point, img:BitmapData, text:String, textWidth:int) {
+		public function NewsImgBtn(imgSize:Point, img:BitmapData, text:String, textWidth:int) {
 			super();
 			this.imgSize = imgSize;
 			this.img = img;
