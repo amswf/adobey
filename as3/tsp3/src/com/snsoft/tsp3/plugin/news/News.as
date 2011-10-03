@@ -11,13 +11,13 @@ package com.snsoft.tsp3.plugin.news {
 		public function News() {
 			super();
 
-			stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.align = StageAlign.TOP_LEFT;
-
 			pluginCfg = new Object();
 		}
 
 		override protected function init():void {
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.align = StageAlign.TOP_LEFT;
+
 			var btnv:Vector.<NewsBtn> = new Vector.<NewsBtn>();
 			for (var i:int = 0; i < 20; i++) {
 				var nb:NewsBtn = new NewsBtn(new Point(48, 48), new BitmapData(100, 100), "这里的山路十八", 126);
