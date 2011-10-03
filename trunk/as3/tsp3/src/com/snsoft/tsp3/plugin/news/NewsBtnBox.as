@@ -12,7 +12,7 @@ package com.snsoft.tsp3.plugin.news {
 
 		public static const EVENT_BTN_CLICK:String = "event_btn_click";
 
-		private var btnv:Vector.<NewsBtn>;
+		private var btnv:Vector.<NewsImgBtn>;
 
 		private var boxHeight:int;
 
@@ -22,9 +22,9 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var backLayer:Sprite = new Sprite();
 
-		private var _clickBtn:NewsBtn;
+		private var _clickBtn:NewsImgBtn;
 
-		public function NewsBtnBox(btnv:Vector.<NewsBtn>, boxHeight:int) {
+		public function NewsBtnBox(btnv:Vector.<NewsImgBtn>, boxHeight:int) {
 			super();
 			this.btnv = btnv;
 			this.boxHeight = boxHeight;
@@ -38,7 +38,7 @@ package com.snsoft.tsp3.plugin.news {
 
 			var btnH:int;
 			for (var i:int = 0; i < btnv.length; i++) {
-				var btn:NewsBtn = btnv[i];
+				var btn:NewsImgBtn = btnv[i];
 				btn.y = i * btn.height;
 				btnsLayer.addChild(btn);
 				btnH = btn.height;
@@ -60,7 +60,7 @@ package com.snsoft.tsp3.plugin.news {
 
 			var td:TouchDrag = new TouchDrag(btnsLayer, stage, rect);
 			for (var j:int = 0; j < btnv.length; j++) {
-				var b:NewsBtn = btnv[j];
+				var b:NewsImgBtn = btnv[j];
 				b.buttonMode = true;
 				b.mouseChildren = false;
 				td.addClickObj(b);
@@ -71,11 +71,11 @@ package com.snsoft.tsp3.plugin.news {
 
 		private function handlerClick(e:Event):void {
 			var td:TouchDrag = e.currentTarget as TouchDrag;
-			this._clickBtn = td.clickObj as NewsBtn;
+			this._clickBtn = td.clickObj as NewsImgBtn;
 			this.dispatchEvent(new Event(EVENT_BTN_CLICK));
 		}
 
-		public function get clickBtn():NewsBtn {
+		public function get clickBtn():NewsImgBtn {
 			return _clickBtn;
 		}
 
