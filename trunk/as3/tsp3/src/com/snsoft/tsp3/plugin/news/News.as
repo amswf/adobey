@@ -1,5 +1,7 @@
 package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.ViewUtil;
+	import com.snsoft.tsp3.pagination.Pagination;
+	import com.snsoft.tsp3.pagination.PaginationEvent;
 	import com.snsoft.tsp3.plugin.BPlugin;
 	import com.snsoft.tsp3.plugin.news.dto.NewsTitleDTO;
 	import com.snsoft.util.SkinsUtil;
@@ -13,6 +15,13 @@ package com.snsoft.tsp3.plugin.news {
 	import flash.geom.Point;
 
 	public class News extends BPlugin {
+
+		private var boader:int = 10;
+
+		private var newsBook:NewsBook;
+
+		private var pagin:Pagination;
+
 		public function News() {
 			super();
 
@@ -53,20 +62,37 @@ package com.snsoft.tsp3.plugin.news {
 			nbb.y = th;
 			nbb.addEventListener(NewsBtnBox.EVENT_BTN_CLICK, handlerBtnClick);
 
+			pagin = new Pagination(5);
+			this.addChild(pagin);
+			pagin.x = (stage.stageWidth - nbb.width - pagin.width) / 2;
+			pagin.y = nh - pagin.height - boader;
+			pagin.addEventListener(PaginationEvent.PAGIN_CLICK, handlerPaginBtnClick);
 			//先在这里实现分页拖动
 
-			var nb:NewsBook = new NewsBook(new Point(stage.stageWidth - nbb.width, mh));
-			nb.y = th;
-			nb.addEventListener(NewsBook.NEED_NEXT, handlerBookNext);
-			nb.addEventListener(NewsBook.NEED_PREV, handlerBookPrev);
-			this.addChild(nb);
+			newsBook = new NewsBook(new Point(stage.stageWidth - nbb.width, pagin.y - boader - th));
+			newsBook.y = th;
+			newsBook.addEventListener(NewsBook.NEED_NEXT, handlerBookNext);
+			newsBook.addEventListener(NewsBook.NEED_PREV, handlerBookPrev);
+			newsBook.addEventListener(NewsBook.CHANGE_PAGE, handlerChangePage);
+			this.addChild(newsBook);
+		}
+
+		private function handlerPaginBtnClick(e:Event):void {
+			var pagin:Pagination = e.currentTarget as Pagination;
+			newsBook.gotoPage(pagin.pageNum);
+		}
+
+		private function handlerChangePage(e:Event):void {
+			var nb:NewsBook = e.currentTarget as NewsBook;
+			pagin.setPageNum(nb.currentNum, 5);
 		}
 
 		private function handlerBookNext(e:Event):void {
 			trace("handlerBookNext");
 			var nb:NewsBook = e.currentTarget as NewsBook;
+			pagin.setPageNum(pagin.pageNum, 5);
 
-			if (nb.pageNum <= 5) {
+			if (nb.npNum <= 5) {
 				var v:Vector.<Sprite> = new Vector.<Sprite>();
 				for (var i:int = 0; i < 15; i++) {
 					var spr:Sprite = new Sprite();
@@ -74,7 +100,7 @@ package com.snsoft.tsp3.plugin.news {
 					v.push(spr);
 				}
 
-				var nbp:NewsBookPage = new NewsBookPage(new Point(nb.bookSize.x, 300), v, nb.pageNum, 5);
+				var nbp:NewsBookPage = new NewsBookPage(new Point(nb.bookSize.x, 300), v, nb.npNum, 5);
 				nb.addPageNext(nbp);
 			}
 		}
@@ -82,6 +108,7 @@ package com.snsoft.tsp3.plugin.news {
 		private function handlerBookPrev(e:Event):void {
 			trace("handlerBookPrev");
 			var nb:NewsBook = e.currentTarget as NewsBook;
+			pagin.setPageNum(pagin.pageNum, 5);
 
 			var v:Vector.<Sprite> = new Vector.<Sprite>();
 			for (var i:int = 0; i < 15; i++) {
@@ -90,7 +117,7 @@ package com.snsoft.tsp3.plugin.news {
 				v.push(spr);
 			}
 
-			var nbp:NewsBookPage = new NewsBookPage(new Point(nb.bookSize.x, 300), v, nb.pageNum, 5);
+			var nbp:NewsBookPage = new NewsBookPage(new Point(nb.bookSize.x, 300), v, nb.npNum, 5);
 			nb.addPagePrev(nbp);
 		}
 
