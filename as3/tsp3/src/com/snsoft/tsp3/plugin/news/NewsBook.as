@@ -53,24 +53,20 @@ package com.snsoft.tsp3.plugin.news {
 			dispatchEventNeedNext();
 		}
 
+		public function gotoPage(pageNum:int):void {
+
+		}
+
 		private function handlerTouchUp(e:Event):void {
 			var rect:Rectangle = pageLayer.getRect(this);
 			if (rect.bottom - 5 <= bookSize.y) {
-				if (pagev.length > 0) {
-					var ep:NewsBookPage = pagev[pagev.length - 1];
-					_pageNum = ep.pageNum + 1;
-				}
+
 				dispatchEventNeedNext();
 			}
 			else if (rect.top + 5 >= 0) {
-				if (pagev.length > 0) {
-					var fp:NewsBookPage = pagev[0];
-					var n:int = fp.pageNum - 1;
-					if (n >= 1) {
-						_pageNum = n;
-						dispatchEventNeedPrev();
-					}
-				}
+
+				dispatchEventNeedPrev();
+
 			}
 		}
 
@@ -151,11 +147,22 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		private function dispatchEventNeedNext():void {
+			if (pagev.length > 0) {
+				var ep:NewsBookPage = pagev[pagev.length - 1];
+				_pageNum = ep.pageNum + 1;
+			}
 			this.dispatchEvent(new Event(NEED_NEXT));
 		}
 
 		private function dispatchEventNeedPrev():void {
-			this.dispatchEvent(new Event(NEED_PREV));
+			if (pagev.length > 0) {
+				var fp:NewsBookPage = pagev[0];
+				var n:int = fp.pageNum - 1;
+				if (n >= 1) {
+					_pageNum = n;
+					this.dispatchEvent(new Event(NEED_PREV));
+				}
+			}
 		}
 
 		public function get bookSize():Point {
