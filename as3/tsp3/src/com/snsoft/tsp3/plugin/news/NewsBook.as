@@ -3,6 +3,7 @@ package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.ViewUtil;
 	import com.snsoft.tsp3.touch.TouchDrag;
 	import com.snsoft.tsp3.touch.TouchDragEvent;
+	import com.snsoft.util.SpriteUtil;
 
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -14,6 +15,8 @@ package com.snsoft.tsp3.plugin.news {
 		public static const NEED_NEXT:String = "needNext";
 
 		public static const NEED_PREV:String = "needPrev";
+
+		public static const CHANGE_PAGE:String = "changePage";
 
 		private var _bookSize:Point;
 
@@ -27,7 +30,12 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var catchMax:int = 0;
 
-		private var _pageNum:int = 1;
+		/**
+		 * 要添加的下一个或上一个页的页号
+		 */
+		private var _npNum:int = 1;
+
+		private var _currentNum:int = 1;
 
 		/**
 		 * 拖动时，当前页上或下留白多少，便于拖动，要大于TouchDrag的灵敏度。
@@ -54,7 +62,12 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		public function gotoPage(pageNum:int):void {
+			this._npNum = pageNum;
 
+			SpriteUtil.deleteAllChild(pageLayer);
+			pageLayer.y = 0;
+			pagev.splice(0, pagev.length);
+			dispatchEventNeedNext();
 		}
 
 		private function handlerTouchUp(e:Event):void {
@@ -68,6 +81,17 @@ package com.snsoft.tsp3.plugin.news {
 				dispatchEventNeedPrev();
 
 			}
+
+			for (var i:int = 0; i < pagev.length; i++) {
+				var page:NewsBookPage = pagev[i];
+				var cr:Rectangle = page.getRect(this);
+				if ((cr.y <= 0 && cr.bottom >= bookSize.y) || (cr.y <= bookSize.y / 2 && cr.bottom > bookSize.y / 2)) {
+					_currentNum = page.pageNum;
+					this.dispatchEvent(new Event(CHANGE_PAGE));
+					break;
+				}
+			}
+
 		}
 
 		public function addPageNext(npage:NewsBookPage):void {
@@ -149,7 +173,7 @@ package com.snsoft.tsp3.plugin.news {
 		private function dispatchEventNeedNext():void {
 			if (pagev.length > 0) {
 				var ep:NewsBookPage = pagev[pagev.length - 1];
-				_pageNum = ep.pageNum + 1;
+				_npNum = ep.pageNum + 1;
 			}
 			this.dispatchEvent(new Event(NEED_NEXT));
 		}
@@ -159,7 +183,7 @@ package com.snsoft.tsp3.plugin.news {
 				var fp:NewsBookPage = pagev[0];
 				var n:int = fp.pageNum - 1;
 				if (n >= 1) {
-					_pageNum = n;
+					_npNum = n;
 					this.dispatchEvent(new Event(NEED_PREV));
 				}
 			}
@@ -169,8 +193,12 @@ package com.snsoft.tsp3.plugin.news {
 			return _bookSize;
 		}
 
-		public function get pageNum():int {
-			return _pageNum;
+		public function get npNum():int {
+			return _npNum;
+		}
+
+		public function get currentNum():int {
+			return _currentNum;
 		}
 
 	}
