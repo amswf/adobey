@@ -29,6 +29,11 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var _pageNum:int = 1;
 
+		/**
+		 * 拖动时，当前页上或下留白多少，便于拖动，要大于TouchDrag的灵敏度。
+		 */
+		private var space:int = 20;
+
 		public function NewsBook(bookSize:Point, catchMax:int = 0) {
 			super();
 			this._bookSize = bookSize;
@@ -92,8 +97,8 @@ package com.snsoft.tsp3.plugin.news {
 
 			var dy:int = pageLayer.height - bookSize.y;
 			dy = dy < 0 ? 0 : dy;
-			td.dragBounds.y = -dy;
-			td.dragBounds.height = dy;
+			td.dragBounds.y = -dy - space;
+			td.dragBounds.height = dy + space + space;
 
 			for (var i:int = 0; i < pagev.length; i++) {
 				var p:NewsBookPage = pagev[i];
@@ -129,8 +134,8 @@ package com.snsoft.tsp3.plugin.news {
 
 			var dy:int = pageLayer.height - bookSize.y;
 			dy = dy < 0 ? 0 : dy;
-			td.dragBounds.y = -dy;
-			td.dragBounds.height = dy;
+			td.dragBounds.y = -dy - space;
+			td.dragBounds.height = dy + space + space;
 
 			for (var i:int = 0; i < pagev.length; i++) {
 				var p:NewsBookPage = pagev[i];
