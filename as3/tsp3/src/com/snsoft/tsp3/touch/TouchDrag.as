@@ -25,7 +25,7 @@ package com.snsoft.tsp3.touch {
 
 		private var stage:Stage;
 
-		private var dragBounds:Rectangle = new Rectangle();
+		private var _dragBounds:Rectangle = new Rectangle();
 
 		private var _mouseDownPoint:Point = new Point();
 
@@ -169,6 +169,17 @@ package com.snsoft.tsp3.touch {
 		public function get mouseUpPoint():Point {
 			return _mouseUpPoint;
 		}
+
+		public function get dragBounds():Rectangle
+		{
+			return _dragBounds;
+		}
+
+		public function set dragBounds(value:Rectangle):void
+		{
+			_dragBounds = value;
+		}
+
 
 	}
 }

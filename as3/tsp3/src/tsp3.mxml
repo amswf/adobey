@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009"
-					   xmlns:s="library://ns.adobe.com/flex/spark"
-					   xmlns:mx="library://ns.adobe.com/flex/mx">
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/mx">
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
@@ -13,6 +11,7 @@
 			import com.snsoft.tsp3.pagination.PaginationBtn;
 			import com.snsoft.tsp3.plugin.desktop.Desktop;
 			import com.snsoft.tsp3.plugin.news.News;
+			import com.snsoft.tsp3.plugin.news.NewsBook;
 			import com.snsoft.tsp3.plugin.news.NewsBtnBox;
 			import com.snsoft.tsp3.test.Skins;
 			import com.snsoft.tsp3.test.Test;
@@ -27,6 +26,7 @@
 				PaginationBtn;
 				News;
 				NewsBtnBox;
+				NewsBook;
 			}
 		]]>
 	</fx:Script>
