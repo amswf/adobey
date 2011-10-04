@@ -66,15 +66,17 @@ package com.snsoft.tsp3.plugin.news {
 			trace("handlerBookNext");
 			var nb:NewsBook = e.currentTarget as NewsBook;
 
-			var v:Vector.<Sprite> = new Vector.<Sprite>();
-			for (var i:int = 0; i < 15; i++) {
-				var spr:Sprite = new Sprite();
-				spr.addChild(ViewUtil.creatRect(400, 50, 0x000000, 1));
-				v.push(spr);
-			}
+			if (nb.pageNum <= 5) {
+				var v:Vector.<Sprite> = new Vector.<Sprite>();
+				for (var i:int = 0; i < 15; i++) {
+					var spr:Sprite = new Sprite();
+					spr.addChild(ViewUtil.creatRect(400, 50, 0x000000, 1));
+					v.push(spr);
+				}
 
-			var nbp:NewsBookPage = new NewsBookPage(new Point(nb.bookSize.x, 300), v, nb.pageNum, 100);
-			nb.addPageNext(nbp);
+				var nbp:NewsBookPage = new NewsBookPage(new Point(nb.bookSize.x, 300), v, nb.pageNum, 5);
+				nb.addPageNext(nbp);
+			}
 		}
 
 		private function handlerBookPrev(e:Event):void {
@@ -88,7 +90,7 @@ package com.snsoft.tsp3.plugin.news {
 				v.push(spr);
 			}
 
-			var nbp:NewsBookPage = new NewsBookPage(new Point(nb.bookSize.x, 300), v, nb.pageNum, 100);
+			var nbp:NewsBookPage = new NewsBookPage(new Point(nb.bookSize.x, 300), v, nb.pageNum, 5);
 			nb.addPagePrev(nbp);
 		}
 
