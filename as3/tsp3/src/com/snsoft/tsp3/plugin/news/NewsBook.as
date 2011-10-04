@@ -27,6 +27,8 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var catchMax:int = 0;
 
+		private var _pageNum:int = 1;
+
 		public function NewsBook(bookSize:Point, catchMax:int = 0) {
 			super();
 			this._bookSize = bookSize;
@@ -49,10 +51,21 @@ package com.snsoft.tsp3.plugin.news {
 		private function handlerTouchUp(e:Event):void {
 			var rect:Rectangle = pageLayer.getRect(this);
 			if (rect.bottom - 5 <= bookSize.y) {
+				if (pagev.length > 0) {
+					var ep:NewsBookPage = pagev[pagev.length - 1];
+					_pageNum = ep.pageNum + 1;
+				}
 				dispatchEventNeedNext();
 			}
 			else if (rect.top + 5 >= 0) {
-				dispatchEventNeedPrev();
+				if (pagev.length > 0) {
+					var fp:NewsBookPage = pagev[0];
+					var n:int = fp.pageNum - 1;
+					if (n >= 1) {
+						_pageNum = n;
+						dispatchEventNeedPrev();
+					}
+				}
 			}
 		}
 
@@ -142,6 +155,10 @@ package com.snsoft.tsp3.plugin.news {
 
 		public function get bookSize():Point {
 			return _bookSize;
+		}
+
+		public function get pageNum():int {
+			return _pageNum;
 		}
 
 	}
