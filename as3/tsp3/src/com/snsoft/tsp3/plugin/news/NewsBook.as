@@ -25,9 +25,12 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var td:TouchDrag;
 
-		public function NewsBook(bookSize:Point) {
+		private var catchMax:int = 0;
+
+		public function NewsBook(bookSize:Point, catchMax:int = 0) {
 			super();
 			this._bookSize = bookSize;
+			this.catchMax = catchMax;
 
 			this.addChild(pageLayer);
 			this.addChild(maskLayer);
@@ -63,10 +66,27 @@ package com.snsoft.tsp3.plugin.news {
 			pageLayer.addChild(npage);
 			pagev.push(npage);
 
+			var dh:int = 0;
+			if (catchMax >= 0) {
+				var dp:NewsBookPage = pagev[0];
+				while (pagev.length > catchMax && dp.getRect(this).bottom < 0) {
+					dh += dp.height;
+					pageLayer.removeChild(dp);
+					pagev.splice(0, 1);
+					dp = pagev[0];
+				}
+			}
+
 			var dy:int = pageLayer.height - bookSize.y;
 			dy = dy < 0 ? 0 : dy;
 			td.dragBounds.y = -dy;
 			td.dragBounds.height = dy;
+
+			for (var i:int = 0; i < pagev.length; i++) {
+				var p:NewsBookPage = pagev[i];
+				p.y -= dh;
+			}
+			pageLayer.y += dh;
 
 			trace(td.dragBounds.y, td.dragBounds.height);
 			trace(pageLayer.y, npage.y, npage.height, bookSize.y);
@@ -84,6 +104,15 @@ package com.snsoft.tsp3.plugin.news {
 			ppage.y = prevy;
 			pageLayer.addChild(ppage);
 			pagev.splice(0, 0, ppage);
+
+			if (catchMax >= 0) {
+				var dp:NewsBookPage = pagev[pagev.length - 1];
+				while (pagev.length > catchMax && dp.getRect(this).y > bookSize.y) {
+					pageLayer.removeChild(dp);
+					pagev.pop();
+					dp = pagev[pagev.length - 1];
+				}
+			}
 
 			var dy:int = pageLayer.height - bookSize.y;
 			dy = dy < 0 ? 0 : dy;

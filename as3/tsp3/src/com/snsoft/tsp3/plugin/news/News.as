@@ -62,14 +62,14 @@ package com.snsoft.tsp3.plugin.news {
 
 		private function handlerBookNext(e:Event):void {
 			var nb:NewsBook = e.currentTarget as NewsBook;
-			var nbp:NewsBookPage = new NewsBookPage(new Point(nb.bookSize.x, 600));
+			var nbp:NewsBookPage = new NewsBookPage(new Point(nb.bookSize.x, 500));
 			nb.addPageNext(nbp);
 		}
 
 		private function handlerBookPrev(e:Event):void {
 			trace("handlerBookPrev");
 			var nb:NewsBook = e.currentTarget as NewsBook;
-			var nbp:NewsBookPage = new NewsBookPage(new Point(nb.bookSize.x, 200));
+			var nbp:NewsBookPage = new NewsBookPage(new Point(nb.bookSize.x, 300));
 			nb.addPagePrev(nbp);
 		}
 
