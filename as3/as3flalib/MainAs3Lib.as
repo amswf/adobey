@@ -1,5 +1,5 @@
-﻿package  {
-	
+﻿package {
+
 	import flash.display.MovieClip;
 	import fl.motion.*;
 	import fl.motion.easing.*;
@@ -27,10 +27,41 @@
 	import fl.transitions.easing.None;
 	import fl.transitions.easing.Regular;
 	import fl.transitions.easing.Strong;
-	
+	import fl.video.FLVPlayback;
+	import fl.video.AutoLayoutEvent;
+	import fl.video.ConnectClient;
+	import fl.video.ControlData;
+	import fl.video.CuePointManager;
+	import fl.video.CuePointType;
+	import fl.video.FPADManager;
+	import fl.video.Icon;
+	import fl.video.INCManager;
+	import fl.video.IVPEvent;
+	import fl.video.LayoutEvent;
+	import fl.video.MetadataEvent;
+	import fl.video.NCManager;
+	import fl.video.ParseResults;
+	import fl.video.QueuedCommand;
+	import fl.video.ReconnectClient;
+	import fl.video.SeekBarAccImpl;
+	import fl.video.SkinErrorEvent;
+	import fl.video.SMILManager;
+	import fl.video.SoundEvent;
+	import fl.video.UIManager;
+	import fl.video.VideoAlign;
+	import fl.video.VideoError;
+	import fl.video.VideoEvent;
+	import fl.video.VideoPlayer;
+	import fl.video.VideoPlayerClient;
+	import fl.video.VideoPlayerState;
+	import fl.video.VideoProgressEvent;
+	import fl.video.VideoScaleMode;
+	import fl.video.VideoState;
+	import fl.video.VolumeBarAccImpl;
+
 	public class MainAs3Lib extends MovieClip {
-		
-		
+
+
 		public function MainAs3Lib() {
 			fl.motion.AdjustColor;
 			fl.motion.Animator;
@@ -95,7 +126,38 @@
 			fl.transitions.easing.Regular;
 			fl.transitions.easing.Strong;
 			fl.containers.ScrollPane;
+			fl.video.AutoLayoutEvent;
+			fl.video.ConnectClient;
+			fl.video.ControlData;
+			fl.video.CuePointManager;
+			fl.video.CuePointType;
+			fl.video.FLVPlayback;
+			fl.video.FPADManager;
+			fl.video.Icon;
+			fl.video.INCManager;
+			fl.video.IVPEvent;
+			fl.video.LayoutEvent;
+			fl.video.MetadataEvent;
+			fl.video.NCManager;
+			fl.video.ParseResults;
+			fl.video.QueuedCommand;
+			fl.video.ReconnectClient;
+			fl.video.SeekBarAccImpl;
+			fl.video.SkinErrorEvent;
+			fl.video.SMILManager;
+			fl.video.SoundEvent;
+			fl.video.UIManager;
+			fl.video.VideoAlign;
+			fl.video.VideoError;
+			fl.video.VideoEvent;
+			fl.video.VideoPlayer;
+			fl.video.VideoPlayerClient;
+			fl.video.VideoPlayerState;
+			fl.video.VideoProgressEvent;
+			fl.video.VideoScaleMode;
+			fl.video.VideoState;
+			fl.video.VolumeBarAccImpl;
 		}
 	}
-	
+
 }
