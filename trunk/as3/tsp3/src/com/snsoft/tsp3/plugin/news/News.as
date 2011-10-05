@@ -12,7 +12,9 @@ package com.snsoft.tsp3.plugin.news {
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.events.TimerEvent;
 	import flash.geom.Point;
+	import flash.utils.Timer;
 
 	public class News extends BPlugin {
 
@@ -21,6 +23,8 @@ package com.snsoft.tsp3.plugin.news {
 		private var newsBook:NewsBook;
 
 		private var pagin:Pagination;
+
+		private var isLock:Boolean = false;
 
 		public function News() {
 			super();
@@ -101,7 +105,12 @@ package com.snsoft.tsp3.plugin.news {
 				}
 
 				var nbp:NewsBookPage = new NewsBookPage(new Point(nb.bookSize.x, 300), v, nb.npNum, 5);
-				nb.addPageNext(nbp);
+
+				var timer:Timer = new Timer(500, 1);
+				timer.addEventListener(TimerEvent.TIMER_COMPLETE, function(e:Event):void {
+					nb.addPageNext(nbp);
+				});
+				timer.start();
 			}
 		}
 
@@ -118,7 +127,12 @@ package com.snsoft.tsp3.plugin.news {
 			}
 
 			var nbp:NewsBookPage = new NewsBookPage(new Point(nb.bookSize.x, 300), v, nb.npNum, 5);
-			nb.addPagePrev(nbp);
+
+			var timer:Timer = new Timer(500, 1);
+			timer.addEventListener(TimerEvent.TIMER_COMPLETE, function(e:Event):void {
+				nb.addPagePrev(nbp);
+			});
+			timer.start();
 		}
 
 		private function handlerBtnClick(e:Event):void {
