@@ -39,6 +39,12 @@ package com.snsoft.tsp3.plugin.player {
 
 		private var playerSize:Point = new Point(420, 320);
 
+		private var vw:int;
+
+		private var vh:int;
+
+		private var sw:SoundWave;
+
 		public function Player() {
 			super();
 			this.playerSize = playerSize;
@@ -65,7 +71,14 @@ package com.snsoft.tsp3.plugin.player {
 			btn1.addEventListener(MouseEvent.CLICK, handler1);
 			btn2.addEventListener(MouseEvent.CLICK, handler2);
 
-			stage.addEventListener(Event.ENTER_FRAME, handler);
+			vw = playerSize.x - boader - boader;
+			vh = playerSize.y - boader - boader;
+
+			sw = new SoundWave(vw, vh, 100);
+			sw.x = boader;
+			sw.y = boader;
+			soundLayer.addChild(sw);
+			sw.visible = false;
 		}
 
 		public function handler1(e:Event):void {
@@ -79,8 +92,8 @@ package com.snsoft.tsp3.plugin.player {
 		public function playVideo(url:String):void {
 			stopAll();
 			video = new FLVPlayback();
-			video.width = playerSize.x - boader - boader;
-			video.height = playerSize.y - boader - boader;
+			video.width = vw;
+			video.height = vh;
 			videoLayer.addChild(video);
 			video.x = boader;
 			video.y = boader;
@@ -93,50 +106,8 @@ package com.snsoft.tsp3.plugin.player {
 			sound = new Sound(req);
 			sc = sound.play();
 
-		}
-
-		private function handler(e:Event):void {
-			draw();
-		}
-
-		public function draw():void {
-
-			const PLOT_HEIGHT:int = 400;
-			const CHANNEL_LENGTH:int = 100;
-			var bytes:ByteArray = new ByteArray();
-
-			SoundMixer.computeSpectrum(bytes, false, 0);
-
-			var g:Graphics = soundLayer.graphics;
-
-			g.clear();
-
-			g.lineStyle(0, 0x6600CC);
-			g.beginFill(0x6600CC);
-			g.moveTo(0, PLOT_HEIGHT);
-
-			var n:Number = 0;
-
-			// left channel
-			for (var i:int = 0; i < CHANNEL_LENGTH; i++) {
-				n = (bytes.readFloat() * PLOT_HEIGHT);
-				g.lineTo(i * 2, PLOT_HEIGHT - n);
-			}
-			g.lineTo(CHANNEL_LENGTH * 2, PLOT_HEIGHT);
-			g.endFill();
-
-			// right channel
-			g.lineStyle(0, 0xCC0066);
-			g.beginFill(0xCC0066, 0.5);
-			g.moveTo(CHANNEL_LENGTH * 2, PLOT_HEIGHT);
-
-			for (i = CHANNEL_LENGTH; i > 0; i--) {
-				n = (bytes.readFloat() * PLOT_HEIGHT);
-				g.lineTo(i * 2, PLOT_HEIGHT - n);
-			}
-			g.lineTo(0, PLOT_HEIGHT);
-			g.endFill();
-
+			sw.playWave();
+			sw.visible = true;
 		}
 
 		public function stopAll():void {
@@ -155,6 +126,10 @@ package com.snsoft.tsp3.plugin.player {
 				video.stop();
 				videoLayer.removeChild(video);
 				video = null;
+			}
+			if (sw != null) {
+				sw.stopWave();
+				sw.visible = false;
 			}
 		}
 
