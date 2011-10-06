@@ -9,12 +9,16 @@
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.events.MouseEvent;
 	import flash.events.ProgressEvent;
 	import flash.geom.Point;
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
 	import flash.net.URLRequest;
+	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
+	import flash.text.TextFormat;
 
 	public class Player extends BPlugin {
 
@@ -30,13 +34,25 @@
 
 		private var btnLayer:Sprite = new Sprite();
 
+		private var titleLayer:Sprite = new Sprite();
+
+		private var msgLayer:Sprite = new Sprite();
+
 		private var soundLayer:Sprite = new Sprite();
+
+		private var msgTfd:TextField;
+
+		private var titleTfd:TextField;
+
+		private var tft:TextFormat = new TextFormat(null, 13, 0xffffff);
 
 		private var boader:int = 10;
 
 		private var btnw:int = 48;
 
 		private var playerSize:Point = new Point(420, 320);
+
+		private var titleh:int = 48;
 
 		private var vw:int;
 
@@ -77,6 +93,8 @@
 			this.addChild(videoLayer);
 			this.addChild(soundLayer);
 			this.addChild(btnLayer);
+			this.addChild(titleLayer);
+			this.addChild(msgLayer);
 			pluginCfg = new PlayerCfg;
 		}
 
@@ -86,29 +104,45 @@
 			playerSize.y = int(cfg.playerHeight);
 
 			vw = playerSize.x - boader - boader;
-			vh = playerSize.y - boader - boader - btnw - boader;
+			vh = playerSize.y - titleh - boader - boader - boader - btnw - boader;
 
 			var back:MovieClip = SkinsUtil.createSkinByName("Player_backSkin");
 			backLayer.addChild(back);
 			back.width = playerSize.x;
 			back.height = playerSize.y;
 
+			titleTfd = new TextField();
+			titleTfd.defaultTextFormat = tft;
+			titleTfd.width = vw;
+			titleTfd.height = 20;
+			titleTfd.x = boader;
+			titleTfd.y = boader;
+			titleTfd.mouseEnabled = false;
+			titleLayer.addChild(titleTfd);
+
 			var videoBack:MovieClip = SkinsUtil.createSkinByName("Player_videoBackSkin");
 			backLayer.addChild(videoBack);
 			videoBack.x = boader;
-			videoBack.y = boader;
+			videoBack.y = boader + titleh + boader;
 			videoBack.width = vw;
 			videoBack.height = vh;
+
+			msgTfd = new TextField();
+			msgTfd.defaultTextFormat = tft;
+			msgTfd.width = vw;
+			msgTfd.height = 20;
+			msgTfd.x = boader;
+			msgTfd.y = boader + titleh + boader + (vh - msgTfd.height) / 2;
+			msgTfd.autoSize = TextFieldAutoSize.CENTER;
+			msgTfd.mouseEnabled = false;
+			msgLayer.addChild(msgTfd);
 
 			var btn1:MovieClip = this.getChildByName("btn1") as MovieClip;
 			var btn2:MovieClip = this.getChildByName("btn2") as MovieClip;
 
-			btn1.addEventListener(MouseEvent.CLICK, handler1);
-			btn2.addEventListener(MouseEvent.CLICK, handler2);
-
 			sw = new SoundWave(vw, vh, 10);
 			sw.x = boader;
-			sw.y = boader;
+			sw.y = boader + titleh + boader;
 			soundLayer.addChild(sw);
 			sw.visible = false;
 
@@ -144,18 +178,43 @@
 			defScreenBtn.x = playerSize.x - 3 * (boader + btnw);
 			btnLayer.addChild(defScreenBtn);
 			defScreenBtn.addEventListener(MouseEvent.CLICK, handlerdefScreenBtnClick);
+
+			var closeBtn:MovieClip = SkinsUtil.createSkinByName("Player_closeBtnSkin");
+			closeBtn.x = playerSize.x - (boader + btnw);
+			closeBtn.y = boader;
+			titleLayer.addChild(closeBtn);
+			closeBtn.addEventListener(MouseEvent.CLICK, handlerCloseBtnClick);
+
+			btn1.addEventListener(MouseEvent.CLICK, handler1);
+			btn2.addEventListener(MouseEvent.CLICK, handler2);
 		}
 
+		//********************************************
+		public function handler1(e:Event):void {
+			playMp3("1.mp3", "1.mp3");
+		}
+
+		public function handler2(e:Event):void {
+			playVideo("1.flv", "1.flv");
+		}
+
+		//********************************************
+
 		private function handlerPlayBtnClick(e:Event):void {
-			playMp3WithStatus(STATUS_PLAY);
+			playWithStatus(STATUS_PLAY);
 		}
 
 		private function handlerPauseBtnClick(e:Event):void {
-			playMp3WithStatus(STATUS_PAUSE);
+			playWithStatus(STATUS_PAUSE);
 		}
 
 		private function handlerStopBtnClick(e:Event):void {
-			playMp3WithStatus(STATUS_STOP);
+			playWithStatus(STATUS_STOP);
+		}
+
+		private function handlerCloseBtnClick(e:Event):void {
+			playWithStatus(STATUS_STOP);
+			this.visible = false;
 		}
 
 		private function handlerdefScreenBtnClick(e:Event):void {
@@ -174,31 +233,21 @@
 
 		}
 
-		public function handler1(e:Event):void {
-			playMp3("1.mp3");
-		}
-
-		public function handler2(e:Event):void {
-			playVideo("1.flv");
-		}
-
-		private function playMp3WithStatus(status:int):void {
-
+		private function playWithStatus(status:int):void {
+			hiddenMsg();
 			var os:int = this.status;
 			var sign:Boolean = true;
 			if (playType == PLAY_TYPE_SOUND) {
 				if (status == STATUS_START) {
+					setMsg("正在加载文件...");
 					sign = false;
 					stopAll();
-
 					var req:URLRequest = new URLRequest(url);
 					sound = new Sound(req);
-					sound.addEventListener(ProgressEvent.PROGRESS, handlerSoundPlaying);
+					sound.addEventListener(Event.COMPLETE, handlerSoundLoadCmp);
+					sound.addEventListener(IOErrorEvent.IO_ERROR, handlerSoundIOError);
 					sc = sound.play();
 					sc.addEventListener(Event.SOUND_COMPLETE, handlerSoundCmp);
-					sw.playWave();
-					sw.visible = true;
-
 				}
 				else if ((os == STATUS_PAUSE || os == STATUS_STOP) && status == STATUS_PLAY) {
 					sw.playWave();
@@ -227,6 +276,7 @@
 			}
 			else if (playType == PLAY_TYPE_VIDEO) {
 				if (status == STATUS_START || (os == STATUS_STOP && status == STATUS_PLAY)) {
+					setMsg("正在加载文件...");
 					sign = false;
 					stopAll();
 					video = new FLVPlayback();
@@ -236,7 +286,7 @@
 					video.height = vh;
 					videoLayer.addChild(video);
 					video.x = boader;
-					video.y = boader;
+					video.y = boader + titleh + boader;
 					video.play(url);
 
 				}
@@ -265,12 +315,13 @@
 		}
 
 		private function handlerVideoStatusCmp(e:VideoEvent):void {
-			playMp3WithStatus(STATUS_STOP);
+			playWithStatus(STATUS_STOP);
 		}
 
 		private function handlerVideoStatusChange(e:VideoEvent):void {
 			trace("handlerStatusChange:", e.state);
 			if (e.state == VideoState.PLAYING) {
+				hiddenMsg();
 				this.status = STATUS_PLAY;
 			}
 			else if (e.state == VideoState.PAUSED) {
@@ -279,30 +330,57 @@
 			else if (e.state == VideoState.STOPPED) {
 				this.status = STATUS_STOP;
 			}
+			else if (e.state == VideoState.CONNECTION_ERROR) {
+				setMsg("播放文件地址错误！");
+			}
 			setBtnPlaying();
 		}
 
 		private function handlerSoundCmp(e:Event):void {
-			playMp3WithStatus(STATUS_STOP);
+			playWithStatus(STATUS_STOP);
 		}
 
-		private function handlerSoundPlaying(e:Event):void {
-			trace("handlerSoundPlaying");
-			sound.removeEventListener(ProgressEvent.PROGRESS, handlerSoundPlaying);
+		private function handlerSoundIOError(e:Event):void {
+			var sound:Sound = e.currentTarget as Sound;
+			sound.removeEventListener(IOErrorEvent.IO_ERROR, handlerSoundIOError);
+			setMsg("播放文件地址错误！");
+		}
+
+		private function handlerSoundLoadCmp(e:Event):void {
+			trace("handlerSoundLoadCmp" + sound.bytesLoaded);
+			hiddenMsg();
+			sound.removeEventListener(ProgressEvent.PROGRESS, handlerSoundLoadCmp);
 			this.status = STATUS_PLAY;
+			sw.playWave();
+			sw.visible = true;
 			setBtnPlaying();
 		}
 
-		public function playMp3(url:String):void {
+		public function playMp3(url:String, title:String = ""):void {
+			setTitleText(title);
 			this.url = url;
 			this.playType = PLAY_TYPE_SOUND;
-			playMp3WithStatus(STATUS_START);
+			playWithStatus(STATUS_START);
 		}
 
-		public function playVideo(url:String):void {
+		public function playVideo(url:String, title:String = ""):void {
+			setTitleText(title);
 			this.url = url;
 			this.playType = PLAY_TYPE_VIDEO;
-			playMp3WithStatus(STATUS_START);
+			playWithStatus(STATUS_START);
+		}
+
+		private function setTitleText(text:String):void {
+			this.titleTfd.text = text;
+		}
+
+		private function setMsg(text:String):void {
+			this.msgTfd.text = text;
+			msgLayer.visible = true;
+		}
+
+		private function hiddenMsg():void {
+			msgLayer.visible = false;
 		}
 
 		public function stopAll():void {
@@ -312,18 +390,23 @@
 				sc = null;
 			}
 			if (sound != null) {
-				sound.removeEventListener(ProgressEvent.PROGRESS, handlerSoundPlaying);
+				sound.removeEventListener(ProgressEvent.PROGRESS, handlerSoundLoadCmp);
 				try {
 					sound.close();
 				}
-				catch (error:Error) {
+				catch (e:Error) {
 				}
 				sound = null;
 			}
 			if (video != null) {
 				video.visible = false;
 				video.removeEventListener(VideoEvent.COMPLETE, handlerVideoStatusCmp);
-				video.stop();
+				try {
+					video.stop();
+				}
+				catch (e:Error) {
+				}
+
 				videoLayer.removeChild(video);
 				video = null;
 			}

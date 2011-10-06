@@ -286,9 +286,9 @@
 
 		private function btnClick(btn:DesktopBtn):void {
 			var dto:DesktopBtnDTO = btn.data as DesktopBtnDTO;
-			trace(dto.text);
-
-			Common.instance().loadPlugin("news");
+			if (dto.plugin != null) {
+				Common.instance().loadPlugin(dto.plugin);
+			}
 		}
 
 		private function handlerDragMouseUp(e:Event):void {
