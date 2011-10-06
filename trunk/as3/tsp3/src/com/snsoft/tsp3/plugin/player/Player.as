@@ -1,10 +1,11 @@
-package com.snsoft.tsp3.plugin.player {
+﻿package com.snsoft.tsp3.plugin.player {
 	import com.snsoft.tsp3.plugin.BPlugin;
 	import com.snsoft.util.SkinsUtil;
 
 	import fl.video.FLVPlayback;
+	import fl.video.VideoEvent;
+	import fl.video.VideoState;
 
-	import flash.display.Graphics;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -13,12 +14,7 @@ package com.snsoft.tsp3.plugin.player {
 	import flash.geom.Point;
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
-	import flash.media.SoundMixer;
-	import flash.media.Video;
-	import flash.net.NetConnection;
-	import flash.net.NetStream;
 	import flash.net.URLRequest;
-	import flash.utils.ByteArray;
 
 	public class Player extends BPlugin {
 
@@ -56,9 +52,9 @@ package com.snsoft.tsp3.plugin.player {
 
 		private var playType:int = 0;
 
-		private var PLAY_TYPE_SOUND:int = 0;
+		private var PLAY_TYPE_SOUND:int = 1;
 
-		private var PLAY_TYPE_VIDEO:int = 0;
+		private var PLAY_TYPE_VIDEO:int = 2;
 
 		private var status:int = -1;
 
@@ -110,7 +106,7 @@ package com.snsoft.tsp3.plugin.player {
 			btn1.addEventListener(MouseEvent.CLICK, handler1);
 			btn2.addEventListener(MouseEvent.CLICK, handler2);
 
-			sw = new SoundWave(vw, vh, 100);
+			sw = new SoundWave(vw, vh, 10);
 			sw.x = boader;
 			sw.y = boader;
 			soundLayer.addChild(sw);
@@ -186,77 +182,133 @@ package com.snsoft.tsp3.plugin.player {
 			playVideo("1.flv");
 		}
 
-		public function playVideo(url:String):void {
-			playType = PLAY_TYPE_VIDEO;
-			this.url = url;
-			stopAll();
-			video = new FLVPlayback();
-			video.width = vw;
-			video.height = vh;
-			videoLayer.addChild(video);
-			video.x = boader;
-			video.y = boader;
-			video.play(url);
-		}
-
 		private function playMp3WithStatus(status:int):void {
+
 			var os:int = this.status;
 			var sign:Boolean = true;
-			var b:Boolean = true;
-			if (status == STATUS_START) {
-				stopAll();
-				var req:URLRequest = new URLRequest(url);
-				sound = new Sound(req);
-				sound.addEventListener(ProgressEvent.PROGRESS, handlerSoundPlaying);
-				sc = sound.play();
-				sw.playWave();
-				sw.visible = true;
+			if (playType == PLAY_TYPE_SOUND) {
+				if (status == STATUS_START) {
+					sign = false;
+					stopAll();
+
+					var req:URLRequest = new URLRequest(url);
+					sound = new Sound(req);
+					sound.addEventListener(ProgressEvent.PROGRESS, handlerSoundPlaying);
+					sc = sound.play();
+					sc.addEventListener(Event.SOUND_COMPLETE, handlerSoundCmp);
+					sw.playWave();
+					sw.visible = true;
+
+				}
+				else if ((os == STATUS_PAUSE || os == STATUS_STOP) && status == STATUS_PLAY) {
+					sw.playWave();
+					sw.visible = true;
+					sc = sound.play(playIndex);
+					sc.addEventListener(Event.SOUND_COMPLETE, handlerSoundCmp);
+				}
+				else if (os == STATUS_PLAY && status == STATUS_PAUSE) {
+					sw.visible = true;
+					playIndex = sc.position;
+					sc.stop();
+				}
+				else if (status == STATUS_STOP) {
+					sw.stopWave();
+					sw.visible = false;
+					playIndex = 0;
+					sc.stop();
+				}
+				else {
+					sign = false;
+				}
+				if (sign) {
+					this.status = status;
+					setBtnPlaying();
+				}
 			}
-			else if ((os == STATUS_PAUSE || os == STATUS_STOP) && status == STATUS_PLAY) {
-				sw.playWave();
-				sw.visible = true;
-				sc = sound.play(playIndex);
-				b = true;
+			else if (playType == PLAY_TYPE_VIDEO) {
+				if (status == STATUS_START || (os == STATUS_STOP && status == STATUS_PLAY)) {
+					sign = false;
+					stopAll();
+					video = new FLVPlayback();
+					video.addEventListener(VideoEvent.STATE_CHANGE, handlerVideoStatusChange);
+					video.addEventListener(VideoEvent.COMPLETE, handlerVideoStatusCmp);
+					video.width = vw;
+					video.height = vh;
+					videoLayer.addChild(video);
+					video.x = boader;
+					video.y = boader;
+					video.play(url);
+
+				}
+				else if (os == STATUS_PAUSE && status == STATUS_PLAY) {
+					video.play();
+				}
+				else if (os == STATUS_PLAY && status == STATUS_PAUSE) {
+					video.pause();
+				}
+				else if (status == STATUS_STOP) {
+					stopAll();
+				}
+				else {
+					sign = false;
+				}
+				if (sign) {
+					this.status = status;
+				}
 			}
-			else if (os == STATUS_PLAY && status == STATUS_PAUSE) {
-				sw.stopWave();
-				sw.visible = true;
-				playIndex = sc.position;
-				sc.stop();
-				b = false;
+		}
+
+		private function setBtnPlaying():void {
+			var b:Boolean = (status == STATUS_PLAY);
+			pauseBtn.visible = b;
+			playBtn.visible = !b;
+		}
+
+		private function handlerVideoStatusCmp(e:VideoEvent):void {
+			playMp3WithStatus(STATUS_STOP);
+		}
+
+		private function handlerVideoStatusChange(e:VideoEvent):void {
+			trace("handlerStatusChange:", e.state);
+			if (e.state == VideoState.PLAYING) {
+				this.status = STATUS_PLAY;
 			}
-			else if (status == STATUS_STOP) {
-				sw.stopWave();
-				sw.visible = false;
-				playIndex = 0;
-				sc.stop();
-				b = false;
+			else if (e.state == VideoState.PAUSED) {
+				this.status = STATUS_PAUSE;
 			}
-			else {
-				sign = false;
+			else if (e.state == VideoState.STOPPED) {
+				this.status = STATUS_STOP;
 			}
-			if (sign) {
-				this.status = status;
-				pauseBtn.visible = b;
-				playBtn.visible = !b;
-			}
+			setBtnPlaying();
+		}
+
+		private function handlerSoundCmp(e:Event):void {
+			playMp3WithStatus(STATUS_STOP);
 		}
 
 		private function handlerSoundPlaying(e:Event):void {
 			trace("handlerSoundPlaying");
 			sound.removeEventListener(ProgressEvent.PROGRESS, handlerSoundPlaying);
 			this.status = STATUS_PLAY;
+			setBtnPlaying();
 		}
 
 		public function playMp3(url:String):void {
-			playType = PLAY_TYPE_SOUND;
 			this.url = url;
+			this.playType = PLAY_TYPE_SOUND;
+			playMp3WithStatus(STATUS_START);
+		}
+
+		public function playVideo(url:String):void {
+			this.url = url;
+			this.playType = PLAY_TYPE_VIDEO;
 			playMp3WithStatus(STATUS_START);
 		}
 
 		public function stopAll():void {
 			if (sc != null) {
 				sc.stop();
+				sc.removeEventListener(Event.SOUND_COMPLETE, handlerSoundCmp);
 				sc = null;
 			}
 			if (sound != null) {
@@ -270,6 +322,7 @@ package com.snsoft.tsp3.plugin.player {
 			}
 			if (video != null) {
 				video.visible = false;
+				video.removeEventListener(VideoEvent.COMPLETE, handlerVideoStatusCmp);
 				video.stop();
 				videoLayer.removeChild(video);
 				video = null;
