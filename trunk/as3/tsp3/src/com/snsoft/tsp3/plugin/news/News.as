@@ -45,6 +45,8 @@ package com.snsoft.tsp3.plugin.news {
 			ntdto.titleImg = new BitmapData(48, 48);
 			var nt:NewsTitle = new NewsTitle(ntdto, stage.stageWidth, th);
 			this.addChild(nt);
+			nt.addEventListener(NewsTitle.EVENT_CLOSE, handlerCloseBtnClick);
+			nt.addEventListener(NewsTitle.EVENT_MIN, handlerMinBtnClick);
 
 			var btnv:Vector.<NewsImgBtn> = new Vector.<NewsImgBtn>();
 			for (var i:int = 0; i < 20; i++) {
@@ -79,6 +81,14 @@ package com.snsoft.tsp3.plugin.news {
 			newsBook.addEventListener(NewsBook.NEED_PREV, handlerBookPrev);
 			newsBook.addEventListener(NewsBook.CHANGE_PAGE, handlerChangePage);
 			this.addChild(newsBook);
+		}
+
+		private function handlerCloseBtnClick(e:Event):void {
+			closePlugin();
+		}
+
+		private function handlerMinBtnClick(e:Event):void {
+			minimizePlugin();
 		}
 
 		private function handlerPaginBtnClick(e:Event):void {

@@ -287,7 +287,7 @@
 		private function btnClick(btn:DesktopBtn):void {
 			var dto:DesktopBtnDTO = btn.data as DesktopBtnDTO;
 			if (dto.plugin != null) {
-				Common.instance().loadPlugin(dto.plugin);
+				Common.instance().loadPlugin(dto.plugin, new Object(), btn.uuid);
 			}
 		}
 

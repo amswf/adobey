@@ -9,6 +9,9 @@ package com.snsoft.tsp3.plugin {
 	import flash.events.Event;
 	import flash.utils.getDefinitionByName;
 
+	[Event(name = "pluginMinimize", type = "com.snsoft.tsp3.plugin.BPluginEvent")]
+	[Event(name = "pluginClose", type = "com.snsoft.tsp3.plugin.BPluginEvent")]
+
 	/**
 	 * 插件基类，伪抽象类
 	 *
@@ -36,6 +39,8 @@ package com.snsoft.tsp3.plugin {
 
 		protected var _type:String;
 
+		private var _uuid:String;
+
 		public function BPlugin() {
 			super();
 			this.addEventListener(Event.ADDED_TO_STAGE, handlerEnterFrame);
@@ -59,6 +64,14 @@ package com.snsoft.tsp3.plugin {
 			}
 			dataBaseUrl = Common.instance().dataBaseUrl;
 			init();
+		}
+
+		public function closePlugin():void {
+			this.dispatchEvent(new Event(BPluginEvent.PLUGIN_CLOSE));
+		}
+
+		public function minimizePlugin():void {
+			this.dispatchEvent(new Event(BPluginEvent.PLUGIN_MINIMIZE));
 		}
 
 		protected function init():void {
@@ -104,6 +117,14 @@ package com.snsoft.tsp3.plugin {
 
 		public function set type(value:String):void {
 			_type = value;
+		}
+
+		public function get uuid():String {
+			return _uuid;
+		}
+
+		public function set uuid(value:String):void {
+			_uuid = value;
 		}
 
 	}
