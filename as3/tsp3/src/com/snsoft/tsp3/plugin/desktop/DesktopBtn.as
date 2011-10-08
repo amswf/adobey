@@ -1,5 +1,6 @@
 package com.snsoft.tsp3.plugin.desktop {
 	import com.snsoft.tsp3.ViewUtil;
+	import com.snsoft.util.UUID;
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -25,11 +26,14 @@ package com.snsoft.tsp3.plugin.desktop {
 
 		private var _data:Object;
 
+		private var _uuid:String;
+
 		public function DesktopBtn(imgSize:Point, img:BitmapData, text:String) {
 			super();
 			this.imgSize = imgSize;
 			this.img = img;
 			this.text = text;
+			this._uuid = UUID.create();
 			init();
 		}
 
@@ -66,6 +70,10 @@ package com.snsoft.tsp3.plugin.desktop {
 
 		public function set data(value:Object):void {
 			_data = value;
+		}
+
+		public function get uuid():String {
+			return _uuid;
 		}
 
 	}

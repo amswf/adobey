@@ -2,10 +2,13 @@ package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.MySprite;
 	import com.snsoft.tsp3.ViewUtil;
 	import com.snsoft.tsp3.plugin.news.dto.NewsTitleDTO;
+	import com.snsoft.util.SkinsUtil;
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
@@ -14,6 +17,12 @@ package com.snsoft.tsp3.plugin.news {
 
 	public class NewsTitle extends Sprite {
 
+		public static const EVENT_MIN:String = "event_min";
+
+		public static const EVENT_CLOSE:String = "event_close";
+
+		public static const EVENT_SEARCH:String = "event_search";
+
 		private var dto:NewsTitleDTO;
 
 		private var searchBtn:NewsTextBtn;
@@ -21,6 +30,8 @@ package com.snsoft.tsp3.plugin.news {
 		private var minimizeBtn:Sprite;
 
 		private var closeBtn:Sprite;
+
+		private var minimiseBtn:Sprite;
 
 		private var boader:int = 10;
 
@@ -63,6 +74,7 @@ package com.snsoft.tsp3.plugin.news {
 			titleTfd.selectable = false;
 			this.addChild(titleTfd);
 
+			//搜索输入
 			var searchTfd:TextField = new TextField();
 			searchTfd.type = TextFieldType.INPUT;
 			searchTfd.border = true;
@@ -72,11 +84,38 @@ package com.snsoft.tsp3.plugin.news {
 			searchTfd.y = boader;
 			this.addChild(searchTfd);
 
+			//搜索按钮
 			searchBtn = new NewsTextBtn("查询", 48, 48);
 			searchBtn.x = searchTfd.x + searchTfd.width + boader;
 			searchTfd.y = boader;
 			this.addChild(searchBtn);
+			searchBtn.addEventListener(MouseEvent.CLICK, handlerSearchBtnClick);
 
+			//关闭按钮
+			closeBtn = SkinsUtil.createSkinByName("News_closeBtnSkin");
+			this.addChild(closeBtn);
+			closeBtn.x = titleWidth - boader - closeBtn.width;
+			closeBtn.y = boader;
+			closeBtn.addEventListener(MouseEvent.CLICK, handlerCloseBtnClick);
+
+			//关闭按钮
+			minimiseBtn = SkinsUtil.createSkinByName("News_minimiseBtnSkin");
+			this.addChild(minimiseBtn);
+			minimiseBtn.x = closeBtn.x - boader - minimiseBtn.width;
+			minimiseBtn.y = boader;
+			minimiseBtn.addEventListener(MouseEvent.CLICK, handlerMinimizeBtnClick);
+		}
+
+		private function handlerMinimizeBtnClick(e:Event):void {
+			this.dispatchEvent(new Event(EVENT_MIN));
+		}
+
+		private function handlerCloseBtnClick(e:Event):void {
+			this.dispatchEvent(new Event(EVENT_CLOSE));
+		}
+
+		private function handlerSearchBtnClick(e:Event):void {
+			this.dispatchEvent(new Event(EVENT_SEARCH));
 		}
 	}
 }

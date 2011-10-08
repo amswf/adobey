@@ -20,9 +20,9 @@ package com.snsoft.tsp3 {
 			this.tsp = tsp;
 		}
 
-		public function loadPlugin(pluginName:String, params:Object = null):void {
+		public function loadPlugin(pluginName:String, params:Object = null, uuid:String = null):void {
 			if (tsp != null) {
-				tsp.loadPlugin(pluginName, params);
+				tsp.loadPlugin(pluginName, params, uuid);
 			}
 		}
 

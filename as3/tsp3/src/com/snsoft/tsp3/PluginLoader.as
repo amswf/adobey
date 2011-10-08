@@ -38,10 +38,15 @@ package com.snsoft.tsp3 {
 
 		private var plv:PluginVersion = new PluginVersion();
 
-		public function PluginLoader(basePath:String, pluginName:String, params:Object = null) {
+		private var _uuid:String;
+
+		private var loader:Loader;
+
+		public function PluginLoader(basePath:String, pluginName:String, params:Object = null, uuid:String = null) {
 			this.basePath = basePath;
 			this.pluginName = pluginName;
 			this.params = params;
+			this._uuid = uuid;
 
 			relativeUrl = basePath + pluginName + "/";
 			xmlUrl = relativeUrl + PLUGIN_XML_NAME;
@@ -53,6 +58,23 @@ package com.snsoft.tsp3 {
 			xc.addEventListener(Event.COMPLETE, handlerLoadXMLCMP);
 			xc.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadXMLError);
 			xc.load(xmlUrl);
+		}
+
+		public function close():void {
+			try {
+				xc.removeEventListener(Event.COMPLETE, handlerLoadXMLCMP);
+				xc.removeEventListener(IOErrorEvent.IO_ERROR, handlerLoadXMLError);
+			}
+			catch (e:Error) {
+			}
+
+			try {
+				loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, handlerLoadPluginCmp);
+				loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, handlerLoadPluginError);
+				loader.unloadAndStop();
+			}
+			catch (e:Error) {
+			}
 		}
 
 		private function handlerLoadXMLError(e:Event):void {
@@ -77,7 +99,7 @@ package com.snsoft.tsp3 {
 			else {
 				pluginUrl = relativeUrl + swfName;
 
-				var loader:Loader = new Loader();
+				loader = new Loader();
 				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, handlerLoadPluginCmp);
 				loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadPluginError);
 				loader.load(new URLRequest(pluginUrl));
@@ -99,6 +121,7 @@ package com.snsoft.tsp3 {
 				}
 				bp.pluginUrl = relativeUrl;
 				bp.type = plv.type;
+				bp.uuid = uuid;
 				_plugin = bp;
 				dispatchCmp();
 			}
@@ -120,6 +143,10 @@ package com.snsoft.tsp3 {
 
 		public function get plugin():BPlugin {
 			return _plugin;
+		}
+
+		public function get uuid():String {
+			return _uuid;
 		}
 
 	}

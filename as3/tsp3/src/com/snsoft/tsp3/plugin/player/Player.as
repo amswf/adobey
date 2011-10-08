@@ -214,7 +214,7 @@
 
 		private function handlerCloseBtnClick(e:Event):void {
 			playWithStatus(STATUS_STOP);
-			this.visible = false;
+			this.minimizePlugin();
 		}
 
 		private function handlerdefScreenBtnClick(e:Event):void {
