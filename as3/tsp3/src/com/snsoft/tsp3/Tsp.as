@@ -4,6 +4,10 @@ package com.snsoft.tsp3 {
 	import com.snsoft.util.rlm.rs.*;
 	import com.snsoft.util.xmldom.XMLConfig;
 
+	import flash.display.NativeWindow;
+	import flash.display.NativeWindowInitOptions;
+	import flash.display.NativeWindowType;
+	import flash.display.Screen;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageDisplayState;
@@ -121,7 +125,23 @@ package com.snsoft.tsp3 {
 
 		private function handlerStart(e:Event):void {
 			stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+			initTopScreen();
 			initTsp();
+		}
+
+		private function initTopScreen():void {
+			var sc1:Screen = Screen.screens[1];
+			var options:NativeWindowInitOptions = new NativeWindowInitOptions();
+			options.type = NativeWindowType.UTILITY;
+			var win:NativeWindow = new NativeWindow(options);
+			win.width = 800;
+			win.height = 600;
+			win.y = sc1.bounds.y;
+			win.activate();
+			win.stage.displayState = StageDisplayState.FULL_SCREEN;
+			win.stage.scaleMode = StageScaleMode.NO_SCALE;
+			Common.instance().initTopStage(win.stage);
+			stage.nativeWindow.addEventListener(Event.CLOSE, function(e:Event):void {win.close()});
 		}
 
 		private function initTsp():void {
@@ -206,6 +226,12 @@ package com.snsoft.tsp3 {
 			var pld:PluginLoader = getPlugin(uuid);
 			if (pld != null) {
 				try {
+					plugins[pld.uuid] = null;
+				}
+				catch (error:Error) {
+					trace("删除plugin出错!");
+				}
+				try {
 					Common.instance().pluginBarRemoveBtn(pld.uuid);
 				}
 				catch (error:Error) {
@@ -227,12 +253,6 @@ package com.snsoft.tsp3 {
 					trace("删除plugin出错!");
 				}
 
-				try {
-					plugins[pld.uuid] = null;
-				}
-				catch (error:Error) {
-					trace("删除plugin出错!");
-				}
 			}
 		}
 

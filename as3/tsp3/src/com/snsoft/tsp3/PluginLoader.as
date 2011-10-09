@@ -1,4 +1,4 @@
-package com.snsoft.tsp3 {
+﻿package com.snsoft.tsp3 {
 	import com.snsoft.tsp3.plugin.BPlugin;
 	import com.snsoft.util.di.DependencyInjection;
 	import com.snsoft.util.di.ObjectProperty;
@@ -72,6 +72,12 @@ package com.snsoft.tsp3 {
 				loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, handlerLoadPluginCmp);
 				loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, handlerLoadPluginError);
 				loader.unloadAndStop();
+				loader = null;
+			}
+			catch (e:Error) {
+			}
+			try {
+				_plugin = null;
 			}
 			catch (e:Error) {
 			}
@@ -98,7 +104,6 @@ package com.snsoft.tsp3 {
 			}
 			else {
 				pluginUrl = relativeUrl + swfName;
-
 				loader = new Loader();
 				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, handlerLoadPluginCmp);
 				loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadPluginError);
