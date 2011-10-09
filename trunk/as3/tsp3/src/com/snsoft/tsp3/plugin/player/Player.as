@@ -319,7 +319,6 @@
 		}
 
 		private function handlerVideoStatusChange(e:VideoEvent):void {
-			trace("handlerStatusChange:", e.state);
 			if (e.state == VideoState.PLAYING) {
 				hiddenMsg();
 				this.status = STATUS_PLAY;
@@ -347,7 +346,6 @@
 		}
 
 		private function handlerSoundLoadCmp(e:Event):void {
-			trace("handlerSoundLoadCmp" + sound.bytesLoaded);
 			hiddenMsg();
 			sound.removeEventListener(ProgressEvent.PROGRESS, handlerSoundLoadCmp);
 			this.status = STATUS_PLAY;

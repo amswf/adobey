@@ -134,7 +134,6 @@ package com.snsoft.tsp3 {
 		}
 
 		private function handlerLoadCfgCmp(e:Event):void {
-			trace("handlerLoadCfgCmp");
 			var pluginName:String = xmlConfig.getConfig("plugin");
 			loadPlugin(pluginName);
 		}
@@ -158,7 +157,6 @@ package com.snsoft.tsp3 {
 		}
 
 		private function handlerLoadPluginCmp(e:Event):void {
-			trace("handlerLoadPluginCmp");
 			var pld:PluginLoader = e.currentTarget as PluginLoader;
 			var plg:BPlugin = pld.plugin;
 			plg.addEventListener(BPluginEvent.PLUGIN_CLOSE, handlerPluginClose);
@@ -243,13 +241,11 @@ package com.snsoft.tsp3 {
 		}
 
 		private function handlerPluginClose(e:Event):void {
-			trace("handlerPluginClose");
 			var plg:BPlugin = e.currentTarget as BPlugin;
 			removePlugin(plg.uuid);
 		}
 
 		private function handlerPluginMinimize(e:Event):void {
-			trace("handlerPluginMinimize");
 			var plg:BPlugin = e.currentTarget as BPlugin;
 			plg.visible = false;
 		}

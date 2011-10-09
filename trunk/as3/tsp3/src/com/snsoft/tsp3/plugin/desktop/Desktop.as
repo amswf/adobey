@@ -84,12 +84,10 @@
 		}
 
 		public function pluginBarRemoveBtn(uuid:String):void {
-			trace("pushListToAllBtns");
 			pluginBar.removeBtn(uuid);
 		}
 
 		private function pushListToAllBtns(v:Vector.<DesktopBtn>):void {
-			trace("pushListToAllBtns");
 			for (var i:int = 0; i < v.length; i++) {
 				var btn:DesktopBtn = v[i];
 				allBtns[btn.uuid] = btn;
@@ -334,7 +332,6 @@
 		}
 
 		private function btnClick(btn:DesktopBtn):void {
-			trace("btnClick");
 			var dto:DesktopBtnDTO = btn.data as DesktopBtnDTO;
 			if (dto.plugin != null) {
 				Common.instance().loadPlugin(dto.plugin, new Object(), btn.uuid);
@@ -342,7 +339,6 @@
 		}
 
 		private function handlerDragMouseUp(e:Event):void {
-			trace("handlerDragMouseUp");
 			boardLayer.mouseEnabled = false;
 			boardLayer.mouseChildren = false;
 

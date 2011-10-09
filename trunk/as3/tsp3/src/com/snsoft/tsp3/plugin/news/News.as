@@ -102,7 +102,6 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		private function handlerBookNext(e:Event):void {
-			trace("handlerBookNext");
 			var nb:NewsBook = e.currentTarget as NewsBook;
 			pagin.setPageNum(pagin.pageNum, 5);
 
@@ -125,7 +124,6 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		private function handlerBookPrev(e:Event):void {
-			trace("handlerBookPrev");
 			var nb:NewsBook = e.currentTarget as NewsBook;
 			pagin.setPageNum(pagin.pageNum, 5);
 
@@ -149,7 +147,6 @@ package com.snsoft.tsp3.plugin.news {
 			var nbb:NewsBtnBox = e.currentTarget as NewsBtnBox;
 			var btn:NewsImgBtn = nbb.clickBtn;
 			var dto:NewsBtnDTO = btn.data as NewsBtnDTO;
-			trace(dto.text);
 		}
 	}
 }

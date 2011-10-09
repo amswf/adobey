@@ -64,8 +64,6 @@ package com.snsoft.tsp3.plugin.news {
 
 			itemsh += boaderi;
 
-			trace(itemsh);
-
 			var pb:MovieClip = SkinsUtil.createSkinByName("NewsBookPage_backSkin");
 			pb.width = pageSize.x;
 			pb.height = Math.max(itemsh, pageSize.y);

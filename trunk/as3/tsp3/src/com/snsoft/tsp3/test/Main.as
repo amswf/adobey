@@ -34,7 +34,6 @@ package com.snsoft.tsp3.test {
 		}
 
 		private function handlerClick(e:Event):void {
-			trace("m");
 			var mm:MovieClip = Skins.getSkin("Skin2");
 			this.addChild(mm);
 
