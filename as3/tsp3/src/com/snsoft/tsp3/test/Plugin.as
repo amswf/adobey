@@ -14,7 +14,6 @@ package com.snsoft.tsp3.test {
 
 		public function Plugin() {
 			super();
-			trace(stage.stageWidth);
 			var rlm:ResLoadManager = new ResLoadManager();
 
 			rss.addResUrl("skins.swf");
@@ -29,7 +28,6 @@ package com.snsoft.tsp3.test {
 			var info:LoaderInfo = rss.getInfoByUrl("skins.swf");
 			Skins.setDomain(info.applicationDomain);
 			var mm:MovieClip = Skins.getSkin("Skin2");
-			trace("p");
 			this.addChild(mm);
 		}
 

@@ -126,8 +126,6 @@ package com.snsoft.tsp3.plugin.news {
 			}
 			pageLayer.y += dh;
 
-			trace(td.dragBounds.y, td.dragBounds.height);
-			trace(pageLayer.y, npage.y, npage.height, bookSize.y);
 			if (pageLayer.y + npage.y + npage.height < bookSize.y) {
 				dispatchEventNeedNext();
 			}
@@ -163,8 +161,6 @@ package com.snsoft.tsp3.plugin.news {
 			}
 			pageLayer.y -= ppage.height;
 
-			trace(td.dragBounds.y, td.dragBounds.height);
-			trace(pageLayer.y, ppage.y, ppage.height, bookSize.y);
 			if (pageLayer.y + ppage.y > 0) {
 				dispatchEventNeedPrev();
 			}
