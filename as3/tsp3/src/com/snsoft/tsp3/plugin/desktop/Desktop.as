@@ -74,9 +74,7 @@
 		}
 
 		public function pluginBarAddBtn(uuid:String):void {
-			trace("pluginBarAddBtn", uuid);
 			var btn:DesktopBtn = getBtn(uuid);
-			trace("btn", btn);
 			if (btn != null) {
 				var dto:DesktopBtnDTO = btn.data as DesktopBtnDTO;
 				if (dto != null) {
@@ -246,6 +244,7 @@
 			pluginBar = new DyncBtnBar(5);
 			pluginBar.y = tb;
 			pluginBar.x = quickToolBar.x + quickToolBar.width;
+			pluginBar.addEventListener(BtnBar.EVENT_BTN_CLICK, handlerDyncBtnBarBtnClick);
 
 			toolBarLayer.addChild(pluginBar);
 			toolBarLayer.addChild(startToolBar);
@@ -307,6 +306,12 @@
 
 			pagin.addEventListener(PaginationEvent.PAGIN_CLICK, handlerPaginClick);
 
+		}
+
+		private function handlerDyncBtnBarBtnClick(e:Event):void {
+			var btnBar:DyncBtnBar = e.currentTarget as DyncBtnBar;
+			var btn:DesktopBtn = btnBar.btn;
+			btnClick(btn);
 		}
 
 		private function handlerBtnBarBtnClick(e:Event):void {
