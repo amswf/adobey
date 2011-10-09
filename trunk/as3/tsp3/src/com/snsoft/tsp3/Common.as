@@ -1,6 +1,9 @@
 package com.snsoft.tsp3 {
 	import com.snsoft.tsp3.plugin.desktop.IDesktop;
 
+	import flash.display.Sprite;
+	import flash.display.Stage;
+
 	public class Common {
 
 		private static var lock:Boolean = false;
@@ -13,9 +16,29 @@ package com.snsoft.tsp3 {
 
 		private var deskTop:IDesktop;
 
+		private var topStage:Stage;
+
 		public function Common() {
 			if (lock) {
 				throw(new Error("Common can not new"));
+			}
+		}
+
+		public function initTopStage(stage:Stage):void {
+			topStage = stage;
+		}
+
+		public function playVideo(video:Sprite):void {
+			if (topStage != null) {
+				topStage.addChild(video);
+			}
+		}
+
+		public function removeVideo():void {
+			if (topStage != null) {
+				while (topStage.numChildren > 0) {
+					topStage.removeChildAt(0);
+				}
 			}
 		}
 

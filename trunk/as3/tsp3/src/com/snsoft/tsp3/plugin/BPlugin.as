@@ -6,6 +6,8 @@ package com.snsoft.tsp3.plugin {
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.Stage;
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.utils.getDefinitionByName;
 
@@ -48,6 +50,9 @@ package com.snsoft.tsp3.plugin {
 
 		private function handlerEnterFrame(e:Event):void {
 			this.removeEventListener(Event.ADDED_TO_STAGE, handlerEnterFrame);
+
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.align = StageAlign.TOP_LEFT;
 
 			var cfg:XMLConfig = new XMLConfig();
 			cfg.addEventListener(Event.COMPLETE, handlerLoadConfigCmp);
