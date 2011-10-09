@@ -18,6 +18,8 @@ package com.snsoft.tsp3.plugin.desktop {
 
 		private var boader2:int = 3;
 
+		private var tfdH:int = 17;
+
 		private var img:BitmapData;
 
 		private var tft:TextFormat = new TextFormat(null, 12, 0x000000);
@@ -28,12 +30,18 @@ package com.snsoft.tsp3.plugin.desktop {
 
 		private var _uuid:String;
 
-		public function DesktopBtn(imgSize:Point, img:BitmapData, text:String) {
+		public function DesktopBtn(imgSize:Point, img:BitmapData, text:String, uuid:String = null) {
 			super();
 			this.imgSize = imgSize;
 			this.img = img;
 			this.text = text;
-			this._uuid = UUID.create();
+
+			if (uuid != null) {
+				this._uuid = uuid;
+			}
+			else {
+				this._uuid = UUID.create();
+			}
 			init();
 		}
 
@@ -50,7 +58,7 @@ package com.snsoft.tsp3.plugin.desktop {
 			var tfd:TextField = new TextField();
 			tfd.defaultTextFormat = tft;
 			tfd.width = w;
-			tfd.height = 17;
+			tfd.height = tfdH;
 			tfd.autoSize = TextFieldAutoSize.CENTER;
 			tfd.text = text;
 			ViewUtil.filterTfd(tfd);
@@ -59,7 +67,7 @@ package com.snsoft.tsp3.plugin.desktop {
 			tfd.x = (w - tfd.width) / 2;
 			tfd.y = boader + imgSize.y + boader2;
 
-			var h:int = boader + imgSize.y + boader2 + tfd.height + boader;
+			var h:int = boader + imgSize.y + boader2 + tfdH + boader;
 			var back:Sprite = ViewUtil.creatRect(w, h);
 			this.addChild(back);
 		}

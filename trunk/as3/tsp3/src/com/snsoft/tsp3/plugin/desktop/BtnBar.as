@@ -14,6 +14,8 @@
 
 		private var _btn:DesktopBtn;
 
+		private var _btns:Vector.<DesktopBtn> = new Vector.<DesktopBtn>();
+
 		public function BtnBar(dtoList:Vector.<DesktopBtnDTO>) {
 			super();
 			this.dtoList = dtoList;
@@ -30,6 +32,7 @@
 				dbtn.data = dto;
 				dbtn.x = bx;
 				this.addChild(dbtn);
+				btns.push(dbtn);
 				bx += dbtn.width;
 			}
 		}
@@ -46,6 +49,10 @@
 
 		public function set btn(value:DesktopBtn):void {
 			_btn = value;
+		}
+
+		public function get btns():Vector.<DesktopBtn> {
+			return _btns;
 		}
 
 	}
