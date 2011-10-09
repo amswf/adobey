@@ -163,8 +163,6 @@ package com.snsoft.tsp3 {
 			var plg:BPlugin = pld.plugin;
 			plg.addEventListener(BPluginEvent.PLUGIN_CLOSE, handlerPluginClose);
 			plg.addEventListener(BPluginEvent.PLUGIN_MINIMIZE, handlerPluginMinimize);
-			var layer:Sprite = getLayer(plg.type);
-			layer.addChild(plg);
 			addPlugin(pld);
 			pluginView(pld);
 		}
@@ -195,35 +193,44 @@ package com.snsoft.tsp3 {
 			return layer;
 		}
 
-		private function addPlugin(pl:PluginLoader):void {
-			var uuid:String = pl.uuid;
+		private function addPlugin(pld:PluginLoader):void {
+			var plg:BPlugin = pld.plugin;
+			var layer:Sprite = getLayer(plg.type);
+			layer.addChild(plg);
+			Common.instance().pluginBarAddBtn(pld.uuid);
+			var uuid:String = pld.uuid;
 			if (uuid != null && uuid.length > 0) {
-				plugins[uuid] = pl;
+				plugins[uuid] = pld;
 			}
 		}
 
 		private function removePlugin(uuid:String):void {
-			var pl:PluginLoader = getPlugin(uuid);
-			if (pl != null) {
+			var pld:PluginLoader = getPlugin(uuid);
+			if (pld != null) {
 				try {
-					pl.plugin.removeEventListener(BPluginEvent.PLUGIN_CLOSE, handlerPluginClose);
-					pl.plugin.removeEventListener(BPluginEvent.PLUGIN_MINIMIZE, handlerPluginMinimize);
-					pl.plugin.parent.removeChild(pl.plugin);
+					Common.instance().pluginBarRemoveBtn(pld.uuid);
+				}
+				catch (error:Error) {
+				}
+				try {
+					pld.plugin.removeEventListener(BPluginEvent.PLUGIN_CLOSE, handlerPluginClose);
+					pld.plugin.removeEventListener(BPluginEvent.PLUGIN_MINIMIZE, handlerPluginMinimize);
+					pld.plugin.parent.removeChild(pld.plugin);
 				}
 				catch (error:Error) {
 					trace("删除plugin出错!");
 				}
 
 				try {
-					pl.removeEventListener(Event.COMPLETE, handlerLoadPluginCmp);
-					pl.close();
+					pld.removeEventListener(Event.COMPLETE, handlerLoadPluginCmp);
+					pld.close();
 				}
 				catch (error:Error) {
 					trace("删除plugin出错!");
 				}
 
 				try {
-					plugins[pl.uuid] = null;
+					plugins[pld.uuid] = null;
 				}
 				catch (error:Error) {
 					trace("删除plugin出错!");

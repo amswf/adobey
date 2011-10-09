@@ -31,7 +31,7 @@
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 
-	public class Desktop extends BPlugin {
+	public class Desktop extends BPlugin implements IDesktop {
 
 		private var pagin:Pagination = new Pagination();
 
@@ -63,9 +63,43 @@
 
 		private var moveBoardLock:Boolean = false;
 
+		private var pluginBar:DyncBtnBar;
+
+		private var allBtns:Array = new Array();
+
 		public function Desktop() {
 			super();
 			pluginCfg = new DesktopCfg();
+			Common.instance().initDesktop(this);
+		}
+
+		public function pluginBarAddBtn(uuid:String):void {
+			trace("pluginBarAddBtn", uuid);
+			var btn:DesktopBtn = getBtn(uuid);
+			trace("btn", btn);
+			if (btn != null) {
+				var dto:DesktopBtnDTO = btn.data as DesktopBtnDTO;
+				if (dto != null) {
+					pluginBar.addBtn(dto, btn.uuid);
+				}
+			}
+		}
+
+		public function pluginBarRemoveBtn(uuid:String):void {
+			trace("pushListToAllBtns");
+			pluginBar.removeBtn(uuid);
+		}
+
+		private function pushListToAllBtns(v:Vector.<DesktopBtn>):void {
+			trace("pushListToAllBtns");
+			for (var i:int = 0; i < v.length; i++) {
+				var btn:DesktopBtn = v[i];
+				allBtns[btn.uuid] = btn;
+			}
+		}
+
+		private function getBtn(uuid:String):DesktopBtn {
+			return allBtns[uuid] as DesktopBtn;
 		}
 
 		override protected function init():void {
@@ -209,9 +243,18 @@
 			stateToolBar.x = stage.stageWidth - stateToolBar.width;
 			stateToolBar.addEventListener(BtnBar.EVENT_BTN_CLICK, handlerBtnBarBtnClick);
 
+			pluginBar = new DyncBtnBar(5);
+			pluginBar.y = tb;
+			pluginBar.x = quickToolBar.x + quickToolBar.width;
+
+			toolBarLayer.addChild(pluginBar);
 			toolBarLayer.addChild(startToolBar);
 			toolBarLayer.addChild(quickToolBar);
 			toolBarLayer.addChild(stateToolBar);
+
+			pushListToAllBtns(startToolBar.btns);
+			pushListToAllBtns(quickToolBar.btns);
+			pushListToAllBtns(stateToolBar.btns);
 
 			var toolbmd:BitmapData = imgRS.getImageByUrl(pluginCfg.toolBarBackImgUrl);
 			var toolbm:Bitmap = new Bitmap(toolbmd, "auto", true);
@@ -256,6 +299,7 @@
 					btn.buttonMode = true;
 					td.addClickObj(btn);
 				}
+				pushListToAllBtns(btnV);
 			}
 
 			td.addEventListener(TouchDragEvent.TOUCH_DRAG_MOUSE_UP, handlerDragMouseUp);
@@ -285,6 +329,7 @@
 		}
 
 		private function btnClick(btn:DesktopBtn):void {
+			trace("btnClick");
 			var dto:DesktopBtnDTO = btn.data as DesktopBtnDTO;
 			if (dto.plugin != null) {
 				Common.instance().loadPlugin(dto.plugin, new Object(), btn.uuid);

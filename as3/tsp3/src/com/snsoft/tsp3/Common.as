@@ -1,4 +1,5 @@
 package com.snsoft.tsp3 {
+	import com.snsoft.tsp3.plugin.desktop.IDesktop;
 
 	public class Common {
 
@@ -10,6 +11,8 @@ package com.snsoft.tsp3 {
 
 		private var tsp:ITsp;
 
+		private var deskTop:IDesktop;
+
 		public function Common() {
 			if (lock) {
 				throw(new Error("Common can not new"));
@@ -18,6 +21,22 @@ package com.snsoft.tsp3 {
 
 		public function initTsp(tsp:ITsp):void {
 			this.tsp = tsp;
+		}
+
+		public function initDesktop(deskTop:IDesktop):void {
+			this.deskTop = deskTop;
+		}
+
+		public function pluginBarAddBtn(uuid:String):void {
+			if (this.deskTop != null) {
+				this.deskTop.pluginBarAddBtn(uuid);
+			}
+		}
+
+		public function pluginBarRemoveBtn(uuid:String):void {
+			if (this.deskTop != null) {
+				this.deskTop.pluginBarRemoveBtn(uuid);
+			}
 		}
 
 		public function loadPlugin(pluginName:String, params:Object = null, uuid:String = null):void {
