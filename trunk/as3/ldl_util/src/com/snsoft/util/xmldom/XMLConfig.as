@@ -144,10 +144,8 @@ package com.snsoft.util.xmldom {
 		public function configToObj(obj:Object):void {
 			for (var i:int = 0; i < configHV.length; i++) {
 				var name:String = configHV.findNameByIndex(i);
-				trace(obj);
 				try {
 					obj[name] = configHV.findByIndex(i);
-					trace("hasOwnProperty", name);
 				}
 				catch (e:Error) {
 					trace(e.getStackTrace());
