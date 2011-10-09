@@ -22,6 +22,7 @@ package com.snsoft.tsp3 {
 			if (lock) {
 				throw(new Error("Common can not new"));
 			}
+			lock = true;
 		}
 
 		public function initTopStage(stage:Stage):void {

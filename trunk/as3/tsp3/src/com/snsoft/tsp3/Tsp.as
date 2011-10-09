@@ -9,10 +9,12 @@ package com.snsoft.tsp3 {
 	import flash.display.NativeWindowType;
 	import flash.display.Screen;
 	import flash.display.Sprite;
+	import flash.display.Stage;
 	import flash.display.StageAlign;
 	import flash.display.StageDisplayState;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.geom.Rectangle;
 
 	public class Tsp extends MySprite implements ITsp {
 
@@ -69,6 +71,8 @@ package com.snsoft.tsp3 {
 
 		private var plugins:Array = new Array();
 
+		private var topWin:NativeWindow;
+
 		public function Tsp() {
 			//注册动态调用的类
 			com.snsoft.util.rlm.rs.RSImages;
@@ -101,8 +105,6 @@ package com.snsoft.tsp3 {
 			backSpr = ViewUtil.creatRect(100, 100, 0xffffff, 1);
 			backLayer.addChild(backSpr);
 
-			//PromptMsgMng.instance().setMsg("a");
-
 			welcome = new Welcome();
 			welcomeLayer.addChild(welcome);
 			welcome.addEventListener(Welcome.EVENT_CLICK_START, handlerStart);
@@ -130,18 +132,21 @@ package com.snsoft.tsp3 {
 		}
 
 		private function initTopScreen():void {
-			var sc1:Screen = Screen.screens[1];
-			var options:NativeWindowInitOptions = new NativeWindowInitOptions();
-			options.type = NativeWindowType.UTILITY;
-			var win:NativeWindow = new NativeWindow(options);
-			win.width = 800;
-			win.height = 600;
-			win.y = sc1.bounds.y;
-			win.activate();
-			win.stage.displayState = StageDisplayState.FULL_SCREEN;
-			win.stage.scaleMode = StageScaleMode.NO_SCALE;
-			Common.instance().initTopStage(win.stage);
-			stage.nativeWindow.addEventListener(Event.CLOSE, function(e:Event):void {win.close()});
+			var topsc:Screen = ScreenMng.instance().topScreen;
+			if (topsc != null && topWin == null) {
+				var options:NativeWindowInitOptions = new NativeWindowInitOptions();
+				options.type = NativeWindowType.UTILITY;
+				topWin = new NativeWindow(options);
+				topWin.width = 800;
+				topWin.height = 600;
+				topWin.x = topsc.bounds.x;
+				topWin.y = topsc.bounds.y;
+				topWin.activate();
+				topWin.stage.displayState = StageDisplayState.FULL_SCREEN;
+				topWin.stage.scaleMode = StageScaleMode.NO_SCALE;
+				Common.instance().initTopStage(topWin.stage);
+				stage.nativeWindow.addEventListener(Event.CLOSE, function(e:Event):void {topWin.close()});
+			}
 		}
 
 		private function initTsp():void {
