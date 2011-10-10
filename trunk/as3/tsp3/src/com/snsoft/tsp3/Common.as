@@ -29,6 +29,10 @@ package com.snsoft.tsp3 {
 			topStage = stage;
 		}
 
+		public function hasTopStage():Boolean {
+			return (topStage != null);
+		}
+
 		public function playVideo(video:Sprite):void {
 			if (topStage != null) {
 				topStage.addChild(video);

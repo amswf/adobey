@@ -401,7 +401,9 @@
 			}
 			else if (playType == PLAY_TYPE_VIDEO) {
 				if (status == STATUS_START || (os == STATUS_STOP && status == STATUS_PLAY)) {
-					topScreenBtn.visible = true;
+					if (Common.instance().hasTopStage()) {
+						topScreenBtn.visible = true;
+					}
 					setMsg("正在加载文件...");
 					sign = false;
 					stopAll();
