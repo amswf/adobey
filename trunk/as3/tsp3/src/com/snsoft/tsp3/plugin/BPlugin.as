@@ -31,7 +31,7 @@ package com.snsoft.tsp3.plugin {
 
 		private var _promptMsgMng:PromptMsgMng;
 
-		private var _dataBaseUrl:String;
+		private var _serverRootUrl:String;
 
 		private var _pluginUrl:String = "";
 
@@ -67,7 +67,7 @@ package com.snsoft.tsp3.plugin {
 			else {
 				trace(this, "没有初始化pluginCfg属性");
 			}
-			dataBaseUrl = Common.instance().dataBaseUrl;
+			serverRootUrl = Common.instance().serverRootUrl;
 			init();
 		}
 
@@ -92,12 +92,12 @@ package com.snsoft.tsp3.plugin {
 			_promptMsgMng = value;
 		}
 
-		public function get dataBaseUrl():String {
-			return _dataBaseUrl;
+		public function get serverRootUrl():String {
+			return _serverRootUrl;
 		}
 
-		public function set dataBaseUrl(value:String):void {
-			_dataBaseUrl = value;
+		public function set serverRootUrl(value:String):void {
+			_serverRootUrl = value;
 		}
 
 		public function get pluginUrl():String {

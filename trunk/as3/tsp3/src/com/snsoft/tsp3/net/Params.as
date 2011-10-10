@@ -8,11 +8,11 @@ package com.snsoft.tsp3.net {
 		}
 
 		public function addParam(name:String, value:String):void {
-			paramsStr += "    <" + name + ">" + "<![CDATA[" + value + "]]>" + "</" + name + ">\r";
+			paramsStr += "    <filed" + " name=\"" + name + "\" value=\"" + value + "\" />\r";
 		}
 
 		public function toXML():String {
-			var xml:String = "<xml>\r" + paramsStr + "</xml>";
+			var xml:String = "<fileds>\r" + paramsStr + "</fileds>";
 			return xml;
 		}
 	}
