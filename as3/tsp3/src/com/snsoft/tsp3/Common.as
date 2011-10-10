@@ -10,7 +10,9 @@ package com.snsoft.tsp3 {
 
 		private static var common:Common = new Common();
 
-		private var _dataBaseUrl:String = "";
+		private var _serverRootUrl:String = "";
+
+		private var _dataUrl:String;
 
 		private var tsp:ITsp;
 
@@ -77,12 +79,20 @@ package com.snsoft.tsp3 {
 			return common;
 		}
 
-		public function get dataBaseUrl():String {
-			return _dataBaseUrl;
+		public function get serverRootUrl():String {
+			return _serverRootUrl;
 		}
 
-		public function set dataBaseUrl(value:String):void {
-			_dataBaseUrl = value;
+		public function set serverRootUrl(value:String):void {
+			_serverRootUrl = value;
+		}
+
+		public function get dataUrl():String {
+			return _dataUrl;
+		}
+
+		public function set dataUrl(value:String):void {
+			_dataUrl = value;
 		}
 
 	}

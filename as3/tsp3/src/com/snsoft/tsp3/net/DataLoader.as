@@ -23,23 +23,28 @@ package com.snsoft.tsp3.net {
 
 		private var url:String;
 
+		private static const OPERATION:String = "operation";
+
 		public function DataLoader() {
 			super(null);
 
 		}
 
-		public function loadData(url:String, type:String, code:String, params:Params = null):void {
-			var uvs:URLVariables = new URLVariables();
-			uvs["type"] = type;
-			uvs["code"] = code;
+		public function loadData(url:String, code:String, operation:String, params:Params = null):void {
+			this.url = url;
 			if (params != null) {
-				uvs["xml"] = params.toXML();
+				params = new Params();
 			}
+			params.addParam(OPERATION, operation);
+
+			var uvs:URLVariables = new URLVariables();
+			uvs["code"] = code;
+			uvs["xml"] = params.toXML();
 			load(url, uvs);
 		}
 
 		private function load(url:String, uvs:URLVariables = null):void {
-			this.url = url;
+
 			var req:URLRequest = new URLRequest(url);
 			if (uvs == null) {
 				uvs = new URLVariables();
@@ -51,14 +56,14 @@ package com.snsoft.tsp3.net {
 
 			var ul:URLLoader = new URLLoader();
 			ul.addEventListener(Event.COMPLETE, handlerLoadCmp);
-			ul.addEventListener(Event.COMPLETE, handlerLoadError);
+			ul.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadError);
 			ul.load(req);
 		}
 
 		private function handlerLoadCmp(e:Event):void {
 			var ul:URLLoader = e.currentTarget as URLLoader;
 			ul.removeEventListener(Event.COMPLETE, handlerLoadCmp);
-			ul.removeEventListener(Event.COMPLETE, handlerLoadError);
+			ul.removeEventListener(IOErrorEvent.IO_ERROR, handlerLoadError);
 			_data = ul.data;
 			this.dispatchEvent(new Event(Event.COMPLETE));
 		}
@@ -66,7 +71,7 @@ package com.snsoft.tsp3.net {
 		private function handlerLoadError(e:Event):void {
 			var ul:URLLoader = e.currentTarget as URLLoader;
 			ul.removeEventListener(Event.COMPLETE, handlerLoadCmp);
-			ul.removeEventListener(Event.COMPLETE, handlerLoadError);
+			ul.removeEventListener(IOErrorEvent.IO_ERROR, handlerLoadError);
 			this.dispatchEvent(new Event(IOErrorEvent.IO_ERROR));
 		}
 

@@ -120,8 +120,8 @@
 
 		private function loadBarsXML():void {
 
-			xmlDataRS.addResUrl(dataBaseUrl + pluginCfg.toolBarDataUrl);
-			xmlDataRS.addResUrl(dataBaseUrl + pluginCfg.boardDataUrl);
+			xmlDataRS.addResUrl(serverRootUrl + pluginCfg.toolBarDataUrl);
+			xmlDataRS.addResUrl(serverRootUrl + pluginCfg.boardDataUrl);
 
 			var rlm:ResLoadManager = new ResLoadManager();
 			rlm.addEventListener(Event.COMPLETE, handlerLoadXMLDataCmp);
@@ -136,8 +136,8 @@
 
 		private function parseXMLData():void {
 
-			var tbstr:String = xmlDataRS.getTextByUrl(dataBaseUrl + pluginCfg.toolBarDataUrl);
-			var bstr:String = xmlDataRS.getTextByUrl(dataBaseUrl + pluginCfg.boardDataUrl);
+			var tbstr:String = xmlDataRS.getTextByUrl(serverRootUrl + pluginCfg.toolBarDataUrl);
+			var bstr:String = xmlDataRS.getTextByUrl(serverRootUrl + pluginCfg.boardDataUrl);
 
 			var tbxd:XMLData = new XMLData(tbstr);
 			var bxd:XMLData = new XMLData(bstr);
