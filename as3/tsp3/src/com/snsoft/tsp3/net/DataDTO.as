@@ -19,6 +19,8 @@ package com.snsoft.tsp3.net {
 
 		private var _id:String;
 
+		private var _name:String;
+
 		public function DataDTO() {
 		}
 
@@ -85,6 +87,17 @@ package com.snsoft.tsp3.net {
 		public function set id(value:String):void {
 			_id = value;
 		}
+
+		public function get name():String
+		{
+			return _name;
+		}
+
+		public function set name(value:String):void
+		{
+			_name = value;
+		}
+
 
 	}
 }

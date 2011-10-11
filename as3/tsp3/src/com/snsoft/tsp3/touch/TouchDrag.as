@@ -141,11 +141,10 @@ package com.snsoft.tsp3.touch {
 				this.dispatchEvent(new Event(TouchDragEvent.TOUCH_DRAG_MOUSE_UP));
 			}
 			else {
-
 				twe = true;
 			}
 
-			if (twe && isMouseDown) {
+			if (twe && isMouseDown && sign) {
 				var twn:Tween = new Tween(dragObj, property, Regular.easeOut, start, end, 0.3, true);
 				twn.start();
 			}
@@ -170,16 +169,13 @@ package com.snsoft.tsp3.touch {
 			return _mouseUpPoint;
 		}
 
-		public function get dragBounds():Rectangle
-		{
+		public function get dragBounds():Rectangle {
 			return _dragBounds;
 		}
 
-		public function set dragBounds(value:Rectangle):void
-		{
+		public function set dragBounds(value:Rectangle):void {
 			_dragBounds = value;
 		}
-
 
 	}
 }
