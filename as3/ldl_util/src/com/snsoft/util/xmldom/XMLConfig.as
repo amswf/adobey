@@ -1,4 +1,4 @@
-package com.snsoft.util.xmldom {
+﻿package com.snsoft.util.xmldom{
 	import com.snsoft.util.HashVector;
 
 	import flash.events.Event;
@@ -18,8 +18,8 @@ package com.snsoft.util.xmldom {
 	 *
 	 */
 
-	[Event(name = "complete", type = "flash.events.Event")]
-	[Event(name = "ioError", type = "flash.events.IOErrorEvent")]
+	[Event(name = "complete",type = "flash.events.Event")]
+	[Event(name = "ioError",type = "flash.events.IOErrorEvent")]
 
 	public class XMLConfig extends EventDispatcher {
 
@@ -113,12 +113,14 @@ package com.snsoft.util.xmldom {
 			var xmldom:XMLDom = new XMLDom(xml);
 			var configNode:Node = xmldom.parse();
 			var propertyNodeList:NodeList = configNode.getNodeList(propertyTagName);
-			for (var i:int = 0; i < propertyNodeList.length(); i++) {
-				var propertyNode:Node = propertyNodeList.getNode(i);
-				var name:String = propertyNode.getAttributeByName(propertyName);
-				var value:String = propertyNode.getAttributeByName(propertyValue);
-				if (name != null && name.length > 0) {
-					configHV.push(value, name);
+			if (propertyNodeList != null) {
+				for (var i:int = 0; i < propertyNodeList.length(); i++) {
+					var propertyNode:Node = propertyNodeList.getNode(i);
+					var name:String = propertyNode.getAttributeByName(propertyName);
+					var value:String = propertyNode.getAttributeByName(propertyValue);
+					if (name != null && name.length > 0) {
+						configHV.push(value, name);
+					}
 				}
 			}
 		}
@@ -146,8 +148,7 @@ package com.snsoft.util.xmldom {
 				var name:String = configHV.findNameByIndex(i);
 				try {
 					obj[name] = configHV.findByIndex(i);
-				}
-				catch (e:Error) {
+				} catch (e:Error) {
 					trace(e.getStackTrace());
 				}
 			}
