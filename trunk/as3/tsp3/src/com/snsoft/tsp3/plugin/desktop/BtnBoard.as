@@ -1,14 +1,12 @@
 package com.snsoft.tsp3.plugin.desktop {
-	import com.snsoft.tsp3.ViewUtil;
-	import com.snsoft.tsp3.plugin.desktop.dto.DesktopBtnDTO;
+	import com.snsoft.tsp3.net.DataDTO;
 
-	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.geom.Point;
 
 	public class BtnBoard extends Sprite {
 
-		private var dtoList:Vector.<DesktopBtnDTO>;
+		private var dtoList:Vector.<DataDTO>;
 
 		private var boardWidth:int;
 
@@ -22,7 +20,7 @@ package com.snsoft.tsp3.plugin.desktop {
 
 		private var _btnV:Vector.<DesktopBtn> = new Vector.<DesktopBtn>();
 
-		public function BtnBoard(dtoList:Vector.<DesktopBtnDTO>, boardWidth:int, boardHeight:int, spaceX:int, spaceY:int) {
+		public function BtnBoard(dtoList:Vector.<DataDTO>, boardWidth:int, boardHeight:int, spaceX:int, spaceY:int) {
 			super();
 			this.dtoList = dtoList;
 			this.boardWidth = boardWidth;
@@ -48,7 +46,7 @@ package com.snsoft.tsp3.plugin.desktop {
 			}
 
 			for (var k:int = 0; k < dtoList.length; k++) {
-				var dto:DesktopBtnDTO = dtoList[k];
+				var dto:DataDTO = dtoList[k];
 				var dbtn:DesktopBtn = new DesktopBtn(new Point(48, 48), dto.img, dto.text);
 				dbtn.x = coords[k].x - dbtn.width;
 				dbtn.y = coords[k].y;

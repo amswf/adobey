@@ -1,6 +1,6 @@
 ﻿package com.snsoft.tsp3.plugin.desktop {
-	import com.snsoft.tsp3.plugin.desktop.dto.DesktopBtnDTO;
-
+	import com.snsoft.tsp3.net.DataDTO;
+	
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -10,13 +10,13 @@
 
 		public static const EVENT_BTN_CLICK:String = "EVENT_BTN_CLICK";
 
-		private var dtoList:Vector.<DesktopBtnDTO>;
+		private var dtoList:Vector.<DataDTO>;
 
 		private var _btn:DesktopBtn;
 
 		private var _btns:Vector.<DesktopBtn> = new Vector.<DesktopBtn>();
 
-		public function BtnBar(dtoList:Vector.<DesktopBtnDTO>) {
+		public function BtnBar(dtoList:Vector.<DataDTO>) {
 			super();
 			this.dtoList = dtoList;
 			init();
@@ -25,7 +25,7 @@
 		private function init():void {
 			var bx:int = 0;
 			for (var i:int = 0; i < dtoList.length; i++) {
-				var dto:DesktopBtnDTO = dtoList[i];
+				var dto:DataDTO = dtoList[i];
 				var dbtn:DesktopBtn = new DesktopBtn(new Point(48, 48), dto.img, dto.text);
 				dbtn.buttonMode = true;
 				dbtn.addEventListener(MouseEvent.CLICK, handlerBtnClick);

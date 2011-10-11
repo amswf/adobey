@@ -2,20 +2,18 @@
 	import com.snsoft.tsp3.Common;
 	import com.snsoft.tsp3.PromptMsgMng;
 	import com.snsoft.tsp3.ViewUtil;
-	import com.snsoft.tsp3.XMLData;
+	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.tsp3.net.DataLoader;
+	import com.snsoft.tsp3.net.DataSet;
 	import com.snsoft.tsp3.pagination.Pagination;
 	import com.snsoft.tsp3.pagination.PaginationEvent;
 	import com.snsoft.tsp3.plugin.BPlugin;
-	import com.snsoft.tsp3.plugin.desktop.dto.DesktopBtnDTO;
 	import com.snsoft.tsp3.touch.TouchDrag;
 	import com.snsoft.tsp3.touch.TouchDragEvent;
+	import com.snsoft.util.di.DependencyInjection;
 	import com.snsoft.util.rlm.ResLoadManager;
 	import com.snsoft.util.rlm.rs.RSImages;
 	import com.snsoft.util.rlm.rs.RSTextFile;
-	import com.snsoft.util.xmldom.Node;
-	import com.snsoft.util.xmldom.NodeList;
-	import com.snsoft.util.xmldom.XMLDom;
 
 	import fl.transitions.Tween;
 	import fl.transitions.TweenEvent;
@@ -28,10 +26,7 @@
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
-	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
-	import flash.net.URLLoader;
-	import flash.net.URLRequest;
 
 	public class Desktop extends BPlugin implements IDesktop {
 
@@ -44,14 +39,6 @@
 		private var imgRS:RSImages = new RSImages();
 
 		private var xmlDataRS:RSTextFile = new RSTextFile();
-
-		private var boardBtnDTOLL:Vector.<Vector.<DesktopBtnDTO>> = new Vector.<Vector.<DesktopBtnDTO>>();
-
-		private var startBarBtnDTOList:Vector.<DesktopBtnDTO> = new Vector.<DesktopBtnDTO>();
-
-		private var quickBarBtnDTOList:Vector.<DesktopBtnDTO> = new Vector.<DesktopBtnDTO>();
-
-		private var stateBarBtnDTOList:Vector.<DesktopBtnDTO> = new Vector.<DesktopBtnDTO>();
 
 		private var toolBarLayer:Sprite = new Sprite();
 
@@ -75,13 +62,11 @@
 
 		private static const TOOL_BAR_STATE:String = "state";
 
-		private static const CAPTURES:String = "captures";
-
 		private var cfg:DesktopCfg = new DesktopCfg();
 
-		private var boardXMLData:XMLData;
+		private var boardData:Vector.<DataSet>;
 
-		private var toolBarXMLData:XMLData;
+		private var toolBarData:Vector.<DataSet>;
 
 		public function Desktop() {
 			super();
@@ -92,7 +77,7 @@
 		public function pluginBarAddBtn(uuid:String):void {
 			var btn:DesktopBtn = getBtn(uuid);
 			if (btn != null) {
-				var dto:DesktopBtnDTO = btn.data as DesktopBtnDTO;
+				var dto:DataDTO = btn.data as DataDTO;
 				if (dto != null) {
 					pluginBar.addBtn(dto, btn.uuid);
 				}
@@ -135,15 +120,17 @@
 		}
 
 		private function loadToolBarData():void {
+			var code:String = Common.instance().dataCode;
 			var url:String = cfg.toolBarDataUrl;
-			var ul:URLLoader = new URLLoader(new URLRequest(url));
-			ul.addEventListener(Event.COMPLETE, handlerLoadToolBarDataCmp);
-			ul.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadToolBarDataError);
+			var dl:DataLoader = new DataLoader();
+			dl.addEventListener(Event.COMPLETE, handlerLoadToolBarDataCmp);
+			dl.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadToolBarDataError);
+			dl.loadData(url, code, "");
 		}
 
 		private function handlerLoadToolBarDataCmp(e:Event):void {
-			var ul:URLLoader = e.currentTarget as URLLoader;
-			toolBarXMLData = new XMLData(ul.data);
+			var dl:DataLoader = e.currentTarget as DataLoader;
+			toolBarData = dl.data;
 			loadBoaderData();
 		}
 
@@ -160,74 +147,22 @@
 			var dl:DataLoader = new DataLoader();
 			dl.addEventListener(Event.COMPLETE, handlerLoadBoaderDataCmp);
 			dl.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadBoaderDataError);
-			dl.loadData(url, code, CAPTURES);
+			dl.loadData(url, code, Common.PLATE);
 
 		}
 
 		private function handlerLoadBoaderDataCmp(e:Event):void {
 			var dl:DataLoader = e.currentTarget as DataLoader;
-			boardXMLData = new XMLData(dl.data);
-			parseXMLData();
+			boardData = dl.data;
+			loadImgs();
 		}
 
 		private function handlerLoadBoaderDataError(e:Event):void {
 			PromptMsgMng.instance().setMsg("加载桌面按钮数据出错！");
 		}
 
-		private function parseXMLData():void {
-
-			parseToolBtnXMLData(toolBarXMLData);
-			parseBoardXMLData(boardXMLData);
-			loadImgs();
-		}
-
-		private function parseBoardXMLData(xmlData:XMLData):void {
-			var bodyNode:Node = xmlData.bodyNode;
-			var groupList:NodeList = bodyNode.getNodeList("recordset");
-			for (var i:int = 0; i < groupList.length(); i++) {
-				var boardBtnDTOList:Vector.<DesktopBtnDTO> = new Vector.<DesktopBtnDTO>();
-				var groupNode:Node = groupList.getNode(i);
-				var btnList:NodeList = groupNode.getNodeList("record");
-				for (var j:int = 0; j < btnList.length(); j++) {
-					var btnNode:Node = btnList.getNode(j);
-					var dto:DesktopBtnDTO = creatToolBarBtnDTO(btnNode);
-					boardImgRS.addResUrl(dto.imgUrl);
-					boardBtnDTOList.push(dto);
-				}
-				boardBtnDTOLL.push(boardBtnDTOList);
-			}
-		}
-
-		private function parseToolBtnXMLData(xmlData:XMLData):void {
-			var bodyNode:Node = xmlData.bodyNode;
-			var setList:NodeList = bodyNode.getNodeList("recordset");
-			for (var i2:int = 0; i2 < setList.length(); i2++) {
-				var setNode:Node = setList.getNode(i2);
-				var type:String = setNode.getAttributeByName("type");
-				var dtoList:Vector.<DesktopBtnDTO> = null;
-				if (type == TOOL_BAR_START) {
-					dtoList = startBarBtnDTOList;
-				}
-				else if (type == TOOL_BAR_QUICK) {
-					dtoList = quickBarBtnDTOList;
-				}
-				else if (type == TOOL_BAR_STATE) {
-					dtoList = stateBarBtnDTOList;
-				}
-				var rcdList:NodeList = setNode.getNodeList("record");
-				for (var j2:int = 0; j2 < rcdList.length(); j2++) {
-					var rcdNode:Node = rcdList.getNode(j2);
-					var dto:DesktopBtnDTO = creatToolBarBtnDTO(rcdNode);
-					dtoList.push(dto);
-					toolBtnImgRS.addResUrl(dto.imgUrl);
-				}
-			}
-		}
-
 		private function loadImgs():void {
 			var rlm:ResLoadManager = new ResLoadManager();
-			rlm.addResSet(toolBtnImgRS);
-			rlm.addResSet(boardImgRS);
 			rlm.addResSet(imgRS);
 			rlm.addEventListener(Event.COMPLETE, handlerLoadImgsCmp);
 			rlm.load();
@@ -245,16 +180,25 @@
 			backbm.height = stage.stageHeight;
 			backLayer.addChild(backbm);
 
-			for (var i:int = 0; i < boardBtnDTOLL.length; i++) {
-				var bbdlist:Vector.<DesktopBtnDTO> = boardBtnDTOLL[i];
-				dtoListSetImg(bbdlist, boardImgRS);
-			}
-
-			dtoListSetImg(startBarBtnDTOList, toolBtnImgRS);
-			dtoListSetImg(quickBarBtnDTOList, toolBtnImgRS);
-			dtoListSetImg(stateBarBtnDTOList, toolBtnImgRS);
+			var startBarBtnDTOList:Vector.<DataDTO> = new Vector.<DataDTO>();
+			var quickBarBtnDTOList:Vector.<DataDTO> = new Vector.<DataDTO>();
+			var stateBarBtnDTOList:Vector.<DataDTO> = new Vector.<DataDTO>();
 
 			var tb:int = 0;
+
+			for (var i:int = 0; i < toolBarData.length; i++) {
+				var tds:DataSet = toolBarData[i];
+				if (tds.attr != null && tds.attr.type == TOOL_BAR_START) {
+					startBarBtnDTOList = tds.dtoList;
+				}
+				else if (tds.attr != null && tds.attr.type == TOOL_BAR_QUICK) {
+					quickBarBtnDTOList = tds.dtoList;
+				}
+				else if (tds.attr != null && tds.attr.type == TOOL_BAR_STATE) {
+					stateBarBtnDTOList = tds.dtoList;
+				}
+			}
+
 			var startToolBar:BtnBar = new BtnBar(startBarBtnDTOList);
 			tb = stage.stageHeight - startToolBar.height;
 			startToolBar.y = tb;
@@ -291,32 +235,35 @@
 			toolbm.y = stage.stageHeight - toolbm.height;
 			toolBarBackLayer.addChild(toolbm);
 
+			var bpNum:int = boardData.length;
+
 			pagin = new Pagination();
 			pagin.x = (stage.stageWidth - pagin.width) / 2;
 			pagin.y = stage.stageHeight - toolbm.height - pagin.height - 10;
-			pagin.setPageNum(1, boardBtnDTOLL.length);
+			pagin.setPageNum(1, bpNum);
 			paginLayer.addChild(pagin);
 
 			var boardw:int = stage.stageWidth;
 			var boardh:int = pagin.y;
 
 			var bbv:Vector.<BtnBoard> = new Vector.<BtnBoard>();
-			for (var j:int = 0; j < boardBtnDTOLL.length; j++) {
+			for (var j:int = 0; j < boardData.length; j++) {
 				var back:Sprite = ViewUtil.creatRect(100, 100, 0xffffff);
 				back.x = j * boardw;
 				back.width = boardw;
 				back.height = toolbm.y;
 				boardLayer.addChild(back);
 
-				var btnBoard:BtnBoard = new BtnBoard(boardBtnDTOLL[j], boardw, boardh, 80, 100);
+				var bv:Vector.<DataDTO> = boardData[j].dtoList;
+				var btnBoard:BtnBoard = new BtnBoard(bv, boardw, boardh, 80, 100);
 				btnBoard.x = j * boardw;
 				bbv.push(btnBoard);
 				boardLayer.addChild(btnBoard);
 
 			}
 
-			var dbx:int = -boardw * (boardBtnDTOLL.length);
-			var dbw:int = boardw * (boardBtnDTOLL.length + 1);
+			var dbx:int = -boardw * (bpNum);
+			var dbw:int = boardw * (bpNum + 1);
 			var dragBounds:Rectangle = new Rectangle(dbx, 0, dbw, 0);
 			var td:TouchDrag = new TouchDrag(boardLayer, stage, dragBounds);
 			for (var k:int = 0; k < bbv.length; k++) {
@@ -352,7 +299,7 @@
 		private function handlerPaginClick(e:Event):void {
 			var start:Number = boardLayer.x;
 			var end:Number = -(pagin.pageNum - 1) * stage.stageWidth;
-			pagin.setPageNum(pagin.pageNum, boardBtnDTOLL.length);
+			pagin.setPageNum(pagin.pageNum, boardData.length);
 			moveBoardLayer(start, end);
 		}
 
@@ -363,9 +310,13 @@
 		}
 
 		private function btnClick(btn:DesktopBtn):void {
-			var dto:DesktopBtnDTO = btn.data as DesktopBtnDTO;
+			var dto:DataDTO = btn.data as DataDTO;
 			if (dto.plugin != null) {
-				Common.instance().loadPlugin(dto.plugin, dto.params, btn.uuid);
+
+				var params:Object = new Object();
+				DependencyInjection.diToObj(dto.params, params, false);
+				DependencyInjection.diToObj(dto, params, false);
+				Common.instance().loadPlugin(dto.plugin, params, btn.uuid);
 			}
 		}
 
@@ -383,10 +334,10 @@
 
 			var pn:int = pagin.pageNum - sign;
 
-			if (dist > 100 && pn >= 1 && pn <= boardBtnDTOLL.length) {
+			if (dist > 100 && pn >= 1 && pn <= boardData.length) {
 				end = boardLayer.x + sign * (stage.stageWidth - dist);
 
-				pagin.setPageNum(pn, boardBtnDTOLL.length);
+				pagin.setPageNum(pn, boardData.length);
 			}
 			else {
 				end = boardLayer.x - sign * dist;
@@ -406,26 +357,6 @@
 			twn.removeEventListener(TweenEvent.MOTION_FINISH, handlerMotionFinish);
 			boardLayer.mouseEnabled = true;
 			boardLayer.mouseChildren = true;
-		}
-
-		private function dtoListSetImg(v:Vector.<DesktopBtnDTO>, rs:RSImages):void {
-			for (var i:int = 0; i < v.length; i++) {
-				var dto:DesktopBtnDTO = v[i];
-				var url:String = dto.imgUrl;
-				var bmd:BitmapData = rs.getImageByUrl(url);
-				dto.img = bmd;
-			}
-		}
-
-		private function creatToolBarBtnDTO(node:Node):DesktopBtnDTO {
-			var dto:DesktopBtnDTO = new DesktopBtnDTO();
-			node.attrToObj(dto);
-			var params:Object = new Object();
-			var paramsNode:Node = node.getNodeListFirstNode("params");
-			paramsNode.attrToObj(params);
-			paramsNode.childNodeTextTObj(params);
-			dto.params = params;
-			return dto;
 		}
 
 	}

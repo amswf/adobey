@@ -1,7 +1,7 @@
-package com.snsoft.tsp3.plugin.desktop.dto {
+package com.snsoft.tsp3.net {
 	import flash.display.BitmapData;
 
-	public class DesktopBtnDTO {
+	public class DataDTO {
 
 		private var _img:BitmapData;
 
@@ -17,17 +17,9 @@ package com.snsoft.tsp3.plugin.desktop.dto {
 
 		private var _type:String;
 
-		/**
-		 * 控制显示对象的隐藏和显示
-		 */
-		public static const TYPE_DISOBJ:String = "disobj";
+		private var _id:String;
 
-		/**
-		 * 运行插件
-		 */
-		public static const TYPE_PLUGIN:String = "plugin";
-
-		public function DesktopBtnDTO() {
+		public function DataDTO() {
 		}
 
 		public function get img():BitmapData {
@@ -84,6 +76,14 @@ package com.snsoft.tsp3.plugin.desktop.dto {
 
 		public function set type(value:String):void {
 			_type = value;
+		}
+
+		public function get id():String {
+			return _id;
+		}
+
+		public function set id(value:String):void {
+			_id = value;
 		}
 
 	}

@@ -24,35 +24,34 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var text:String;
 
-		private var tw:int;
+		private var bw:int;
 
 		private var _data:Object;
 
 		private var selBack:Sprite;
 
-		public function NewsImgBtn(imgSize:Point, img:BitmapData, text:String, textWidth:int) {
+		public function NewsImgBtn(imgSize:Point, img:BitmapData, text:String, btnWidth:int) {
 			super();
 			this.imgSize = imgSize;
 			this.img = img;
 			this.text = text;
-			this.tw = textWidth;
+			this.bw = btnWidth;
 			init();
 		}
 
 		private function init():void {
 
-			var w:int = imgSize.x + boader + boader + tw;
 			var bm:Bitmap = new Bitmap(img, "auto", true);
 			bm.width = imgSize.x;
 			bm.height = imgSize.y;
 			bm.x = boader;
 			bm.y = boader2;
 
+			var tw:int = bw - (imgSize.x + boader + boader + boader);
 			var tfd:TextField = new TextField();
 			tfd.defaultTextFormat = tft;
 			tfd.width = tw;
 			tfd.height = 17;
-			tfd.autoSize = TextFieldAutoSize.CENTER;
 			tfd.text = text;
 			ViewUtil.filterTfd(tfd);
 
@@ -62,10 +61,10 @@ package com.snsoft.tsp3.plugin.news {
 			var h:int = boader2 + imgSize.y + boader2;
 
 			selBack = SkinsUtil.createSkinByName("NewsBtn_selectedBackSkin");
-			selBack.width = w;
+			selBack.width = bw;
 			selBack.height = h;
 
-			var view:Sprite = ViewUtil.creatRect(w, h);
+			var view:Sprite = ViewUtil.creatRect(bw, h);
 
 			this.addChild(selBack);
 			this.addChild(bm);
