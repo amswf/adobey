@@ -6,6 +6,16 @@ package com.snsoft.tsp3 {
 
 	public class Common {
 
+		public static const PLATE:String = "plate";
+
+		public static const COLUMN:String = "column";
+
+		public static const PLATE_ID:String = "plateId";
+
+		public static const COLUMN_ID:String = "columnId";
+
+		public static const CLASS_ID:String = "classId";
+
 		private static var lock:Boolean = false;
 
 		private static var common:Common = new Common();

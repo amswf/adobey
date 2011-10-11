@@ -1,5 +1,4 @@
-package com.snsoft.tsp3.plugin.desktop {
-	import com.snsoft.tsp3.plugin.desktop.dto.DesktopBtnDTO;
+﻿package com.snsoft.tsp3.plugin.desktop{
 
 	public interface IDesktop {
 

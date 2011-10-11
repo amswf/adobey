@@ -1,6 +1,6 @@
 package com.snsoft.tsp3.plugin.desktop {
 	import com.snsoft.tsp3.ViewUtil;
-	import com.snsoft.tsp3.plugin.desktop.dto.DesktopBtnDTO;
+	import com.snsoft.tsp3.net.DataDTO;
 
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
@@ -60,7 +60,7 @@ package com.snsoft.tsp3.plugin.desktop {
 			btnLayer.mask = mskLayer;
 		}
 
-		public function addBtn(dto:DesktopBtnDTO, uuid:String = null):void {
+		public function addBtn(dto:DataDTO, uuid:String = null):void {
 			var btn:DesktopBtn = new DesktopBtn(btnImgSize, dto.img, dto.text, uuid);
 			btn.data = dto;
 			btn.x = btnv.length * btnWidth;

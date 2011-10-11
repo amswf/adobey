@@ -1,5 +1,9 @@
 package com.snsoft.tsp3.plugin.news {
+	import com.snsoft.tsp3.Common;
 	import com.snsoft.tsp3.ViewUtil;
+	import com.snsoft.tsp3.XMLData;
+	import com.snsoft.tsp3.net.DataLoader;
+	import com.snsoft.tsp3.net.Params;
 	import com.snsoft.tsp3.pagination.Pagination;
 	import com.snsoft.tsp3.pagination.PaginationEvent;
 	import com.snsoft.tsp3.plugin.BPlugin;
@@ -12,6 +16,7 @@ package com.snsoft.tsp3.plugin.news {
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.utils.Timer;
@@ -26,31 +31,78 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var isLock:Boolean = false;
 
+		private var cfg:NewsCfg = new NewsCfg();
+
+		private var prms:NewsParams = new NewsParams();
+
+		private const columnW:int = 190;
+
+		private const paginH:int = 58;
+
+		private const titleH:int = 100;
+
+		private const deskBarH:int = 86;
+
 		public function News() {
 			super();
-
-			pluginCfg = new Object();
+			pluginCfg = cfg;
+			params = prms;
 		}
 
 		override protected function init():void {
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 
-			var nw:int = stage.stageWidth;
-			var nh:int = stage.stageHeight - 86;
+			trace(prms.id, prms.columnId);
 
-			var th:int = 100;
+			var nw:int = stage.stageWidth;
+			var nh:int = stage.stageHeight - paginH;
+
 			var ntdto:NewsTitleDTO = new NewsTitleDTO();
 			ntdto.text = "新闻资讯";
 			ntdto.titleImg = new BitmapData(48, 48);
-			var nt:NewsTitle = new NewsTitle(ntdto, stage.stageWidth, th);
+			var nt:NewsTitle = new NewsTitle(ntdto, stage.stageWidth, titleH);
 			this.addChild(nt);
 			nt.addEventListener(NewsTitle.EVENT_CLOSE, handlerCloseBtnClick);
 			nt.addEventListener(NewsTitle.EVENT_MIN, handlerMinBtnClick);
 
+			pagin = new Pagination(5);
+			this.addChild(pagin);
+			pagin.x = (stage.stageWidth - columnW - pagin.width) / 2;
+			pagin.y = nh - pagin.height - boader;
+			pagin.addEventListener(PaginationEvent.PAGIN_CLICK, handlerPaginBtnClick);
+
+			trace(pagin.height);
+			//先在这里实现分页拖动
+
+			newsBook = new NewsBook(new Point(stage.stageWidth - columnW, pagin.y - boader - titleH));
+			newsBook.y = titleH;
+			newsBook.addEventListener(NewsBook.NEED_NEXT, handlerBookNext);
+			newsBook.addEventListener(NewsBook.NEED_PREV, handlerBookPrev);
+			newsBook.addEventListener(NewsBook.CHANGE_PAGE, handlerChangePage);
+			this.addChild(newsBook);
+		}
+
+		private function loadColumn():void {
+			var url:String = Common.instance().dataUrl;
+			var code:String = Common.instance().dataCode;
+			var params:Params = new Params();
+			params.addParam(Common.PLATE_ID, prms.id);
+
+			var dl:DataLoader = new DataLoader();
+			dl.addEventListener(Event.COMPLETE, handlerLoadColumnCmp);
+			dl.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadColumnError);
+			dl.loadData(url, code, Common.COLUMN, params);
+		}
+
+		private function handlerLoadColumnCmp(e:Event):void {
+
+			var dl:DataLoader = e.currentTarget as DataLoader;
+			var xd:XMLData = new XMLData(dl.data);
+
 			var btnv:Vector.<NewsImgBtn> = new Vector.<NewsImgBtn>();
 			for (var i:int = 0; i < 20; i++) {
-				var nib:NewsImgBtn = new NewsImgBtn(new Point(48, 48), new BitmapData(100, 100), "这里的山路十八", 126);
+				var nib:NewsImgBtn = new NewsImgBtn(new Point(48, 48), new BitmapData(100, 100), "这里的山路十八", columnW);
 				nib.buttonMode = true;
 
 				var dto:NewsBtnDTO = new NewsBtnDTO();
@@ -60,27 +112,18 @@ package com.snsoft.tsp3.plugin.news {
 				btnv.push(nib);
 			}
 
-			var mh:int = nh - th;
+			var mh:int = stage.stageHeight - titleH - paginH - deskBarH;
 
 			var nbb:NewsBtnBox = new NewsBtnBox(btnv, mh);
 			this.addChild(nbb);
 			nbb.x = stage.stageWidth - nbb.width;
-			nbb.y = th;
+			nbb.y = titleH;
 			nbb.addEventListener(NewsBtnBox.EVENT_BTN_CLICK, handlerBtnClick);
 
-			pagin = new Pagination(5);
-			this.addChild(pagin);
-			pagin.x = (stage.stageWidth - nbb.width - pagin.width) / 2;
-			pagin.y = nh - pagin.height - boader;
-			pagin.addEventListener(PaginationEvent.PAGIN_CLICK, handlerPaginBtnClick);
-			//先在这里实现分页拖动
+		}
 
-			newsBook = new NewsBook(new Point(stage.stageWidth - nbb.width, pagin.y - boader - th));
-			newsBook.y = th;
-			newsBook.addEventListener(NewsBook.NEED_NEXT, handlerBookNext);
-			newsBook.addEventListener(NewsBook.NEED_PREV, handlerBookPrev);
-			newsBook.addEventListener(NewsBook.CHANGE_PAGE, handlerChangePage);
-			this.addChild(newsBook);
+		private function handlerLoadColumnError(e:Event):void {
+
 		}
 
 		private function handlerCloseBtnClick(e:Event):void {

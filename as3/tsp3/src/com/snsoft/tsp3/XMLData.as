@@ -17,11 +17,13 @@ package com.snsoft.tsp3 {
 			var xd:XMLDom = new XMLDom(x);
 			var xmlNode:Node = xd.parse();
 			var headNode:Node = xmlNode.getNodeListFirstNode("head");
-			headNode.childNodeTextTObj(this);
-			if (code == "200") {
-				isCmp = true;
+			if (headNode != null) {
+				headNode.childNodeTextTObj(this);
+				if (code == "200") {
+					isCmp = true;
+				}
+				bodyNode = xmlNode.getNodeListFirstNode("body");
 			}
-			bodyNode = xmlNode.getNodeListFirstNode("body");
 		}
 
 		public function get code():String {
