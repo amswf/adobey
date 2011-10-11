@@ -1,4 +1,4 @@
-package com.snsoft.tsp3.net {
+﻿package com.snsoft.tsp3.net {
 	import com.snsoft.util.UUID;
 
 	import flash.events.Event;
@@ -10,7 +10,7 @@ package com.snsoft.tsp3.net {
 	import flash.net.URLVariables;
 
 	[Event(name = "complete", type = "flash.events.Event")]
-	[Event(name = "ioError", type = "flash.events.Event")]
+	[Event(name = "ioError", type = "flash.events.IOErrorEvent")]
 
 	/**
 	 *
@@ -32,7 +32,7 @@ package com.snsoft.tsp3.net {
 
 		public function loadData(url:String, code:String, operation:String, params:Params = null):void {
 			this.url = url;
-			if (params != null) {
+			if (params == null) {
 				params = new Params();
 			}
 			params.addParam(OPERATION, operation);
