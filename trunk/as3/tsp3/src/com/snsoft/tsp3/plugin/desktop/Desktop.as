@@ -214,7 +214,9 @@
 			stateToolBar.x = stage.stageWidth - stateToolBar.width;
 			stateToolBar.addEventListener(BtnBar.EVENT_BTN_CLICK, handlerBtnBarBtnClick);
 
-			pluginBar = new DyncBtnBar(5);
+			var pw:int = stage.stageWidth - quickToolBar.x - quickToolBar.width - stateToolBar.width;
+
+			pluginBar = new DyncBtnBar(pw);
 			pluginBar.y = tb;
 			pluginBar.x = quickToolBar.x + quickToolBar.width;
 			pluginBar.addEventListener(BtnBar.EVENT_BTN_CLICK, handlerDyncBtnBarBtnClick);

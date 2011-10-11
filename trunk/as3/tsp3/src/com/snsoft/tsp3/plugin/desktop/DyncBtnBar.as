@@ -34,9 +34,9 @@ package com.snsoft.tsp3.plugin.desktop {
 
 		private var _btn:DesktopBtn;
 
-		public function DyncBtnBar(max:int) {
+		public function DyncBtnBar(barWidth:int) {
 			super();
-			this.max = max;
+			this.barWidth = barWidth;
 
 			this.addChild(backLayer);
 			this.addChild(btnLayer);
@@ -46,7 +46,7 @@ package com.snsoft.tsp3.plugin.desktop {
 			btnWidth = btn.width;
 			btnHeight = btn.height;
 
-			barWidth = max * btnWidth;
+			this.max = barWidth / btnWidth;
 			barHeight = btnHeight;
 			init();
 		}
@@ -55,7 +55,7 @@ package com.snsoft.tsp3.plugin.desktop {
 			var back:Sprite = ViewUtil.creatRect(barWidth, barHeight);
 			backLayer.addChild(back);
 
-			var msk:Sprite = ViewUtil.creatRect(barWidth, barHeight);
+			var msk:Sprite = ViewUtil.creatRect(btnWidth * max, barHeight);
 			mskLayer.addChild(msk);
 			btnLayer.mask = mskLayer;
 		}
