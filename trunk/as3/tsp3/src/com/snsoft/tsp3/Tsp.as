@@ -73,6 +73,8 @@ package com.snsoft.tsp3 {
 
 		private var topWin:NativeWindow;
 
+		private var cfg:TspCfg = new TspCfg();
+
 		public function Tsp() {
 			//注册动态调用的类
 			com.snsoft.util.rlm.rs.RSImages;
@@ -159,8 +161,13 @@ package com.snsoft.tsp3 {
 		}
 
 		private function handlerLoadCfgCmp(e:Event):void {
-			var pluginName:String = xmlConfig.getConfig("plugin");
-			loadPlugin(pluginName);
+			xmlConfig.configToObj(cfg);
+
+			if (cfg.serverRootUrl != null) {
+				Common.instance().serverRootUrl = cfg.serverRootUrl;
+			}
+			Common.instance().dataUrl = cfg.dataUrl;
+			loadPlugin(cfg.startPlugin);
 		}
 
 		public function loadPlugin(pluginName:String, params:Object = null, uuid:String = null):void {

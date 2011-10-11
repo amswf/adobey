@@ -3,6 +3,7 @@
 	import com.snsoft.tsp3.PromptMsgMng;
 	import com.snsoft.tsp3.ViewUtil;
 	import com.snsoft.tsp3.XMLData;
+	import com.snsoft.tsp3.net.DataLoader;
 	import com.snsoft.tsp3.pagination.Pagination;
 	import com.snsoft.tsp3.pagination.PaginationEvent;
 	import com.snsoft.tsp3.plugin.BPlugin;
@@ -26,6 +27,7 @@
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
 	import flash.net.URLLoader;
@@ -73,9 +75,17 @@
 
 		private static const TOOL_BAR_STATE:String = "state";
 
+		private static const CAPTURES:String = "captures";
+
+		private var cfg:DesktopCfg = new DesktopCfg();
+
+		private var boardXMLData:XMLData;
+
+		private var toolBarXMLData:XMLData;
+
 		public function Desktop() {
 			super();
-			pluginCfg = new DesktopCfg();
+			pluginCfg = cfg;
 			Common.instance().initDesktop(this);
 		}
 
@@ -121,38 +131,54 @@
 
 			PromptMsgMng.instance().setMsg("Desktop");
 
-			loadBarsXML();
+			loadToolBarData();
 		}
 
-		private function loadBarsXML():void {
+		private function loadToolBarData():void {
+			var url:String = cfg.toolBarDataUrl;
+			var ul:URLLoader = new URLLoader(new URLRequest(url));
+			ul.addEventListener(Event.COMPLETE, handlerLoadToolBarDataCmp);
+			ul.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadToolBarDataError);
+		}
 
-			xmlDataRS.addResUrl(serverRootUrl + pluginCfg.toolBarDataUrl);
-			xmlDataRS.addResUrl(serverRootUrl + pluginCfg.boardDataUrl);
+		private function handlerLoadToolBarDataCmp(e:Event):void {
+			var ul:URLLoader = e.currentTarget as URLLoader;
+			toolBarXMLData = new XMLData(ul.data);
+			loadBoaderData();
+		}
 
-			var rlm:ResLoadManager = new ResLoadManager();
-			rlm.addEventListener(Event.COMPLETE, handlerLoadXMLDataCmp);
-			rlm.addResSet(xmlDataRS);
-			rlm.load();
+		private function handlerLoadToolBarDataError(e:Event):void {
+			PromptMsgMng.instance().setMsg("加载工具栏按钮数据出错！");
+		}
+
+		private function loadBoaderData():void {
+			var code:String = Common.instance().dataCode;
+			var url:String = Common.instance().dataUrl;
+			if (url == null) {
+				url = cfg.boardDataUrl;
+			}
+			var dl:DataLoader = new DataLoader();
+			dl.addEventListener(Event.COMPLETE, handlerLoadBoaderDataCmp);
+			dl.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadBoaderDataError);
+			dl.loadData(url, code, CAPTURES);
 
 		}
 
-		private function handlerLoadXMLDataCmp(e:Event):void {
+		private function handlerLoadBoaderDataCmp(e:Event):void {
+			var dl:DataLoader = e.currentTarget as DataLoader;
+			boardXMLData = new XMLData(dl.data);
 			parseXMLData();
+		}
+
+		private function handlerLoadBoaderDataError(e:Event):void {
+			PromptMsgMng.instance().setMsg("加载桌面按钮数据出错！");
 		}
 
 		private function parseXMLData():void {
 
-			var tbstr:String = xmlDataRS.getTextByUrl(serverRootUrl + pluginCfg.toolBarDataUrl);
-			var bstr:String = xmlDataRS.getTextByUrl(serverRootUrl + pluginCfg.boardDataUrl);
-
-			var tbxd:XMLData = new XMLData(tbstr);
-			var bxd:XMLData = new XMLData(bstr);
-
-			if (tbxd.isCmp && bxd.isCmp) {
-				parseToolBtnXMLData(tbxd);
-				parseBoardXMLData(bxd);
-				loadImgs();
-			}
+			parseToolBtnXMLData(toolBarXMLData);
+			parseBoardXMLData(boardXMLData);
+			loadImgs();
 		}
 
 		private function parseBoardXMLData(xmlData:XMLData):void {

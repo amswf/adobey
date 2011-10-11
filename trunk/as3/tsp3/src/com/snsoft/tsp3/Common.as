@@ -14,6 +14,8 @@ package com.snsoft.tsp3 {
 
 		private var _dataUrl:String;
 
+		private var _dataCode:String;
+
 		private var tsp:ITsp;
 
 		private var deskTop:IDesktop;
@@ -93,6 +95,14 @@ package com.snsoft.tsp3 {
 
 		public function set dataUrl(value:String):void {
 			_dataUrl = value;
+		}
+
+		public function get dataCode():String {
+			return _dataCode;
+		}
+
+		public function set dataCode(value:String):void {
+			_dataCode = value;
 		}
 
 	}
