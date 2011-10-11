@@ -1,57 +1,59 @@
-﻿package com.snsoft.util.di{
-	 
+﻿package com.snsoft.util.di {
+
 	import com.snsoft.util.StringUtil;
-	
+
+	import flash.display.MovieClip;
+
 	/**
-	 * 依赖注入 
+	 * 依赖注入
 	 * @author Administrator
-	 * 
-	 */	
-	public class DependencyInjection{
-		public function DependencyInjection(){
-			
+	 *
+	 */
+	public class DependencyInjection {
+		public function DependencyInjection() {
+
 		}
-		
+
 		/**
-		 * 根据类创建对象并给对象注入值 
+		 * 根据类创建对象并给对象注入值
 		 * @param fobj
 		 * @param ToClass
 		 * @param name
-		 * @return 
-		 * 
-		 */		
-		public static function diObjByClass(fobj:Object,ToClass:Class,...name):Object{
+		 * @return
+		 *
+		 */
+		public static function diObjByClass(fobj:Object, ToClass:Class, ... name):Object {
 			var tobj:Object = new ToClass();
 			var nameArray:Array = name;
-			diObjToObjByArray(fobj,tobj,nameArray);
+			diObjToObjByArray(fobj, tobj, nameArray);
 			return tobj;
 		}
-		
+
 		/**
-		 * 
-		 * 
+		 *
+		 *
 		 * 按源对象的属性或按指定的属性名称，把源对象的值注入到目的对象中
-		 * 
-		 */		
-		public static function diToObj(fobj:Object,tobj:Object,...name):void{
+		 *
+		 */
+		public static function diToObj(fobj:Object, tobj:Object, judge:Boolean = true, ... name):void {
 			var nameArray:Array = name;
-			diObjToObjByArray(fobj,tobj,nameArray);
+			diObjToObjByArray(fobj, tobj, nameArray, judge);
 		}
-		
+
 		/**
 		 * 按源对象的属性或按指定的属性名称，把源对象的值注入到目的对象中
 		 * @param fobj
 		 * @param tobj
 		 * @param nameArray
-		 * 
-		 */		
-		private static function diObjToObjByArray(fobj:Object,tobj:Object,nameArray:Array):void{
+		 *
+		 */
+		private static function diObjToObjByArray(fobj:Object, tobj:Object, nameArray:Array, judge:Boolean = true):void {
 			var v:Vector.<String>;
-			if(nameArray != null && nameArray.length > 0){
+			if (nameArray != null && nameArray.length > 0) {
 				v = new Vector.<String>();
-				for(var i:int = 0;i < nameArray.length;i ++){
+				for (var i:int = 0; i < nameArray.length; i++) {
 					var aName:String = String(nameArray[i]);
-					if(aName != null && aName.length > 0){
+					if (aName != null && aName.length > 0) {
 						v.push(String(aName));
 					}
 				}
@@ -60,23 +62,30 @@
 				var op:ObjectProperty = new ObjectProperty(fobj);
 				v = op.getAllPropertyNames();
 			}
-			for(var i2:int = 0;i2<v.length;i2++){
+			for (var i2:int = 0; i2 < v.length; i2++) {
 				var pName:String = v[i2];
-				if(tobj.hasOwnProperty(pName)){
+				var sign:Boolean = false;
+				if (!judge) {
+					sign = true;
+				}
+				else if (tobj.hasOwnProperty(pName)) {
+					sign = true;
+				}
+				if (sign) {
 					tobj[pName] = fobj[pName];
 				}
 			}
 		}
-		
+
 		/**
 		 * 给对象注入值
 		 * @param obj
 		 * @param name
 		 * @param value
-		 * 
-		 */		
-		public static function diValueToObj(obj:Object,name:String,value:Object,judgeProperty:Boolean = true):void{
-			if(obj.hasOwnProperty(name) || !judgeProperty){
+		 *
+		 */
+		public static function diValueToObj(obj:Object, name:String, value:Object, judgeProperty:Boolean = true):void {
+			if (obj.hasOwnProperty(name) || !judgeProperty) {
 				obj[name] = value;
 			}
 		}
