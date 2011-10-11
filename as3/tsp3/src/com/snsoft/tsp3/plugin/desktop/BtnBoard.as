@@ -33,8 +33,8 @@ package com.snsoft.tsp3.plugin.desktop {
 
 		private function init():void {
 
-			var nx:int = boardWidth / spaceX;
-			var ny:int = boardHeight / spaceY;
+			var nx:int = (boardWidth + 1) / spaceX;
+			var ny:int = (boardHeight + 1) / spaceY;
 
 			for (var i:int = 0; i < nx; i++) {
 				for (var j:int = 0; j < ny; j++) {

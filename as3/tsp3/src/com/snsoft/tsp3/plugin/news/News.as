@@ -54,12 +54,9 @@ package com.snsoft.tsp3.plugin.news {
 
 			trace(prms.id, prms.columnId);
 
-			var nw:int = stage.stageWidth;
-			var nh:int = stage.stageHeight - paginH;
-
 			var ntdto:NewsTitleDTO = new NewsTitleDTO();
 			ntdto.text = "新闻资讯";
-			ntdto.titleImg = new BitmapData(48, 48);
+			ntdto.titleImg = prms.img;
 			var nt:NewsTitle = new NewsTitle(ntdto, stage.stageWidth, titleH);
 			this.addChild(nt);
 			nt.addEventListener(NewsTitle.EVENT_CLOSE, handlerCloseBtnClick);
@@ -68,7 +65,7 @@ package com.snsoft.tsp3.plugin.news {
 			pagin = new Pagination(5);
 			this.addChild(pagin);
 			pagin.x = (stage.stageWidth - columnW - pagin.width) / 2;
-			pagin.y = nh - pagin.height - boader;
+			pagin.y = stage.stageHeight - deskBarH - pagin.height - boader;
 			pagin.addEventListener(PaginationEvent.PAGIN_CLICK, handlerPaginBtnClick);
 
 			trace(pagin.height);
@@ -119,7 +116,7 @@ package com.snsoft.tsp3.plugin.news {
 				}
 			}
 
-			var mh:int = stage.stageHeight - titleH - paginH - deskBarH;
+			var mh:int = stage.stageHeight - titleH - deskBarH;
 			var nbb:NewsBtnBox = new NewsBtnBox(btnv, mh);
 			this.addChild(nbb);
 			nbb.x = stage.stageWidth - nbb.width;
