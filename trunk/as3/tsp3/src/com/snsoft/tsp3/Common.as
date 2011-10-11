@@ -6,9 +6,9 @@ package com.snsoft.tsp3 {
 
 	public class Common {
 
-		public static const PLATE:String = "plate";
+		public static const OPERATION_PLATE:String = "plate";
 
-		public static const COLUMN:String = "column";
+		public static const OPERATION_COLUMN:String = "column";
 
 		public static const PLATE_ID:String = "plateId";
 

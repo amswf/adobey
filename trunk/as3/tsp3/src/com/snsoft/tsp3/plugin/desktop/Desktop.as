@@ -147,7 +147,7 @@
 			var dl:DataLoader = new DataLoader();
 			dl.addEventListener(Event.COMPLETE, handlerLoadBoaderDataCmp);
 			dl.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadBoaderDataError);
-			dl.loadData(url, code, Common.PLATE);
+			dl.loadData(url, code, Common.OPERATION_PLATE);
 
 		}
 
