@@ -30,6 +30,8 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var selBack:Sprite;
 
+		private var unSelBack:Sprite;
+
 		public function NewsImgBtn(imgSize:Point, img:BitmapData, text:String, btnWidth:int) {
 			super();
 			this.imgSize = imgSize;
@@ -61,15 +63,25 @@ package com.snsoft.tsp3.plugin.news {
 			var h:int = boader2 + imgSize.y + boader2;
 
 			selBack = SkinsUtil.createSkinByName("NewsBtn_selectedBackSkin");
+			selBack.visible = false;
 			selBack.width = bw;
 			selBack.height = h;
 
+			unSelBack = SkinsUtil.createSkinByName("NewsBtn_unSelectedBackSkin");
+			unSelBack.width = bw;
+			unSelBack.height = h;
+
 			var view:Sprite = ViewUtil.creatRect(bw, h);
 
+			this.addChild(unSelBack);
 			this.addChild(selBack);
 			this.addChild(bm);
 			this.addChild(tfd);
 			this.addChild(view);
+		}
+
+		public function setSectcted(b:Boolean):void {
+			selBack.visible = b;
 		}
 
 		public function get data():Object {

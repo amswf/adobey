@@ -25,6 +25,10 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var _data:DataDTO;
 
+		private var selSkin:MovieClip;
+
+		private var unSelSkin:MovieClip;
+
 		public function NewsTextBtn(text:String) {
 			super();
 			this.text = text;
@@ -41,13 +45,22 @@ package com.snsoft.tsp3.plugin.news {
 			tfd.x = boader;
 			tfd.y = boader2;
 
-			var back:MovieClip = SkinsUtil.createSkinByName("NewsTextBtn_backSkin");
-			this.addChild(back);
-			back.width = tfd.width + boader + boader;
-			back.height = tfd.height + boader2 + boader2;
+			unSelSkin = SkinsUtil.createSkinByName("NewsTextBtn_unSelectedSkin");
+			unSelSkin.width = tfd.width + boader + boader;
+			unSelSkin.height = tfd.height + boader2 + boader2;
 
-			this.addChild(back);
+			selSkin = SkinsUtil.createSkinByName("NewsTextBtn_selectedSkin");
+			selSkin.visible = false;
+			selSkin.width = tfd.width + boader + boader;
+			selSkin.height = tfd.height + boader2 + boader2;
+
+			this.addChild(unSelSkin);
+			this.addChild(selSkin);
 			this.addChild(tfd);
+		}
+
+		public function setSectcted(b:Boolean):void {
+			selSkin.visible = b;
 		}
 
 		public function get data():DataDTO {

@@ -72,8 +72,22 @@ package com.snsoft.tsp3.plugin.news {
 
 		private function handlerClick(e:Event):void {
 			var td:TouchDrag = e.currentTarget as TouchDrag;
-			this._clickBtn = td.clickObj as NewsImgBtn;
+			setSelectBtn(td.clickObj as NewsImgBtn);
 			this.dispatchEvent(new Event(EVENT_BTN_CLICK));
+		}
+
+		private function setSelectBtn(btn:NewsImgBtn):void {
+			if (this.clickBtn != null) {
+				this.clickBtn.setSectcted(false);
+			}
+			btn.setSectcted(true);
+			_clickBtn = btn;
+		}
+
+		public function selectedDef(i:int):void {
+			if (i >= 0 && i < btnv.length) {
+				setSelectBtn(btnv[i]);
+			}
 		}
 
 		public function get clickBtn():NewsImgBtn {

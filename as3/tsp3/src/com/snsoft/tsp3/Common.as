@@ -10,11 +10,17 @@ package com.snsoft.tsp3 {
 
 		public static const OPERATION_COLUMN:String = "column";
 
-		public static const PLATE_ID:String = "plateId";
+		public static const OPERATION_CLASS:String = "class";
 
-		public static const COLUMN_ID:String = "columnId";
+		public static const OPERATION_FILTER:String = "filter";
 
-		public static const CLASS_ID:String = "classId";
+		public static const PARAM_PLATE:String = "plateId";
+
+		public static const PARAM_COLUMN:String = "columnId";
+
+		public static const PARAM_CLASS:String = "classId";
+
+		public static const PARAM_FILTER:String = "filter";
 
 		private static var lock:Boolean = false;
 
