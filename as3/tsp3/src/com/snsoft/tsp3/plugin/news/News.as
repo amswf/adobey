@@ -1,4 +1,4 @@
-package com.snsoft.tsp3.plugin.news {
+﻿package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.Common;
 	import com.snsoft.tsp3.ViewUtil;
 	import com.snsoft.tsp3.net.DataDTO;
@@ -42,8 +42,20 @@ package com.snsoft.tsp3.plugin.news {
 
 		private const deskBarH:int = 86;
 
+		private const classH:int = 58;
+
+		private var bookLayer:Sprite = new Sprite();
+
+		private var classLayer:Sprite = new Sprite();
+
+		private var filtersLayer:Sprite = new Sprite();
+
 		public function News() {
 			super();
+			this.addChild(bookLayer);
+			this.addChild(classLayer);
+			this.addChild(filtersLayer);
+
 			pluginCfg = cfg;
 			params = prms;
 		}
@@ -76,8 +88,38 @@ package com.snsoft.tsp3.plugin.news {
 			newsBook.addEventListener(NewsBook.NEED_NEXT, handlerBookNext);
 			newsBook.addEventListener(NewsBook.NEED_PREV, handlerBookPrev);
 			newsBook.addEventListener(NewsBook.CHANGE_PAGE, handlerChangePage);
-			this.addChild(newsBook);
+			//this.addChild(newsBook);
+
+			var ncb:NewsClassBox = new NewsClassBox(stage.stageWidth - columnW, classH, "分类", null);
+			this.addChild(ncb);
+			ncb.y = titleH;
+
+			var v:Vector.<DataDTO> = new Vector.<DataDTO>();
+			for (var i:int = 0; i < 10; i++) {
+				var dto:DataDTO = new DataDTO();
+				dto.text = "新闻资讯";
+				v.push(dto);
+			}
+
+			ncb.addChildren(v);
+			ncb.addEventListener(NewsClassBox.EVENT_BTN_CLICK, handlerClassBtnClick);
+
 			loadColumn();
+		}
+
+		private var n:int = 0;
+
+		private function handlerClassBtnClick(e:Event):void {
+			trace("handlerClassBtnClick");
+			var ncb:NewsClassBox = e.currentTarget as NewsClassBox;
+
+			var v:Vector.<DataDTO> = new Vector.<DataDTO>();
+			for (var i:int = 0; i < 10; i++) {
+				var dto:DataDTO = new DataDTO();
+				dto.text = "新闻资讯" + n++;
+				v.push(dto);
+			}
+			ncb.addChildren(v);
 		}
 
 		private function loadColumn():void {

@@ -85,7 +85,7 @@ package com.snsoft.tsp3.plugin.news {
 			this.addChild(searchTfd);
 
 			//搜索按钮
-			searchBtn = new NewsTextBtn("查询", 48, 48);
+			searchBtn = new NewsTextBtn("查询");
 			searchBtn.x = searchTfd.x + searchTfd.width + boader;
 			searchTfd.y = boader;
 			this.addChild(searchBtn);
