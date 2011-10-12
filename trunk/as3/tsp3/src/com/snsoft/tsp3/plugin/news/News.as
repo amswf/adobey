@@ -9,6 +9,7 @@
 	import com.snsoft.tsp3.pagination.PaginationEvent;
 	import com.snsoft.tsp3.plugin.BPlugin;
 	import com.snsoft.tsp3.plugin.news.dto.NewsTitleDTO;
+	import com.snsoft.util.SpriteUtil;
 
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
@@ -16,6 +17,7 @@
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.utils.Timer;
@@ -50,6 +52,16 @@
 
 		private var filtersLayer:Sprite = new Sprite();
 
+		private var cPlateId:String;
+
+		private var cColumnId:String;
+
+		private var cClassId:String;
+
+		private var filter:Object;
+
+		private var classBox:NewsClassBox;
+
 		public function News() {
 			super();
 			this.addChild(bookLayer);
@@ -64,7 +76,10 @@
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 
-			trace(prms.id, prms.columnId);
+			cPlateId = prms.id;
+			cColumnId = prms.columnId;
+
+			trace(cPlateId, cColumnId);
 
 			var ntdto:NewsTitleDTO = new NewsTitleDTO();
 			ntdto.text = "新闻资讯";
@@ -90,36 +105,140 @@
 			newsBook.addEventListener(NewsBook.CHANGE_PAGE, handlerChangePage);
 			//this.addChild(newsBook);
 
-			var ncb:NewsClassBox = new NewsClassBox(stage.stageWidth - columnW, classH, "分类", null);
-			this.addChild(ncb);
-			ncb.y = titleH;
+			classLayer.y = titleH;
+			filtersLayer.y = titleH;
 
-			var v:Vector.<DataDTO> = new Vector.<DataDTO>();
-			for (var i:int = 0; i < 10; i++) {
-				var dto:DataDTO = new DataDTO();
-				dto.text = "新闻资讯";
-				v.push(dto);
-			}
+			classBox = new NewsClassBox(stage.stageWidth - columnW, classH, "分类", null);
+			classLayer.addChild(classBox);
 
-			ncb.addChildren(v);
-			ncb.addEventListener(NewsClassBox.EVENT_BTN_CLICK, handlerClassBtnClick);
+			classBox.visible = false;
+			classBox.addEventListener(NewsClassBox.EVENT_BTN_CLICK, handlerClassBtnClick);
 
 			loadColumn();
 		}
 
-		private var n:int = 0;
+		private function loadFilter():void {
+			filter = new Object();
+
+			var url:String = Common.instance().dataUrl;
+			var code:String = Common.instance().dataCode;
+
+			if (url == null) {
+				url = cfg.filterDataUrl;
+			}
+
+			var params:Params = new Params();
+			params.addParam(Common.PARAM_PLATE, cPlateId);
+			params.addParam(Common.PARAM_COLUMN, cColumnId);
+			params.addParam(Common.PARAM_CLASS, cClassId);
+
+			var dl:DataLoader = new DataLoader();
+			dl.addEventListener(Event.COMPLETE, handlerLoadFilterCmp);
+			dl.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadFilterError);
+			dl.loadData(url, code, Common.OPERATION_FILTER, params);
+		}
+
+		private function handlerLoadFilterCmp(e:Event):void {
+			var dl:DataLoader = e.currentTarget as DataLoader;
+			var rsv:Vector.<DataSet> = dl.data;
+
+			var h:int = 0;
+			if (classBox.visible == true) {
+				h += classH;
+			}
+
+			for (var i:int = 0; i < rsv.length; i++) {
+				var ds:DataSet = rsv[i];
+				var v:Vector.<DataDTO> = ds.dtoList;
+				var fbox:NewsClassBox = null;
+
+				if (i < filtersLayer.numChildren) {
+					fbox = filtersLayer.getChildAt(i) as NewsClassBox;
+					fbox.clear();
+				}
+				else {
+					fbox = new NewsClassBox(stage.stageWidth - columnW, classH, ds.attr.name, ds.attr.id, true);
+					filtersLayer.addChild(fbox);
+				}
+				fbox.addChildren(v);
+				fbox.y = h;
+				h += classH;
+				fbox.addEventListener(NewsClassBox.EVENT_BTN_CLICK, handlerFilterBtnClick);
+			}
+		}
+
+		private function handlerFilterBtnClick(e:Event):void {
+			var box:NewsClassBox = e.currentTarget as NewsClassBox;
+			if (box.classType != null) {
+				filter[box.classType] = box.dataId;
+			}
+		}
+
+		private function handlerLoadFilterError(e:Event):void {
+
+		}
 
 		private function handlerClassBtnClick(e:Event):void {
-			trace("handlerClassBtnClick");
-			var ncb:NewsClassBox = e.currentTarget as NewsClassBox;
+			var box:NewsClassBox = e.currentTarget as NewsClassBox;
+			cClassId = box.dataId;
+			loadClass(false);
+		}
 
-			var v:Vector.<DataDTO> = new Vector.<DataDTO>();
-			for (var i:int = 0; i < 10; i++) {
-				var dto:DataDTO = new DataDTO();
-				dto.text = "新闻资讯" + n++;
-				v.push(dto);
+		private function loadClass(isClear:Boolean):void {
+			if (isClear) {
+				classBox.clear();
 			}
-			ncb.addChildren(v);
+
+			var url:String = Common.instance().dataUrl;
+			var code:String = Common.instance().dataCode;
+
+			if (url == null) {
+				url = cfg.classDataUrl;
+			}
+
+			var params:Params = new Params();
+			params.addParam(Common.PARAM_PLATE, cPlateId);
+			params.addParam(Common.PARAM_COLUMN, cColumnId);
+			params.addParam(Common.PARAM_CLASS, cClassId);
+
+			var dl:DataLoader = new DataLoader();
+			dl.addEventListener(Event.COMPLETE, handlerLoadClassCmp);
+			dl.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadClassError);
+			dl.loadData(url, code, Common.OPERATION_CLASS, params);
+		}
+
+		private function handlerLoadClassCmp(e:Event):void {
+			var dl:DataLoader = e.currentTarget as DataLoader;
+			var rsv:Vector.<DataSet> = dl.data;
+
+			var dtov:Vector.<DataDTO> = new Vector.<DataDTO>();
+			for (var i:int = 0; i < rsv.length; i++) {
+				var ds:DataSet = rsv[i];
+				var v:Vector.<DataDTO> = ds.dtoList;
+				for (var j:int = 0; j < v.length; j++) {
+					var dto:DataDTO = v[j];
+					dtov.push(dto);
+				}
+			}
+
+			var init:Boolean = false;
+			if (cClassId == null) {
+				init = true;
+			}
+			if (dtov.length > 0) {
+				var fdto:DataDTO = dtov[0];
+				cClassId = fdto.id;
+				classBox.visible = true;
+				classBox.addChildren(dtov);
+				if (init) {
+					classBox.selectedDef(0);
+				}
+			}
+			loadFilter();
+		}
+
+		private function handlerLoadClassError(e:Event):void {
+
 		}
 
 		private function loadColumn():void {
@@ -131,7 +250,7 @@
 			}
 
 			var params:Params = new Params();
-			params.addParam(Common.PLATE_ID, prms.id);
+			params.addParam(Common.PARAM_PLATE, cPlateId);
 
 			var dl:DataLoader = new DataLoader();
 			dl.addEventListener(Event.COMPLETE, handlerLoadColumnCmp);
@@ -157,6 +276,13 @@
 					btnv.push(nib);
 				}
 			}
+			if (btnv.length > 0) {
+				var fbtn:NewsImgBtn = btnv[0];
+				var fdto:DataDTO = fbtn.data as DataDTO;
+				if (cColumnId != null) {
+					cColumnId = fdto.id;
+				}
+			}
 
 			var mh:int = stage.stageHeight - titleH - deskBarH;
 			var nbb:NewsBtnBox = new NewsBtnBox(btnv, mh);
@@ -165,6 +291,15 @@
 			nbb.y = titleH;
 			nbb.addEventListener(NewsBtnBox.EVENT_BTN_CLICK, handlerBtnClick);
 
+			for (var k:int = 0; k < btnv.length; k++) {
+				var btn:NewsImgBtn = btnv[k];
+				var sdto:DataDTO = btn.data as DataDTO;
+				if ((cColumnId != null && cColumnId == sdto.id) || (cColumnId == null && k == 0)) {
+					nbb.selectedDef(k);
+				}
+			}
+
+			loadClass(true);
 		}
 
 		private function handlerLoadColumnError(e:Event):void {
@@ -235,6 +370,8 @@
 			var nbb:NewsBtnBox = e.currentTarget as NewsBtnBox;
 			var btn:NewsImgBtn = nbb.clickBtn;
 			var dto:DataDTO = btn.data as DataDTO;
+			cColumnId = dto.id;
+			loadClass(true);
 		}
 	}
 }

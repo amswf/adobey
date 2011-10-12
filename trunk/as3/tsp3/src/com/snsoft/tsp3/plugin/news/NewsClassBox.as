@@ -5,6 +5,7 @@
 	import com.snsoft.tsp3.touch.TouchDrag;
 	import com.snsoft.tsp3.touch.TouchDragEvent;
 	import com.snsoft.util.SkinsUtil;
+	import com.snsoft.util.SpriteUtil;
 
 	import fl.transitions.Tween;
 	import fl.transitions.TweenEvent;
@@ -45,7 +46,7 @@
 
 		private var _classType:String;
 
-		private var _currentBtnValue:String;
+		private var _dataId:String;
 
 		private var clickLock:Boolean = false;
 
@@ -62,6 +63,14 @@
 		private var tft:TextFormat = new TextFormat(null, 12, 0xffffff);
 
 		private var title:String;
+
+		private var twn:Tween;
+
+		private var twn2:Tween;
+
+		private var currentClickBtn:NewsTextBtn;
+
+		private var cbtnv:Vector.<NewsTextBtn>;
 
 		public function NewsClassBox(boxWidth:int, boxHeight:int, title:String, classType:String = null, hiddenBack:Boolean = false) {
 			super();
@@ -82,6 +91,7 @@
 			var back:Sprite = ViewUtil.creatRect(boxWidth, boxHeight, 0x000000, 0.5);
 			backLayer.addChild(back);
 
+			title = title == null ? "*" : title;
 			var tfd:TextField = new TextField();
 			tfd.defaultTextFormat = tft;
 			tfd.autoSize = TextFieldAutoSize.LEFT;
@@ -89,7 +99,7 @@
 			tfd.mouseEnabled = false;
 			backLayer.addChild(tfd);
 			tfd.x = boader;
-			tfd.y = (boxHeight - tfd.height)/2;
+			tfd.y = (boxHeight - tfd.height) / 2;
 
 			var bw:int = 0;
 			if (!hiddenBack) {
@@ -119,6 +129,11 @@
 
 		}
 
+		public function clear():void {
+			btnsv = new Vector.<Sprite>();
+			SpriteUtil.deleteAllChild(btnLayer);
+		}
+
 		public function addChildren(v:Vector.<DataDTO>):void {
 			if (v != null && v.length > 0) {
 				var btns:Sprite = new Sprite();
@@ -126,14 +141,14 @@
 				btns.addChild(back);
 
 				var w:int = 0;
-				var btnv:Vector.<NewsTextBtn> = new Vector.<NewsTextBtn>();
+				cbtnv = new Vector.<NewsTextBtn>();
 				for (var i:int = 0; i < v.length; i++) {
 					var dto:DataDTO = v[i];
 					var ntbtn:NewsTextBtn = new NewsTextBtn(dto.text);
 					ntbtn.data = dto;
 					ntbtn.buttonMode = true;
 					btns.addChild(ntbtn);
-					btnv.push(ntbtn);
+					cbtnv.push(ntbtn);
 					ntbtn.x = w;
 					w += ntbtn.width;
 					back.height = ntbtn.height;
@@ -148,8 +163,8 @@
 
 				var rect:Rectangle = new Rectangle(rx, 0, -rx, 0);
 				var tg:TouchDrag = new TouchDrag(btns, stage, rect, 5);
-				for (var j:int = 0; j < btnv.length; j++) {
-					var btn:NewsTextBtn = btnv[j];
+				for (var j:int = 0; j < cbtnv.length; j++) {
+					var btn:NewsTextBtn = cbtnv[j];
 					tg.addClickObj(btn);
 				}
 				tg.addEventListener(TouchDragEvent.TOUCH_CLICK, handlerTouchClick);
@@ -159,9 +174,6 @@
 				tweenMove(currentBtns, oldBtns, -1);
 			}
 		}
-
-		private var twn:Tween;
-		private var twn2:Tween;
 
 		private function tweenMove(cbtn:Sprite, obtn:Sprite, sign:int):void {
 			clickLock = true;
@@ -213,12 +225,30 @@
 		}
 
 		private function handlerTouchClick(e:Event):void {
+			trace("handlerTouchClick");
 			if (!clickLock) {
 				var tg:TouchDrag = e.currentTarget as TouchDrag;
 				var btn:NewsTextBtn = tg.clickObj as NewsTextBtn;
 				var dto:DataDTO = btn.data;
-				_currentBtnValue = dto.id;
+				_dataId = dto.id;
+				setSelectBtn(btn);
 				this.dispatchEvent(new Event(EVENT_BTN_CLICK));
+			}
+		}
+
+		private function setSelectBtn(btn:NewsTextBtn):void {
+			if (this.currentClickBtn != null) {
+				this.currentClickBtn.setSectcted(false);
+			}
+			btn.setSectcted(true);
+			currentClickBtn = btn;
+		}
+
+		public function selectedDef(i:int):void {
+			if (cbtnv != null) {
+				if (i >= 0 && i < cbtnv.length) {
+					setSelectBtn(cbtnv[i]);
+				}
 			}
 		}
 
@@ -238,8 +268,8 @@
 			return _classType;
 		}
 
-		public function get currentBtnValue():String {
-			return _currentBtnValue;
+		public function get dataId():String {
+			return _dataId;
 		}
 
 	}
