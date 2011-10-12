@@ -14,7 +14,6 @@ package com.snsoft.tsp3.net {
 		public function toXML():String {
 			var xml:String = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r";
 			xml += "<request>\r    <params>\r" + paramsStr + "    </params>\r</request>";
-			trace(xml);
 			return xml;
 		}
 	}
