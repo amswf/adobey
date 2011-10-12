@@ -8,7 +8,7 @@ package com.snsoft.tsp3 {
 
 		}
 
-		public static function creatRect(width:int, height:int, color:uint = 0xffffff, alpha:Number = 0.2):Sprite {
+		public static function creatRect(width:int, height:int, color:uint = 0xffffff, alpha:Number = 0):Sprite {
 			var spr:Sprite = new Sprite();
 			spr.graphics.beginFill(color, alpha);
 			spr.graphics.drawRect(0, 0, width, height);

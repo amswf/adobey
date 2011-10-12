@@ -92,63 +92,72 @@ package com.snsoft.tsp3.touch {
 		}
 
 		private function handlerDragObjMouseUp(e:Event):void {
+			if (isMouseDown) {
+				isMouseDown = false;
 
-			mouseUpPoint.x = stage.mouseX;
-			mouseUpPoint.y = stage.mouseY;
+				mouseUpPoint.x = stage.mouseX;
+				mouseUpPoint.y = stage.mouseY;
 
-			var cx:int = stage.mouseX;
-			var cy:int = stage.mouseY;
+				var cx:int = stage.mouseX;
+				var cy:int = stage.mouseY;
 
-			var property:String = null;
-			var start:int = 0;
-			var end:int = 0;
-			var sign:Boolean = false;
+				var property:String = null;
+				var start:int = 0;
+				var end:int = 0;
+				var sign:Boolean = true;
 
-			var dragSign:Boolean = false;
-			if (dragBounds.height > 0) {
-				if (Math.abs(cy - mouseDownPoint.y) < sensitivity && mouseDownPoint.y > 0) {
-					sign = true;
+				var dragSign:Boolean = false;
+
+				var signx:Boolean = false;
+
+				var signy:Boolean = false;
+
+				if (Math.abs(cy - mouseDownPoint.y) > sensitivity) {
+					signy = true;
+				}
+
+				if (Math.abs(cx - mouseDownPoint.x) > sensitivity) {
+					signx = true;
+				}
+
+				if (dragBounds.height > 0) {
+					property = "y";
+					start = dragObj.y;
+					end = ddp.y;
+				}
+				else if (dragBounds.width > 0) {
+					property = "x";
+					start = dragObj.x;
+					end = ddp.x;
 				}
 				else {
-					dragSign = true;
+					sign = false;
 				}
-				property = "y";
-				start = dragObj.y;
-				end = ddp.y;
-			}
-			else if (dragBounds.width > 0) {
-				if (Math.abs(cx - mouseDownPoint.x) < sensitivity && mouseDownPoint.x > 0) {
-					sign = true;
+
+				dragObj.stopDrag();
+
+				var twe:Boolean = false;
+
+				trace(signx, signy, isClick);
+				if (!signx && !signy && isClick) {
+					trace("click");
+					this._clickObj = cDownObj;
+					this.dispatchEvent(new Event(TouchDragEvent.TOUCH_CLICK));
+					twe = true;
+				}
+				else if ((signx || signy)) {
+					trace("drag");
+					this.dispatchEvent(new Event(TouchDragEvent.TOUCH_DRAG_MOUSE_UP));
 				}
 				else {
-					dragSign = true;
+					twe = true;
 				}
-				property = "x";
-				start = dragObj.x;
-				end = ddp.x;
-			}
 
-			dragObj.stopDrag();
-
-			var twe:Boolean = false;
-
-			if (sign && isClick) {
-				this._clickObj = cDownObj;
-				this.dispatchEvent(new Event(TouchDragEvent.TOUCH_CLICK));
-				twe = true;
+				if (twe && sign) {
+					var twn:Tween = new Tween(dragObj, property, Regular.easeOut, start, end, 0.3, true);
+					twn.start();
+				}
 			}
-			else if (dragSign && isMouseDown) {
-				this.dispatchEvent(new Event(TouchDragEvent.TOUCH_DRAG_MOUSE_UP));
-			}
-			else {
-				twe = true;
-			}
-
-			if (twe && isMouseDown && sign) {
-				var twn:Tween = new Tween(dragObj, property, Regular.easeOut, start, end, 0.3, true);
-				twn.start();
-			}
-			isMouseDown = false;
 		}
 
 		public function get clickObj():Sprite {
