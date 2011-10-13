@@ -141,12 +141,7 @@
 				url = cfg.searchDataUrl;
 			}
 
-			var filterStr:String = "";
-
-			for (var name:String in filter) {
-				filterStr += (name + ":" + filter[name] + ",");
-			}
-			filterStr = filterStr.substr(0, filterStr.length - 1);
+			var filterStr:String = filterToStr(filter);
 
 			var params:Params = new Params();
 			params.addParam(Common.PARAM_PLATE, cPlateId);
@@ -160,6 +155,15 @@
 			dl.addEventListener(Event.COMPLETE, handlerSearchCmp);
 			dl.addEventListener(IOErrorEvent.IO_ERROR, handlerSearchError);
 			dl.loadData(url, code, Common.OPERATION_SEARCH, params);
+		}
+
+		private function filterToStr(filter:Object):String {
+			var filterStr:String = "";
+			for (var name:String in filter) {
+				filterStr += (name + ":" + filter[name] + ",");
+			}
+			filterStr = filterStr.substr(0, filterStr.length - 1);
+			return filterStr;
 		}
 
 		private function handlerSearchCmp(e:Event):void {
