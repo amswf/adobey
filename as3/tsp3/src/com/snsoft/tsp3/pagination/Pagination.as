@@ -124,63 +124,64 @@ package com.snsoft.tsp3.pagination {
 		 *
 		 */
 		public function setPageNum(pageNum:int, pageCount:int):void {
+			if (pageCount > 0) {
+				this._pageNum = pageNum;
+				pageNum = Math.max(1, pageNum);
+				pageNum = Math.min(pageCount, pageNum);
 
-			this._pageNum = pageNum;
-			pageNum = Math.max(1, pageNum);
-			pageNum = Math.min(pageCount, pageNum);
+				lastBtn.setStateText(String(pageCount));
+				lastBtn.btnNum = pageCount;
 
-			lastBtn.setStateText(String(pageCount));
-			lastBtn.btnNum = pageCount;
-
-			if (pageCount != this.pageCount) {
-				SpriteUtil.deleteAllChild(middleBtnsLayer);
-				if (middleBtns != null) {
-					for (var j:int = 0; j < middleBtns.length; j++) {
-						var btnd:PaginationBtn = middleBtns[j];
-						btnd.removeEventListener(MouseEvent.CLICK, handlerBtnClick);
+				if (pageCount != this.pageCount) {
+					SpriteUtil.deleteAllChild(middleBtnsLayer);
+					if (middleBtns != null) {
+						for (var j:int = 0; j < middleBtns.length; j++) {
+							var btnd:PaginationBtn = middleBtns[j];
+							btnd.removeEventListener(MouseEvent.CLICK, handlerBtnClick);
+						}
 					}
+
+					middleBtns = new Vector.<PaginationBtn>();
+					var min:int = pageBtnNum <= pageCount ? pageBtnNum : pageCount;
+					for (var i:int = 0; i < min; i++) {
+						var btn:PaginationBtn =  new PaginationBtn();
+						btn.x = w * i;
+						btn.y = boader;
+						middleBtnsLayer.addChild(btn);
+						btn.addEventListener(MouseEvent.CLICK, handlerBtnClick);
+						middleBtns.push(btn);
+					}
+					middleBtnsLayer.x = (back.width - middleBtnsLayer.width) / 2;
 				}
 
-				middleBtns = new Vector.<PaginationBtn>();
-				var min:int = pageBtnNum <= pageCount ? pageBtnNum : pageCount;
-				for (var i:int = 0; i < min; i++) {
-					var btn:PaginationBtn =  new PaginationBtn();
-					btn.x = w * i;
-					btn.y = boader;
-					middleBtnsLayer.addChild(btn);
-					btn.addEventListener(MouseEvent.CLICK, handlerBtnClick);
-					middleBtns.push(btn);
+				var d:int = (pageBtnNum / 2);
+				var m:int =   (pageBtnNum % 2);
+				var p:int = d + m;
+
+				var maxl:int = pageNum - 1;
+				var maxr:int = pageCount - pageNum;
+
+				var pl:int = Math.max((p - m) - maxr, 0);
+				var cl:int = Math.min(maxl, p - 1 + pl);
+
+				var fn:int = pageNum - cl;
+				for (var i2:int = 0; i2 < middleBtns.length; i2++) {
+					var n:int = fn + i2;
+					var btn2:PaginationBtn = middleBtns[i2];
+					btn2.setStateText(String(n));
+					btn2.btnNum = n;
+					var sed:Boolean = (n == pageNum);
+					btn2.setStateSelect(sed);
 				}
-				middleBtnsLayer.x = (back.width - middleBtnsLayer.width) / 2;
+
+				var fvsb:Boolean = (fn != 1);
+				firstBtn.visible = fvsb;
+				firstSep.visible = fvsb;
+
+				var lvsb:Boolean = ((fn + pageBtnNum - 1) < pageCount);
+				lastBtn.visible = lvsb;
+				lastSep.visible = lvsb;
 			}
-
-			var d:int = (pageBtnNum / 2);
-			var m:int =   (pageBtnNum % 2);
-			var p:int = d + m;
-
-			var maxl:int = pageNum - 1;
-			var maxr:int = pageCount - pageNum;
-
-			var pl:int = Math.max((p - m) - maxr, 0);
-			var cl:int = Math.min(maxl, p - 1 + pl);
-
-			var fn:int = pageNum - cl;
-			for (var i2:int = 0; i2 < middleBtns.length; i2++) {
-				var n:int = fn + i2;
-				var btn2:PaginationBtn = middleBtns[i2];
-				btn2.setStateText(String(n));
-				btn2.btnNum = n;
-				var sed:Boolean = (n == pageNum);
-				btn2.setStateSelect(sed);
-			}
-
-			var fvsb:Boolean = (fn != 1);
-			firstBtn.visible = fvsb;
-			firstSep.visible = fvsb;
-
-			var lvsb:Boolean = ((fn + pageBtnNum - 1) < pageCount);
-			lastBtn.visible = lvsb;
-			lastSep.visible = lvsb;
 		}
 
 		private function handlerBtnClick(e:Event):void {

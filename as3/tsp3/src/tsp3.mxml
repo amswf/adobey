@@ -15,6 +15,8 @@
 			import com.snsoft.tsp3.plugin.news.NewsBook;
 			import com.snsoft.tsp3.plugin.news.NewsBtnBox;
 			import com.snsoft.tsp3.plugin.news.NewsClassBox;
+			import com.snsoft.tsp3.plugin.news.NewsItemBase;
+			import com.snsoft.tsp3.plugin.news.NewsItemI;
 			import com.snsoft.tsp3.plugin.player.Player;
 			import com.snsoft.tsp3.test.Skins;
 			import com.snsoft.tsp3.test.Test;
@@ -33,6 +35,8 @@
 				DataLoader;
 				Player;
 				NewsClassBox;
+				NewsItemBase;
+				NewsItemI;
 			}
 		]]>
 	</fx:Script>

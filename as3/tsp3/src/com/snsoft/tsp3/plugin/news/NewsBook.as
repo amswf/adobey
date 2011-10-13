@@ -37,10 +37,20 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var _currentNum:int = 1;
 
+		private var _pageCount:int = 0;
+
 		/**
 		 * 拖动时，当前页上或下留白多少，便于拖动，要大于TouchDrag的灵敏度。
 		 */
 		private var space:int = 20;
+
+		private var _changeType:String;
+
+		public static const CHANGE_TYPE_PAGIN:String = "pagin";
+
+		public static const CHANGE_TYPE_NEXT:String = "next";
+
+		public static const CHANGE_TYPE_PREV:String = "prev";
 
 		public function NewsBook(bookSize:Point, catchMax:int = 0) {
 			super();
@@ -58,7 +68,6 @@ package com.snsoft.tsp3.plugin.news {
 			var dragBounds:Rectangle = new Rectangle(0, 0, 0, 0);
 			td = new TouchDrag(pageLayer, stage, dragBounds);
 			td.addEventListener(TouchDragEvent.TOUCH_DRAG_MOUSE_UP, handlerTouchUp);
-			dispatchEventNeedNext();
 		}
 
 		public function gotoPage(pageNum:int):void {
@@ -81,17 +90,16 @@ package com.snsoft.tsp3.plugin.news {
 				dispatchEventNeedPrev();
 
 			}
-
 			for (var i:int = 0; i < pagev.length; i++) {
 				var page:NewsBookPage = pagev[i];
 				var cr:Rectangle = page.getRect(this);
 				if ((cr.y <= 0 && cr.bottom >= bookSize.y) || (cr.y <= bookSize.y / 2 && cr.bottom > bookSize.y / 2)) {
 					_currentNum = page.pageNum;
+
 					this.dispatchEvent(new Event(CHANGE_PAGE));
 					break;
 				}
 			}
-
 		}
 
 		public function addPageNext(npage:NewsBookPage):void {
@@ -171,6 +179,7 @@ package com.snsoft.tsp3.plugin.news {
 				var ep:NewsBookPage = pagev[pagev.length - 1];
 				_npNum = ep.pageNum + 1;
 			}
+			_changeType = CHANGE_TYPE_NEXT;
 			this.dispatchEvent(new Event(NEED_NEXT));
 		}
 
@@ -180,6 +189,7 @@ package com.snsoft.tsp3.plugin.news {
 				var n:int = fp.pageNum - 1;
 				if (n >= 1) {
 					_npNum = n;
+					_changeType = CHANGE_TYPE_PREV;
 					this.dispatchEvent(new Event(NEED_PREV));
 				}
 			}
@@ -196,6 +206,21 @@ package com.snsoft.tsp3.plugin.news {
 		public function get currentNum():int {
 			return _currentNum;
 		}
+
+		public function get changeType():String {
+			return _changeType;
+		}
+
+		public function get pageCount():int
+		{
+			return _pageCount;
+		}
+
+		public function set pageCount(value:int):void
+		{
+			_pageCount = value;
+		}
+
 
 	}
 }

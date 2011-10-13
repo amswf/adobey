@@ -8,6 +8,14 @@ package com.snsoft.tsp3.net {
 
 		private var _type:String;
 
+		private var _pageNum:String;
+		
+		private var _pageCount:String;
+		
+		private var _listViewType:String;
+
+		private var _detailViewType:String;
+
 		public function DataSetAttr() {
 		}
 
@@ -27,15 +35,54 @@ package com.snsoft.tsp3.net {
 			_name = value;
 		}
 
-		public function get type():String
-		{
+		public function get type():String {
 			return _type;
 		}
 
-		public function set type(value:String):void
-		{
+		public function set type(value:String):void {
 			_type = value;
 		}
+
+		public function get pageNum():String
+		{
+			return _pageNum;
+		}
+
+		public function set pageNum(value:String):void
+		{
+			_pageNum = value;
+		}
+
+		public function get pageCount():String
+		{
+			return _pageCount;
+		}
+
+		public function set pageCount(value:String):void
+		{
+			_pageCount = value;
+		}
+
+		public function get listViewType():String
+		{
+			return _listViewType;
+		}
+
+		public function set listViewType(value:String):void
+		{
+			_listViewType = value;
+		}
+
+		public function get detailViewType():String
+		{
+			return _detailViewType;
+		}
+
+		public function set detailViewType(value:String):void
+		{
+			_detailViewType = value;
+		}
+
 
 	}
 }

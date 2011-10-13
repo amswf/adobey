@@ -24,6 +24,18 @@ package com.snsoft.tsp3.net {
 		public function DataDTO() {
 		}
 
+		public function getParam(name:String):String {
+			var value:String = "";
+			if (params != null) {
+				try {
+					value = params[name];
+				}
+				catch (error:Error) {
+				}
+			}
+			return value;
+		}
+
 		public function get img():BitmapData {
 			return _img;
 		}
@@ -88,16 +100,13 @@ package com.snsoft.tsp3.net {
 			_id = value;
 		}
 
-		public function get name():String
-		{
+		public function get name():String {
 			return _name;
 		}
 
-		public function set name(value:String):void
-		{
+		public function set name(value:String):void {
 			_name = value;
 		}
-
 
 	}
 }
