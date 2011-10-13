@@ -24,6 +24,8 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var maskLayer:Sprite = new Sprite();
 
+		private var msk:Sprite = new Sprite();
+
 		private var pagev:Vector.<NewsBookPage> = new Vector.<NewsBookPage>();
 
 		private var td:TouchDrag;
@@ -61,13 +63,27 @@ package com.snsoft.tsp3.plugin.news {
 			this.addChild(maskLayer);
 		}
 
+		public function reSize(bookSize:Point):void {
+			this._bookSize = bookSize;
+			msk.width = bookSize.x;
+			msk.height = bookSize.y;
+
+			var dy:int = pageLayer.height - bookSize.y;
+			dy = dy < 0 ? 0 : dy;
+			td.dragBounds.y = -dy - space;
+			td.dragBounds.height = dy + space + space;
+		}
+
 		override protected function init():void {
-			maskLayer.addChild(ViewUtil.creatRect(bookSize.x, bookSize.y, 0xffffff, 1));
+			msk = ViewUtil.creatRect(100, 100, 0xffffff, 1);
+			maskLayer.addChild(msk);
 			pageLayer.mask = maskLayer;
 
 			var dragBounds:Rectangle = new Rectangle(0, 0, 0, 0);
 			td = new TouchDrag(pageLayer, stage, dragBounds);
 			td.addEventListener(TouchDragEvent.TOUCH_DRAG_MOUSE_UP, handlerTouchUp);
+
+			reSize(bookSize);
 		}
 
 		public function gotoPage(pageNum:int):void {
