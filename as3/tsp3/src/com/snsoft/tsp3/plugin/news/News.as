@@ -120,7 +120,7 @@
 
 			loadColumn();
 
-			stage.addEventListener(KeyboardEvent.KEY_UP, function(e:Event):void {crntCH--;resizeNewsBook();});
+			//stage.addEventListener(KeyboardEvent.KEY_UP, function(e:Event):void {crntCH--;resizeNewsBook();});
 		}
 
 		private function resizeNewsBook():void {
@@ -283,6 +283,7 @@
 				h += classH;
 				fbox.addEventListener(NewsClassBox.EVENT_BTN_CLICK, handlerFilterBtnClick);
 			}
+			newsBook.gotoPage(1);
 			resizeNewsBook();
 		}
 
@@ -291,6 +292,7 @@
 			if (box.classType != null) {
 				filter[box.classType] = box.dataId;
 			}
+			newsBook.gotoPage(1);
 		}
 
 		private function handlerLoadFilterError(e:Event):void {
@@ -357,7 +359,6 @@
 				}
 			}
 			loadFilter();
-			newsBook.gotoPage(1);
 		}
 
 		private function handlerLoadClassError(e:Event):void {
