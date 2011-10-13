@@ -116,6 +116,12 @@
 			loadColumn();
 		}
 
+		private function handlerPaginBtnClick(e:Event):void {
+			var pagin:Pagination = e.currentTarget as Pagination;
+			newsBook.gotoPage(pagin.pageNum);
+			pagin.setPageNum(pagin.pageNum, newsBook.pageCount);
+		}
+
 		private function handlerChangePage(e:Event):void {
 			trace("handlerChangePage");
 			var curnum:int = int(newsBook.currentNum);
@@ -195,7 +201,7 @@
 				var curnum:int = int(newsBook.currentNum);
 				var pCount:int = int(rs.attr.pageCount);
 				nbp.setPaginText(nextnum, pCount);
-				pagin.setPageNum(nextnum, pCount);
+					//pagin.setPageNum(nextnum, pCount);
 			}
 
 			trace("newsBook.changeType:", newsBook.changeType);
@@ -410,12 +416,6 @@
 
 		private function handlerMinBtnClick(e:Event):void {
 			minimizePlugin();
-		}
-
-		private function handlerPaginBtnClick(e:Event):void {
-			var pagin:Pagination = e.currentTarget as Pagination;
-			newsBook.gotoPage(pagin.pageNum);
-			pagin.setPageNum(pagin.pageNum, newsBook.pageCount);
 		}
 
 		private function handlerBtnClick(e:Event):void {

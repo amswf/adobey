@@ -72,7 +72,6 @@ package com.snsoft.tsp3.plugin.news {
 
 		public function gotoPage(pageNum:int):void {
 			this._npNum = pageNum;
-
 			SpriteUtil.deleteAllChild(pageLayer);
 			pageLayer.y = 0;
 			pagev.splice(0, pagev.length);
@@ -82,24 +81,12 @@ package com.snsoft.tsp3.plugin.news {
 		private function handlerTouchUp(e:Event):void {
 			var rect:Rectangle = pageLayer.getRect(this);
 			if (rect.bottom - 5 <= bookSize.y) {
-
 				dispatchEventNeedNext();
 			}
 			else if (rect.top + 5 >= 0) {
-
 				dispatchEventNeedPrev();
-
 			}
-			for (var i:int = 0; i < pagev.length; i++) {
-				var page:NewsBookPage = pagev[i];
-				var cr:Rectangle = page.getRect(this);
-				if ((cr.y <= 0 && cr.bottom >= bookSize.y) || (cr.y <= bookSize.y / 2 && cr.bottom > bookSize.y / 2)) {
-					_currentNum = page.pageNum;
-
-					this.dispatchEvent(new Event(CHANGE_PAGE));
-					break;
-				}
-			}
+			checkChangePage();
 		}
 
 		public function addPageNext(npage:NewsBookPage):void {
@@ -137,6 +124,7 @@ package com.snsoft.tsp3.plugin.news {
 			if (pageLayer.y + npage.y + npage.height < bookSize.y) {
 				dispatchEventNeedNext();
 			}
+			checkChangePage();
 		}
 
 		public function addPagePrev(ppage:NewsBookPage):void {
@@ -195,6 +183,20 @@ package com.snsoft.tsp3.plugin.news {
 			}
 		}
 
+		private function checkChangePage():void {
+			trace("checkChangePage");
+			for (var i:int = 0; i < pagev.length; i++) {
+				var page:NewsBookPage = pagev[i];
+				var cr:Rectangle = page.getRect(this);
+				if ((cr.y <= 0 && cr.bottom >= bookSize.y) || (cr.y <= bookSize.y / 2 && cr.bottom > bookSize.y / 2)) {
+					_currentNum = page.pageNum;
+					this.dispatchEvent(new Event(CHANGE_PAGE));
+					break;
+				}
+
+			}
+		}
+
 		public function get bookSize():Point {
 			return _bookSize;
 		}
@@ -211,16 +213,13 @@ package com.snsoft.tsp3.plugin.news {
 			return _changeType;
 		}
 
-		public function get pageCount():int
-		{
+		public function get pageCount():int {
 			return _pageCount;
 		}
 
-		public function set pageCount(value:int):void
-		{
+		public function set pageCount(value:int):void {
 			_pageCount = value;
 		}
-
 
 	}
 }
