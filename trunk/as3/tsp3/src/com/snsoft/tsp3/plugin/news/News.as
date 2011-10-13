@@ -103,18 +103,111 @@
 			newsBook.addEventListener(NewsBook.NEED_NEXT, handlerBookNext);
 			newsBook.addEventListener(NewsBook.NEED_PREV, handlerBookPrev);
 			newsBook.addEventListener(NewsBook.CHANGE_PAGE, handlerChangePage);
-			//this.addChild(newsBook);
+			this.addChild(newsBook);
 
 			classLayer.y = titleH;
 			filtersLayer.y = titleH;
 
 			classBox = new NewsClassBox(stage.stageWidth - columnW, classH, "分类", null);
 			classLayer.addChild(classBox);
-
 			classBox.visible = false;
 			classBox.addEventListener(NewsClassBox.EVENT_BTN_CLICK, handlerClassBtnClick);
 
 			loadColumn();
+		}
+
+		private function handlerChangePage(e:Event):void {
+			trace("handlerChangePage");
+			var curnum:int = int(newsBook.currentNum);
+			var pCount:int = int(newsBook.pageCount);
+			pagin.setPageNum(curnum, pCount);
+		}
+
+		private function handlerBookNext(e:Event):void {
+			trace("handlerBookNext");
+			loadInfoItems();
+		}
+
+		private function handlerBookPrev(e:Event):void {
+			trace("handlerBookPrev");
+			loadInfoItems();
+		}
+
+		private function loadInfoItems():void {
+			var url:String = Common.instance().dataUrl;
+			var code:String = Common.instance().dataCode;
+
+			if (url == null) {
+				url = cfg.searchDataUrl;
+			}
+
+			var filterStr:String = "";
+
+			for (var name:String in filter) {
+				filterStr += (name + ":" + filter[name] + ",");
+			}
+			filterStr = filterStr.substr(0, filterStr.length - 1);
+
+			var params:Params = new Params();
+			params.addParam(Common.PARAM_PLATE, cPlateId);
+			params.addParam(Common.PARAM_COLUMN, cColumnId);
+			params.addParam(Common.PARAM_CLASS, cClassId);
+			params.addParam(Common.PARAM_FILTER, filterStr);
+			params.addParam(Common.PARAM_PAGE_NUM, String(newsBook.npNum));
+			params.addParam(Common.PARAM_DIGEST_LENGTH, cfg.digestLength);
+
+			var dl:DataLoader = new DataLoader();
+			dl.addEventListener(Event.COMPLETE, handlerSearchCmp);
+			dl.addEventListener(IOErrorEvent.IO_ERROR, handlerSearchError);
+			dl.loadData(url, code, Common.OPERATION_SEARCH, params);
+		}
+
+		private function handlerSearchCmp(e:Event):void {
+			trace("handlerSearchCmp");
+			var dl:DataLoader = e.currentTarget as DataLoader;
+			var rsv:Vector.<DataSet> = dl.data;
+
+			var nbp:NewsBookPage = new NewsBookPage(new Point(newsBook.bookSize.x, 500));
+
+			var itemv:Vector.<Sprite> = new Vector.<Sprite>();
+			for (var i:int = 0; i < rsv.length; i++) {
+				var rs:DataSet = rsv[i];
+
+				var itype:String = rs.attr.listViewType;
+				if (itype == null) {
+					itype = NewsItemBase.ITEM_TYPE_I;
+				}
+				for (var j:int = 0; j < rs.dtoList.length; j++) {
+					var dto:DataDTO = rs.dtoList[j];
+					var item:NewsItemBase;
+					if (itype == NewsItemBase.ITEM_TYPE_I) {
+						item = new NewsItemI(dto);
+						nbp.addItem(item);
+					}
+				}
+
+				newsBook.pageCount = int(rs.attr.pageCount);
+				var nextnum:int = int(newsBook.npNum);
+				var curnum:int = int(newsBook.currentNum);
+				var pCount:int = int(rs.attr.pageCount);
+				nbp.setPaginText(nextnum, pCount);
+				pagin.setPageNum(nextnum, pCount);
+			}
+
+			trace("newsBook.changeType:", newsBook.changeType);
+
+			if (newsBook.changeType == NewsBook.CHANGE_TYPE_PREV) {
+				trace("prev");
+				newsBook.addPagePrev(nbp);
+			}
+			if (newsBook.changeType == NewsBook.CHANGE_TYPE_NEXT) {
+				trace("next");
+				newsBook.addPageNext(nbp);
+			}
+		}
+
+		private function handlerSearchError(e:Event):void {
+
 		}
 
 		private function loadFilter():void {
@@ -235,6 +328,7 @@
 				}
 			}
 			loadFilter();
+			newsBook.gotoPage(1);
 		}
 
 		private function handlerLoadClassError(e:Event):void {
@@ -317,53 +411,7 @@
 		private function handlerPaginBtnClick(e:Event):void {
 			var pagin:Pagination = e.currentTarget as Pagination;
 			newsBook.gotoPage(pagin.pageNum);
-		}
-
-		private function handlerChangePage(e:Event):void {
-			var nb:NewsBook = e.currentTarget as NewsBook;
-			pagin.setPageNum(nb.currentNum, 5);
-		}
-
-		private function handlerBookNext(e:Event):void {
-			var nb:NewsBook = e.currentTarget as NewsBook;
-			pagin.setPageNum(pagin.pageNum, 5);
-
-			if (nb.npNum <= 5) {
-				var v:Vector.<Sprite> = new Vector.<Sprite>();
-				for (var i:int = 0; i < 15; i++) {
-					var spr:Sprite = new Sprite();
-					spr.addChild(ViewUtil.creatRect(400, 50, 0x000000, 1));
-					v.push(spr);
-				}
-
-				var nbp:NewsBookPage = new NewsBookPage(new Point(nb.bookSize.x, 300), v, nb.npNum, 5);
-
-				var timer:Timer = new Timer(500, 1);
-				timer.addEventListener(TimerEvent.TIMER_COMPLETE, function(e:Event):void {
-					nb.addPageNext(nbp);
-				});
-				timer.start();
-			}
-		}
-
-		private function handlerBookPrev(e:Event):void {
-			var nb:NewsBook = e.currentTarget as NewsBook;
-			pagin.setPageNum(pagin.pageNum, 5);
-
-			var v:Vector.<Sprite> = new Vector.<Sprite>();
-			for (var i:int = 0; i < 15; i++) {
-				var spr:Sprite = new Sprite();
-				spr.addChild(ViewUtil.creatRect(400, 50, 0x000000, 1));
-				v.push(spr);
-			}
-
-			var nbp:NewsBookPage = new NewsBookPage(new Point(nb.bookSize.x, 300), v, nb.npNum, 5);
-
-			var timer:Timer = new Timer(500, 1);
-			timer.addEventListener(TimerEvent.TIMER_COMPLETE, function(e:Event):void {
-				nb.addPagePrev(nbp);
-			});
-			timer.start();
+			pagin.setPageNum(pagin.pageNum, newsBook.pageCount);
 		}
 
 		private function handlerBtnClick(e:Event):void {

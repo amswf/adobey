@@ -138,15 +138,15 @@ package com.snsoft.tsp3.touch {
 
 				var twe:Boolean = false;
 
-				trace(signx, signy, isClick);
+				//trace(signx, signy, isClick);
 				if (!signx && !signy && isClick) {
-					trace("click");
+					//trace("click");
 					this._clickObj = cDownObj;
 					this.dispatchEvent(new Event(TouchDragEvent.TOUCH_CLICK));
 					twe = true;
 				}
 				else if ((signx || signy)) {
-					trace("drag");
+					//trace("drag");
 					this.dispatchEvent(new Event(TouchDragEvent.TOUCH_DRAG_MOUSE_UP));
 				}
 				else {

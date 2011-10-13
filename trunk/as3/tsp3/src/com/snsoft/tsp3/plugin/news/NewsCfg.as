@@ -8,6 +8,10 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var _filterDataUrl:String;
 
+		private var _searchDataUrl:String;
+
+		private var _digestLength:String;
+
 		public function NewsCfg() {
 		}
 
@@ -19,24 +23,38 @@ package com.snsoft.tsp3.plugin.news {
 			_columnDataUrl = value;
 		}
 
-		public function get classDataUrl():String
-		{
+		public function get classDataUrl():String {
 			return _classDataUrl;
 		}
 
-		public function set classDataUrl(value:String):void
-		{
+		public function set classDataUrl(value:String):void {
 			_classDataUrl = value;
 		}
 
-		public function get filterDataUrl():String
-		{
+		public function get filterDataUrl():String {
 			return _filterDataUrl;
 		}
 
-		public function set filterDataUrl(value:String):void
-		{
+		public function set filterDataUrl(value:String):void {
 			_filterDataUrl = value;
+		}
+
+		public function get searchDataUrl():String {
+			return _searchDataUrl;
+		}
+
+		public function set searchDataUrl(value:String):void {
+			_searchDataUrl = value;
+		}
+
+		public function get digestLength():String
+		{
+			return _digestLength;
+		}
+
+		public function set digestLength(value:String):void
+		{
+			_digestLength = value;
 		}
 
 

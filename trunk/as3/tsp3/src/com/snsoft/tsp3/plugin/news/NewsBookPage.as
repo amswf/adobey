@@ -34,11 +34,13 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var itemsLayer:Sprite = new Sprite();
 
-		private var items:Vector.<Sprite>;
+		private var itemsh:int = boaderi;
 
-		public function NewsBookPage(pageSize:Point, items:Vector.<Sprite>, pageNum:int, pageCount:int) {
+		private var pb:MovieClip;
+
+		public function NewsBookPage(pageSize:Point) {
 			this.pageSize = pageSize;
-			this.items = items;
+
 			this.pageCount = pageCount;
 			this._pageNum = pageNum;
 
@@ -49,24 +51,22 @@ package com.snsoft.tsp3.plugin.news {
 			init();
 		}
 
+		public function addItem(nib:NewsItemBase):void {
+			nib.x = boaderf + boader;
+			nib.y = itemsh;
+			nib.itemWidth = pageSize.x - boader - boaderf - boader - boaderf;
+			nib.draw();
+			itemsLayer.addChild(nib);
+			itemsh += nib.height;
+
+			var h:int = itemsh + boaderi;
+			pb.height = Math.max(h, pageSize.y);
+		}
+
 		private function init():void {
 
-			var itemsh:int = 0;
-			itemsh += boaderi;
-
-			for (var i:int = 0; i < items.length; i++) {
-				var spr:Sprite = items[i];
-				itemsLayer.addChild(spr);
-				spr.x = boaderf + boader;
-				spr.y = itemsh;
-				itemsh += spr.height;
-			}
-
-			itemsh += boaderi;
-
-			var pb:MovieClip = SkinsUtil.createSkinByName("NewsBookPage_backSkin");
+			pb = SkinsUtil.createSkinByName("NewsBookPage_backSkin");
 			pb.width = pageSize.x;
-			pb.height = Math.max(itemsh, pageSize.y);
 			backLayer.addChild(pb);
 
 			topPageText = new TextField();
@@ -75,10 +75,9 @@ package com.snsoft.tsp3.plugin.news {
 			bottomPageText = new TextField();
 			paginLayer.addChild(bottomPageText);
 
-			setPagin(pageNum, pageCount);
 		}
 
-		private function setPagin(pageNum:int, pageCount:int):void {
+		public function setPaginText(pageNum:int, pageCount:int):void {
 			this.pageCount = pageCount;
 			this._pageNum = pageNum;
 
