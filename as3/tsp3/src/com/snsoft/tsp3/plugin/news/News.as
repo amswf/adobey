@@ -17,6 +17,7 @@
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
@@ -61,6 +62,10 @@
 		private var filter:Object;
 
 		private var classBox:NewsClassBox;
+
+		private var crntCH:int;
+
+		private var crntFH:int;
 
 		public function News() {
 			super();
@@ -114,6 +119,14 @@
 			classBox.addEventListener(NewsClassBox.EVENT_BTN_CLICK, handlerClassBtnClick);
 
 			loadColumn();
+
+			stage.addEventListener(KeyboardEvent.KEY_UP, function(e:Event):void {crntCH--;resizeNewsBook();});
+		}
+
+		private function resizeNewsBook():void {
+			var ph:int = (crntCH + crntFH) * classH;
+			newsBook.y = titleH + ph;
+			newsBook.reSize(new Point(stage.stageWidth - columnW, pagin.y - boader - titleH - ph));
 		}
 
 		private function handlerPaginBtnClick(e:Event):void {
@@ -250,7 +263,9 @@
 				h += classH;
 			}
 
+			crntFH = 0;
 			for (var i:int = 0; i < rsv.length; i++) {
+				crntFH++;
 				var ds:DataSet = rsv[i];
 				var v:Vector.<DataDTO> = ds.dtoList;
 				var fbox:NewsClassBox = null;
@@ -268,6 +283,7 @@
 				h += classH;
 				fbox.addEventListener(NewsClassBox.EVENT_BTN_CLICK, handlerFilterBtnClick);
 			}
+			resizeNewsBook();
 		}
 
 		private function handlerFilterBtnClick(e:Event):void {
@@ -328,7 +344,10 @@
 			if (cClassId == null) {
 				init = true;
 			}
+
+			crntCH = 0;
 			if (dtov.length > 0) {
+				crntCH = 1;
 				var fdto:DataDTO = dtov[0];
 				cClassId = fdto.id;
 				classBox.visible = true;
