@@ -30,7 +30,7 @@
 
 		private var rsImg:RSImages = new RSImages();
 
-		private var _data:Vector.<DataSet>;
+		private var _data:Vector.<DataSet> = new Vector.<DataSet>();
 
 		private const TAG_SET:String = "recordset";
 
