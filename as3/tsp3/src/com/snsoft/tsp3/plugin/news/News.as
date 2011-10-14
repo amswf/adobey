@@ -9,9 +9,11 @@
 	import com.snsoft.tsp3.pagination.PaginationEvent;
 	import com.snsoft.tsp3.plugin.BPlugin;
 	import com.snsoft.tsp3.plugin.news.dto.NewsTitleDTO;
+	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.SpriteUtil;
 
 	import flash.display.BitmapData;
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
@@ -49,6 +51,8 @@
 
 		private const classH:int = 58;
 
+		private var backLayer:Sprite = new Sprite();
+
 		private var columnLayer:Sprite = new Sprite();
 
 		private var bookLayer:Sprite = new Sprite();
@@ -79,6 +83,7 @@
 
 		public function News() {
 			super();
+			this.addChild(backLayer);
 			this.addChild(columnLayer);
 			this.addChild(bookLayer);
 			this.addChild(classLayer);
@@ -99,6 +104,11 @@
 			cColumnId = prms.columnId;
 
 			trace(cPlateId, cColumnId);
+
+			var back:MovieClip = SkinsUtil.createSkinByName("News_backSkin");
+			backLayer.addChild(back);
+			back.width = stage.stageWidth;
+			back.height = stage.stageHeight - deskBarH;
 
 			var ntdto:NewsTitleDTO = new NewsTitleDTO();
 			ntdto.text = "新闻资讯";

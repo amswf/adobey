@@ -64,7 +64,7 @@ package com.snsoft.tsp3.plugin.news {
 
 			this.addChild(pageLayer);
 			this.addChild(maskLayer);
-		
+
 			super();
 		}
 
@@ -122,6 +122,7 @@ package com.snsoft.tsp3.plugin.news {
 
 		public function addPageNext(npage:NewsBookPage):void {
 			addTouchBtn(npage);
+
 			var nexty:int = 0;
 			if (pagev.length > 0) {
 				var page:NewsBookPage = pagev[pagev.length - 1];
@@ -162,12 +163,6 @@ package com.snsoft.tsp3.plugin.news {
 
 		public function addPagePrev(ppage:NewsBookPage):void {
 			addTouchBtn(ppage);
-			if (ppage.itemv != null) {
-				for (var j:int = 0; j < ppage.itemv.length; j++) {
-					var item:NewsItemBase = ppage[j];
-					td.addClickObj(item);
-				}
-			}
 
 			var prevy:int = 0;
 			if (pagev.length > 0) {
