@@ -81,6 +81,8 @@
 
 		private var crntFH:int;
 
+		private var newsBookCtrler:NewsBookCtrler;
+
 		public function News() {
 			super();
 			this.addChild(backLayer);
@@ -122,17 +124,11 @@
 			paginLayer.addChild(pagin);
 			pagin.x = (stage.stageWidth - columnW - pagin.width) / 2;
 			pagin.y = stage.stageHeight - deskBarH - pagin.height - boader;
-			pagin.addEventListener(PaginationEvent.PAGIN_CLICK, handlerPaginBtnClick);
-
 			trace(pagin.height);
 			//先在这里实现分页拖动
 
 			newsBook = new NewsBook(new Point(stage.stageWidth - columnW, pagin.y - boader - titleH));
 			newsBook.y = titleH;
-			newsBook.addEventListener(NewsBook.EVENT_NEED_NEXT, handlerBookNext);
-			newsBook.addEventListener(NewsBook.EVENT_NEED_PREV, handlerBookPrev);
-			newsBook.addEventListener(NewsBook.EVENT_CHANGE_PAGE, handlerChangePage);
-			newsBook.addEventListener(NewsBook.EVENT_ITEM_CLICK, handleritemClick);
 			bookLayer.addChild(newsBook);
 
 			classLayer.y = titleH;
@@ -143,43 +139,35 @@
 			classBox.visible = false;
 			classBox.addEventListener(NewsClassBox.EVENT_BTN_CLICK, handlerClassBtnClick);
 
+			newsBookCtrler = new NewsBookCtrler(newsBook, pagin);
+
 			loadColumn();
 
 			//stage.addEventListener(KeyboardEvent.KEY_UP, function(e:Event):void {crntCH--;resizeNewsBook();});
 		}
 
-		private function resizeNewsBook():void {
+		private function refreshBook():void {
 			var ph:int = (crntCH + crntFH) * classH;
-			newsBook.y = titleH + ph;
-			newsBook.reSize(new Point(stage.stageWidth - columnW, pagin.y - boader - titleH - ph));
-		}
+			var y:int = titleH + ph;
+			var size:Point = new Point(stage.stageWidth - columnW, stage.stageHeight - deskBarH - paginH - boader - boader - titleH - ph);
 
-		private function handlerPaginBtnClick(e:Event):void {
-			var pagin:Pagination = e.currentTarget as Pagination;
-			newsBook.gotoPage(pagin.pageNum);
-			pagin.setPageNum(pagin.pageNum, newsBook.pageCount);
-		}
+			var url:String = Common.instance().dataUrl;
+			var code:String = Common.instance().dataCode;
 
-		private function handleritemClick(e:Event):void {
-			var dto:DataDTO = newsBook.clickItem.data;
-			loadInfo(dto.id);
-		}
+			if (url == null) {
+				url = cfg.searchDataUrl;
+			}
 
-		private function handlerChangePage(e:Event):void {
-			trace("handlerChangePage");
-			var curnum:int = int(newsBook.currentNum);
-			var pCount:int = int(newsBook.pageCount);
-			pagin.setPageNum(curnum, pCount);
-		}
+			var filterStr:String = filterToStr(filter);
 
-		private function handlerBookNext(e:Event):void {
-			trace("handlerBookNext");
-			loadInfoItems();
-		}
-
-		private function handlerBookPrev(e:Event):void {
-			trace("handlerBookPrev");
-			loadInfoItems();
+			var params:Params = new Params();
+			params.addParam(Common.PARAM_PLATE, cPlateId);
+			params.addParam(Common.PARAM_COLUMN, cColumnId);
+			params.addParam(Common.PARAM_CLASS, cClassId);
+			params.addParam(Common.PARAM_FILTER, filterStr);
+			params.addParam(Common.PARAM_PAGE_NUM, String(1));
+			params.addParam(Common.PARAM_DIGEST_LENGTH, cfg.digestLength);
+			newsBookCtrler.refresh(url, code, params, size, y);
 		}
 
 		private function loadInfo(infoId:String):void {
@@ -247,30 +235,6 @@
 
 		}
 
-		private function loadInfoItems():void {
-			var url:String = Common.instance().dataUrl;
-			var code:String = Common.instance().dataCode;
-
-			if (url == null) {
-				url = cfg.searchDataUrl;
-			}
-
-			var filterStr:String = filterToStr(filter);
-
-			var params:Params = new Params();
-			params.addParam(Common.PARAM_PLATE, cPlateId);
-			params.addParam(Common.PARAM_COLUMN, cColumnId);
-			params.addParam(Common.PARAM_CLASS, cClassId);
-			params.addParam(Common.PARAM_FILTER, filterStr);
-			params.addParam(Common.PARAM_PAGE_NUM, String(newsBook.npNum));
-			params.addParam(Common.PARAM_DIGEST_LENGTH, cfg.digestLength);
-
-			var dl:DataLoader = new DataLoader();
-			dl.addEventListener(Event.COMPLETE, handlerSearchCmp);
-			dl.addEventListener(IOErrorEvent.IO_ERROR, handlerSearchError);
-			dl.loadData(url, code, Common.OPERATION_SEARCH, params);
-		}
-
 		private function filterToStr(filter:Object):String {
 			var filterStr:String = "";
 			for (var name:String in filter) {
@@ -278,53 +242,6 @@
 			}
 			filterStr = filterStr.substr(0, filterStr.length - 1);
 			return filterStr;
-		}
-
-		private function handlerSearchCmp(e:Event):void {
-			trace("handlerSearchCmp");
-			var dl:DataLoader = e.currentTarget as DataLoader;
-			var rsv:Vector.<DataSet> = dl.data;
-
-			var nbp:NewsBookPage = new NewsBookPage(new Point(newsBook.bookSize.x, 500));
-
-			var itemv:Vector.<Sprite> = new Vector.<Sprite>();
-			for (var i:int = 0; i < rsv.length; i++) {
-				var rs:DataSet = rsv[i];
-
-				var itype:String = rs.attr.listViewType;
-				if (itype == null) {
-					itype = NewsItemBase.ITEM_TYPE_I;
-				}
-				for (var j:int = 0; j < rs.dtoList.length; j++) {
-					var dto:DataDTO = rs.dtoList[j];
-					var item:NewsItemBase;
-					if (itype == NewsItemBase.ITEM_TYPE_I) {
-						item = new NewsItemI(dto);
-						nbp.addItem(item);
-					}
-				}
-
-				newsBook.pageCount = int(rs.attr.pageCount);
-				var nextnum:int = int(newsBook.npNum);
-				var curnum:int = int(newsBook.currentNum);
-				var pCount:int = int(rs.attr.pageCount);
-				nbp.setPaginText(nextnum, pCount);
-			}
-
-			trace("newsBook.changeType:", newsBook.changeType);
-
-			if (newsBook.changeType == NewsBook.CHANGE_TYPE_PREV) {
-				trace("prev");
-				newsBook.addPagePrev(nbp);
-			}
-			if (newsBook.changeType == NewsBook.CHANGE_TYPE_NEXT) {
-				trace("next");
-				newsBook.addPageNext(nbp);
-			}
-		}
-
-		private function handlerSearchError(e:Event):void {
-
 		}
 
 		private function loadFilter():void {
@@ -377,8 +294,7 @@
 				h += classH;
 				fbox.addEventListener(NewsClassBox.EVENT_BTN_CLICK, handlerFilterBtnClick);
 			}
-			newsBook.gotoPage(1);
-			resizeNewsBook();
+			refreshBook();
 		}
 
 		private function handlerFilterBtnClick(e:Event):void {
@@ -386,7 +302,7 @@
 			if (box.classType != null) {
 				filter[box.classType] = box.dataId;
 			}
-			newsBook.gotoPage(1);
+			refreshBook();
 		}
 
 		private function handlerLoadFilterError(e:Event):void {
