@@ -25,13 +25,16 @@ package com.snsoft.tsp3.plugin.news {
 		private var _clickBtn:NewsImgBtn;
 
 		public function NewsBtnBox(btnv:Vector.<NewsImgBtn>, boxHeight:int) {
-			super();
 			this.btnv = btnv;
 			this.boxHeight = boxHeight;
+			super();
+		}
+
+		override protected function configMS():void {
 
 		}
 
-		override protected function init():void {
+		override protected function draw():void {
 
 			this.addChild(backLayer);
 			this.addChild(btnsLayer);

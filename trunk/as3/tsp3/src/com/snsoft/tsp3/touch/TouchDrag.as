@@ -40,8 +40,6 @@ package com.snsoft.tsp3.touch {
 
 		private var cDownObj:Sprite;
 
-		private var clickObjs:Vector.<Sprite> = new Vector.<Sprite>();
-
 		private var sensitivity:int = 0;
 
 		private var isClick:Boolean = false;
@@ -57,9 +55,13 @@ package com.snsoft.tsp3.touch {
 		}
 
 		public function addClickObj(clickObj:Sprite):void {
-			clickObjs.push(clickObj);
 			clickObj.addEventListener(MouseEvent.MOUSE_DOWN, handlerClickObjMouseDown);
 			clickObj.addEventListener(MouseEvent.MOUSE_UP, handlerClickObjMouseUp);
+		}
+
+		public function removeClickObj(clickObj:Sprite):void {
+			clickObj.removeEventListener(MouseEvent.MOUSE_DOWN, handlerClickObjMouseDown);
+			clickObj.removeEventListener(MouseEvent.MOUSE_UP, handlerClickObjMouseUp);
 		}
 
 		private function handlerClickObjMouseDown(e:Event):void {

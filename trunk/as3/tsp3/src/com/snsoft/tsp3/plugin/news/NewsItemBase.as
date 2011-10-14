@@ -1,4 +1,6 @@
 package com.snsoft.tsp3.plugin.news {
+	import com.snsoft.tsp3.net.DataDTO;
+
 	import flash.display.Sprite;
 
 	public class NewsItemBase extends Sprite {
@@ -15,6 +17,8 @@ package com.snsoft.tsp3.plugin.news {
 		private var _itemWidth:int;
 
 		private var _itemHeight:int
+
+		protected var _data:DataDTO;
 
 		public function NewsItemBase() {
 			super();
@@ -38,6 +42,10 @@ package com.snsoft.tsp3.plugin.news {
 
 		public function set itemHeight(value:int):void {
 			_itemHeight = value;
+		}
+
+		public function get data():DataDTO {
+			return _data;
 		}
 
 	}

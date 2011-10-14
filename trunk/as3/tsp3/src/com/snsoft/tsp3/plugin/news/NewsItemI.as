@@ -22,11 +22,9 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var selBack:MovieClip;
 
-		private var data:DataDTO;
-
 		public function NewsItemI(data:DataDTO) {
 			super();
-			this.data = data;
+			this._data = data;
 		}
 
 		override public function draw():void {
@@ -46,7 +44,7 @@ package com.snsoft.tsp3.plugin.news {
 			var imgh:int = itemHeight - boader - boader;
 			var imgw:int = imgh * 1.33;
 
-			var img:Bitmap = new Bitmap(data.img, "auto", true);
+			var img:Bitmap = new Bitmap(_data.img, "auto", true);
 			this.addChild(img);
 			img.x = boader;
 			img.y = boader;
@@ -58,7 +56,7 @@ package com.snsoft.tsp3.plugin.news {
 			title.defaultTextFormat = tft;
 			title.autoSize = TextFieldAutoSize.LEFT;
 			title.mouseEnabled = false;
-			title.text = "标题：" + data.getParam(PARAM_TITLE);
+			title.text = "标题：" + _data.getParam(PARAM_TITLE);
 			this.addChild(title);
 			title.x = img.getRect(this).right + boader;
 			title.y = boader;
@@ -67,7 +65,7 @@ package com.snsoft.tsp3.plugin.news {
 			date.defaultTextFormat = tft;
 			date.autoSize = TextFieldAutoSize.LEFT;
 			date.mouseEnabled = false;
-			date.text = "日期：" + data.getParam(PARAM_DATE);
+			date.text = "日期：" + _data.getParam(PARAM_DATE);
 			this.addChild(date);
 			date.x = title.getRect(this).right + boader;
 			date.y = boader;

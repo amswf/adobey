@@ -16,6 +16,8 @@ package com.snsoft.tsp3 {
 
 		public static const OPERATION_SEARCH:String = "search";
 
+		public static const OPERATION_INFO:String = "info";
+
 		public static const PARAM_PLATE:String = "plateId";
 
 		public static const PARAM_COLUMN:String = "columnId";
@@ -23,12 +25,14 @@ package com.snsoft.tsp3 {
 		public static const PARAM_CLASS:String = "classId";
 
 		public static const PARAM_FILTER:String = "filter";
-		
+
 		public static const PARAM_PAGE_NUM:String = "pageNum";
-		
+
 		public static const PARAM_PAGE_SIZE:String = "pageSize";
-		
+
 		public static const PARAM_DIGEST_LENGTH:String = "digestLength";
+
+		public static const PARAM_DIGEST_INFO:String = "infoId";
 
 		private static var lock:Boolean = false;
 

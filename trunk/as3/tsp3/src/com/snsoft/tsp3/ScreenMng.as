@@ -11,6 +11,8 @@ package com.snsoft.tsp3 {
 
 		private static var sm:ScreenMng = new ScreenMng();
 
+		private var maxBottom:int;
+
 		public function ScreenMng() {
 			if (lock) {
 				throw(new Error("ScreenMng can not new"));
@@ -31,6 +33,13 @@ package com.snsoft.tsp3 {
 					_topScreen = scrn;
 					break;
 				}
+			}
+
+			if (topScreen != null) {
+				maxBottom = Math.max(_mainScreen.bounds.bottom, _topScreen.bounds.bottom);
+			}
+			else {
+				maxBottom = mainScreen.bounds.bottom;
 			}
 		}
 

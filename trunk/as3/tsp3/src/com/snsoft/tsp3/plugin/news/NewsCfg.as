@@ -10,6 +10,8 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var _searchDataUrl:String;
 
+		private var _infoDataUrl:String;
+
 		private var _digestLength:String;
 
 		public function NewsCfg() {
@@ -47,14 +49,22 @@ package com.snsoft.tsp3.plugin.news {
 			_searchDataUrl = value;
 		}
 
-		public function get digestLength():String
-		{
+		public function get digestLength():String {
 			return _digestLength;
 		}
 
-		public function set digestLength(value:String):void
-		{
+		public function set digestLength(value:String):void {
 			_digestLength = value;
+		}
+
+		public function get infoDataUrl():String
+		{
+			return _infoDataUrl;
+		}
+
+		public function set infoDataUrl(value:String):void
+		{
+			_infoDataUrl = value;
 		}
 
 
