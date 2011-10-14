@@ -38,6 +38,8 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var pb:MovieClip;
 
+		private var _itemv:Vector.<NewsItemBase> = new Vector.<NewsItemBase>();
+
 		public function NewsBookPage(pageSize:Point) {
 			this.pageSize = pageSize;
 
@@ -57,6 +59,7 @@ package com.snsoft.tsp3.plugin.news {
 			nib.itemWidth = pageSize.x - boader - boaderf - boader - boaderf;
 			nib.draw();
 			itemsLayer.addChild(nib);
+			itemv.push(nib);
 			itemsh += nib.height;
 
 			var h:int = itemsh + boaderi;
@@ -99,6 +102,12 @@ package com.snsoft.tsp3.plugin.news {
 		public function get pageNum():int {
 			return _pageNum;
 		}
+
+		public function get itemv():Vector.<NewsItemBase>
+		{
+			return _itemv;
+		}
+
 
 	}
 }

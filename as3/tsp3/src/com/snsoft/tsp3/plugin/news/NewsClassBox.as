@@ -73,15 +73,19 @@
 		private var cbtnv:Vector.<NewsTextBtn>;
 
 		public function NewsClassBox(boxWidth:int, boxHeight:int, title:String, classType:String = null, hiddenBack:Boolean = false) {
-			super();
 			this.boxWidth = boxWidth;
 			this.boxHeight = boxHeight;
 			this.title = title;
 			this.hiddenBack = hiddenBack;
 			this._classType = classType;
+			super();
 		}
 
-		override protected function init():void {
+		override protected function configMS():void {
+
+		}
+
+		override protected function draw():void {
 
 			this.addChild(backLayer);
 			this.addChild(backBtnLayer);

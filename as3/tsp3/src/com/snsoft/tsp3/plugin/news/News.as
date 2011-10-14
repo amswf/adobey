@@ -43,15 +43,25 @@
 
 		private const titleH:int = 100;
 
-		private const deskBarH:int = 86;
+		private const deskBarH:int = 84;
+
+		private const infoBoader:int = 50;
 
 		private const classH:int = 58;
+
+		private var columnLayer:Sprite = new Sprite();
 
 		private var bookLayer:Sprite = new Sprite();
 
 		private var classLayer:Sprite = new Sprite();
 
 		private var filtersLayer:Sprite = new Sprite();
+
+		private var titleLayer:Sprite = new Sprite();
+
+		private var paginLayer:Sprite = new Sprite();
+
+		private var infoLayer:Sprite = new Sprite();
 
 		private var cPlateId:String;
 
@@ -69,9 +79,13 @@
 
 		public function News() {
 			super();
+			this.addChild(columnLayer);
 			this.addChild(bookLayer);
 			this.addChild(classLayer);
 			this.addChild(filtersLayer);
+			this.addChild(titleLayer);
+			this.addChild(paginLayer);
+			this.addChild(infoLayer);
 
 			pluginCfg = cfg;
 			params = prms;
@@ -90,12 +104,12 @@
 			ntdto.text = "新闻资讯";
 			ntdto.titleImg = prms.img;
 			var nt:NewsTitle = new NewsTitle(ntdto, stage.stageWidth, titleH);
-			this.addChild(nt);
+			titleLayer.addChild(nt);
 			nt.addEventListener(NewsTitle.EVENT_CLOSE, handlerCloseBtnClick);
 			nt.addEventListener(NewsTitle.EVENT_MIN, handlerMinBtnClick);
 
 			pagin = new Pagination(5);
-			this.addChild(pagin);
+			paginLayer.addChild(pagin);
 			pagin.x = (stage.stageWidth - columnW - pagin.width) / 2;
 			pagin.y = stage.stageHeight - deskBarH - pagin.height - boader;
 			pagin.addEventListener(PaginationEvent.PAGIN_CLICK, handlerPaginBtnClick);
@@ -105,10 +119,11 @@
 
 			newsBook = new NewsBook(new Point(stage.stageWidth - columnW, pagin.y - boader - titleH));
 			newsBook.y = titleH;
-			newsBook.addEventListener(NewsBook.NEED_NEXT, handlerBookNext);
-			newsBook.addEventListener(NewsBook.NEED_PREV, handlerBookPrev);
-			newsBook.addEventListener(NewsBook.CHANGE_PAGE, handlerChangePage);
-			this.addChild(newsBook);
+			newsBook.addEventListener(NewsBook.EVENT_NEED_NEXT, handlerBookNext);
+			newsBook.addEventListener(NewsBook.EVENT_NEED_PREV, handlerBookPrev);
+			newsBook.addEventListener(NewsBook.EVENT_CHANGE_PAGE, handlerChangePage);
+			newsBook.addEventListener(NewsBook.EVENT_ITEM_CLICK, handleritemClick);
+			bookLayer.addChild(newsBook);
 
 			classLayer.y = titleH;
 			filtersLayer.y = titleH;
@@ -135,6 +150,11 @@
 			pagin.setPageNum(pagin.pageNum, newsBook.pageCount);
 		}
 
+		private function handleritemClick(e:Event):void {
+			var dto:DataDTO = newsBook.clickItem.data;
+			loadInfo(dto.id);
+		}
+
 		private function handlerChangePage(e:Event):void {
 			trace("handlerChangePage");
 			var curnum:int = int(newsBook.currentNum);
@@ -150,6 +170,71 @@
 		private function handlerBookPrev(e:Event):void {
 			trace("handlerBookPrev");
 			loadInfoItems();
+		}
+
+		private function loadInfo(infoId:String):void {
+			var url:String = Common.instance().dataUrl;
+			var code:String = Common.instance().dataCode;
+
+			if (url == null) {
+				url = cfg.infoDataUrl;
+			}
+
+			var filterStr:String = filterToStr(filter);
+
+			var params:Params = new Params();
+			params.addParam(Common.PARAM_PLATE, cPlateId);
+			params.addParam(Common.PARAM_COLUMN, cColumnId);
+			params.addParam(Common.PARAM_DIGEST_INFO, infoId);
+
+			var dl:DataLoader = new DataLoader();
+			dl.addEventListener(Event.COMPLETE, handlerInfoCmp);
+			dl.addEventListener(IOErrorEvent.IO_ERROR, handlerInfoError);
+			dl.loadData(url, code, Common.OPERATION_INFO, params);
+		}
+
+		private function handlerInfoCmp(e:Event):void {
+			trace("handlerInfoCmp");
+			var dl:DataLoader = e.currentTarget as DataLoader;
+			var rsv:Vector.<DataSet> = dl.data;
+
+			var itemv:Vector.<Sprite> = new Vector.<Sprite>();
+			for (var i:int = 0; i < rsv.length; i++) {
+				var rs:DataSet = rsv[i];
+
+				var itype:String = rs.attr.listViewType;
+				if (itype == null) {
+					itype = NewsInfoBase.INFO_TYPE_I;
+				}
+				for (var j:int = 0; j < rs.dtoList.length; j++) {
+					var dto:DataDTO = rs.dtoList[j];
+
+					var info:NewsInfoBase;
+
+					infoLayer.visible = true;
+
+					var w:int = stage.stageWidth * 0.8;
+					var h:int = stage.stageHeight - deskBarH - infoBoader - infoBoader;
+
+					if (itype == NewsInfoBase.INFO_TYPE_I) {
+						info = new NewsInfoI(new Point(w, h), dto);
+					}
+					info.addEventListener(NewsInfoBase.EVENT_CLOSE, handlerInfoClose);
+					infoLayer.addChild(info);
+					info.x = int((stage.stageWidth - info.width) / 2);
+					info.y = infoBoader;
+				}
+			}
+		}
+
+		private function handlerInfoClose(e:Event):void {
+			var info:NewsInfoBase = e.currentTarget as NewsInfoBase;
+			info.removeEventListener(NewsInfoBase.EVENT_CLOSE, handlerInfoClose);
+			SpriteUtil.deleteAllChild(infoLayer);
+		}
+
+		private function handlerInfoError(e:Event):void {
+
 		}
 
 		private function loadInfoItems():void {
@@ -214,7 +299,6 @@
 				var curnum:int = int(newsBook.currentNum);
 				var pCount:int = int(rs.attr.pageCount);
 				nbp.setPaginText(nextnum, pCount);
-					//pagin.setPageNum(nextnum, pCount);
 			}
 
 			trace("newsBook.changeType:", newsBook.changeType);
@@ -410,7 +494,7 @@
 
 			var mh:int = stage.stageHeight - titleH - deskBarH;
 			var nbb:NewsBtnBox = new NewsBtnBox(btnv, mh);
-			this.addChild(nbb);
+			columnLayer.addChild(nbb);
 			nbb.x = stage.stageWidth - nbb.width;
 			nbb.y = titleH;
 			nbb.addEventListener(NewsBtnBox.EVENT_BTN_CLICK, handlerBtnClick);

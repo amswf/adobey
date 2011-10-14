@@ -102,7 +102,11 @@ package com.snsoft.tsp3 {
 			Common.instance().initTsp(this);
 		}
 
-		override protected function init():void {
+		override protected function configMS():void {
+
+		}
+
+		override protected function draw():void {
 
 			backSpr = ViewUtil.creatRect(100, 100, 0xffffff, 1);
 			backLayer.addChild(backSpr);

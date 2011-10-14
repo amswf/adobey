@@ -12,11 +12,13 @@ package com.snsoft.tsp3.plugin.news {
 
 	public class NewsBook extends MySprite {
 
-		public static const NEED_NEXT:String = "needNext";
+		public static const EVENT_NEED_NEXT:String = "needNext";
 
-		public static const NEED_PREV:String = "needPrev";
+		public static const EVENT_NEED_PREV:String = "needPrev";
 
-		public static const CHANGE_PAGE:String = "changePage";
+		public static const EVENT_CHANGE_PAGE:String = "changePage";
+
+		public static const EVENT_ITEM_CLICK:String = "itemClick";
 
 		private var _bookSize:Point;
 
@@ -54,13 +56,16 @@ package com.snsoft.tsp3.plugin.news {
 
 		public static const CHANGE_TYPE_PREV:String = "prev";
 
+		private var _clickItem:NewsItemBase;
+
 		public function NewsBook(bookSize:Point, catchMax:int = 0) {
-			super();
 			this._bookSize = bookSize;
 			this.catchMax = catchMax;
 
 			this.addChild(pageLayer);
 			this.addChild(maskLayer);
+		
+			super();
 		}
 
 		public function reSize(bookSize:Point):void {
@@ -74,7 +79,11 @@ package com.snsoft.tsp3.plugin.news {
 			td.dragBounds.height = dy + space + space;
 		}
 
-		override protected function init():void {
+		override protected function configMS():void {
+
+		}
+
+		override protected function draw():void {
 			msk = ViewUtil.creatRect(100, 100, 0xffffff, 1);
 			maskLayer.addChild(msk);
 			pageLayer.mask = maskLayer;
@@ -82,6 +91,7 @@ package com.snsoft.tsp3.plugin.news {
 			var dragBounds:Rectangle = new Rectangle(0, 0, 0, 0);
 			td = new TouchDrag(pageLayer, stage, dragBounds);
 			td.addEventListener(TouchDragEvent.TOUCH_DRAG_MOUSE_UP, handlerTouchUp);
+			td.addEventListener(TouchDragEvent.TOUCH_CLICK, handlerTouchClick);
 
 			reSize(bookSize);
 		}
@@ -92,6 +102,11 @@ package com.snsoft.tsp3.plugin.news {
 			pageLayer.y = 0;
 			pagev.splice(0, pagev.length);
 			dispatchEventNeedNext();
+		}
+
+		private function handlerTouchClick(e:Event):void {
+			_clickItem = td.clickObj as NewsItemBase;
+			this.dispatchEvent(new Event(EVENT_ITEM_CLICK));
 		}
 
 		private function handlerTouchUp(e:Event):void {
@@ -106,6 +121,7 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		public function addPageNext(npage:NewsBookPage):void {
+			addTouchBtn(npage);
 			var nexty:int = 0;
 			if (pagev.length > 0) {
 				var page:NewsBookPage = pagev[pagev.length - 1];
@@ -120,6 +136,7 @@ package com.snsoft.tsp3.plugin.news {
 				var dp:NewsBookPage = pagev[0];
 				while (pagev.length > catchMax && dp.getRect(this).bottom < 0) {
 					dh += dp.height;
+					removeTouchBtn(dp);
 					pageLayer.removeChild(dp);
 					pagev.splice(0, 1);
 					dp = pagev[0];
@@ -144,6 +161,14 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		public function addPagePrev(ppage:NewsBookPage):void {
+			addTouchBtn(ppage);
+			if (ppage.itemv != null) {
+				for (var j:int = 0; j < ppage.itemv.length; j++) {
+					var item:NewsItemBase = ppage[j];
+					td.addClickObj(item);
+				}
+			}
+
 			var prevy:int = 0;
 			if (pagev.length > 0) {
 				var page:NewsBookPage = pagev[0];
@@ -156,6 +181,7 @@ package com.snsoft.tsp3.plugin.news {
 			if (catchMax >= 0) {
 				var dp:NewsBookPage = pagev[pagev.length - 1];
 				while (pagev.length > catchMax && dp.getRect(this).y > bookSize.y) {
+					removeTouchBtn(dp);
 					pageLayer.removeChild(dp);
 					pagev.pop();
 					dp = pagev[pagev.length - 1];
@@ -178,13 +204,33 @@ package com.snsoft.tsp3.plugin.news {
 			}
 		}
 
+		private function addTouchBtn(page:NewsBookPage):void {
+			var itemv:Vector.<NewsItemBase> = page.itemv;
+			if (itemv != null) {
+				for (var j:int = 0; j < itemv.length; j++) {
+					var item:NewsItemBase = itemv[j];
+					td.addClickObj(item);
+				}
+			}
+		}
+
+		private function removeTouchBtn(page:NewsBookPage):void {
+			var itemv:Vector.<NewsItemBase> = page.itemv;
+			if (itemv != null) {
+				for (var j:int = 0; j < itemv.length; j++) {
+					var item:NewsItemBase = itemv[j];
+					td.removeClickObj(item);
+				}
+			}
+		}
+
 		private function dispatchEventNeedNext():void {
 			if (pagev.length > 0) {
 				var ep:NewsBookPage = pagev[pagev.length - 1];
 				_npNum = ep.pageNum + 1;
 			}
 			_changeType = CHANGE_TYPE_NEXT;
-			this.dispatchEvent(new Event(NEED_NEXT));
+			this.dispatchEvent(new Event(EVENT_NEED_NEXT));
 		}
 
 		private function dispatchEventNeedPrev():void {
@@ -194,7 +240,7 @@ package com.snsoft.tsp3.plugin.news {
 				if (n >= 1) {
 					_npNum = n;
 					_changeType = CHANGE_TYPE_PREV;
-					this.dispatchEvent(new Event(NEED_PREV));
+					this.dispatchEvent(new Event(EVENT_NEED_PREV));
 				}
 			}
 		}
@@ -206,7 +252,7 @@ package com.snsoft.tsp3.plugin.news {
 				var cr:Rectangle = page.getRect(this);
 				if ((cr.y <= 0 && cr.bottom >= bookSize.y) || (cr.y <= bookSize.y / 2 && cr.bottom > bookSize.y / 2)) {
 					_currentNum = page.pageNum;
-					this.dispatchEvent(new Event(CHANGE_PAGE));
+					this.dispatchEvent(new Event(EVENT_CHANGE_PAGE));
 					break;
 				}
 
@@ -235,6 +281,10 @@ package com.snsoft.tsp3.plugin.news {
 
 		public function set pageCount(value:int):void {
 			_pageCount = value;
+		}
+
+		public function get clickItem():NewsItemBase {
+			return _clickItem;
 		}
 
 	}

@@ -15,6 +15,7 @@
 			import com.snsoft.tsp3.plugin.news.NewsBook;
 			import com.snsoft.tsp3.plugin.news.NewsBtnBox;
 			import com.snsoft.tsp3.plugin.news.NewsClassBox;
+			import com.snsoft.tsp3.plugin.news.NewsInfoI;
 			import com.snsoft.tsp3.plugin.news.NewsItemBase;
 			import com.snsoft.tsp3.plugin.news.NewsItemI;
 			import com.snsoft.tsp3.plugin.player.Player;
@@ -37,6 +38,7 @@
 				NewsClassBox;
 				NewsItemBase;
 				NewsItemI;
+				NewsInfoI;
 			}
 		]]>
 	</fx:Script>
