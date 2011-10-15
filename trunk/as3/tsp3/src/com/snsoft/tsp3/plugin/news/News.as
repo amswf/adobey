@@ -77,6 +77,8 @@
 
 		private var panelY:int;
 
+		private var newsTitle:NewsTitle;
+
 		public function News() {
 			super();
 			this.addChild(backLayer);
@@ -109,10 +111,11 @@
 			var ntdto:NewsTitleDTO = new NewsTitleDTO();
 			ntdto.text = "新闻资讯";
 			ntdto.titleImg = prms.img;
-			var nt:NewsTitle = new NewsTitle(ntdto, stage.stageWidth, titleH);
-			titleLayer.addChild(nt);
-			nt.addEventListener(NewsTitle.EVENT_CLOSE, handlerCloseBtnClick);
-			nt.addEventListener(NewsTitle.EVENT_MIN, handlerMinBtnClick);
+			newsTitle = new NewsTitle(ntdto, stage.stageWidth, titleH);
+			titleLayer.addChild(newsTitle);
+			newsTitle.addEventListener(NewsTitle.EVENT_CLOSE, handlerCloseBtnClick);
+			newsTitle.addEventListener(NewsTitle.EVENT_MIN, handlerMinBtnClick);
+			newsTitle.addEventListener(NewsTitle.EVENT_SEARCH, handlerSearchBtnClick);
 
 			pagin = new Pagination(5);
 			paginLayer.addChild(pagin);
@@ -272,6 +275,9 @@
 		}
 
 		private function loadClass(isClear:Boolean):void {
+			newsState.type = NewsState.TYPE_FACTOR;
+			clearSearchText();
+
 			if (isClear) {
 				classBox.clear();
 			}
@@ -332,6 +338,9 @@
 		}
 
 		private function loadColumn():void {
+			newsState.type = NewsState.TYPE_FACTOR;
+			clearSearchText();
+
 			var url:String = Common.instance().dataUrl;
 			var code:String = Common.instance().dataCode;
 
@@ -404,6 +413,18 @@
 			minimizePlugin();
 		}
 
+		private function handlerSearchBtnClick(e:Event):void {
+			var nt:NewsTitle = e.currentTarget as NewsTitle;
+			newsState.searchText = nt.searchText;
+			newsState.type = NewsState.TYPE_SEARCH;
+			refreshBook();
+		}
+
+		private function clearSearchText():void {
+			newsTitle.clearSearchText();
+			newsState.searchText = null;
+		}
+
 		private function handlerBtnClick(e:Event):void {
 			var nbb:NewsBtnBox = e.currentTarget as NewsBtnBox;
 			var btn:NewsImgBtn = nbb.clickBtn;
@@ -411,5 +432,6 @@
 			newsState.cColumnId = dto.id;
 			loadClass(true);
 		}
+
 	}
 }
