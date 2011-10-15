@@ -12,12 +12,14 @@
 			import com.snsoft.tsp3.pagination.PaginationBtn;
 			import com.snsoft.tsp3.plugin.desktop.Desktop;
 			import com.snsoft.tsp3.plugin.news.News;
+			import com.snsoft.tsp3.plugin.news.NewsBoardI;
 			import com.snsoft.tsp3.plugin.news.NewsBook;
 			import com.snsoft.tsp3.plugin.news.NewsBtnBox;
 			import com.snsoft.tsp3.plugin.news.NewsClassBox;
-			import com.snsoft.tsp3.plugin.news.NewsInfoI;
+			import com.snsoft.tsp3.plugin.news.NewsInfo;
 			import com.snsoft.tsp3.plugin.news.NewsItemBase;
 			import com.snsoft.tsp3.plugin.news.NewsItemI;
+			import com.snsoft.tsp3.plugin.news.NewsPanel;
 			import com.snsoft.tsp3.plugin.player.Player;
 			import com.snsoft.tsp3.test.Skins;
 			import com.snsoft.tsp3.test.Test;
@@ -38,7 +40,9 @@
 				NewsClassBox;
 				NewsItemBase;
 				NewsItemI;
-				NewsInfoI;
+				NewsBoardI;
+				NewsPanel;
+				NewsInfo;
 			}
 		]]>
 	</fx:Script>

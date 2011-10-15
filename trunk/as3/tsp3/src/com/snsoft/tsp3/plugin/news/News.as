@@ -1,29 +1,21 @@
 ﻿package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.Common;
-	import com.snsoft.tsp3.ViewUtil;
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.tsp3.net.DataLoader;
 	import com.snsoft.tsp3.net.DataSet;
 	import com.snsoft.tsp3.net.Params;
 	import com.snsoft.tsp3.pagination.Pagination;
-	import com.snsoft.tsp3.pagination.PaginationEvent;
 	import com.snsoft.tsp3.plugin.BPlugin;
 	import com.snsoft.tsp3.plugin.news.dto.NewsTitleDTO;
 	import com.snsoft.util.SkinsUtil;
-	import com.snsoft.util.SpriteUtil;
 
-	import flash.display.BitmapData;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
-	import flash.events.KeyboardEvent;
-	import flash.events.MouseEvent;
-	import flash.events.TimerEvent;
 	import flash.geom.Point;
-	import flash.utils.Timer;
 
 	public class News extends BPlugin {
 
@@ -47,7 +39,7 @@
 
 		private const deskBarH:int = 84;
 
-		private const infoBoader:int = 50;
+		private const infoBoader:int = 30;
 
 		private const classH:int = 58;
 
@@ -67,14 +59,6 @@
 
 		private var infoLayer:Sprite = new Sprite();
 
-		private var cPlateId:String;
-
-		private var cColumnId:String;
-
-		private var cClassId:String;
-
-		private var filter:Object;
-
 		private var classBox:NewsClassBox;
 
 		private var crntCH:int;
@@ -82,6 +66,16 @@
 		private var crntFH:int;
 
 		private var newsBookCtrler:NewsBookCtrler;
+
+		private var newsState:NewsState = new NewsState();
+
+		private var newsPanel:NewsPanel;
+
+		private var panelSize:Point;
+
+		private var panelX:int;
+
+		private var panelY:int;
 
 		public function News() {
 			super();
@@ -102,10 +96,10 @@
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 
-			cPlateId = prms.id;
-			cColumnId = prms.columnId;
+			newsState.cPlateId = prms.id;
+			newsState.cColumnId = prms.columnId;
 
-			trace(cPlateId, cColumnId);
+			trace(newsState.cPlateId, newsState.cColumnId);
 
 			var back:MovieClip = SkinsUtil.createSkinByName("News_backSkin");
 			backLayer.addChild(back);
@@ -140,10 +134,43 @@
 			classBox.addEventListener(NewsClassBox.EVENT_BTN_CLICK, handlerClassBtnClick);
 
 			newsBookCtrler = new NewsBookCtrler(newsBook, pagin);
+			newsBookCtrler.addEventListener(NewsBookCtrler.EVENT_ITEM_CLICK, handlerItemClick);
+			newsBookCtrler.addEventListener(NewsBookCtrler.EVENT_LOAD_COMPLETE, handlerloadItemsCmp);
 
 			loadColumn();
 
+			var rate:Number = 0.8;
+			var w:int = stage.stageWidth * 0.8;
+			var h:int = stage.stageHeight - deskBarH - infoBoader - infoBoader;
+			panelSize = new Point(w, h);
+
+			panelX = int(stage.stageWidth * (1 - 0.8) / 2);
+			panelY = infoBoader;
+
+			var code:String = Common.instance().dataCode;
+
+			var infoUrl:String = Common.instance().dataUrl;
+			if (infoUrl == null) {
+				infoUrl = cfg.infoDataUrl;
+			}
+
+			var itemsUrl:String = Common.instance().dataUrl;
+			if (itemsUrl == null) {
+				itemsUrl = cfg.searchDataUrl;
+			}
+
+			newsPanel = new NewsPanel(panelSize, infoUrl, itemsUrl, code);
+			newsPanel.visible = false;
+			newsPanel.x = panelX;
+			newsPanel.y = panelY;
+			infoLayer.addChild(newsPanel);
+			newsPanel.addEventListener(NewsPanel.EVENT_CLOSE, handlerPanelClose);
+
 			//stage.addEventListener(KeyboardEvent.KEY_UP, function(e:Event):void {crntCH--;resizeNewsBook();});
+		}
+
+		private function handlerPanelClose(e:Event):void {
+			newsPanel.visible = false;
 		}
 
 		private function refreshBook():void {
@@ -158,94 +185,23 @@
 				url = cfg.searchDataUrl;
 			}
 
-			var filterStr:String = filterToStr(filter);
-
-			var params:Params = new Params();
-			params.addParam(Common.PARAM_PLATE, cPlateId);
-			params.addParam(Common.PARAM_COLUMN, cColumnId);
-			params.addParam(Common.PARAM_CLASS, cClassId);
-			params.addParam(Common.PARAM_FILTER, filterStr);
-			params.addParam(Common.PARAM_PAGE_NUM, String(1));
-			params.addParam(Common.PARAM_DIGEST_LENGTH, cfg.digestLength);
-			newsBookCtrler.refresh(url, code, params, size, y);
+			newsBookCtrler.refresh(url, code, newsState, size, y);
 		}
 
-		private function loadInfo(infoId:String):void {
-			var url:String = Common.instance().dataUrl;
-			var code:String = Common.instance().dataCode;
-
-			if (url == null) {
-				url = cfg.infoDataUrl;
-			}
-
-			var filterStr:String = filterToStr(filter);
-
-			var params:Params = new Params();
-			params.addParam(Common.PARAM_PLATE, cPlateId);
-			params.addParam(Common.PARAM_COLUMN, cColumnId);
-			params.addParam(Common.PARAM_DIGEST_INFO, infoId);
-
-			var dl:DataLoader = new DataLoader();
-			dl.addEventListener(Event.COMPLETE, handlerInfoCmp);
-			dl.addEventListener(IOErrorEvent.IO_ERROR, handlerInfoError);
-			dl.loadData(url, code, Common.OPERATION_INFO, params);
+		private function handlerloadItemsCmp(e:Event):void {
+			newsState.infoViewType = newsBookCtrler.infoViewType;
+			newsState.itemViewType = newsBookCtrler.itemViewType;
 		}
 
-		private function handlerInfoCmp(e:Event):void {
-			trace("handlerInfoCmp");
-			var dl:DataLoader = e.currentTarget as DataLoader;
-			var rsv:Vector.<DataSet> = dl.data;
-
-			var itemv:Vector.<Sprite> = new Vector.<Sprite>();
-			for (var i:int = 0; i < rsv.length; i++) {
-				var rs:DataSet = rsv[i];
-
-				var itype:String = rs.attr.listViewType;
-				if (itype == null) {
-					itype = NewsInfoBase.INFO_TYPE_I;
-				}
-				for (var j:int = 0; j < rs.dtoList.length; j++) {
-					var dto:DataDTO = rs.dtoList[j];
-
-					var info:NewsInfoBase;
-
-					infoLayer.visible = true;
-
-					var w:int = stage.stageWidth * 0.8;
-					var h:int = stage.stageHeight - deskBarH - infoBoader - infoBoader;
-
-					if (itype == NewsInfoBase.INFO_TYPE_I) {
-						info = new NewsInfoI(new Point(w, h), dto);
-					}
-					info.addEventListener(NewsInfoBase.EVENT_CLOSE, handlerInfoClose);
-					infoLayer.addChild(info);
-					info.x = int((stage.stageWidth - info.width) / 2);
-					info.y = infoBoader;
-				}
-			}
-		}
-
-		private function handlerInfoClose(e:Event):void {
-			var info:NewsInfoBase = e.currentTarget as NewsInfoBase;
-			info.removeEventListener(NewsInfoBase.EVENT_CLOSE, handlerInfoClose);
-			SpriteUtil.deleteAllChild(infoLayer);
-		}
-
-		private function handlerInfoError(e:Event):void {
-
-		}
-
-		private function filterToStr(filter:Object):String {
-			var filterStr:String = "";
-			for (var name:String in filter) {
-				filterStr += (name + ":" + filter[name] + ",");
-			}
-			filterStr = filterStr.substr(0, filterStr.length - 1);
-			return filterStr;
+		private function handlerItemClick(e:Event):void {
+			var item:NewsItemBase = newsBookCtrler.clickItem;
+			newsState.infoId = item.data.id;
+			newsPanel.refresh(newsState);
+			newsPanel.visible = true;
 		}
 
 		private function loadFilter():void {
-			filter = new Object();
+			newsState.filter = new Object();
 
 			var url:String = Common.instance().dataUrl;
 			var code:String = Common.instance().dataCode;
@@ -255,9 +211,9 @@
 			}
 
 			var params:Params = new Params();
-			params.addParam(Common.PARAM_PLATE, cPlateId);
-			params.addParam(Common.PARAM_COLUMN, cColumnId);
-			params.addParam(Common.PARAM_CLASS, cClassId);
+			params.addParam(Common.PARAM_PLATE, newsState.cPlateId);
+			params.addParam(Common.PARAM_COLUMN, newsState.cColumnId);
+			params.addParam(Common.PARAM_CLASS, newsState.cClassId);
 
 			var dl:DataLoader = new DataLoader();
 			dl.addEventListener(Event.COMPLETE, handlerLoadFilterCmp);
@@ -300,7 +256,7 @@
 		private function handlerFilterBtnClick(e:Event):void {
 			var box:NewsClassBox = e.currentTarget as NewsClassBox;
 			if (box.classType != null) {
-				filter[box.classType] = box.dataId;
+				newsState.filter[box.classType] = box.dataId;
 			}
 			refreshBook();
 		}
@@ -311,7 +267,7 @@
 
 		private function handlerClassBtnClick(e:Event):void {
 			var box:NewsClassBox = e.currentTarget as NewsClassBox;
-			cClassId = box.dataId;
+			newsState.cClassId = box.dataId;
 			loadClass(false);
 		}
 
@@ -328,9 +284,9 @@
 			}
 
 			var params:Params = new Params();
-			params.addParam(Common.PARAM_PLATE, cPlateId);
-			params.addParam(Common.PARAM_COLUMN, cColumnId);
-			params.addParam(Common.PARAM_CLASS, cClassId);
+			params.addParam(Common.PARAM_PLATE, newsState.cPlateId);
+			params.addParam(Common.PARAM_COLUMN, newsState.cColumnId);
+			params.addParam(Common.PARAM_CLASS, newsState.cClassId);
 
 			var dl:DataLoader = new DataLoader();
 			dl.addEventListener(Event.COMPLETE, handlerLoadClassCmp);
@@ -353,7 +309,7 @@
 			}
 
 			var init:Boolean = false;
-			if (cClassId == null) {
+			if (newsState.cClassId == null) {
 				init = true;
 			}
 
@@ -361,7 +317,7 @@
 			if (dtov.length > 0) {
 				crntCH = 1;
 				var fdto:DataDTO = dtov[0];
-				cClassId = fdto.id;
+				newsState.cClassId = fdto.id;
 				classBox.visible = true;
 				classBox.addChildren(dtov);
 				if (init) {
@@ -384,7 +340,7 @@
 			}
 
 			var params:Params = new Params();
-			params.addParam(Common.PARAM_PLATE, cPlateId);
+			params.addParam(Common.PARAM_PLATE, newsState.cPlateId);
 
 			var dl:DataLoader = new DataLoader();
 			dl.addEventListener(Event.COMPLETE, handlerLoadColumnCmp);
@@ -413,8 +369,8 @@
 			if (btnv.length > 0) {
 				var fbtn:NewsImgBtn = btnv[0];
 				var fdto:DataDTO = fbtn.data as DataDTO;
-				if (cColumnId != null) {
-					cColumnId = fdto.id;
+				if (newsState.cColumnId != null) {
+					newsState.cColumnId = fdto.id;
 				}
 			}
 
@@ -428,7 +384,7 @@
 			for (var k:int = 0; k < btnv.length; k++) {
 				var btn:NewsImgBtn = btnv[k];
 				var sdto:DataDTO = btn.data as DataDTO;
-				if ((cColumnId != null && cColumnId == sdto.id) || (cColumnId == null && k == 0)) {
+				if ((newsState.cColumnId != null && newsState.cColumnId == sdto.id) || (newsState.cColumnId == null && k == 0)) {
 					nbb.selectedDef(k);
 				}
 			}
@@ -452,7 +408,7 @@
 			var nbb:NewsBtnBox = e.currentTarget as NewsBtnBox;
 			var btn:NewsImgBtn = nbb.clickBtn;
 			var dto:DataDTO = btn.data as DataDTO;
-			cColumnId = dto.id;
+			newsState.cColumnId = dto.id;
 			loadClass(true);
 		}
 	}

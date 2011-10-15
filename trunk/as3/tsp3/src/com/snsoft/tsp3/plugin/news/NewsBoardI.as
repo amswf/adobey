@@ -4,6 +4,7 @@
 	import com.snsoft.tsp3.html.HtmlExplorer;
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.util.SkinsUtil;
+	import com.snsoft.util.SpriteUtil;
 
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -16,7 +17,7 @@
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 
-	public class NewsInfoI extends NewsInfoBase {
+	public class NewsBoardI extends NewsBoardBase {
 
 		private var backLayer:Sprite = new Sprite();
 
@@ -30,7 +31,7 @@
 
 		private var tft:TextFormat = new TextFormat(null, 12, 0xffffff);
 
-		public function NewsInfoI(infoSize:Point, data:DataDTO) {
+		public function NewsBoardI(infoSize:Point, data:DataDTO) {
 			this.infoSize = infoSize;
 			this._data = data;
 			super();
@@ -41,6 +42,13 @@
 			this.addChild(infoLayer);
 			this.addChild(itemsLayer);
 			this.addChild(btnLayer);
+		}
+
+		override protected function draw():void {
+			SpriteUtil.deleteAllChild(backLayer);
+			SpriteUtil.deleteAllChild(infoLayer);
+			SpriteUtil.deleteAllChild(itemsLayer);
+			SpriteUtil.deleteAllChild(btnLayer);
 
 			var cw:int = infoSize.x - boader - boader;
 
@@ -50,7 +58,6 @@
 			title.text = _data.getParam(PARAM_TITLE);
 			this.addChild(title);
 			title.x = boader;
-			title.y = closeBtn.getRect(this).bottom + boader;
 			title.width = cw;
 
 			var line2:Sprite = new Sprite();
@@ -80,10 +87,6 @@
 			he.loadString(_data.getParam(PARAM_CONTENT));
 			he.x = boader;
 			he.y = heY;
-		}
-
-		override protected function draw():void {
-
 		}
 	}
 }
