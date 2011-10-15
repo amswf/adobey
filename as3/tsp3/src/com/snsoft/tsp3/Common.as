@@ -16,6 +16,8 @@ package com.snsoft.tsp3 {
 
 		public static const OPERATION_SEARCH:String = "search";
 
+		public static const OPERATION_SEARCH_RELATED:String = "searchRelated";
+
 		public static const OPERATION_INFO:String = "info";
 
 		public static const PARAM_PLATE:String = "plateId";
@@ -32,7 +34,7 @@ package com.snsoft.tsp3 {
 
 		public static const PARAM_DIGEST_LENGTH:String = "digestLength";
 
-		public static const PARAM_DIGEST_INFO:String = "infoId";
+		public static const PARAM_INFO:String = "infoId";
 
 		private static var lock:Boolean = false;
 

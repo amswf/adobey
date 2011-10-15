@@ -16,6 +16,10 @@ package com.snsoft.tsp3.plugin.news {
 
 	public class NewsBookCtrler extends EventDispatcher {
 
+		public static const EVENT_ITEM_CLICK:String = "eventItemClick";
+
+		public static const EVENT_LOAD_COMPLETE:String = "eventLoadComplete";
+
 		private var newsBook:NewsBook;
 
 		private var pagin:Pagination;
@@ -24,7 +28,13 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var code:String;
 
-		private var params:Params;
+		private var newsState:NewsState;
+
+		private var _clickItem:NewsItemBase;
+
+		private var _itemViewType:String;
+
+		private var _infoViewType:String;
 
 		public function NewsBookCtrler(newsBook:NewsBook, pagin:Pagination) {
 			super();
@@ -43,7 +53,7 @@ package com.snsoft.tsp3.plugin.news {
 			pagin.addEventListener(PaginationEvent.PAGIN_CLICK, handlerPaginBtnClick);
 		}
 
-		public function refresh(url:String, code:String, parmas:Params, size:Point = null, y:int = NaN):void {
+		public function refresh(url:String, code:String, newsState:NewsState, size:Point = null, y:int = NaN):void {
 			if (size != null) {
 				newsBook.reSize(size);
 			}
@@ -52,7 +62,7 @@ package com.snsoft.tsp3.plugin.news {
 			}
 			this.url = url;
 			this.code = code;
-			this.params = params;
+			this.newsState = newsState;
 
 			newsBook.gotoPage(1);
 		}
@@ -64,8 +74,8 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		private function handleritemClick(e:Event):void {
-			var dto:DataDTO = newsBook.clickItem.data;
-
+			_clickItem = newsBook.clickItem;
+			this.dispatchEvent(new Event(EVENT_ITEM_CLICK));
 		}
 
 		private function handlerChangePage(e:Event):void {
@@ -86,6 +96,14 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		private function loadInfoItems():void {
+			var params:Params = new Params();
+			params.addParam(Common.PARAM_PLATE, newsState.cPlateId);
+			params.addParam(Common.PARAM_COLUMN, newsState.cColumnId);
+			params.addParam(Common.PARAM_CLASS, newsState.cClassId);
+			params.addParam(Common.PARAM_FILTER, newsState.filterStr());
+			params.addParam(Common.PARAM_PAGE_NUM, String(1));
+			params.addParam(Common.PARAM_DIGEST_LENGTH, String(newsState.digestLength));
+
 			var dl:DataLoader = new DataLoader();
 			dl.addEventListener(Event.COMPLETE, handlerSearchCmp);
 			dl.addEventListener(IOErrorEvent.IO_ERROR, handlerSearchError);
@@ -107,6 +125,14 @@ package com.snsoft.tsp3.plugin.news {
 				if (itype == null) {
 					itype = NewsItemBase.ITEM_TYPE_I;
 				}
+				var ftype:String = rs.attr.detailViewType;
+				if (ftype == null) {
+					ftype = NewsItemBase.ITEM_TYPE_I;
+				}
+
+				itemViewType = itype;
+				infoViewType = ftype;
+
 				for (var j:int = 0; j < rs.dtoList.length; j++) {
 					var dto:DataDTO = rs.dtoList[j];
 					var item:NewsItemBase;
@@ -129,14 +155,35 @@ package com.snsoft.tsp3.plugin.news {
 				trace("prev");
 				newsBook.addPagePrev(nbp);
 			}
-			if (newsBook.changeType == NewsBook.CHANGE_TYPE_NEXT) {
+			else if (newsBook.changeType == NewsBook.CHANGE_TYPE_NEXT) {
 				trace("next");
 				newsBook.addPageNext(nbp);
 			}
+			this.dispatchEvent(new Event(EVENT_LOAD_COMPLETE));
 		}
 
 		private function handlerSearchError(e:Event):void {
 
+		}
+
+		public function get clickItem():NewsItemBase {
+			return _clickItem;
+		}
+
+		public function get itemViewType():String {
+			return _itemViewType;
+		}
+
+		public function set itemViewType(value:String):void {
+			_itemViewType = value;
+		}
+
+		public function get infoViewType():String {
+			return _infoViewType;
+		}
+
+		public function set infoViewType(value:String):void {
+			_infoViewType = value;
 		}
 
 	}

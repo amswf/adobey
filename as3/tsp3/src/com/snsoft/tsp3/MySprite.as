@@ -14,6 +14,10 @@ package com.snsoft.tsp3 {
 
 		}
 
+		public function reDraw():void {
+			draw();
+		}
+
 		protected function draw():void {
 			trace("需要重写draw方法！");
 			throw new Error("需要重写 draw方法！");
