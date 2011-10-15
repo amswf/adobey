@@ -52,7 +52,12 @@ package com.snsoft.util.xmldom {
 			if (obj != null) {
 				for (var i:int = 0; i < attribute.length(); i++) {
 					var name:String = attribute.getNameByIndex(i);
-					obj[name] = attribute.getByIndex(i);
+					try {
+						obj[name] = attribute.getByIndex(i);
+					}
+					catch (error:Error) {
+						trace("对象：", obj, "没有属性：", name);
+					}
 				}
 			}
 		}
