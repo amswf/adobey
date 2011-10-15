@@ -19,6 +19,25 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var _itemViewType:String;
 
+		private var _searchText:String;
+
+		private var _type:String;
+
+		/**
+		 * 关键词搜索
+		 */
+		public static const TYPE_SEARCH:String = "search";
+
+		/**
+		 * 筛选条件
+		 */
+		public static const TYPE_FACTOR:String = "factor";
+
+		/**
+		 * 和某条信息相关的
+		 */
+		public static const TYPE_RELATED:String = "related";
+
 		public function NewsState() {
 		}
 
@@ -28,9 +47,14 @@ package com.snsoft.tsp3.plugin.news {
 			ns.cColumnId = cColumnId;
 			ns.cClassId = cClassId;
 			ns.infoId = infoId;
+			ns.digestLength = digestLength;
+			ns.infoViewType = infoViewType;
+			ns.itemViewType = itemViewType;
+			ns.searchText = searchText;
+			ns.type = type;
 
 			var obj:Object = new Object();
-			DependencyInjection.diToObj(filter, obj);
+			DependencyInjection.diToObj(filter, obj, false);
 			ns.filter = obj;
 			return ns;
 		}
@@ -100,16 +124,29 @@ package com.snsoft.tsp3.plugin.news {
 			_infoViewType = value;
 		}
 
-		public function get itemViewType():String
-		{
+		public function get itemViewType():String {
 			return _itemViewType;
 		}
 
-		public function set itemViewType(value:String):void
-		{
+		public function set itemViewType(value:String):void {
 			_itemViewType = value;
 		}
 
+		public function get searchText():String {
+			return _searchText;
+		}
+
+		public function set searchText(value:String):void {
+			_searchText = value;
+		}
+
+		public function get type():String {
+			return _type;
+		}
+
+		public function set type(value:String):void {
+			_type = value;
+		}
 
 	}
 }

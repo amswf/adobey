@@ -27,8 +27,6 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var searchBtn:NewsTextBtn;
 
-		private var minimizeBtn:Sprite;
-
 		private var closeBtn:Sprite;
 
 		private var minimiseBtn:Sprite;
@@ -42,6 +40,10 @@ package com.snsoft.tsp3.plugin.news {
 		private var titleHeight:int;
 
 		private var titleTft:TextFormat = new TextFormat(null, 14, 0x000000);
+
+		private var _searchText:String = "";
+
+		private var searchTfd:TextField;
 
 		public function NewsTitle(dto:NewsTitleDTO, titleWidth:int, titleHeight:int) {
 			this.titleHeight = titleHeight;
@@ -57,6 +59,7 @@ package com.snsoft.tsp3.plugin.news {
 			this.addChild(back);
 
 			//标题图片
+
 			var titlebm:Bitmap = new Bitmap(dto.titleImg, "auto", true);
 			titlebm.width = imgSize.x;
 			titlebm.height = imgSize.y;
@@ -69,30 +72,14 @@ package com.snsoft.tsp3.plugin.news {
 			titleTfd.defaultTextFormat = titleTft;
 			titleTfd.autoSize = TextFieldAutoSize.LEFT;
 			titleTfd.text = dto.text;
-			titleTfd.x = titlebm.x + titlebm.width + boader;
-			titleTfd.y = boader;
 			titleTfd.selectable = false;
 			this.addChild(titleTfd);
-
-			//搜索输入
-			var searchTfd:TextField = new TextField();
-			searchTfd.type = TextFieldType.INPUT;
-			searchTfd.border = true;
-			searchTfd.width = 400;
-			searchTfd.height = 30;
-			searchTfd.x = titleTfd.x + titleTfd.width + boader;
-			searchTfd.y = boader;
-			this.addChild(searchTfd);
-
-			//搜索按钮
-			searchBtn = new NewsTextBtn("查询");
-			searchBtn.x = searchTfd.x + searchTfd.width + boader;
-			searchTfd.y = boader;
-			this.addChild(searchBtn);
-			searchBtn.addEventListener(MouseEvent.CLICK, handlerSearchBtnClick);
+			titleTfd.x = titlebm.x + imgSize.x + boader;
+			titleTfd.y = boader + imgSize.y - titleTfd.height;
 
 			//关闭按钮
 			closeBtn = SkinsUtil.createSkinByName("News_closeBtnSkin");
+			closeBtn.buttonMode = true;
 			this.addChild(closeBtn);
 			closeBtn.x = titleWidth - boader - closeBtn.width;
 			closeBtn.y = boader;
@@ -100,10 +87,36 @@ package com.snsoft.tsp3.plugin.news {
 
 			//关闭按钮
 			minimiseBtn = SkinsUtil.createSkinByName("News_minimiseBtnSkin");
+			minimiseBtn.buttonMode = true;
 			this.addChild(minimiseBtn);
 			minimiseBtn.x = closeBtn.x - boader - minimiseBtn.width;
 			minimiseBtn.y = boader;
 			minimiseBtn.addEventListener(MouseEvent.CLICK, handlerMinimizeBtnClick);
+
+			//搜索按钮
+			searchBtn = new NewsTextBtn("查询");
+			searchBtn.buttonMode = true;
+			this.addChild(searchBtn);
+			searchBtn.x = minimiseBtn.x - searchBtn.width - 100;
+			searchBtn.y = 30;
+			searchBtn.addEventListener(MouseEvent.CLICK, handlerSearchBtnClick);
+
+			//搜索输入
+			searchTfd = new TextField();
+			searchTfd.text = "";
+			searchTfd.type = TextFieldType.INPUT;
+			searchTfd.border = true;
+			searchTfd.x = titleTfd.x + titleTfd.width + 100;
+			searchTfd.y = 30;
+			searchTfd.width = searchBtn.x - boader - searchTfd.x;
+			searchTfd.height = 38;
+			this.addChild(searchTfd);
+
+		}
+
+		public function clearSearchText():void {
+			this._searchText == "";
+			this.searchTfd.text = "";
 		}
 
 		private function handlerMinimizeBtnClick(e:Event):void {
@@ -115,7 +128,13 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		private function handlerSearchBtnClick(e:Event):void {
+			_searchText = searchTfd.text;
 			this.dispatchEvent(new Event(EVENT_SEARCH));
 		}
+
+		public function get searchText():String {
+			return _searchText;
+		}
+
 	}
 }

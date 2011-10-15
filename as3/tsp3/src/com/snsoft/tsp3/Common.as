@@ -1,6 +1,7 @@
 package com.snsoft.tsp3 {
 	import com.snsoft.tsp3.plugin.desktop.IDesktop;
 
+	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.display.Stage;
 
@@ -51,6 +52,8 @@ package com.snsoft.tsp3 {
 		private var deskTop:IDesktop;
 
 		private var topStage:Stage;
+
+		private var defImg:BitmapData = new BitmapData(100, 100);
 
 		public function Common() {
 			if (lock) {
