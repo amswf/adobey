@@ -37,6 +37,8 @@ package com.snsoft.ensview {
 
 		private var introTextLayer:Sprite = new Sprite();
 
+		private var itemsTextLayer:Sprite = new Sprite();
+
 		private var mainback:Sprite;
 
 		private var winBoader:int = 10;
@@ -77,11 +79,13 @@ package com.snsoft.ensview {
 			this.addChild(startLayer);
 			this.addChild(ensLayer);
 			this.addChild(mainTextLayer);
+			this.addChild(itemsTextLayer);
 			this.addChild(introTextLayer);
 
 			ensLayer.visible = false;
 			mainTextLayer.visible = false;
 			introTextLayer.visible = false;
+			itemsTextLayer.visible = false;
 
 			stage.addEventListener(Event.FULLSCREEN, handlerFullScreen);
 			stage.align = StageAlign.TOP_LEFT;
@@ -102,12 +106,26 @@ package com.snsoft.ensview {
 
 				initText();
 				initEns();
+				initItems();
 			}
 			else {
 				mainback.visible = false;
 				visibleLayer.visible = false;
 				startLayer.visible = true;
 			}
+		}
+
+		private function initItems():void {
+			SpriteUtil.deleteAllChild(itemsTextLayer);
+			var mainBack:MovieClip = SkinsUtil.createSkinByName("GreenBack");
+			mainBack.width = stage.stageWidth;
+			mainBack.height = stage.stageHeight;
+			itemsTextLayer.addChild(mainBack);
+			var ti:TextItems = new TextItems();
+			itemsTextLayer.addChild(ti);
+			ti.x = (stage.stageWidth - ti.width) / 2;
+			ti.y = (stage.stageHeight - ti.height) / 2;
+			ti.addEventListener(TextMain.EVENT_BTN, handlerTextMainBtnClick);
 		}
 
 		private function initBack():void {
@@ -196,31 +214,25 @@ package com.snsoft.ensview {
 			introTextLayer.addChild(ti);
 			ti.x = (stage.stageWidth - ti.width) / 2;
 			ti.y = (stage.stageHeight - ti.height) / 2;
-			ti.addEventListener(TextIntroduction.EVENT_BTN, handlerTextIntroBtnClick);
+			ti.addEventListener(TextIntroduction.EVENT_BTN, handlerTextMainBtnClick);
 		}
 
 		private function handlerTextMainBtnClick(e:Event):void {
 
-			var tm:TextMain = e.currentTarget as TextMain;
-
+			var mc:MovieClip = e.currentTarget as MovieClip;
 			visibleLayer.visible = false;
-			if (tm.getBtnType() == TextMain.BTN_TYPE_INTRO) {
-				visibleLayer = introTextLayer;
-			}
-			else if (tm.getBtnType() == TextMain.BTN_TYPE_MAP) {
-				visibleLayer = ensLayer;
-			}
-			visibleLayer.visible = true;
-		}
-
-		private function handlerTextIntroBtnClick(e:Event):void {
-			var ti:TextIntroduction = e.currentTarget as TextIntroduction;
-			visibleLayer.visible = false;
-			if (ti.getBtnType() == TextIntroduction.BTN_TYPE_BACK) {
+			var type:String = mc.btnType;
+			if (type == TextIntroduction.BTN_TYPE_BACK) {
 				visibleLayer = mainTextLayer;
 			}
-			else if (ti.getBtnType() == TextIntroduction.BTN_TYPE_MAP) {
+			else if (type == TextMain.BTN_TYPE_INTRO) {
+				visibleLayer = introTextLayer;
+			}
+			else if (type == TextMain.BTN_TYPE_MAP) {
 				visibleLayer = ensLayer;
+			}
+			else if (type == TextMain.BTN_TYPE_ITEMS) {
+				visibleLayer = itemsTextLayer;
 			}
 			visibleLayer.visible = true;
 		}

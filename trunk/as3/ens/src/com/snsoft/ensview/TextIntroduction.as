@@ -12,11 +12,15 @@ package com.snsoft.ensview {
 
 		public static const BTN_TYPE_MAP:String = "map";
 
+		public static const BTN_TYPE_INTRO:String = "intro";
+
+		public static const BTN_TYPE_ITEMS:String = "items";
+
 		public static const BTN_TYPE_BACK:String = "back";
 
 		private var src:MovieClip;
 
-		private var btnType:String;
+		private var _btnType:String;
 
 		public function TextIntroduction() {
 			super();
@@ -26,13 +30,10 @@ package com.snsoft.ensview {
 		private function handlerEnterFrame(e:Event):void {
 			this.removeEventListener(Event.ENTER_FRAME, handlerEnterFrame);
 
-			var mapBtn:MovieClip = this.getChildByName("mapBtn") as MovieClip;
-			mapBtn.buttonMode = true;
-			mapBtn.addEventListener(MouseEvent.CLICK, handlerMapClick);
-
-			var backBtn:MovieClip = this.getChildByName("backBtn") as MovieClip;
-			backBtn.buttonMode = true;
-			backBtn.addEventListener(MouseEvent.CLICK, handlerBackClick);
+			addEvent("mapBtn", BTN_TYPE_MAP);
+			addEvent("itemsBtn", BTN_TYPE_ITEMS);
+			addEvent("introBtn", BTN_TYPE_INTRO);
+			addEvent("backBtn", BTN_TYPE_BACK);
 
 			var mask:MovieClip = SkinsUtil.createSkinByName("HiddenBtn");
 			this.addChild(mask);
@@ -55,24 +56,23 @@ package com.snsoft.ensview {
 
 		}
 
-		public function getBtnType():String {
-			return btnType;
-		}
-
 		private function handlerScrolling(e:Event):void {
 			var scrollBar:ScrollBar = e.currentTarget as ScrollBar;
 			var sv:Number = scrollBar.getScrollValue();
 			src.y = 290 - (src.height - 320) * sv;
 		}
 
-		private function handlerMapClick(e:Event):void {
-			btnType = BTN_TYPE_MAP;
-			this.dispatchEvent(new Event(EVENT_BTN));
+		private function addEvent(btnName:String, type:String):void {
+			var mc:MovieClip = this;
+			var mapBtn:MovieClip = this.getChildByName(btnName) as MovieClip;
+			if (mapBtn != null) {
+				mapBtn.buttonMode = true;
+				mapBtn.addEventListener(MouseEvent.CLICK, function(e:Event):void {_btnType = type;mc.dispatchEvent(new Event(EVENT_BTN));});
+			}
 		}
 
-		private function handlerBackClick(e:Event):void {
-			btnType = BTN_TYPE_BACK;
-			this.dispatchEvent(new Event(EVENT_BTN));
+		public function get btnType():String {
+			return _btnType;
 		}
 	}
 }
