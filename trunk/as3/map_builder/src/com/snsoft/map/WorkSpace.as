@@ -297,25 +297,28 @@
 			}
 		}
 
-		public function updateMapArea(areaAttribute:AreaAttribute):void {
+		public function updateMapArea(attr:AreaAttribute):void {
 			var ma:MapArea = this.currentClickMapArea;
 			if (ma != null) {
-				if (areaAttribute.getareaName() != null) {
-					ma.mapAreaDO.areaName = areaAttribute.getareaName();
+				if (attr.getareaName() != null) {
+					ma.mapAreaDO.areaName = attr.getareaName();
 				}
-				if (areaAttribute.getareaCode() != null) {
-					ma.mapAreaDO.areaCode = areaAttribute.getareaCode();
+				if (attr.getareaCode() != null && attr.getareaCode() != "null" && attr.getareaCode().length > 0) {
+					ma.mapAreaDO.areaCode = attr.getareaCode();
 				}
-				if (areaAttribute.getareaUrl() != null) {
-					ma.mapAreaDO.areaUrl = areaAttribute.getareaUrl();
+				else if (attr.getareaName() != null) {
+					ma.mapAreaDO.areaCode = attr.getareaName();
 				}
-				if (areaAttribute.getareaNameX() != null) {
-					ma.mapAreaDO.areaNamePlace.x = Number(areaAttribute.getareaNameX());
+				if (attr.getareaUrl() != null) {
+					ma.mapAreaDO.areaUrl = attr.getareaUrl();
 				}
-				if (areaAttribute.getareaNameY() != null) {
-					ma.mapAreaDO.areaNamePlace.y = Number(areaAttribute.getareaNameY());
+				if (attr.getareaNameX() != null) {
+					ma.mapAreaDO.areaNamePlace.x = Number(attr.getareaNameX());
 				}
-				ma.mapAreaDO.isCurrent = areaAttribute.getIsCurrent();
+				if (attr.getareaNameY() != null) {
+					ma.mapAreaDO.areaNamePlace.y = Number(attr.getareaNameY());
+				}
+				ma.mapAreaDO.isCurrent = attr.getIsCurrent();
 				ma.refresh();
 
 				if (ma.mapAreaDO.isCurrent) {
@@ -672,7 +675,11 @@
 						mado.areaName = mapAreaDo.areaName;
 						mado.areaId = mapAreaDo.areaId;
 						mado.areaNamePlace = mapAreaDo.areaNamePlace;
+						mado.areaCode = mapAreaDo.areaCode;
+						mado.areaUrl = mado.areaUrl;
 						mado.isCurrent = mapAreaDo.isCurrent;
+
+						trace(mado.areaName, mado.areaCode);
 					}
 				}
 			}
