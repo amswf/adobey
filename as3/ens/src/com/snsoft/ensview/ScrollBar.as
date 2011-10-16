@@ -7,6 +7,7 @@ package com.snsoft.ensview {
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.geom.Rectangle;
 
 	public class ScrollBar extends UIComponent {
 
@@ -29,6 +30,10 @@ package com.snsoft.ensview {
 		private var thumbMaxY:int;
 
 		private var lastThumbY:int;
+
+		private var th:int;
+
+		private var drect:Rectangle;
 
 		public function ScrollBar(scrollHeight:int, sourceHeight:int) {
 
@@ -91,7 +96,6 @@ package com.snsoft.ensview {
 
 			thumbskin.buttonMode = true;
 			thumbskin.y = upskin.height;
-			var th:int = 0;
 
 			if (sourceHeight > scrollHeight) {
 				th = Math.pow((scrollHeight - downskin.height - upskin.height), 2) / sourceHeight;
@@ -105,6 +109,8 @@ package com.snsoft.ensview {
 			thumbskin.height = th;
 			thumbMinY = upskin.height;
 			thumbMaxY = scrollHeight - downskin.height - thumbskin.height;
+
+			drect = new Rectangle(0, thumbMinY, 0, thumbMaxY - thumbMinY);
 		}
 
 		public function getScrollValue():Number {
@@ -120,7 +126,7 @@ package com.snsoft.ensview {
 		}
 
 		private function handlerMouseDown(e:Event):void {
-			thumbskin.startDrag();
+			thumbskin.startDrag(false, drect);
 			isMouseDown = true;
 		}
 
@@ -132,7 +138,7 @@ package com.snsoft.ensview {
 
 		private function handlerMouseMove(e:Event):void {
 			if (isMouseDown) {
-				setThumbskinY();
+				this.dispatchEvent(new Event(EVENT_SCROLLING));
 			}
 		}
 

@@ -7,11 +7,15 @@ package com.snsoft.ensview {
 
 		public static const EVENT_BTN:String = "EVENT_BTN";
 
-		public static const BTN_TYPE_INTRO:String = "intro";
-
 		public static const BTN_TYPE_MAP:String = "map";
 
-		private var btnType:String;
+		public static const BTN_TYPE_INTRO:String = "intro";
+
+		public static const BTN_TYPE_ITEMS:String = "items";
+
+		public static const BTN_TYPE_BACK:String = "back";
+
+		private var _btnType:String;
 
 		public function TextMain() {
 			super();
@@ -22,28 +26,25 @@ package com.snsoft.ensview {
 		private function handlerEnterFrame(e:Event):void {
 			this.removeEventListener(Event.ENTER_FRAME, handlerEnterFrame);
 
-			var introBtn:MovieClip = this.getChildByName("introBtn") as MovieClip;
-			introBtn.buttonMode = true;
-			introBtn.addEventListener(MouseEvent.CLICK, handlerIntroClick);
-
-			var mapBtn:MovieClip = this.getChildByName("mapBtn") as MovieClip;
-			mapBtn.buttonMode = true;
-			mapBtn.addEventListener(MouseEvent.CLICK, handlerMapClick);
+			addEvent("mapBtn", BTN_TYPE_MAP);
+			addEvent("itemsBtn", BTN_TYPE_ITEMS);
+			addEvent("introBtn", BTN_TYPE_INTRO);
+			addEvent("backBtn", BTN_TYPE_BACK);
 
 		}
 
-		public function getBtnType():String {
-			return btnType;
+		private function addEvent(btnName:String, type:String):void {
+			var mc:MovieClip = this;
+			var mapBtn:MovieClip = this.getChildByName(btnName) as MovieClip;
+			if (mapBtn != null) {
+				mapBtn.buttonMode = true;
+				mapBtn.addEventListener(MouseEvent.CLICK, function(e:Event):void {_btnType = type;mc.dispatchEvent(new Event(EVENT_BTN));});
+			}
 		}
 
-		private function handlerIntroClick(e:Event):void {
-			btnType = BTN_TYPE_INTRO;
-			this.dispatchEvent(new Event(EVENT_BTN));
+		public function get btnType():String {
+			return _btnType;
 		}
 
-		private function handlerMapClick(e:Event):void {
-			btnType = BTN_TYPE_MAP;
-			this.dispatchEvent(new Event(EVENT_BTN));
-		}
 	}
 }
