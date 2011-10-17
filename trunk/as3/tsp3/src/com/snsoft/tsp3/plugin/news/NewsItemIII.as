@@ -36,6 +36,8 @@
 		}
 
 		override public function draw():void {
+			var ndp:NewsDataParam = new NewsDataParam(data.params);
+
 			itemHeight = hMax;
 			itemWidth = wMax;
 			defBack = SkinsUtil.createSkinByName("NewsItemsIII_backDefSkin");
@@ -53,7 +55,7 @@
 			title.mouseEnabled = false;
 			title.defaultTextFormat = tft;
 			title.autoSize = TextFieldAutoSize.LEFT;
-			title.text = _data.getParam(PARAM_TITLE);
+			title.text = ndp.titleParam.content;
 			this.addChild(title);
 			title.x = (itemWidth - title.width) / 2;
 			title.y = itemHeight - boader - title.height;

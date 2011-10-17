@@ -38,14 +38,16 @@
 
 		private const TAG_PARAMS:String = "params";
 
+		private const TAG_PARAM:String = "param";
+
 		public function DataLoader() {
 			super(null);
 		}
 
-		public function loadData(url:String, code:String, operation:String, params:Params = null):void {
+		public function loadData(url:String, code:String, operation:String, params:ReqParams = null):void {
 			this.url = url;
 			if (params == null) {
-				params = new Params();
+				params = new ReqParams();
 			}
 			params.addParam(OPERATION, operation);
 
@@ -137,11 +139,18 @@
 		private function creatToolBarBtnDTO(node:Node):DataDTO {
 			var dto:DataDTO = new DataDTO();
 			node.attrToObj(dto);
-			var params:Object = new Object();
+
 			var paramsNode:Node = node.getNodeListFirstNode(TAG_PARAMS);
-			paramsNode.attrToObj(params);
-			paramsNode.childNodeTextTObj(params);
-			dto.params = params;
+			var paramList:NodeList = paramsNode.getNodeList(TAG_PARAM);
+			if (paramList != null) {
+				for (var i:int = 0; i < paramList.length(); i++) {
+					var paramNode:Node = paramList.getNode(i);
+					var param:DataParam = new DataParam();
+					paramNode.attrToObj(param);
+					param.content = paramNode.text;
+					dto.addParam(param)
+				}
+			}
 			return dto;
 		}
 

@@ -1,6 +1,6 @@
 package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.Common;
-	import com.snsoft.tsp3.net.Params;
+	import com.snsoft.tsp3.net.ReqParams;
 	import com.snsoft.util.di.DependencyInjection;
 
 	public class NewsState {
@@ -77,8 +77,8 @@ package com.snsoft.tsp3.plugin.news {
 			return filterStr;
 		}
 
-		public function toParams():Params {
-			var params:Params = new Params();
+		public function toParams():ReqParams {
+			var params:ReqParams = new ReqParams();
 			params.addParam(Common.PARAM_PLATE, cPlateId);
 			params.addParam(Common.PARAM_COLUMN, cColumnId);
 			params.addParam(Common.PARAM_CLASS, cClassId);
