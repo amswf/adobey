@@ -11,7 +11,9 @@
 	import flash.text.TextFormat;
 
 	/**
-	 * 图片、标题、日期、关键字、概要信息
+	 * 图片       标题、日期、关键字、
+	 *
+	 *       概要信息
 	 * @author Administrator
 	 *
 	 */
