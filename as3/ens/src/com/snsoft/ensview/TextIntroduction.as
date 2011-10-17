@@ -17,6 +17,8 @@ package com.snsoft.ensview {
 		public static const BTN_TYPE_ITEMS:String = "items";
 
 		public static const BTN_TYPE_BACK:String = "back";
+		
+		public static const BTN_TYPE_MSG:String = "msg";
 
 		private var src:MovieClip;
 
@@ -34,6 +36,7 @@ package com.snsoft.ensview {
 			addEvent("itemsBtn", BTN_TYPE_ITEMS);
 			addEvent("introBtn", BTN_TYPE_INTRO);
 			addEvent("backBtn", BTN_TYPE_BACK);
+			addEvent("msgBtn", BTN_TYPE_MSG);
 
 			var mask:MovieClip = SkinsUtil.createSkinByName("HiddenBtn");
 			this.addChild(mask);

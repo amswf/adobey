@@ -30,8 +30,8 @@ package com.snsoft.ensview {
 			dTextTfd = this.getChildByName("textTfd") as TextField;
 			dDesTa = this.getChildByName("desTa") as TextField;
 
-			setText(dNameTfd, ensvBoothMsgDO.name);
-			setText(dTextTfd, ensvBoothMsgDO.text);
+			setText(dNameTfd, ensvBoothMsgDO.id);
+			setText(dTextTfd, ensvBoothMsgDO.name);
 			setText(dDesTa, ensvBoothMsgDO.des);
 		}
 

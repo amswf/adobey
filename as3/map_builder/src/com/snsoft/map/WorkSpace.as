@@ -303,6 +303,7 @@
 				if (attr.getareaName() != null) {
 					ma.mapAreaDO.areaName = attr.getareaName();
 				}
+				trace(attr.getareaCode());
 				if (attr.getareaCode() != null && attr.getareaCode() != "null" && attr.getareaCode().length > 0) {
 					ma.mapAreaDO.areaCode = attr.getareaCode();
 				}

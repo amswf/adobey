@@ -65,8 +65,8 @@ package com.snsoft.ensview {
 			dGoodsTa.setStyle("textFormat", tft);
 			dGoodsTa.setStyle("disabledTextFormat", tft);
 
-			setText(dNameTfd, ensvBoothMsgDO.name);
-			setText(dTextTfd, ensvBoothMsgDO.text);
+			setText(dNameTfd, ensvBoothMsgDO.code);
+			setText(dTextTfd, ensvBoothMsgDO.name);
 			setText(dDesTa, ensvBoothMsgDO.des);
 			setText(dGoodsTa, ensvBoothMsgDO.goods);
 			setText(dLinkmanTfd, ensvBoothMsgDO.linkman);

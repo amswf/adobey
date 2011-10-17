@@ -39,6 +39,8 @@ package com.snsoft.ensview {
 
 		private var itemsTextLayer:Sprite = new Sprite();
 
+		private var msgTextLayer:Sprite = new Sprite();
+
 		private var mainback:Sprite;
 
 		private var winBoader:int = 10;
@@ -81,11 +83,13 @@ package com.snsoft.ensview {
 			this.addChild(mainTextLayer);
 			this.addChild(itemsTextLayer);
 			this.addChild(introTextLayer);
+			this.addChild(msgTextLayer);
 
 			ensLayer.visible = false;
 			mainTextLayer.visible = false;
 			introTextLayer.visible = false;
 			itemsTextLayer.visible = false;
+			msgTextLayer.visible = false;
 
 			stage.addEventListener(Event.FULLSCREEN, handlerFullScreen);
 			stage.align = StageAlign.TOP_LEFT;
@@ -113,6 +117,10 @@ package com.snsoft.ensview {
 				visibleLayer.visible = false;
 				startLayer.visible = true;
 			}
+		}
+
+		private function initMsg():void {
+
 		}
 
 		private function initItems():void {
@@ -215,6 +223,17 @@ package com.snsoft.ensview {
 			ti.x = (stage.stageWidth - ti.width) / 2;
 			ti.y = (stage.stageHeight - ti.height) / 2;
 			ti.addEventListener(TextIntroduction.EVENT_BTN, handlerTextMainBtnClick);
+
+			SpriteUtil.deleteAllChild(msgTextLayer);
+			var msgBack:MovieClip = SkinsUtil.createSkinByName("GreenBack");
+			msgBack.width = stage.stageWidth;
+			msgBack.height = stage.stageHeight;
+			msgTextLayer.addChild(msgBack);
+			var msg:TextMsg = new TextMsg();
+			msgTextLayer.addChild(msg);
+			msg.x = (stage.stageWidth - msg.width) / 2;
+			msg.y = (stage.stageHeight - msg.height) / 2;
+			msg.addEventListener(TextMsg.EVENT_BTN, handlerTextMainBtnClick);
 		}
 
 		private function handlerTextMainBtnClick(e:Event):void {
@@ -234,6 +253,10 @@ package com.snsoft.ensview {
 			else if (type == TextMain.BTN_TYPE_ITEMS) {
 				visibleLayer = itemsTextLayer;
 			}
+			else if (type == TextMain.BTN_TYPE_MSG) {
+				visibleLayer = msgTextLayer;
+			}
+
 			visibleLayer.visible = true;
 		}
 

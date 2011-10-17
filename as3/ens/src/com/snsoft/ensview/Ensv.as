@@ -213,8 +213,8 @@
 					for (var i:int = 0; i < ensvBoothMsgDOHV.length; i++) {
 						var msg:EnsvBoothMsgDO = ensvBoothMsgDOHV.findByIndex(i) as EnsvBoothMsgDO;
 						if (msg != null) {
-							if ((msg.text != null && msg.text.indexOf(stext) >= 0) || (msg.des != null && msg.des.indexOf(stext) >= 0)) {
-								var eli:EnsvListItem = new EnsvListItem(msg.text);
+							if ((msg.name != null && msg.name.indexOf(stext) >= 0) || (msg.des != null && msg.des.indexOf(stext) >= 0)) {
+								var eli:EnsvListItem = new EnsvListItem(msg.name);
 
 								eli.id = msg.id;
 								eli.y = eli.height * n;
@@ -244,7 +244,7 @@
 					var sbar:ScrollBar = new ScrollBar(barh, searchListHeight);
 					sbar.x = 210;
 					searchListLayer.addChild(sbar);
-					sbar.addEventListener(ScrollBar.EVENT_SCROLLING, function():void {searchListItemLayer.y = -int(searchListHeight - 500) * sbar.getScrollValue()});
+					sbar.addEventListener(ScrollBar.EVENT_SCROLLING, function():void {searchListItemLayer.y = -int(searchListHeight - barh) * sbar.getScrollValue()});
 				}
 			}
 		}
@@ -432,7 +432,7 @@
 				var dName:String = "";
 				var dText:String = "";
 
-				dName = msg.text;
+				dName = msg.name;
 				dText = msg.goods;
 
 				var ebc:EnsvBoothCard = new EnsvBoothCard();
