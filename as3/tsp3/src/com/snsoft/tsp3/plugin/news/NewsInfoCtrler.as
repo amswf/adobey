@@ -3,7 +3,7 @@ package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.tsp3.net.DataLoader;
 	import com.snsoft.tsp3.net.DataSet;
-	import com.snsoft.tsp3.net.Params;
+	import com.snsoft.tsp3.net.ReqParams;
 
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -37,7 +37,7 @@ package com.snsoft.tsp3.plugin.news {
 
 		private function loadInfo():void {
 
-			var params:Params = new Params();
+			var params:ReqParams = new ReqParams();
 			params.addParam(Common.PARAM_PLATE, newsState.cPlateId);
 			params.addParam(Common.PARAM_COLUMN, newsState.cColumnId);
 			params.addParam(Common.PARAM_INFO, newsState.infoId);

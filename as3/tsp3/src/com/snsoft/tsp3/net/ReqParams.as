@@ -1,10 +1,10 @@
 package com.snsoft.tsp3.net {
 
-	public class Params {
+	public class ReqParams {
 
 		private var paramsStr:String = "";
 
-		public function Params() {
+		public function ReqParams() {
 		}
 
 		public function addParam(name:String, value:String):void {

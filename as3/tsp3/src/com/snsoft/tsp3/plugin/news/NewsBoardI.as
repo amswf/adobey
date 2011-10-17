@@ -45,6 +45,9 @@
 		}
 
 		override protected function draw():void {
+
+			var ndp:NewsDataParam = new NewsDataParam(data.params);
+
 			SpriteUtil.deleteAllChild(backLayer);
 			SpriteUtil.deleteAllChild(infoLayer);
 			SpriteUtil.deleteAllChild(itemsLayer);
@@ -55,7 +58,7 @@
 			var title:TextField = new TextField();
 			title.defaultTextFormat = tft;
 			title.autoSize = TextFieldAutoSize.CENTER;
-			title.text = _data.getParam(PARAM_TITLE);
+			title.text = ndp.titleParam.content;
 			this.addChild(title);
 			title.x = boader;
 			title.width = cw;
@@ -67,14 +70,14 @@
 			var keywrd:TextField = new TextField();
 			keywrd.defaultTextFormat = tft;
 			keywrd.autoSize = TextFieldAutoSize.CENTER;
-			keywrd.text = "关键词：" + _data.getParam(PARAM_KEYWORDS);
+			keywrd.text = ndp.keywordsParam.text + "：" + ndp.keywordsParam.content;
 			line2.addChild(keywrd);
 			keywrd.x = boader;
 
 			var date:TextField = new TextField();
 			date.defaultTextFormat = tft;
 			date.autoSize = TextFieldAutoSize.CENTER;
-			date.text = "发布日期：" + _data.getParam(PARAM_DATE);
+			keywrd.text = ndp.dateParam.text + "：" + ndp.dateParam.content;
 			line2.addChild(date);
 			date.x = boader + keywrd.getRect(line2).right;
 
@@ -84,7 +87,7 @@
 			var heH:int = infoSize.y - heY - boader;
 			var he:HtmlExplorer = new HtmlExplorer(new Point(cw, heH));
 			this.addChild(he);
-			he.loadString(_data.getParam(PARAM_CONTENT));
+			he.loadString(ndp.contentParam.content);
 			he.x = boader;
 			he.y = heY;
 		}

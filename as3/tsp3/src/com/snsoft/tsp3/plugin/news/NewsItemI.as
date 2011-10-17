@@ -33,6 +33,9 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		override public function draw():void {
+
+			var ndp:NewsDataParam = new NewsDataParam(data.params);
+
 			itemHeight = hMax;
 
 			defBack = SkinsUtil.createSkinByName("NewsItemsI_backDefSkin");
@@ -61,7 +64,7 @@ package com.snsoft.tsp3.plugin.news {
 			title.defaultTextFormat = tft;
 			title.autoSize = TextFieldAutoSize.LEFT;
 			title.mouseEnabled = false;
-			title.text = "标题：" + _data.getParam(PARAM_TITLE);
+			title.text = ndp.titleParam.text + "：" + ndp.titleParam.content;
 			this.addChild(title);
 			title.x = img.getRect(this).right + boader;
 			title.y = boader;
@@ -70,7 +73,7 @@ package com.snsoft.tsp3.plugin.news {
 			date.defaultTextFormat = tft;
 			date.autoSize = TextFieldAutoSize.LEFT;
 			date.mouseEnabled = false;
-			date.text = "日期：" + _data.getParam(PARAM_DATE);
+			date.text = ndp.dateParam.text + "：" + ndp.dateParam.content;
 			this.addChild(date);
 			date.x = title.getRect(this).right + boader;
 			date.y = boader;
@@ -79,7 +82,7 @@ package com.snsoft.tsp3.plugin.news {
 			keywords.defaultTextFormat = tft;
 			keywords.autoSize = TextFieldAutoSize.LEFT;
 			keywords.mouseEnabled = false;
-			keywords.text = "关键字：" + data.getParam(PARAM_KEYWORDS);
+			keywords.text = ndp.keywordsParam.text + "：" + ndp.keywordsParam.content;
 			this.addChild(keywords);
 			keywords.x = date.getRect(this).right + boader;
 			keywords.y = boader;
@@ -89,7 +92,7 @@ package com.snsoft.tsp3.plugin.news {
 			digest.mouseEnabled = false;
 			digest.multiline = true;
 			digest.wordWrap = true;
-			digest.text = "摘要：" + data.getParam(PARAM_DIGEST);
+			digest.text = ndp.digestParam.text + "：" + ndp.digestParam.content;
 			this.addChild(digest);
 			digest.x = img.getRect(this).right + boader;
 			digest.y = title.getRect(this).bottom + boader;

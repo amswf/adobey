@@ -13,7 +13,7 @@ package com.snsoft.tsp3.net {
 
 		private var _disobj:String;
 
-		private var _params:Object;
+		private var _params:Vector.<DataParam> = new Vector.<DataParam>();
 
 		private var _type:String;
 
@@ -22,18 +22,11 @@ package com.snsoft.tsp3.net {
 		private var _name:String;
 
 		public function DataDTO() {
+
 		}
 
-		public function getParam(name:String):String {
-			var value:String = "";
-			if (params != null) {
-				try {
-					value = params[name];
-				}
-				catch (error:Error) {
-				}
-			}
-			return value;
+		public function addParam(param:DataParam):void {
+			_params.push(param);
 		}
 
 		public function get img():BitmapData {
@@ -76,11 +69,11 @@ package com.snsoft.tsp3.net {
 			_disobj = value;
 		}
 
-		public function get params():Object {
+		public function get params():Vector.<DataParam> {
 			return _params;
 		}
 
-		public function set params(value:Object):void {
+		public function set params(value:Vector.<DataParam>):void {
 			_params = value;
 		}
 
