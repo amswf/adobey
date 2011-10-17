@@ -87,7 +87,7 @@
 			var heH:int = infoSize.y - heY - boader;
 			var he:HtmlExplorer = new HtmlExplorer(new Point(cw, heH));
 			this.addChild(he);
-			he.loadString(ndp.contentParam.content);
+			he.loadString(ndp.digestParam.content);
 			he.x = boader;
 			he.y = heY;
 		}
