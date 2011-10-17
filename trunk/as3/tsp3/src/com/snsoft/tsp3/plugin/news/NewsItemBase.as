@@ -10,15 +10,17 @@ package com.snsoft.tsp3.plugin.news {
 		protected static const PARAM_DIGEST:String = "digest";
 		protected static const PARAM_KEYWORDS:String = "keywords";
 
-		public static const ITEM_TYPE_I:String = "1";
-		public static const ITEM_TYPE_II:String = "2";
-		public static const ITEM_TYPE_III:String = "3";
+		public static const ITEM_TYPE_I:String = "I";
+		public static const ITEM_TYPE_II:String = "II";
+		public static const ITEM_TYPE_III:String = "III";
 
 		private var _itemWidth:int;
 
 		private var _itemHeight:int
 
 		protected var _data:DataDTO;
+
+		protected var _autoRow:Boolean = false;
 
 		public function NewsItemBase() {
 			super();
@@ -46,6 +48,10 @@ package com.snsoft.tsp3.plugin.news {
 
 		public function get data():DataDTO {
 			return _data;
+		}
+
+		public function get autoRow():Boolean {
+			return _autoRow;
 		}
 
 	}

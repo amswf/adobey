@@ -1,4 +1,4 @@
-package com.snsoft.tsp3.plugin.news {
+﻿package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.util.SkinsUtil;
 
@@ -15,7 +15,7 @@ package com.snsoft.tsp3.plugin.news {
 	 * @author Administrator
 	 *
 	 */
-	public class NewsItemI extends NewsItemBase {
+	public class NewsItemII extends NewsItemBase {
 
 		private var boader:int = 10;
 
@@ -27,7 +27,7 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var selBack:MovieClip;
 
-		public function NewsItemI(data:DataDTO) {
+		public function NewsItemII(data:DataDTO) {
 			super();
 			this._data = data;
 		}
@@ -35,12 +35,12 @@ package com.snsoft.tsp3.plugin.news {
 		override public function draw():void {
 			itemHeight = hMax;
 
-			defBack = SkinsUtil.createSkinByName("NewsItemsI_backDefSkin");
+			defBack = SkinsUtil.createSkinByName("NewsItemsII_backDefSkin");
 			defBack.width = itemWidth;
 			defBack.height = itemHeight;
 			this.addChild(defBack);
 
-			selBack = SkinsUtil.createSkinByName("NewsItemsI_backSelSkin");
+			selBack = SkinsUtil.createSkinByName("NewsItemsII_backSelSkin");
 			selBack.width = itemWidth;
 			selBack.height = itemHeight;
 			selBack.visible = false;
@@ -49,21 +49,13 @@ package com.snsoft.tsp3.plugin.news {
 			var imgh:int = itemHeight - boader - boader;
 			var imgw:int = imgh * 1.33;
 
-			var img:Bitmap = new Bitmap(_data.img, "auto", true);
-			this.addChild(img);
-			img.x = boader;
-			img.y = boader;
-			img.width = imgw;
-			img.height = imgh;
-			this.addChild(img);
-
 			var title:TextField = new TextField();
 			title.defaultTextFormat = tft;
 			title.autoSize = TextFieldAutoSize.LEFT;
 			title.mouseEnabled = false;
 			title.text = "标题：" + _data.getParam(PARAM_TITLE);
 			this.addChild(title);
-			title.x = img.getRect(this).right + boader;
+			title.x = boader;
 			title.y = boader;
 
 			var date:TextField = new TextField();
@@ -91,7 +83,7 @@ package com.snsoft.tsp3.plugin.news {
 			digest.wordWrap = true;
 			digest.text = "摘要：" + data.getParam(PARAM_DIGEST);
 			this.addChild(digest);
-			digest.x = img.getRect(this).right + boader;
+			digest.x = title.x;
 			digest.y = title.getRect(this).bottom + boader;
 			digest.width = itemWidth - boader - digest.x;
 			digest.height = itemHeight - boader - digest.y;

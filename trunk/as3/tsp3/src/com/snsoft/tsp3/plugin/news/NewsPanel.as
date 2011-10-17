@@ -78,6 +78,7 @@ package com.snsoft.tsp3.plugin.news {
 			closeBtn.x = panelSize.x - closeBtn.width - boader;
 			closeBtn.y = boader;
 			this.addChild(closeBtn);
+			closeBtn.buttonMode = true;
 			closeBtn.addEventListener(MouseEvent.CLICK, handlerClose);
 			btmBtnLayer.x = boader;
 			btmBtnLayer.y = panelSize.y - btmH - boader;

@@ -8,7 +8,9 @@ package com.snsoft.tsp3.net {
 		}
 
 		public function addParam(name:String, value:String):void {
-			paramsStr += "        <param" + " name=\"" + name + "\"><![CDATA[" + value + "]]></param>\r";
+			if (value != null) {
+				paramsStr += "        <param" + " name=\"" + name + "\"><![CDATA[" + value + "]]></param>\r";
+			}
 		}
 
 		public function toXML():String {

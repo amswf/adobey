@@ -36,6 +36,10 @@ package com.snsoft.tsp3 {
 		public static const PARAM_DIGEST_LENGTH:String = "digestLength";
 
 		public static const PARAM_INFO:String = "infoId";
+		
+		public static const PARAM_WORD:String = "word";
+
+		public static const PARAM_TYPE:String = "type";
 
 		private static var lock:Boolean = false;
 

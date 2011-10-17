@@ -7,12 +7,14 @@ package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.net.Params;
 	import com.snsoft.tsp3.pagination.Pagination;
 	import com.snsoft.tsp3.pagination.PaginationEvent;
+	import com.snsoft.util.SkinsUtil;
 
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
 	import flash.geom.Point;
+	import flash.utils.getDefinitionByName;
 
 	public class NewsBookCtrler extends EventDispatcher {
 
@@ -125,19 +127,22 @@ package com.snsoft.tsp3.plugin.news {
 				if (itype == null) {
 					itype = NewsItemBase.ITEM_TYPE_I;
 				}
-				var ftype:String = rs.attr.detailViewType;
-				if (ftype == null) {
-					ftype = NewsItemBase.ITEM_TYPE_I;
-				}
 
 				itemViewType = itype;
-				infoViewType = ftype;
 
 				for (var j:int = 0; j < rs.dtoList.length; j++) {
 					var dto:DataDTO = rs.dtoList[j];
 					var item:NewsItemBase;
-					if (itype == NewsItemBase.ITEM_TYPE_I) {
-						item = new NewsItemI(dto);
+
+					try {
+						var MClass:Class;
+						MClass = getDefinitionByName("com.snsoft.tsp3.plugin.news.NewsItem" + itype) as Class;
+						item = new MClass(dto);
+					}
+					catch (error:Error) {
+						trace(error.getStackTrace());
+					}
+					if (item != null) {
 						nbp.addItem(item);
 					}
 				}

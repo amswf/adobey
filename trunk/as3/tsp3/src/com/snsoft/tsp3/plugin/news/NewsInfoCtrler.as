@@ -11,6 +11,7 @@ package com.snsoft.tsp3.plugin.news {
 	import flash.events.IEventDispatcher;
 	import flash.events.IOErrorEvent;
 	import flash.geom.Point;
+	import flash.utils.getDefinitionByName;
 
 	public class NewsInfoCtrler extends EventDispatcher {
 
@@ -52,26 +53,29 @@ package com.snsoft.tsp3.plugin.news {
 			var dl:DataLoader = e.currentTarget as DataLoader;
 			var rsv:Vector.<DataSet> = dl.data;
 
+			var boardSize:Point = newsInfo.infoSize;
 			var itemv:Vector.<Sprite> = new Vector.<Sprite>();
 			for (var i:int = 0; i < rsv.length; i++) {
 				var rs:DataSet = rsv[i];
+				var itype:String = rs.attr.listViewType;
+				if (itype == null) {
+					itype = NewsItemBase.ITEM_TYPE_I;
+				}
 				for (var j:int = 0; j < rs.dtoList.length; j++) {
 					var dto:DataDTO = rs.dtoList[j];
-
-					var itype:String = newsState.infoViewType;
-					var boardSize:Point = newsInfo.infoSize;
-
 					var board:NewsBoardBase;
-					if (itype == NewsBoardBase.INFO_TYPE_I) {
-						board = new NewsBoardI(boardSize, dto);
-					}
-					else if (itype == NewsBoardBase.INFO_TYPE_II) {
 
+					try {
+						var MClass:Class;
+						MClass = getDefinitionByName("com.snsoft.tsp3.plugin.news.NewsBoard" + itype) as Class;
+						board = new MClass(boardSize, dto);
 					}
-					else {
-						board = new NewsBoardI(boardSize, dto);
+					catch (error:Error) {
+						trace(error.getStackTrace());
 					}
-					newsInfo.refresh(board);
+					if (board != null) {
+						newsInfo.refresh(board);
+					}
 				}
 			}
 		}
