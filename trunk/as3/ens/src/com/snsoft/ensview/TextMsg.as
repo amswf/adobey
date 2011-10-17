@@ -3,7 +3,7 @@ package com.snsoft.ensview {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 
-	public class TextMain extends MovieClip {
+	public class TextMsg extends MovieClip {
 
 		public static const EVENT_BTN:String = "EVENT_BTN";
 
@@ -19,9 +19,9 @@ package com.snsoft.ensview {
 
 		private var _btnType:String;
 
-		public function TextMain() {
-			super();
+		public function TextMsg() {
 
+			super();
 			this.addEventListener(Event.ENTER_FRAME, handlerEnterFrame);
 		}
 
@@ -33,7 +33,6 @@ package com.snsoft.ensview {
 			addEvent("introBtn", BTN_TYPE_INTRO);
 			addEvent("backBtn", BTN_TYPE_BACK);
 			addEvent("msgBtn", BTN_TYPE_MSG);
-
 		}
 
 		private function addEvent(btnName:String, type:String):void {
@@ -44,10 +43,9 @@ package com.snsoft.ensview {
 				mapBtn.addEventListener(MouseEvent.CLICK, function(e:Event):void {_btnType = type;mc.dispatchEvent(new Event(EVENT_BTN));});
 			}
 		}
-
+		
 		public function get btnType():String {
 			return _btnType;
 		}
-
 	}
 }

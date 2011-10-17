@@ -106,6 +106,8 @@ package com.snsoft.ensview {
 			else {
 				th = scrollHeight - downskin.height - thumbskin.height;
 			}
+			
+			th = th > 40 ? th : 40;
 			thumbskin.height = th;
 			thumbMinY = upskin.height;
 			thumbMaxY = scrollHeight - downskin.height - thumbskin.height;

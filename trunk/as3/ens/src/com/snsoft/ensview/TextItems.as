@@ -22,6 +22,8 @@ package com.snsoft.ensview {
 		public static const BTN_TYPE_ITEMS:String = "items";
 
 		public static const BTN_TYPE_BACK:String = "back";
+		
+		public static const BTN_TYPE_MSG:String = "msg";
 
 		private var maskLayer:Sprite = new Sprite();
 
@@ -57,6 +59,7 @@ package com.snsoft.ensview {
 			addEvent("itemsBtn", BTN_TYPE_ITEMS);
 			addEvent("introBtn", BTN_TYPE_INTRO);
 			addEvent("backBtn", BTN_TYPE_BACK);
+			addEvent("msgBtn", BTN_TYPE_MSG);
 
 			var lock:Sprite = new Sprite();
 			lock.graphics.beginFill(0xffffff, 0);
