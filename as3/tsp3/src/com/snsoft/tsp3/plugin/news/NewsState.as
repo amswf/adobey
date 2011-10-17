@@ -1,4 +1,6 @@
 package com.snsoft.tsp3.plugin.news {
+	import com.snsoft.tsp3.Common;
+	import com.snsoft.tsp3.net.Params;
 	import com.snsoft.util.di.DependencyInjection;
 
 	public class NewsState {
@@ -12,6 +14,10 @@ package com.snsoft.tsp3.plugin.news {
 		private var _filter:Object;
 
 		private var _infoId:String;
+
+		private var _pageNum:int;
+
+		private var _pageSize:int;
 
 		private var _digestLength:int;
 
@@ -47,6 +53,7 @@ package com.snsoft.tsp3.plugin.news {
 			ns.cColumnId = cColumnId;
 			ns.cClassId = cClassId;
 			ns.infoId = infoId;
+			ns.pageNum = pageNum;
 			ns.digestLength = digestLength;
 			ns.infoViewType = infoViewType;
 			ns.itemViewType = itemViewType;
@@ -61,11 +68,28 @@ package com.snsoft.tsp3.plugin.news {
 
 		public function filterStr():String {
 			var filterStr:String = "";
-			for (var name:String in filter) {
-				filterStr += (name + ":" + filter[name] + ",");
+			if (filter != null) {
+				for (var name:String in filter) {
+					filterStr += (name + ":" + filter[name] + ",");
+				}
+				filterStr = filterStr.substr(0, filterStr.length - 1);
 			}
-			filterStr = filterStr.substr(0, filterStr.length - 1);
 			return filterStr;
+		}
+
+		public function toParams():Params {
+			var params:Params = new Params();
+			params.addParam(Common.PARAM_PLATE, cPlateId);
+			params.addParam(Common.PARAM_COLUMN, cColumnId);
+			params.addParam(Common.PARAM_CLASS, cClassId);
+			params.addParam(Common.PARAM_INFO, infoId);
+			params.addParam(Common.PARAM_DIGEST_LENGTH, String(digestLength));
+			params.addParam(Common.PARAM_WORD, searchText);
+			params.addParam(Common.PARAM_TYPE, type);
+			params.addParam(Common.PARAM_PAGE_NUM, String(pageNum));
+			params.addParam(Common.PARAM_PAGE_SIZE, String(pageSize));
+			params.addParam("filter", filterStr());
+			return params;
 		}
 
 		public function get cPlateId():String {
@@ -146,6 +170,22 @@ package com.snsoft.tsp3.plugin.news {
 
 		public function set type(value:String):void {
 			_type = value;
+		}
+
+		public function get pageNum():int {
+			return _pageNum;
+		}
+
+		public function set pageNum(value:int):void {
+			_pageNum = value;
+		}
+
+		public function get pageSize():int {
+			return _pageSize;
+		}
+
+		public function set pageSize(value:int):void {
+			_pageSize = value;
 		}
 
 	}

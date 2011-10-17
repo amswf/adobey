@@ -36,9 +36,21 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var itemsh:int = boaderi;
 
+		private var itemsWidth:int;
+
 		private var pb:MovieClip;
 
 		private var _itemv:Vector.<NewsItemBase> = new Vector.<NewsItemBase>();
+
+		/**
+		 * 行数
+		 */
+		private var col:int = 0;
+
+		/**
+		 * 列数
+		 */
+		private var row:int = 0;
 
 		public function NewsBookPage(pageSize:Point) {
 			this.pageSize = pageSize;
@@ -54,19 +66,37 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		public function addItem(nib:NewsItemBase):void {
-			nib.x = boaderf + boader;
-			nib.y = itemsh;
-			nib.itemWidth = pageSize.x - boader - boaderf - boader - boaderf;
+			nib.itemWidth = itemsWidth;
 			nib.draw();
 			itemsLayer.addChild(nib);
-			itemv.push(nib);
-			itemsh += nib.height;
+			nib.buttonMode = true;
+			nib.mouseChildren = false;
 
+			if (nib.autoRow) {
+				if (row == 0) {
+					itemsh += nib.height;
+				}
+				nib.x = row * nib.width + boaderf + boader;
+				nib.y = col * nib.height + boaderi;
+				row++;
+				if ((row + 1) * nib.width > itemsWidth) {
+					col++;
+					row = 0;
+				}
+			}
+			else {
+				nib.x = boaderf + boader;
+				nib.y = itemsh;
+				itemsh += nib.height;
+			}
+
+			itemv.push(nib);
 			var h:int = itemsh + boaderi;
 			pb.height = Math.max(h, pageSize.y);
 		}
 
 		private function init():void {
+			itemsWidth = pageSize.x - boader - boaderf - boader - boaderf;
 
 			pb = SkinsUtil.createSkinByName("NewsBookPage_backSkin");
 			pb.width = pageSize.x;
@@ -103,11 +133,9 @@ package com.snsoft.tsp3.plugin.news {
 			return _pageNum;
 		}
 
-		public function get itemv():Vector.<NewsItemBase>
-		{
+		public function get itemv():Vector.<NewsItemBase> {
 			return _itemv;
 		}
-
 
 	}
 }

@@ -3,12 +3,11 @@
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.tsp3.net.DataLoader;
 	import com.snsoft.tsp3.net.DataSet;
-	import com.snsoft.tsp3.net.Params;
 	import com.snsoft.tsp3.pagination.Pagination;
 	import com.snsoft.tsp3.plugin.BPlugin;
 	import com.snsoft.tsp3.plugin.news.dto.NewsTitleDTO;
 	import com.snsoft.util.SkinsUtil;
-
+	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
@@ -80,6 +79,12 @@
 		private var newsTitle:NewsTitle;
 
 		public function News() {
+			NewsItemI;
+			NewsItemII;
+			NewsItemIII;
+			
+			NewsBoardI;
+			
 			super();
 			this.addChild(backLayer);
 			this.addChild(columnLayer);
@@ -177,6 +182,10 @@
 		}
 
 		private function refreshBook():void {
+
+			newsState.pageNum = 1;
+			newsState.infoId = null;
+
 			var ph:int = (crntCH + crntFH) * classH;
 			var y:int = titleH + ph;
 			var size:Point = new Point(stage.stageWidth - columnW, stage.stageHeight - deskBarH - paginH - boader - boader - titleH - ph);
@@ -204,6 +213,9 @@
 		}
 
 		private function loadFilter():void {
+			newsState.pageNum = 1;
+			newsState.infoId = null;
+
 			newsState.filter = new Object();
 
 			var url:String = Common.instance().dataUrl;
@@ -213,15 +225,10 @@
 				url = cfg.filterDataUrl;
 			}
 
-			var params:Params = new Params();
-			params.addParam(Common.PARAM_PLATE, newsState.cPlateId);
-			params.addParam(Common.PARAM_COLUMN, newsState.cColumnId);
-			params.addParam(Common.PARAM_CLASS, newsState.cClassId);
-
 			var dl:DataLoader = new DataLoader();
 			dl.addEventListener(Event.COMPLETE, handlerLoadFilterCmp);
 			dl.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadFilterError);
-			dl.loadData(url, code, Common.OPERATION_FILTER, params);
+			dl.loadData(url, code, Common.OPERATION_FILTER, newsState.toParams());
 		}
 
 		private function handlerLoadFilterCmp(e:Event):void {
@@ -275,6 +282,11 @@
 		}
 
 		private function loadClass(isClear:Boolean):void {
+			newsState.filter = null;
+			newsState.searchText = null;
+			newsState.pageNum = 1;
+			newsState.infoId = null;
+
 			newsState.type = NewsState.TYPE_FACTOR;
 			clearSearchText();
 
@@ -289,15 +301,10 @@
 				url = cfg.classDataUrl;
 			}
 
-			var params:Params = new Params();
-			params.addParam(Common.PARAM_PLATE, newsState.cPlateId);
-			params.addParam(Common.PARAM_COLUMN, newsState.cColumnId);
-			params.addParam(Common.PARAM_CLASS, newsState.cClassId);
-
 			var dl:DataLoader = new DataLoader();
 			dl.addEventListener(Event.COMPLETE, handlerLoadClassCmp);
 			dl.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadClassError);
-			dl.loadData(url, code, Common.OPERATION_CLASS, params);
+			dl.loadData(url, code, Common.OPERATION_CLASS, newsState.toParams());
 		}
 
 		private function handlerLoadClassCmp(e:Event):void {
@@ -338,6 +345,12 @@
 		}
 
 		private function loadColumn():void {
+			newsState.cClassId = null;
+			newsState.filter = null;
+			newsState.searchText = null;
+			newsState.pageNum = 1;
+			newsState.infoId = null;
+
 			newsState.type = NewsState.TYPE_FACTOR;
 			clearSearchText();
 
@@ -348,13 +361,10 @@
 				url = cfg.columnDataUrl;
 			}
 
-			var params:Params = new Params();
-			params.addParam(Common.PARAM_PLATE, newsState.cPlateId);
-
 			var dl:DataLoader = new DataLoader();
 			dl.addEventListener(Event.COMPLETE, handlerLoadColumnCmp);
 			dl.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadColumnError);
-			dl.loadData(url, code, Common.OPERATION_COLUMN, params);
+			dl.loadData(url, code, Common.OPERATION_COLUMN, newsState.toParams());
 		}
 
 		private function handlerLoadColumnCmp(e:Event):void {
