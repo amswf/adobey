@@ -90,6 +90,10 @@
 			he.loadString(ndp.digestParam.content);
 			he.x = boader;
 			he.y = heY;
+
+			var nisb:NewsInfoSrcBox = new NewsInfoSrcBox("NewsSrcBtn_fileSkin", data.files, 200);
+			this.addChild(nisb);
+
 		}
 	}
 }

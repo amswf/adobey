@@ -64,7 +64,6 @@ package com.snsoft.tsp3.plugin.news {
 				for (var j:int = 0; j < rs.dtoList.length; j++) {
 					var dto:DataDTO = rs.dtoList[j];
 					var board:NewsBoardBase;
-
 					try {
 						var MClass:Class;
 						MClass = getDefinitionByName("com.snsoft.tsp3.plugin.news.NewsBoard" + itype) as Class;
