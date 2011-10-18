@@ -178,6 +178,7 @@
 			newsPanel.addEventListener(NewsPanel.EVENT_CLOSE, handlerPanelClose);
 
 			//stage.addEventListener(KeyboardEvent.KEY_UP, function(e:Event):void {crntCH--;resizeNewsBook();});
+
 		}
 
 		private function handlerPanelClose(e:Event):void {

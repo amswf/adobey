@@ -165,7 +165,7 @@
 
 		private function params(dto:DataDTO, node:Node, listTag:String, nodeTag:String):void {
 			var paramsNode:Node = node.getNodeListFirstNode(listTag);
-			if (paramList != null) {
+			if (paramsNode != null) {
 				var paramList:NodeList = paramsNode.getNodeList(nodeTag);
 				if (paramList != null && paramList.length() > 0) {
 					var pv:Vector.<DataParam> = new Vector.<DataParam>();
