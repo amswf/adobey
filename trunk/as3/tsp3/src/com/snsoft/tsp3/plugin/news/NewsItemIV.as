@@ -44,12 +44,12 @@
 		override public function draw():void {
 			itemHeight = hMax;
 
-			defBack = SkinsUtil.createSkinByName("NewsItemsV_backDefSkin");
+			defBack = SkinsUtil.createSkinByName("NewsItemsIV_backDefSkin");
 			defBack.width = itemWidth;
 			defBack.height = itemHeight;
 			this.addChild(defBack);
 
-			selBack = SkinsUtil.createSkinByName("NewsItemsV_backSelSkin");
+			selBack = SkinsUtil.createSkinByName("NewsItemsIV_backSelSkin");
 			selBack.width = itemWidth;
 			selBack.height = itemHeight;
 			selBack.visible = false;
