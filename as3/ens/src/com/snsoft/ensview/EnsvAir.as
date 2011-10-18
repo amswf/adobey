@@ -153,6 +153,10 @@ package com.snsoft.ensview {
 			ensvStart.addEventListener(EnsvStart.EVENT_DOWNLOAD, handlerDownload);
 			ensvStart.addEventListener(EnsvStart.EVENT_START, handlerStart);
 			ensvStart.addEventListener(EnsvStart.EVENT_CLOSE, handlerClose);
+
+			if (XMLStaticConfig.getConfig("autoFullScreen") == "true") {
+				stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+			}
 		}
 
 		private function handlerDownload(e:Event):void {
