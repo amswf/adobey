@@ -12,7 +12,7 @@
 	import flash.text.TextFormat;
 
 	/**
-	 * 自动换行，不需要设置宽度
+	 * 市场行情
 	 *    图片
 	 *    标题
 	 * @author Administrator

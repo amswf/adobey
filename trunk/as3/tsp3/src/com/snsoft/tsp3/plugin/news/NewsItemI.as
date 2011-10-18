@@ -11,7 +11,7 @@ package com.snsoft.tsp3.plugin.news {
 	import flash.text.TextFormat;
 
 	/**
-	 * 标题、日期、关键字
+	 * 图片、标题、日期、关键字
 	 * 详细信息
 	 * @author Administrator
 	 *
