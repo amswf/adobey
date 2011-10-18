@@ -1,4 +1,4 @@
-﻿package com.snsoft.tsp3.plugin.news {
+package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.util.SkinsUtil;
 
@@ -11,17 +11,16 @@
 	import flash.text.TextFormat;
 
 	/**
-	 *  标题、日期、关键字、
+	 * 标题、日期
 	 *
-	 *       概要信息
 	 * @author Administrator
 	 *
 	 */
-	public class NewsItemII extends NewsItemBase {
+	public class NewsItemVI extends NewsItemBase {
 
-		private var boader:int = 10;
+		private var boader:int = 20;
 
-		private var hMax:int = 100;
+		private var hMax:int = 60;
 
 		private var tft:TextFormat = new TextFormat(null, 12, 0xffffff);
 
@@ -29,7 +28,9 @@
 
 		private var selBack:MovieClip;
 
-		public function NewsItemII(data:DataDTO) {
+		private var dateW:int = 100;
+
+		public function NewsItemVI(data:DataDTO) {
 			super();
 			this._data = data;
 		}
@@ -38,19 +39,16 @@
 			var ndp:NewsDataParam = new NewsDataParam(data.params);
 			itemHeight = hMax;
 
-			defBack = SkinsUtil.createSkinByName("NewsItemsII_backDefSkin");
+			defBack = SkinsUtil.createSkinByName("NewsItemsVI_backDefSkin");
 			defBack.width = itemWidth;
 			defBack.height = itemHeight;
 			this.addChild(defBack);
 
-			selBack = SkinsUtil.createSkinByName("NewsItemsII_backSelSkin");
+			selBack = SkinsUtil.createSkinByName("NewsItemsVI_backSelSkin");
 			selBack.width = itemWidth;
 			selBack.height = itemHeight;
 			selBack.visible = false;
 			this.addChild(selBack);
-
-			var imgh:int = itemHeight - boader - boader;
-			var imgw:int = imgh * 1.33;
 
 			var title:TextField = new TextField();
 			title.defaultTextFormat = tft;
@@ -60,6 +58,7 @@
 			this.addChild(title);
 			title.x = boader;
 			title.y = boader;
+			title.width = itemWidth - boader - boader - boader;
 
 			var date:TextField = new TextField();
 			date.defaultTextFormat = tft;
@@ -67,29 +66,9 @@
 			date.mouseEnabled = false;
 			date.text = ndp.dateParam.text + "：" + ndp.dateParam.content;
 			this.addChild(date);
-			date.x = title.getRect(this).right + boader;
+			date.x = itemWidth - boader - dateW;
 			date.y = boader;
-
-			var keywords:TextField = new TextField();
-			keywords.defaultTextFormat = tft;
-			keywords.autoSize = TextFieldAutoSize.LEFT;
-			keywords.mouseEnabled = false;
-			keywords.text = ndp.keywordsParam.text + "：" + ndp.keywordsParam.content;
-			this.addChild(keywords);
-			keywords.x = date.getRect(this).right + boader;
-			keywords.y = boader;
-
-			var digest:TextField = new TextField();
-			digest.defaultTextFormat = tft;
-			digest.mouseEnabled = false;
-			digest.multiline = true;
-			digest.wordWrap = true;
-			digest.text = ndp.digestParam.text + "：" + ndp.digestParam.content;
-			this.addChild(digest);
-			digest.x = title.x;
-			digest.y = title.getRect(this).bottom + boader;
-			digest.width = itemWidth - boader - digest.x;
-			digest.height = itemHeight - boader - digest.y;
+			date.width = dateW;
 		}
 	}
 }
