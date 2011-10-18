@@ -11,6 +11,7 @@
 	import flash.text.TextFormat;
 
 	/**
+	 * 自动换行，不需要设置宽度
 	 *    图片
 	 *    标题
 	 * @author Administrator

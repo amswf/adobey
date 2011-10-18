@@ -52,11 +52,14 @@ package com.snsoft.tsp3.plugin.news {
 		 */
 		private var row:int = 0;
 
-		public function NewsBookPage(pageSize:Point) {
+		private var rowNum:int = 1;
+
+		public function NewsBookPage(pageSize:Point, rowNum:int) {
 			this.pageSize = pageSize;
 
 			this.pageCount = pageCount;
 			this._pageNum = pageNum;
+			this.rowNum = rowNum;
 
 			this.addChild(backLayer);
 			this.addChild(paginLayer);
@@ -66,28 +69,30 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		public function addItem(nib:NewsItemBase):void {
-			nib.itemWidth = itemsWidth;
-			nib.draw();
-			itemsLayer.addChild(nib);
+
 			nib.buttonMode = true;
 			nib.mouseChildren = false;
-
 			if (nib.autoRow) {
-				if (row == 0) {
-					itemsh += nib.height;
-				}
-				nib.x = row * nib.width + boaderf + boader;
-				nib.y = col * nib.height + boaderi;
-				row++;
-				if ((row + 1) * nib.width > itemsWidth) {
-					col++;
-					row = 0;
-				}
+				nib.itemWidth = itemsWidth;
+				nib.draw();
+				itemsLayer.addChild(nib);
 			}
 			else {
-				nib.x = boaderf + boader;
-				nib.y = itemsh;
+				nib.itemWidth = int(itemsWidth / rowNum);
+				nib.draw();
+				itemsLayer.addChild(nib);
+
+			}
+
+			if (row == 0) {
 				itemsh += nib.height;
+			}
+			nib.x = row * nib.width + boaderf + boader;
+			nib.y = col * nib.height + boaderi;
+			row++;
+			if ((row + 1) * nib.width > itemsWidth) {
+				col++;
+				row = 0;
 			}
 
 			itemv.push(nib);
