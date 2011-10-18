@@ -82,6 +82,7 @@
 			NewsItemI;
 			NewsItemII;
 			NewsItemIII;
+			NewsItemIV;
 			NewsItemV;
 
 			NewsBoardI;

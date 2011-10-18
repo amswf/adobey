@@ -73,7 +73,6 @@ package com.snsoft.tsp3.plugin.news {
 			nib.buttonMode = true;
 			nib.mouseChildren = false;
 			if (nib.autoRow) {
-				nib.itemWidth = itemsWidth;
 				nib.draw();
 				itemsLayer.addChild(nib);
 			}

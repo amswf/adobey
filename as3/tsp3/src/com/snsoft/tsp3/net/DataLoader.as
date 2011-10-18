@@ -51,7 +51,7 @@
 			}
 			params.addParam(OPERATION, operation);
 
-			trace(params.toXML());
+			//trace(params.toXML());
 			var uvs:URLVariables = new URLVariables();
 			uvs["code"] = code;
 			uvs["xml"] = params.toXML();
