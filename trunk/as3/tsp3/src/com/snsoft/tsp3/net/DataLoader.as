@@ -40,6 +40,22 @@
 
 		private const TAG_PARAM:String = "param";
 
+		private const TAG_IMAGES:String = "images";
+
+		private const TAG_IMAGE:String = "image";
+
+		private const TAG_FILES:String = "files";
+
+		private const TAG_FILE:String = "file";
+
+		private const TAG_AUDIOS:String = "audios";
+
+		private const TAG_AUDIO:String = "audio";
+
+		private const TAG_VIDEOS:String = "videos";
+
+		private const TAG_VIDEO:String = "video";
+
 		public function DataLoader() {
 			super(null);
 		}
@@ -139,19 +155,30 @@
 		private function creatToolBarBtnDTO(node:Node):DataDTO {
 			var dto:DataDTO = new DataDTO();
 			node.attrToObj(dto);
+			params(dto, node, TAG_PARAMS, TAG_PARAM);
+			params(dto, node, TAG_IMAGES, TAG_IMAGE);
+			params(dto, node, TAG_FILES, TAG_FILE);
+			params(dto, node, TAG_AUDIOS, TAG_AUDIO);
+			params(dto, node, TAG_VIDEOS, TAG_VIDEO);
+			return dto;
+		}
 
-			var paramsNode:Node = node.getNodeListFirstNode(TAG_PARAMS);
-			var paramList:NodeList = paramsNode.getNodeList(TAG_PARAM);
+		private function params(dto:DataDTO, node:Node, listTag:String, nodeTag:String):void {
+			var paramsNode:Node = node.getNodeListFirstNode(listTag);
 			if (paramList != null) {
-				for (var i:int = 0; i < paramList.length(); i++) {
-					var paramNode:Node = paramList.getNode(i);
-					var param:DataParam = new DataParam();
-					paramNode.attrToObj(param);
-					param.content = paramNode.text;
-					dto.addParam(param)
+				var paramList:NodeList = paramsNode.getNodeList(nodeTag);
+				if (paramList != null && paramList.length() > 0) {
+					var pv:Vector.<DataParam> = new Vector.<DataParam>();
+					for (var i:int = 0; i < paramList.length(); i++) {
+						var paramNode:Node = paramList.getNode(i);
+						var param:DataParam = new DataParam();
+						paramNode.attrToObj(param);
+						param.content = paramNode.text;
+						pv.push(param)
+					}
+					dto[listTag] = pv;
 				}
 			}
-			return dto;
 		}
 
 		public function get data():Vector.<DataSet> {
