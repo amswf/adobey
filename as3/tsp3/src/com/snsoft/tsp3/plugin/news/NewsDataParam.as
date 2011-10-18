@@ -8,6 +8,11 @@ package com.snsoft.tsp3.plugin.news {
 		private static const PARAM_DIGEST:String = "digest";
 		private static const PARAM_KEYWORDS:String = "keywords";
 		private static const PARAM_CONTENT:String = "content";
+		private static const PARAM_EBUY_TYPE:String = "ebuyType";
+
+		public static const EBUY_TYPE_SUPL:String = "1";
+
+		public static const EBUY_TYPE_BUY:String = "0";
 
 		private var _titleParam:DataParam = new DataParam();
 
@@ -18,6 +23,8 @@ package com.snsoft.tsp3.plugin.news {
 		private var _keywordsParam:DataParam = new DataParam();
 
 		private var _contentParam:DataParam = new DataParam();
+
+		private var _ebuyTypeParam:DataParam = new DataParam();
 
 		private var _extParams:Vector.<DataParam> = new Vector.<DataParam>();
 
@@ -40,6 +47,9 @@ package com.snsoft.tsp3.plugin.news {
 					}
 					else if (param.name == PARAM_CONTENT) {
 						_contentParam = param;
+					}
+					else if (param.name == PARAM_EBUY_TYPE) {
+						_ebuyTypeParam = param;
 					}
 					else {
 						extParams.push(param);
@@ -70,6 +80,14 @@ package com.snsoft.tsp3.plugin.news {
 
 		public function get contentParam():DataParam {
 			return _contentParam;
+		}
+
+		public function get ebuyTypeParam():DataParam {
+			return _ebuyTypeParam;
+		}
+
+		public function set ebuyTypeParam(value:DataParam):void {
+			_ebuyTypeParam = value;
 		}
 
 	}

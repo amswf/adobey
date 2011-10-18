@@ -19,6 +19,7 @@
 			import com.snsoft.tsp3.plugin.news.NewsInfo;
 			import com.snsoft.tsp3.plugin.news.NewsItemBase;
 			import com.snsoft.tsp3.plugin.news.NewsItemI;
+			import com.snsoft.tsp3.plugin.news.NewsItemV;
 			import com.snsoft.tsp3.plugin.news.NewsPanel;
 			import com.snsoft.tsp3.plugin.player.Player;
 			import com.snsoft.tsp3.test.Skins;
@@ -43,6 +44,7 @@
 				NewsBoardI;
 				NewsPanel;
 				NewsInfo;
+				NewsItemV;
 			}
 		]]>
 	</fx:Script>

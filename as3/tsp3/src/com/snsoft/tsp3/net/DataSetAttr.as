@@ -9,9 +9,11 @@ package com.snsoft.tsp3.net {
 		private var _type:String;
 
 		private var _pageNum:String;
-		
+
 		private var _pageCount:String;
-		
+
+		private var _rowNum:String; 
+
 		private var _listViewType:String;
 
 		private var _detailViewType:String;
@@ -43,44 +45,46 @@ package com.snsoft.tsp3.net {
 			_type = value;
 		}
 
-		public function get pageNum():String
-		{
+		public function get pageNum():String {
 			return _pageNum;
 		}
 
-		public function set pageNum(value:String):void
-		{
+		public function set pageNum(value:String):void {
 			_pageNum = value;
 		}
 
-		public function get pageCount():String
-		{
+		public function get pageCount():String {
 			return _pageCount;
 		}
 
-		public function set pageCount(value:String):void
-		{
+		public function set pageCount(value:String):void {
 			_pageCount = value;
 		}
 
-		public function get listViewType():String
-		{
+		public function get listViewType():String {
 			return _listViewType;
 		}
 
-		public function set listViewType(value:String):void
-		{
+		public function set listViewType(value:String):void {
 			_listViewType = value;
 		}
 
-		public function get detailViewType():String
-		{
+		public function get detailViewType():String {
 			return _detailViewType;
 		}
 
-		public function set detailViewType(value:String):void
-		{
+		public function set detailViewType(value:String):void {
 			_detailViewType = value;
+		}
+
+		public function get rowNum():String
+		{
+			return _rowNum;
+		}
+
+		public function set rowNum(value:String):void
+		{
+			_rowNum = value;
 		}
 
 

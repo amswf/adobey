@@ -117,12 +117,15 @@ package com.snsoft.tsp3.plugin.news {
 			var dl:DataLoader = e.currentTarget as DataLoader;
 			var rsv:Vector.<DataSet> = dl.data;
 
-			var nbp:NewsBookPage = new NewsBookPage(new Point(newsBook.bookSize.x, 500));
-
+			var nbv:Vector.<NewsBookPage> = new Vector.<NewsBookPage>();
 			var itemv:Vector.<Sprite> = new Vector.<Sprite>();
 			for (var i:int = 0; i < rsv.length; i++) {
 				var rs:DataSet = rsv[i];
 
+				var rowNum:int = int(rs.attr.rowNum);
+				rowNum = rowNum > 1 ? rowNum : 1;
+
+				var nbp:NewsBookPage = new NewsBookPage(new Point(newsBook.bookSize.x, 500), rowNum);
 				var itype:String = rs.attr.listViewType;
 				if (itype == null) {
 					itype = NewsItemBase.ITEM_TYPE_I;
@@ -152,17 +155,20 @@ package com.snsoft.tsp3.plugin.news {
 				var curnum:int = int(newsBook.currentNum);
 				var pCount:int = int(rs.attr.pageCount);
 				nbp.setPaginText(nextnum, pCount);
+				nbv.push(nbp);
 			}
 
 			trace("newsBook.changeType:", newsBook.changeType);
 
-			if (newsBook.changeType == NewsBook.CHANGE_TYPE_PREV) {
-				trace("prev");
-				newsBook.addPagePrev(nbp);
-			}
-			else if (newsBook.changeType == NewsBook.CHANGE_TYPE_NEXT) {
-				trace("next");
-				newsBook.addPageNext(nbp);
+			for (var k:int = 0; k < nbv.length; k++) {
+				if (newsBook.changeType == NewsBook.CHANGE_TYPE_PREV) {
+					trace("prev");
+					newsBook.addPagePrev(nbp);
+				}
+				else if (newsBook.changeType == NewsBook.CHANGE_TYPE_NEXT) {
+					trace("next");
+					newsBook.addPageNext(nbp);
+				}
 			}
 			this.dispatchEvent(new Event(EVENT_LOAD_COMPLETE));
 		}
