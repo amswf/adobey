@@ -41,6 +41,8 @@ package com.snsoft.ensview {
 
 		private var msgTextLayer:Sprite = new Sprite();
 
+		private var ensvViewLayer:Sprite = new Sprite();
+
 		private var mainback:Sprite;
 
 		private var winBoader:int = 10;
@@ -54,6 +56,8 @@ package com.snsoft.ensview {
 		private var ensvStart:EnsvStart;
 
 		private var visibleLayer:Sprite;
+
+		private var ensv:Ensv;
 
 		public function EnsvAir() {
 			super();
@@ -84,12 +88,14 @@ package com.snsoft.ensview {
 			this.addChild(itemsTextLayer);
 			this.addChild(introTextLayer);
 			this.addChild(msgTextLayer);
+			this.addChild(ensvViewLayer);
 
 			ensLayer.visible = false;
 			mainTextLayer.visible = false;
 			introTextLayer.visible = false;
 			itemsTextLayer.visible = false;
 			msgTextLayer.visible = false;
+			ensvViewLayer.visible = false;
 
 			stage.addEventListener(Event.FULLSCREEN, handlerFullScreen);
 			stage.align = StageAlign.TOP_LEFT;
@@ -238,6 +244,10 @@ package com.snsoft.ensview {
 			msg.x = (stage.stageWidth - msg.width) / 2;
 			msg.y = (stage.stageHeight - msg.height) / 2;
 			msg.addEventListener(TextMsg.EVENT_BTN, handlerTextMainBtnClick);
+
+			var ensvView:EnsvView = new EnsvView(stage.stageWidth, stage.stageHeight);
+			ensvViewLayer.addChild(ensvView);
+			ensvView.addEventListener(TextMsg.EVENT_BTN, handlerTextMainBtnClick);
 		}
 
 		private function handlerTextMainBtnClick(e:Event):void {
@@ -252,7 +262,7 @@ package com.snsoft.ensview {
 				visibleLayer = introTextLayer;
 			}
 			else if (type == TextMain.BTN_TYPE_MAP) {
-				visibleLayer = ensLayer;
+				visibleLayer = ensvViewLayer;
 			}
 			else if (type == TextMain.BTN_TYPE_ITEMS) {
 				visibleLayer = itemsTextLayer;
@@ -260,13 +270,19 @@ package com.snsoft.ensview {
 			else if (type == TextMain.BTN_TYPE_MSG) {
 				visibleLayer = msgTextLayer;
 			}
+			else if (type == TextMain.BTN_TYPE_VIEW) {
+				var p:Point = mc.mousep as Point;
+				trace(p);
+				ensv.setMapCoord(p);
+				visibleLayer = ensLayer;
+			}
 
 			visibleLayer.visible = true;
 		}
 
 		private function initEns():void {
 			SpriteUtil.deleteAllChild(ensLayer);
-			var ensv:Ensv = new Ensv(stage.stageWidth, stage.stageHeight);
+			ensv = new Ensv(stage.stageWidth, stage.stageHeight);
 			ensLayer.addChild(ensv);
 			ensv.addEventListener(Ensv.EVENT_BTN, handlerBackBtnClick);
 		}
@@ -275,7 +291,7 @@ package com.snsoft.ensview {
 			var ensv:Ensv = e.currentTarget as Ensv;
 			visibleLayer.visible = false;
 			if (ensv.getBtnType() == Ensv.BTN_TYPE_BACK) {
-				visibleLayer = mainTextLayer;
+				visibleLayer = ensvViewLayer;
 			}
 			visibleLayer.visible = true;
 		}

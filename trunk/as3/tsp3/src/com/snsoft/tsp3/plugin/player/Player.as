@@ -414,7 +414,7 @@
 					video.height = vh;
 					trace("top");
 					if (screenType == SCREEN_TYPE_TOP) {
-						Common.instance().playVideo(video);
+						Common.instance().topScreenPlayVideo(video);
 					}
 					else {
 						videoLayer.addChild(video);

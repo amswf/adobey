@@ -62,6 +62,8 @@ package com.snsoft.mapview.util {
 						//<areaUrl>
 						mado.areaUrl = areaNode.getAttributeByName("areaUrl");
 
+						mado.fontSize = areaNode.getAttributeByName("fontSize");
+
 						var isCurStr:String = areaNode.getAttributeByName("isCurrent");
 						var isCurrent:Boolean = false;
 						if (isCurStr != null && isCurStr == "true") {

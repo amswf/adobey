@@ -74,7 +74,7 @@ package com.snsoft.tsp3 {
 			return (topStage != null);
 		}
 
-		public function playVideo(video:Sprite):void {
+		public function topScreenPlayVideo(video:Sprite):void {
 			if (topStage != null) {
 				topStage.addChild(video);
 			}

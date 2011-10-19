@@ -33,6 +33,8 @@ package com.snsoft.mapview.dataObj
 		private var _areaNamePlace:Point = new Point();
 		
 		private var _isCurrent:Boolean = false;
+
+		private var _fontSize:String;
 		
 		public function MapAreaDO() {
 		}
@@ -99,6 +101,16 @@ package com.snsoft.mapview.dataObj
 		public function set isCurrent(value:Boolean):void
 		{
 			_isCurrent = value;
+		}
+
+		public function get fontSize():String
+		{
+			return _fontSize;
+		}
+
+		public function set fontSize(value:String):void
+		{
+			_fontSize = value;
 		}
 		
 		
