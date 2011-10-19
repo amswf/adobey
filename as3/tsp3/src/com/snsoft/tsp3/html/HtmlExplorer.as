@@ -10,9 +10,11 @@ package com.snsoft.tsp3.html {
 	import flash.html.HTMLLoader;
 	import flash.net.URLRequest;
 
-	public class HtmlExplorer extends MySprite {
+	public class HtmlExplorer extends Sprite {
 
-		private var heSize:Point;
+		public static const EVENT_LOAD_CMP:String = "eventLoadCmp";
+
+		private var htmlWidth:int;
 
 		private var htmlView:Sprite;
 
@@ -26,16 +28,15 @@ package com.snsoft.tsp3.html {
 
 		private var isHtmlMouseDown:Boolean = false;
 
-		public function HtmlExplorer(heSize:Point) {
-			this.heSize = heSize;
+		public function HtmlExplorer(htmlWidth:int) {
+			this.htmlWidth = htmlWidth;
 			super();
-
+			init();
 		}
 
-		override protected function configMS():void {
+		private function init():void {
 			htmlMask = ViewUtil.creatRect(100, 100);
-			htmlMask.width = heSize.x;
-			htmlMask.height = heSize.y;
+			htmlMask.width = htmlWidth;
 			this.addChild(htmlMask);
 
 			htmlCtn = new Sprite();
@@ -60,31 +61,11 @@ package com.snsoft.tsp3.html {
 			html.loadString(htmlContent);
 		}
 
-		override protected function draw():void {
-			stage.addEventListener(MouseEvent.MOUSE_UP, handlerMouseUp);
-		}
-
 		private function handlerHtmlLoadCmp(e:Event):void {
-			var html:HTMLLoader = e.currentTarget as HTMLLoader;
 			html.height = html.contentHeight;
 			htmlView.height = html.contentHeight;
-
-			var y:int = Math.max(htmlCtn.height - htmlMask.height, 0);
-
-			htmldragBounds = new Rectangle(0, -y, 0, y);
-			htmlCtn.addEventListener(MouseEvent.MOUSE_DOWN, handlerHtmlMouseDown);
+			this.dispatchEvent(new Event(EVENT_LOAD_CMP));
 		}
 
-		private function handlerHtmlMouseDown(e:Event):void {
-			isHtmlMouseDown = true;
-			htmlCtn.startDrag(false, htmldragBounds);
-		}
-
-		private function handlerMouseUp(e:Event):void {
-			if (isHtmlMouseDown) {
-				isHtmlMouseDown = false;
-				htmlCtn.stopDrag();
-			}
-		}
 	}
 }

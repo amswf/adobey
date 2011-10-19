@@ -282,6 +282,67 @@
 			searchListLayer.visible = !searchListLayer.visible;
 		}
 
+		public function setMapCoord(p:Point):void {
+			var maprect:Rectangle = mapView.getRect(boothsLayer);
+
+			var x:int = p.x;
+			var y:int = p.y;
+
+			var mw:int = maprect.right - mapView.x;
+			var mh:int = maprect.bottom - mapView.y;
+
+			var mx:int = x * mw / stage.stageWidth;
+			var my:int = y * mh / stage.stageHeight;
+
+			mx = stage.stageWidth / 2 - mx - 290;
+			my = stage.stageHeight / 2 - my - 450;
+
+			if (mx > 0) {
+				mx = 0;
+			}
+			else if (mx < stage.stageWidth - mw) {
+				mx = stage.stageWidth - mw;
+			}
+			if (my > 0) {
+				my = 0;
+			}
+			else if (my < stage.stageHeight - mh) {
+				my = stage.stageHeight - mh;
+			}
+
+			dragLayer.x = mx;
+			dragLayer.y = my;
+
+			var cmw:int = 100;
+			var cmh:int = 75;
+
+			var lmw:int = 200;
+			var lmh:int = 150;
+
+			var cmx:int = x * lmw / stage.stageWidth;
+			var cmy:int = y * lmh / stage.stageHeight;
+
+			cmx = cmx - cmw / 2;
+			cmy = cmy - cmh / 2;
+
+			if (cmx < 0) {
+				cmx = 0;
+			}
+			else if (cmx > lmw - cmw) {
+				cmx = lmw - cmw;
+			}
+			if (cmy < 0) {
+				cmy = 0;
+			}
+			else if (cmy > lmh - cmh) {
+				cmy = lmh - cmh;
+			}
+
+			viewDrag.x = cmx;
+			viewDrag.y = cmy;
+
+		}
+
 		private function initMap(wsdo:WorkSpaceDO):void {
 
 			mapView = new MapView();

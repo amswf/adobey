@@ -12,8 +12,12 @@ package com.snsoft.mapview {
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.filters.DropShadowFilter;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
+	import flash.text.TextFormat;
 
 	public class AreaNameView extends UIComponent {
 
@@ -67,9 +71,21 @@ package com.snsoft.mapview {
 				var cl:Shape = MapViewDraw.drawFill(0x000000, 0, pointAry);
 				areaBtnLayer.addChild(cl);
 
+				var size:int = 14;
+				if (mado.fontSize != null) {
+					size = int(mado.fontSize);
+				}
+				var tft:TextFormat = new TextFormat(null, size, 0x000000);
+
 				var dobj:Rectangle = cl.getRect(this);
-				var cn:CuntryName = this.cuntryName;
-				cn.lableText = mado.areaName;
+				var cn:TextField = new TextField();
+				cn.defaultTextFormat = tft;
+				cn.mouseEnabled = false;
+				cn.autoSize = TextFieldAutoSize.LEFT;
+				cn.text = mado.areaName;
+				filterTfd(cn);
+				areaNameLayer.addChild(cn);
+
 				cn.x = dobj.x + (dobj.width - cn.width) * 0.5 + mado.areaNamePlace.x;
 				cn.y = dobj.y + (dobj.height - cn.height) * 0.5 + mado.areaNamePlace.y;
 
@@ -77,13 +93,21 @@ package com.snsoft.mapview {
 				_center.x = cn.x + cn.width / 2;
 				_center.y = cn.y + cn.height / 2;
 
-				areaNameLayer.addChild(cn);
 				this.addEventListener(MouseEvent.MOUSE_OVER, handlerAreaViewMouseOver);
 				this.addEventListener(MouseEvent.MOUSE_OUT, handlerAreaViewMouseOut);
 			}
 			else {
 				trace("mapAreaDO:" + mapAreaDO);
 			}
+		}
+
+		public function filterTfd(tfd:TextField):void {
+			var fary:Array = new Array();
+			var f1:DropShadowFilter = new DropShadowFilter(0, 0, 0xffffff, 1, 2, 2, 10);
+			fary.push(f1);
+			var f2:DropShadowFilter = new DropShadowFilter(0, 0, 0x000000, 1, 4, 4, 1);
+			fary.push(f2);
+			tfd.filters = fary;
 		}
 
 		override public function set doubleClickEnabled(value:Boolean):void {
