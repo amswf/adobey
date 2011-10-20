@@ -25,12 +25,6 @@ package com.snsoft.tsp3.plugin.news {
 		protected static const PARAM_TYPE_MULTY_TEXT:String = "mtext";
 		protected static const PARAM_TYPE_HTML:String = "html";
 
-		protected static const PARAM_TITLE:String = "title";
-		protected static const PARAM_DATE:String = "date";
-		protected static const PARAM_DIGEST:String = "digest";
-		protected static const PARAM_CONTENT:String = "content";
-		protected static const PARAM_KEYWORDS:String = "keywords";
-
 		protected const SRC_PARAMS:String = "params";
 		protected const SRC_IMAGES:String = "images";
 		protected const SRC_FILES:String = "files";
@@ -120,7 +114,7 @@ package com.snsoft.tsp3.plugin.news {
 			if (params != null) {
 				for (var i:int = 0; i < params.length; i++) {
 					var ep:DataParam = params[i];
-					var spr:Sprite = creatItemText(ep);
+					var spr:Sprite = creatItemTexts(ep);
 					scrollLayer.addChild(spr);
 					spr.y = nextY;
 					nextY = spr.getRect(scrollLayer).bottom + boader;
@@ -134,7 +128,7 @@ package com.snsoft.tsp3.plugin.news {
 			if (eps != null) {
 				for (var i:int = 0; i < eps.length; i++) {
 					var ep:DataParam = eps[i];
-					var spr:Sprite = creatItemText(ep);
+					var spr:Sprite = creatItemTexts(ep);
 					scrollLayer.addChild(spr);
 					spr.y = nextY;
 					nextY = spr.getRect(scrollLayer).bottom + boader;
@@ -154,7 +148,7 @@ package com.snsoft.tsp3.plugin.news {
 			}
 			else {
 				if (dp != null) {
-					var dig:Sprite = creatItemText(dp);
+					var dig:Sprite = creatItemTexts(dp);
 					scrollLayer.addChild(dig);
 					dig.y = nextY;
 				}
@@ -231,23 +225,57 @@ package com.snsoft.tsp3.plugin.news {
 			return sprite;
 		}
 
-		protected function creatItemText(dataParam:DataParam):Sprite {
+		/**
+		 * 属性多行显示，属性名和值不同在同一行
+		 * @param dataParam
+		 * @return
+		 *
+		 */
+		protected function creatItemTexts(... dataParam):Sprite {
 			var sprite:Sprite = new Sprite();
-			var tfd:TextField = creatTextTfd(dataParam.text);
-			sprite.addChild(tfd);
+			for (var i:int = 0; i < dataParam.length; i++) {
+				var prm:DataParam = dataParam[i] as DataParam;
+				var tfd:TextField = creatTextTfd(prm.text);
+				sprite.addChild(tfd);
 
-			var ctfd:TextField = creatCtntTfd(dataParam.content);
-			sprite.addChild(ctfd);
-			ctfd.width = ctntWidth;
-			ctfd.y = tfd.height;
+				var ctfd:TextField = creatCtntTfd(prm.content);
+				sprite.addChild(ctfd);
+				ctfd.width = ctntWidth;
+				ctfd.y = tfd.height;
+			}
 			return sprite;
 		}
 
+		/**
+		 * 属性名称和值在同一行，多个属性多行显示
+		 * @param dataParam
+		 * @return
+		 *
+		 */
+		protected function creatItemsLine(... dataParam):Sprite {
+			var spr:Sprite = new Sprite();
+			var y:int = 0;
+			for (var i:int = 0; i < dataParam.length; i++) {
+				var prm:DataParam = dataParam[i] as DataParam;
+				var lt:Sprite = creatLineText(prm);
+				spr.addChild(lt);
+				lt.y = y;
+				y += spr.height;
+			}
+			return spr;
+		}
+
+		/**
+		 * 一行，多属性输出
+		 * @param dataParam
+		 * @return
+		 *
+		 */
 		protected function creatLineText(... dataParam):Sprite {
 			var spr:Sprite = new Sprite();
 			var x:int = 0;
 			for (var i:int = 0; i < dataParam.length; i++) {
-				var prm:DataParam = dataParam[i];
+				var prm:DataParam = dataParam[i] as DataParam;
 				var tt:TextField = creatTextTfd(prm.text);
 				spr.addChild(tt);
 				tt.x = x;

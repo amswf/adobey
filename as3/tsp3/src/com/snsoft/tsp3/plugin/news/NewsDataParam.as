@@ -8,9 +8,18 @@ package com.snsoft.tsp3.plugin.news {
 		public static const PARAM_DIGEST:String = "digest";
 		public static const PARAM_KEYWORDS:String = "keywords";
 		public static const PARAM_CONTENT:String = "content";
-		public static const PARAM_EBUY_TYPE:String = "ebuyType";
 		public static const PARAM_COMEFROM:String = "comefrom";
 		public static const PARAM_AUTHOR:String = "author";
+		//导演
+		public static const PARAM_VIDEO_DIRECTOR:String = "director";
+		//主演
+		public static const PARAM_VIDEO_PROTAGONIST:String = "protagonist";
+
+		//供/求
+		public static const PARAM_EBUY_TYPE:String = "ebuyType";
+
+		//发布日期
+		public static const PARAM_EBUY_PUBLISH_DATE:String = "publishDate";
 
 		private var intrParams:Array = new Array();
 
@@ -32,7 +41,10 @@ package com.snsoft.tsp3.plugin.news {
 						|| param.name == PARAM_CONTENT
 						|| param.name == PARAM_EBUY_TYPE
 						|| param.name == PARAM_COMEFROM
-						|| param.name == PARAM_AUTHOR) {
+						|| param.name == PARAM_AUTHOR
+						|| param.name == PARAM_VIDEO_DIRECTOR
+						|| param.name == PARAM_VIDEO_PROTAGONIST
+						|| param.name == PARAM_EBUY_PUBLISH_DATE) {
 						addIntrParam(param, param.name);
 					}
 					else {

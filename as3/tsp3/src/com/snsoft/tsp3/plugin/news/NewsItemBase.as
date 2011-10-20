@@ -5,11 +5,6 @@ package com.snsoft.tsp3.plugin.news {
 
 	public class NewsItemBase extends Sprite {
 
-		protected static const PARAM_TITLE:String = "title";
-		protected static const PARAM_DATE:String = "date";
-		protected static const PARAM_DIGEST:String = "digest";
-		protected static const PARAM_KEYWORDS:String = "keywords";
-
 		public static const ITEM_TYPE_I:String = "I";
 		public static const ITEM_TYPE_II:String = "II";
 		public static const ITEM_TYPE_III:String = "III";
