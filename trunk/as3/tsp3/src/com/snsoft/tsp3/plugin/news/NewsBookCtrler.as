@@ -126,6 +126,7 @@ package com.snsoft.tsp3.plugin.news {
 				rowNum = rowNum > 1 ? rowNum : 1;
 
 				var nbp:NewsBookPage = new NewsBookPage(new Point(newsBook.bookSize.x, 500), rowNum);
+				infoViewType = rs.attr.detailViewType;
 				var itype:String = rs.attr.listViewType;
 				if (itype == null) {
 					itype = NewsItemBase.ITEM_TYPE_I;

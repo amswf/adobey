@@ -3,28 +3,20 @@ package com.snsoft.tsp3.plugin.news {
 
 	public class NewsDataParam {
 
-		private static const PARAM_TITLE:String = "title";
-		private static const PARAM_DATE:String = "date";
-		private static const PARAM_DIGEST:String = "digest";
-		private static const PARAM_KEYWORDS:String = "keywords";
-		private static const PARAM_CONTENT:String = "content";
-		private static const PARAM_EBUY_TYPE:String = "ebuyType";
+		public static const PARAM_TITLE:String = "title";
+		public static const PARAM_DATE:String = "date";
+		public static const PARAM_DIGEST:String = "digest";
+		public static const PARAM_KEYWORDS:String = "keywords";
+		public static const PARAM_CONTENT:String = "content";
+		public static const PARAM_EBUY_TYPE:String = "ebuyType";
+		public static const PARAM_COMEFROM:String = "comefrom";
+		public static const PARAM_AUTHOR:String = "author";
+
+		private var intrParams:Array = new Array();
 
 		public static const EBUY_TYPE_SUPL:String = "1";
 
 		public static const EBUY_TYPE_BUY:String = "0";
-
-		private var _titleParam:DataParam = new DataParam();
-
-		private var _dateParam:DataParam = new DataParam();
-
-		private var _digestParam:DataParam = new DataParam();
-
-		private var _keywordsParam:DataParam = new DataParam();
-
-		private var _contentParam:DataParam = new DataParam();
-
-		private var _ebuyTypeParam:DataParam = new DataParam();
 
 		private var _extParams:Vector.<DataParam> = new Vector.<DataParam>();
 
@@ -33,61 +25,33 @@ package com.snsoft.tsp3.plugin.news {
 			if (params != null) {
 				for (var i:int = 0; i < params.length; i++) {
 					var param:DataParam = params[i];
-					if (param.name == PARAM_TITLE) {
-						_titleParam = param;
-					}
-					else if (param.name == PARAM_DATE) {
-						_dateParam = param;
-					}
-					else if (param.name == PARAM_DIGEST) {
-						_digestParam = param;
-					}
-					else if (param.name == PARAM_KEYWORDS) {
-						_keywordsParam = param;
-					}
-					else if (param.name == PARAM_CONTENT) {
-						_contentParam = param;
-					}
-					else if (param.name == PARAM_EBUY_TYPE) {
-						_ebuyTypeParam = param;
+					if (param.name == PARAM_TITLE
+						|| param.name == PARAM_DATE
+						|| param.name == PARAM_DIGEST
+						|| param.name == PARAM_KEYWORDS
+						|| param.name == PARAM_CONTENT
+						|| param.name == PARAM_EBUY_TYPE
+						|| param.name == PARAM_COMEFROM
+						|| param.name == PARAM_AUTHOR) {
+						addIntrParam(param, param.name);
 					}
 					else {
-						extParams.push(param);
+						_extParams.push(param);
 					}
 				}
 			}
 		}
 
-		public function get titleParam():DataParam {
-			return _titleParam;
+		private function addIntrParam(param:DataParam, name:String):void {
+			intrParams[name] = param;
 		}
 
-		public function get dateParam():DataParam {
-			return _dateParam;
-		}
-
-		public function get digestParam():DataParam {
-			return _digestParam;
-		}
-
-		public function get keywordsParam():DataParam {
-			return _keywordsParam;
+		public function getIntrParam(name:String):DataParam {
+			return intrParams[name] as DataParam;
 		}
 
 		public function get extParams():Vector.<DataParam> {
 			return _extParams;
-		}
-
-		public function get contentParam():DataParam {
-			return _contentParam;
-		}
-
-		public function get ebuyTypeParam():DataParam {
-			return _ebuyTypeParam;
-		}
-
-		public function set ebuyTypeParam(value:DataParam):void {
-			_ebuyTypeParam = value;
 		}
 
 	}

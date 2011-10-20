@@ -1,5 +1,6 @@
 ﻿package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.net.DataDTO;
+	import com.snsoft.tsp3.net.DataParam;
 	import com.snsoft.util.SkinsUtil;
 
 	import flash.display.Bitmap;
@@ -56,7 +57,8 @@
 			title.defaultTextFormat = tft;
 			title.autoSize = TextFieldAutoSize.LEFT;
 			title.mouseEnabled = false;
-			title.text = ndp.titleParam.content;
+			var tp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_TITLE);
+			title.text = tp.text + "：" + tp.content;
 			this.addChild(title);
 			title.x = boader;
 			title.y = boader;
@@ -65,7 +67,8 @@
 			date.defaultTextFormat = tft;
 			date.autoSize = TextFieldAutoSize.LEFT;
 			date.mouseEnabled = false;
-			date.text = ndp.dateParam.content;
+			var cp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_DATE);
+			date.text = cp.text + "：" + cp.content;
 			this.addChild(date);
 			date.x = title.getRect(this).right + boader;
 			date.y = boader;
@@ -76,10 +79,11 @@
 			ebuyType.mouseEnabled = false;
 
 			var ett:String = "";
-			if (ndp.ebuyTypeParam.content == NewsDataParam.EBUY_TYPE_SUPL) {
+			var ebp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_DATE);
+			if (ebp.content == NewsDataParam.EBUY_TYPE_SUPL) {
 				ett = "[供]";
 			}
-			else if (ndp.ebuyTypeParam.content == NewsDataParam.EBUY_TYPE_BUY) {
+			else if (ebp.content == NewsDataParam.EBUY_TYPE_BUY) {
 				ett = "[应]";
 			}
 			ebuyType.text = ett;
@@ -91,7 +95,8 @@
 			keywords.defaultTextFormat = tft;
 			keywords.autoSize = TextFieldAutoSize.LEFT;
 			keywords.mouseEnabled = false;
-			keywords.text = ndp.keywordsParam.text + "：" + ndp.keywordsParam.content;
+			var kp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_KEYWORDS);
+			keywords.text = kp.text + "：" + kp.content;
 			this.addChild(keywords);
 			keywords.x = boader;
 			keywords.y = title.getRect(this).bottom;
@@ -101,7 +106,8 @@
 			digest.mouseEnabled = false;
 			digest.multiline = true;
 			digest.wordWrap = true;
-			digest.text = ndp.digestParam.text + "：" + ndp.digestParam.content;
+			var dgp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_DIGEST);
+			digest.text = dgp.text + "：" + dgp.content;
 			this.addChild(digest);
 			digest.x = boader;
 			digest.y = keywords.getRect(this).bottom;

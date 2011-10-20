@@ -1,5 +1,6 @@
 ﻿package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.net.DataDTO;
+	import com.snsoft.tsp3.net.DataParam;
 	import com.snsoft.util.SkinsUtil;
 
 	import flash.display.Bitmap;
@@ -11,7 +12,7 @@
 	import flash.text.TextFormat;
 
 	/**
-	 *    图片 
+	 *    图片
 	 *    标题
 	 * @author Administrator
 	 *
@@ -56,7 +57,8 @@
 			title.mouseEnabled = false;
 			title.defaultTextFormat = tft;
 			title.autoSize = TextFieldAutoSize.LEFT;
-			title.text = ndp.titleParam.content;
+			var tp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_TITLE);
+			title.text = tp.text + "：" + tp.content;
 			this.addChild(title);
 			title.x = (itemWidth - title.width) / 2;
 			title.y = itemHeight - boader - title.height;
