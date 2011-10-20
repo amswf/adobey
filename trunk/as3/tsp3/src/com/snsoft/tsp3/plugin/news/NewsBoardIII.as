@@ -15,14 +15,14 @@
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 
-	public class NewsBoardII extends NewsBoardBase {
+	public class NewsBoardIII extends NewsBoardBase {
 
 		private var hMax:int = 100;
 
 		private var timgW:int = 320;
 		private var timgH:int = 240;
 
-		public function NewsBoardII(infoSize:Point, data:DataDTO) {
+		public function NewsBoardIII(infoSize:Point, data:DataDTO) {
 			this.infoSize = infoSize;
 			this._data = data;
 			super();
@@ -48,9 +48,9 @@
 			//图片
 			addTitleImg(data.img, timgW, timgH);
 
-			var dp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_VIDEO_DIRECTOR);
-			var pp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_VIDEO_PROTAGONIST);
-			var filmItems:Sprite = creatItemsLine(dp, pp);
+			var tp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_EBUY_TYPE);
+			var pp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_EBUY_PUBLISH_DATE);
+			var filmItems:Sprite = creatItemsLine(tp, pp);
 			scrollLayer.addChild(filmItems);
 			filmItems.x = boader + timgW;
 			filmItems.y = boader;
