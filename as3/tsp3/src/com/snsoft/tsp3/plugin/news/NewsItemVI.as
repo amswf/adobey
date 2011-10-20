@@ -1,5 +1,6 @@
 package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.net.DataDTO;
+	import com.snsoft.tsp3.net.DataParam;
 	import com.snsoft.util.SkinsUtil;
 
 	import flash.display.Bitmap;
@@ -54,7 +55,8 @@ package com.snsoft.tsp3.plugin.news {
 			title.defaultTextFormat = tft;
 			title.autoSize = TextFieldAutoSize.LEFT;
 			title.mouseEnabled = false;
-			title.text = ndp.titleParam.text + "：" + ndp.titleParam.content;
+			var tp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_TITLE);
+			title.text = tp.text + "：" + tp.content;
 			this.addChild(title);
 			title.x = boader;
 			title.y = boader;
@@ -64,7 +66,8 @@ package com.snsoft.tsp3.plugin.news {
 			date.defaultTextFormat = tft;
 			date.autoSize = TextFieldAutoSize.LEFT;
 			date.mouseEnabled = false;
-			date.text = ndp.dateParam.text + "：" + ndp.dateParam.content;
+			var cp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_DATE);
+			date.text = cp.text + "：" + cp.content;
 			this.addChild(date);
 			date.x = itemWidth - boader - dateW;
 			date.y = boader;

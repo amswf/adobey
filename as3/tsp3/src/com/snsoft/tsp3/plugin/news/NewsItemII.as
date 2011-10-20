@@ -1,5 +1,6 @@
 ﻿package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.net.DataDTO;
+	import com.snsoft.tsp3.net.DataParam;
 	import com.snsoft.util.SkinsUtil;
 
 	import flash.display.Bitmap;
@@ -56,7 +57,8 @@
 			title.defaultTextFormat = tft;
 			title.autoSize = TextFieldAutoSize.LEFT;
 			title.mouseEnabled = false;
-			title.text = ndp.titleParam.text + "：" + ndp.titleParam.content;
+			var tp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_TITLE);
+			title.text = tp.text + "：" + tp.content;
 			this.addChild(title);
 			title.x = boader;
 			title.y = boader;
@@ -65,7 +67,8 @@
 			date.defaultTextFormat = tft;
 			date.autoSize = TextFieldAutoSize.LEFT;
 			date.mouseEnabled = false;
-			date.text = ndp.dateParam.text + "：" + ndp.dateParam.content;
+			var cp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_DATE);
+			date.text = cp.text + "：" + cp.content;
 			this.addChild(date);
 			date.x = title.getRect(this).right + boader;
 			date.y = boader;
@@ -74,7 +77,8 @@
 			keywords.defaultTextFormat = tft;
 			keywords.autoSize = TextFieldAutoSize.LEFT;
 			keywords.mouseEnabled = false;
-			keywords.text = ndp.keywordsParam.text + "：" + ndp.keywordsParam.content;
+			var kp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_KEYWORDS);
+			keywords.text = kp.text + "：" + kp.content;
 			this.addChild(keywords);
 			keywords.x = date.getRect(this).right + boader;
 			keywords.y = boader;
@@ -84,7 +88,8 @@
 			digest.mouseEnabled = false;
 			digest.multiline = true;
 			digest.wordWrap = true;
-			digest.text = ndp.digestParam.text + "：" + ndp.digestParam.content;
+			var dgp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_DIGEST);
+			digest.text = dgp.text + "：" + dgp.content;
 			this.addChild(digest);
 			digest.x = title.x;
 			digest.y = title.getRect(this).bottom + boader;

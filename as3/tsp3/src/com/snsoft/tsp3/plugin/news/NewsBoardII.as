@@ -5,6 +5,7 @@
 	import com.snsoft.tsp3.touch.TouchDrag;
 	import com.snsoft.util.SpriteUtil;
 
+	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
@@ -14,11 +15,11 @@
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 
-	public class NewsBoardI extends NewsBoardBase {
+	public class NewsBoardII extends NewsBoardBase {
 
 		private var hMax:int = 100;
 
-		public function NewsBoardI(infoSize:Point, data:DataDTO) {
+		public function NewsBoardII(infoSize:Point, data:DataDTO) {
 			this.infoSize = infoSize;
 			this._data = data;
 			super();
@@ -40,12 +41,25 @@
 
 			//基础信息，标题，日期，关键词
 			addBaseItems(ndp);
+
+			//图片
+			addTitleImg(data.img, 320, 240);
+
 			//附件、图片、音乐、影片
 			addSrcs(data);
 			//其它数据项输出
 			addExpItems(ndp);
 			//内容单独输出，并且在最后
 			addDigest(ndp);
+		}
+
+		protected function addTitleImg(bmd:BitmapData, width:int, height:int):void {
+			if (data != null && data.img != null) {
+				var img:Sprite = creatImage(bmd, width, height);
+				scrollLayer.addChild(img);
+				img.y = nextY;
+				nextY = img.getRect(scrollLayer).bottom + boader;
+			}
 		}
 
 	}

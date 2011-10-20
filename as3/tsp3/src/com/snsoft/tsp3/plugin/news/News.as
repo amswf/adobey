@@ -87,6 +87,7 @@
 			NewsItemVI;
 
 			NewsBoardI;
+			NewsBoardII;
 
 			super();
 			this.addChild(backLayer);

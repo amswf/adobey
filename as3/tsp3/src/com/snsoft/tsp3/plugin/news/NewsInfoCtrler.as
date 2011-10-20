@@ -57,7 +57,7 @@ package com.snsoft.tsp3.plugin.news {
 			var itemv:Vector.<Sprite> = new Vector.<Sprite>();
 			for (var i:int = 0; i < rsv.length; i++) {
 				var rs:DataSet = rsv[i];
-				var itype:String = rs.attr.listViewType;
+				var itype:String = newsState.infoViewType;
 				if (itype == null) {
 					itype = NewsItemBase.ITEM_TYPE_I;
 				}
