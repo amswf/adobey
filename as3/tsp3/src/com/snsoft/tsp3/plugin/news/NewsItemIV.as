@@ -20,8 +20,6 @@
 	 */
 	public class NewsItemIV extends NewsItemBase {
 
-		private var boader:int = 20;
-
 		private var boader2:int = 20;
 
 		private var hMax:int = 80;
@@ -42,6 +40,8 @@
 		}
 
 		override public function draw():void {
+			boader = 20;
+
 			itemHeight = hMax;
 
 			defBack = SkinsUtil.createSkinByName("NewsItemsIV_backDefSkin");

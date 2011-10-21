@@ -19,8 +19,6 @@ package com.snsoft.tsp3.plugin.news {
 	 */
 	public class NewsItemVI extends NewsItemBase {
 
-		private var boader:int = 20;
-
 		private var hMax:int = 60;
 
 		private var tft:TextFormat = new TextFormat(null, 12, 0xffffff);
@@ -37,6 +35,8 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		override public function draw():void {
+			boader = 20;
+			
 			var ndp:NewsDataParam = new NewsDataParam(data.params);
 			itemHeight = hMax;
 

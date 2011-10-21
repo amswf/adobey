@@ -19,7 +19,6 @@
 	 */
 	public class NewsItemIII extends NewsItemBase {
 
-		private var boader:int = 20;
 
 		private var hMax:int = 150;
 

@@ -21,6 +21,7 @@
 			import com.snsoft.tsp3.plugin.news.NewsItemI;
 			import com.snsoft.tsp3.plugin.news.NewsItemV;
 			import com.snsoft.tsp3.plugin.news.NewsPanel;
+			import com.snsoft.tsp3.plugin.news.layout.Util;
 			import com.snsoft.tsp3.plugin.player.Player;
 			import com.snsoft.tsp3.test.Skins;
 			import com.snsoft.tsp3.test.Test;
@@ -45,6 +46,7 @@
 				NewsPanel;
 				NewsInfo;
 				NewsItemV;
+				Util;
 			}
 		]]>
 	</fx:Script>

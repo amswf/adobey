@@ -20,7 +20,6 @@
 	 */
 	public class NewsItemII extends NewsItemBase {
 
-		private var boader:int = 10;
 
 		private var hMax:int = 100;
 

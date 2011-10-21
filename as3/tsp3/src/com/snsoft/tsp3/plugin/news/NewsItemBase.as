@@ -1,7 +1,11 @@
 package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.net.DataDTO;
+	import com.snsoft.tsp3.net.DataParam;
 
 	import flash.display.Sprite;
+	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
+	import flash.text.TextFormat;
 
 	public class NewsItemBase extends Sprite {
 
@@ -23,8 +27,19 @@ package com.snsoft.tsp3.plugin.news {
 
 		protected var _clickType:String;
 
+		protected var texttft:TextFormat = new TextFormat(null, 14, 0xffffff);
+
+		protected var ctnttft:TextFormat = new TextFormat(null, 12, 0xffffff);
+
+		protected var boader:int = 10;
+
 		public function NewsItemBase() {
 			super();
+		}
+
+		protected function creatTitleLine(data:DataDTO):Sprite {
+			var sprite:Sprite = new Sprite();
+			return sprite;
 		}
 
 		public function draw():void {
@@ -55,11 +70,9 @@ package com.snsoft.tsp3.plugin.news {
 			return _autoRow;
 		}
 
-		public function get clickType():String
-		{
+		public function get clickType():String {
 			return _clickType;
 		}
-
 
 	}
 }
