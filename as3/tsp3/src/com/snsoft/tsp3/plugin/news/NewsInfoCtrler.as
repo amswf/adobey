@@ -49,7 +49,7 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		private function handlerInfoCmp(e:Event):void {
-			trace("handlerInfoCmp");
+			//trace("handlerInfoCmp");
 			var dl:DataLoader = e.currentTarget as DataLoader;
 			var rsv:Vector.<DataSet> = dl.data;
 

@@ -105,7 +105,6 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		private function handlerTouchClick(e:Event):void {
-			trace("handlerTouchClick");
 			_clickItem = td.clickObj as NewsItemBase;
 			this.dispatchEvent(new Event(EVENT_ITEM_CLICK));
 		}
@@ -242,7 +241,7 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		private function checkChangePage():void {
-			trace("checkChangePage");
+			//trace("checkChangePage");
 			for (var i:int = 0; i < pagev.length; i++) {
 				var page:NewsBookPage = pagev[i];
 				var cr:Rectangle = page.getRect(this);
