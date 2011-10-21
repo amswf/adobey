@@ -1,6 +1,7 @@
 ﻿package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.tsp3.net.DataParam;
+	import com.snsoft.tsp3.plugin.news.layout.Util;
 	import com.snsoft.util.SkinsUtil;
 
 	import flash.display.Bitmap;
@@ -18,7 +19,6 @@
 	 *
 	 */
 	public class NewsItemIII extends NewsItemBase {
-
 
 		private var hMax:int = 150;
 
@@ -52,12 +52,8 @@
 			selBack.visible = false;
 			this.addChild(selBack);
 
-			var title:TextField = new TextField();
-			title.mouseEnabled = false;
-			title.defaultTextFormat = tft;
-			title.autoSize = TextFieldAutoSize.LEFT;
 			var tp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_TITLE);
-			title.text = tp.text + "：" + tp.content;
+			var title:TextField = Util.creatTextInline(tp.content, ctnttft, itemWidth - boader - boader);
 			this.addChild(title);
 			title.x = (itemWidth - title.width) / 2;
 			title.y = itemHeight - boader - title.height;

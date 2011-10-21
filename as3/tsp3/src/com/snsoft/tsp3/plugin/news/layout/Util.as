@@ -12,8 +12,8 @@ package com.snsoft.tsp3.plugin.news.layout {
 
 		public static function contentItem(dataParam:DataParam, textTft:TextFormat, ctntTft:TextFormat, width:int, height:int):TextField {
 			var text:String = dataParam.text + "：";
-			var ctnt:String = dataParam.text + dataParam.content;
-			var tfd:TextField = creatTextMultiLine(text + ctnt, ctntTft, width, height);
+			var ctnt:String = text + dataParam.content;
+			var tfd:TextField = creatTextMultiLine(ctnt, ctntTft, width, height);
 			tfd.setTextFormat(textTft, 0, text.length);
 			return tfd;
 		}
@@ -36,7 +36,7 @@ package com.snsoft.tsp3.plugin.news.layout {
 			spr.addChild(title);
 			var exp:Sprite = lineItems(expParams, textTft, ctntTft, maxWidth / 2, boader);
 			spr.addChild(exp);
-			exp.x = title.width;
+			exp.x = title.width + boader;
 			return spr;
 		}
 
@@ -52,13 +52,13 @@ package com.snsoft.tsp3.plugin.news.layout {
 		 * @return
 		 *
 		 */
-		public static function twsRight(textTft:TextFormat, ctntTft:TextFormat, maxWidth:int, titleParam:DataParam, expParams:Vector.<DataParam>, boader:int):Sprite {
+		public static function twsRight(textTft:TextFormat, ctntTft:TextFormat, maxWidth:int, boader:int, titleParam:DataParam, expParams:Vector.<DataParam>):Sprite {
 			var spr:Sprite = new Sprite();
 			var title:Sprite = lineItem(titleParam.text, titleParam.content, textTft, ctntTft, maxWidth / 2);
 			spr.addChild(title);
 			var exp:Sprite = lineItems(expParams, textTft, ctntTft, maxWidth / 2, boader);
 			spr.addChild(exp);
-			exp.x = maxWidth - spr.width;
+			exp.x = maxWidth - exp.width;
 			return spr;
 		}
 
@@ -164,12 +164,13 @@ package com.snsoft.tsp3.plugin.news.layout {
 		 */
 		public static function creatTextInline(text:String, tft:TextFormat, maxWidth:int = 0, endText:String = "..."):TextField {
 			var tfd:TextField = new TextField();
+			tfd.mouseEnabled = false;
 			tfd.defaultTextFormat = tft;
 			tfd.autoSize = TextFieldAutoSize.LEFT;
 			if (text != null) {
 				var fs:int = int(tft.size);
-				var fw:int = fs + 3;
-				var n:int = maxWidth / fw;
+				var fw:int = fs;
+				var n:int = (maxWidth - 5) / fw;
 				var et:String = n < text.length ? endText : "";
 				tfd.text = text.substring(0, n - endText.length) + et;
 			}
@@ -188,6 +189,7 @@ package com.snsoft.tsp3.plugin.news.layout {
 		 */
 		public static function creatTextMultiLine(text:String, tft:TextFormat, maxWidth:int, maxHeight:int, endText:String = "..."):TextField {
 			var tfd:TextField = new TextField();
+			tfd.mouseEnabled = false;
 			tfd.defaultTextFormat = tft;
 			tfd.autoSize = TextFieldAutoSize.LEFT;
 			tfd.multiline = true;
