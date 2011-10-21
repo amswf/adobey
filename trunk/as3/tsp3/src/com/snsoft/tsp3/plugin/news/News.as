@@ -2,6 +2,7 @@
 	import com.snsoft.tsp3.Common;
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.tsp3.net.DataLoader;
+	import com.snsoft.tsp3.net.DataParam;
 	import com.snsoft.tsp3.net.DataSet;
 	import com.snsoft.tsp3.pagination.Pagination;
 	import com.snsoft.tsp3.plugin.BPlugin;
@@ -85,6 +86,7 @@
 			NewsItemIV;
 			NewsItemV;
 			NewsItemVI;
+			NewsItemVII;
 
 			NewsBoardI;
 			NewsBoardII;
@@ -213,9 +215,21 @@
 
 		private function handlerItemClick(e:Event):void {
 			var item:NewsItemBase = newsBookCtrler.clickItem;
-			newsState.infoId = item.data.id;
-			newsPanel.refresh(newsState);
-			newsPanel.visible = true;
+			if (item.clickType == NewsItemBase.CLICK_TYPE_INFO) {
+				newsState.infoId = item.data.id;
+				newsPanel.refresh(newsState);
+				newsPanel.visible = true;
+			}
+			else if (item.clickType == NewsItemBase.CLICK_TYPE_PLAY) {
+				if (item.data.videos != null && item.data.videos.length > 0) {
+					var video:DataParam = item.data.videos[0];
+					Common.instance().playVideo(video.url, video.text);
+				}
+				else if (item.data.audios != null && item.data.audios.length > 0) {
+					var audio:DataParam = item.data.audios[0];
+					Common.instance().playMp3(audio.url, audio.text);
+				}
+			}
 		}
 
 		private function loadFilter():void {

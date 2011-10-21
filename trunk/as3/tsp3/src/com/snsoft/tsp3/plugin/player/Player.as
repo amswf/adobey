@@ -1,5 +1,6 @@
 ﻿package com.snsoft.tsp3.plugin.player {
 	import com.snsoft.tsp3.Common;
+	import com.snsoft.tsp3.IPlayer;
 	import com.snsoft.tsp3.ViewUtil;
 	import com.snsoft.tsp3.plugin.BPlugin;
 	import com.snsoft.util.SkinsUtil;
@@ -24,7 +25,7 @@
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 
-	public class Player extends BPlugin {
+	public class Player extends BPlugin implements IPlayer {
 
 		private var video:FLVPlayback;
 
@@ -228,10 +229,11 @@
 			topBtnLayer.addChild(closeBtn);
 			closeBtn.addEventListener(MouseEvent.CLICK, handlerCloseBtnClick);
 
-			btn1.addEventListener(MouseEvent.CLICK, handler1);
-			btn2.addEventListener(MouseEvent.CLICK, handler2);
+			//btn1.addEventListener(MouseEvent.CLICK, handler1);
+			//btn2.addEventListener(MouseEvent.CLICK, handler2);
 
 			setSize();
+			Common.instance().initPlayer(this);
 		}
 
 		private function setSize():void {
@@ -283,13 +285,13 @@
 		}
 
 		//********************************************
-		public function handler1(e:Event):void {
-			playMp3("1.mp3", "1.mp3");
-		}
-
-		public function handler2(e:Event):void {
-			playVideo("1.flv", "1.flv");
-		}
+//		public function handler1(e:Event):void {
+//			playMp3("1.mp3", "1.mp3");
+//		}
+//
+//		public function handler2(e:Event):void {
+//			playVideo("1.flv", "1.flv");
+//		}
 
 		//********************************************
 
@@ -510,6 +512,10 @@
 			this.url = url;
 			this.playType = PLAY_TYPE_VIDEO;
 			playWithStatus(STATUS_START);
+		}
+
+		public function setVisible(visible:Boolean):void {
+			this.visible = visible;
 		}
 
 		private function setTitleText(text:String):void {

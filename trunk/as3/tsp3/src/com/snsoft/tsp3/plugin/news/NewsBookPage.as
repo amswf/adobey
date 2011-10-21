@@ -70,8 +70,8 @@ package com.snsoft.tsp3.plugin.news {
 
 		public function addItem(nib:NewsItemBase):void {
 
-			nib.buttonMode = true;
-			nib.mouseChildren = false;
+			//nib.buttonMode = true;
+			//nib.mouseChildren = false;
 			if (nib.autoRow) {
 				nib.draw();
 				itemsLayer.addChild(nib);

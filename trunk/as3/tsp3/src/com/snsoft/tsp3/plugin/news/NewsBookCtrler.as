@@ -81,19 +81,19 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		private function handlerChangePage(e:Event):void {
-			trace("handlerChangePage");
+			//trace("handlerChangePage");
 			var curnum:int = int(newsBook.currentNum);
 			var pCount:int = int(newsBook.pageCount);
 			pagin.setPageNum(curnum, pCount);
 		}
 
 		private function handlerBookNext(e:Event):void {
-			trace("handlerBookNext");
+			//trace("handlerBookNext");
 			loadInfoItems();
 		}
 
 		private function handlerBookPrev(e:Event):void {
-			trace("handlerBookPrev");
+			//trace("handlerBookPrev");
 			loadInfoItems();
 		}
 
@@ -113,7 +113,7 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		private function handlerSearchCmp(e:Event):void {
-			trace("handlerSearchCmp");
+			//trace("handlerSearchCmp");
 			var dl:DataLoader = e.currentTarget as DataLoader;
 			var rsv:Vector.<DataSet> = dl.data;
 
@@ -159,15 +159,15 @@ package com.snsoft.tsp3.plugin.news {
 				nbv.push(nbp);
 			}
 
-			trace("newsBook.changeType:", newsBook.changeType);
+			//trace("newsBook.changeType:", newsBook.changeType);
 
 			for (var k:int = 0; k < nbv.length; k++) {
 				if (newsBook.changeType == NewsBook.CHANGE_TYPE_PREV) {
-					trace("prev");
+					//trace("prev");
 					newsBook.addPagePrev(nbp);
 				}
 				else if (newsBook.changeType == NewsBook.CHANGE_TYPE_NEXT) {
-					trace("next");
+					//trace("next");
 					newsBook.addPageNext(nbp);
 				}
 			}

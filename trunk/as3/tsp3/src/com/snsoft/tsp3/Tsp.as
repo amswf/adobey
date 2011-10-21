@@ -174,21 +174,22 @@ package com.snsoft.tsp3 {
 			loadPlugin(cfg.startPlugin);
 		}
 
-		public function loadPlugin(pluginName:String, params:Object = null, uuid:String = null):void {
+		public function loadPlugin(pluginName:String, params:Object = null, uuid:String = null, defVisible:Boolean = true):void {
 			var sign:Boolean = true;
 			var pld:PluginLoader = null;
 
+			var visible:Boolean = true;
 			if (uuid != null) {
 				pld = getPlugin(uuid);
 			}
 
 			if (pld == null) {
-				pld = new PluginLoader(PLUGIN_BASE_PATH, pluginName, params, uuid);
+				pld = new PluginLoader(PLUGIN_BASE_PATH, pluginName, params, uuid, defVisible);
 				pld.addEventListener(Event.COMPLETE, handlerLoadPluginCmp);
 				pld.load();
 			}
 			else {
-				pluginView(pld);
+				pluginView(pld, true);
 			}
 		}
 
@@ -198,10 +199,10 @@ package com.snsoft.tsp3 {
 			plg.addEventListener(BPluginEvent.PLUGIN_CLOSE, handlerPluginClose);
 			plg.addEventListener(BPluginEvent.PLUGIN_MINIMIZE, handlerPluginMinimize);
 			addPlugin(pld);
-			pluginView(pld);
+			pluginView(pld, pld.defVisible);
 		}
 
-		private function pluginView(pld:PluginLoader):void {
+		private function pluginView(pld:PluginLoader, visible:Boolean):void {
 			var plg:BPlugin = pld.plugin;
 			var layer:Sprite = getLayer(plg.type);
 			if (layer.numChildren > 0) {
@@ -210,7 +211,7 @@ package com.snsoft.tsp3 {
 					layer.swapChildren(plg, tplg);
 				}
 			}
-			plg.visible = true;
+			plg.visible = visible;
 		}
 
 		private function getLayer(type:String):Sprite {
@@ -229,9 +230,12 @@ package com.snsoft.tsp3 {
 
 		private function addPlugin(pld:PluginLoader):void {
 			var plg:BPlugin = pld.plugin;
+			plg.visible = false;
 			var layer:Sprite = getLayer(plg.type);
 			layer.addChild(plg);
-			Common.instance().pluginBarAddBtn(pld.uuid);
+			if (plg.type == BPlugin.TYPE_FUNCTION) {
+				Common.instance().pluginBarAddBtn(pld.uuid);
+			}
 			var uuid:String = pld.uuid;
 			if (uuid != null && uuid.length > 0) {
 				plugins[uuid] = pld;

@@ -209,6 +209,14 @@
 			quickToolBar.x = startToolBar.width;
 			quickToolBar.addEventListener(BtnBar.EVENT_BTN_CLICK, handlerBtnBarBtnClick);
 
+			var qbtns:Vector.<DesktopBtn> = quickToolBar.btns;
+			if (qbtns != null) {
+				for (var i3:int = 0; i3 < qbtns.length; i3++) {
+					var qbtn:DesktopBtn = qbtns[i3];
+					var qdata:DataDTO = qbtn.data as DataDTO;
+					Common.instance().loadPlugin(qdata.plugin, qdata.params, qbtn.uuid, false);
+				}
+			}
 			var stateToolBar:BtnBar = new BtnBar(stateBarBtnDTOList);
 			stateToolBar.y = tb;
 			stateToolBar.x = stage.stageWidth - stateToolBar.width;
@@ -314,7 +322,6 @@
 		private function btnClick(btn:DesktopBtn):void {
 			var dto:DataDTO = btn.data as DataDTO;
 			if (dto.plugin != null) {
-
 				var params:Object = new Object();
 				DependencyInjection.diToObj(dto.params, params, false);
 				DependencyInjection.diToObj(dto, params, false);
