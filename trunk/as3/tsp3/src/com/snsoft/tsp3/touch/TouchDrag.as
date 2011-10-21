@@ -142,7 +142,7 @@ package com.snsoft.tsp3.touch {
 
 				//trace(signx, signy, isClick);
 				if (!signx && !signy && isClick) {
-					trace("click");
+					//trace("click");
 					this._clickObj = cDownObj;
 					this.dispatchEvent(new Event(TouchDragEvent.TOUCH_CLICK));
 					twe = true;

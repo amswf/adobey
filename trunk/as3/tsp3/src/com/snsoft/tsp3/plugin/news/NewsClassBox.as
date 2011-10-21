@@ -229,7 +229,7 @@
 		}
 
 		private function handlerTouchClick(e:Event):void {
-			trace("handlerTouchClick");
+			//trace("handlerTouchClick");
 			if (!clickLock) {
 				var tg:TouchDrag = e.currentTarget as TouchDrag;
 				var btn:NewsTextBtn = tg.clickObj as NewsTextBtn;

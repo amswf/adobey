@@ -133,7 +133,6 @@
 			paginLayer.addChild(pagin);
 			pagin.x = (stage.stageWidth - columnW - pagin.width) / 2;
 			pagin.y = stage.stageHeight - deskBarH - pagin.height - boader;
-			trace(pagin.height);
 			//先在这里实现分页拖动
 
 			newsBook = new NewsBook(new Point(stage.stageWidth - columnW, pagin.y - boader - titleH));

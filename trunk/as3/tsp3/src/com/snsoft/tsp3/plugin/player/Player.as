@@ -414,7 +414,7 @@
 					video.addEventListener(VideoEvent.COMPLETE, handlerVideoStatusCmp);
 					video.width = vw;
 					video.height = vh;
-					trace("top");
+					//trace("top");
 					if (screenType == SCREEN_TYPE_TOP) {
 						Common.instance().topScreenPlayVideo(video);
 					}
@@ -452,7 +452,7 @@
 		}
 
 		private function handlerVideoStatusCmp(e:VideoEvent):void {
-			trace("handlerVideoStatusCmp");
+			//trace("handlerVideoStatusCmp");
 			if (screenType == SCREEN_TYPE_TOP) {
 				playWithStatus(STATUS_PLAY);
 			}

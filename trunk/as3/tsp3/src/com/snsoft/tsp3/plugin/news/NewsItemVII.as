@@ -1,4 +1,5 @@
 ﻿package com.snsoft.tsp3.plugin.news {
+	import com.snsoft.tsp3.ViewUtil;
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.tsp3.net.DataParam;
 	import com.snsoft.util.SkinsUtil;
@@ -36,7 +37,8 @@
 
 		private var selBack:MovieClip;
 
-		private var isMouseDown:Boolean = false;
+		private var isPlayMouseDown:Boolean = false;
+		private var isInfoMouseDown:Boolean = false;
 
 		public function NewsItemVII(data:DataDTO) {
 			super();
@@ -80,6 +82,15 @@
 			title.x = (itemWidth - title.width) / 2;
 			title.y = date.y - title.height;
 
+			var infoH:int = itemHeight - title.y - boader;
+			var infoBtn:Sprite = ViewUtil.creatRect(itemWidth, infoH);
+			this.addChild(infoBtn);
+			infoBtn.x = boader;
+			infoBtn.y = title.y;
+			infoBtn.buttonMode = true;
+			infoBtn.addEventListener(MouseEvent.MOUSE_DOWN, handlerInfoMouseDown);
+			infoBtn.addEventListener(MouseEvent.MOUSE_UP, handlerInfoMouseUp);
+
 			var imgspr:Sprite = new Sprite();
 			this.addChild(imgspr);
 			imgspr.x = boader;
@@ -97,17 +108,31 @@
 			play.y = (img.height - play.height) / 2;
 
 			play.buttonMode = true;
-			play.addEventListener(MouseEvent.MOUSE_DOWN, handlerMouseDown);
-			play.addEventListener(MouseEvent.MOUSE_UP, handlerMouseUp);
+			play.addEventListener(MouseEvent.MOUSE_DOWN, handlerPlayMouseDown);
+			play.addEventListener(MouseEvent.MOUSE_UP, handlerPlayMouseUp);
 		}
 
-		private function handlerMouseDown(e:Event):void {
-			isMouseDown = true;
+		private function handlerInfoMouseDown(e:Event):void {
+			isInfoMouseDown = true;
 		}
 
-		private function handlerMouseUp(e:Event):void {
-			_clickType = CLICK_TYPE_PLAY;
-			isMouseDown = false;
+		private function handlerInfoMouseUp(e:Event):void {
+			if (isInfoMouseDown) {
+				_clickType = CLICK_TYPE_INFO;
+				isInfoMouseDown = false;
+			}
+		}
+
+		private function handlerPlayMouseDown(e:Event):void {
+			isPlayMouseDown = true;
+		}
+
+		private function handlerPlayMouseUp(e:Event):void {
+			if (isPlayMouseDown) {
+				_clickType = CLICK_TYPE_PLAY;
+				isPlayMouseDown = false;
+			}
+
 		}
 	}
 }
