@@ -1,6 +1,7 @@
 ﻿package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.tsp3.net.DataParam;
+	import com.snsoft.tsp3.plugin.news.layout.Util;
 	import com.snsoft.util.SkinsUtil;
 
 	import flash.display.Bitmap;
@@ -21,7 +22,7 @@
 
 		private var boader2:int = 5;
 
-		private var hMax:int = 100;
+		private var hMax:int = 110;
 
 		private var tft:TextFormat = new TextFormat(null, 12, 0xffffff);
 
@@ -51,66 +52,42 @@
 			selBack.visible = false;
 			this.addChild(selBack);
 
-			var title:TextField = new TextField();
-			title.defaultTextFormat = tft;
-			title.autoSize = TextFieldAutoSize.LEFT;
-			title.mouseEnabled = false;
+			var imgh:int = itemHeight - boader - boader;
+			var imgw:int = imgh * 1.33;
+
+			var img:Bitmap = new Bitmap(_data.img, "auto", true);
+			this.addChild(img);
+			img.x = boader;
+			img.y = boader;
+			img.width = imgw;
+			img.height = imgh;
+			this.addChild(img);
+
 			var tp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_TITLE);
-			title.text = tp.text + "：" + tp.content;
+
+			var v:Vector.<DataParam> = new Vector.<DataParam>();
+			v.push(ndp.getIntrParam(NewsDataParam.PARAM_DATE));
+			v.push(ndp.getIntrParam(NewsDataParam.PARAM_EBUY_TYPE));
+
+			var title:Sprite = Util.twsLeft(texttft, ctnttft, itemWidth - img.getRect(this).right - boader - boader - boader, 10, tp, v);
 			this.addChild(title);
-			title.x = boader;
+			title.x = img.getRect(this).right + boader;
 			title.y = boader;
 
-			var date:TextField = new TextField();
-			date.defaultTextFormat = tft;
-			date.autoSize = TextFieldAutoSize.LEFT;
-			date.mouseEnabled = false;
-			var cp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_DATE);
-			date.text = cp.text + "：" + cp.content;
-			this.addChild(date);
-			date.x = title.getRect(this).right + boader;
-			date.y = boader;
-
-			var ebuyType:TextField = new TextField();
-			ebuyType.defaultTextFormat = tft;
-			ebuyType.autoSize = TextFieldAutoSize.LEFT;
-			ebuyType.mouseEnabled = false;
-
-			var ett:String = "";
-			var ebp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_DATE);
-			if (ebp.content == NewsDataParam.EBUY_TYPE_SUPL) {
-				ett = "[供]";
-			}
-			else if (ebp.content == NewsDataParam.EBUY_TYPE_BUY) {
-				ett = "[应]";
-			}
-			ebuyType.text = ett;
-			this.addChild(ebuyType);
-			ebuyType.x = date.getRect(this).right + boader;
-			ebuyType.y = boader;
-
-			var keywords:TextField = new TextField();
-			keywords.defaultTextFormat = tft;
-			keywords.autoSize = TextFieldAutoSize.LEFT;
-			keywords.mouseEnabled = false;
 			var kp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_KEYWORDS);
-			keywords.text = kp.text + "：" + kp.content;
+			var keywords:Sprite = Util.lineItem(kp.text, kp.content, texttft, ctnttft, 0);
 			this.addChild(keywords);
-			keywords.x = boader;
+			keywords.x = img.getRect(this).right + boader;
 			keywords.y = title.getRect(this).bottom;
 
-			var digest:TextField = new TextField();
-			digest.defaultTextFormat = tft;
-			digest.mouseEnabled = false;
-			digest.multiline = true;
-			digest.wordWrap = true;
-			var dgp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_DIGEST);
-			digest.text = dgp.text + "：" + dgp.content;
+			var dp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_DIGEST);
+			var dw:int = itemWidth - boader - img.width - boader - boader;
+			var dh:int = itemHeight - keywords.getRect(this).bottom - boader;
+			var digest:TextField = Util.contentItem(dp, texttft, ctnttft, dw, dh);
 			this.addChild(digest);
-			digest.x = boader;
+			digest.x = title.x;
 			digest.y = keywords.getRect(this).bottom;
-			digest.width = itemWidth - boader - digest.x;
-			digest.height = itemHeight - boader - digest.y;
+
 		}
 	}
 }

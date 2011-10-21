@@ -67,10 +67,11 @@ package com.snsoft.tsp3.plugin.news {
 			v.push(ndp.getIntrParam(NewsDataParam.PARAM_KEYWORDS));
 			v.push(ndp.getIntrParam(NewsDataParam.PARAM_DATE));
 
-			var title:Sprite = Util.twsLeft(texttft, ctnttft, itemWidth - boader - boader - boader, 10, tp, v);
+			var title:Sprite = Util.twsLeft(texttft, ctnttft, itemWidth - img.getRect(this).right - boader - boader - boader, 10, tp, v);
 			this.addChild(title);
 			title.x = img.getRect(this).right + boader;
 			title.y = boader;
+
 			var dp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_DIGEST);
 			var dw:int = itemWidth - boader - img.width - boader - boader;
 			var dh:int = itemHeight - title.getRect(this).bottom - boader - boader;

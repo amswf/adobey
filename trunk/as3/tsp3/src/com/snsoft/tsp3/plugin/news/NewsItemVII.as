@@ -2,6 +2,7 @@
 	import com.snsoft.tsp3.ViewUtil;
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.tsp3.net.DataParam;
+	import com.snsoft.tsp3.plugin.news.layout.Util;
 	import com.snsoft.util.SkinsUtil;
 
 	import flash.display.Bitmap;
@@ -62,24 +63,16 @@
 			selBack.visible = false;
 			this.addChild(selBack);
 
-			var date:TextField = new TextField();
-			date.mouseEnabled = false;
-			date.defaultTextFormat = tft;
-			date.autoSize = TextFieldAutoSize.LEFT;
 			var dp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_DATE);
-			date.text = dp.text + "：" + dp.content;
+			var date:Sprite = Util.lineItem(dp.text, dp.content, texttft, ctnttft, 0);
 			this.addChild(date);
-			date.x = (itemWidth - date.width) / 2;
+			date.x = boader;
 			date.y = itemHeight - boader - date.height;
 
-			var title:TextField = new TextField();
-			title.mouseEnabled = false;
-			title.defaultTextFormat = tft;
-			title.autoSize = TextFieldAutoSize.LEFT;
 			var tp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_TITLE);
-			title.text = tp.text + "：" + tp.content;
+			var title:TextField = Util.ctnt(tp.content, ctnttft, itemWidth - boader - boader);
 			this.addChild(title);
-			title.x = (itemWidth - title.width) / 2;
+			title.x = boader;
 			title.y = date.y - title.height;
 
 			var infoH:int = itemHeight - title.y - boader;
