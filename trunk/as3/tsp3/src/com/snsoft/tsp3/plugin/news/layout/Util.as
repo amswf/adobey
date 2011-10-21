@@ -1,6 +1,5 @@
 package com.snsoft.tsp3.plugin.news.layout {
 	import com.snsoft.tsp3.net.DataParam;
-	import com.snsoft.util.TFDUtil;
 
 	import flash.display.Sprite;
 	import flash.text.TextField;
@@ -14,7 +13,7 @@ package com.snsoft.tsp3.plugin.news.layout {
 		public static function contentItem(dataParam:DataParam, textTft:TextFormat, ctntTft:TextFormat, width:int, height:int):TextField {
 			var text:String = dataParam.text + "：";
 			var ctnt:String = dataParam.text + dataParam.content;
-			var tfd:TextField = TFDUtil.creatTextMultiLine(text + ctnt, ctntTft, width, height);
+			var tfd:TextField = creatTextMultiLine(text + ctnt, ctntTft, width, height);
 			tfd.setTextFormat(textTft, 0, text.length);
 			return tfd;
 		}
@@ -140,7 +139,7 @@ package com.snsoft.tsp3.plugin.news.layout {
 		 */
 		public static function ctnt(text:String, tft:TextFormat, maxWidth:int = 0):TextField {
 			if (maxWidth > 0) {
-				return TFDUtil.creatTextInline(text, tft, maxWidth);
+				return creatTextInline(text, tft, maxWidth);
 			}
 			else {
 				var txt:TextField = new TextField();
@@ -152,6 +151,63 @@ package com.snsoft.tsp3.plugin.news.layout {
 				}
 				return txt;
 			}
+		}
+
+		/**
+		 * 创建一个适合宽度的Textfield，字符超出时截断并以 endText结尾
+		 * @param text
+		 * @param tft
+		 * @param maxWidth
+		 * @param endText
+		 * @return
+		 *
+		 */
+		public static function creatTextInline(text:String, tft:TextFormat, maxWidth:int = 0, endText:String = "..."):TextField {
+			var tfd:TextField = new TextField();
+			tfd.defaultTextFormat = tft;
+			tfd.autoSize = TextFieldAutoSize.LEFT;
+			if (text != null) {
+				var fs:int = int(tft.size);
+				var fw:int = fs + 3;
+				var n:int = maxWidth / fw;
+				var et:String = n < text.length ? endText : "";
+				tfd.text = text.substring(0, n - endText.length) + et;
+			}
+			return tfd;
+		}
+
+		/**
+		 *
+		 * @param text
+		 * @param tft
+		 * @param maxWidth
+		 * @param maxHeight
+		 * @param endText
+		 * @return
+		 *
+		 */
+		public static function creatTextMultiLine(text:String, tft:TextFormat, maxWidth:int, maxHeight:int, endText:String = "..."):TextField {
+			var tfd:TextField = new TextField();
+			tfd.defaultTextFormat = tft;
+			tfd.autoSize = TextFieldAutoSize.LEFT;
+			tfd.multiline = true;
+			tfd.wordWrap = true;
+			tfd.width = maxWidth;
+			if (text != null) {
+				if (maxWidth > 0 && text.length > 0) {
+					var fs:int = int(tft.size);
+					var fw:int = fs;
+					var fh:int = fs + 2;
+					var n:int = (maxWidth - 5) / fw;
+					var m:int = (maxHeight - 1) / fh;
+					var et:String = n * m < text.length ? endText : "";
+					tfd.text = text.substring(0, n * m - endText.length) + et;
+				}
+				else {
+					tfd.text = text;
+				}
+			}
+			return tfd;
 		}
 
 	}
