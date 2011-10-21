@@ -9,6 +9,10 @@ package com.snsoft.tsp3.plugin.news {
 		public static const ITEM_TYPE_II:String = "II";
 		public static const ITEM_TYPE_III:String = "III";
 
+		public static const CLICK_TYPE_PLAY:String = "play";
+
+		public static const CLICK_TYPE_INFO:String = "info";
+
 		private var _itemWidth:int;
 
 		private var _itemHeight:int
@@ -16,6 +20,8 @@ package com.snsoft.tsp3.plugin.news {
 		protected var _data:DataDTO;
 
 		protected var _autoRow:Boolean = false;
+
+		protected var _clickType:String;
 
 		public function NewsItemBase() {
 			super();
@@ -48,6 +54,12 @@ package com.snsoft.tsp3.plugin.news {
 		public function get autoRow():Boolean {
 			return _autoRow;
 		}
+
+		public function get clickType():String
+		{
+			return _clickType;
+		}
+
 
 	}
 }

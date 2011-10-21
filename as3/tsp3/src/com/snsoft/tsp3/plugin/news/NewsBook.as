@@ -105,6 +105,7 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		private function handlerTouchClick(e:Event):void {
+			trace("handlerTouchClick");
 			_clickItem = td.clickObj as NewsItemBase;
 			this.dispatchEvent(new Event(EVENT_ITEM_CLICK));
 		}

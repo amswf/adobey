@@ -36,7 +36,7 @@ package com.snsoft.tsp3 {
 		public static const PARAM_DIGEST_LENGTH:String = "digestLength";
 
 		public static const PARAM_INFO:String = "infoId";
-		
+
 		public static const PARAM_WORD:String = "word";
 
 		public static const PARAM_TYPE:String = "type";
@@ -59,11 +59,31 @@ package com.snsoft.tsp3 {
 
 		private var defImg:BitmapData = new BitmapData(100, 100);
 
+		private var player:IPlayer;
+
 		public function Common() {
 			if (lock) {
 				throw(new Error("Common can not new"));
 			}
 			lock = true;
+		}
+
+		public function initPlayer(player:IPlayer):void {
+			this.player = player;
+		}
+
+		public function playMp3(url:String, title:String):void {
+			if (player != null) {
+				player.setVisible(true);
+				player.playMp3(url, title);
+			}
+		}
+
+		public function playVideo(url:String, title:String):void {
+			if (player != null) {
+				player.setVisible(true);
+				player.playVideo(url, title);
+			}
 		}
 
 		public function initTopStage(stage:Stage):void {
@@ -108,9 +128,9 @@ package com.snsoft.tsp3 {
 			}
 		}
 
-		public function loadPlugin(pluginName:String, params:Object = null, uuid:String = null):void {
+		public function loadPlugin(pluginName:String, params:Object = null, uuid:String = null, defVisible:Boolean = true):void {
 			if (tsp != null) {
-				tsp.loadPlugin(pluginName, params, uuid);
+				tsp.loadPlugin(pluginName, params, uuid, defVisible);
 			}
 		}
 

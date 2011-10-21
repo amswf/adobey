@@ -42,11 +42,14 @@
 
 		private var loader:Loader;
 
-		public function PluginLoader(basePath:String, pluginName:String, params:Object = null, uuid:String = null) {
+		private var _defVisible:Boolean = true;
+
+		public function PluginLoader(basePath:String, pluginName:String, params:Object = null, uuid:String = null, defVisible:Boolean = true) {
 			this.basePath = basePath;
 			this.pluginName = pluginName;
 			this.params = params;
 			this._uuid = uuid;
+			this._defVisible = defVisible;
 
 			relativeUrl = basePath + pluginName + "/";
 			xmlUrl = relativeUrl + PLUGIN_XML_NAME;
@@ -152,6 +155,10 @@
 
 		public function get uuid():String {
 			return _uuid;
+		}
+
+		public function get defVisible():Boolean {
+			return _defVisible;
 		}
 
 	}
