@@ -25,8 +25,6 @@
 	 */
 	public class NewsItemVII extends NewsItemBase {
 
-		private var boader:int = 20;
-
 		private var hMax:int = 180;
 
 		private var wMax:int = 150;
@@ -47,6 +45,8 @@
 		}
 
 		override public function draw():void {
+			boader = 20;
+
 			var ndp:NewsDataParam = new NewsDataParam(data.params);
 
 			itemHeight = hMax;
