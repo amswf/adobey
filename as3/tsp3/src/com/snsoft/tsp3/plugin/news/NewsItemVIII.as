@@ -24,9 +24,9 @@
 	 * @author Administrator
 	 *
 	 */
-	public class NewsItemVII extends NewsItemBase {
+	public class NewsItemVIII extends NewsItemBase {
 
-		private var hMax:int = 180;
+		private var hMax:int = 88;
 
 		private var wMax:int = 150;
 
@@ -39,9 +39,8 @@
 		private var isPlayMouseDown:Boolean = false;
 		private var isInfoMouseDown:Boolean = false;
 
-		public function NewsItemVII(data:DataDTO) {
+		public function NewsItemVIII(data:DataDTO) {
 			super();
-			_autoRow = true;
 			this._data = data;
 		}
 
@@ -51,58 +50,39 @@
 			var ndp:NewsDataParam = new NewsDataParam(data.params);
 
 			itemHeight = hMax;
-			itemWidth = wMax;
-			defBack = SkinsUtil.createSkinByName("NewsItemsVII_backDefSkin");
+
+			defBack = SkinsUtil.createSkinByName("NewsItemsVIII_backDefSkin");
 			defBack.width = itemWidth;
 			defBack.height = itemHeight;
 			this.addChild(defBack);
 
-			selBack = SkinsUtil.createSkinByName("NewsItemsVII_backSelSkin");
+			selBack = SkinsUtil.createSkinByName("NewsItemsVIII_backSelSkin");
 			selBack.width = itemWidth;
 			selBack.height = itemHeight;
 			selBack.visible = false;
 			this.addChild(selBack);
 
-			var dp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_DATE);
-			var date:Sprite = Util.lineItem(dp.text, dp.content, texttft, ctnttft, 0);
-			this.addChild(date);
-			date.x = boader;
-			date.y = itemHeight - boader - date.height;
-
-			var tp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_TITLE);
-			var title:TextField = Util.ctnt(tp.content, ctnttft, itemWidth - boader - boader);
-			this.addChild(title);
-			title.x = boader;
-			title.y = date.y - title.height;
-
-			var infoH:int = itemHeight - title.y - boader;
-			var infoBtn:Sprite = ViewUtil.creatRect(itemWidth, infoH);
+			var infoBtn:MovieClip = SkinsUtil.createSkinByName("NewsItemsVIII_ctntDefSkin");
 			this.addChild(infoBtn);
-			infoBtn.x = boader;
-			infoBtn.y = title.y;
+			infoBtn.x = itemWidth - boader - infoBtn.width;
+			infoBtn.y = (itemHeight - infoBtn.height) / 2;
 			infoBtn.buttonMode = true;
 			infoBtn.addEventListener(MouseEvent.MOUSE_DOWN, handlerInfoMouseDown);
 			infoBtn.addEventListener(MouseEvent.MOUSE_UP, handlerInfoMouseUp);
 
-			var imgspr:Sprite = new Sprite();
-			this.addChild(imgspr);
-			imgspr.x = boader;
-			imgspr.y = boader;
+			var playBtn:MovieClip = SkinsUtil.createSkinByName("NewsItemsVIII_playDefSkin");
+			this.addChild(playBtn);
+			playBtn.x = infoBtn.x - boader - playBtn.width;
+			playBtn.y = (itemHeight - playBtn.height) / 2;
+			playBtn.buttonMode = true;
+			playBtn.addEventListener(MouseEvent.MOUSE_DOWN, handlerPlayMouseDown);
+			playBtn.addEventListener(MouseEvent.MOUSE_UP, handlerPlayMouseUp);
 
-			var img:Bitmap = new Bitmap(_data.img, "auto", true);
-			imgspr.addChild(img);
-			img.width = itemWidth - boader - boader;
-			img.height = title.y - boader;
-			imgspr.addChild(img);
-
-			var play:MovieClip = SkinsUtil.createSkinByName("NewsItemsVII_playDefSkin");
-			imgspr.addChild(play);
-			play.x = (img.width - play.width) / 2;
-			play.y = (img.height - play.height) / 2;
-
-			play.buttonMode = true;
-			play.addEventListener(MouseEvent.MOUSE_DOWN, handlerPlayMouseDown);
-			play.addEventListener(MouseEvent.MOUSE_UP, handlerPlayMouseUp);
+			var tp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_TITLE);
+			var title:Sprite = Util.lineItem(tp.text, tp.content, texttft, ctnttft, playBtn.x - boader);
+			this.addChild(title);
+			title.x = boader;
+			title.y = (itemHeight - title.height) / 2;
 
 			this.addEventListener(MouseEvent.MOUSE_DOWN, handlerThisMouseDown);
 		}
