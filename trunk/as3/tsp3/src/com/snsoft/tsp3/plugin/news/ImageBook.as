@@ -52,6 +52,8 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var boader:int = 10;
 
+		private var boader2:int = 0;
+
 		private var currentImg:Sprite;
 
 		private var nextImg:Sprite;
@@ -95,7 +97,10 @@ package com.snsoft.tsp3.plugin.news {
 
 			imgLayer.mask = mskLayer;
 			imgLayer.x = boader + lbtn.width + boader;
+			imgLayer.y = boader + boader2;
+
 			mskLayer.x = boader + lbtn.width + boader;
+			mskLayer.y = boader + boader2;
 
 			msgtfd = new TextField();
 			msgtfd.autoSize = TextFieldAutoSize.LEFT;
@@ -116,7 +121,7 @@ package com.snsoft.tsp3.plugin.news {
 
 		private function setMsg(msg:String):void {
 			msgtfd.text = msg;
-			msgtfd.x = (cbw - msgtfd.width) / 2;
+			msgtfd.x = cbw - msgtfd.width - boader;
 			msgtfd.y = boader;
 		}
 
@@ -140,8 +145,8 @@ package com.snsoft.tsp3.plugin.news {
 			}
 			img.width = int(img.width * scale);
 			img.height = int(img.height * scale);
-			img.x = (msk.width - img.width) / 2;
-			img.y = (msk.height - img.height) / 2;
+			img.x = (imgw - img.width) / 2;
+			img.y = (imgh - img.height) / 2;
 
 			var sprite:Sprite = new Sprite();
 			sprite.addChild(img);
@@ -194,16 +199,16 @@ package com.snsoft.tsp3.plugin.news {
 			}
 
 			msk.width = cbw - boader * 4 - lbtn.width - rbtn.width;
-			msk.height = cbh - boader * 4;
+			msk.height = cbh - boader - boader - boader2;
 
 			back.width = cbw;
-			back.height = msk.height;
+			back.height = cbh;
 
 			lbtn.x = boader;
-			lbtn.y = (cbh - lbtn.height) / 2;
+			lbtn.y = (cbh + boader2 - lbtn.height) / 2;
 
 			rbtn.x = cbw - boader - rbtn.width;
-			rbtn.y = (cbh - rbtn.height) / 2;
+			rbtn.y = (cbh + boader2 - rbtn.height) / 2;
 		}
 
 	}
