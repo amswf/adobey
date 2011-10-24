@@ -16,9 +16,9 @@
 	import flash.text.TextFormat;
 
 	/**
-	 *    图片
-	 *    标题
-	 *    日期
+	 *
+	 *    标题   播放按钮  详细按钮
+	 *
 	 *
 	 *   可点击图片播放，点击文字进入
 	 * @author Administrator
