@@ -167,7 +167,7 @@ package com.snsoft.tsp3.plugin.news {
 			if (data != null && data.length > 0) {
 				var sprite:Sprite = null;
 				if (type == SRC_IMAGES) {
-					sprite = new ImageBook(data, ctntWidth, int(ctntWidth * 0.6));
+					sprite = new ImageBook(data, ctntWidth, maskLayer.height - boader - boader);
 				}
 				else {
 					sprite = creatSrc(text, type, skin, data);

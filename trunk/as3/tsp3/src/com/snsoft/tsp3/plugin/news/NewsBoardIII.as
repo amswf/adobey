@@ -15,6 +15,11 @@
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 
+	/**
+	 * 供求
+	 * @author Administrator
+	 *
+	 */
 	public class NewsBoardIII extends NewsBoardBase {
 
 		private var hMax:int = 100;

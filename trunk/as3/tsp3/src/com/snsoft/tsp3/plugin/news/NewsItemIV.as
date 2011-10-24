@@ -13,8 +13,8 @@
 
 	/**
 	 * 市场行情
-	 *    图片
-	 *    标题
+	 *
+	 *
 	 * @author Administrator
 	 *
 	 */

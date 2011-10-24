@@ -8,7 +8,7 @@
 	import com.snsoft.tsp3.plugin.BPlugin;
 	import com.snsoft.tsp3.plugin.news.dto.NewsTitleDTO;
 	import com.snsoft.util.SkinsUtil;
-	
+
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
@@ -92,6 +92,7 @@
 			NewsBoardI;
 			NewsBoardII;
 			NewsBoardIII;
+			NewsBoardIV;
 
 			super();
 			this.addChild(backLayer);
