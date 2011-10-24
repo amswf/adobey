@@ -1,4 +1,5 @@
 package com.snsoft.tsp3.net {
+	import flash.display.BitmapData;
 
 	public class DataParam {
 		private var _name:String;
@@ -10,6 +11,8 @@ package com.snsoft.tsp3.net {
 		private var _url:String;
 
 		private var _content:String;
+
+		private var _img:BitmapData;
 
 		public function DataParam() {
 
@@ -54,6 +57,17 @@ package com.snsoft.tsp3.net {
 		public function set url(value:String):void {
 			_url = value;
 		}
+
+		public function get img():BitmapData
+		{
+			return _img;
+		}
+
+		public function set img(value:BitmapData):void
+		{
+			_img = value;
+		}
+
 
 	}
 }

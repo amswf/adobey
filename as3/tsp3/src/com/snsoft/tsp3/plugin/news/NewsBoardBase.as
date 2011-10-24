@@ -158,17 +158,23 @@ package com.snsoft.tsp3.plugin.news {
 
 		protected function addSrcs(data:DataDTO):void {
 			addSrcItem("附件", SRC_FILES, "NewsSrcBtn_fileSkin", data.files);
-			addSrcItem("图片", SRC_FILES, "NewsSrcBtn_imgSkin", data.images);
-			addSrcItem("音乐", SRC_FILES, "NewsSrcBtn_audioSkin", data.audios);
-			addSrcItem(" 影片", SRC_FILES, "NewsSrcBtn_videoSkin", data.videos);
+			addSrcItem("图片", SRC_IMAGES, "NewsSrcBtn_imgSkin", data.images);
+			addSrcItem("音乐", SRC_AUDIOS, "NewsSrcBtn_audioSkin", data.audios);
+			addSrcItem(" 影片", SRC_VIDEOS, "NewsSrcBtn_videoSkin", data.videos);
 		}
 
 		private function addSrcItem(text:String, type:String, skin:String, data:Vector.<DataParam>):void {
 			if (data != null && data.length > 0) {
-				var sfiles:Sprite = creatSrc(text, type, skin, data);
-				scrollLayer.addChild(sfiles);
-				sfiles.y = nextY;
-				nextY = sfiles.getRect(scrollLayer).bottom + boader;
+				var sprite:Sprite = null;
+				if (type == SRC_IMAGES) {
+					sprite = new ImageBook(data, ctntWidth, int(ctntWidth * 0.6));
+				}
+				else {
+					sprite = creatSrc(text, type, skin, data);
+				}
+				scrollLayer.addChild(sprite);
+				sprite.y = nextY;
+				nextY = sprite.getRect(scrollLayer).bottom + boader;
 			}
 		}
 

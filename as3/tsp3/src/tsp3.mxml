@@ -11,6 +11,7 @@
 			import com.snsoft.tsp3.pagination.Pagination;
 			import com.snsoft.tsp3.pagination.PaginationBtn;
 			import com.snsoft.tsp3.plugin.desktop.Desktop;
+			import com.snsoft.tsp3.plugin.news.ImageBook;
 			import com.snsoft.tsp3.plugin.news.News;
 			import com.snsoft.tsp3.plugin.news.NewsBoardI;
 			import com.snsoft.tsp3.plugin.news.NewsBook;
@@ -47,6 +48,7 @@
 				NewsInfo;
 				NewsItemV;
 				Util;
+				ImageBook;
 			}
 		]]>
 	</fx:Script>
