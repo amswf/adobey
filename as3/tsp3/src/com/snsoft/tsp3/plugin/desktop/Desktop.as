@@ -114,8 +114,8 @@
 			this.addChild(paginLayer);
 			this.addChild(toolBarLayer);
 
-			imgRS.addResUrl(pluginCfg.toolBarBackImgUrl);
-			imgRS.addResUrl(pluginCfg.backImgUrl);
+			imgRS.addResUrl(cfg.logoImgUrl);
+			imgRS.addResUrl(cfg.backImgUrl);
 
 			PromptMsgMng.instance().setMsg("Desktop");
 
@@ -192,11 +192,17 @@
 
 		private function initDesktop():void {
 
-			var backbmd:BitmapData = imgRS.getImageByUrl(pluginCfg.backImgUrl);
+			var backbmd:BitmapData = imgRS.getImageByUrl(cfg.backImgUrl);
 			var backbm:Bitmap = new Bitmap(backbmd, "auto", true);
 			backbm.width = stage.stageWidth;
 			backbm.height = stage.stageHeight;
 			backLayer.addChild(backbm);
+
+			var logobmd:BitmapData = imgRS.getImageByUrl(cfg.logoImgUrl);
+			var logobm:Bitmap = new Bitmap(logobmd, "auto", true);
+			backLayer.addChild(logobm);
+			logobm.x = int(cfg.logoImgX);
+			logobm.y = int(cfg.logoImgY);
 
 			var startBarBtnDTOList:Vector.<DataDTO> = new Vector.<DataDTO>();
 			var quickBarBtnDTOList:Vector.<DataDTO> = new Vector.<DataDTO>();
@@ -282,7 +288,7 @@
 				boardLayer.addChild(back);
 
 				var bv:Vector.<DataDTO> = boardData[j].dtoList;
-				var btnBoard:BtnBoard = new BtnBoard(bv, boardw, boardh, 80, 100);
+				var btnBoard:BtnBoard = new BtnBoard(bv, boardw, boardh, 120, 130);
 				btnBoard.x = j * boardw;
 				bbv.push(btnBoard);
 				boardLayer.addChild(btnBoard);
