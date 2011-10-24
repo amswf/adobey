@@ -111,6 +111,14 @@
 								if (dto.imgUrl != null && dto.imgUrl.length > 0) {
 									rsImg.addResUrl(dto.imgUrl);
 								}
+
+								var imgs:Vector.<DataParam> = dto.images;
+								if (imgs != null) {
+									for (var k:int = 0; k < imgs.length; k++) {
+										var pImgUrl:String = imgs[k].url;
+										rsImg.addResUrl(pImgUrl);
+									}
+								}
 							}
 						}
 						_data.push(ds);
@@ -146,6 +154,14 @@
 					for (var j:int = 0; j < ds.dtoList.length; j++) {
 						var dto:DataDTO = ds.dtoList[j];
 						dto.img = rsImg.getImageByUrl(dto.imgUrl);
+
+						var imgs:Vector.<DataParam> = dto.images;
+						if (imgs != null) {
+							for (var k:int = 0; k < imgs.length; k++) {
+								var dp:DataParam = imgs[k];
+								dp.img = rsImg.getImageByUrl(dp.url);
+							}
+						}
 					}
 				}
 			}
