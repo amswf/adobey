@@ -275,6 +275,9 @@
 			pagin.y = stage.stageHeight - toolBack.height - pagin.height - 10;
 			pagin.setPageNum(1, bpNum);
 			paginLayer.addChild(pagin);
+			if (bpNum <= 1) {
+				pagin.visible = false;
+			}
 
 			var boardw:int = stage.stageWidth;
 			var boardh:int = pagin.y;
