@@ -31,7 +31,7 @@ package com.snsoft.tsp3.pagination {
 		/**
 		 * 元件之间的间距
 		 */
-		private var boader:int  = 5;
+		private var boader:int  = 0;
 
 		/**
 		 * 首页和末页按钮和中间几个按钮的间隔数
