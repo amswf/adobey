@@ -1,8 +1,11 @@
 package com.snsoft.tsp3.pagination {
 	import com.snsoft.util.SkinsUtil;
+	import com.snsoft.util.rlm.rs.RSEmbedFonts;
 
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import flash.text.AntiAliasType;
+	import flash.text.GridFitType;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
@@ -21,7 +24,7 @@ package com.snsoft.tsp3.pagination {
 
 		private var selected:Boolean = false;
 
-		private var btnTft:TextFormat;
+		private var btnTft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName("HZGBYS"), 15, 0x333333, true);
 
 		public function PaginationBtn(btnText:String = "", btnNum:int = 0) {
 			this.btnText = btnText;
@@ -33,8 +36,6 @@ package com.snsoft.tsp3.pagination {
 			this.mouseChildren = false;
 			this.buttonMode = true;
 
-			btnTft = new TextFormat(null, 14);
-
 			defBtn = SkinsUtil.createSkinByName("PaginationBtn_defSkin");
 			this.addChild(defBtn);
 
@@ -44,6 +45,9 @@ package com.snsoft.tsp3.pagination {
 			setStateSelect(selected);
 
 			btnTfd = new TextField();
+			btnTfd.embedFonts = true;
+			btnTfd.antiAliasType = AntiAliasType.ADVANCED;
+			btnTfd.gridFitType = GridFitType.PIXEL;
 			btnTfd.defaultTextFormat = btnTft;
 			btnTfd.autoSize = TextFieldAutoSize.LEFT;
 			setStateText(btnText);

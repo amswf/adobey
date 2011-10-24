@@ -10,8 +10,10 @@
 	import com.snsoft.tsp3.plugin.BPlugin;
 	import com.snsoft.tsp3.touch.TouchDrag;
 	import com.snsoft.tsp3.touch.TouchDragEvent;
+	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.di.DependencyInjection;
 	import com.snsoft.util.rlm.ResLoadManager;
+	import com.snsoft.util.rlm.rs.RSEmbedFonts;
 	import com.snsoft.util.rlm.rs.RSImages;
 	import com.snsoft.util.rlm.rs.RSTextFile;
 
@@ -21,6 +23,7 @@
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
@@ -116,6 +119,21 @@
 
 			PromptMsgMng.instance().setMsg("Desktop");
 
+			loadFonts();
+		}
+
+		private function loadFonts():void {
+			var rsf:RSEmbedFonts = new RSEmbedFonts();
+			rsf.addFontName("MicrosoftYaHei");
+			rsf.addFontName("HZGBYS");
+
+			var rlm:ResLoadManager = new ResLoadManager();
+			rlm.addResSet(rsf);
+			rlm.addEventListener(Event.COMPLETE, handlerLoadFontCmp);
+			rlm.load();
+		}
+
+		private function handlerLoadFontCmp(e:Event):void {
 			loadToolBarData();
 		}
 
@@ -238,18 +256,17 @@
 			pushListToAllBtns(quickToolBar.btns);
 			pushListToAllBtns(stateToolBar.btns);
 
-			var toolbmd:BitmapData = imgRS.getImageByUrl(pluginCfg.toolBarBackImgUrl);
-			var toolbm:Bitmap = new Bitmap(toolbmd, "auto", true);
-			toolbm.width = stage.stageWidth;
-			toolbm.height = toolBarLayer.height;
-			toolbm.y = stage.stageHeight - toolbm.height;
-			toolBarBackLayer.addChild(toolbm);
+			var toolBack:MovieClip = SkinsUtil.createSkinByName("Desktop_barBack");
+			toolBack.width = stage.stageWidth;
+			toolBack.height = toolBarLayer.height;
+			toolBack.y = stage.stageHeight - toolBack.height;
+			toolBarBackLayer.addChild(toolBack);
 
 			var bpNum:int = boardData.length;
 
 			pagin = new Pagination();
 			pagin.x = (stage.stageWidth - pagin.width) / 2;
-			pagin.y = stage.stageHeight - toolbm.height - pagin.height - 10;
+			pagin.y = stage.stageHeight - toolBack.height - pagin.height - 10;
 			pagin.setPageNum(1, bpNum);
 			paginLayer.addChild(pagin);
 
@@ -261,7 +278,7 @@
 				var back:Sprite = ViewUtil.creatRect(100, 100, 0xffffff);
 				back.x = j * boardw;
 				back.width = boardw;
-				back.height = toolbm.y;
+				back.height = toolBack.y;
 				boardLayer.addChild(back);
 
 				var bv:Vector.<DataDTO> = boardData[j].dtoList;
