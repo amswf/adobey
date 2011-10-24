@@ -10,6 +10,12 @@ package com.snsoft.tsp3.plugin.desktop {
 
 		private var _toolBarBackImgUrl:String;
 
+		private var _logoImgUrl:String;
+
+		private var _logoImgX:String;
+
+		private var _logoImgY:String;
+
 		public function DesktopCfg() {
 		}
 
@@ -44,6 +50,37 @@ package com.snsoft.tsp3.plugin.desktop {
 		public function set toolBarBackImgUrl(value:String):void {
 			_toolBarBackImgUrl = value;
 		}
+
+		public function get logoImgUrl():String
+		{
+			return _logoImgUrl;
+		}
+
+		public function set logoImgUrl(value:String):void
+		{
+			_logoImgUrl = value;
+		}
+
+		public function get logoImgX():String
+		{
+			return _logoImgX;
+		}
+
+		public function set logoImgX(value:String):void
+		{
+			_logoImgX = value;
+		}
+
+		public function get logoImgY():String
+		{
+			return _logoImgY;
+		}
+
+		public function set logoImgY(value:String):void
+		{
+			_logoImgY = value;
+		}
+
 
 	}
 }
