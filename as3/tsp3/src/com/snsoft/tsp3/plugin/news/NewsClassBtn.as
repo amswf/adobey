@@ -6,23 +6,23 @@ package com.snsoft.tsp3.plugin.news {
 
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import flash.text.AntiAliasType;
+	import flash.text.GridFitType;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 
-	public class NewsTextBtn extends Sprite {
+	public class NewsClassBtn extends Sprite {
 
 		private var text:String;
 
 		private var boader:int = 5;
 
-		private var boader2:int = 10;
-
 		private var btnWidth:int;
 
 		private var btnHeight:int;
 
-		private var tft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName("MicrosoftYaHei"), 15, 0xffffff);
+		private var tft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName("MicrosoftYaHei"), 14, 0xffffff);
 
 		private var _data:DataDTO;
 
@@ -30,7 +30,7 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var unSelSkin:MovieClip;
 
-		public function NewsTextBtn(text:String) {
+		public function NewsClassBtn(text:String) {
 			super();
 			this.text = text;
 			init();
@@ -38,26 +38,29 @@ package com.snsoft.tsp3.plugin.news {
 
 		private function init():void {
 
+			unSelSkin = SkinsUtil.createSkinByName("NewsClassBtn_unSelectedSkin");
+			this.addChild(unSelSkin);
+
+			selSkin = SkinsUtil.createSkinByName("NewsClassBtn_selectedSkin");
+			selSkin.visible = false;
+			this.addChild(selSkin);
+
 			var tfd:TextField = new TextField();
+			tfd.mouseEnabled = false;
 			tfd.defaultTextFormat = tft;
 			tfd.autoSize = TextFieldAutoSize.LEFT;
+			tfd.embedFonts = true;
+			tfd.antiAliasType = AntiAliasType.ADVANCED;
+			tfd.gridFitType = GridFitType.PIXEL;
+			tfd.thickness = 100;
 			tfd.text = text;
-			tfd.mouseEnabled = false;
-			tfd.x = boader;
-			tfd.y = boader2;
-
-			unSelSkin = SkinsUtil.createSkinByName("NewsTextBtn_unSelectedSkin");
-			unSelSkin.width = tfd.width + boader + boader;
-			unSelSkin.height = tfd.height + boader2 + boader2;
-
-			selSkin = SkinsUtil.createSkinByName("NewsTextBtn_selectedSkin");
-			selSkin.visible = false;
-			selSkin.width = tfd.width + boader + boader;
-			selSkin.height = tfd.height + boader2 + boader2;
-
-			this.addChild(unSelSkin);
-			this.addChild(selSkin);
 			this.addChild(tfd);
+			tfd.y = (unSelSkin.height - tfd.height) / 2;
+
+			var maxw:int = Math.max(unSelSkin.width, tfd.width + boader + boader);
+			tfd.x = (maxw - tfd.width) / 2;
+			unSelSkin.width = maxw;
+			selSkin.width = maxw;
 		}
 
 		public function setSectcted(b:Boolean):void {
