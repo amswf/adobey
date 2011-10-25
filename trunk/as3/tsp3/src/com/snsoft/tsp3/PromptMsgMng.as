@@ -68,6 +68,7 @@ package com.snsoft.tsp3 {
 				pmsgMask.visible = true;
 			}
 			else {
+				trace("PromptMsgMng:", msg);
 				trace("PromptMsgMng 需要调用init()初始化！");
 			}
 		}
