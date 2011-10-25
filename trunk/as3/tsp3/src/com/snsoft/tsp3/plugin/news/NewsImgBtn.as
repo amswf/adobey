@@ -1,11 +1,14 @@
 package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.ViewUtil;
 	import com.snsoft.util.SkinsUtil;
+	import com.snsoft.util.rlm.rs.RSEmbedFonts;
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.geom.Point;
+	import flash.text.AntiAliasType;
+	import flash.text.GridFitType;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
@@ -20,7 +23,7 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var img:BitmapData;
 
-		private var tft:TextFormat = new TextFormat(null, 12, 0x000000);
+		private var tft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName("MicrosoftYaHei"), 15, 0x666666);
 
 		private var text:String;
 
@@ -43,7 +46,15 @@ package com.snsoft.tsp3.plugin.news {
 
 		private function init():void {
 
+			unSelBack = SkinsUtil.createSkinByName("NewsBtn_unSelectedBackSkin");
+			this.addChild(unSelBack);
+
+			selBack = SkinsUtil.createSkinByName("NewsBtn_selectedBackSkin");
+			selBack.visible = false;
+			this.addChild(selBack);
+
 			var bm:Bitmap = new Bitmap(img, "auto", true);
+			this.addChild(bm);
 			bm.width = imgSize.x;
 			bm.height = imgSize.y;
 			bm.x = boader;
@@ -51,32 +62,28 @@ package com.snsoft.tsp3.plugin.news {
 
 			var tw:int = bw - (imgSize.x + boader + boader + boader);
 			var tfd:TextField = new TextField();
+			tfd.embedFonts = true;
+			tfd.antiAliasType = AntiAliasType.ADVANCED;
+			tfd.gridFitType = GridFitType.PIXEL;
+			tfd.thickness = 100;
+			tfd.autoSize = TextFieldAutoSize.LEFT;
 			tfd.defaultTextFormat = tft;
-			tfd.width = tw;
-			tfd.height = 17;
 			tfd.text = text;
-			ViewUtil.filterTfd(tfd);
-
+			this.addChild(tfd);
 			tfd.x = imgSize.x + boader + boader;
 			tfd.y = (imgSize.x + boader2 + boader2 - tfd.height) / 2;
+			tfd.width = tw;
 
 			var h:int = boader2 + imgSize.y + boader2;
 
-			selBack = SkinsUtil.createSkinByName("NewsBtn_selectedBackSkin");
-			selBack.visible = false;
 			selBack.width = bw;
 			selBack.height = h;
 
-			unSelBack = SkinsUtil.createSkinByName("NewsBtn_unSelectedBackSkin");
 			unSelBack.width = bw;
 			unSelBack.height = h;
 
 			var view:Sprite = ViewUtil.creatRect(bw, h);
 
-			this.addChild(unSelBack);
-			this.addChild(selBack);
-			this.addChild(bm);
-			this.addChild(tfd);
 			this.addChild(view);
 		}
 

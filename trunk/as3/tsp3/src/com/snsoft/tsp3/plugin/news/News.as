@@ -8,6 +8,8 @@
 	import com.snsoft.tsp3.plugin.BPlugin;
 	import com.snsoft.tsp3.plugin.news.dto.NewsTitleDTO;
 	import com.snsoft.util.SkinsUtil;
+	import com.snsoft.util.rlm.ResLoadManager;
+	import com.snsoft.util.rlm.rs.RSEmbedFonts;
 
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -109,9 +111,29 @@
 		}
 
 		override protected function init():void {
+			loadFonts();
+		}
+
+		private function loadFonts():void {
+			var rsf:RSEmbedFonts = new RSEmbedFonts();
+			rsf.addFontName("MicrosoftYaHei");
+			rsf.addFontName("HZGBYS");
+
+			var rlm:ResLoadManager = new ResLoadManager();
+			rlm.addResSet(rsf);
+			rlm.addEventListener(Event.COMPLETE, handlerLoadFontCmp);
+			rlm.load();
+		}
+
+		private function handlerLoadFontCmp(e:Event):void {
+			initBase();
+		}
+
+		private function initBase():void {
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 
+			prms.id = "5bc003ec024e49a995dbeb85f8734b84";
 			newsState.cPlateId = prms.id;
 			newsState.cColumnId = prms.columnId;
 
@@ -312,7 +334,9 @@
 			clearSearchText();
 
 			if (isClear) {
+				newsState.cClassId = null;
 				classBox.clear();
+				classBox.visible = false;
 			}
 
 			var url:String = Common.instance().dataUrl;
@@ -426,6 +450,8 @@
 				var sdto:DataDTO = btn.data as DataDTO;
 				if ((newsState.cColumnId != null && newsState.cColumnId == sdto.id) || (newsState.cColumnId == null && k == 0)) {
 					nbb.selectedDef(k);
+					newsState.cColumnId = sdto.id;
+					break;
 				}
 			}
 
