@@ -162,7 +162,6 @@
 			if (url == null) {
 				url = cfg.boardDataUrl;
 			}
-			url = "http://192.168.0.41:8080/nxy/nxy/xmldate";
 			var dl:DataLoader = new DataLoader();
 			dl.addEventListener(Event.COMPLETE, handlerLoadBoaderDataCmp);
 			dl.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadBoaderDataError);
