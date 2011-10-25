@@ -94,7 +94,7 @@
 
 		private function handlerLoadCmp(e:Event):void {
 			var ul:URLLoader = e.currentTarget as URLLoader;
-			trace("xml back:", ul.data);
+			//trace("xml back:", ul.data);
 			var xd:XMLData = new XMLData(ul.data);
 			if (xd.isCmp) {
 				var list:NodeList = xd.bodyNode.getNodeList(TAG_SET);

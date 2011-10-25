@@ -37,11 +37,7 @@ package com.snsoft.tsp3.plugin.news {
 
 		private function loadInfo():void {
 
-			var params:ReqParams = new ReqParams();
-			params.addParam(Common.PARAM_PLATE, newsState.cPlateId);
-			params.addParam(Common.PARAM_COLUMN, newsState.cColumnId);
-			params.addParam(Common.PARAM_INFO, newsState.infoId);
-
+			var params:ReqParams = newsState.toParams();
 			var dl:DataLoader = new DataLoader();
 			dl.addEventListener(Event.COMPLETE, handlerInfoCmp);
 			dl.addEventListener(IOErrorEvent.IO_ERROR, handlerInfoError);

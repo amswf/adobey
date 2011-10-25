@@ -64,7 +64,7 @@ package com.snsoft.tsp3.plugin.news {
 			}
 			this.url = url;
 			this.code = code;
-			this.newsState = newsState;
+			this.newsState = newsState.clone();
 
 			newsBook.gotoPage(1);
 		}
@@ -89,23 +89,18 @@ package com.snsoft.tsp3.plugin.news {
 
 		private function handlerBookNext(e:Event):void {
 			//trace("handlerBookNext");
+			newsState.pageNum = newsBook.npNum;
 			loadInfoItems();
 		}
 
 		private function handlerBookPrev(e:Event):void {
 			//trace("handlerBookPrev");
+			newsState.pageNum = newsBook.npNum;
 			loadInfoItems();
 		}
 
 		private function loadInfoItems():void {
-			var params:ReqParams = new ReqParams();
-			params.addParam(Common.PARAM_PLATE, newsState.cPlateId);
-			params.addParam(Common.PARAM_COLUMN, newsState.cColumnId);
-			params.addParam(Common.PARAM_CLASS, newsState.cClassId);
-			params.addParam(Common.PARAM_FILTER, newsState.filterStr());
-			params.addParam(Common.PARAM_PAGE_NUM, String(1));
-			params.addParam(Common.PARAM_DIGEST_LENGTH, String(newsState.digestLength));
-
+			var params:ReqParams = newsState.toParams();
 			var dl:DataLoader = new DataLoader();
 			dl.addEventListener(Event.COMPLETE, handlerSearchCmp);
 			dl.addEventListener(IOErrorEvent.IO_ERROR, handlerSearchError);
@@ -117,7 +112,7 @@ package com.snsoft.tsp3.plugin.news {
 			var dl:DataLoader = e.currentTarget as DataLoader;
 			var rsv:Vector.<DataSet> = dl.data;
 
-			var nbv:Vector.<NewsBookPage> = new Vector.<NewsBookPage>();
+			var nbpv:Vector.<NewsBookPage> = new Vector.<NewsBookPage>();
 			var itemv:Vector.<Sprite> = new Vector.<Sprite>();
 			for (var i:int = 0; i < rsv.length; i++) {
 				var rs:DataSet = rsv[i];
@@ -125,7 +120,6 @@ package com.snsoft.tsp3.plugin.news {
 				var rowNum:int = int(rs.attr.rowNum);
 				rowNum = rowNum > 1 ? rowNum : 1;
 
-				var nbp:NewsBookPage = new NewsBookPage(new Point(newsBook.bookSize.x, 500), rowNum);
 				infoViewType = rs.attr.detailViewType;
 				var itype:String = rs.attr.listViewType;
 				if (itype == null) {
@@ -133,7 +127,7 @@ package com.snsoft.tsp3.plugin.news {
 				}
 
 				itemViewType = itype;
-
+				var items:Vector.<NewsItemBase> = new Vector.<NewsItemBase>();
 				for (var j:int = 0; j < rs.dtoList.length; j++) {
 					var dto:DataDTO = rs.dtoList[j];
 					var item:NewsItemBase;
@@ -147,31 +141,47 @@ package com.snsoft.tsp3.plugin.news {
 						trace(error.getStackTrace());
 					}
 					if (item != null) {
-						nbp.addItem(item);
+						items.push(item);
 					}
 				}
 
-				newsBook.pageCount = int(rs.attr.pageCount);
-				var nextnum:int = int(newsBook.npNum);
-				var curnum:int = int(newsBook.currentNum);
-				var pCount:int = int(rs.attr.pageCount);
-				nbp.setPaginText(nextnum, pCount);
-				nbv.push(nbp);
+				if (items.length > 0) {
+					var nbp:NewsBookPage = new NewsBookPage(new Point(newsBook.bookSize.x, 500), rowNum);
+					for (var i2:int = 0; i2 < items.length; i2++) {
+						var itm:NewsItemBase = items[i2];
+						nbp.addItem(itm);
+					}
+
+					newsBook.pageCount = int(rs.attr.pageCount);
+					var nextnum:int = int(newsBook.npNum);
+					var curnum:int = int(newsBook.currentNum);
+					var pCount:int = int(rs.attr.pageCount);
+					nbp.setPaginText(nextnum, pCount);
+					nbpv.push(nbp);
+				}
 			}
 
 			//trace("newsBook.changeType:", newsBook.changeType);
-
-			for (var k:int = 0; k < nbv.length; k++) {
-				if (newsBook.changeType == NewsBook.CHANGE_TYPE_PREV) {
-					//trace("prev");
-					newsBook.addPagePrev(nbp);
-				}
-				else if (newsBook.changeType == NewsBook.CHANGE_TYPE_NEXT) {
-					//trace("next");
-					newsBook.addPageNext(nbp);
+			var sign:Boolean = false;
+			if (newsBook.changeType == NewsBook.CHANGE_TYPE_PREV) {
+				//trace("prev");
+				for (var k:int = 0; k < nbpv.length; k++) {
+					var knbp:NewsBookPage = nbpv[k];
+					newsBook.addPagePrev(knbp);
+					sign = true;
 				}
 			}
-			this.dispatchEvent(new Event(EVENT_LOAD_COMPLETE));
+			else if (newsBook.changeType == NewsBook.CHANGE_TYPE_NEXT) {
+				//trace("next");
+				for (var k2:int = 0; k2 < nbpv.length; k2++) {
+					var k2nbp:NewsBookPage = nbpv[k2];
+					newsBook.addPageNext(k2nbp);
+					sign = true;
+				}
+			}
+			if (sign) {
+				this.dispatchEvent(new Event(EVENT_LOAD_COMPLETE));
+			}
 		}
 
 		private function handlerSearchError(e:Event):void {

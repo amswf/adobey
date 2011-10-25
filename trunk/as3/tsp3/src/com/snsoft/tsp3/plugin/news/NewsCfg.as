@@ -14,6 +14,8 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var _digestLength:String;
 
+		private var _pageSize:String;
+
 		public function NewsCfg() {
 		}
 
@@ -57,16 +59,21 @@ package com.snsoft.tsp3.plugin.news {
 			_digestLength = value;
 		}
 
-		public function get infoDataUrl():String
-		{
+		public function get infoDataUrl():String {
 			return _infoDataUrl;
 		}
 
-		public function set infoDataUrl(value:String):void
-		{
+		public function set infoDataUrl(value:String):void {
 			_infoDataUrl = value;
 		}
 
+		public function get pageSize():String {
+			return _pageSize;
+		}
+
+		public function set pageSize(value:String):void {
+			_pageSize = value;
+		}
 
 	}
 }

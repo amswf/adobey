@@ -109,9 +109,9 @@
 			if (!hiddenBack) {
 				var backBtn:MovieClip = SkinsUtil.createSkinByName("NewsClassBox_backBtnSkin");
 				backBtn.buttonMode = true;
-				backBtn.x = boxWidth - boader - backBtn.width;
-				backBtn.y = boader;
 				backBtnLayer.addChild(backBtn);
+				backBtn.x = int(boxWidth - boader - backBtn.width);
+				backBtn.y = int(boxHeight - backBtn.height) / 2;
 				backBtn.addEventListener(MouseEvent.CLICK, handlerBackBtnMouseClick);
 				bw = backBtn.width + boader;
 			}
