@@ -18,10 +18,8 @@ package com.snsoft.tsp3 {
 
 		public static function filterTfd(tfd:TextField):void {
 			var fary:Array = new Array();
-			var f1:DropShadowFilter = new DropShadowFilter(0, 0, 0xffffff, 1, 2, 2, 10);
+			var f1:DropShadowFilter = new DropShadowFilter(2, 90, 0x000000, 1, 4, 4, 1);
 			fary.push(f1);
-			var f2:DropShadowFilter = new DropShadowFilter(0, 0, 0x000000, 1, 4, 4, 1);
-			fary.push(f2);
 			tfd.filters = fary;
 		}
 	}

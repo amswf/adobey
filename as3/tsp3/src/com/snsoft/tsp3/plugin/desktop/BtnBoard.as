@@ -1,8 +1,10 @@
 package com.snsoft.tsp3.plugin.desktop {
 	import com.snsoft.tsp3.net.DataDTO;
+	import com.snsoft.util.rlm.rs.RSEmbedFonts;
 
 	import flash.display.Sprite;
 	import flash.geom.Point;
+	import flash.text.TextFormat;
 
 	public class BtnBoard extends Sprite {
 
@@ -52,7 +54,8 @@ package com.snsoft.tsp3.plugin.desktop {
 
 			for (var k:int = 0; k < dtoList.length; k++) {
 				var dto:DataDTO = dtoList[k];
-				var dbtn:DesktopBtn = new DesktopBtn(btnSize, dto.img, dto.text);
+				var tft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName("MicrosoftYaHei"), 14, 0xffffff);
+				var dbtn:DesktopBtn = new DesktopBtn(btnSize, dto.img, dto.text, null, tft, true);
 				dbtn.x = coords[k].x;
 				dbtn.y = coords[k].y;
 				dbtn.data = dto;

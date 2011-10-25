@@ -6,6 +6,8 @@ package com.snsoft.tsp3.plugin.desktop {
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.geom.Point;
+	import flash.text.AntiAliasType;
+	import flash.text.GridFitType;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
@@ -22,7 +24,7 @@ package com.snsoft.tsp3.plugin.desktop {
 
 		private var img:BitmapData;
 
-		private var tft:TextFormat = new TextFormat(null, 12, 0x000000);
+		private var tft:TextFormat = new TextFormat(null, 12, 0xffffff);
 
 		private var text:String;
 
@@ -30,7 +32,9 @@ package com.snsoft.tsp3.plugin.desktop {
 
 		private var _uuid:String;
 
-		public function DesktopBtn(imgSize:Point, img:BitmapData, text:String, uuid:String = null) {
+		private var embedFonts:Boolean;
+
+		public function DesktopBtn(imgSize:Point, img:BitmapData, text:String, uuid:String = null, tft:TextFormat = null, embedFonts:Boolean = false) {
 			super();
 			this.imgSize = imgSize;
 			this.img = img;
@@ -42,6 +46,12 @@ package com.snsoft.tsp3.plugin.desktop {
 			else {
 				this._uuid = UUID.create();
 			}
+
+			if (tft != null) {
+				this.tft = tft;
+			}
+
+			this.embedFonts = embedFonts;
 			init();
 		}
 
@@ -57,6 +67,10 @@ package com.snsoft.tsp3.plugin.desktop {
 
 			var tfd:TextField = new TextField();
 			tfd.defaultTextFormat = tft;
+			tfd.embedFonts = embedFonts;
+			tfd.antiAliasType = AntiAliasType.ADVANCED;
+			tfd.gridFitType = GridFitType.PIXEL;
+			tfd.thickness = 100;
 			tfd.width = w;
 			tfd.height = tfdH;
 			tfd.autoSize = TextFieldAutoSize.CENTER;
