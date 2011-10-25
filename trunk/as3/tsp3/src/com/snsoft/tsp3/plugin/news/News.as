@@ -43,7 +43,7 @@
 
 		private const infoBoader:int = 30;
 
-		private const classH:int = 58;
+		private const classH:int = 44;
 
 		private var backLayer:Sprite = new Sprite();
 
@@ -424,7 +424,7 @@
 				var v:Vector.<DataDTO> = ds.dtoList;
 				for (var j:int = 0; j < v.length; j++) {
 					var dto:DataDTO = v[j];
-					var nib:NewsImgBtn = new NewsImgBtn(new Point(48, 48), dto.img, dto.text, columnW);
+					var nib:NewsImgBtn = new NewsImgBtn(new Point(44, 44), dto.img, dto.text, columnW);
 					nib.buttonMode = true;
 					nib.data = dto;
 					btnv.push(nib);

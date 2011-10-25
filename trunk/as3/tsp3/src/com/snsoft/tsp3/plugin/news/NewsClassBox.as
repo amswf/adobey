@@ -68,9 +68,9 @@
 
 		private var twn2:Tween;
 
-		private var currentClickBtn:NewsTextBtn;
+		private var currentClickBtn:NewsClassBtn;
 
-		private var cbtnv:Vector.<NewsTextBtn>;
+		private var cbtnv:Vector.<NewsClassBtn>;
 
 		public function NewsClassBox(boxWidth:int, boxHeight:int, title:String, classType:String = null, hiddenBack:Boolean = false) {
 			this.boxWidth = boxWidth;
@@ -115,7 +115,7 @@
 				backBtn.addEventListener(MouseEvent.CLICK, handlerBackBtnMouseClick);
 				bw = backBtn.width + boader;
 			}
-			var btn:NewsTextBtn = new NewsTextBtn("aaaa");
+			var btn:NewsClassBtn = new NewsClassBtn("aaaa");
 			btnH = btn.height;
 			btnsY = int((boxHeight - btnH) / 2);
 
@@ -145,10 +145,10 @@
 				btns.addChild(back);
 
 				var w:int = 0;
-				cbtnv = new Vector.<NewsTextBtn>();
+				cbtnv = new Vector.<NewsClassBtn>();
 				for (var i:int = 0; i < v.length; i++) {
 					var dto:DataDTO = v[i];
-					var ntbtn:NewsTextBtn = new NewsTextBtn(dto.text);
+					var ntbtn:NewsClassBtn = new NewsClassBtn(dto.text);
 					ntbtn.data = dto;
 					ntbtn.buttonMode = true;
 					btns.addChild(ntbtn);
@@ -168,7 +168,7 @@
 				var rect:Rectangle = new Rectangle(rx, 0, -rx, 0);
 				var tg:TouchDrag = new TouchDrag(btns, stage, rect, 5);
 				for (var j:int = 0; j < cbtnv.length; j++) {
-					var btn:NewsTextBtn = cbtnv[j];
+					var btn:NewsClassBtn = cbtnv[j];
 					tg.addClickObj(btn);
 				}
 				tg.addEventListener(TouchDragEvent.TOUCH_CLICK, handlerTouchClick);
@@ -232,7 +232,7 @@
 			//trace("handlerTouchClick");
 			if (!clickLock) {
 				var tg:TouchDrag = e.currentTarget as TouchDrag;
-				var btn:NewsTextBtn = tg.clickObj as NewsTextBtn;
+				var btn:NewsClassBtn = tg.clickObj as NewsClassBtn;
 				var dto:DataDTO = btn.data;
 				_dataId = dto.id;
 				setSelectBtn(btn);
@@ -240,7 +240,7 @@
 			}
 		}
 
-		private function setSelectBtn(btn:NewsTextBtn):void {
+		private function setSelectBtn(btn:NewsClassBtn):void {
 			if (this.currentClickBtn != null) {
 				this.currentClickBtn.setSectcted(false);
 			}
