@@ -52,8 +52,10 @@ package com.snsoft.tsp3.plugin.news {
 			ns.cPlateId = cPlateId;
 			ns.cColumnId = cColumnId;
 			ns.cClassId = cClassId;
+			ns.filter = filter;
 			ns.infoId = infoId;
 			ns.pageNum = pageNum;
+			ns.pageSize = pageSize;
 			ns.digestLength = digestLength;
 			ns.infoViewType = infoViewType;
 			ns.itemViewType = itemViewType;
@@ -78,17 +80,18 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		public function toParams():ReqParams {
+			trace(pageSize);
 			var params:ReqParams = new ReqParams();
 			params.addParam(Common.PARAM_PLATE, cPlateId);
 			params.addParam(Common.PARAM_COLUMN, cColumnId);
 			params.addParam(Common.PARAM_CLASS, cClassId);
+			params.addParam(Common.PARAM_FILTER, filterStr());
 			params.addParam(Common.PARAM_INFO, infoId);
+			params.addParam(Common.PARAM_PAGE_NUM, String(pageNum));
+			params.addParam(Common.PARAM_PAGE_SIZE, String(pageSize));
 			params.addParam(Common.PARAM_DIGEST_LENGTH, String(digestLength));
 			params.addParam(Common.PARAM_WORD, searchText);
 			params.addParam(Common.PARAM_TYPE, type);
-			params.addParam(Common.PARAM_PAGE_NUM, String(pageNum));
-			params.addParam(Common.PARAM_PAGE_SIZE, String(pageSize));
-			params.addParam("filter", filterStr());
 			return params;
 		}
 

@@ -202,6 +202,7 @@ package com.snsoft.tsp3.plugin.news {
 		private function addTouchBtn(page:NewsBookPage):void {
 			var itemv:Vector.<NewsItemBase> = page.itemv;
 			if (itemv != null) {
+				trace("itemv.length", itemv.length);
 				for (var j:int = 0; j < itemv.length; j++) {
 					var item:NewsItemBase = itemv[j];
 					td.addClickObj(item);

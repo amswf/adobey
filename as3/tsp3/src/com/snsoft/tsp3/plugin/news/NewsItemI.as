@@ -1,4 +1,5 @@
 package com.snsoft.tsp3.plugin.news {
+	import com.snsoft.tsp3.ViewUtil;
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.tsp3.net.DataParam;
 	import com.snsoft.tsp3.plugin.news.layout.Util;
@@ -79,6 +80,10 @@ package com.snsoft.tsp3.plugin.news {
 			this.addChild(digest);
 			digest.x = title.x;
 			digest.y = title.getRect(this).bottom + boader;
+
+			var cbtn:Sprite = ViewUtil.creatRect(itemWidth, itemHeight);
+			cbtn.buttonMode = true;
+			this.addChild(cbtn);
 
 		}
 	}

@@ -25,7 +25,7 @@ package com.snsoft.tsp3.plugin.news {
 
 		protected var _autoRow:Boolean = false;
 
-		protected var _clickType:String;
+		protected var _clickType:String = CLICK_TYPE_INFO;
 
 		protected var texttft:TextFormat = new TextFormat(null, 14, 0xffffff);
 

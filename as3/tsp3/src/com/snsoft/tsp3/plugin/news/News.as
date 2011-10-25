@@ -134,10 +134,14 @@
 			stage.align = StageAlign.TOP_LEFT;
 
 			prms.id = "5bc003ec024e49a995dbeb85f8734b84";
+			prms.text = "新闻资讯";
 			newsState.cPlateId = prms.id;
 			newsState.cColumnId = prms.columnId;
 
 			trace(newsState.cPlateId, newsState.cColumnId);
+
+			newsState.pageSize = int(cfg.pageSize);
+			newsState.digestLength = int(cfg.digestLength);
 
 			var back:MovieClip = SkinsUtil.createSkinByName("News_backSkin");
 			backLayer.addChild(back);
@@ -145,7 +149,7 @@
 			back.height = stage.stageHeight - deskBarH;
 
 			var ntdto:NewsTitleDTO = new NewsTitleDTO();
-			ntdto.text = "新闻资讯";
+			ntdto.text = prms.text;
 			ntdto.titleImg = prms.img;
 			newsTitle = new NewsTitle(ntdto, stage.stageWidth, titleH);
 			titleLayer.addChild(newsTitle);
@@ -166,7 +170,7 @@
 			classLayer.y = titleH;
 			filtersLayer.y = titleH;
 
-			classBox = new NewsClassBox(stage.stageWidth - columnW, classH, "分类", null);
+			classBox = new NewsClassBox(stage.stageWidth - columnW, classH, "分类", null, true);
 			classLayer.addChild(classBox);
 			classBox.visible = false;
 			classBox.addEventListener(NewsClassBox.EVENT_BTN_CLICK, handlerClassBtnClick);
@@ -284,6 +288,11 @@
 			}
 
 			crntFH = 0;
+			var cn:int = rsv.length;
+			while (filtersLayer.numChildren > cn) {
+				filtersLayer.removeChildAt(filtersLayer.numChildren - 1);
+			}
+
 			for (var i:int = 0; i < rsv.length; i++) {
 				crntFH++;
 				var ds:DataSet = rsv[i];
@@ -321,7 +330,8 @@
 		private function handlerClassBtnClick(e:Event):void {
 			var box:NewsClassBox = e.currentTarget as NewsClassBox;
 			newsState.cClassId = box.dataId;
-			loadClass(false);
+			//loadClass(false);  //目前不需要显示子分类，分类只有一级。
+			loadFilter();
 		}
 
 		private function loadClass(isClear:Boolean):void {
