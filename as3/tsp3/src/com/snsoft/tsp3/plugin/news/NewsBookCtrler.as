@@ -138,7 +138,7 @@ package com.snsoft.tsp3.plugin.news {
 						item = new MClass(dto);
 					}
 					catch (error:Error) {
-						trace(error.getStackTrace());
+						trace("找不到[列表]显示类型：" + itype);
 					}
 					if (item != null) {
 						items.push(item);

@@ -46,6 +46,8 @@
 
 		private const classH:int = 44;
 
+		private const filtersH:int = 34;
+
 		private var backLayer:Sprite = new Sprite();
 
 		private var columnLayer:Sprite = new Sprite();
@@ -64,9 +66,9 @@
 
 		private var classBox:NewsClassBox;
 
-		private var crntCH:int;
+		private var classCount:int;
 
-		private var crntFH:int;
+		private var filtersCount:int;
 
 		private var newsBookCtrler:NewsBookCtrler;
 
@@ -141,8 +143,8 @@
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 
-			prms.id = "5bc003ec024e49a995dbeb85f8734b84";
-			prms.text = "新闻资讯";
+			//prms.id = "5bc003ec024e49a995dbeb85f8734b84";
+			//prms.text = "新闻资讯";
 
 			trace(prms.id, prms.columnId, prms.text);
 
@@ -232,7 +234,7 @@
 			newsState.pageNum = 1;
 			newsState.infoId = null;
 
-			var ph:int = (crntCH + crntFH) * classH;
+			var ph:int = classCount * classH + filtersCount * filtersH;
 			var y:int = titleH + ph;
 			var size:Point = new Point(stage.stageWidth - columnW, stage.stageHeight - deskBarH - paginH - boader - boader - titleH - ph);
 
@@ -293,19 +295,16 @@
 			var dl:DataLoader = e.currentTarget as DataLoader;
 			var rsv:Vector.<DataSet> = dl.data;
 
-			var h:int = 0;
-			if (classBox.visible == true) {
-				h += classH;
-			}
+			var h:int = classCount * classH;
 
-			crntFH = 0;
+			filtersCount = 0;
 			var cn:int = rsv.length;
 			while (filtersLayer.numChildren > cn) {
 				filtersLayer.removeChildAt(filtersLayer.numChildren - 1);
 			}
 
 			for (var i:int = 0; i < rsv.length; i++) {
-				crntFH++;
+				filtersCount++;
 				var ds:DataSet = rsv[i];
 				var v:Vector.<DataDTO> = ds.dtoList;
 				var fbox:NewsClassBox = null;
@@ -315,7 +314,7 @@
 					fbox.clear();
 				}
 				else {
-					fbox = new NewsClassBox(stage.stageWidth - columnW, classH, ds.attr.name, ds.attr.id, true);
+					fbox = new NewsClassBox(stage.stageWidth - columnW, filtersH, ds.attr.name, ds.attr.id, true);
 					fbox.selectedSkin = "NewsFilterBtn_selectedSkin";
 					fbox.unSelectedSkin = "NewsFilterBtn_unSelectedSkin";
 					fbox.backSkin = "NewsFilterBox_backSkin";
@@ -327,7 +326,7 @@
 				fbox.classType = ds.attr.id;
 				fbox.addChildren(v);
 				fbox.y = h;
-				h += classH;
+				h += filtersH;
 				fbox.addEventListener(NewsClassBox.EVENT_BTN_CLICK, handlerFilterBtnClick);
 			}
 			refreshBook();
@@ -399,9 +398,9 @@
 				init = true;
 			}
 
-			crntCH = 0;
+			classCount = 0;
 			if (dtov.length > 0) {
-				crntCH = 1;
+				classCount = 1;
 				var fdto:DataDTO = dtov[0];
 				newsState.cClassId = fdto.id;
 				classBox.visible = true;
