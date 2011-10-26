@@ -63,7 +63,7 @@
 
 		private var tft:TextFormat = new TextFormat(null, 12, 0xffffff);
 
-		private var title:String;
+		private var _title:String;
 
 		private var twn:Tween;
 
@@ -90,7 +90,7 @@
 			this.boxHeight = boxHeight;
 			this.title = title;
 			this.hiddenBack = hiddenBack;
-			this._classType = classType;
+			this.classType = classType;
 			super();
 		}
 
@@ -173,7 +173,6 @@
 					ntbtn.selectedSkin = selectedSkin;
 					ntbtn.selTft = selTft;
 					ntbtn.unSelTft = unSelTft;
-					trace("stage:", stage);
 					ntbtn.drawNow();
 					ntbtn.data = dto;
 					ntbtn.buttonMode = true;
@@ -348,6 +347,18 @@
 
 		public function set unSelTft(value:TextFormat):void {
 			_unSelTft = value;
+		}
+
+		public function set classType(value:String):void {
+			_classType = value;
+		}
+
+		public function get title():String {
+			return _title;
+		}
+
+		public function set title(value:String):void {
+			_title = value;
 		}
 
 	}

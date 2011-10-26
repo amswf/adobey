@@ -175,10 +175,12 @@ package com.snsoft.tsp3 {
 		}
 
 		public function loadPlugin(pluginName:String, params:Object = null, uuid:String = null, defVisible:Boolean = true):void {
-			var sign:Boolean = true;
-			var pld:PluginLoader = null;
 
-			var visible:Boolean = true;
+			if (pluginName == null) {
+				pluginName = cfg.defPlugin;
+			}
+
+			var pld:PluginLoader = null;
 			if (uuid != null) {
 				pld = getPlugin(uuid);
 			}

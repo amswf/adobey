@@ -4,6 +4,8 @@ package com.snsoft.tsp3 {
 
 		private var _startPlugin:String;
 
+		private var _defPlugin:String;
+
 		private var _serverRootUrl:String;
 
 		private var _dataUrl:String;
@@ -11,36 +13,37 @@ package com.snsoft.tsp3 {
 		public function TspCfg() {
 		}
 
-		public function get startPlugin():String
-		{
+		public function get startPlugin():String {
 			return _startPlugin;
 		}
 
-		public function set startPlugin(value:String):void
-		{
+		public function set startPlugin(value:String):void {
 			_startPlugin = value;
 		}
 
-		public function get serverRootUrl():String
-		{
+		public function get serverRootUrl():String {
 			return _serverRootUrl;
 		}
 
-		public function set serverRootUrl(value:String):void
-		{
+		public function set serverRootUrl(value:String):void {
 			_serverRootUrl = value;
 		}
 
-		public function get dataUrl():String
-		{
+		public function get dataUrl():String {
 			return _dataUrl;
 		}
 
-		public function set dataUrl(value:String):void
-		{
+		public function set dataUrl(value:String):void {
 			_dataUrl = value;
 		}
 
+		public function get defPlugin():String {
+			return _defPlugin;
+		}
+
+		public function set defPlugin(value:String):void {
+			_defPlugin = value;
+		}
 
 	}
 }
