@@ -3,7 +3,7 @@ package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.ViewUtil;
 	import com.snsoft.tsp3.touch.TouchDrag;
 	import com.snsoft.tsp3.touch.TouchDragEvent;
-
+	
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Rectangle;

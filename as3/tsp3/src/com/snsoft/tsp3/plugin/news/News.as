@@ -10,7 +10,7 @@
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.rlm.ResLoadManager;
 	import com.snsoft.util.rlm.rs.RSEmbedFonts;
-
+	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;

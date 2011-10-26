@@ -1,6 +1,6 @@
 package com.snsoft.tsp3.plugin.news.layout {
 	import com.snsoft.tsp3.net.DataParam;
-
+	
 	import flash.display.Sprite;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;

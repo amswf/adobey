@@ -1,19 +1,11 @@
 ﻿package com.snsoft.tsp3.plugin.news {
-	import com.snsoft.tsp3.ViewUtil;
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.tsp3.net.DataParam;
-	import com.snsoft.tsp3.touch.TouchDrag;
 	import com.snsoft.util.SpriteUtil;
-
+	
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
-	import flash.events.Event;
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
-	import flash.html.HTMLLoader;
-	import flash.text.TextField;
-	import flash.text.TextFieldAutoSize;
-	import flash.text.TextFormat;
 
 	/**
 	 * 供求

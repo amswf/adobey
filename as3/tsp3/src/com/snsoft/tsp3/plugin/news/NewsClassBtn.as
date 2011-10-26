@@ -3,9 +3,8 @@ package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.rlm.rs.RSEmbedFonts;
-
+	
 	import flash.display.MovieClip;
-	import flash.display.Sprite;
 	import flash.text.AntiAliasType;
 	import flash.text.GridFitType;
 	import flash.text.TextField;

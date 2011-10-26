@@ -1,8 +1,7 @@
 package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.MySprite;
-	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.util.SpriteUtil;
-
+	
 	import flash.geom.Point;
 
 	public class NewsInfo extends MySprite {

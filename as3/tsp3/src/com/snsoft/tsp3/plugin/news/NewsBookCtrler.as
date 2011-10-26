@@ -1,14 +1,12 @@
 package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.Common;
-	import com.snsoft.tsp3.MySprite;
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.tsp3.net.DataLoader;
 	import com.snsoft.tsp3.net.DataSet;
 	import com.snsoft.tsp3.net.ReqParams;
 	import com.snsoft.tsp3.pagination.Pagination;
 	import com.snsoft.tsp3.pagination.PaginationEvent;
-	import com.snsoft.util.SkinsUtil;
-
+	
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;

@@ -1,10 +1,7 @@
 package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.net.DataDTO;
-	import com.snsoft.tsp3.net.DataParam;
-
+	
 	import flash.display.Sprite;
-	import flash.text.TextField;
-	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 
 	public class NewsItemBase extends Sprite {
