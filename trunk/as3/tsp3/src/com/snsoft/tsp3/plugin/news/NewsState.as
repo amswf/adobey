@@ -80,7 +80,6 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		public function toParams():ReqParams {
-			trace(pageSize);
 			var params:ReqParams = new ReqParams();
 			params.addParam(Common.PARAM_PLATE, cPlateId);
 			params.addParam(Common.PARAM_COLUMN, cColumnId);
