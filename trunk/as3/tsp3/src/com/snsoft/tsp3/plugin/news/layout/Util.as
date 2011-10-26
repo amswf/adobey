@@ -10,12 +10,19 @@ package com.snsoft.tsp3.plugin.news.layout {
 		public function Util() {
 		}
 
-		public static function contentItem(dataParam:DataParam, textTft:TextFormat, ctntTft:TextFormat, width:int, height:int):TextField {
-			var text:String = dataParam.text + "：";
-			var ctnt:String = text + dataParam.content;
-			var tfd:TextField = creatTextMultiLine(ctnt, ctntTft, width, height);
-			tfd.setTextFormat(textTft, 0, text.length);
-			return tfd;
+		public static function contentItem(dataParam:DataParam, textTft:TextFormat, ctntTft:TextFormat, width:int, height:int):Sprite {
+			var spr:Sprite = new Sprite();
+			if (dataParam != null && dataParam.text != null) {
+				var text:String = dataParam.text + "：";
+				var ctnt:String = text;
+				if (dataParam.content != null) {
+					ctnt = text + dataParam.content;
+				}
+				var tfd:TextField = creatTextMultiLine(ctnt, ctntTft, width, height);
+				tfd.setTextFormat(textTft, 0, text.length);
+				spr.addChild(tfd);
+			}
+			return spr;
 		}
 
 		/**
@@ -32,11 +39,13 @@ package com.snsoft.tsp3.plugin.news.layout {
 		 */
 		public static function twsLeft(textTft:TextFormat, ctntTft:TextFormat, maxWidth:int, boader:int, titleParam:DataParam, expParams:Vector.<DataParam>):Sprite {
 			var spr:Sprite = new Sprite();
-			var title:Sprite = lineItem(titleParam.text, titleParam.content, textTft, ctntTft, maxWidth / 2);
-			spr.addChild(title);
-			var exp:Sprite = lineItems(expParams, textTft, ctntTft, maxWidth / 2, boader);
-			spr.addChild(exp);
-			exp.x = title.width + boader;
+			if (titleParam != null) {
+				var title:Sprite = lineItem(titleParam.text, titleParam.content, textTft, ctntTft, maxWidth / 2);
+				spr.addChild(title);
+				var exp:Sprite = lineItems(expParams, textTft, ctntTft, maxWidth / 2, boader);
+				spr.addChild(exp);
+				exp.x = title.width + boader;
+			}
 			return spr;
 		}
 
@@ -54,11 +63,13 @@ package com.snsoft.tsp3.plugin.news.layout {
 		 */
 		public static function twsRight(textTft:TextFormat, ctntTft:TextFormat, maxWidth:int, boader:int, titleParam:DataParam, expParams:Vector.<DataParam>):Sprite {
 			var spr:Sprite = new Sprite();
-			var title:Sprite = lineItem(titleParam.text, titleParam.content, textTft, ctntTft, maxWidth / 2);
-			spr.addChild(title);
-			var exp:Sprite = lineItems(expParams, textTft, ctntTft, maxWidth / 2, boader);
-			spr.addChild(exp);
-			exp.x = maxWidth - exp.width;
+			if (titleParam != null) {
+				var title:Sprite = lineItem(titleParam.text, titleParam.content, textTft, ctntTft, maxWidth / 2);
+				spr.addChild(title);
+				var exp:Sprite = lineItems(expParams, textTft, ctntTft, maxWidth / 2, boader);
+				spr.addChild(exp);
+				exp.x = maxWidth - exp.width;
+			}
 			return spr;
 		}
 
@@ -74,19 +85,22 @@ package com.snsoft.tsp3.plugin.news.layout {
 		public static function lineItems(v:Vector.<DataParam>, textTft:TextFormat, ctntTft:TextFormat, maxWidth:int, boader:int):Sprite {
 			var spr:Sprite = new Sprite();
 			var x:int = 0;
-			for (var i:int = 0; i < v.length; i++) {
-				var dp:DataParam = v[i];
-				var item:Sprite = lineItem(dp.text, dp.content, textTft, ctntTft, maxWidth);
-				if (x + item.width + boader <= maxWidth) {
-					spr.addChild(item);
-					item.x = x;
-					x += item.width + boader;
-				}
-				else {
-					break;
+			if (v != null) {
+				for (var i:int = 0; i < v.length; i++) {
+					var dp:DataParam = v[i];
+					if (dp != null) {
+						var item:Sprite = lineItem(dp.text, dp.content, textTft, ctntTft, maxWidth);
+						if (x + item.width + boader <= maxWidth) {
+							spr.addChild(item);
+							item.x = x;
+							x += item.width + boader;
+						}
+						else {
+							break;
+						}
+					}
 				}
 			}
-
 			return spr;
 		}
 
@@ -102,14 +116,16 @@ package com.snsoft.tsp3.plugin.news.layout {
 		 */
 		public static function lineItem(text:String, ctnt:String, textTft:TextFormat, ctntTft:TextFormat, maxWidth:int):Sprite {
 			var spr:Sprite = new Sprite();
-			var t:TextField = Util.text(text, textTft);
-			t.mouseEnabled = false;
-			spr.addChild(t);
+			if (text != null && ctnt != null) {
+				var t:TextField = Util.text(text, textTft);
+				t.mouseEnabled = false;
+				spr.addChild(t);
 
-			var c:TextField = Util.ctnt(ctnt, ctntTft, maxWidth);
-			c.mouseEnabled = false;
-			spr.addChild(c);
-			c.x = t.width;
+				var c:TextField = Util.ctnt(ctnt, ctntTft, maxWidth);
+				c.mouseEnabled = false;
+				spr.addChild(c);
+				c.x = t.width;
+			}
 			return spr;
 		}
 
@@ -125,7 +141,9 @@ package com.snsoft.tsp3.plugin.news.layout {
 			txt.mouseEnabled = false;
 			txt.defaultTextFormat = tft;
 			txt.autoSize = TextFieldAutoSize.LEFT;
-			txt.text = text + "：";
+			if (text != null) {
+				txt.text = text + "：";
+			}
 			return txt;
 		}
 

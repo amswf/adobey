@@ -66,7 +66,7 @@ package com.snsoft.tsp3.plugin.news {
 						board = new MClass(boardSize, dto);
 					}
 					catch (error:Error) {
-						trace(error.getStackTrace());
+						trace("找不到[详细]显示类型：" + itype);
 					}
 					if (board != null) {
 						newsInfo.refresh(board);

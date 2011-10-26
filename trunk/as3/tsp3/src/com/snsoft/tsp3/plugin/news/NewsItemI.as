@@ -4,7 +4,7 @@ package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.net.DataParam;
 	import com.snsoft.tsp3.plugin.news.layout.Util;
 	import com.snsoft.util.SkinsUtil;
-
+	
 	import flash.display.Bitmap;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -76,7 +76,7 @@ package com.snsoft.tsp3.plugin.news {
 			var dp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_DIGEST);
 			var dw:int = itemWidth - boader - img.width - boader - boader;
 			var dh:int = itemHeight - title.getRect(this).bottom - boader - boader;
-			var digest:TextField = Util.contentItem(dp, texttft, ctnttft, dw, dh);
+			var digest:Sprite = Util.contentItem(dp, texttft, ctnttft, dw, dh);
 			this.addChild(digest);
 			digest.x = title.x;
 			digest.y = title.getRect(this).bottom + boader;
