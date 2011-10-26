@@ -16,6 +16,7 @@
 	import flash.events.IOErrorEvent;
 	import flash.events.MouseEvent;
 	import flash.events.ProgressEvent;
+	import flash.filters.DropShadowFilter;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.media.Sound;
@@ -55,9 +56,13 @@
 
 		private var titleTfd:TextField;
 
-		private var tft:TextFormat = new TextFormat(null, 13, 0xffffff);
+		//默认
+		private var tftDef:TextFormat = new TextFormat(null, 13, 0x000000);
 
-		private var boader:int = 10;
+		//全屏
+		private var tftFS:TextFormat = new TextFormat(null, 13, 0xffffff);
+
+		private var boader:int = 8;
 
 		private var btnw:int = 48;
 
@@ -101,7 +106,9 @@
 
 		private var closeBtn:MovieClip;
 
-		private var back:MovieClip;
+		private var backDef:MovieClip;
+
+		private var backFullScreen:MovieClip;
 
 		private var dragSpr:Sprite;
 
@@ -148,8 +155,17 @@
 			vw = playerSize.x - boader - boader;
 			vh = playerSize.y - titleh - boader - boader - boader - btnw - boader;
 
-			back = SkinsUtil.createSkinByName("Player_backSkin");
-			backLayer.addChild(back);
+			backDef = SkinsUtil.createSkinByName("Player_backDefSkin");
+			backLayer.addChild(backDef);
+
+			var fary:Array = new Array();
+			var f1:DropShadowFilter = new DropShadowFilter(0, 0, 0x000000, 0.5, 20, 20, 1);
+			fary.push(f1);
+			backDef.filters = fary;
+
+			backFullScreen = SkinsUtil.createSkinByName("Player_backFullScreenSkin");
+			backFullScreen.visible = false;
+			backLayer.addChild(backFullScreen);
 
 			dragSpr = ViewUtil.creatRect(100, 100);
 			dragSpr.addEventListener(MouseEvent.MOUSE_DOWN, handlerBackMouseDown);
@@ -157,7 +173,7 @@
 			dragLayer.addChild(dragSpr);
 
 			titleTfd = new TextField();
-			titleTfd.defaultTextFormat = tft;
+			titleTfd.defaultTextFormat = tftDef;
 			titleTfd.height = 20;
 			titleTfd.x = boader;
 			titleTfd.y = boader;
@@ -170,7 +186,7 @@
 			videoBack.y = boader + titleh + boader;
 
 			msgTfd = new TextField();
-			msgTfd.defaultTextFormat = tft;
+			msgTfd.defaultTextFormat = tftDef;
 			msgTfd.width = vw;
 			msgTfd.height = 20;
 			msgTfd.autoSize = TextFieldAutoSize.CENTER;
@@ -241,11 +257,15 @@
 
 			var pz:Point = new Point();
 			if (screenType == SCREEN_TYPE_FULL) {
+				titleTfd.setTextFormat(tftFS);
+				backFullScreen.visible = true;
 				p = new Point(stage.stageWidth, stage.stageHeight);
 				pz.x = 0;
 				pz.y = 0;
 			}
 			else {
+				titleTfd.setTextFormat(tftDef);
+				backFullScreen.visible = false;
 				p = playerSize;
 				pz.x = defCoord.x;
 				pz.y = defCoord.y;
@@ -257,8 +277,11 @@
 			vw = p.x - boader - boader;
 			vh = p.y - titleh - boader - boader - boader - btnw - boader;
 
-			back.width = p.x;
-			back.height = p.y;
+			backDef.width = p.x;
+			backDef.height = p.y;
+
+			backFullScreen.width = p.x;
+			backFullScreen.height = p.y;
 
 			dragSpr.width = p.x;
 			dragSpr.height = p.y;
