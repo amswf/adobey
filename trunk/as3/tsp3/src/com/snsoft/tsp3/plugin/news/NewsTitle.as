@@ -82,7 +82,9 @@ package com.snsoft.tsp3.plugin.news {
 			var titleTfd:TextField = new TextField();
 			titleTfd.defaultTextFormat = titleTft;
 			titleTfd.autoSize = TextFieldAutoSize.LEFT;
-			titleTfd.text = dto.text;
+			if (dto.text != null) {
+				titleTfd.text = dto.text;
+			}
 			titleTfd.selectable = false;
 			this.addChild(titleTfd);
 			titleTfd.x = titlebm.x + imgSize.x + boader;

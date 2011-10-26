@@ -47,7 +47,6 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		override protected function draw():void {
-			trace("draw:asdf");
 			unSelSkin = SkinsUtil.createSkinByName(unSelectedSkin);
 			this.addChild(unSelSkin);
 

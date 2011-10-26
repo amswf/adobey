@@ -346,13 +346,12 @@
 		}
 
 		private function btnClick(btn:DesktopBtn):void {
+			trace("btnClick");
 			var dto:DataDTO = btn.data as DataDTO;
-			if (dto.plugin != null) {
-				var params:Object = new Object();
-				DependencyInjection.diToObj(dto.params, params, false);
-				DependencyInjection.diToObj(dto, params, false);
-				Common.instance().loadPlugin(dto.plugin, params, btn.uuid);
-			}
+			var params:Object = new Object();
+			DependencyInjection.diToObj(dto.params, params, false);
+			DependencyInjection.diToObj(dto, params, false);
+			Common.instance().loadPlugin(dto.plugin, params, btn.uuid);
 		}
 
 		private function handlerDragMouseUp(e:Event):void {

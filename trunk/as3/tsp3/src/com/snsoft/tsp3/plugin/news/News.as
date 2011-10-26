@@ -143,13 +143,16 @@
 
 			prms.id = "5bc003ec024e49a995dbeb85f8734b84";
 			prms.text = "新闻资讯";
+
+			trace(prms.id, prms.columnId, prms.text);
+
 			newsState.cPlateId = prms.id;
 			newsState.cColumnId = prms.columnId;
 
-			trace(newsState.cPlateId, newsState.cColumnId);
-
 			newsState.pageSize = int(cfg.pageSize);
 			newsState.digestLength = int(cfg.digestLength);
+
+			trace("newsState", cfg.pageSize, cfg.digestLength);
 
 			var back:MovieClip = SkinsUtil.createSkinByName("News_backSkin");
 			backLayer.addChild(back);
@@ -320,6 +323,8 @@
 					fbox.unSelTft = filterUnSelTft;
 					filtersLayer.addChild(fbox);
 				}
+				fbox.title = ds.attr.name;
+				fbox.classType = ds.attr.id;
 				fbox.addChildren(v);
 				fbox.y = h;
 				h += classH;
