@@ -4,11 +4,10 @@ package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.net.DataLoader;
 	import com.snsoft.tsp3.net.DataSet;
 	import com.snsoft.tsp3.net.ReqParams;
-
+	
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.events.IEventDispatcher;
 	import flash.events.IOErrorEvent;
 	import flash.geom.Point;
 	import flash.utils.getDefinitionByName;

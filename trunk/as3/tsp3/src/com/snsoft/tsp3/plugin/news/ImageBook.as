@@ -4,11 +4,11 @@ package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.ViewUtil;
 	import com.snsoft.tsp3.net.DataParam;
 	import com.snsoft.util.SkinsUtil;
-
+	
 	import fl.transitions.Tween;
 	import fl.transitions.TweenEvent;
 	import fl.transitions.easing.Regular;
-
+	
 	import flash.display.Bitmap;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;

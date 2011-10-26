@@ -1,7 +1,7 @@
 package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.MySprite;
 	import com.snsoft.tsp3.net.DataParam;
-
+	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 

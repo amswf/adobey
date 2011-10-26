@@ -1,6 +1,6 @@
 package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.util.SkinsUtil;
-
+	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.geom.Point;

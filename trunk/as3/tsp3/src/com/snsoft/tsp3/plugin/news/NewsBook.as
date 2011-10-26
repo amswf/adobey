@@ -4,7 +4,7 @@ package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.touch.TouchDrag;
 	import com.snsoft.tsp3.touch.TouchDragEvent;
 	import com.snsoft.util.SpriteUtil;
-
+	
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
