@@ -7,11 +7,11 @@
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.SpriteUtil;
 	import com.snsoft.util.rlm.rs.RSEmbedFonts;
-	
+
 	import fl.transitions.Tween;
 	import fl.transitions.TweenEvent;
 	import fl.transitions.easing.Regular;
-	
+
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -161,6 +161,7 @@
 		public function addChildren(v:Vector.<DataDTO>):void {
 			if (v != null && v.length > 0) {
 				var btns:Sprite = new Sprite();
+				btnLayer.addChild(btns);
 				var back:Sprite = ViewUtil.creatRect(100, boxHeight);
 				btns.addChild(back);
 
@@ -173,7 +174,6 @@
 					ntbtn.selectedSkin = selectedSkin;
 					ntbtn.selTft = selTft;
 					ntbtn.unSelTft = unSelTft;
-					ntbtn.drawNow();
 					ntbtn.data = dto;
 					ntbtn.buttonMode = true;
 					btns.addChild(ntbtn);
@@ -184,7 +184,7 @@
 				}
 				back.width = w;
 				btns.y = w;
-				btnLayer.addChild(btns);
+
 				btnsv.push(btns);
 				btnLayer.y = btnsY;
 
