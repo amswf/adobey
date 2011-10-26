@@ -241,13 +241,15 @@ package com.snsoft.tsp3.plugin.news {
 			var sprite:Sprite = new Sprite();
 			for (var i:int = 0; i < dataParam.length; i++) {
 				var prm:DataParam = dataParam[i] as DataParam;
-				var tfd:TextField = creatTextTfd(prm.text);
-				sprite.addChild(tfd);
+				if (prm != null && prm.text != null && prm.content != null) {
+					var tfd:TextField = creatTextTfd(prm.text);
+					sprite.addChild(tfd);
 
-				var ctfd:TextField = creatCtntTfd(prm.content);
-				sprite.addChild(ctfd);
-				ctfd.width = ctntWidth;
-				ctfd.y = tfd.height;
+					var ctfd:TextField = creatCtntTfd(prm.content);
+					sprite.addChild(ctfd);
+					ctfd.width = ctntWidth;
+					ctfd.y = tfd.height;
+				}
 			}
 			return sprite;
 		}
@@ -263,10 +265,12 @@ package com.snsoft.tsp3.plugin.news {
 			var y:int = 0;
 			for (var i:int = 0; i < dataParam.length; i++) {
 				var prm:DataParam = dataParam[i] as DataParam;
-				var lt:Sprite = creatLineText(prm);
-				spr.addChild(lt);
-				lt.y = y;
-				y += spr.height;
+				if (prm != null && prm.text != null && prm.content != null) {
+					var lt:Sprite = creatLineText(prm);
+					spr.addChild(lt);
+					lt.y = y;
+					y += lt.height;
+				}
 			}
 			return spr;
 		}
@@ -282,27 +286,31 @@ package com.snsoft.tsp3.plugin.news {
 			var x:int = 0;
 			for (var i:int = 0; i < dataParam.length; i++) {
 				var prm:DataParam = dataParam[i] as DataParam;
-				var tt:TextField = creatTextTfd(prm.text);
-				spr.addChild(tt);
-				tt.x = x;
-				x += tt.width;
-				var tc:TextField = creatCtntTfd(prm.content);
-				spr.addChild(tc);
-				tc.x = x;
-				x += tc.width;
+				if (prm != null && prm.text != null && prm.content != null) {
+					var tt:TextField = creatTextTfd(prm.text);
+					spr.addChild(tt);
+					tt.x = x;
+					x += tt.width;
+					var tc:TextField = creatCtntTfd(prm.content);
+					spr.addChild(tc);
+					tc.x = x;
+					x += tc.width;
+				}
 			}
 			return spr;
 		}
 
 		protected function creatTitle(dataParam:DataParam, width:int):Sprite {
 			var spr:Sprite = new Sprite();
-			var title:TextField = new TextField();
-			title.mouseEnabled = false;
-			title.defaultTextFormat = titletft;
-			title.autoSize = TextFieldAutoSize.CENTER;
-			title.text = dataParam.content;
-			title.width = width;
-			spr.addChild(title);
+			if (dataParam != null && dataParam.content != null) {
+				var title:TextField = new TextField();
+				title.mouseEnabled = false;
+				title.defaultTextFormat = titletft;
+				title.autoSize = TextFieldAutoSize.CENTER;
+				title.text = dataParam.content;
+				title.width = width;
+				spr.addChild(title);
+			}
 			return spr;
 		}
 

@@ -6,6 +6,7 @@
 	import com.snsoft.tsp3.touch.TouchDragEvent;
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.SpriteUtil;
+	import com.snsoft.util.rlm.rs.RSEmbedFonts;
 
 	import fl.transitions.Tween;
 	import fl.transitions.TweenEvent;
@@ -72,6 +73,18 @@
 
 		private var cbtnv:Vector.<NewsClassBtn>;
 
+		private var _unSelectedSkin:String = "NewsClassBtn_unSelectedSkin";
+
+		private var _selectedSkin:String = "NewsClassBtn_selectedSkin";
+
+		private var _backBtnSkin:String = "NewsClassBox_backBtnSkin";
+
+		private var _backSkin:String = "NewsClassBox_backSkin";
+
+		private var _selTft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName("MicrosoftYaHei"), 14, 0xffffff);
+
+		private var _unSelTft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName("MicrosoftYaHei"), 14, 0xffffff);
+
 		public function NewsClassBox(boxWidth:int, boxHeight:int, title:String, classType:String = null, hiddenBack:Boolean = false) {
 			this.boxWidth = boxWidth;
 			this.boxHeight = boxHeight;
@@ -92,8 +105,10 @@
 			this.addChild(maskLayer);
 			this.addChild(btnLayer);
 
-			var back:Sprite = ViewUtil.creatRect(boxWidth, boxHeight, 0x000000, 0.5);
+			var back:Sprite = SkinsUtil.createSkinByName(backSkin);
 			backLayer.addChild(back);
+			back.width = boxWidth;
+			back.height = boxHeight;
 
 			title = title == null ? "*" : title;
 			var tfd:TextField = new TextField();
@@ -107,7 +122,7 @@
 
 			var bw:int = 0;
 			if (!hiddenBack) {
-				var backBtn:MovieClip = SkinsUtil.createSkinByName("NewsClassBox_backBtnSkin");
+				var backBtn:MovieClip = SkinsUtil.createSkinByName(backBtnSkin);
 				backBtn.buttonMode = true;
 				backBtnLayer.addChild(backBtn);
 				backBtn.x = int(boxWidth - boader - backBtn.width);
@@ -116,6 +131,11 @@
 				bw = backBtn.width + boader;
 			}
 			var btn:NewsClassBtn = new NewsClassBtn("aaaa");
+			btn.unSelectedSkin = unSelectedSkin;
+			btn.selectedSkin = selectedSkin;
+			btn.selTft = selTft;
+			btn.unSelTft = unSelTft;
+			btn.drawNow();
 			btnH = btn.height;
 			btnsY = int((boxHeight - btnH) / 2);
 
@@ -149,6 +169,12 @@
 				for (var i:int = 0; i < v.length; i++) {
 					var dto:DataDTO = v[i];
 					var ntbtn:NewsClassBtn = new NewsClassBtn(dto.text);
+					ntbtn.unSelectedSkin = unSelectedSkin;
+					ntbtn.selectedSkin = selectedSkin;
+					ntbtn.selTft = selTft;
+					ntbtn.unSelTft = unSelTft;
+					trace("stage:", stage);
+					ntbtn.drawNow();
 					ntbtn.data = dto;
 					ntbtn.buttonMode = true;
 					btns.addChild(ntbtn);
@@ -274,6 +300,54 @@
 
 		public function get dataId():String {
 			return _dataId;
+		}
+
+		public function get unSelectedSkin():String {
+			return _unSelectedSkin;
+		}
+
+		public function set unSelectedSkin(value:String):void {
+			_unSelectedSkin = value;
+		}
+
+		public function get selectedSkin():String {
+			return _selectedSkin;
+		}
+
+		public function set selectedSkin(value:String):void {
+			_selectedSkin = value;
+		}
+
+		public function get backBtnSkin():String {
+			return _backBtnSkin;
+		}
+
+		public function set backBtnSkin(value:String):void {
+			_backBtnSkin = value;
+		}
+
+		public function get backSkin():String {
+			return _backSkin;
+		}
+
+		public function set backSkin(value:String):void {
+			_backSkin = value;
+		}
+
+		public function get selTft():TextFormat {
+			return _selTft;
+		}
+
+		public function set selTft(value:TextFormat):void {
+			_selTft = value;
+		}
+
+		public function get unSelTft():TextFormat {
+			return _unSelTft;
+		}
+
+		public function set unSelTft(value:TextFormat):void {
+			_unSelTft = value;
 		}
 
 	}

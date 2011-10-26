@@ -74,7 +74,7 @@ package com.snsoft.tsp3.plugin.news {
 			back.width = panelSize.x;
 			back.height = panelSize.y;
 
-			closeBtn = SkinsUtil.createSkinByName("News_closeBtnSkin");
+			closeBtn = SkinsUtil.createSkinByName("NewsPanel_closeBtnSkin");
 			closeBtn.x = panelSize.x - closeBtn.width - boader;
 			closeBtn.y = boader;
 			this.addChild(closeBtn);
