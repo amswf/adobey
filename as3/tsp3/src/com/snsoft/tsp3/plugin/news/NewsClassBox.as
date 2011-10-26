@@ -17,6 +17,8 @@
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
+	import flash.text.AntiAliasType;
+	import flash.text.GridFitType;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
@@ -60,8 +62,6 @@
 		private var btnsY:int;
 
 		private var maskW:int;
-
-		private var tft:TextFormat = new TextFormat(null, 12, 0xffffff);
 
 		private var _title:String;
 
@@ -110,16 +110,23 @@
 			back.width = boxWidth;
 			back.height = boxHeight;
 
-			title = title == null ? "*" : title;
-			var tfd:TextField = new TextField();
-			tfd.defaultTextFormat = tft;
-			tfd.autoSize = TextFieldAutoSize.LEFT;
-			tfd.text = title;
-			tfd.mouseEnabled = false;
-			backLayer.addChild(tfd);
-			tfd.x = boader;
-			tfd.y = (boxHeight - tfd.height) / 2;
+			var tfdw:int = 0;
 
+			if (title != null) {
+				var tfd:TextField = new TextField();
+				tfd.defaultTextFormat = unSelTft;
+				tfd.autoSize = TextFieldAutoSize.LEFT;
+				tfd.embedFonts = true;
+				tfd.antiAliasType = AntiAliasType.ADVANCED;
+				tfd.gridFitType = GridFitType.PIXEL;
+				tfd.thickness = 100;
+				tfd.text = title+"：";
+				tfd.mouseEnabled = false;
+				backLayer.addChild(tfd);
+				tfd.x = boader;
+				tfd.y = (boxHeight - tfd.height) / 2;
+				tfdw = tfd.width;
+			}
 			var bw:int = 0;
 			if (!hiddenBack) {
 				var backBtn:MovieClip = SkinsUtil.createSkinByName(backBtnSkin);
@@ -139,7 +146,7 @@
 			btnH = btn.height;
 			btnsY = int((boxHeight - btnH) / 2);
 
-			var btnsX:int = boader + tfd.width + boader;
+			var btnsX:int = boader + tfdw + boader;
 
 			maskW = boxWidth - btnsX - bw - boader - boader;
 
