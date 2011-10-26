@@ -12,7 +12,7 @@ package com.snsoft.tsp3.plugin.news {
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 
-	public class NewsClassBtn extends Sprite {
+	public class NewsClassBtn extends MySprite {
 
 		private var text:String;
 
@@ -22,32 +22,42 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var btnHeight:int;
 
-		private var tft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName("MicrosoftYaHei"), 14, 0xffffff);
-
 		private var _data:DataDTO;
 
 		private var selSkin:MovieClip;
 
 		private var unSelSkin:MovieClip;
 
+		private var tfd:TextField;
+
+		private var _unSelectedSkin:String = "NewsClassBtn_unSelectedSkin";
+
+		private var _selectedSkin:String = "NewsClassBtn_selectedSkin";
+
+		private var _selTft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName("MicrosoftYaHei"), 14, 0xffffff);
+
+		private var _unSelTft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName("MicrosoftYaHei"), 14, 0xffffff);
+
 		public function NewsClassBtn(text:String) {
 			super();
 			this.text = text;
-			init();
+			this.unSelectedSkin = unSelectedSkin;
+			this.selectedSkin = selectedSkin;
+
 		}
 
-		private function init():void {
-
-			unSelSkin = SkinsUtil.createSkinByName("NewsClassBtn_unSelectedSkin");
+		override protected function draw():void {
+			trace("draw:asdf");
+			unSelSkin = SkinsUtil.createSkinByName(unSelectedSkin);
 			this.addChild(unSelSkin);
 
-			selSkin = SkinsUtil.createSkinByName("NewsClassBtn_selectedSkin");
+			selSkin = SkinsUtil.createSkinByName(selectedSkin);
 			selSkin.visible = false;
 			this.addChild(selSkin);
 
-			var tfd:TextField = new TextField();
+			tfd = new TextField();
 			tfd.mouseEnabled = false;
-			tfd.defaultTextFormat = tft;
+			tfd.defaultTextFormat = unSelTft;
 			tfd.autoSize = TextFieldAutoSize.LEFT;
 			tfd.embedFonts = true;
 			tfd.antiAliasType = AntiAliasType.ADVANCED;
@@ -65,6 +75,7 @@ package com.snsoft.tsp3.plugin.news {
 
 		public function setSectcted(b:Boolean):void {
 			selSkin.visible = b;
+			tfd.setTextFormat(b ? selTft : unSelTft);
 		}
 
 		public function get data():DataDTO {
@@ -73,6 +84,38 @@ package com.snsoft.tsp3.plugin.news {
 
 		public function set data(value:DataDTO):void {
 			_data = value;
+		}
+
+		public function get unSelectedSkin():String {
+			return _unSelectedSkin;
+		}
+
+		public function set unSelectedSkin(value:String):void {
+			_unSelectedSkin = value;
+		}
+
+		public function get selectedSkin():String {
+			return _selectedSkin;
+		}
+
+		public function set selectedSkin(value:String):void {
+			_selectedSkin = value;
+		}
+
+		public function get selTft():TextFormat {
+			return _selTft;
+		}
+
+		public function set selTft(value:TextFormat):void {
+			_selTft = value;
+		}
+
+		public function get unSelTft():TextFormat {
+			return _unSelTft;
+		}
+
+		public function set unSelTft(value:TextFormat):void {
+			_unSelTft = value;
 		}
 
 	}

@@ -14,7 +14,7 @@ package com.snsoft.tsp3 {
 
 		}
 
-		public function reDraw():void {
+		public function drawNow():void {
 			draw();
 		}
 

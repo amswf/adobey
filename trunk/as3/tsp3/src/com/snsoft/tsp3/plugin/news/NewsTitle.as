@@ -3,6 +3,7 @@ package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.ViewUtil;
 	import com.snsoft.tsp3.plugin.news.dto.NewsTitleDTO;
 	import com.snsoft.util.SkinsUtil;
+	import com.snsoft.util.rlm.rs.RSEmbedFonts;
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -25,13 +26,19 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var dto:NewsTitleDTO;
 
-		private var searchBtn:NewsTextBtn;
+		private var searchBtn:Sprite;
 
 		private var closeBtn:Sprite;
 
 		private var minimiseBtn:Sprite;
 
 		private var boader:int = 10;
+
+		private var boader2:int = 3;
+
+		private var boader3:int = 100;
+
+		private var boader4:int = 3;
 
 		private var imgSize:Point = new Point(48, 48);
 
@@ -40,6 +47,8 @@ package com.snsoft.tsp3.plugin.news {
 		private var titleHeight:int;
 
 		private var titleTft:TextFormat = new TextFormat(null, 14, 0x000000);
+
+		private var searchTextTft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName("MicrosoftYaHei"), 16, 0x000000);
 
 		private var _searchText:String = "";
 
@@ -55,8 +64,10 @@ package com.snsoft.tsp3.plugin.news {
 		private function init():void {
 
 			//背景
-			var back:Sprite = ViewUtil.creatRect(titleWidth, titleHeight);
+			var back:Sprite = SkinsUtil.createSkinByName("NewsTitle_backSkin");
 			this.addChild(back);
+			back.width = titleWidth;
+			back.height = titleHeight;
 
 			//标题图片
 
@@ -78,40 +89,45 @@ package com.snsoft.tsp3.plugin.news {
 			titleTfd.y = boader + imgSize.y - titleTfd.height;
 
 			//关闭按钮
-			closeBtn = SkinsUtil.createSkinByName("News_closeBtnSkin");
+			closeBtn = SkinsUtil.createSkinByName("NewsTitle_closeBtnSkin");
 			closeBtn.buttonMode = true;
 			this.addChild(closeBtn);
 			closeBtn.x = titleWidth - boader - closeBtn.width;
-			closeBtn.y = boader;
+			closeBtn.y = (titleHeight - closeBtn.height) / 2;
 			closeBtn.addEventListener(MouseEvent.CLICK, handlerCloseBtnClick);
 
-			//关闭按钮
-			minimiseBtn = SkinsUtil.createSkinByName("News_minimiseBtnSkin");
+			//最小化按钮
+			minimiseBtn = SkinsUtil.createSkinByName("NewsTitle_minimiseBtnSkin");
 			minimiseBtn.buttonMode = true;
 			this.addChild(minimiseBtn);
-			minimiseBtn.x = closeBtn.x - boader - minimiseBtn.width;
-			minimiseBtn.y = boader;
+			minimiseBtn.x = closeBtn.x - minimiseBtn.width;
+			minimiseBtn.y = (titleHeight - closeBtn.height) / 2;
 			minimiseBtn.addEventListener(MouseEvent.CLICK, handlerMinimizeBtnClick);
 
+			var schBack:Sprite = SkinsUtil.createSkinByName("NewsTitle_searchBackSkin");
+			this.addChild(schBack);
+			schBack.x = titleTfd.x + titleTfd.width + boader3;
+			schBack.y = (titleHeight - schBack.height) / 2;
+			schBack.width = minimiseBtn.x - 100 - schBack.x;
+
 			//搜索按钮
-			searchBtn = new NewsTextBtn("查询");
+			searchBtn = SkinsUtil.createSkinByName("NewsTitle_searchBtnSkin");
 			searchBtn.buttonMode = true;
 			this.addChild(searchBtn);
-			searchBtn.x = minimiseBtn.x - searchBtn.width - 100;
-			searchBtn.y = 30;
+			searchBtn.x = schBack.getRect(this).right - searchBtn.width - boader2;
+			searchBtn.y = schBack.y + boader2;
 			searchBtn.addEventListener(MouseEvent.CLICK, handlerSearchBtnClick);
 
 			//搜索输入
 			searchTfd = new TextField();
+			searchTfd.defaultTextFormat = searchTextTft;
 			searchTfd.text = "";
 			searchTfd.type = TextFieldType.INPUT;
-			searchTfd.border = true;
-			searchTfd.x = titleTfd.x + titleTfd.width + 100;
-			searchTfd.y = 30;
-			searchTfd.width = searchBtn.x - boader - searchTfd.x;
-			searchTfd.height = 38;
 			this.addChild(searchTfd);
-
+			searchTfd.width = schBack.width - boader2 - boader2 - searchBtn.width;
+			searchTfd.height = schBack.height - boader2 - boader2;
+			searchTfd.x = schBack.x + boader2;
+			searchTfd.y = schBack.y + schBack.height - searchTfd.height + boader4;
 		}
 
 		public function clearSearchText():void {

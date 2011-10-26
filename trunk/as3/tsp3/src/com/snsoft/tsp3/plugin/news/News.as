@@ -18,6 +18,7 @@
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.geom.Point;
+	import flash.text.TextFormat;
 
 	public class News extends BPlugin {
 
@@ -81,6 +82,10 @@
 
 		private var newsTitle:NewsTitle;
 
+		private var filterSelTft:TextFormat;
+
+		private var filterUnSelTft:TextFormat;
+
 		public function News() {
 			NewsItemI;
 			NewsItemII;
@@ -126,6 +131,9 @@
 		}
 
 		private function handlerLoadFontCmp(e:Event):void {
+			filterSelTft = new TextFormat(RSEmbedFonts.findFontByName("MicrosoftYaHei"), 14, 0xffffff);
+			filterUnSelTft = new TextFormat(RSEmbedFonts.findFontByName("MicrosoftYaHei"), 14, 0x666666);
+
 			initBase();
 		}
 
@@ -305,6 +313,11 @@
 				}
 				else {
 					fbox = new NewsClassBox(stage.stageWidth - columnW, classH, ds.attr.name, ds.attr.id, true);
+					fbox.selectedSkin = "NewsFilterBtn_selectedSkin";
+					fbox.unSelectedSkin = "NewsFilterBtn_unSelectedSkin";
+					fbox.backSkin = "NewsFilterBox_backSkin";
+					fbox.selTft = filterSelTft;
+					fbox.unSelTft = filterUnSelTft;
 					filtersLayer.addChild(fbox);
 				}
 				fbox.addChildren(v);
