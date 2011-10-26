@@ -3,7 +3,8 @@ package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.ViewUtil;
 	import com.snsoft.tsp3.touch.TouchDrag;
 	import com.snsoft.tsp3.touch.TouchDragEvent;
-	
+	import com.snsoft.util.SkinsUtil;
+
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
@@ -51,8 +52,10 @@ package com.snsoft.tsp3.plugin.news {
 			//var mskH:int = boxHeight - boxHeight % btnH;
 			var mskH:int = boxHeight;
 
-			var back:Sprite = ViewUtil.creatRect(btnsLayer.width, boxHeight, 0xffffff, 1);
+			var back:Sprite = SkinsUtil.createSkinByName("NewsBtnBox_backSkin");
 			backLayer.addChild(back);
+			back.width = btnsLayer.width;
+			back.height = boxHeight;
 
 			var msk:Sprite = ViewUtil.creatRect(btnsLayer.width, mskH, 0xffffff, 1);
 			maskLayer.addChild(msk);
