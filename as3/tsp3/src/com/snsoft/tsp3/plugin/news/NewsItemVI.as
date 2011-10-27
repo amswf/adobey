@@ -20,10 +20,6 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var tft:TextFormat = new TextFormat(null, 12, 0xffffff);
 
-		private var defBack:MovieClip;
-
-		private var selBack:MovieClip;
-
 		private var dateW:int = 100;
 
 		public function NewsItemVI(data:DataDTO) {
@@ -37,16 +33,7 @@ package com.snsoft.tsp3.plugin.news {
 			var ndp:NewsDataParam = new NewsDataParam(data.params);
 			itemHeight = hMax;
 
-			defBack = SkinsUtil.createSkinByName("NewsItemsVI_backDefSkin");
-			defBack.width = itemWidth;
-			defBack.height = itemHeight;
-			this.addChild(defBack);
-
-			selBack = SkinsUtil.createSkinByName("NewsItemsVI_backSelSkin");
-			selBack.width = itemWidth;
-			selBack.height = itemHeight;
-			selBack.visible = false;
-			this.addChild(selBack);
+			addBack("VI");
 
 			var tp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_TITLE);
 

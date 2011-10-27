@@ -19,10 +19,6 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var hMax:int = 100;
 
-		private var defBack:MovieClip;
-
-		private var selBack:MovieClip;
-
 		public function NewsItemI(data:DataDTO) {
 			super();
 			this._data = data;
@@ -34,16 +30,7 @@ package com.snsoft.tsp3.plugin.news {
 
 			itemHeight = hMax;
 
-			defBack = SkinsUtil.createSkinByName("NewsItemsI_backDefSkin");
-			defBack.width = itemWidth;
-			defBack.height = itemHeight;
-			this.addChild(defBack);
-
-			selBack = SkinsUtil.createSkinByName("NewsItemsI_backSelSkin");
-			selBack.width = itemWidth;
-			selBack.height = itemHeight;
-			selBack.visible = false;
-			this.addChild(selBack);
+			addBack("I");
 
 			var imgh:int = itemHeight - boader - boader;
 			var imgw:int = imgh * 1.33;

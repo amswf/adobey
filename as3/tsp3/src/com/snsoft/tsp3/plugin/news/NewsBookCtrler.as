@@ -6,7 +6,7 @@ package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.net.ReqParams;
 	import com.snsoft.tsp3.pagination.Pagination;
 	import com.snsoft.tsp3.pagination.PaginationEvent;
-	
+
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -74,7 +74,11 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		private function handleritemClick(e:Event):void {
+			if (_clickItem != null) {
+				_clickItem.setSelected(false);
+			}
 			_clickItem = newsBook.clickItem;
+			_clickItem.setSelected(true);
 			this.dispatchEvent(new Event(EVENT_ITEM_CLICK));
 		}
 

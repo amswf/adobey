@@ -1,8 +1,10 @@
 package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.Common;
 	import com.snsoft.tsp3.net.DataDTO;
+	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.rlm.rs.RSEmbedFonts;
 
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.text.TextFormat;
 
@@ -39,6 +41,10 @@ package com.snsoft.tsp3.plugin.news {
 
 		protected var boader:int = 10;
 
+		protected var defBack:MovieClip;
+
+		protected var selBack:MovieClip;
+
 		public function NewsItemBase() {
 			super();
 		}
@@ -50,6 +56,24 @@ package com.snsoft.tsp3.plugin.news {
 
 		public function draw():void {
 			throw(new Error("子类需要重写draw方法!"));
+		}
+
+		public function addBack(skinCode:String):void {
+			defBack = SkinsUtil.createSkinByName("NewsItems" + skinCode + "_backDefSkin");
+			defBack.width = itemWidth;
+			defBack.height = itemHeight;
+			this.addChild(defBack);
+
+			selBack = SkinsUtil.createSkinByName("NewsItems" + skinCode + "_backSelSkin");
+			selBack.width = itemWidth;
+			selBack.height = itemHeight;
+			selBack.visible = false;
+			this.addChild(selBack);
+		}
+
+		public function setSelected(b:Boolean):void {
+			selBack.visible = b;
+			defBack.visible = !b;
 		}
 
 		public function get itemWidth():int {

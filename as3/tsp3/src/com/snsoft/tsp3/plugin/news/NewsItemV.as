@@ -23,10 +23,6 @@
 
 		private var tft:TextFormat = new TextFormat(null, 12, 0xffffff);
 
-		private var defBack:MovieClip;
-
-		private var selBack:MovieClip;
-
 		public function NewsItemV(data:DataDTO) {
 			super();
 			this._data = data;
@@ -38,16 +34,7 @@
 
 			itemHeight = hMax;
 
-			defBack = SkinsUtil.createSkinByName("NewsItemsV_backDefSkin");
-			defBack.width = itemWidth;
-			defBack.height = itemHeight;
-			this.addChild(defBack);
-
-			selBack = SkinsUtil.createSkinByName("NewsItemsV_backSelSkin");
-			selBack.width = itemWidth;
-			selBack.height = itemHeight;
-			selBack.visible = false;
-			this.addChild(selBack);
+			addBack("V");
 
 			var imgh:int = itemHeight - boader - boader;
 			var imgw:int = imgh * 1.33;
