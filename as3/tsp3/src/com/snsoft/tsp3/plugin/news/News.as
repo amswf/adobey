@@ -214,8 +214,14 @@
 				itemsUrl = cfg.searchDataUrl;
 			}
 
+			infoLayer.visible = false;
+
+			var newsPanelLock:Sprite = SkinsUtil.createSkinByName("NewsPanel_lockSkin");
+			newsPanelLock.width = back.width;
+			newsPanelLock.height = back.height;
+			infoLayer.addChild(newsPanelLock);
+
 			newsPanel = new NewsPanel(panelSize, infoUrl, itemsUrl, code);
-			newsPanel.visible = false;
 			newsPanel.x = panelX;
 			newsPanel.y = panelY;
 			infoLayer.addChild(newsPanel);
@@ -226,7 +232,7 @@
 		}
 
 		private function handlerPanelClose(e:Event):void {
-			newsPanel.visible = false;
+			infoLayer.visible = false;
 		}
 
 		private function refreshBook():void {
@@ -258,7 +264,7 @@
 			if (item.clickType == NewsItemBase.CLICK_TYPE_INFO) {
 				newsState.infoId = item.data.id;
 				newsPanel.refresh(newsState);
-				newsPanel.visible = true;
+				infoLayer.visible = true;
 			}
 			else if (item.clickType == NewsItemBase.CLICK_TYPE_PLAY) {
 				if (item.data.videos != null && item.data.videos.length > 0) {

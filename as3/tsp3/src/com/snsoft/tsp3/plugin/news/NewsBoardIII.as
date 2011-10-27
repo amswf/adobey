@@ -1,8 +1,9 @@
 ﻿package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.tsp3.net.DataParam;
+	import com.snsoft.tsp3.plugin.news.layout.Util;
 	import com.snsoft.util.SpriteUtil;
-	
+
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.geom.Point;
@@ -45,12 +46,13 @@
 			//图片
 			addTitleImg(data.img, timgW, timgH);
 
-			var tp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_EBUY_TYPE);
-			var pp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_EBUY_PUBLISH_DATE);
-			var filmItems:Sprite = creatItemsLine(tp, pp);
-			scrollLayer.addChild(filmItems);
-			filmItems.x = boader + timgW;
-			filmItems.y = boader;
+			var ebuyv:Vector.<DataParam> = new Vector.<DataParam>();
+			ebuyv.push(ndp.getIntrParam(NewsDataParam.PARAM_EBUY_TYPE));
+			ebuyv.push(ndp.getIntrParam(NewsDataParam.PARAM_EBUY_PUBLISH_DATE));
+			var ebuyItems:Sprite = Util.rowItemsMultiLine(ebuyv, itemtft, itemtft, infoSize.x - boader - boader);
+			scrollLayer.addChild(ebuyItems);
+			ebuyItems.x = boader + timgW;
+			ebuyItems.y = boader;
 
 			//附件、图片、音乐、影片
 			addSrcs(data);

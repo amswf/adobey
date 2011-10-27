@@ -1,14 +1,17 @@
 package com.snsoft.tsp3.plugin.news {
 
+	import com.snsoft.tsp3.Common;
 	import com.snsoft.tsp3.MySprite;
 	import com.snsoft.tsp3.ViewUtil;
 	import com.snsoft.tsp3.net.DataParam;
+	import com.snsoft.tsp3.plugin.news.layout.Util;
 	import com.snsoft.util.SkinsUtil;
-	
+	import com.snsoft.util.rlm.rs.RSEmbedFonts;
+
 	import fl.transitions.Tween;
 	import fl.transitions.TweenEvent;
 	import fl.transitions.easing.Regular;
-	
+
 	import flash.display.Bitmap;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -19,6 +22,8 @@ package com.snsoft.tsp3.plugin.news {
 	import flash.text.TextFormat;
 
 	public class ImageBook extends MySprite {
+
+		public static const EVENT_BTN_CLICK:String = "btnClick";
 
 		public static const DISPLAY_STATE_DEF:String = "def";
 
@@ -64,7 +69,7 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var msgtfd:TextField;
 
-		protected var texttft:TextFormat = new TextFormat(null, 14, 0xffffff);
+		protected var texttft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName(Common.FONT_HZGBYS), 14, 0x575757);
 
 		public function ImageBook(data:Vector.<DataParam>, bookWidth:int, bookHeight:int) {
 			this.data = data;
@@ -97,15 +102,12 @@ package com.snsoft.tsp3.plugin.news {
 
 			imgLayer.mask = mskLayer;
 			imgLayer.x = boader + lbtn.width + boader;
-			imgLayer.y = boader + boader2;
+			imgLayer.y = boader;
 
 			mskLayer.x = boader + lbtn.width + boader;
-			mskLayer.y = boader + boader2;
+			mskLayer.y = boader;
 
-			msgtfd = new TextField();
-			msgtfd.autoSize = TextFieldAutoSize.LEFT;
-			msgtfd.mouseEnabled = false;
-			msgtfd.defaultTextFormat = texttft;
+			msgtfd = Util.ctntSameLine("", texttft);
 			btnLayer.addChild(msgtfd);
 
 			setDisplayState(DISPLAY_STATE_DEF);
@@ -155,10 +157,12 @@ package com.snsoft.tsp3.plugin.news {
 
 		private function handlerLClick(e:Event):void {
 			moveImg(currentIndex - 1);
+			this.dispatchEvent(new Event(EVENT_BTN_CLICK));
 		}
 
 		private function handlerRClick(e:Event):void {
 			moveImg(currentIndex + 1);
+			this.dispatchEvent(new Event(EVENT_BTN_CLICK));
 		}
 
 		private function moveImg(index:int):void {
@@ -209,6 +213,8 @@ package com.snsoft.tsp3.plugin.news {
 
 			rbtn.x = cbw - boader - rbtn.width;
 			rbtn.y = (cbh + boader2 - rbtn.height) / 2;
+
+			setMsg(msgtfd.text);
 		}
 
 	}

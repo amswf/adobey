@@ -50,9 +50,9 @@
 					var pm:DataParam = pv[i];
 					var spr:Sprite = new Sprite();
 					this.addChild(spr);
-					var ctnt:TextField = Util.ctnt(pm.content, ctnttft, pb);
+					var ctnt:TextField = Util.ctntSameLine(pm.content, ctnttft, pb);
 					spr.addChild(ctnt);
-					var txt:TextField = Util.ctnt(pm.text, texttft);
+					var txt:TextField = Util.ctntSameLine(pm.text, texttft);
 					spr.addChild(txt);
 					txt.y = ctnt.height;
 					sv.push(spr);

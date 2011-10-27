@@ -57,7 +57,7 @@ package com.snsoft.tsp3.plugin.news {
 			var dp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_DIGEST);
 			var dw:int = itemWidth - boader - img.width - boader - boader;
 			var dh:int = itemHeight - title.getRect(this).bottom - boader - boader;
-			var digest:Sprite = Util.contentItem(dp, digesttft, digesttft, dw, dh, false);
+			var digest:Sprite = Util.digestText(dp, digesttft, digesttft, dw, dh, false);
 			this.addChild(digest);
 			digest.x = title.x;
 			digest.y = title.getRect(this).bottom + boader;
