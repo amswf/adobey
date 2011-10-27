@@ -1,8 +1,9 @@
 ﻿package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.tsp3.net.DataParam;
+	import com.snsoft.tsp3.plugin.news.layout.Util;
 	import com.snsoft.util.SkinsUtil;
-	
+
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.text.TextField;
@@ -57,14 +58,19 @@
 
 			if (pv != null) {
 				var sv:Vector.<Sprite> = new Vector.<Sprite>();
+				var pb:int = (itemWidth - boader - boader) / pv.length;
 				for (var i:int = 0; i < pv.length; i++) {
 					var pm:DataParam = pv[i];
-					var spr:Sprite = creatRowSpr(pm);
+					var spr:Sprite = new Sprite();
 					this.addChild(spr);
+					var ctnt:TextField = Util.ctnt(pm.content, ctnttft, pb);
+					spr.addChild(ctnt);
+					var txt:TextField = Util.ctnt(pm.text, texttft);
+					spr.addChild(txt);
+					txt.y = ctnt.height;
 					sv.push(spr);
 				}
 
-				var pb:int = (itemWidth - boader - boader) / sv.length;
 				var sx:int = boader + boader2;
 				for (var j:int = 0; j < sv.length; j++) {
 					var spr2:Sprite = sv[j];
@@ -76,25 +82,5 @@
 			}
 		}
 
-		private function creatRowSpr(param:DataParam):Sprite {
-			var spr:Sprite = new Sprite();
-
-			var ctnt:TextField = new TextField();
-			ctnt.mouseEnabled = false;
-			ctnt.defaultTextFormat = tft;
-			ctnt.autoSize = TextFieldAutoSize.LEFT;
-			ctnt.text = param.content;
-			spr.addChild(ctnt);
-
-			var txt:TextField = new TextField();
-			txt.mouseEnabled = false;
-			txt.defaultTextFormat = tft2;
-			txt.autoSize = TextFieldAutoSize.LEFT;
-			txt.text = param.text;
-			spr.addChild(txt);
-
-			txt.y = ctnt.height;
-			return spr;
-		}
 	}
 }
