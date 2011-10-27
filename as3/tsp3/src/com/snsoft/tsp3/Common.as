@@ -41,6 +41,10 @@ package com.snsoft.tsp3 {
 
 		public static const PARAM_TYPE:String = "type";
 
+		public static const FONT_YH:String = "MicrosoftYaHei";
+
+		public static const FONT_HZGBYS:String = "HZGBYS";
+
 		private static var lock:Boolean = false;
 
 		private static var common:Common = new Common();

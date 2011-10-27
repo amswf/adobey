@@ -1,7 +1,9 @@
 package com.snsoft.tsp3.plugin.news.layout {
 	import com.snsoft.tsp3.net.DataParam;
-	
+
 	import flash.display.Sprite;
+	import flash.text.AntiAliasType;
+	import flash.text.GridFitType;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
@@ -10,16 +12,22 @@ package com.snsoft.tsp3.plugin.news.layout {
 		public function Util() {
 		}
 
-		public static function contentItem(dataParam:DataParam, textTft:TextFormat, ctntTft:TextFormat, width:int, height:int):Sprite {
+		public static function contentItem(dataParam:DataParam, textTft:TextFormat, ctntTft:TextFormat, width:int, height:int, viewText:Boolean = true):Sprite {
 			var spr:Sprite = new Sprite();
-			if (dataParam != null && dataParam.text != null) {
-				var text:String = dataParam.text + "：";
+			if (dataParam != null) {
+
+				var text:String = "";
+				if (dataParam.text != null && viewText) {
+					text = dataParam.text + "：";
+				}
 				var ctnt:String = text;
 				if (dataParam.content != null) {
 					ctnt = text + dataParam.content;
 				}
 				var tfd:TextField = creatTextMultiLine(ctnt, ctntTft, width, height);
-				tfd.setTextFormat(textTft, 0, text.length);
+				if (text.length > 0) {
+					tfd.setTextFormat(textTft, 0, text.length);
+				}
 				spr.addChild(tfd);
 			}
 			return spr;
@@ -37,10 +45,10 @@ package com.snsoft.tsp3.plugin.news.layout {
 		 * @return
 		 *
 		 */
-		public static function twsLeft(textTft:TextFormat, ctntTft:TextFormat, maxWidth:int, boader:int, titleParam:DataParam, expParams:Vector.<DataParam>):Sprite {
+		public static function twsLeft(titletft:TextFormat, textTft:TextFormat, ctntTft:TextFormat, maxWidth:int, boader:int, titleParam:DataParam, expParams:Vector.<DataParam>):Sprite {
 			var spr:Sprite = new Sprite();
 			if (titleParam != null) {
-				var title:Sprite = lineItem(titleParam.text, titleParam.content, textTft, ctntTft, maxWidth / 2);
+				var title:TextField = Util.ctnt(titleParam.text, titletft, maxWidth);
 				spr.addChild(title);
 				var exp:Sprite = lineItems(expParams, textTft, ctntTft, maxWidth / 2, boader);
 				spr.addChild(exp);
@@ -61,10 +69,10 @@ package com.snsoft.tsp3.plugin.news.layout {
 		 * @return
 		 *
 		 */
-		public static function twsRight(textTft:TextFormat, ctntTft:TextFormat, maxWidth:int, boader:int, titleParam:DataParam, expParams:Vector.<DataParam>):Sprite {
+		public static function twsRight(titletft:TextFormat, textTft:TextFormat, ctntTft:TextFormat, maxWidth:int, boader:int, titleParam:DataParam, expParams:Vector.<DataParam>):Sprite {
 			var spr:Sprite = new Sprite();
 			if (titleParam != null) {
-				var title:Sprite = lineItem(titleParam.text, titleParam.content, textTft, ctntTft, maxWidth / 2);
+				var title:TextField = Util.ctnt(titleParam.text, titletft, maxWidth);
 				spr.addChild(title);
 				var exp:Sprite = lineItems(expParams, textTft, ctntTft, maxWidth / 2, boader);
 				spr.addChild(exp);
@@ -141,6 +149,10 @@ package com.snsoft.tsp3.plugin.news.layout {
 			txt.mouseEnabled = false;
 			txt.defaultTextFormat = tft;
 			txt.autoSize = TextFieldAutoSize.LEFT;
+			txt.embedFonts = true;
+			txt.antiAliasType = AntiAliasType.ADVANCED;
+			txt.gridFitType = GridFitType.PIXEL;
+			txt.thickness = 100;
 			if (text != null) {
 				txt.text = text + "：";
 			}
@@ -164,6 +176,10 @@ package com.snsoft.tsp3.plugin.news.layout {
 				txt.mouseEnabled = false;
 				txt.defaultTextFormat = tft;
 				txt.autoSize = TextFieldAutoSize.LEFT;
+				txt.embedFonts = true;
+				txt.antiAliasType = AntiAliasType.ADVANCED;
+				txt.gridFitType = GridFitType.PIXEL;
+				txt.thickness = 100;
 				if (text != null) {
 					txt.text = text;
 				}
@@ -185,6 +201,10 @@ package com.snsoft.tsp3.plugin.news.layout {
 			tfd.mouseEnabled = false;
 			tfd.defaultTextFormat = tft;
 			tfd.autoSize = TextFieldAutoSize.LEFT;
+			tfd.embedFonts = true;
+			tfd.antiAliasType = AntiAliasType.ADVANCED;
+			tfd.gridFitType = GridFitType.PIXEL;
+			tfd.thickness = 100;
 			if (text != null) {
 				var fs:int = int(tft.size);
 				var fw:int = fs;
@@ -210,6 +230,10 @@ package com.snsoft.tsp3.plugin.news.layout {
 			tfd.mouseEnabled = false;
 			tfd.defaultTextFormat = tft;
 			tfd.autoSize = TextFieldAutoSize.LEFT;
+			tfd.embedFonts = true;
+			tfd.antiAliasType = AntiAliasType.ADVANCED;
+			tfd.gridFitType = GridFitType.PIXEL;
+			tfd.thickness = 100;
 			tfd.multiline = true;
 			tfd.wordWrap = true;
 			tfd.width = maxWidth;

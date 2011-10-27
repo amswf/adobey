@@ -124,8 +124,8 @@
 
 		private function loadFonts():void {
 			var rsf:RSEmbedFonts = new RSEmbedFonts();
-			rsf.addFontName("MicrosoftYaHei");
-			rsf.addFontName("HZGBYS");
+			rsf.addFontName(Common.FONT_YH);
+			rsf.addFontName(Common.FONT_HZGBYS);
 
 			var rlm:ResLoadManager = new ResLoadManager();
 			rlm.addResSet(rsf);

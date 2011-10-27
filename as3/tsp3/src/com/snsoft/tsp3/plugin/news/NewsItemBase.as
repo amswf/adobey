@@ -1,6 +1,8 @@
 package com.snsoft.tsp3.plugin.news {
+	import com.snsoft.tsp3.Common;
 	import com.snsoft.tsp3.net.DataDTO;
-	
+	import com.snsoft.util.rlm.rs.RSEmbedFonts;
+
 	import flash.display.Sprite;
 	import flash.text.TextFormat;
 
@@ -24,9 +26,16 @@ package com.snsoft.tsp3.plugin.news {
 
 		protected var _clickType:String = CLICK_TYPE_INFO;
 
-		protected var texttft:TextFormat = new TextFormat(null, 14, 0xffffff);
+		//标题
+		protected var titletft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName(Common.FONT_YH), 15, 0x0657b7);
+		//副标题及日期等的标签文字
+		protected var texttft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName(Common.FONT_YH), 13, 0x9f9f9f);
 
-		protected var ctnttft:TextFormat = new TextFormat(null, 12, 0xffffff);
+		//副标题及日期等的信息文字
+		protected var ctnttft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName(Common.FONT_YH), 13, 0x9f9f9f);
+
+		//简介摘要信息
+		protected var digesttft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName(Common.FONT_YH), 14, 0x575757);
 
 		protected var boader:int = 10;
 

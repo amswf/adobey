@@ -3,7 +3,7 @@ package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.net.DataParam;
 	import com.snsoft.tsp3.plugin.news.layout.Util;
 	import com.snsoft.util.SkinsUtil;
-	
+
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.text.TextFormat;
@@ -53,7 +53,7 @@ package com.snsoft.tsp3.plugin.news {
 			var v:Vector.<DataParam> = new Vector.<DataParam>();
 			v.push(ndp.getIntrParam(NewsDataParam.PARAM_DATE));
 
-			var title:Sprite = Util.twsRight(texttft, ctnttft, itemWidth - boader - boader, 10, tp, v);
+			var title:Sprite = Util.twsRight(titletft, texttft, ctnttft, itemWidth - boader - boader, 10, tp, v);
 			this.addChild(title);
 			title.x = boader;
 			title.y = boader;
