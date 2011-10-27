@@ -54,7 +54,7 @@
 			v.push(ndp.getIntrParam(NewsDataParam.PARAM_KEYWORDS));
 			v.push(ndp.getIntrParam(NewsDataParam.PARAM_DATE));
 
-			var title:Sprite = Util.twsLeft(texttft, ctnttft, itemWidth - boader - boader - boader, 10, tp, v);
+			var title:Sprite = Util.twsLeft(titletft, texttft, ctnttft, itemWidth - boader - boader - boader, 10, tp, v);
 			this.addChild(title);
 			title.x = +boader;
 			title.y = boader;

@@ -3,7 +3,7 @@
 	import com.snsoft.tsp3.net.DataParam;
 	import com.snsoft.tsp3.plugin.news.layout.Util;
 	import com.snsoft.util.SkinsUtil;
-	
+
 	import flash.display.Bitmap;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -66,7 +66,7 @@
 			v.push(ndp.getIntrParam(NewsDataParam.PARAM_DATE));
 			v.push(ndp.getIntrParam(NewsDataParam.PARAM_EBUY_TYPE));
 
-			var title:Sprite = Util.twsLeft(texttft, ctnttft, itemWidth - img.getRect(this).right - boader - boader - boader, 10, tp, v);
+			var title:Sprite = Util.twsLeft(titletft, texttft, ctnttft, itemWidth - img.getRect(this).right - boader - boader - boader, 10, tp, v);
 			this.addChild(title);
 			title.x = img.getRect(this).right + boader;
 			title.y = boader;

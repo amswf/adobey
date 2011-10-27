@@ -1,4 +1,5 @@
 package com.snsoft.tsp3.plugin.news {
+	import com.snsoft.tsp3.Common;
 	import com.snsoft.tsp3.MySprite;
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.util.SkinsUtil;
@@ -33,9 +34,9 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var _selectedSkin:String = "NewsClassBtn_selectedSkin";
 
-		private var _selTft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName("MicrosoftYaHei"), 14, 0xffffff);
+		private var _selTft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName(Common.FONT_YH), 14, 0xffffff);
 
-		private var _unSelTft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName("MicrosoftYaHei"), 14, 0xffffff);
+		private var _unSelTft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName(Common.FONT_YH), 14, 0xffffff);
 
 		public function NewsClassBtn(text:String) {
 			super();

@@ -1,4 +1,5 @@
 package com.snsoft.tsp3.plugin.news {
+	import com.snsoft.tsp3.Common;
 	import com.snsoft.tsp3.plugin.news.dto.NewsTitleDTO;
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.rlm.rs.RSEmbedFonts;
@@ -45,7 +46,7 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var titleTft:TextFormat = new TextFormat(null, 14, 0x000000);
 
-		private var searchTextTft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName("MicrosoftYaHei"), 16, 0x000000);
+		private var searchTextTft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName(Common.FONT_YH), 16, 0x000000);
 
 		private var _searchText:String = "";
 

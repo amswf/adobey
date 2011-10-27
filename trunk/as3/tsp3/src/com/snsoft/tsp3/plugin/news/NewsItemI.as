@@ -4,11 +4,10 @@ package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.net.DataParam;
 	import com.snsoft.tsp3.plugin.news.layout.Util;
 	import com.snsoft.util.SkinsUtil;
-	
+
 	import flash.display.Bitmap;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
-	import flash.text.TextFormat;
 
 	/**
 	 * 图片、标题、日期、关键字
@@ -19,8 +18,6 @@ package com.snsoft.tsp3.plugin.news {
 	public class NewsItemI extends NewsItemBase {
 
 		private var hMax:int = 100;
-
-		private var tft:TextFormat = new TextFormat(null, 12, 0xffffff);
 
 		private var defBack:MovieClip;
 
@@ -65,7 +62,7 @@ package com.snsoft.tsp3.plugin.news {
 			v.push(ndp.getIntrParam(NewsDataParam.PARAM_KEYWORDS));
 			v.push(ndp.getIntrParam(NewsDataParam.PARAM_DATE));
 
-			var title:Sprite = Util.twsLeft(texttft, ctnttft, itemWidth - img.getRect(this).right - boader - boader - boader, 10, tp, v);
+			var title:Sprite = Util.twsLeft(titletft, texttft, ctnttft, itemWidth - img.getRect(this).right - boader - boader - boader, 10, tp, v);
 			this.addChild(title);
 			title.x = img.getRect(this).right + boader;
 			title.y = boader;
@@ -73,7 +70,7 @@ package com.snsoft.tsp3.plugin.news {
 			var dp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_DIGEST);
 			var dw:int = itemWidth - boader - img.width - boader - boader;
 			var dh:int = itemHeight - title.getRect(this).bottom - boader - boader;
-			var digest:Sprite = Util.contentItem(dp, texttft, ctnttft, dw, dh);
+			var digest:Sprite = Util.contentItem(dp, digesttft, digesttft, dw, dh, false);
 			this.addChild(digest);
 			digest.x = title.x;
 			digest.y = title.getRect(this).bottom + boader;

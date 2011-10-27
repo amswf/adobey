@@ -1,4 +1,5 @@
 package com.snsoft.tsp3.plugin.news {
+	import com.snsoft.tsp3.Common;
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.rlm.rs.RSEmbedFonts;
@@ -21,7 +22,7 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var btnHeight:int;
 
-		private var tft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName("MicrosoftYaHei"), 15, 0xffffff);
+		private var tft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName(Common.FONT_YH), 15, 0xffffff);
 
 		private var _data:DataDTO;
 

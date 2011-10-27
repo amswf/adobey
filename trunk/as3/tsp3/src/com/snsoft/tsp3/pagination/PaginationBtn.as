@@ -1,7 +1,8 @@
 package com.snsoft.tsp3.pagination {
+	import com.snsoft.tsp3.Common;
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.rlm.rs.RSEmbedFonts;
-
+	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.text.AntiAliasType;
@@ -24,7 +25,7 @@ package com.snsoft.tsp3.pagination {
 
 		private var selected:Boolean = false;
 
-		private var btnTft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName("HZGBYS"), 15, 0x333333, true);
+		private var btnTft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName(Common.FONT_HZGBYS), 15, 0x333333, true);
 
 		public function PaginationBtn(btnText:String = "", btnNum:int = 0) {
 			this.btnText = btnText;
