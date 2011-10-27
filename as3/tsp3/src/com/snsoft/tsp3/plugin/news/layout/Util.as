@@ -48,10 +48,10 @@ package com.snsoft.tsp3.plugin.news.layout {
 		public static function twsLeft(titletft:TextFormat, textTft:TextFormat, ctntTft:TextFormat, maxWidth:int, boader:int, titleParam:DataParam, expParams:Vector.<DataParam>):Sprite {
 			var spr:Sprite = new Sprite();
 			if (titleParam != null) {
-				var title:TextField = Util.ctnt(titleParam.text, titletft, maxWidth);
-				spr.addChild(title);
 				var exp:Sprite = lineItems(expParams, textTft, ctntTft, maxWidth / 2, boader);
 				spr.addChild(exp);
+				var title:TextField = Util.ctnt(titleParam.content, titletft, maxWidth - exp.width - boader);
+				spr.addChild(title);
 				exp.x = title.width + boader;
 			}
 			return spr;
@@ -72,10 +72,10 @@ package com.snsoft.tsp3.plugin.news.layout {
 		public static function twsRight(titletft:TextFormat, textTft:TextFormat, ctntTft:TextFormat, maxWidth:int, boader:int, titleParam:DataParam, expParams:Vector.<DataParam>):Sprite {
 			var spr:Sprite = new Sprite();
 			if (titleParam != null) {
-				var title:TextField = Util.ctnt(titleParam.text, titletft, maxWidth);
-				spr.addChild(title);
 				var exp:Sprite = lineItems(expParams, textTft, ctntTft, maxWidth / 2, boader);
 				spr.addChild(exp);
+				var title:TextField = Util.ctnt(titleParam.content, titletft, maxWidth - exp.width - boader);
+				spr.addChild(title);
 				exp.x = maxWidth - exp.width;
 			}
 			return spr;
@@ -210,7 +210,7 @@ package com.snsoft.tsp3.plugin.news.layout {
 				var fw:int = fs;
 				var n:int = (maxWidth - 5) / fw;
 				var et:String = n < text.length ? endText : "";
-				tfd.text = text.substring(0, n - endText.length) + et;
+				tfd.text = text.substring(0, n - et.length) + et;
 			}
 			return tfd;
 		}
@@ -245,7 +245,7 @@ package com.snsoft.tsp3.plugin.news.layout {
 					var n:int = (maxWidth - 5) / fw;
 					var m:int = (maxHeight - 1) / fh;
 					var et:String = n * m < text.length ? endText : "";
-					tfd.text = text.substring(0, n * m - endText.length) + et;
+					tfd.text = text.substring(0, n * m - et.length) + et;
 				}
 				else {
 					tfd.text = text;

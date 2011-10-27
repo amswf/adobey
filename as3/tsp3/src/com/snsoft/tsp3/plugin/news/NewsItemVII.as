@@ -26,7 +26,7 @@
 
 		private var hMax:int = 180;
 
-		private var wMax:int = 150;
+		private var wMax:int = 180;
 
 		private var tft:TextFormat = new TextFormat(null, 12, 0xffffff);
 
