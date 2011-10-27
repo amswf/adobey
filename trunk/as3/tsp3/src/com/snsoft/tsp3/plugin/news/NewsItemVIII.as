@@ -3,7 +3,7 @@
 	import com.snsoft.tsp3.net.DataParam;
 	import com.snsoft.tsp3.plugin.news.layout.Util;
 	import com.snsoft.util.SkinsUtil;
-	
+
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -27,11 +27,8 @@
 
 		private var tft:TextFormat = new TextFormat(null, 12, 0xffffff);
 
-		private var defBack:MovieClip;
-
-		private var selBack:MovieClip;
-
 		private var isPlayMouseDown:Boolean = false;
+
 		private var isInfoMouseDown:Boolean = false;
 
 		public function NewsItemVIII(data:DataDTO) {
@@ -46,16 +43,7 @@
 
 			itemHeight = hMax;
 
-			defBack = SkinsUtil.createSkinByName("NewsItemsVIII_backDefSkin");
-			defBack.width = itemWidth;
-			defBack.height = itemHeight;
-			this.addChild(defBack);
-
-			selBack = SkinsUtil.createSkinByName("NewsItemsVIII_backSelSkin");
-			selBack.width = itemWidth;
-			selBack.height = itemHeight;
-			selBack.visible = false;
-			this.addChild(selBack);
+			addBack("VIII");
 
 			var infoBtn:MovieClip = SkinsUtil.createSkinByName("NewsItemsVIII_ctntDefSkin");
 			this.addChild(infoBtn);

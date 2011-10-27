@@ -3,7 +3,7 @@
 	import com.snsoft.tsp3.net.DataParam;
 	import com.snsoft.tsp3.plugin.news.layout.Util;
 	import com.snsoft.util.SkinsUtil;
-	
+
 	import flash.display.Bitmap;
 	import flash.display.MovieClip;
 	import flash.text.TextField;
@@ -23,10 +23,6 @@
 
 		private var tft:TextFormat = new TextFormat(null, 12, 0xffffff);
 
-		private var defBack:MovieClip;
-
-		private var selBack:MovieClip;
-
 		public function NewsItemIII(data:DataDTO) {
 			super();
 			_autoRow = true;
@@ -38,16 +34,8 @@
 
 			itemHeight = hMax;
 			itemWidth = wMax;
-			defBack = SkinsUtil.createSkinByName("NewsItemsIII_backDefSkin");
-			defBack.width = itemWidth;
-			defBack.height = itemHeight;
-			this.addChild(defBack);
 
-			selBack = SkinsUtil.createSkinByName("NewsItemsIII_backSelSkin");
-			selBack.width = itemWidth;
-			selBack.height = itemHeight;
-			selBack.visible = false;
-			this.addChild(selBack);
+			addBack("III");
 
 			var tp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_TITLE);
 			var title:TextField = Util.creatTextInline(tp.content, ctnttft, itemWidth - boader - boader);
