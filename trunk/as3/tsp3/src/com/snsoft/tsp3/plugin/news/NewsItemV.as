@@ -67,7 +67,7 @@
 			var dp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_DIGEST);
 			var dw:int = itemWidth - boader - img.width - boader - boader;
 			var dh:int = itemHeight - keywords.getRect(this).bottom - boader;
-			var digest:Sprite = Util.contentItem(dp, texttft, ctnttft, dw, dh);
+			var digest:Sprite = Util.digestText(dp, texttft, ctnttft, dw, dh);
 			this.addChild(digest);
 			digest.x = title.x;
 			digest.y = keywords.getRect(this).bottom;

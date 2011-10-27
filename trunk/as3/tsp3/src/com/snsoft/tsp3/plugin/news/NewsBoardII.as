@@ -1,8 +1,9 @@
 ﻿package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.tsp3.net.DataParam;
+	import com.snsoft.tsp3.plugin.news.layout.Util;
 	import com.snsoft.util.SpriteUtil;
-	
+
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.geom.Point;
@@ -45,10 +46,10 @@
 			//图片
 			addTitleImg(data.img, timgW, timgH);
 
-			var dp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_VIDEO_DIRECTOR);
-			var pp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_VIDEO_PROTAGONIST);
-			var filmItems:Sprite = creatItemsLine(dp, pp);
-			scrollLayer.addChild(filmItems);
+			var filmv:Vector.<DataParam> = new Vector.<DataParam>();
+			filmv.push(ndp.getIntrParam(NewsDataParam.PARAM_VIDEO_DIRECTOR));
+			filmv.push(ndp.getIntrParam(NewsDataParam.PARAM_VIDEO_PROTAGONIST));
+			var filmItems:Sprite = Util.rowItemsMultiLine(filmv, itemtft, itemtft, infoSize.x - boader - boader);
 			filmItems.x = boader + timgW;
 			filmItems.y = boader;
 

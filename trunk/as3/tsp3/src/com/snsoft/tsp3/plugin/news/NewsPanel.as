@@ -3,7 +3,7 @@ package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.tsp3.pagination.Pagination;
 	import com.snsoft.util.SkinsUtil;
-	
+
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -22,11 +22,13 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var btmBtnLayer:Sprite = new Sprite();
 
-		private var topH:int = 50;
+		private var topBtnLayer:Sprite = new Sprite();
+
+		private var topH:int = 30;
 
 		private var btmH:int = 50;
 
-		private var boader:int = 10;
+		private var boader:int = 19;
 
 		private var bookSize:Point;
 
@@ -63,6 +65,7 @@ package com.snsoft.tsp3.plugin.news {
 			this.addChild(backLayer);
 			this.addChild(infoLayer);
 			this.addChild(bookLayer);
+			this.addChild(topBtnLayer);
 			this.addChild(btmBtnLayer);
 		}
 
@@ -73,9 +76,9 @@ package com.snsoft.tsp3.plugin.news {
 			back.height = panelSize.y;
 
 			closeBtn = SkinsUtil.createSkinByName("NewsPanel_closeBtnSkin");
-			closeBtn.x = panelSize.x - closeBtn.width - boader;
-			closeBtn.y = boader;
-			this.addChild(closeBtn);
+			closeBtn.x = panelSize.x - closeBtn.width;
+
+			topBtnLayer.addChild(closeBtn);
 			closeBtn.buttonMode = true;
 			closeBtn.addEventListener(MouseEvent.CLICK, handlerClose);
 			btmBtnLayer.x = boader;

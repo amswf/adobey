@@ -38,7 +38,7 @@
 			addBack("III");
 
 			var tp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_TITLE);
-			var title:TextField = Util.creatTextInline(tp.content, ctnttft, itemWidth - boader - boader);
+			var title:TextField = Util.ctntSameLine(tp.content, ctnttft, itemWidth - boader - boader);
 			this.addChild(title);
 			title.x = (itemWidth - title.width) / 2;
 			title.y = itemHeight - boader - title.height;

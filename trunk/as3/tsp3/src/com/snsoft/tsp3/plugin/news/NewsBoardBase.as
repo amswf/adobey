@@ -1,10 +1,17 @@
 package com.snsoft.tsp3.plugin.news {
+	import com.snsoft.tsp3.Common;
 	import com.snsoft.tsp3.MySprite;
 	import com.snsoft.tsp3.ViewUtil;
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.tsp3.net.DataParam;
+	import com.snsoft.tsp3.plugin.news.layout.Util;
 	import com.snsoft.tsp3.touch.TouchDrag;
-	
+	import com.snsoft.util.SkinsUtil;
+	import com.snsoft.util.rlm.rs.RSEmbedFonts;
+
+	import fl.transitions.Tween;
+	import fl.transitions.easing.Regular;
+
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
@@ -48,11 +55,11 @@ package com.snsoft.tsp3.plugin.news {
 
 		protected var scrollBack:Sprite;
 
-		protected var titletft:TextFormat = new TextFormat(null, 24, 0xffffff);
+		protected var titletft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName(Common.FONT_YH), 18, 0x0657b7);
 
-		protected var texttft:TextFormat = new TextFormat(null, 14, 0xffffff);
+		protected var subheadtft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName(Common.FONT_YH), 13, 0x9f9f9f);
 
-		protected var ctnttft:TextFormat = new TextFormat(null, 12, 0xffffff);
+		protected var itemtft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName(Common.FONT_YH), 14, 0x575757);
 
 		protected var nextY:int = boader;
 
@@ -63,20 +70,35 @@ package com.snsoft.tsp3.plugin.news {
 		protected function addBaseItems(ndp:NewsDataParam):void {
 			var cw:int = ctntWidth;
 
-			var title:Sprite = creatTitle(ndp.getIntrParam(NewsDataParam.PARAM_TITLE), cw);
-			this.addChild(title);
-			title.x = boader;
+			var h:int = 0;
 
-			var line2:Sprite =  creatLineText(ndp.getIntrParam(NewsDataParam.PARAM_COMEFROM),
-				ndp.getIntrParam(NewsDataParam.PARAM_AUTHOR),
-				ndp.getIntrParam(NewsDataParam.PARAM_KEYWORDS),
-				ndp.getIntrParam(NewsDataParam.PARAM_DATE));
+			var titleBack:Sprite = SkinsUtil.createSkinByName("NewsBoard_titleBackSkin");
+			this.addChild(titleBack);
+			titleBack.x = boader;
+
+			var titledp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_TITLE);
+			if (titledp != null) {
+				var title:TextField = Util.ctntSameLine(titledp.content, titletft, cw);
+				this.addChild(title);
+				title.x = (infoSize.x - title.width) / 2;
+				h += title.getRect(this).bottom;
+			}
+
+			var l2v:Vector.<DataParam> = new Vector.<DataParam>();
+			l2v.push(ndp.getIntrParam(NewsDataParam.PARAM_COMEFROM));
+			l2v.push(ndp.getIntrParam(NewsDataParam.PARAM_AUTHOR));
+			l2v.push(ndp.getIntrParam(NewsDataParam.PARAM_KEYWORDS));
+			l2v.push(ndp.getIntrParam(NewsDataParam.PARAM_DATE));
+			var line2:Sprite =  Util.lineItemsSameLine(l2v, subheadtft, subheadtft, cw, boader);
 			this.addChild(line2);
 			line2.x = (infoSize.x - line2.width) / 2;
-			line2.y = title.getRect(this).bottom + boader;
+			line2.y = h + boader;
+
+			titleBack.width = cw;
+			titleBack.height = line2.getRect(this).bottom + boader;
 
 			var sx:int = boader;
-			var sy:int = line2.getRect(this).bottom + boader;
+			var sy:int = titleBack.getRect(this).bottom + boader;
 			var sw:int = cw;
 			var sh:int = infoSize.y - sy - boader;
 
@@ -93,43 +115,15 @@ package com.snsoft.tsp3.plugin.news {
 			scrollLayer.addChild(scrollBack);
 		}
 
-		protected function addLineText(... dataParam):void {
-			//扩展信息输出
-			if (dataParam != null) {
-				for (var i:int = 0; i < dataParam.length; i++) {
-					var ep:DataParam = dataParam[i];
-					var spr:Sprite = creatLineText.apply(null, dataParam);
-					scrollLayer.addChild(spr);
-					spr.y = nextY;
-					nextY = spr.getRect(scrollLayer).bottom + boader;
-				}
-			}
-		}
-
-		protected function addItems(params:Vector.<DataParam>):void {
-			//扩展信息输出
-			if (params != null) {
-				for (var i:int = 0; i < params.length; i++) {
-					var ep:DataParam = params[i];
-					var spr:Sprite = creatItemTexts(ep);
-					scrollLayer.addChild(spr);
-					spr.y = nextY;
-					nextY = spr.getRect(scrollLayer).bottom + boader;
-				}
-			}
-		}
-
 		protected function addExpItems(ndp:NewsDataParam):void {
 			//扩展信息输出
 			var eps:Vector.<DataParam> = ndp.extParams;
 			if (eps != null) {
-				for (var i:int = 0; i < eps.length; i++) {
-					var ep:DataParam = eps[i];
-					var spr:Sprite = creatItemTexts(ep);
-					scrollLayer.addChild(spr);
-					spr.y = nextY;
-					nextY = spr.getRect(scrollLayer).bottom + boader;
-				}
+
+				var spr:Sprite = Util.rowItemsMultiLine(eps, itemtft, itemtft, infoSize.x - boader - boader);
+				scrollLayer.addChild(spr);
+				spr.y = nextY;
+				nextY = spr.getRect(scrollLayer).bottom + boader;
 			}
 		}
 
@@ -145,7 +139,9 @@ package com.snsoft.tsp3.plugin.news {
 			}
 			else {
 				if (dp != null) {
-					var dig:Sprite = creatItemTexts(dp);
+					var v:Vector.<DataParam> = new Vector.<DataParam>();
+					v.push(dp);
+					var dig:Sprite = Util.rowItemsMultiLine(v, itemtft, itemtft, infoSize.x - boader - boader);
 					scrollLayer.addChild(dig);
 					dig.y = nextY;
 				}
@@ -165,6 +161,7 @@ package com.snsoft.tsp3.plugin.news {
 				var sprite:Sprite = null;
 				if (type == SRC_IMAGES) {
 					sprite = new ImageBook(data, ctntWidth, maskLayer.height - boader - boader);
+					sprite.addEventListener(ImageBook.EVENT_BTN_CLICK, handlerImageBookBtnClick);
 				}
 				else {
 					sprite = creatSrc(text, type, skin, data);
@@ -175,9 +172,16 @@ package com.snsoft.tsp3.plugin.news {
 			}
 		}
 
+		private function handlerImageBookBtnClick(e:Event):void {
+			var ib:ImageBook = e.currentTarget as ImageBook;
+			var endy:int = maskLayer.y - ib.y + boader;
+
+			var twn1:fl.transitions.Tween = new Tween(scrollLayer, "y", Regular.easeOut, scrollLayer.y, endy, 0.3, true);
+		}
+
 		protected function creatItemHtml(dataParam:DataParam):Sprite {
 			var sprite:Sprite = new Sprite();
-			var tfd:TextField = creatTextTfd(dataParam.text);
+			var tfd:TextField = Util.label(dataParam.text, itemtft);
 			sprite.addChild(tfd);
 
 			var html:HTMLLoader = new HTMLLoader();
@@ -210,7 +214,7 @@ package com.snsoft.tsp3.plugin.news {
 
 		protected function creatSrc(text:String, type:String, skin:String, data:Vector.<DataParam>):Sprite {
 			var sprite:Sprite = new Sprite();
-			var tfd:TextField = creatTextTfd(text);
+			var tfd:TextField = Util.label(text, itemtft);
 			sprite.addChild(tfd);
 
 			var nisb:NewsInfoSrcBox = new NewsInfoSrcBox(skin, data, 200);
@@ -226,108 +230,6 @@ package com.snsoft.tsp3.plugin.news {
 			bm.width = width;
 			bm.height = height;
 			return sprite;
-		}
-
-		/**
-		 * 属性多行显示，属性名和值不同在同一行
-		 * @param dataParam
-		 * @return
-		 *
-		 */
-		protected function creatItemTexts(... dataParam):Sprite {
-			var sprite:Sprite = new Sprite();
-			for (var i:int = 0; i < dataParam.length; i++) {
-				var prm:DataParam = dataParam[i] as DataParam;
-				if (prm != null && prm.text != null && prm.content != null) {
-					var tfd:TextField = creatTextTfd(prm.text);
-					sprite.addChild(tfd);
-
-					var ctfd:TextField = creatCtntTfd(prm.content);
-					sprite.addChild(ctfd);
-					ctfd.width = ctntWidth;
-					ctfd.y = tfd.height;
-				}
-			}
-			return sprite;
-		}
-
-		/**
-		 * 属性名称和值在同一行，多个属性多行显示
-		 * @param dataParam
-		 * @return
-		 *
-		 */
-		protected function creatItemsLine(... dataParam):Sprite {
-			var spr:Sprite = new Sprite();
-			var y:int = 0;
-			for (var i:int = 0; i < dataParam.length; i++) {
-				var prm:DataParam = dataParam[i] as DataParam;
-				if (prm != null && prm.text != null && prm.content != null) {
-					var lt:Sprite = creatLineText(prm);
-					spr.addChild(lt);
-					lt.y = y;
-					y += lt.height;
-				}
-			}
-			return spr;
-		}
-
-		/**
-		 * 一行，多属性输出
-		 * @param dataParam
-		 * @return
-		 *
-		 */
-		protected function creatLineText(... dataParam):Sprite {
-			var spr:Sprite = new Sprite();
-			var x:int = 0;
-			for (var i:int = 0; i < dataParam.length; i++) {
-				var prm:DataParam = dataParam[i] as DataParam;
-				if (prm != null && prm.text != null && prm.content != null) {
-					var tt:TextField = creatTextTfd(prm.text);
-					spr.addChild(tt);
-					tt.x = x;
-					x += tt.width;
-					var tc:TextField = creatCtntTfd(prm.content);
-					spr.addChild(tc);
-					tc.x = x;
-					x += tc.width;
-				}
-			}
-			return spr;
-		}
-
-		protected function creatTitle(dataParam:DataParam, width:int):Sprite {
-			var spr:Sprite = new Sprite();
-			if (dataParam != null && dataParam.content != null) {
-				var title:TextField = new TextField();
-				title.mouseEnabled = false;
-				title.defaultTextFormat = titletft;
-				title.autoSize = TextFieldAutoSize.CENTER;
-				title.text = dataParam.content;
-				title.width = width;
-				spr.addChild(title);
-			}
-			return spr;
-		}
-
-		protected function creatTextTfd(text:String):TextField {
-			var txt:TextField = new TextField();
-			txt.mouseEnabled = false;
-			txt.defaultTextFormat = texttft;
-			txt.autoSize = TextFieldAutoSize.LEFT;
-			txt.text = text + "：";
-			return txt;
-		}
-
-		protected function creatCtntTfd(text:String):TextField {
-			var txt:TextField = new TextField();
-			txt.mouseEnabled = false;
-			txt.defaultTextFormat = ctnttft;
-			txt.autoSize = TextFieldAutoSize.LEFT;
-			txt.text = text;
-			txt.wordWrap = true;
-			return txt;
 		}
 
 		public function get data():DataDTO {

@@ -57,7 +57,7 @@
 			date.y = itemHeight - boader - date.height;
 
 			var tp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_TITLE);
-			var title:TextField = Util.ctnt(tp.content, ctnttft, itemWidth - boader - boader);
+			var title:TextField = Util.ctntSameLine(tp.content, ctnttft, itemWidth - boader - boader);
 			this.addChild(title);
 			title.x = boader;
 			title.y = date.y - title.height;
