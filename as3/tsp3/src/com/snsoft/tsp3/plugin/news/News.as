@@ -163,7 +163,8 @@
 
 			var ntdto:NewsTitleDTO = new NewsTitleDTO();
 			ntdto.text = prms.text;
-			ntdto.titleImg = prms.img;
+			ntdto.img = prms.img;
+			ntdto.titleImg = prms.titleImg;
 			newsTitle = new NewsTitle(ntdto, stage.stageWidth, titleH);
 			titleLayer.addChild(newsTitle);
 			newsTitle.addEventListener(NewsTitle.EVENT_CLOSE, handlerCloseBtnClick);
@@ -183,7 +184,7 @@
 			classLayer.y = titleH;
 			filtersLayer.y = titleH;
 
-			classBox = new NewsClassBox(stage.stageWidth - columnW, classH, null, null, true);
+			classBox = new NewsClassBox(stage.stageWidth - columnW, classH, null, null, true, NewsClassBox.ALIGN_RIGHT);
 			classLayer.addChild(classBox);
 			classBox.visible = false;
 			classBox.addEventListener(NewsClassBox.EVENT_BTN_CLICK, handlerClassBtnClick);

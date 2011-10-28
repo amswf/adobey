@@ -7,6 +7,8 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var _img:BitmapData;
 
+		private var _titleImg:BitmapData;
+
 		private var _text:String;
 
 		private var _columnId:String;
@@ -44,6 +46,14 @@ package com.snsoft.tsp3.plugin.news {
 
 		public function set text(value:String):void {
 			_text = value;
+		}
+
+		public function get titleImg():BitmapData {
+			return _titleImg;
+		}
+
+		public function set titleImg(value:BitmapData):void {
+			_titleImg = value;
 		}
 
 	}
