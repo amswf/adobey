@@ -74,7 +74,7 @@ package com.snsoft.tsp3.plugin.news {
 				var titlebm:Bitmap = new Bitmap(dto.titleImg, "auto", true);
 				this.addChild(titlebm);
 				titlebm.x = boader;
-				titlebm.y = boader;
+				titlebm.y = (titleHeight - titlebm.height) / 2;
 				imgtxtW = titlebm.width;
 			}
 			else {
