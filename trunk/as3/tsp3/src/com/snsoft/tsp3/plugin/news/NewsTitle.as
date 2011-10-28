@@ -3,7 +3,7 @@ package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.plugin.news.dto.NewsTitleDTO;
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.rlm.rs.RSEmbedFonts;
-	
+
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -67,27 +67,38 @@ package com.snsoft.tsp3.plugin.news {
 			back.width = titleWidth;
 			back.height = titleHeight;
 
-			//标题图片
+			var imgtxtW:int = 0;
 
-			var titlebm:Bitmap = new Bitmap(dto.titleImg, "auto", true);
-			titlebm.width = imgSize.x;
-			titlebm.height = imgSize.y;
-			titlebm.x = boader;
-			titlebm.y = boader;
-			this.addChild(titlebm);
-
-			//标题
-			var titleTfd:TextField = new TextField();
-			titleTfd.defaultTextFormat = titleTft;
-			titleTfd.autoSize = TextFieldAutoSize.LEFT;
-			if (dto.text != null) {
-				titleTfd.text = dto.text;
+			if (dto.titleImg != null) {
+				//版块图片
+				var titlebm:Bitmap = new Bitmap(dto.titleImg, "auto", true);
+				this.addChild(titlebm);
+				titlebm.x = boader;
+				titlebm.y = boader;
+				imgtxtW = titlebm.width;
 			}
-			titleTfd.selectable = false;
-			this.addChild(titleTfd);
-			titleTfd.x = titlebm.x + imgSize.x + boader;
-			titleTfd.y = boader + imgSize.y - titleTfd.height;
+			else {
+				//版块图片
+				var bm:Bitmap = new Bitmap(dto.img, "auto", true);
+				bm.width = imgSize.x;
+				bm.height = imgSize.y;
+				bm.x = boader;
+				bm.y = boader;
+				this.addChild(bm);
 
+				//标题
+				var titleTfd:TextField = new TextField();
+				titleTfd.defaultTextFormat = titleTft;
+				titleTfd.autoSize = TextFieldAutoSize.LEFT;
+				if (dto.text != null) {
+					titleTfd.text = dto.text;
+				}
+				titleTfd.selectable = false;
+				this.addChild(titleTfd);
+				titleTfd.x = bm.x + imgSize.x + boader;
+				titleTfd.y = boader + imgSize.y - titleTfd.height;
+				imgtxtW = titleTfd.getRect(this).right;
+			}
 			//关闭按钮
 			closeBtn = SkinsUtil.createSkinByName("NewsTitle_closeBtnSkin");
 			closeBtn.buttonMode = true;
@@ -106,7 +117,7 @@ package com.snsoft.tsp3.plugin.news {
 
 			var schBack:Sprite = SkinsUtil.createSkinByName("NewsTitle_searchBackSkin");
 			this.addChild(schBack);
-			schBack.x = titleTfd.x + titleTfd.width + boader3;
+			schBack.x = imgtxtW + boader3;
 			schBack.y = (titleHeight - schBack.height) / 2;
 			schBack.width = minimiseBtn.x - 100 - schBack.x;
 

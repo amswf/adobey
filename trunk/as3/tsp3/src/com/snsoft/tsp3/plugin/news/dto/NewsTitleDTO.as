@@ -3,6 +3,8 @@ package com.snsoft.tsp3.plugin.news.dto {
 
 	public class NewsTitleDTO {
 
+		private var _img:BitmapData;
+
 		private var _titleImg:BitmapData;
 
 		private var _minimizeBtnImg:BitmapData;
@@ -44,6 +46,14 @@ package com.snsoft.tsp3.plugin.news.dto {
 
 		public function set text(value:String):void {
 			_text = value;
+		}
+
+		public function get img():BitmapData {
+			return _img;
+		}
+
+		public function set img(value:BitmapData):void {
+			_img = value;
 		}
 
 	}

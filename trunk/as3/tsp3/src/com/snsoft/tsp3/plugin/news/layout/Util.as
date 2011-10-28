@@ -279,9 +279,8 @@ package com.snsoft.tsp3.plugin.news.layout {
 			tfd.thickness = 100;
 			if (text != null) {
 				if (maxWidth > 0) {
-					var fs:int = int(tft.size);
-					var fw:int = fs;
-					var n:int = (maxWidth - 5) / fw;
+					var fs:int = int(tft.size) + int(tft.letterSpacing);
+					var n:int = (maxWidth - 5) / fs;
 					var et:String = n < text.length ? endText : "";
 					tfd.text = text.substring(0, n - et.length) + et;
 				}
@@ -317,9 +316,8 @@ package com.snsoft.tsp3.plugin.news.layout {
 			if (text != null) {
 				if (maxWidth > 0 && maxHeight > 0 && text.length > 0) {
 					var fs:int = int(tft.size);
-					var fw:int = fs;
 					var fh:int = fs + 2;
-					var n:int = (maxWidth - 5) / fw;
+					var n:int = (maxWidth - 5) / fs;
 					var m:int = (maxHeight - 1) / fh;
 					var et:String = n * m < text.length ? endText : "";
 					tfd.text = text.substring(0, n * m - et.length) + et;

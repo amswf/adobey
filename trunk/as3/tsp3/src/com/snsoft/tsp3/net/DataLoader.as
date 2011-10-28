@@ -114,6 +114,9 @@
 								if (dto.imgUrl != null && dto.imgUrl.length > 0) {
 									rsImg.addResUrl(dto.imgUrl);
 								}
+								if (dto.titleImgUrl != null && dto.titleImgUrl.length > 0) {
+									rsImg.addResUrl(dto.titleImgUrl);
+								}
 
 								var imgs:Vector.<DataParam> = dto.images;
 								if (imgs != null) {
@@ -160,6 +163,7 @@
 					for (var j:int = 0; j < ds.dtoList.length; j++) {
 						var dto:DataDTO = ds.dtoList[j];
 						dto.img = rsImg.getImageByUrl(dto.imgUrl);
+						dto.titleImg = rsImg.getImageByUrl(dto.titleImgUrl);
 
 						var imgs:Vector.<DataParam> = dto.images;
 						if (imgs != null) {

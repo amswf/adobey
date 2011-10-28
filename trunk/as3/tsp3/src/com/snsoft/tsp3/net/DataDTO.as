@@ -7,6 +7,10 @@ package com.snsoft.tsp3.net {
 
 		private var _imgUrl:String;
 
+		private var _titleImg:BitmapData;
+
+		private var _titleImgUrl:String;
+
 		private var _text:String;
 
 		private var _plugin:String;
@@ -155,6 +159,22 @@ package com.snsoft.tsp3.net {
 
 		public function set videos(value:Vector.<DataParam>):void {
 			_videos = value;
+		}
+
+		public function get titleImgUrl():String {
+			return _titleImgUrl;
+		}
+
+		public function set titleImgUrl(value:String):void {
+			_titleImgUrl = value;
+		}
+
+		public function get titleImg():BitmapData {
+			return _titleImg;
+		}
+
+		public function set titleImg(value:BitmapData):void {
+			_titleImg = value;
 		}
 
 	}

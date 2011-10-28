@@ -8,11 +8,11 @@
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.SpriteUtil;
 	import com.snsoft.util.rlm.rs.RSEmbedFonts;
-	
+
 	import fl.transitions.Tween;
 	import fl.transitions.TweenEvent;
 	import fl.transitions.easing.Regular;
-	
+
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -25,6 +25,10 @@
 	import flash.text.TextFormat;
 
 	public class NewsClassBox extends MySprite {
+
+		public static const ALIGN_LEFT:String = "left";
+
+		public static const ALIGN_RIGHT:String = "right";
 
 		public static const EVENT_BACK:String = "eventBack";
 
@@ -49,6 +53,8 @@
 		private var boader2:int = 8;
 
 		private var _classType:String;
+
+		private var align:String;
 
 		private var _dataId:String;
 
@@ -86,12 +92,13 @@
 
 		private var _unSelTft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName(Common.FONT_YH), 14, 0xffffff);
 
-		public function NewsClassBox(boxWidth:int, boxHeight:int, title:String, classType:String = null, hiddenBack:Boolean = false) {
+		public function NewsClassBox(boxWidth:int, boxHeight:int, title:String, classType:String = null, hiddenBack:Boolean = false, align:String = "left") {
 			this.boxWidth = boxWidth;
 			this.boxHeight = boxHeight;
 			this.title = title;
 			this.hiddenBack = hiddenBack;
 			this.classType = classType;
+			this.align = align;
 			super();
 		}
 
@@ -121,7 +128,7 @@
 				tfd.antiAliasType = AntiAliasType.ADVANCED;
 				tfd.gridFitType = GridFitType.PIXEL;
 				tfd.thickness = 100;
-				tfd.text = title+"：";
+				tfd.text = title + "：";
 				tfd.mouseEnabled = false;
 				backLayer.addChild(tfd);
 				tfd.x = boader;
@@ -196,9 +203,19 @@
 				btnsv.push(btns);
 				btnLayer.y = btnsY;
 
-				var rx:int = Math.min(maskLayer.width - w, 0);
+				var px:int =  maskLayer.width - w;
+				var rx:int = 0;
+				var rw:int = 0;
+				if (px > 0 && align == ALIGN_RIGHT) {
+					btns.x = px;
+					rx = px;
+				}
+				else {
+					rx = Math.min(px, 0);
+					rw = -rx;
+				}
 
-				var rect:Rectangle = new Rectangle(rx, 0, -rx, 0);
+				var rect:Rectangle = new Rectangle(rx, 0, rw, 0);
 				var tg:TouchDrag = new TouchDrag(btns, stage, rect, 5);
 				for (var j:int = 0; j < cbtnv.length; j++) {
 					var btn:NewsClassBtn = cbtnv[j];
