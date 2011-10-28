@@ -1,5 +1,8 @@
 package com.snsoft.tsp3.plugin.news {
+	import com.snsoft.tsp3.Common;
+	import com.snsoft.tsp3.plugin.news.layout.Util;
 	import com.snsoft.util.SkinsUtil;
+	import com.snsoft.util.rlm.rs.RSEmbedFonts;
 	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -22,7 +25,7 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var boader:int = 10;
 
-		private var defTft:TextFormat = new TextFormat(null, 12);
+		private var defTft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName(Common.FONT_HZGBYS), 14, 0x575757);
 
 		private var topPageText:TextField;
 
@@ -106,10 +109,10 @@ package com.snsoft.tsp3.plugin.news {
 			pb.width = pageSize.x;
 			backLayer.addChild(pb);
 
-			topPageText = new TextField();
+			topPageText = Util.ctntSameLine("", defTft);
 			paginLayer.addChild(topPageText);
 
-			bottomPageText = new TextField();
+			bottomPageText = Util.ctntSameLine("", defTft);
 			paginLayer.addChild(bottomPageText);
 
 		}
@@ -118,17 +121,13 @@ package com.snsoft.tsp3.plugin.news {
 			this.pageCount = pageCount;
 			this._pageNum = pageNum;
 
-			topPageText.mouseEnabled = false;
-			topPageText.defaultTextFormat = defTft;
-			topPageText.autoSize = TextFieldAutoSize.LEFT;
-			topPageText.text = "" + pageNum + " / " + pageCount;
+			var text:String = "" + pageNum + "/" + pageCount;
+			
+			topPageText.text = text;
 			topPageText.x = pageSize.x - topPageText.width - boaderf - boader;
 			topPageText.y = boaderf;
 
-			bottomPageText.mouseEnabled = false;
-			bottomPageText.defaultTextFormat = defTft;
-			bottomPageText.autoSize = TextFieldAutoSize.LEFT;
-			bottomPageText.text = "" + pageNum + " / " + pageCount;
+			bottomPageText.text = text;
 			bottomPageText.x = pageSize.x - topPageText.width - boaderf - boader;
 			bottomPageText.y = backLayer.height - boaderf - bottomPageText.height;
 		}

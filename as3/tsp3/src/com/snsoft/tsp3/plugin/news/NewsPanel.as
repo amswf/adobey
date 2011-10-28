@@ -30,6 +30,8 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var boader:int = 19;
 
+		private var boader2:int = 10;
+
 		private var bookSize:Point;
 
 		private var infoSize:Point;
@@ -49,6 +51,12 @@ package com.snsoft.tsp3.plugin.news {
 		private var itemsUrl:String;
 
 		private var code:String;
+
+		private var cbtmBtn:NewsPanelBtn;
+
+		private var infoBtn:NewsPanelBtn;
+
+		private var bookBtn:NewsPanelBtn
 
 		public function NewsPanel(panelSize:Point, infoUrl:String, itemsUrl:String, code:String) {
 			this.panelSize = panelSize;
@@ -81,14 +89,23 @@ package com.snsoft.tsp3.plugin.news {
 			topBtnLayer.addChild(closeBtn);
 			closeBtn.buttonMode = true;
 			closeBtn.addEventListener(MouseEvent.CLICK, handlerClose);
-			btmBtnLayer.x = boader;
+
+			btmBtnLayer.x = boader + boader2;
 			btmBtnLayer.y = panelSize.y - btmH - boader;
-			var infoBtn:NewsTextBtn = new NewsTextBtn("详细内容");
+
+			var btmBack:Sprite = SkinsUtil.createSkinByName("NewsBoard_bottomBackSkin");
+			btmBtnLayer.addChild(btmBack);
+			btmBack.width = infoSize.x - boader2 - boader2;
+			btmBack.height = btmH;
+
+			infoBtn = new NewsPanelBtn("详细内容");
 			btmBtnLayer.addChild(infoBtn);
+			infoBtn.setSectcted(true);
+			setBtmBtnState(infoBtn);
 			infoBtn.buttonMode = true;
 			infoBtn.addEventListener(MouseEvent.CLICK, handlerInfoBtnClick);
 
-			var bookBtn:NewsTextBtn = new NewsTextBtn("相关信息");
+			bookBtn = new NewsPanelBtn("相关信息");
 			btmBtnLayer.addChild(bookBtn);
 			bookBtn.addEventListener(MouseEvent.CLICK, handlerBookBtnClick);
 			bookBtn.x = infoBtn.getRect(btmBtnLayer).right;
@@ -103,7 +120,7 @@ package com.snsoft.tsp3.plugin.news {
 
 			var pagin:Pagination = new Pagination();
 			bookLayer.addChild(pagin);
-			pagin.y = bookSize.y - pagin.height;
+			pagin.y = bookSize.y - pagin.height - boader2;
 			pagin.x = (bookSize.x - pagin.width) / 2;
 			var pp:Point = new Point(0, pagin.height + boader);
 
@@ -122,16 +139,27 @@ package com.snsoft.tsp3.plugin.news {
 			var data:DataDTO = bookCtrler.clickItem.data;
 			newsState.infoId = data.id;
 			refreshInfo();
+			setBtmBtnState(infoBtn);
 			infoVsb(true);
 		}
 
 		private function handlerInfoBtnClick(e:Event):void {
+			setBtmBtnState(e.currentTarget);
 			infoVsb(true);
 		}
 
 		private function handlerBookBtnClick(e:Event):void {
+			setBtmBtnState(e.currentTarget);
 			refreshItems();
 			infoVsb(false);
+		}
+
+		private function setBtmBtnState(clickObj:Object):void {
+			if (cbtmBtn != null) {
+				cbtmBtn.setSectcted(false);
+			}
+			cbtmBtn = clickObj as NewsPanelBtn;
+			cbtmBtn.setSectcted(true);
 		}
 
 		private function handlerClose(e:Event):void {

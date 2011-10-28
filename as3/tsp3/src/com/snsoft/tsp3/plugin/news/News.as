@@ -242,7 +242,7 @@
 
 			var ph:int = classCount * classH + filtersCount * filtersH;
 			var y:int = titleH + ph;
-			var size:Point = new Point(stage.stageWidth - columnW, stage.stageHeight - deskBarH - paginH - boader - boader - titleH - ph);
+			var size:Point = new Point(stage.stageWidth - columnW, stage.stageHeight - deskBarH - paginH - boader - titleH - ph);
 
 			var url:String = Common.instance().dataUrl;
 			var code:String = Common.instance().dataCode;
