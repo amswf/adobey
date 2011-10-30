@@ -9,6 +9,9 @@ package com.snsoft.tsp3.plugin.news.layout {
 	import flash.text.TextFormat;
 
 	public class Util {
+
+		public static const EMBED_FONTS:Boolean = true;
+
 		public function Util() {
 		}
 
@@ -249,7 +252,7 @@ package com.snsoft.tsp3.plugin.news.layout {
 			txt.mouseEnabled = false;
 			txt.defaultTextFormat = tft;
 			txt.autoSize = TextFieldAutoSize.LEFT;
-			txt.embedFonts = true;
+			txt.embedFonts = EMBED_FONTS;
 			txt.antiAliasType = AntiAliasType.ADVANCED;
 			txt.gridFitType = GridFitType.PIXEL;
 			txt.thickness = 100;
@@ -273,7 +276,7 @@ package com.snsoft.tsp3.plugin.news.layout {
 			tfd.mouseEnabled = false;
 			tfd.defaultTextFormat = tft;
 			tfd.autoSize = TextFieldAutoSize.LEFT;
-			tfd.embedFonts = true;
+			tfd.embedFonts = EMBED_FONTS;
 			tfd.antiAliasType = AntiAliasType.ADVANCED;
 			tfd.gridFitType = GridFitType.PIXEL;
 			tfd.thickness = 100;
@@ -306,7 +309,7 @@ package com.snsoft.tsp3.plugin.news.layout {
 			tfd.mouseEnabled = false;
 			tfd.defaultTextFormat = tft;
 			tfd.autoSize = TextFieldAutoSize.LEFT;
-			tfd.embedFonts = true;
+			tfd.embedFonts = EMBED_FONTS;
 			tfd.antiAliasType = AntiAliasType.ADVANCED;
 			tfd.gridFitType = GridFitType.PIXEL;
 			tfd.thickness = 100;

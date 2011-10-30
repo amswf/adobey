@@ -51,18 +51,37 @@
 
 			var v:Vector.<DataParam> = new Vector.<DataParam>();
 			v.push(ndp.getIntrParam(NewsDataParam.PARAM_DATE));
-			v.push(ndp.getIntrParam(NewsDataParam.PARAM_EBUY_TYPE));
 
+			var th:int = 0;
 			var title:Sprite = Util.twsLeft(titletft, texttft, ctnttft, itemWidth - img.getRect(this).right - boader - boader - boader, 10, tp, v);
 			this.addChild(title);
 			title.x = img.getRect(this).right + boader;
 			title.y = boader;
+			th = title.height;
+
+			var ep:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_EBUY_TYPE);
+			var eskin:String = null;
+			if (ep != null) {
+				if (ep.content == NewsDataParam.EBUY_TYPE_SUPL) {
+					eskin = "NewsEbuy_GSKin";
+				}
+				else if (ep.content == NewsDataParam.EBUY_TYPE_BUY) {
+					eskin = "NewsEbuy_QSKin";
+				}
+			}
+			if (eskin != null) {
+				var ebuySpr:Sprite = SkinsUtil.createSkinByName(eskin);
+				this.addChild(ebuySpr);
+				ebuySpr.x = title.getRect(this).right + boader;
+				ebuySpr.y = title.y;
+				th = Math.max(th, ebuySpr.height);
+			}
 
 			var kp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_KEYWORDS);
 			var keywords:Sprite = Util.lineItem(kp.text, kp.content, texttft, ctnttft, 0);
 			this.addChild(keywords);
 			keywords.x = img.getRect(this).right + boader;
-			keywords.y = title.getRect(this).bottom;
+			keywords.y = title.y + th;
 
 			var dp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_DIGEST);
 			var dw:int = itemWidth - boader - img.width - boader - boader;
