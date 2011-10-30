@@ -45,6 +45,8 @@ package com.snsoft.tsp3 {
 
 		public static const FONT_HZGBYS:String = "HZGBYS";
 
+		public static const DESKTOP_TOOLBAR_HEIGHT:int = 84;
+
 		private static var lock:Boolean = false;
 
 		private static var common:Common = new Common();

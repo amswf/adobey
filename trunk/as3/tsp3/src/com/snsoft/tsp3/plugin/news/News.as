@@ -40,7 +40,7 @@
 
 		private const titleH:int = 100;
 
-		private const deskBarH:int = 84;
+		private const deskBarH:int = Common.DESKTOP_TOOLBAR_HEIGHT;
 
 		private const infoBoader:int = 30;
 
