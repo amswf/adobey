@@ -19,7 +19,7 @@ package com.snsoft.tsp3.plugin.news {
 		public static const PARAM_EBUY_TYPE:String = "ebuyType";
 
 		//发布日期
-		public static const PARAM_EBUY_PUBLISH_DATE:String = "publishDate";
+		public static const PARAM_EBUY_PUBLISH_DATE:String = "fabushijian";
 
 		private var intrParams:Array = new Array();
 

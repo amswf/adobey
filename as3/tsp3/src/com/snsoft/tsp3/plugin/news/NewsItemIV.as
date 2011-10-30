@@ -35,6 +35,7 @@
 		}
 
 		override public function draw():void {
+			_clickType = null;
 			boader = 20;
 
 			itemHeight = hMax;

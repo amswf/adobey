@@ -119,7 +119,6 @@ package com.snsoft.tsp3.plugin.news {
 			//扩展信息输出
 			var eps:Vector.<DataParam> = ndp.extParams;
 			if (eps != null) {
-
 				var spr:Sprite = Util.rowItemsMultiLine(eps, itemtft, itemtft, infoSize.x - boader - boader);
 				scrollLayer.addChild(spr);
 				spr.y = nextY;
@@ -207,8 +206,9 @@ package com.snsoft.tsp3.plugin.news {
 
 			scrollBack.width = ctntWidth;
 			scrollBack.height = scrollLayer.height;
-			var h:int = scrollLayer.height - maskLayer.height;
-			var rect:Rectangle  = new Rectangle(scrollLayer.x, scrollLayer.y - h, 0, h);
+			var y:int = scrollLayer.height - maskLayer.height;
+			var h:int = Math.max(y, 0);
+			var rect:Rectangle  = new Rectangle(scrollLayer.x, scrollLayer.y - y, 0, h);
 			var td:TouchDrag = new TouchDrag(scrollLayer, stage, rect, 0);
 		}
 
