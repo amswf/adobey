@@ -2,6 +2,7 @@
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.tsp3.net.DataParam;
 	import com.snsoft.tsp3.plugin.news.layout.Util;
+	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.SpriteUtil;
 
 	import flash.display.BitmapData;
@@ -46,13 +47,32 @@
 			//图片
 			addTitleImg(data.img, timgW, timgH);
 
+			var th:int = 0;
+
+			var ep:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_EBUY_TYPE);
+			var eskin:String = null;
+			if (ep != null) {
+				if (ep.content == NewsDataParam.EBUY_TYPE_SUPL) {
+					eskin = "NewsEbuy_GSKin";
+				}
+				else if (ep.content == NewsDataParam.EBUY_TYPE_BUY) {
+					eskin = "NewsEbuy_QSKin";
+				}
+			}
+			if (eskin != null) {
+				var ebuySpr:Sprite = SkinsUtil.createSkinByName(eskin);
+				scrollLayer.addChild(ebuySpr);
+				ebuySpr.x = boader + timgW;
+				ebuySpr.y = boader;
+				th = ebuySpr.height;
+			}
+
 			var ebuyv:Vector.<DataParam> = new Vector.<DataParam>();
-			ebuyv.push(ndp.getIntrParam(NewsDataParam.PARAM_EBUY_TYPE));
 			ebuyv.push(ndp.getIntrParam(NewsDataParam.PARAM_EBUY_PUBLISH_DATE));
-			var ebuyItems:Sprite = Util.rowItemsMultiLine(ebuyv, itemtft, itemtft, infoSize.x - boader - boader);
+			var ebuyItems:Sprite = Util.lineItemsMultiLine(ebuyv, itemtft, itemtft, infoSize.x - boader - boader, 5);
 			scrollLayer.addChild(ebuyItems);
 			ebuyItems.x = boader + timgW;
-			ebuyItems.y = boader;
+			ebuyItems.y = boader + th;
 
 			//附件、图片、音乐、影片
 			addSrcs(data);

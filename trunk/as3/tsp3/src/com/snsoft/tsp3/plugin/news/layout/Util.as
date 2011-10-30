@@ -113,14 +113,9 @@ package com.snsoft.tsp3.plugin.news.layout {
 					var dp:DataParam = v[i];
 					if (dp != null) {
 						var item:Sprite = rowItem(dp.text, dp.content, textTft, ctntTft, maxWidth);
-						if (y + item.width + boader <= maxWidth) {
-							spr.addChild(item);
-							item.y = y;
-							y += item.height + boader;
-						}
-						else {
-							break;
-						}
+						spr.addChild(item);
+						item.y = y;
+						y += item.height + boader;
 					}
 				}
 			}
