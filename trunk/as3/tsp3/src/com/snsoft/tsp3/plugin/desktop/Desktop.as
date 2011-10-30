@@ -226,6 +226,13 @@
 			startBtn.buttonMode = true;
 			toolBarLayer.addChild(startBtn);
 
+			var qsprt:Sprite = SkinsUtil.createSkinByName("Desktop_sprtSkin");
+			qsprt.mouseEnabled = false;
+			toolBarLayer.addChild(qsprt);
+			qsprt.height = Common.DESKTOP_TOOLBAR_HEIGHT;
+			qsprt.x = startBtn.width;
+			qsprt.y = tb;
+
 			var quickToolBar:BtnBar = new BtnBar(quickBarBtnDTOList);
 			toolBarLayer.addChild(quickToolBar);
 			quickToolBar.y = tb;
@@ -240,13 +247,28 @@
 					Common.instance().loadPlugin(qdata.plugin, qdata.params, qbtn.uuid, false);
 				}
 			}
+
 			var stateToolBar:BtnBar = new BtnBar(stateBarBtnDTOList);
 			toolBarLayer.addChild(stateToolBar);
 			stateToolBar.y = tb;
 			stateToolBar.x = stage.stageWidth - stateToolBar.width;
 			stateToolBar.addEventListener(BtnBar.EVENT_BTN_CLICK, handlerBtnBarBtnClick);
 
+			var ssprt:Sprite = SkinsUtil.createSkinByName("Desktop_sprtSkin");
+			ssprt.mouseEnabled = false;
+			toolBarLayer.addChild(ssprt);
+			ssprt.height = Common.DESKTOP_TOOLBAR_HEIGHT;
+			ssprt.x = stage.stageWidth - stateToolBar.width;
+			ssprt.y = tb;
+
 			var pw:int = stage.stageWidth - quickToolBar.x - quickToolBar.width - stateToolBar.width;
+
+			var dsprt:Sprite = SkinsUtil.createSkinByName("Desktop_sprtSkin");
+			dsprt.mouseEnabled = false;
+			toolBarLayer.addChild(dsprt);
+			dsprt.height = Common.DESKTOP_TOOLBAR_HEIGHT;
+			dsprt.x = quickToolBar.x + quickToolBar.width;
+			dsprt.y = tb;
 
 			pluginBar = new DyncBtnBar(pw);
 			pluginBar.y = tb;
