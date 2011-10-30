@@ -23,9 +23,9 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var intrParams:Array = new Array();
 
-		public static const EBUY_TYPE_SUPL:String = "1";
+		public static const EBUY_TYPE_SUPL:String = "供应";
 
-		public static const EBUY_TYPE_BUY:String = "0";
+		public static const EBUY_TYPE_BUY:String = "求购";
 
 		private var _extParams:Vector.<DataParam> = new Vector.<DataParam>();
 
