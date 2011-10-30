@@ -29,6 +29,7 @@
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 
 	public class Desktop extends BPlugin implements IDesktop {
@@ -59,8 +60,6 @@
 
 		private var allBtns:Array = new Array();
 
-		private static const TOOL_BAR_START:String = "start";
-
 		private static const TOOL_BAR_QUICK:String = "quick";
 
 		private static const TOOL_BAR_STATE:String = "state";
@@ -70,6 +69,8 @@
 		private var boardData:Vector.<DataSet>;
 
 		private var toolBarData:Vector.<DataSet>;
+
+		private var startBtnImgSize:Point = new Point(80, 80);
 
 		public function Desktop() {
 			super();
@@ -113,9 +114,11 @@
 			this.addChild(boardLayer);
 			this.addChild(paginLayer);
 			this.addChild(toolBarLayer);
+			toolBarLayer.y = stage.stageHeight - Common.DESKTOP_TOOLBAR_HEIGHT;
 
 			imgRS.addResUrl(cfg.logoImgUrl);
 			imgRS.addResUrl(cfg.backImgUrl);
+			imgRS.addResUrl(cfg.startImgUrl);
 
 			PromptMsgMng.instance().setMsg("Desktop");
 
@@ -204,7 +207,6 @@
 			logobm.x = int(cfg.logoImgX);
 			logobm.y = int(cfg.logoImgY);
 
-			var startBarBtnDTOList:Vector.<DataDTO> = new Vector.<DataDTO>();
 			var quickBarBtnDTOList:Vector.<DataDTO> = new Vector.<DataDTO>();
 			var stateBarBtnDTOList:Vector.<DataDTO> = new Vector.<DataDTO>();
 
@@ -212,10 +214,7 @@
 
 			for (var i:int = 0; i < toolBarData.length; i++) {
 				var tds:DataSet = toolBarData[i];
-				if (tds.attr != null && tds.attr.type == TOOL_BAR_START) {
-					startBarBtnDTOList = tds.dtoList;
-				}
-				else if (tds.attr != null && tds.attr.type == TOOL_BAR_QUICK) {
+				if (tds.attr != null && tds.attr.type == TOOL_BAR_QUICK) {
 					quickBarBtnDTOList = tds.dtoList;
 				}
 				else if (tds.attr != null && tds.attr.type == TOOL_BAR_STATE) {
@@ -223,14 +222,14 @@
 				}
 			}
 
-			var startToolBar:BtnBar = new BtnBar(startBarBtnDTOList);
-			tb = stage.stageHeight - startToolBar.height;
-			startToolBar.y = tb;
-			startToolBar.addEventListener(BtnBar.EVENT_BTN_CLICK, handlerBtnBarBtnClick);
+			var startBtn:StartBtn = new StartBtn(startBtnImgSize, imgRS.getImageByUrl(cfg.startImgUrl));
+			startBtn.buttonMode = true;
+			toolBarLayer.addChild(startBtn);
 
 			var quickToolBar:BtnBar = new BtnBar(quickBarBtnDTOList);
+			toolBarLayer.addChild(quickToolBar);
 			quickToolBar.y = tb;
-			quickToolBar.x = startToolBar.width;
+			quickToolBar.x = startBtn.width;
 			quickToolBar.addEventListener(BtnBar.EVENT_BTN_CLICK, handlerBtnBarBtnClick);
 
 			var qbtns:Vector.<DesktopBtn> = quickToolBar.btns;
@@ -242,6 +241,7 @@
 				}
 			}
 			var stateToolBar:BtnBar = new BtnBar(stateBarBtnDTOList);
+			toolBarLayer.addChild(stateToolBar);
 			stateToolBar.y = tb;
 			stateToolBar.x = stage.stageWidth - stateToolBar.width;
 			stateToolBar.addEventListener(BtnBar.EVENT_BTN_CLICK, handlerBtnBarBtnClick);
@@ -254,17 +254,13 @@
 			pluginBar.addEventListener(BtnBar.EVENT_BTN_CLICK, handlerDyncBtnBarBtnClick);
 
 			toolBarLayer.addChild(pluginBar);
-			toolBarLayer.addChild(startToolBar);
-			toolBarLayer.addChild(quickToolBar);
-			toolBarLayer.addChild(stateToolBar);
 
-			pushListToAllBtns(startToolBar.btns);
 			pushListToAllBtns(quickToolBar.btns);
 			pushListToAllBtns(stateToolBar.btns);
 
 			var toolBack:MovieClip = SkinsUtil.createSkinByName("Desktop_barBack");
 			toolBack.width = stage.stageWidth;
-			toolBack.height = toolBarLayer.height;
+			toolBack.height = Common.DESKTOP_TOOLBAR_HEIGHT;
 			toolBack.y = stage.stageHeight - toolBack.height;
 			toolBarBackLayer.addChild(toolBack);
 

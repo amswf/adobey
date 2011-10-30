@@ -16,6 +16,8 @@ package com.snsoft.tsp3.plugin.desktop {
 
 		private var _logoImgY:String;
 
+		private var _startImgUrl:String;
+
 		public function DesktopCfg() {
 		}
 
@@ -79,6 +81,16 @@ package com.snsoft.tsp3.plugin.desktop {
 		public function set logoImgY(value:String):void
 		{
 			_logoImgY = value;
+		}
+
+		public function get startImgUrl():String
+		{
+			return _startImgUrl;
+		}
+
+		public function set startImgUrl(value:String):void
+		{
+			_startImgUrl = value;
 		}
 
 
