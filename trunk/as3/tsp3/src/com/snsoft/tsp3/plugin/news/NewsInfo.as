@@ -1,7 +1,7 @@
 package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.MySprite;
 	import com.snsoft.util.SpriteUtil;
-	
+
 	import flash.geom.Point;
 
 	public class NewsInfo extends MySprite {
@@ -22,8 +22,11 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		public function refresh(board:NewsBoardBase):void {
-			SpriteUtil.deleteAllChild(this);
 			this.addChild(board);
+		}
+
+		public function clear():void {
+			SpriteUtil.deleteAllChild(this);
 		}
 
 		public function get infoSize():Point {

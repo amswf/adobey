@@ -167,6 +167,7 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		public function refresh(newsState:NewsState):void {
+			this.infoLayer.visible = false;
 			this.newsState = newsState.clone();
 			refreshInfo();
 		}

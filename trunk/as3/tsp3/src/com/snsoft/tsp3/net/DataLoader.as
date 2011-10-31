@@ -94,8 +94,8 @@
 
 		private function handlerLoadCmp(e:Event):void {
 			var ul:URLLoader = e.currentTarget as URLLoader;
-			trace("xml back:*********************************************************************************");
-			trace(ul.data);
+			//trace("xml back:*********************************************************************************");
+			//trace(ul.data);
 			var xd:XMLData = new XMLData(ul.data);
 			if (xd.isCmp) {
 				var list:NodeList = xd.bodyNode.getNodeList(TAG_SET);
@@ -106,6 +106,7 @@
 						var dtoList:NodeList = setNode.getNodeList(TAG_DTO);
 						var ds:DataSet = new DataSet();
 						setNode.attrToObj(ds.attr);
+						trace("listViewType:", ds.attr.listViewType, "detailViewType:", ds.attr.detailViewType)
 						if (dtoList != null) {
 							for (var j:int = 0; j < dtoList.length(); j++) {
 								var dtoNode:Node = dtoList.getNode(j);
