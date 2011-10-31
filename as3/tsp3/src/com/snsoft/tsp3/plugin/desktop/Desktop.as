@@ -120,7 +120,7 @@
 			imgRS.addResUrl(cfg.backImgUrl);
 			imgRS.addResUrl(cfg.startImgUrl);
 
-			PromptMsgMng.instance().setMsg("Desktop");
+			//PromptMsgMng.instance().setMsg("Desktop");
 
 			loadFonts();
 		}
