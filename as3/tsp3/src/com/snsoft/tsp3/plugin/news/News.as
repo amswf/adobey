@@ -1,5 +1,6 @@
 ﻿package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.Common;
+	import com.snsoft.tsp3.PromptMsgMng;
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.tsp3.net.DataLoader;
 	import com.snsoft.tsp3.net.DataParam;
@@ -544,7 +545,7 @@
 
 		private function handlerLockTimerCmp(e:Event):void {
 			lockStop();
-			promptMsgMng.setMsg("请求数据超时...");
+			PromptMsgMng.instance().setMsg("请求数据超时...");
 		}
 
 		private function lockStart():void {
