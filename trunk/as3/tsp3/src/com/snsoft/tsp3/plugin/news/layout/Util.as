@@ -313,8 +313,8 @@ package com.snsoft.tsp3.plugin.news.layout {
 			tfd.width = maxWidth;
 			if (text != null) {
 				if (maxWidth > 0 && maxHeight > 0 && text.length > 0) {
-					var fs:int = int(tft.size);
-					var fh:int = fs + 2;
+					var fs:int = int(tft.size) + int(tft.letterSpacing);
+					var fh:int = fs + 2 + int(tft.leading);
 					var n:int = (maxWidth - 5) / fs;
 					var m:int = (maxHeight - 1) / fh;
 					var et:String = n * m < text.length ? endText : "";
