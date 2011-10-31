@@ -29,8 +29,6 @@ package com.snsoft.tsp3.plugin {
 
 		public static const TYPE_TOOL:String = "TOOL";
 
-		private var _promptMsgMng:PromptMsgMng;
-
 		private var _serverRootUrl:String;
 
 		private var _pluginUrl:String = "";
@@ -82,14 +80,6 @@ package com.snsoft.tsp3.plugin {
 		protected function init():void {
 			trace("需要重写 init方法！");
 			throw new Error("需要重写 init方法！");
-		}
-
-		public function get promptMsgMng():PromptMsgMng {
-			return _promptMsgMng;
-		}
-
-		public function set promptMsgMng(value:PromptMsgMng):void {
-			_promptMsgMng = value;
 		}
 
 		public function get serverRootUrl():String {
