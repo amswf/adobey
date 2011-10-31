@@ -4,7 +4,7 @@ package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.net.DataLoader;
 	import com.snsoft.tsp3.net.DataSet;
 	import com.snsoft.tsp3.net.ReqParams;
-	
+
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -28,6 +28,8 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		public function refresh(url:String, code:String, newsState:NewsState):void {
+			newsInfo.visible = false;
+			newsInfo.clear();
 			this.url = url;
 			this.code = code;
 			this.newsState = newsState.clone();
@@ -35,7 +37,6 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		private function loadInfo():void {
-
 			var params:ReqParams = newsState.toParams();
 			var dl:DataLoader = new DataLoader();
 			dl.addEventListener(Event.COMPLETE, handlerInfoCmp);
@@ -72,6 +73,7 @@ package com.snsoft.tsp3.plugin.news {
 					}
 				}
 			}
+			newsInfo.visible = true;
 		}
 
 		private function handlerInfoError(e:Event):void {

@@ -206,8 +206,8 @@ package com.snsoft.tsp3.plugin.news {
 
 			scrollBack.width = ctntWidth;
 			scrollBack.height = scrollLayer.height;
-			var y:int = scrollLayer.height - maskLayer.height;
-			var h:int = Math.max(y, 0);
+			var y:int = Math.max(scrollLayer.height - maskLayer.height, 0);
+			var h:int = y;
 			var rect:Rectangle  = new Rectangle(scrollLayer.x, scrollLayer.y - y, 0, h);
 			var td:TouchDrag = new TouchDrag(scrollLayer, stage, rect, 0);
 		}
