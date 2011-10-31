@@ -17,8 +17,10 @@
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.text.TextFormat;
+	import flash.utils.Timer;
 
 	public class News extends BPlugin {
 
@@ -88,6 +90,10 @@
 
 		private var filterUnSelTft:TextFormat;
 
+		private var lock:Boolean = false;
+
+		private var lockTimer:Timer;
+
 		public function News() {
 			NewsItemI;
 			NewsItemII;
@@ -155,6 +161,10 @@
 			newsState.digestLength = int(cfg.digestLength);
 
 			trace("newsState", cfg.pageSize, cfg.digestLength);
+
+			lockTimer = new Timer(Common.REQ_DELAY_TIME, 1);
+
+			lockTimer.addEventListener(TimerEvent.TIMER_COMPLETE, handlerLockTimerCmp);
 
 			var back:MovieClip = SkinsUtil.createSkinByName("News_backSkin");
 			backLayer.addChild(back);
@@ -258,6 +268,7 @@
 		private function handlerloadItemsCmp(e:Event):void {
 			newsState.infoViewType = newsBookCtrler.infoViewType;
 			newsState.itemViewType = newsBookCtrler.itemViewType;
+			lockStop();
 		}
 
 		private function handlerItemClick(e:Event):void {
@@ -340,11 +351,14 @@
 		}
 
 		private function handlerFilterBtnClick(e:Event):void {
-			var box:NewsClassBox = e.currentTarget as NewsClassBox;
-			if (box.classType != null) {
-				newsState.filter[box.classType] = box.dataId;
+			if (!lock) {
+				lockStart();
+				var box:NewsClassBox = e.currentTarget as NewsClassBox;
+				if (box.classType != null) {
+					newsState.filter[box.classType] = box.dataId;
+				}
+				refreshBook();
 			}
-			refreshBook();
 		}
 
 		private function handlerLoadFilterError(e:Event):void {
@@ -352,10 +366,13 @@
 		}
 
 		private function handlerClassBtnClick(e:Event):void {
-			var box:NewsClassBox = e.currentTarget as NewsClassBox;
-			newsState.cClassId = box.dataId;
-			//loadClass(false);  //目前不需要显示子分类，分类只有一级。
-			loadFilter();
+			if (!lock) {
+				lockStart();
+				var box:NewsClassBox = e.currentTarget as NewsClassBox;
+				newsState.cClassId = box.dataId;
+				//loadClass(false);  //目前不需要显示子分类，分类只有一级。
+				loadFilter();
+			}
 		}
 
 		private function loadClass(isClear:Boolean):void {
@@ -477,7 +494,7 @@
 			columnLayer.addChild(nbb);
 			nbb.x = stage.stageWidth - nbb.width;
 			nbb.y = titleH;
-			nbb.addEventListener(NewsBtnBox.EVENT_BTN_CLICK, handlerBtnClick);
+			nbb.addEventListener(NewsBtnBox.EVENT_BTN_CLICK, handlerColumnBtnClick);
 
 			for (var k:int = 0; k < btnv.length; k++) {
 				var btn:NewsImgBtn = btnv[k];
@@ -505,23 +522,44 @@
 		}
 
 		private function handlerSearchBtnClick(e:Event):void {
-			var nt:NewsTitle = e.currentTarget as NewsTitle;
-			newsState.searchText = nt.searchText;
-			newsState.type = NewsState.TYPE_SEARCH;
-			refreshBook();
+			if (!lock) {
+				lockStart();
+				var nt:NewsTitle = e.currentTarget as NewsTitle;
+				newsState.searchText = nt.searchText;
+				newsState.type = NewsState.TYPE_SEARCH;
+				refreshBook();
+			}
+		}
+
+		private function handlerColumnBtnClick(e:Event):void {
+			if (!lock) {
+				lockStart();
+				var nbb:NewsBtnBox = e.currentTarget as NewsBtnBox;
+				var btn:NewsImgBtn = nbb.clickBtn;
+				var dto:DataDTO = btn.data as DataDTO;
+				newsState.cColumnId = dto.id;
+				loadClass(true);
+			}
+		}
+
+		private function handlerLockTimerCmp(e:Event):void {
+			lockStop();
+			promptMsgMng.setMsg("请求数据超时...");
+		}
+
+		private function lockStart():void {
+			lock = true;
+			lockTimer.start();
+		}
+
+		private function lockStop():void {
+			lockTimer.stop();
+			lock = false;
 		}
 
 		private function clearSearchText():void {
 			newsTitle.clearSearchText();
 			newsState.searchText = null;
-		}
-
-		private function handlerBtnClick(e:Event):void {
-			var nbb:NewsBtnBox = e.currentTarget as NewsBtnBox;
-			var btn:NewsImgBtn = nbb.clickBtn;
-			var dto:DataDTO = btn.data as DataDTO;
-			newsState.cColumnId = dto.id;
-			loadClass(true);
 		}
 
 	}

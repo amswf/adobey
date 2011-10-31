@@ -47,6 +47,8 @@ package com.snsoft.tsp3 {
 
 		public static const DESKTOP_TOOLBAR_HEIGHT:int = 84;
 
+		public static const REQ_DELAY_TIME:int = 15000;
+
 		private static var lock:Boolean = false;
 
 		private static var common:Common = new Common();
