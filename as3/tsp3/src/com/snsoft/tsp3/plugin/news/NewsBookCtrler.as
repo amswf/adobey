@@ -119,7 +119,7 @@ package com.snsoft.tsp3.plugin.news {
 			for (var i:int = 0; i < rsv.length; i++) {
 				var rs:DataSet = rsv[i];
 
-				var rowNum:int = int(rs.attr.columnNum);
+				var rowNum:int = int(rs.attr.columnNumber);
 				rowNum = rowNum > 1 ? rowNum : 1;
 
 				infoViewType = rs.attr.detailViewType;

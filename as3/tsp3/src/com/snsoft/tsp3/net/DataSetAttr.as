@@ -12,7 +12,7 @@ package com.snsoft.tsp3.net {
 
 		private var _pageCount:String;
 
-		private var _columnNum:String;
+		private var _columnNumber:String;
 
 		private var _listViewType:String;
 
@@ -77,12 +77,12 @@ package com.snsoft.tsp3.net {
 			_detailViewType = value;
 		}
 
-		public function get columnNum():String {
-			return _columnNum;
+		public function get columnNumber():String {
+			return _columnNumber;
 		}
 
-		public function set columnNum(value:String):void {
-			_columnNum = value;
+		public function set columnNumber(value:String):void {
+			_columnNumber = value;
 		}
 
 	}
