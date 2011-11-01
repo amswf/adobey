@@ -27,6 +27,8 @@ package com.snsoft.tsp3.net {
 
 		private var _detailViewType:String;
 
+		private var _columnNumber:String;
+
 		private var _params:Vector.<DataParam> = new Vector.<DataParam>();
 
 		private var _images:Vector.<DataParam> = new Vector.<DataParam>();
@@ -196,6 +198,17 @@ package com.snsoft.tsp3.net {
 		public function set detailViewType(value:String):void {
 			_detailViewType = value;
 		}
+
+		public function get columnNumber():String
+		{
+			return _columnNumber;
+		}
+
+		public function set columnNumber(value:String):void
+		{
+			_columnNumber = value;
+		}
+
 
 	}
 }

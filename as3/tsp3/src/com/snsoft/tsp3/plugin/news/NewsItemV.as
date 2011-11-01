@@ -26,13 +26,12 @@
 		public function NewsItemV(data:DataDTO) {
 			super();
 			this._data = data;
+			itemHeight = hMax;
 		}
 
 		override public function draw():void {
 			boader = 15;
 			var ndp:NewsDataParam = new NewsDataParam(data.params);
-
-			itemHeight = hMax;
 
 			addBack("V");
 

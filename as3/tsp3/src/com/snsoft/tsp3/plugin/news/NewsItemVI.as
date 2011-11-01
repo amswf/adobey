@@ -25,13 +25,13 @@ package com.snsoft.tsp3.plugin.news {
 		public function NewsItemVI(data:DataDTO) {
 			super();
 			this._data = data;
+			itemHeight = hMax;
 		}
 
 		override public function draw():void {
 			boader = 20;
 
 			var ndp:NewsDataParam = new NewsDataParam(data.params);
-			itemHeight = hMax;
 
 			addBack("VI");
 
