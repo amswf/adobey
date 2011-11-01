@@ -3,7 +3,7 @@ package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.plugin.news.layout.Util;
 	import com.snsoft.util.SkinsUtil;
 	import com.snsoft.util.rlm.rs.RSEmbedFonts;
-	
+
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.geom.Point;
@@ -39,7 +39,7 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var itemsh:int = boaderi;
 
-		private var itemsWidth:int;
+		private var _itemsWidth:int;
 
 		private var pb:MovieClip;
 
@@ -75,7 +75,7 @@ package com.snsoft.tsp3.plugin.news {
 
 			//nib.buttonMode = true;
 			//nib.mouseChildren = false;
-			if (nib.autoRow) {
+			if (nib.autoCol) {
 				nib.draw();
 				itemsLayer.addChild(nib);
 			}
@@ -103,7 +103,7 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		private function init():void {
-			itemsWidth = pageSize.x - boader - boaderf - boader - boaderf;
+			_itemsWidth = pageSize.x - boader - boaderf - boader - boaderf;
 
 			pb = SkinsUtil.createSkinByName("NewsBookPage_backSkin");
 			pb.width = pageSize.x;
@@ -122,7 +122,7 @@ package com.snsoft.tsp3.plugin.news {
 			this._pageNum = pageNum;
 
 			var text:String = "" + pageNum + "/" + pageCount;
-			
+
 			topPageText.text = text;
 			topPageText.x = pageSize.x - topPageText.width - boaderf - boader;
 			topPageText.y = boaderf;
@@ -138,6 +138,10 @@ package com.snsoft.tsp3.plugin.news {
 
 		public function get itemv():Vector.<NewsItemBase> {
 			return _itemv;
+		}
+
+		public function get itemsWidth():int {
+			return _itemsWidth;
 		}
 
 	}

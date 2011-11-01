@@ -24,7 +24,8 @@ package com.snsoft.tsp3.plugin.news {
 
 		protected var _data:DataDTO;
 
-		protected var _autoRow:Boolean = false;
+		//自适应多列显示
+		protected var _autoCol:Boolean = false;
 
 		protected var _clickType:String = CLICK_TYPE_INFO;
 
@@ -96,8 +97,8 @@ package com.snsoft.tsp3.plugin.news {
 			return _data;
 		}
 
-		public function get autoRow():Boolean {
-			return _autoRow;
+		public function get autoCol():Boolean {
+			return _autoCol;
 		}
 
 		public function get clickType():String {

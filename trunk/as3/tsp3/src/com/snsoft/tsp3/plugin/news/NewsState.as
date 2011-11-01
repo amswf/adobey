@@ -21,13 +21,19 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var _digestLength:int;
 
-		private var _infoViewType:String;
+		private var _detailViewType:String;
 
-		private var _itemViewType:String;
+		private var _listViewType:String;
 
 		private var _searchText:String;
 
 		private var _type:String;
+
+		//显示列数（后台数据）
+		private var _columnNumber:int;
+
+		//显示列数（跟据样式处理后真实列数）
+		private var _pageCol:int;
 
 		/**
 		 * 关键词搜索
@@ -57,10 +63,11 @@ package com.snsoft.tsp3.plugin.news {
 			ns.pageNum = pageNum;
 			ns.pageSize = pageSize;
 			ns.digestLength = digestLength;
-			ns.infoViewType = infoViewType;
-			ns.itemViewType = itemViewType;
+			ns.detailViewType = detailViewType;
+			ns.listViewType = listViewType;
 			ns.searchText = searchText;
 			ns.type = type;
+			ns.pageCol = pageCol;
 
 			var obj:Object = new Object();
 			DependencyInjection.diToObj(filter, obj, false);
@@ -87,7 +94,7 @@ package com.snsoft.tsp3.plugin.news {
 			params.addParam(Common.PARAM_FILTER, filterStr());
 			params.addParam(Common.PARAM_INFO, infoId);
 			params.addParam(Common.PARAM_PAGE_NUM, String(pageNum));
-			params.addParam(Common.PARAM_PAGE_SIZE, String(pageSize));
+			params.addParam(Common.PARAM_PAGE_SIZE, String(pageSize * pageCol));
 			params.addParam(Common.PARAM_DIGEST_LENGTH, String(digestLength));
 			params.addParam(Common.PARAM_WORD, searchText);
 			params.addParam(Common.PARAM_TYPE, type);
@@ -142,20 +149,20 @@ package com.snsoft.tsp3.plugin.news {
 			_digestLength = value;
 		}
 
-		public function get infoViewType():String {
-			return _infoViewType;
+		public function get detailViewType():String {
+			return _detailViewType;
 		}
 
-		public function set infoViewType(value:String):void {
-			_infoViewType = value;
+		public function set detailViewType(value:String):void {
+			_detailViewType = value;
 		}
 
-		public function get itemViewType():String {
-			return _itemViewType;
+		public function get listViewType():String {
+			return _listViewType;
 		}
 
-		public function set itemViewType(value:String):void {
-			_itemViewType = value;
+		public function set listViewType(value:String):void {
+			_listViewType = value;
 		}
 
 		public function get searchText():String {
@@ -188,6 +195,22 @@ package com.snsoft.tsp3.plugin.news {
 
 		public function set pageSize(value:int):void {
 			_pageSize = value;
+		}
+
+		public function get columnNumber():int {
+			return _columnNumber;
+		}
+
+		public function set columnNumber(value:int):void {
+			_columnNumber = value;
+		}
+
+		public function get pageCol():int {
+			return _pageCol;
+		}
+
+		public function set pageCol(value:int):void {
+			_pageCol = value;
 		}
 
 	}

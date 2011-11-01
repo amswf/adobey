@@ -22,6 +22,7 @@
 	import flash.geom.Point;
 	import flash.text.TextFormat;
 	import flash.utils.Timer;
+	import flash.utils.getDefinitionByName;
 
 	public class News extends BPlugin {
 
@@ -251,6 +252,7 @@
 
 			newsState.pageNum = 1;
 			newsState.infoId = null;
+			newsState.pageCol = getItemColNum();
 
 			var ph:int = classCount * classH + filtersCount * filtersH;
 			var y:int = titleH + ph;
@@ -266,9 +268,35 @@
 			newsBookCtrler.refresh(url, code, newsState, size, y);
 		}
 
+		private function getItemColNum():int {
+			var type:String = newsState.listViewType;
+			var n:int = 1;
+			var cn:int = newsState.columnNumber;
+			var MClass:Class = null;
+			try {
+				MClass = getDefinitionByName("com.snsoft.tsp3.plugin.news.NewsItem" + type) as Class;
+			}
+			catch (error:Error) {
+				trace("找不到[列表]显示类型：" + type);
+			}
+			if (MClass != null) {
+				var item:NewsItemBase = new MClass(new DataDTO) as NewsItemBase;
+				if (item != null && item.autoCol) {
+					var bp:NewsBookPage = new NewsBookPage(new Point(newsBook.bookSize.x, 100), 1);
+					var bw:int = bp.itemsWidth + 1;
+					var w:int = item.itemWidth;
+					n = bw / w;
+				}
+				else if (cn > 0) {
+					n = cn;
+				}
+			}
+			return n;
+		}
+
 		private function handlerloadItemsCmp(e:Event):void {
-			newsState.infoViewType = newsBookCtrler.infoViewType;
-			newsState.itemViewType = newsBookCtrler.itemViewType;
+			newsState.detailViewType = newsBookCtrler.infoViewType;
+			newsState.listViewType = newsBookCtrler.itemViewType;
 			lockStop();
 		}
 
@@ -356,7 +384,8 @@
 				lockStart();
 				var box:NewsClassBox = e.currentTarget as NewsClassBox;
 				if (box.classType != null) {
-					newsState.filter[box.classType] = box.dataId;
+					var dto:DataDTO = box.data;
+					newsState.filter[box.classType] = dto.id;
 				}
 				refreshBook();
 			}
@@ -364,16 +393,6 @@
 
 		private function handlerLoadFilterError(e:Event):void {
 
-		}
-
-		private function handlerClassBtnClick(e:Event):void {
-			if (!lock) {
-				lockStart();
-				var box:NewsClassBox = e.currentTarget as NewsClassBox;
-				newsState.cClassId = box.dataId;
-				//loadClass(false);  //目前不需要显示子分类，分类只有一级。
-				loadFilter();
-			}
 		}
 
 		private function loadClass(isClear:Boolean):void {
@@ -428,6 +447,7 @@
 				classCount = 1;
 				var fdto:DataDTO = dtov[0];
 				newsState.cClassId = fdto.id;
+				newsStateSetViewType(fdto);
 				classBox.visible = true;
 				classBox.addChildren(dtov);
 				if (init) {
@@ -482,13 +502,6 @@
 					btnv.push(nib);
 				}
 			}
-			if (btnv.length > 0) {
-				var fbtn:NewsImgBtn = btnv[0];
-				var fdto:DataDTO = fbtn.data as DataDTO;
-				if (newsState.cColumnId != null) {
-					newsState.cColumnId = fdto.id;
-				}
-			}
 
 			var mh:int = stage.stageHeight - titleH - deskBarH;
 			var nbb:NewsBtnBox = new NewsBtnBox(btnv, mh);
@@ -503,6 +516,7 @@
 				if ((newsState.cColumnId != null && newsState.cColumnId == sdto.id) || (newsState.cColumnId == null && k == 0)) {
 					nbb.selectedDef(k);
 					newsState.cColumnId = sdto.id;
+					newsStateSetViewType(sdto);
 					break;
 				}
 			}
@@ -539,8 +553,27 @@
 				var btn:NewsImgBtn = nbb.clickBtn;
 				var dto:DataDTO = btn.data as DataDTO;
 				newsState.cColumnId = dto.id;
+				newsStateSetViewType(dto);
 				loadClass(true);
 			}
+		}
+
+		private function handlerClassBtnClick(e:Event):void {
+			if (!lock) {
+				lockStart();
+				var box:NewsClassBox = e.currentTarget as NewsClassBox;
+				var dto:DataDTO = box.data;
+				newsState.cClassId = dto.id;
+				newsStateSetViewType(dto);
+				//loadClass(false);  //目前不需要显示子分类，分类只有一级。
+				loadFilter();
+			}
+		}
+
+		private function newsStateSetViewType(columnDTO:DataDTO):void {
+			newsState.listViewType = columnDTO.listViewType;
+			newsState.detailViewType = columnDTO.detailViewType;
+			newsState.columnNumber = int(columnDTO.columnNumber);
 		}
 
 		private function handlerLockTimerCmp(e:Event):void {

@@ -106,7 +106,6 @@
 						var dtoList:NodeList = setNode.getNodeList(TAG_DTO);
 						var ds:DataSet = new DataSet();
 						setNode.attrToObj(ds.attr);
-						trace("listViewType:", ds.attr.listViewType, "detailViewType:", ds.attr.detailViewType)
 						if (dtoList != null) {
 							for (var j:int = 0; j < dtoList.length(); j++) {
 								var dtoNode:Node = dtoList.getNode(j);

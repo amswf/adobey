@@ -63,7 +63,6 @@ package com.snsoft.tsp3.plugin.news {
 			this.url = url;
 			this.code = code;
 			this.newsState = newsState.clone();
-
 			newsBook.gotoPage(1);
 		}
 
@@ -119,11 +118,11 @@ package com.snsoft.tsp3.plugin.news {
 			for (var i:int = 0; i < rsv.length; i++) {
 				var rs:DataSet = rsv[i];
 
-				var rowNum:int = int(rs.attr.columnNumber);
+				var rowNum:int = int(newsState.columnNumber);
 				rowNum = rowNum > 1 ? rowNum : 1;
 
-				infoViewType = rs.attr.detailViewType;
-				var itype:String = rs.attr.listViewType;
+				infoViewType = newsState.detailViewType;
+				var itype:String = newsState.listViewType;
 				if (itype == null) {
 					itype = NewsItemBase.ITEM_TYPE_I;
 				}

@@ -56,7 +56,7 @@
 
 		private var align:String;
 
-		private var _dataId:String;
+		private var _data:DataDTO;
 
 		private var clickLock:Boolean = false;
 
@@ -284,7 +284,7 @@
 				var tg:TouchDrag = e.currentTarget as TouchDrag;
 				var btn:NewsClassBtn = tg.clickObj as NewsClassBtn;
 				var dto:DataDTO = btn.data;
-				_dataId = dto.id;
+				_data = dto;
 				setSelectBtn(btn);
 				this.dispatchEvent(new Event(EVENT_BTN_CLICK));
 			}
@@ -320,10 +320,6 @@
 
 		public function get classType():String {
 			return _classType;
-		}
-
-		public function get dataId():String {
-			return _dataId;
 		}
 
 		public function get unSelectedSkin():String {
@@ -384,6 +380,10 @@
 
 		public function set title(value:String):void {
 			_title = value;
+		}
+
+		public function get data():DataDTO {
+			return _data;
 		}
 
 	}

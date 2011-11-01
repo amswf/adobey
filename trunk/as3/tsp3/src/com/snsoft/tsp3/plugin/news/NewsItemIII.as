@@ -25,15 +25,15 @@
 
 		public function NewsItemIII(data:DataDTO) {
 			super();
-			_autoRow = true;
+			_autoCol = true;
 			this._data = data;
+			itemHeight = hMax;
+			itemWidth = wMax;
 		}
 
 		override public function draw():void {
 			var ndp:NewsDataParam = new NewsDataParam(data.params);
 
-			itemHeight = hMax;
-			itemWidth = wMax;
 
 			addBack("III");
 

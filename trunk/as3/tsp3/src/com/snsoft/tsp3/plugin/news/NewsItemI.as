@@ -22,13 +22,12 @@ package com.snsoft.tsp3.plugin.news {
 		public function NewsItemI(data:DataDTO) {
 			super();
 			this._data = data;
+			itemHeight = hMax;
 		}
 
 		override public function draw():void {
 
 			var ndp:NewsDataParam = new NewsDataParam(data.params);
-
-			itemHeight = hMax;
 
 			addBack("I");
 
