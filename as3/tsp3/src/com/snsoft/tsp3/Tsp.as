@@ -114,6 +114,7 @@ package com.snsoft.tsp3 {
 			welcome = new Welcome();
 			welcomeLayer.addChild(welcome);
 			welcome.addEventListener(Welcome.EVENT_CLICK_START, handlerStart);
+			welcome.addEventListener(Welcome.EVENT_CLICK_CLOSE, handlerClose);
 
 			stage.nativeWindow.x = (stage.fullScreenWidth - welcome.width) / 2;
 			stage.nativeWindow.y = (stage.fullScreenHeight - welcome.height) / 2;
@@ -135,6 +136,10 @@ package com.snsoft.tsp3 {
 			stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
 			initTopScreen();
 			initTsp();
+		}
+
+		private function handlerClose(e:Event):void {
+			stage.nativeWindow.close();
 		}
 
 		private function initTopScreen():void {

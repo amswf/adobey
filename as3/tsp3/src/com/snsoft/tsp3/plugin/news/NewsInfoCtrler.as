@@ -57,18 +57,18 @@ package com.snsoft.tsp3.plugin.news {
 				if (itype == null) {
 					itype = NewsItemBase.ITEM_TYPE_I;
 				}
-				for (var j:int = 0; j < rs.dtoList.length; j++) {
-					var dto:DataDTO = rs.dtoList[j];
-					var board:NewsBoardBase;
-					try {
-						var MClass:Class;
-						MClass = getDefinitionByName("com.snsoft.tsp3.plugin.news.NewsBoard" + itype) as Class;
-						board = new MClass(boardSize, dto);
-					}
-					catch (error:Error) {
-						trace("找不到[详细]显示类型：" + itype);
-					}
-					if (board != null) {
+
+				var MClass:Class = null;
+				try {
+					MClass = getDefinitionByName("com.snsoft.tsp3.plugin.news.NewsBoard" + itype) as Class;
+				}
+				catch (error:Error) {
+					trace("找不到[详细]显示类型：" + itype);
+				}
+				if (MClass != null) {
+					for (var j:int = 0; j < rs.dtoList.length; j++) {
+						var dto:DataDTO = rs.dtoList[j];
+						var board:NewsBoardBase = new MClass(boardSize, dto);
 						newsInfo.refresh(board);
 					}
 				}

@@ -69,7 +69,9 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var msgtfd:TextField;
 
-		protected var texttft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName(Common.FONT_HZGBYS), 14, 0x575757);
+		protected var msgtft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName(Common.FONT_HZGBYS), 14, 0x575757);
+
+		protected var texttft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName(Common.FONT_YH), 13, 0x575757);
 
 		public function ImageBook(data:Vector.<DataParam>, bookWidth:int, bookHeight:int) {
 			this.data = data;
@@ -107,7 +109,7 @@ package com.snsoft.tsp3.plugin.news {
 			mskLayer.x = boader + lbtn.width + boader;
 			mskLayer.y = boader;
 
-			msgtfd = Util.ctntSameLine("", texttft);
+			msgtfd = Util.ctntSameLine("", msgtft);
 			btnLayer.addChild(msgtfd);
 
 			setDisplayState(DISPLAY_STATE_DEF);
@@ -128,8 +130,9 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		private function creatImg(index:int):Sprite {
-			var dto:DataParam = data[index];
-			var img:Bitmap = new Bitmap(dto.img, "auto", true);
+			var sprite:Sprite = new Sprite();
+			var dp:DataParam = data[index];
+			var img:Bitmap = new Bitmap(dp.img, "auto", true);
 
 			var imgw:int = msk.width;
 			var imgh:int = msk.height;
@@ -149,9 +152,12 @@ package com.snsoft.tsp3.plugin.news {
 			img.height = int(img.height * scale);
 			img.x = (imgw - img.width) / 2;
 			img.y = (imgh - img.height) / 2;
-
-			var sprite:Sprite = new Sprite();
 			sprite.addChild(img);
+
+			var tfd:TextField = Util.ctntSameLine(dp.text, texttft, img.width);
+			tfd.x = img.x;
+			tfd.y = img.getRect(sprite).bottom + boader;
+			sprite.addChild(tfd);
 			return sprite;
 		}
 
