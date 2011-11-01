@@ -129,24 +129,23 @@ package com.snsoft.tsp3.plugin.news {
 				}
 
 				itemViewType = itype;
-				var items:Vector.<NewsItemBase> = new Vector.<NewsItemBase>();
-				for (var j:int = 0; j < rs.dtoList.length; j++) {
-					var dto:DataDTO = rs.dtoList[j];
-					var item:NewsItemBase;
 
-					try {
-						var MClass:Class;
-						MClass = getDefinitionByName("com.snsoft.tsp3.plugin.news.NewsItem" + itype) as Class;
-						item = new MClass(dto);
-					}
-					catch (error:Error) {
-						trace("找不到[列表]显示类型：" + itype);
-					}
-					if (item != null) {
+				var MClass:Class = null;
+				try {
+					MClass = getDefinitionByName("com.snsoft.tsp3.plugin.news.NewsItem" + itype) as Class;
+				}
+				catch (error:Error) {
+					trace("找不到[列表]显示类型：" + itype);
+				}
+				var items:Vector.<NewsItemBase> = new Vector.<NewsItemBase>();
+
+				if (MClass != null) {
+					for (var j:int = 0; j < rs.dtoList.length; j++) {
+						var dto:DataDTO = rs.dtoList[j];
+						var item:NewsItemBase = new MClass(dto);
 						items.push(item);
 					}
 				}
-
 				if (items.length > 0) {
 					var nbp:NewsBookPage = new NewsBookPage(new Point(newsBook.bookSize.x, 500), rowNum);
 					for (var i2:int = 0; i2 < items.length; i2++) {

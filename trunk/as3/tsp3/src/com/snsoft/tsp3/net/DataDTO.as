@@ -23,6 +23,10 @@ package com.snsoft.tsp3.net {
 
 		private var _name:String;
 
+		private var _listViewType:String;
+
+		private var _detailViewType:String;
+
 		private var _params:Vector.<DataParam> = new Vector.<DataParam>();
 
 		private var _images:Vector.<DataParam> = new Vector.<DataParam>();
@@ -175,6 +179,22 @@ package com.snsoft.tsp3.net {
 
 		public function set titleImg(value:BitmapData):void {
 			_titleImg = value;
+		}
+
+		public function get listViewType():String {
+			return _listViewType;
+		}
+
+		public function set listViewType(value:String):void {
+			_listViewType = value;
+		}
+
+		public function get detailViewType():String {
+			return _detailViewType;
+		}
+
+		public function set detailViewType(value:String):void {
+			_detailViewType = value;
 		}
 
 	}
