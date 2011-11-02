@@ -1,4 +1,5 @@
 ﻿package com.snsoft.tsp3.net {
+	import com.snsoft.tsp3.Common;
 	import com.snsoft.tsp3.XMLData;
 	import com.snsoft.util.UUID;
 	import com.snsoft.util.rlm.ResLoadManager;
@@ -6,6 +7,7 @@
 	import com.snsoft.util.xmldom.Node;
 	import com.snsoft.util.xmldom.NodeList;
 
+	import flash.display.BitmapData;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
@@ -67,8 +69,8 @@
 			}
 			params.addParam(OPERATION, operation);
 
-			trace("xml url:", url);
-			trace("xml req:", params.toXML());
+			//trace("xml url:", url);
+			//trace("xml req:", params.toXML());
 			var uvs:URLVariables = new URLVariables();
 			uvs["code"] = code;
 			uvs["xml"] = params.toXML();
@@ -94,8 +96,8 @@
 
 		private function handlerLoadCmp(e:Event):void {
 			var ul:URLLoader = e.currentTarget as URLLoader;
-			trace("xml back:*********************************************************************************");
-			trace(ul.data);
+			//trace("xml back:*********************************************************************************");
+			//trace(ul.data);
 			var xd:XMLData = new XMLData(ul.data);
 			if (xd.isCmp) {
 				var list:NodeList = xd.bodyNode.getNodeList(TAG_SET);
@@ -117,7 +119,6 @@
 								if (dto.titleImgUrl != null && dto.titleImgUrl.length > 0) {
 									rsImg.addResUrl(dto.titleImgUrl);
 								}
-
 								var imgs:Vector.<DataParam> = dto.images;
 								if (imgs != null) {
 									for (var k:int = 0; k < imgs.length; k++) {
@@ -143,6 +144,9 @@
 		}
 
 		private function loadImgs():void {
+			if (Common.instance().defImg == null) {
+				rsImg.addResUrl(Common.DEF_IMG_URL);
+			}
 			if (rsImg.urlList.length > 0) {
 				var rlm:ResLoadManager = new ResLoadManager();
 				rlm.addResSet(rsImg);
@@ -156,26 +160,37 @@
 		}
 
 		private function handlerLoadImgCmp(e:Event):void {
+			if (Common.instance().defImg == null) {
+				Common.instance().initDefImg(rsImg.getImageByUrl(Common.DEF_IMG_URL));
+			}
 			var len:int = rsImg.imageBmdList.length;
 			if (len > 0) {
 				for (var i:int = 0; i < _data.length; i++) {
 					var ds:DataSet = _data[i];
 					for (var j:int = 0; j < ds.dtoList.length; j++) {
 						var dto:DataDTO = ds.dtoList[j];
-						dto.img = rsImg.getImageByUrl(dto.imgUrl);
-						dto.titleImg = rsImg.getImageByUrl(dto.titleImgUrl);
+						dto.img = safeImg(rsImg.getImageByUrl(dto.imgUrl));
+						dto.titleImg = safeImg(rsImg.getImageByUrl(dto.titleImgUrl));
 
 						var imgs:Vector.<DataParam> = dto.images;
 						if (imgs != null) {
 							for (var k:int = 0; k < imgs.length; k++) {
 								var dp:DataParam = imgs[k];
-								dp.img = rsImg.getImageByUrl(dp.url);
+								dp.img = safeImg(rsImg.getImageByUrl(dp.url));
 							}
 						}
 					}
 				}
 			}
 			this.dispatchEvent(new Event(Event.COMPLETE));
+		}
+
+		private function safeImg(img:BitmapData):BitmapData {
+			var bmd:BitmapData = img;
+			if (bmd == null) {
+				bmd = Common.instance().defImg;
+			}
+			return bmd;
 		}
 
 		private function creatToolBarBtnDTO(node:Node):DataDTO {

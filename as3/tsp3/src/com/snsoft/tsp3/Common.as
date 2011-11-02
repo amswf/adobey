@@ -65,7 +65,9 @@ package com.snsoft.tsp3 {
 
 		private var topStage:Stage;
 
-		private var defImg:BitmapData = new BitmapData(100, 100);
+		private var _defImg:BitmapData = null;
+
+		public static const DEF_IMG_URL:String = "img/def.png";
 
 		private var player:IPlayer;
 
@@ -74,6 +76,12 @@ package com.snsoft.tsp3 {
 				throw(new Error("Common can not new"));
 			}
 			lock = true;
+		}
+
+		public function initDefImg(img:BitmapData):void {
+			if (img != null) {
+				_defImg = img.clone();
+			}
 		}
 
 		public function initPlayer(player:IPlayer):void {
@@ -168,6 +176,10 @@ package com.snsoft.tsp3 {
 
 		public function set dataCode(value:String):void {
 			_dataCode = value;
+		}
+
+		public function get defImg():BitmapData {
+			return _defImg;
 		}
 
 	}
