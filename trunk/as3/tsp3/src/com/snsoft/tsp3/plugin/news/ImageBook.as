@@ -57,7 +57,7 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var boader:int = 10;
 
-		private var boader2:int = 0;
+		private var boader2:int = 50;
 
 		private var currentImg:Sprite;
 
@@ -135,7 +135,7 @@ package com.snsoft.tsp3.plugin.news {
 			var img:Bitmap = new Bitmap(dp.img, "auto", true);
 
 			var imgw:int = msk.width;
-			var imgh:int = msk.height;
+			var imgh:int = msk.height - boader2;
 
 			var scale:Number = 1;
 			if (img.height > imgh || img.width > imgw) {
@@ -209,16 +209,16 @@ package com.snsoft.tsp3.plugin.news {
 			}
 
 			msk.width = cbw - boader * 4 - lbtn.width - rbtn.width;
-			msk.height = cbh - boader - boader - boader2;
+			msk.height = cbh - boader - boader;
 
 			back.width = cbw;
 			back.height = cbh;
 
 			lbtn.x = boader;
-			lbtn.y = (cbh + boader2 - lbtn.height) / 2;
+			lbtn.y = (cbh - lbtn.height) / 2;
 
 			rbtn.x = cbw - boader - rbtn.width;
-			rbtn.y = (cbh + boader2 - rbtn.height) / 2;
+			rbtn.y = (cbh - rbtn.height) / 2;
 
 			setMsg(msgtfd.text);
 		}
