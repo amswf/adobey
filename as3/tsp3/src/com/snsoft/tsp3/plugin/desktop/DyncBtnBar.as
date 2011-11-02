@@ -77,13 +77,21 @@ package com.snsoft.tsp3.plugin.desktop {
 		}
 
 		public function removeBtn(uuid:String):void {
+			var n:int = -1;
 			for (var i:int = 0; i < btnv.length; i++) {
 				var btn:DesktopBtn = btnv[i];
 				if (btn.uuid == uuid) {
+					n = i;
 					btnv.splice(i, 1);
 					btnLayer.removeChild(btn);
 					btn.removeEventListener(MouseEvent.CLICK, handlerBtnClick);
 					break;
+				}
+			}
+			if (n >= 0) {
+				for (var j:int = n - 1; j < btnv.length; j++) {
+					var mbtn:DesktopBtn = btnv[j];
+					mbtn.x = mbtn.x - btnWidth;
 				}
 			}
 
