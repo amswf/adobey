@@ -131,10 +131,15 @@ package com.snsoft.tsp3.plugin.news {
 			bookLayer.addChild(book);
 			bookCtrler = new NewsBookCtrler(book, pagin);
 			bookCtrler.addEventListener(NewsBookCtrler.EVENT_ITEM_CLICK, handlerItemClick);
+			bookCtrler.addEventListener(NewsBookCtrler.EVENT_LOAD_COMPLETE, handlerItemCmp);
 
 			var info:NewsInfo = new NewsInfo(infoSize);
 			infoLayer.addChild(info);
 			infoCtrler = new NewsInfoCtrler(info);
+		}
+
+		private function handlerItemCmp(e:Event):void {
+			infoVsb(false);
 		}
 
 		private function handlerItemClick(e:Event):void {
@@ -153,7 +158,7 @@ package com.snsoft.tsp3.plugin.news {
 		private function handlerBookBtnClick(e:Event):void {
 			setBtmBtnState(e.currentTarget);
 			refreshItems();
-			infoVsb(false);
+			infoLayer.visible = false;
 		}
 
 		private function setBtmBtnState(clickObj:Object):void {
