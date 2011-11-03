@@ -340,44 +340,46 @@
 		}
 
 		private function handlerLoadFilterCmp(e:Event):void {
-			var dl:DataLoader = e.currentTarget as DataLoader;
-			var rsv:Vector.<DataSet> = dl.data;
+			if (stage != null) {
+				var dl:DataLoader = e.currentTarget as DataLoader;
+				var rsv:Vector.<DataSet> = dl.data;
 
-			var h:int = classCount * classH;
+				var h:int = classCount * classH;
 
-			filtersCount = 0;
-			var cn:int = rsv.length;
-			while (filtersLayer.numChildren > cn) {
-				filtersLayer.removeChildAt(filtersLayer.numChildren - 1);
-			}
-
-			for (var i:int = 0; i < rsv.length; i++) {
-				filtersCount++;
-				var ds:DataSet = rsv[i];
-				var v:Vector.<DataDTO> = ds.dtoList;
-				var fbox:NewsClassBox = null;
-
-				if (i < filtersLayer.numChildren) {
-					fbox = filtersLayer.getChildAt(i) as NewsClassBox;
-					fbox.clear();
+				filtersCount = 0;
+				var cn:int = rsv.length;
+				while (filtersLayer.numChildren > cn) {
+					filtersLayer.removeChildAt(filtersLayer.numChildren - 1);
 				}
-				else {
-					fbox = new NewsClassBox(stage.stageWidth - columnW, filtersH, ds.attr.name, ds.attr.id, true);
-					fbox.selectedSkin = "NewsFilterBtn_selectedSkin";
-					fbox.unSelectedSkin = "NewsFilterBtn_unSelectedSkin";
-					fbox.backSkin = "NewsFilterBox_backSkin";
-					fbox.selTft = filterSelTft;
-					fbox.unSelTft = filterUnSelTft;
-					filtersLayer.addChild(fbox);
+
+				for (var i:int = 0; i < rsv.length; i++) {
+					filtersCount++;
+					var ds:DataSet = rsv[i];
+					var v:Vector.<DataDTO> = ds.dtoList;
+					var fbox:NewsClassBox = null;
+
+					if (i < filtersLayer.numChildren) {
+						fbox = filtersLayer.getChildAt(i) as NewsClassBox;
+						fbox.clear();
+					}
+					else {
+						fbox = new NewsClassBox(stage.stageWidth - columnW, filtersH, ds.attr.name, ds.attr.id, true);
+						fbox.selectedSkin = "NewsFilterBtn_selectedSkin";
+						fbox.unSelectedSkin = "NewsFilterBtn_unSelectedSkin";
+						fbox.backSkin = "NewsFilterBox_backSkin";
+						fbox.selTft = filterSelTft;
+						fbox.unSelTft = filterUnSelTft;
+						filtersLayer.addChild(fbox);
+					}
+					fbox.title = ds.attr.name;
+					fbox.classType = ds.attr.id;
+					fbox.addChildren(v);
+					fbox.y = h;
+					h += filtersH;
+					fbox.addEventListener(NewsClassBox.EVENT_BTN_CLICK, handlerFilterBtnClick);
 				}
-				fbox.title = ds.attr.name;
-				fbox.classType = ds.attr.id;
-				fbox.addChildren(v);
-				fbox.y = h;
-				h += filtersH;
-				fbox.addEventListener(NewsClassBox.EVENT_BTN_CLICK, handlerFilterBtnClick);
+				refreshBook();
 			}
-			refreshBook();
 		}
 
 		private function handlerFilterBtnClick(e:Event):void {

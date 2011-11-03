@@ -88,8 +88,9 @@ package com.snsoft.tsp3.plugin.desktop {
 					break;
 				}
 			}
+			trace(n);
 			if (n >= 0) {
-				for (var j:int = n - 1; j < btnv.length; j++) {
+				for (var j:int = n; j < btnv.length; j++) {
 					var mbtn:DesktopBtn = btnv[j];
 					mbtn.x = mbtn.x - btnWidth;
 				}
