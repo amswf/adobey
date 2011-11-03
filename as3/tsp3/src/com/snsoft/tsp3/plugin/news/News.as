@@ -184,12 +184,13 @@
 			newsTitle.addEventListener(NewsTitle.EVENT_SEARCH, handlerSearchBtnClick);
 
 			pagin = new Pagination(5);
+			pagin.visible = false;
 			paginLayer.addChild(pagin);
 			pagin.x = (stage.stageWidth - columnW - pagin.width) / 2;
 			pagin.y = stage.stageHeight - deskBarH - pagin.height - boader;
 			//先在这里实现分页拖动
 
-			newsBook = new NewsBook(new Point(stage.stageWidth - columnW, pagin.y - boader - titleH));
+			newsBook = new NewsBook(new Point(stage.stageWidth - columnW, pagin.getRect(paginLayer).bottom - boader - titleH));
 			newsBook.y = titleH;
 			bookLayer.addChild(newsBook);
 
@@ -249,14 +250,14 @@
 		}
 
 		private function refreshBook():void {
-
+			pagin.visible = false;
 			newsState.pageNum = 1;
 			newsState.infoId = null;
 			newsState.pageCol = getItemColNum();
 
 			var ph:int = classCount * classH + filtersCount * filtersH;
 			var y:int = titleH + ph;
-			var size:Point = new Point(stage.stageWidth - columnW, stage.stageHeight - deskBarH - paginH - boader - titleH - ph);
+			var size:Point = new Point(stage.stageWidth - columnW, stage.stageHeight - deskBarH - boader - titleH - ph);
 
 			var url:String = Common.instance().dataUrl;
 			var code:String = Common.instance().dataCode;
@@ -265,7 +266,7 @@
 				url = cfg.searchDataUrl;
 			}
 
-			newsBookCtrler.refresh(url, code, newsState, size, y);
+			newsBookCtrler.refresh(url, code, newsState, size, pagin.height + boader, y);
 		}
 
 		private function getItemColNum():int {
