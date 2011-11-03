@@ -30,6 +30,8 @@
 
 		private static const OPERATION:String = "operation";
 
+		private var rsIcon:RSImages = new RSImages();
+
 		private var rsImg:RSImages = new RSImages();
 
 		private var _data:Vector.<DataSet> = new Vector.<DataSet>();
@@ -115,16 +117,20 @@
 								ds.addDto(dto);
 
 								if (dto.imgUrl == null || dto.imgUrl.length == 0) {
-									dto.imgUrl = Common.DEF_IMG_URL;
+									dto.imgUrl = Common.DEF_IC0N_URL;
 								}
-								rsImg.addResUrl(dto.imgUrl);
-								if (dto.titleImgUrl != null && dto.titleImgUrl.length > 0) {
-									rsImg.addResUrl(dto.titleImgUrl);
+								rsIcon.addResUrl(dto.imgUrl);
+								if (dto.titleImgUrl == null || dto.titleImgUrl.length == 0) {
+									dto.titleImgUrl = Common.DEF_IC0N_URL;
 								}
+								rsIcon.addResUrl(dto.titleImgUrl);
 								var imgs:Vector.<DataParam> = dto.images;
 								if (imgs != null) {
 									for (var k:int = 0; k < imgs.length; k++) {
 										var pImgUrl:String = imgs[k].url;
+										if (pImgUrl == null || pImgUrl.length == 0) {
+											pImgUrl = Common.DEF_IMG_URL;
+										}
 										rsImg.addResUrl(pImgUrl);
 									}
 								}
@@ -146,11 +152,15 @@
 		}
 
 		private function loadImgs():void {
+			if (Common.instance().defIcon == null) {
+				rsIcon.addResUrl(Common.DEF_IC0N_URL);
+			}
 			if (Common.instance().defImg == null) {
 				rsImg.addResUrl(Common.DEF_IMG_URL);
 			}
-			if (rsImg.urlList.length > 0) {
+			if (rsImg.urlList.length > 0 || rsIcon.urlList.length > 0) {
 				var rlm:ResLoadManager = new ResLoadManager();
+				rlm.addResSet(rsIcon);
 				rlm.addResSet(rsImg);
 				rlm.addEventListener(Event.COMPLETE, handlerLoadImgCmp);
 				rlm.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadError);
@@ -162,18 +172,21 @@
 		}
 
 		private function handlerLoadImgCmp(e:Event):void {
+			if (Common.instance().defIcon == null) {
+				Common.instance().initDefIcon(rsIcon.getImageByUrl(Common.DEF_IC0N_URL));
+			}
 			if (Common.instance().defImg == null) {
 				Common.instance().initDefImg(rsImg.getImageByUrl(Common.DEF_IMG_URL));
 			}
-			var len:int = rsImg.imageBmdList.length;
-			if (len > 0) {
+			var iconlen:int = rsIcon.imageBmdList.length;
+			var imglen:int = rsImg.imageBmdList.length;
+			if (iconlen > 0 || imglen > 0) {
 				for (var i:int = 0; i < _data.length; i++) {
 					var ds:DataSet = _data[i];
 					for (var j:int = 0; j < ds.dtoList.length; j++) {
 						var dto:DataDTO = ds.dtoList[j];
-						dto.img = safeImg(rsImg.getImageByUrl(dto.imgUrl));
-						dto.titleImg = safeImg(rsImg.getImageByUrl(dto.titleImgUrl));
-
+						dto.img = safeIcon(rsIcon.getImageByUrl(dto.imgUrl));
+						dto.titleImg = safeIcon(rsIcon.getImageByUrl(dto.titleImgUrl));
 						var imgs:Vector.<DataParam> = dto.images;
 						if (imgs != null) {
 							for (var k:int = 0; k < imgs.length; k++) {
@@ -185,6 +198,14 @@
 				}
 			}
 			this.dispatchEvent(new Event(Event.COMPLETE));
+		}
+
+		private function safeIcon(img:BitmapData):BitmapData {
+			var bmd:BitmapData = img;
+			if (bmd == null) {
+				bmd = Common.instance().defIcon;
+			}
+			return bmd;
 		}
 
 		private function safeImg(img:BitmapData):BitmapData {
