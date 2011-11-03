@@ -22,5 +22,12 @@ package com.snsoft.tsp3 {
 			fary.push(f1);
 			tfd.filters = fary;
 		}
+
+		public static function filterSprite(sprite:Sprite):void {
+			var fary:Array = new Array();
+			var f1:DropShadowFilter = new DropShadowFilter(1, 90, 0x666666, 1, 4, 4, 1);
+			fary.push(f1);
+			sprite.filters = fary;
+		}
 	}
 }

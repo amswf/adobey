@@ -1,4 +1,5 @@
 ﻿package com.snsoft.tsp3.plugin.news {
+	import com.snsoft.tsp3.ViewUtil;
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.tsp3.net.DataParam;
 	import com.snsoft.tsp3.plugin.news.layout.Util;
@@ -41,17 +42,24 @@
 			v.push(ndp.getIntrParam(NewsDataParam.PARAM_KEYWORDS));
 			v.push(ndp.getIntrParam(NewsDataParam.PARAM_DATE));
 
-			var title:Sprite = Util.twsLeft(titletft, texttft, ctnttft, itemWidth - boader - boader - boader, 10, tp, v);
+			var icon:Sprite = SkinsUtil.createSkinByName("NewsItemIcon");
+			this.addChild(icon);
+			ViewUtil.filterSprite(icon);
+			icon.x = boader;
+
+			var title:Sprite = Util.twsLeft(titletft, texttft, ctnttft, itemWidth - icon.width - boader - boader - boader - boader, 10, tp, v);
 			this.addChild(title);
-			title.x = +boader;
+			title.x = icon.getRect(this).right + boader;
 			title.y = boader;
+
+			icon.y = boader + (title.height - icon.height) / 2;
 
 			var dp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_DIGEST);
 			var dw:int = itemWidth - boader - boader - boader;
 			var dh:int = itemHeight - title.getRect(this).bottom - boader - boader;
 			var digest:Sprite = Util.digestText(dp, texttft, ctnttft, dw, dh);
 			this.addChild(digest);
-			digest.x = title.x;
+			digest.x = boader;
 			digest.y = title.getRect(this).bottom + boader;
 		}
 	}

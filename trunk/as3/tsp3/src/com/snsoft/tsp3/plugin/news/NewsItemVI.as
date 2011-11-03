@@ -1,4 +1,5 @@
 package com.snsoft.tsp3.plugin.news {
+	import com.snsoft.tsp3.ViewUtil;
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.tsp3.net.DataParam;
 	import com.snsoft.tsp3.plugin.news.layout.Util;
@@ -40,10 +41,17 @@ package com.snsoft.tsp3.plugin.news {
 			var v:Vector.<DataParam> = new Vector.<DataParam>();
 			v.push(ndp.getIntrParam(NewsDataParam.PARAM_DATE));
 
-			var title:Sprite = Util.twsRight(titletft, texttft, ctnttft, itemWidth - boader - boader, 10, tp, v);
+			var icon:Sprite = SkinsUtil.createSkinByName("NewsItemIcon");
+			this.addChild(icon);
+			ViewUtil.filterSprite(icon);
+			icon.x = boader;
+
+			var title:Sprite = Util.twsLeft(titletft, texttft, ctnttft, itemWidth - icon.width - boader - boader - boader - boader, 10, tp, v);
 			this.addChild(title);
-			title.x = boader;
+			title.x = icon.getRect(this).right + boader;
 			title.y = boader;
+
+			icon.y = boader + (title.height - icon.height) / 2;
 		}
 	}
 }

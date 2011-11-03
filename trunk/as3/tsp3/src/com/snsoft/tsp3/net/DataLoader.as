@@ -113,9 +113,11 @@
 								var dtoNode:Node = dtoList.getNode(j);
 								var dto:DataDTO =  creatToolBarBtnDTO(dtoNode);
 								ds.addDto(dto);
-								if (dto.imgUrl != null && dto.imgUrl.length > 0) {
-									rsImg.addResUrl(dto.imgUrl);
+
+								if (dto.imgUrl == null || dto.imgUrl.length == 0) {
+									dto.imgUrl = Common.DEF_IMG_URL;
 								}
+								rsImg.addResUrl(dto.imgUrl);
 								if (dto.titleImgUrl != null && dto.titleImgUrl.length > 0) {
 									rsImg.addResUrl(dto.titleImgUrl);
 								}

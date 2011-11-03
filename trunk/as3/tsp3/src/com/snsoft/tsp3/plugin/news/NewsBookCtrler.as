@@ -36,11 +36,14 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var _infoViewType:String;
 
+		private var bookSize:Point = null;
+
+		private var paginH:int = 0;
+
 		public function NewsBookCtrler(newsBook:NewsBook, pagin:Pagination) {
 			super();
 			this.newsBook = newsBook;
 			this.pagin = pagin;
-
 			init();
 		}
 
@@ -53,10 +56,9 @@ package com.snsoft.tsp3.plugin.news {
 			pagin.addEventListener(PaginationEvent.PAGIN_CLICK, handlerPaginBtnClick);
 		}
 
-		public function refresh(url:String, code:String, newsState:NewsState, size:Point = null, y:int = NaN):void {
-			if (size != null) {
-				newsBook.reSize(size);
-			}
+		public function refresh(url:String, code:String, newsState:NewsState, bookSize:Point = null, paginH:int = 0, y:int = NaN):void {
+			this.bookSize = bookSize;
+			this.paginH = paginH;
 			if (!isNaN(y)) {
 				newsBook.y = y;
 			}
@@ -152,11 +154,24 @@ package com.snsoft.tsp3.plugin.news {
 						nbp.addItem(itm);
 					}
 
-					newsBook.pageCount = int(rs.attr.pageCount);
 					var nextnum:int = int(newsBook.npNum);
 					var curnum:int = int(newsBook.currentNum);
 					var pCount:int = int(rs.attr.pageCount);
+					newsBook.pageCount = pCount;
 					nbp.setPaginText(nextnum, pCount);
+					if (bookSize != null) {
+						var pp:Point = new Point();
+						if (pCount <= 1) {
+							pagin.visible = false;
+
+						}
+						else {
+							pagin.visible = true;
+							pp.y = pagin.height + 10;
+						}
+						var bs:Point = bookSize.subtract(pp);
+						newsBook.reSize(bs);
+					}
 					nbpv.push(nbp);
 				}
 			}

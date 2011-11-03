@@ -56,15 +56,17 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var infoBtn:NewsPanelBtn;
 
-		private var bookBtn:NewsPanelBtn
+		private var bookBtn:NewsPanelBtn;
+
+		private var pagin:Pagination;
 
 		public function NewsPanel(panelSize:Point, infoUrl:String, itemsUrl:String, code:String) {
 			this.panelSize = panelSize;
 			this.infoUrl = infoUrl;
 			this.itemsUrl = itemsUrl;
 			this.code = code;
-			this.infoSize = new Point(panelSize.x - boader - boader, panelSize.y - boader - boader - btmH - topH);
-			this.bookSize = new Point(panelSize.x - boader - boader, panelSize.y - boader - boader - btmH - topH);
+			this.infoSize = new Point(panelSize.x - boader - boader, panelSize.y - boader2 - boader - boader - btmH - topH);
+			this.bookSize = new Point(panelSize.x - boader - boader, panelSize.y - boader2 - boader - boader - btmH - topH);
 
 			super();
 		}
@@ -118,11 +120,11 @@ package com.snsoft.tsp3.plugin.news {
 			infoLayer.x = boader;
 			infoLayer.y = boader + topH;
 
-			var pagin:Pagination = new Pagination();
+			pagin = new Pagination();
 			bookLayer.addChild(pagin);
-			pagin.y = bookSize.y - pagin.height - boader2;
+			pagin.y = bookSize.y - pagin.height;
 			pagin.x = (bookSize.x - pagin.width) / 2;
-			var pp:Point = new Point(0, pagin.height + boader);
+			var pp:Point = new Point(0, pagin.height + boader + boader2);
 
 			var bp:Point = bookSize.subtract(pp);
 			var book:NewsBook = new NewsBook(bp);
@@ -178,8 +180,7 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		private function refreshItems():void {
-			bookCtrler.refresh(itemsUrl, code, this.newsState);
-
+			bookCtrler.refresh(itemsUrl, code, this.newsState, bookSize, pagin.height + boader2);
 		}
 
 		private function infoVsb(b:Boolean):void {

@@ -100,7 +100,7 @@ package com.snsoft.tsp3.plugin.news {
 			var sx:int = boader;
 			var sy:int = titleBack.getRect(this).bottom + boader;
 			var sw:int = cw;
-			var sh:int = infoSize.y - sy - boader;
+			var sh:int = infoSize.y - sy;
 
 			var msk:Sprite = ViewUtil.creatRect(sw, sh);
 			maskLayer.addChild(msk);
