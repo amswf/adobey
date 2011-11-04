@@ -6,6 +6,7 @@ package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.net.ReqParams;
 	import com.snsoft.tsp3.pagination.Pagination;
 	import com.snsoft.tsp3.pagination.PaginationEvent;
+	import com.snsoft.util.SpriteUtil;
 
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -40,10 +41,17 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var paginH:int = 0;
 
-		public function NewsBookCtrler(newsBook:NewsBook, pagin:Pagination) {
+		private var bookHeadLayer:Sprite;
+
+		private var bookHeadH:int = 0;
+
+		private var bookY:int = 0;
+
+		public function NewsBookCtrler(newsBook:NewsBook, pagin:Pagination, bookHeadLayer:Sprite) {
 			super();
 			this.newsBook = newsBook;
 			this.pagin = pagin;
+			this.bookHeadLayer = bookHeadLayer;
 			init();
 		}
 
@@ -57,10 +65,12 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		public function refresh(url:String, code:String, newsState:NewsState, bookSize:Point = null, paginH:int = 0, y:int = NaN):void {
+			pagin.visible = false;
+			bookHeadLayer.visible = false;
 			this.bookSize = bookSize;
 			this.paginH = paginH;
 			if (!isNaN(y)) {
-				newsBook.y = y;
+				bookY = y;
 			}
 			this.url = url;
 			this.code = code;
@@ -112,6 +122,8 @@ package com.snsoft.tsp3.plugin.news {
 
 		private function handlerSearchCmp(e:Event):void {
 			//trace("handlerSearchCmp");
+			SpriteUtil.deleteAllChild(bookHeadLayer);
+
 			var dl:DataLoader = e.currentTarget as DataLoader;
 			var rsv:Vector.<DataSet> = dl.data;
 
@@ -140,7 +152,19 @@ package com.snsoft.tsp3.plugin.news {
 				}
 				var items:Vector.<NewsItemBase> = new Vector.<NewsItemBase>();
 
+				bookHeadH = 0;
 				if (MClass != null) {
+					if (rs.dtoList.length > 0) {
+						if (newsState.listViewType == "IV") {
+							var nbh:NewsItemHead = new NewsItemHead(rs.dtoList[0]);
+							nbh.itemWidth = newsBook.bookSize.x;
+							bookHeadLayer.addChild(nbh);
+							nbh.y = bookY;
+							nbh.draw();
+							bookHeadH = nbh.height;
+						}
+					}
+
 					for (var j:int = 0; j < rs.dtoList.length; j++) {
 						var dto:DataDTO = rs.dtoList[j];
 						var item:NewsItemBase = new MClass(dto);
@@ -159,19 +183,6 @@ package com.snsoft.tsp3.plugin.news {
 					var pCount:int = int(rs.attr.pageCount);
 					newsBook.pageCount = pCount;
 					nbp.setPaginText(nextnum, pCount);
-					if (bookSize != null) {
-						var pp:Point = new Point();
-						if (pCount <= 1) {
-							pagin.visible = false;
-
-						}
-						else {
-							pagin.visible = true;
-							pp.y = pagin.height + 10;
-						}
-						var bs:Point = bookSize.subtract(pp);
-						newsBook.reSize(bs);
-					}
 					nbpv.push(nbp);
 				}
 			}
@@ -194,6 +205,21 @@ package com.snsoft.tsp3.plugin.news {
 					sign = true;
 				}
 			}
+			if (bookSize != null) {
+				var pp:Point = new Point();
+				if (pCount <= 1) {
+					pagin.visible = false;
+				}
+				else {
+					pagin.visible = true;
+					pp.y = pagin.height + 10;
+				}
+				pp.y += bookHeadH;
+				var bs:Point = bookSize.subtract(pp);
+				newsBook.reSize(bs);
+				newsBook.y = bookY + bookHeadH;
+			}
+			bookHeadLayer.visible = true;
 			if (sign) {
 				this.dispatchEvent(new Event(EVENT_LOAD_COMPLETE));
 			}
