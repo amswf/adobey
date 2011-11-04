@@ -17,19 +17,21 @@
 	 * @author Administrator
 	 *
 	 */
-	public class NewsItemIV extends NewsItemBase {
+	public class NewsItemHead extends NewsItemBase {
 
+		//字间距
 		private var boader2:int = 20;
 
-		private var hMax:int = 35;
+		//文字高度修正
+		private var boader3:int = 0;
+
+		private var boaderlr:int = 20;
+
+		private var hMax:int = 60;
 
 		private var wMax:int = 150;
 
-		private var tft:TextFormat = new TextFormat(null, 14, 0xffffff);
-
-		private var tft2:TextFormat = new TextFormat(null, 12, 0xaaaaaa);
-
-		public function NewsItemIV(data:DataDTO) {
+		public function NewsItemHead(data:DataDTO) {
 			super();
 			this._data = data;
 			itemHeight = hMax;
@@ -37,30 +39,31 @@
 
 		override public function draw():void {
 			_clickType = null;
-			boader = 20;
+			boader = 25;
 
-			addBack("IV");
+			addBack("Head");
 
 			var pv:Vector.<DataParam> = data.params;
 
 			if (pv != null) {
 				var sv:Vector.<Sprite> = new Vector.<Sprite>();
-				var pb:int = (itemWidth - boader - boader) / pv.length;
+				var pb:int = (itemWidth - boader - boader - boaderlr - boaderlr) / pv.length;
 				for (var i:int = 0; i < pv.length; i++) {
 					var pm:DataParam = pv[i];
 					var spr:Sprite = new Sprite();
 					this.addChild(spr);
-					var ctnt:TextField = Util.ctntSameLine(pm.content, ctnttft, pb);
-					spr.addChild(ctnt);
+					spr.y = boader3;
+					var txt:TextField = Util.ctntSameLine(pm.text, headtft);
+					spr.addChild(txt);
 					sv.push(spr);
 				}
 
-				var sx:int = boader2;
+				var sx:int = boader2 + boader;
 				for (var j:int = 0; j < sv.length; j++) {
 					var spr2:Sprite = sv[j];
 					spr2.x = sx;
 					sx += pb;
-					spr2.y = (itemHeight - spr2.height) / 2;
+					spr2.y = (itemHeight - spr2.height) / 2 + boader3;
 				}
 
 			}

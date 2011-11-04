@@ -64,6 +64,8 @@
 
 		private var titleLayer:Sprite = new Sprite();
 
+		private var bookHeadLayer:Sprite = new Sprite();
+
 		private var paginLayer:Sprite = new Sprite();
 
 		private var infoLayer:Sprite = new Sprite();
@@ -118,6 +120,7 @@
 			this.addChild(classLayer);
 			this.addChild(filtersLayer);
 			this.addChild(titleLayer);
+			this.addChild(bookHeadLayer);
 			this.addChild(paginLayer);
 			this.addChild(infoLayer);
 
@@ -202,7 +205,7 @@
 			classBox.visible = false;
 			classBox.addEventListener(NewsClassBox.EVENT_BTN_CLICK, handlerClassBtnClick);
 
-			newsBookCtrler = new NewsBookCtrler(newsBook, pagin);
+			newsBookCtrler = new NewsBookCtrler(newsBook, pagin, bookHeadLayer);
 			newsBookCtrler.addEventListener(NewsBookCtrler.EVENT_ITEM_CLICK, handlerItemClick);
 			newsBookCtrler.addEventListener(NewsBookCtrler.EVENT_LOAD_COMPLETE, handlerloadItemsCmp);
 
@@ -250,7 +253,6 @@
 		}
 
 		private function refreshBook():void {
-			pagin.visible = false;
 			newsState.pageNum = 1;
 			newsState.infoId = null;
 			newsState.pageCol = getItemColNum();
@@ -499,6 +501,7 @@
 				var v:Vector.<DataDTO> = ds.dtoList;
 				for (var j:int = 0; j < v.length; j++) {
 					var dto:DataDTO = v[j];
+					trace(dto.listViewType);
 					var nib:NewsImgBtn = new NewsImgBtn(new Point(44, 44), dto.img, dto.text, columnW);
 					nib.buttonMode = true;
 					nib.data = dto;
@@ -573,10 +576,11 @@
 			}
 		}
 
-		private function newsStateSetViewType(columnDTO:DataDTO):void {
-			newsState.listViewType = columnDTO.listViewType;
-			newsState.detailViewType = columnDTO.detailViewType;
-			newsState.columnNumber = int(columnDTO.columnNumber);
+		private function newsStateSetViewType(dto:DataDTO):void {
+			trace("newsStateSetViewType:", newsState.listViewType);
+			newsState.listViewType = dto.listViewType;
+			newsState.detailViewType = dto.detailViewType;
+			newsState.columnNumber = int(dto.columnNumber);
 		}
 
 		private function handlerLockTimerCmp(e:Event):void {

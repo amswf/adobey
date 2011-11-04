@@ -40,6 +40,9 @@ package com.snsoft.tsp3.plugin.news {
 		//简介摘要信息
 		protected var digesttft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName(Common.FONT_YH), 14, 0x575757);
 
+		//头
+		protected var headtft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName(Common.FONT_YH), 13, 0xffffff);
+
 		protected var boader:int = 10;
 
 		protected var defBack:MovieClip;

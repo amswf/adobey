@@ -20,6 +20,8 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var bookLayer:Sprite = new Sprite();
 
+		private var bookHeadLayer:Sprite = new Sprite();
+
 		private var btmBtnLayer:Sprite = new Sprite();
 
 		private var topBtnLayer:Sprite = new Sprite();
@@ -75,6 +77,7 @@ package com.snsoft.tsp3.plugin.news {
 			this.addChild(backLayer);
 			this.addChild(infoLayer);
 			this.addChild(bookLayer);
+			this.addChild(bookHeadLayer);
 			this.addChild(topBtnLayer);
 			this.addChild(btmBtnLayer);
 		}
@@ -121,6 +124,7 @@ package com.snsoft.tsp3.plugin.news {
 			infoLayer.y = boader + topH;
 
 			pagin = new Pagination();
+			pagin.visible = false;
 			bookLayer.addChild(pagin);
 			pagin.y = bookSize.y - pagin.height;
 			pagin.x = (bookSize.x - pagin.width) / 2;
@@ -129,7 +133,7 @@ package com.snsoft.tsp3.plugin.news {
 			var bp:Point = bookSize.subtract(pp);
 			var book:NewsBook = new NewsBook(bp);
 			bookLayer.addChild(book);
-			bookCtrler = new NewsBookCtrler(book, pagin);
+			bookCtrler = new NewsBookCtrler(book, pagin, bookHeadLayer);
 			bookCtrler.addEventListener(NewsBookCtrler.EVENT_ITEM_CLICK, handlerItemClick);
 			bookCtrler.addEventListener(NewsBookCtrler.EVENT_LOAD_COMPLETE, handlerItemCmp);
 
