@@ -220,7 +220,7 @@ package com.snsoft.tsp3.plugin.news {
 				newsBook.y = bookY + bookHeadH;
 			}
 			bookHeadLayer.visible = true;
-			if (sign) {
+			if (sign && newsBook.addPageCmp) {
 				this.dispatchEvent(new Event(EVENT_LOAD_COMPLETE));
 			}
 		}
