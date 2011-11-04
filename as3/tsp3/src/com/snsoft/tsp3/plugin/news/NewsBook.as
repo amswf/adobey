@@ -58,6 +58,8 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var _clickItem:NewsItemBase;
 
+		private var _addPageCmp:Boolean = false;
+
 		public function NewsBook(bookSize:Point, catchMax:int = 0) {
 			this._bookSize = bookSize;
 			this.catchMax = catchMax;
@@ -121,6 +123,7 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		public function addPageNext(npage:NewsBookPage):void {
+			_addPageCmp = false;
 			addTouchBtn(npage);
 
 			var nexty:int = 0;
@@ -158,10 +161,14 @@ package com.snsoft.tsp3.plugin.news {
 			if (pageLayer.y + npage.y + npage.height < bookSize.y) {
 				dispatchEventNeedNext();
 			}
+			else {
+				_addPageCmp = true;
+			}
 			checkChangePage();
 		}
 
 		public function addPagePrev(ppage:NewsBookPage):void {
+			_addPageCmp = false;
 			addTouchBtn(ppage);
 
 			var prevy:int = 0;
@@ -196,6 +203,9 @@ package com.snsoft.tsp3.plugin.news {
 
 			if (pageLayer.y + ppage.y > 0) {
 				dispatchEventNeedPrev();
+			}
+			else {
+				_addPageCmp = true;
 			}
 		}
 
@@ -280,6 +290,10 @@ package com.snsoft.tsp3.plugin.news {
 
 		public function get clickItem():NewsItemBase {
 			return _clickItem;
+		}
+
+		public function get addPageCmp():Boolean {
+			return _addPageCmp;
 		}
 
 	}
