@@ -2,6 +2,7 @@
 	import com.snsoft.tsp3.Common;
 	import com.snsoft.tsp3.MySprite;
 	import com.snsoft.tsp3.ViewUtil;
+	import com.snsoft.tsp3.hand.HandGroup;
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.tsp3.touch.TouchDrag;
 	import com.snsoft.tsp3.touch.TouchDragEvent;
@@ -44,13 +45,15 @@
 
 		private var backBtnLayer:Sprite = new Sprite();
 
+		private var handLayer:Sprite = new Sprite();
+
 		private var boxWidth:int;
 
 		private var boxHeight:int;
 
 		private var boader:int = 5;
 
-		private var boader2:int = 8;
+		private var boader2:int = 10;
 
 		private var _classType:String;
 
@@ -92,6 +95,10 @@
 
 		private var _unSelTft:TextFormat = new TextFormat(RSEmbedFonts.findFontByName(Common.FONT_YH), 14, 0xffffff);
 
+		private var handg:HandGroup;
+
+		private var td:TouchDrag;
+
 		public function NewsClassBox(boxWidth:int, boxHeight:int, title:String, classType:String = null, hiddenBack:Boolean = false, align:String = "left") {
 			this.boxWidth = boxWidth;
 			this.boxHeight = boxHeight;
@@ -112,6 +119,10 @@
 			this.addChild(backBtnLayer);
 			this.addChild(maskLayer);
 			this.addChild(btnLayer);
+			this.addChild(handLayer);
+
+			handLayer.mouseChildren = false;
+			handLayer.mouseEnabled = false;
 
 			var back:Sprite = SkinsUtil.createSkinByName(backSkin);
 			backLayer.addChild(back);
@@ -154,9 +165,9 @@
 			btnH = btn.height;
 			btnsY = int((boxHeight - btnH) / 2);
 
-			var btnsX:int = boader + tfdw + boader;
+			var btnsX:int = boader2 + tfdw;
 
-			maskW = boxWidth - btnsX - bw - boader - boader;
+			maskW = boxWidth - bw - boader2 - boader2;
 
 			var mask:Sprite = ViewUtil.creatRect(maskW, btnH);
 			mask.x = btnsX;
@@ -166,6 +177,16 @@
 			btnLayer.mask = mask;
 			btnLayer.x = btnsX;
 
+			handg = new HandGroup(btnH, btnH);
+			handg.right.visible = false;
+			handLayer.addChild(handg.right);
+			handg.right.x = boader2;
+			handg.right.y = boxHeight - btnH;
+
+			handg.left.visible = false;
+			handLayer.addChild(handg.left);
+			handg.left.x = maskW - handg.left.width + boader2;
+			handg.left.y = boxHeight - btnH;
 		}
 
 		public function clear():void {
@@ -216,17 +237,28 @@
 				}
 
 				var rect:Rectangle = new Rectangle(rx, 0, rw, 0);
-				var tg:TouchDrag = new TouchDrag(btns, stage, rect, 5);
+				td = new TouchDrag(btns, stage, rect, 5);
 				for (var j:int = 0; j < cbtnv.length; j++) {
 					var btn:NewsClassBtn = cbtnv[j];
-					tg.addClickObj(btn);
+					td.addClickObj(btn);
 				}
-				tg.addEventListener(TouchDragEvent.TOUCH_CLICK, handlerTouchClick);
-
+				td.addEventListener(TouchDragEvent.TOUCH_CLICK, handlerTouchClick);
+				td.addEventListener(TouchDragEvent.TOUCH_DRAG_MOUSE_UP, handlerDragOver);
+				setHandsState();
 				var oldBtns:Sprite = currentBtns;
 				currentBtns = btns;
 				tweenMove(currentBtns, oldBtns, -1);
 			}
+		}
+
+		private function handlerDragOver(e:Event):void {
+			setHandsState();
+		}
+
+		private function setHandsState():void {
+			trace("handlerDragOver", td.isStart, td.isEnd);
+			handg.right.visible = !td.isStart;
+			handg.left.visible = !td.isEnd;
 		}
 
 		private function tweenMove(cbtn:Sprite, obtn:Sprite, sign:int):void {

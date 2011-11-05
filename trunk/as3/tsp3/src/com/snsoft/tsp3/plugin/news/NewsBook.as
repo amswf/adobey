@@ -1,6 +1,7 @@
 package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.MySprite;
 	import com.snsoft.tsp3.ViewUtil;
+	import com.snsoft.tsp3.hand.HandGroup;
 	import com.snsoft.tsp3.touch.TouchDrag;
 	import com.snsoft.tsp3.touch.TouchDragEvent;
 	import com.snsoft.util.SpriteUtil;
@@ -25,6 +26,8 @@ package com.snsoft.tsp3.plugin.news {
 		private var pageLayer:Sprite = new Sprite();
 
 		private var maskLayer:Sprite = new Sprite();
+
+		private var handLayer:Sprite = new Sprite();
 
 		private var msk:Sprite = new Sprite();
 
@@ -60,12 +63,17 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var _addPageCmp:Boolean = false;
 
+		private var handg:HandGroup;
+
+		private var handX:int = 15;
+
 		public function NewsBook(bookSize:Point, catchMax:int = 0) {
 			this._bookSize = bookSize;
 			this.catchMax = catchMax;
 
 			this.addChild(pageLayer);
 			this.addChild(maskLayer);
+			this.addChild(handLayer);
 
 			super();
 		}
@@ -79,6 +87,14 @@ package com.snsoft.tsp3.plugin.news {
 			dy = dy < 0 ? 0 : dy;
 			td.dragBounds.y = -dy - space;
 			td.dragBounds.height = dy + space + space;
+
+			handg.up.y = bookSize.y - handg.up.height;
+			setHandsState();
+		}
+
+		private function setHandsState():void {
+			handg.up.visible = !td.isEnd;
+			handg.down.visible = !td.isStart;
 		}
 
 		override protected function configMS():void {
@@ -94,6 +110,16 @@ package com.snsoft.tsp3.plugin.news {
 			td = new TouchDrag(pageLayer, stage, dragBounds);
 			td.addEventListener(TouchDragEvent.TOUCH_DRAG_MOUSE_UP, handlerTouchUp);
 			td.addEventListener(TouchDragEvent.TOUCH_CLICK, handlerTouchClick);
+
+			handg = new HandGroup(40, 40);
+
+			handg.down.visible = false;
+			handLayer.addChild(handg.down);
+			handg.down.x = handX;
+
+			handg.up.visible = false;
+			handLayer.addChild(handg.up);
+			handg.up.x = handg.down.x;
 
 			reSize(bookSize);
 		}
@@ -119,6 +145,7 @@ package com.snsoft.tsp3.plugin.news {
 			else if (rect.top + 5 >= 0) {
 				dispatchEventNeedPrev();
 			}
+			setHandsState();
 			checkChangePage();
 		}
 
@@ -164,6 +191,7 @@ package com.snsoft.tsp3.plugin.news {
 			else {
 				_addPageCmp = true;
 			}
+			td.refreshPlaceState();
 			checkChangePage();
 		}
 
@@ -207,6 +235,7 @@ package com.snsoft.tsp3.plugin.news {
 			else {
 				_addPageCmp = true;
 			}
+			td.refreshPlaceState();
 		}
 
 		private function addTouchBtn(page:NewsBookPage):void {
@@ -260,7 +289,6 @@ package com.snsoft.tsp3.plugin.news {
 					this.dispatchEvent(new Event(EVENT_CHANGE_PAGE));
 					break;
 				}
-
 			}
 		}
 
