@@ -7,6 +7,7 @@
 		<![CDATA[
 			import com.snsoft.tsp3.PluginLoader;
 			import com.snsoft.tsp3.Tsp;
+			import com.snsoft.tsp3.hand.HandGroup;
 			import com.snsoft.tsp3.net.DataLoader;
 			import com.snsoft.tsp3.pagination.Pagination;
 			import com.snsoft.tsp3.pagination.PaginationBtn;
@@ -49,6 +50,7 @@
 				NewsItemV;
 				Util;
 				ImageBook;
+				HandGroup;
 			}
 		]]>
 	</fx:Script>

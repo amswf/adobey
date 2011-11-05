@@ -1,6 +1,8 @@
 package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.MySprite;
 	import com.snsoft.tsp3.ViewUtil;
+	import com.snsoft.tsp3.hand.Hand;
+	import com.snsoft.tsp3.hand.HandGroup;
 	import com.snsoft.tsp3.touch.TouchDrag;
 	import com.snsoft.tsp3.touch.TouchDragEvent;
 	import com.snsoft.util.SkinsUtil;
@@ -23,7 +25,13 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var backLayer:Sprite = new Sprite();
 
+		private var handLayer:Sprite = new Sprite();
+
 		private var _clickBtn:NewsImgBtn;
+
+		private var handg:HandGroup;
+
+		private var td:TouchDrag;
 
 		public function NewsBtnBox(btnv:Vector.<NewsImgBtn>, boxHeight:int) {
 			this.btnv = btnv;
@@ -40,6 +48,10 @@ package com.snsoft.tsp3.plugin.news {
 			this.addChild(backLayer);
 			this.addChild(btnsLayer);
 			this.addChild(maskLayer);
+			this.addChild(handLayer);
+
+			handLayer.mouseChildren = false;
+			handLayer.mouseEnabled = false;
 
 			var btnH:int;
 			for (var i:int = 0; i < btnv.length; i++) {
@@ -65,7 +77,7 @@ package com.snsoft.tsp3.plugin.news {
 			y = y < 0 ? 0 : y;
 			var rect:Rectangle = new Rectangle(0, -y, 0, y);
 
-			var td:TouchDrag = new TouchDrag(btnsLayer, stage, rect);
+			td = new TouchDrag(btnsLayer, stage, rect);
 			for (var j:int = 0; j < btnv.length; j++) {
 				var b:NewsImgBtn = btnv[j];
 				b.buttonMode = true;
@@ -74,12 +86,34 @@ package com.snsoft.tsp3.plugin.news {
 			}
 
 			td.addEventListener(TouchDragEvent.TOUCH_CLICK, handlerClick);
+			td.addEventListener(TouchDragEvent.TOUCH_DRAG_MOUSE_UP, handlerDragOver);
+
+			handg = new HandGroup(40, 40);
+
+			handg.down.visible = false;
+			handLayer.addChild(handg.down);
+			handg.down.x = (btnsLayer.width - handg.down.height) / 2;
+
+			handg.up.visible = false;
+			handLayer.addChild(handg.up);
+			handg.up.x = handg.down.x;
+			handg.up.y = boxHeight - handg.up.height;
+			setHandsState();
+		}
+
+		private function handlerDragOver(e:Event):void {
+			setHandsState();
 		}
 
 		private function handlerClick(e:Event):void {
 			var td:TouchDrag = e.currentTarget as TouchDrag;
 			setSelectBtn(td.clickObj as NewsImgBtn);
 			this.dispatchEvent(new Event(EVENT_BTN_CLICK));
+		}
+
+		private function setHandsState():void {
+			handg.up.visible = !td.isEnd;
+			handg.down.visible = !td.isStart;
 		}
 
 		private function setSelectBtn(btn:NewsImgBtn):void {

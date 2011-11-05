@@ -46,6 +46,10 @@ package com.snsoft.tsp3.touch {
 
 		private var isMouseDown:Boolean = false;
 
+		private var _isStart:Boolean = false;
+
+		private var _isEnd:Boolean = false;
+
 		public function TouchDrag(dragObj:Sprite, stage:Stage, dragBounds:Rectangle, sensitivity:int = 5) {
 			this.dragObj = dragObj;
 			this.stage = stage;
@@ -76,6 +80,7 @@ package com.snsoft.tsp3.touch {
 		}
 
 		private function init():void {
+			setPlaceState();
 			dragObj.addEventListener(MouseEvent.MOUSE_DOWN, handlerDragObjMouseDown);
 			stage.addEventListener(MouseEvent.MOUSE_UP, handlerDragObjMouseUp);
 		}
@@ -141,6 +146,7 @@ package com.snsoft.tsp3.touch {
 				var twe:Boolean = false;
 
 				//trace(signx, signy, isClick);
+				setPlaceState();
 				if (!signx && !signy && isClick) {
 					//trace("click");
 					this._clickObj = cDownObj;
@@ -160,6 +166,15 @@ package com.snsoft.tsp3.touch {
 					twn.start();
 				}
 			}
+		}
+
+		private function setPlaceState():void {
+
+			//这里有错，当高度都不满足时，需要置true
+			_isEnd = !((dragBounds.width > 0 && dragObj.x - dragBounds.x > 5) || (dragBounds.height > 0 && dragObj.y - dragBounds.y > 5));
+			_isStart = !((dragBounds.width > 0 && dragObj.x + dragBounds.x + dragBounds.width < -5) || (dragBounds.height > 0 && dragObj.y + dragBounds.y + dragBounds.height < -5))
+			trace("setPlaceState:", dragObj.y, dragBounds.y, dragBounds.height);
+			trace(isStart, isEnd);
 		}
 
 		public function get clickObj():Sprite {
@@ -186,6 +201,14 @@ package com.snsoft.tsp3.touch {
 
 		public function set dragBounds(value:Rectangle):void {
 			_dragBounds = value;
+		}
+
+		public function get isStart():Boolean {
+			return _isStart;
+		}
+
+		public function get isEnd():Boolean {
+			return _isEnd;
 		}
 
 	}
