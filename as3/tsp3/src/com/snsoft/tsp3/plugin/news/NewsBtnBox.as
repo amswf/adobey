@@ -92,7 +92,7 @@ package com.snsoft.tsp3.plugin.news {
 
 			handg.down.visible = false;
 			handLayer.addChild(handg.down);
-			handg.down.x = (btnsLayer.width - handg.down.height) / 2;
+			handg.down.x = btnsLayer.width - handg.down.width;
 
 			handg.up.visible = false;
 			handLayer.addChild(handg.up);

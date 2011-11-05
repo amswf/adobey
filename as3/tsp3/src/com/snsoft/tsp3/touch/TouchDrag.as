@@ -168,11 +168,30 @@ package com.snsoft.tsp3.touch {
 			}
 		}
 
-		private function setPlaceState():void {
+		public function refreshPlaceState():void {
+			setPlaceState();
+		}
 
-			//这里有错，当高度都不满足时，需要置true
-			_isEnd = !((dragBounds.width > 0 && dragObj.x - dragBounds.x > 5) || (dragBounds.height > 0 && dragObj.y - dragBounds.y > 5));
-			_isStart = !((dragBounds.width > 0 && dragObj.x + dragBounds.x + dragBounds.width < -5) || (dragBounds.height > 0 && dragObj.y + dragBounds.y + dragBounds.height < -5))
+		private function setPlaceState():void {
+			_isStart = true;
+			_isEnd = true;
+
+			if (dragBounds.width > 0 && dragObj.width > dragBounds.width) {
+				if (dragObj.x + dragBounds.x + dragBounds.width < -5) {
+					_isStart = false;
+				}
+				if (dragObj.x - dragBounds.x > 5) {
+					_isEnd = false;
+				}
+			}
+			else if (dragBounds.height > 0 && dragObj.height > dragBounds.height) {
+				if (dragObj.y + dragBounds.y + dragBounds.height < -5) {
+					_isStart = false;
+				}
+				if (dragObj.y - dragBounds.y > 5) {
+					_isEnd = false;
+				}
+			}
 			trace("setPlaceState:", dragObj.y, dragBounds.y, dragBounds.height);
 			trace(isStart, isEnd);
 		}
