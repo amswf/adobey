@@ -29,6 +29,8 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var handLayer:Sprite = new Sprite();
 
+		private var pages:Sprite = new Sprite();
+
 		private var msk:Sprite = new Sprite();
 
 		private var pagev:Vector.<NewsBookPage> = new Vector.<NewsBookPage>();
@@ -74,7 +76,9 @@ package com.snsoft.tsp3.plugin.news {
 			this.addChild(pageLayer);
 			this.addChild(maskLayer);
 			this.addChild(handLayer);
-
+			
+			pageLayer.y = space;
+			pageLayer.addChild(pages);
 			super();
 		}
 
@@ -83,10 +87,10 @@ package com.snsoft.tsp3.plugin.news {
 			msk.width = bookSize.x;
 			msk.height = bookSize.y;
 
-			var dy:int = pageLayer.height - bookSize.y;
+			var dy:int = pages.height - bookSize.y + space + space;
 			dy = dy < 0 ? 0 : dy;
-			td.dragBounds.y = -dy - space;
-			td.dragBounds.height = dy + space + space;
+			td.dragBounds.y = -dy;
+			td.dragBounds.height = dy;
 
 			handg.up.y = bookSize.y - handg.up.height;
 			setHandsState();
@@ -107,7 +111,7 @@ package com.snsoft.tsp3.plugin.news {
 			pageLayer.mask = maskLayer;
 
 			var dragBounds:Rectangle = new Rectangle(0, 0, 0, 0);
-			td = new TouchDrag(pageLayer, stage, dragBounds);
+			td = new TouchDrag(pages, stage, dragBounds);
 			td.addEventListener(TouchDragEvent.TOUCH_DRAG_MOUSE_UP, handlerTouchUp);
 			td.addEventListener(TouchDragEvent.TOUCH_CLICK, handlerTouchClick);
 
@@ -126,8 +130,8 @@ package com.snsoft.tsp3.plugin.news {
 
 		public function gotoPage(pageNum:int):void {
 			this._npNum = pageNum;
-			SpriteUtil.deleteAllChild(pageLayer);
-			pageLayer.y = 0;
+			SpriteUtil.deleteAllChild(pages);
+			pages.y = 0;
 			pagev.splice(0, pagev.length);
 			dispatchEventNeedNext();
 		}
@@ -138,7 +142,7 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		private function handlerTouchUp(e:Event):void {
-			var rect:Rectangle = pageLayer.getRect(this);
+			var rect:Rectangle = pages.getRect(this);
 			if (rect.bottom - 5 <= bookSize.y) {
 				dispatchEventNeedNext();
 			}
@@ -159,7 +163,7 @@ package com.snsoft.tsp3.plugin.news {
 				nexty = page.y + page.height;
 			}
 			npage.y = nexty;
-			pageLayer.addChild(npage);
+			pages.addChild(npage);
 			pagev.push(npage);
 
 			var dh:int = 0;
@@ -168,24 +172,24 @@ package com.snsoft.tsp3.plugin.news {
 				while (pagev.length > catchMax && dp.getRect(this).bottom < 0) {
 					dh += dp.height;
 					removeTouchBtn(dp);
-					pageLayer.removeChild(dp);
+					pages.removeChild(dp);
 					pagev.splice(0, 1);
 					dp = pagev[0];
 				}
 			}
 
-			var dy:int = pageLayer.height - bookSize.y;
+			var dy:int = pages.height - bookSize.y + space + space;
 			dy = dy < 0 ? 0 : dy;
-			td.dragBounds.y = -dy - space;
-			td.dragBounds.height = dy + space + space;
+			td.dragBounds.y = -dy;
+			td.dragBounds.height = dy;
 
 			for (var i:int = 0; i < pagev.length; i++) {
 				var p:NewsBookPage = pagev[i];
 				p.y -= dh;
 			}
-			pageLayer.y += dh;
+			pages.y += dh;
 
-			if (pageLayer.y + npage.y + npage.height < bookSize.y) {
+			if (pages.y + npage.y + npage.height < bookSize.y) {
 				dispatchEventNeedNext();
 			}
 			else {
@@ -205,31 +209,31 @@ package com.snsoft.tsp3.plugin.news {
 				prevy = page.y - ppage.height;
 			}
 			ppage.y = prevy;
-			pageLayer.addChild(ppage);
+			pages.addChild(ppage);
 			pagev.splice(0, 0, ppage);
 
 			if (catchMax >= 0) {
 				var dp:NewsBookPage = pagev[pagev.length - 1];
 				while (pagev.length > catchMax && dp.getRect(this).y > bookSize.y) {
 					removeTouchBtn(dp);
-					pageLayer.removeChild(dp);
+					pages.removeChild(dp);
 					pagev.pop();
 					dp = pagev[pagev.length - 1];
 				}
 			}
 
-			var dy:int = pageLayer.height - bookSize.y;
+			var dy:int = pages.height - bookSize.y + space + space;
 			dy = dy < 0 ? 0 : dy;
-			td.dragBounds.y = -dy - space;
-			td.dragBounds.height = dy + space + space;
+			td.dragBounds.y = -dy;
+			td.dragBounds.height = dy;
 
 			for (var i:int = 0; i < pagev.length; i++) {
 				var p:NewsBookPage = pagev[i];
 				p.y += ppage.height;
 			}
-			pageLayer.y -= ppage.height;
+			pages.y -= ppage.height;
 
-			if (pageLayer.y + ppage.y > 0) {
+			if (pages.y + ppage.y > 0) {
 				dispatchEventNeedPrev();
 			}
 			else {

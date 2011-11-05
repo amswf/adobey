@@ -192,7 +192,7 @@ package com.snsoft.tsp3.touch {
 					_isEnd = false;
 				}
 			}
-			trace("setPlaceState:", dragObj.y, dragBounds.y, dragBounds.height);
+			trace("setPlaceState:", dragObj.y, dragObj.height, dragBounds.y, dragBounds.height);
 			trace(isStart, isEnd);
 		}
 
