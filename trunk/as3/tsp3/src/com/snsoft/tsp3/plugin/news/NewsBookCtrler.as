@@ -191,13 +191,13 @@ package com.snsoft.tsp3.plugin.news {
 			}
 
 			//trace("newsBook.changeType:", newsBook.changeType);
-			var sign:Boolean = false;
+			var sign:Boolean = true;
 			if (newsBook.changeType == NewsBook.CHANGE_TYPE_PREV) {
 				//trace("prev");
 				for (var k:int = 0; k < nbpv.length; k++) {
 					var knbp:NewsBookPage = nbpv[k];
 					newsBook.addPagePrev(knbp);
-					sign = true;
+					sign = false;
 				}
 			}
 			else if (newsBook.changeType == NewsBook.CHANGE_TYPE_NEXT) {
@@ -205,12 +205,12 @@ package com.snsoft.tsp3.plugin.news {
 				for (var k2:int = 0; k2 < nbpv.length; k2++) {
 					var k2nbp:NewsBookPage = nbpv[k2];
 					newsBook.addPageNext(k2nbp);
-					sign = true;
+					sign = false;
 				}
 			}
 			if (bookSize != null) {
 				var pp:Point = new Point();
-				if (pCount <= 1) {
+				if (newsBook.pageCount <= 1) {
 					pagin.visible = false;
 				}
 				else {
@@ -230,7 +230,9 @@ package com.snsoft.tsp3.plugin.news {
 				newsBook.y = bookY + bookHeadH + by;
 			}
 			bookHeadLayer.visible = true;
-			if (sign && newsBook.addPageCmp) {
+
+			//trace("EVENT_LOAD_COMPLETE:", sign, newsBook.addPageCmp);
+			if (sign || newsBook.addPageCmp) {
 				this.dispatchEvent(new Event(EVENT_LOAD_COMPLETE));
 			}
 		}
