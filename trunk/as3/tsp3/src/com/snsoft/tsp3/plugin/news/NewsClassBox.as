@@ -167,7 +167,7 @@
 
 			var btnsX:int = boader2 + tfdw;
 
-			maskW = boxWidth - bw - boader2 - boader2;
+			maskW = boxWidth - btnsX - bw - boader2;
 
 			var mask:Sprite = ViewUtil.creatRect(maskW, btnH);
 			mask.x = btnsX;
@@ -180,12 +180,12 @@
 			handg = new HandGroup(btnH, btnH);
 			handg.right.visible = false;
 			handLayer.addChild(handg.right);
-			handg.right.x = boader2;
+			handg.right.x = boader2 + btnsX;
 			handg.right.y = boxHeight - btnH;
 
 			handg.left.visible = false;
 			handLayer.addChild(handg.left);
-			handg.left.x = maskW - handg.left.width + boader2;
+			handg.left.x = maskW - handg.left.width + boader2 + btnsX;
 			handg.left.y = boxHeight - btnH;
 		}
 

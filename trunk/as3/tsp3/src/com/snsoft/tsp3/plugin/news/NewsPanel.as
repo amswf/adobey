@@ -22,11 +22,11 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var bookHeadLayer:Sprite = new Sprite();
 
+		private var titleLayer:Sprite = new Sprite();
+
 		private var btmBtnLayer:Sprite = new Sprite();
 
 		private var topBtnLayer:Sprite = new Sprite();
-
-		private var topH:int = 30;
 
 		private var btmH:int = 50;
 
@@ -62,24 +62,27 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var pagin:Pagination;
 
+		private var title:NewsInfoTitle;
+
 		public function NewsPanel(panelSize:Point, infoUrl:String, itemsUrl:String, code:String) {
 			this.panelSize = panelSize;
 			this.infoUrl = infoUrl;
 			this.itemsUrl = itemsUrl;
 			this.code = code;
-			this.infoSize = new Point(panelSize.x - boader - boader, panelSize.y - boader2 - boader - boader - btmH - topH);
-			this.bookSize = new Point(panelSize.x - boader - boader, panelSize.y - boader2 - boader - boader - btmH - topH);
+			this.infoSize = new Point(panelSize.x - boader - boader, panelSize.y - boader - boader - btmH);
+			this.bookSize = new Point(panelSize.x - boader - boader, panelSize.y - boader - boader - btmH);
 
 			super();
 		}
 
 		override protected function configMS():void {
 			this.addChild(backLayer);
+			this.addChild(titleLayer);
+			this.addChild(btmBtnLayer);
 			this.addChild(infoLayer);
 			this.addChild(bookLayer);
 			this.addChild(bookHeadLayer);
 			this.addChild(topBtnLayer);
-			this.addChild(btmBtnLayer);
 		}
 
 		override protected function draw():void {
@@ -95,16 +98,17 @@ package com.snsoft.tsp3.plugin.news {
 			closeBtn.buttonMode = true;
 			closeBtn.addEventListener(MouseEvent.CLICK, handlerClose);
 
-			btmBtnLayer.x = boader + boader2;
+			btmBtnLayer.x = boader;
 			btmBtnLayer.y = panelSize.y - btmH - boader;
 
 			var btmBack:Sprite = SkinsUtil.createSkinByName("NewsBoard_bottomBackSkin");
 			btmBtnLayer.addChild(btmBack);
-			btmBack.width = infoSize.x - boader2 - boader2;
+			btmBack.width = infoSize.x;
 			btmBack.height = btmH;
 
 			infoBtn = new NewsPanelBtn("详细内容");
 			btmBtnLayer.addChild(infoBtn);
+			infoBtn.x = boader2;
 			infoBtn.setSectcted(true);
 			setBtmBtnState(infoBtn);
 			infoBtn.buttonMode = true;
@@ -117,29 +121,32 @@ package com.snsoft.tsp3.plugin.news {
 
 			bookLayer.visible = false;
 			bookLayer.x = boader;
-			bookLayer.y = boader + topH;
 
 			infoLayer.visible = false;
 			infoLayer.x = boader;
-			infoLayer.y = boader + topH;
 
 			pagin = new Pagination();
 			pagin.visible = false;
 			bookLayer.addChild(pagin);
-			pagin.y = bookSize.y - pagin.height;
+			pagin.y = btmBtnLayer.y - pagin.height - boader2;
 			pagin.x = (bookSize.x - pagin.width) / 2;
 			var pp:Point = new Point(0, pagin.height + boader + boader2);
+
+			title = new NewsInfoTitle(infoSize.x);
+			titleLayer.addChild(title);
+			title.x = boader;
+			title.y = boader;
 
 			var bp:Point = bookSize.subtract(pp);
 			var book:NewsBook = new NewsBook(bp);
 			bookLayer.addChild(book);
-			bookCtrler = new NewsBookCtrler(book, pagin, bookHeadLayer);
+			bookCtrler = new NewsBookCtrler(book, pagin, bookHeadLayer, title);
 			bookCtrler.addEventListener(NewsBookCtrler.EVENT_ITEM_CLICK, handlerItemClick);
 			bookCtrler.addEventListener(NewsBookCtrler.EVENT_LOAD_COMPLETE, handlerItemCmp);
 
 			var info:NewsInfo = new NewsInfo(infoSize);
 			infoLayer.addChild(info);
-			infoCtrler = new NewsInfoCtrler(info);
+			infoCtrler = new NewsInfoCtrler(info, title);
 		}
 
 		private function handlerItemCmp(e:Event):void {

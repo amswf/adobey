@@ -259,7 +259,7 @@
 
 			var ph:int = classCount * classH + filtersCount * filtersH;
 			var y:int = titleH + ph;
-			var size:Point = new Point(stage.stageWidth - columnW, stage.stageHeight - deskBarH - boader - titleH - ph);
+			var size:Point = new Point(stage.stageWidth - columnW, stage.stageHeight - deskBarH - titleH - ph);
 
 			var url:String = Common.instance().dataUrl;
 			var code:String = Common.instance().dataCode;
@@ -268,7 +268,7 @@
 				url = cfg.searchDataUrl;
 			}
 
-			newsBookCtrler.refresh(url, code, newsState, size, pagin.height + boader, y);
+			newsBookCtrler.refresh(url, code, newsState, size, pagin.height, y);
 		}
 
 		private function getItemColNum():int {
