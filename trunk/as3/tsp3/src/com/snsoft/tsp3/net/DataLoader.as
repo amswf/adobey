@@ -1,5 +1,6 @@
 ﻿package com.snsoft.tsp3.net {
 	import com.snsoft.tsp3.Common;
+	import com.snsoft.tsp3.PromptMsgMng;
 	import com.snsoft.tsp3.XMLData;
 	import com.snsoft.util.UUID;
 	import com.snsoft.util.rlm.ResLoadManager;
@@ -11,13 +12,16 @@
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
+	import flash.events.TimerEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
 	import flash.net.URLVariables;
+	import flash.utils.Timer;
 
 	[Event(name = "complete", type = "flash.events.Event")]
 	[Event(name = "ioError", type = "flash.events.IOErrorEvent")]
+	[Event(name = "timeOut", type = "com.snsoft.tsp3.net.DataLoaderEvent")]
 
 	/**
 	 *
@@ -60,11 +64,23 @@
 
 		private const TAG_VIDEO:String = "video";
 
+		private var lockTimer:Timer;
+
+		private var isTimeOut:Boolean = false;
+
 		public function DataLoader() {
 			super(null);
+			lockTimer = new Timer(Common.REQ_DELAY_TIME, 1);
+			lockTimer.addEventListener(TimerEvent.TIMER_COMPLETE, handlerLockTimerCmp);
+		}
+
+		private function handlerLockTimerCmp(e:Event):void {
+			isTimeOut = true;
+			this.dispatchEvent(new Event(DataLoaderEvent.TIME_OUT));
 		}
 
 		public function loadData(url:String, code:String, operation:String, params:ReqParams = null):void {
+			timerStart();
 			this.url = url;
 			if (params == null) {
 				params = new ReqParams();
@@ -141,14 +157,13 @@
 				}
 			}
 			else {
-				this.dispatchEvent(new Event(IOErrorEvent.IO_ERROR));
+				dispachEventIOError();
 			}
 			loadImgs();
 		}
 
 		private function handlerLoadError(e:Event):void {
-			var ul:URLLoader = e.currentTarget as URLLoader;
-			this.dispatchEvent(new Event(IOErrorEvent.IO_ERROR));
+			dispachEventIOError();
 		}
 
 		private function loadImgs():void {
@@ -167,7 +182,7 @@
 				rlm.load();
 			}
 			else {
-				this.dispatchEvent(new Event(Event.COMPLETE));
+				dispachEventCmp();
 			}
 		}
 
@@ -197,7 +212,20 @@
 					}
 				}
 			}
-			this.dispatchEvent(new Event(Event.COMPLETE));
+			dispachEventCmp();
+		}
+
+		private function dispachEventIOError():void {
+			if (!isTimeOut) {
+				this.dispatchEvent(new Event(IOErrorEvent.IO_ERROR));
+			}
+		}
+
+		private function dispachEventCmp():void {
+			if (!isTimeOut) {
+				timerStop();
+				this.dispatchEvent(new Event(Event.COMPLETE));
+			}
 		}
 
 		private function safeIcon(img:BitmapData):BitmapData {
@@ -247,6 +275,14 @@
 
 		public function get data():Vector.<DataSet> {
 			return _data;
+		}
+
+		private function timerStart():void {
+			lockTimer.start();
+		}
+
+		private function timerStop():void {
+			lockTimer.stop();
 		}
 
 	}

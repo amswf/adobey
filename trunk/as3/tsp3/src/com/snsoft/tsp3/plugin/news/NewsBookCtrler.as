@@ -2,6 +2,7 @@ package com.snsoft.tsp3.plugin.news {
 	import com.snsoft.tsp3.Common;
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.tsp3.net.DataLoader;
+	import com.snsoft.tsp3.net.DataLoaderEvent;
 	import com.snsoft.tsp3.net.DataSet;
 	import com.snsoft.tsp3.net.ReqParams;
 	import com.snsoft.tsp3.pagination.Pagination;
@@ -49,6 +50,8 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var title:NewsInfoTitle;
 
+		private var lock:Boolean = false;
+
 		public function NewsBookCtrler(newsBook:NewsBook, pagin:Pagination, bookHeadLayer:Sprite, title:NewsInfoTitle = null) {
 			super();
 			this.newsBook = newsBook;
@@ -68,23 +71,27 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		public function refresh(url:String, code:String, newsState:NewsState, bookSize:Point = null, paginH:int = 0, y:int = NaN):void {
-			pagin.visible = false;
-			bookHeadLayer.visible = false;
-			this.bookSize = bookSize;
-			this.paginH = paginH;
-			if (!isNaN(y)) {
-				bookY = y;
+			if (!lock) {
+				pagin.visible = false;
+				bookHeadLayer.visible = false;
+				this.bookSize = bookSize;
+				this.paginH = paginH;
+				if (!isNaN(y)) {
+					bookY = y;
+				}
+				this.url = url;
+				this.code = code;
+				this.newsState = newsState.clone();
+				newsBook.gotoPage(1);
 			}
-			this.url = url;
-			this.code = code;
-			this.newsState = newsState.clone();
-			newsBook.gotoPage(1);
 		}
 
 		private function handlerPaginBtnClick(e:Event):void {
-			var pagin:Pagination = e.currentTarget as Pagination;
-			newsBook.gotoPage(pagin.pageNum);
-			pagin.setPageNum(pagin.pageNum, newsBook.pageCount);
+			if (!lock) {
+				var pagin:Pagination = e.currentTarget as Pagination;
+				newsBook.gotoPage(pagin.pageNum);
+				pagin.setPageNum(pagin.pageNum, newsBook.pageCount);
+			}
 		}
 
 		private function handleritemClick(e:Event):void {
@@ -105,14 +112,20 @@ package com.snsoft.tsp3.plugin.news {
 
 		private function handlerBookNext(e:Event):void {
 			//trace("handlerBookNext");
-			newsState.pageNum = newsBook.npNum;
-			loadInfoItems();
+			if (!lock) {
+				lock = true;
+				newsState.pageNum = newsBook.npNum;
+				loadInfoItems();
+			}
 		}
 
 		private function handlerBookPrev(e:Event):void {
 			//trace("handlerBookPrev");
-			newsState.pageNum = newsBook.npNum;
-			loadInfoItems();
+			if (!lock) {
+				lock = true;
+				newsState.pageNum = newsBook.npNum;
+				loadInfoItems();
+			}
 		}
 
 		private function loadInfoItems():void {
@@ -120,6 +133,7 @@ package com.snsoft.tsp3.plugin.news {
 			var dl:DataLoader = new DataLoader();
 			dl.addEventListener(Event.COMPLETE, handlerSearchCmp);
 			dl.addEventListener(IOErrorEvent.IO_ERROR, handlerSearchError);
+			dl.addEventListener(DataLoaderEvent.TIME_OUT, handlerLoaderTimeOut);
 			dl.loadData(url, code, Common.OPERATION_SEARCH, params);
 		}
 
@@ -233,12 +247,17 @@ package com.snsoft.tsp3.plugin.news {
 
 			//trace("EVENT_LOAD_COMPLETE:", sign, newsBook.addPageCmp);
 			if (sign || newsBook.addPageCmp) {
+				lock = false;
 				this.dispatchEvent(new Event(EVENT_LOAD_COMPLETE));
 			}
 		}
 
 		private function handlerSearchError(e:Event):void {
 
+		}
+
+		private function handlerLoaderTimeOut(e:Event):void {
+			lock = false;
 		}
 
 		public function get clickItem():NewsItemBase {

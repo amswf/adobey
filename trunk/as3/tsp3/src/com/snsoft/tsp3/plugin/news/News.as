@@ -3,6 +3,7 @@
 	import com.snsoft.tsp3.PromptMsgMng;
 	import com.snsoft.tsp3.net.DataDTO;
 	import com.snsoft.tsp3.net.DataLoader;
+	import com.snsoft.tsp3.net.DataLoaderEvent;
 	import com.snsoft.tsp3.net.DataParam;
 	import com.snsoft.tsp3.net.DataSet;
 	import com.snsoft.tsp3.pagination.Pagination;
@@ -96,8 +97,6 @@
 
 		private var lock:Boolean = false;
 
-		private var lockTimer:Timer;
-
 		public function News() {
 			NewsItemI;
 			NewsItemII;
@@ -166,10 +165,6 @@
 			newsState.digestLength = int(cfg.digestLength);
 
 			trace("newsState", cfg.pageSize, cfg.digestLength);
-
-			lockTimer = new Timer(Common.REQ_DELAY_TIME, 1);
-
-			lockTimer.addEventListener(TimerEvent.TIMER_COMPLETE, handlerLockTimerCmp);
 
 			var back:MovieClip = SkinsUtil.createSkinByName("News_backSkin");
 			backLayer.addChild(back);
@@ -300,7 +295,7 @@
 		private function handlerloadItemsCmp(e:Event):void {
 			newsState.detailViewType = newsBookCtrler.infoViewType;
 			newsState.listViewType = newsBookCtrler.itemViewType;
-			lockStop();
+			lock = false;
 		}
 
 		private function handlerItemClick(e:Event):void {
@@ -338,6 +333,7 @@
 			var dl:DataLoader = new DataLoader();
 			dl.addEventListener(Event.COMPLETE, handlerLoadFilterCmp);
 			dl.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadFilterError);
+			dl.addEventListener(DataLoaderEvent.TIME_OUT, handlerDataLoaderTimeOut);
 			dl.loadData(url, code, Common.OPERATION_FILTER, newsState.toParams());
 		}
 
@@ -386,7 +382,7 @@
 
 		private function handlerFilterBtnClick(e:Event):void {
 			if (!lock) {
-				lockStart();
+				lock = true;
 				var box:NewsClassBox = e.currentTarget as NewsClassBox;
 				if (box.classType != null) {
 					var dto:DataDTO = box.data;
@@ -425,6 +421,7 @@
 			var dl:DataLoader = new DataLoader();
 			dl.addEventListener(Event.COMPLETE, handlerLoadClassCmp);
 			dl.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadClassError);
+			dl.addEventListener(DataLoaderEvent.TIME_OUT, handlerDataLoaderTimeOut);
 			dl.loadData(url, code, Common.OPERATION_CLASS, newsState.toParams());
 		}
 
@@ -486,6 +483,7 @@
 			var dl:DataLoader = new DataLoader();
 			dl.addEventListener(Event.COMPLETE, handlerLoadColumnCmp);
 			dl.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadColumnError);
+			dl.addEventListener(DataLoaderEvent.TIME_OUT, handlerDataLoaderTimeOut);
 			dl.loadData(url, code, Common.OPERATION_COLUMN, newsState.toParams());
 		}
 
@@ -544,7 +542,7 @@
 
 		private function handlerSearchBtnClick(e:Event):void {
 			if (!lock) {
-				lockStart();
+				lock = true;
 				var nt:NewsTitle = e.currentTarget as NewsTitle;
 				newsState.searchText = nt.searchText;
 				newsState.type = NewsState.TYPE_SEARCH;
@@ -554,7 +552,7 @@
 
 		private function handlerColumnBtnClick(e:Event):void {
 			if (!lock) {
-				lockStart();
+				lock = true;
 				var nbb:NewsBtnBox = e.currentTarget as NewsBtnBox;
 				var btn:NewsImgBtn = nbb.clickBtn;
 				var dto:DataDTO = btn.data as DataDTO;
@@ -566,7 +564,7 @@
 
 		private function handlerClassBtnClick(e:Event):void {
 			if (!lock) {
-				lockStart();
+				lock = true;
 				var box:NewsClassBox = e.currentTarget as NewsClassBox;
 				var dto:DataDTO = box.data;
 				newsState.cClassId = dto.id;
@@ -583,19 +581,9 @@
 			newsState.columnNumber = int(dto.columnNumber);
 		}
 
-		private function handlerLockTimerCmp(e:Event):void {
-			lockStop();
-			PromptMsgMng.instance().setMsg("请求数据超时...");
-		}
-
-		private function lockStart():void {
-			lock = true;
-			lockTimer.start();
-		}
-
-		private function lockStop():void {
-			lockTimer.stop();
+		private function handlerDataLoaderTimeOut(e:Event):void {
 			lock = false;
+			PromptMsgMng.instance().setMsg("请求数据超时...");
 		}
 
 		private function clearSearchText():void {
