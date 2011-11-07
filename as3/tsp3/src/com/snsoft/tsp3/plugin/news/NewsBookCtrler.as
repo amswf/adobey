@@ -47,11 +47,14 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var bookY:int = 0;
 
-		public function NewsBookCtrler(newsBook:NewsBook, pagin:Pagination, bookHeadLayer:Sprite) {
+		private var title:NewsInfoTitle;
+
+		public function NewsBookCtrler(newsBook:NewsBook, pagin:Pagination, bookHeadLayer:Sprite, title:NewsInfoTitle = null) {
 			super();
 			this.newsBook = newsBook;
 			this.pagin = pagin;
 			this.bookHeadLayer = bookHeadLayer;
+			this.title = title;
 			init();
 		}
 
@@ -212,12 +215,19 @@ package com.snsoft.tsp3.plugin.news {
 				}
 				else {
 					pagin.visible = true;
-					pp.y = pagin.height + 10;
+					pp.y = pagin.height + 10 + 10;
 				}
 				pp.y += bookHeadH;
-				var bs:Point = bookSize.subtract(pp);
+
+				var tp:Point = new Point(0, 0);
+				var by:int = 0;
+				if (title != null) {
+					tp.y = title.height;
+					by = title.y + tp.y;
+				}
+				var bs:Point = bookSize.subtract(pp).subtract(tp);
 				newsBook.reSize(bs);
-				newsBook.y = bookY + bookHeadH;
+				newsBook.y = bookY + bookHeadH + by;
 			}
 			bookHeadLayer.visible = true;
 			if (sign && newsBook.addPageCmp) {

@@ -68,38 +68,9 @@ package com.snsoft.tsp3.plugin.news {
 		}
 
 		protected function addBaseItems(ndp:NewsDataParam):void {
-			var cw:int = ctntWidth;
-
-			var h:int = 0;
-
-			var titleBack:Sprite = SkinsUtil.createSkinByName("NewsBoard_titleBackSkin");
-			this.addChild(titleBack);
-			titleBack.x = boader;
-
-			var titledp:DataParam = ndp.getIntrParam(NewsDataParam.PARAM_TITLE);
-			if (titledp != null) {
-				var title:TextField = Util.ctntSameLine(titledp.content, titletft, cw);
-				this.addChild(title);
-				title.x = (infoSize.x - title.width) / 2;
-				h += title.getRect(this).bottom;
-			}
-
-			var l2v:Vector.<DataParam> = new Vector.<DataParam>();
-			l2v.push(ndp.getIntrParam(NewsDataParam.PARAM_COMEFROM));
-			l2v.push(ndp.getIntrParam(NewsDataParam.PARAM_AUTHOR));
-			l2v.push(ndp.getIntrParam(NewsDataParam.PARAM_KEYWORDS));
-			l2v.push(ndp.getIntrParam(NewsDataParam.PARAM_DATE));
-			var line2:Sprite =  Util.lineItemsSameLine(l2v, subheadtft, subheadtft, cw, boader);
-			this.addChild(line2);
-			line2.x = (infoSize.x - line2.width) / 2;
-			line2.y = h + boader;
-
-			titleBack.width = cw;
-			titleBack.height = line2.getRect(this).bottom + boader;
-
 			var sx:int = boader;
-			var sy:int = titleBack.getRect(this).bottom + boader;
-			var sw:int = cw;
+			var sy:int = 0;
+			var sw:int = ctntWidth;
 			var sh:int = infoSize.y - sy;
 
 			var msk:Sprite = ViewUtil.creatRect(sw, sh);

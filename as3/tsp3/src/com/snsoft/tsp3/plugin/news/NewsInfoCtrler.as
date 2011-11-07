@@ -22,8 +22,11 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var newsState:NewsState;
 
-		public function NewsInfoCtrler(newsInfo:NewsInfo) {
+		private var title:NewsInfoTitle;
+
+		public function NewsInfoCtrler(newsInfo:NewsInfo, title:NewsInfoTitle) {
 			this.newsInfo = newsInfo;
+			this.title = title;
 			super();
 		}
 
@@ -49,7 +52,6 @@ package com.snsoft.tsp3.plugin.news {
 			var dl:DataLoader = e.currentTarget as DataLoader;
 			var rsv:Vector.<DataSet> = dl.data;
 
-			var boardSize:Point = newsInfo.infoSize;
 			var itemv:Vector.<Sprite> = new Vector.<Sprite>();
 			for (var i:int = 0; i < rsv.length; i++) {
 				var rs:DataSet = rsv[i];
@@ -68,7 +70,13 @@ package com.snsoft.tsp3.plugin.news {
 				if (MClass != null) {
 					for (var j:int = 0; j < rs.dtoList.length; j++) {
 						var dto:DataDTO = rs.dtoList[j];
+						title.refresh(dto);
+
+						var tp:Point = new Point(0, title.height);
+						var boardSize:Point = newsInfo.infoSize.subtract(tp);
 						var board:NewsBoardBase = new MClass(boardSize, dto);
+						var by:int = title.y + tp.y;
+						board.y = by;
 						newsInfo.refresh(board);
 					}
 				}

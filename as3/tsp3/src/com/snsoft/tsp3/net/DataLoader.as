@@ -71,8 +71,8 @@
 			}
 			params.addParam(OPERATION, operation);
 
-			//trace("xml url:", url);
-			//trace("xml req:", params.toXML());
+			trace("xml url:", url);
+			trace("xml req:", params.toXML());
 			var uvs:URLVariables = new URLVariables();
 			uvs["code"] = code;
 			uvs["xml"] = params.toXML();
@@ -98,8 +98,8 @@
 
 		private function handlerLoadCmp(e:Event):void {
 			var ul:URLLoader = e.currentTarget as URLLoader;
-			//trace("xml back:*********************************************************************************");
-			//trace(ul.data);
+			trace("xml back:*********************************************************************************");
+			trace(ul.data);
 			var xd:XMLData = new XMLData(ul.data);
 			if (xd.isCmp) {
 				var list:NodeList = xd.bodyNode.getNodeList(TAG_SET);
