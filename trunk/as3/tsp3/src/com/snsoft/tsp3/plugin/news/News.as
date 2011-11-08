@@ -10,6 +10,7 @@
 	import com.snsoft.tsp3.plugin.BPlugin;
 	import com.snsoft.tsp3.plugin.news.dto.NewsTitleDTO;
 	import com.snsoft.util.SkinsUtil;
+	import com.snsoft.util.SpriteUtil;
 	import com.snsoft.util.rlm.ResLoadManager;
 	import com.snsoft.util.rlm.rs.RSEmbedFonts;
 
@@ -19,6 +20,7 @@
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.text.TextFormat;
@@ -28,6 +30,8 @@
 	public class News extends BPlugin {
 
 		private var boader:int = 10;
+
+		private var boaderl:int = 5;
 
 		private var newsBook:NewsBook;
 
@@ -58,6 +62,10 @@
 		private var columnLayer:Sprite = new Sprite();
 
 		private var bookLayer:Sprite = new Sprite();
+
+		private var linksLayer:Sprite = new Sprite();
+
+		private var linksBtnLayer:Sprite = new Sprite();
 
 		private var classLayer:Sprite = new Sprite();
 
@@ -97,6 +105,10 @@
 
 		private var lock:Boolean = false;
 
+		private var lbb:LinkBoardBtn;
+
+		private var lbbW:int = 0;
+
 		public function News() {
 			NewsItemI;
 			NewsItemII;
@@ -121,6 +133,8 @@
 			this.addChild(titleLayer);
 			this.addChild(bookHeadLayer);
 			this.addChild(paginLayer);
+			this.addChild(linksBtnLayer);
+			this.addChild(linksLayer);
 			this.addChild(infoLayer);
 
 			pluginCfg = cfg;
@@ -187,6 +201,14 @@
 			pagin.x = (stage.stageWidth - columnW - pagin.width) / 2;
 			pagin.y = stage.stageHeight - deskBarH - pagin.height - boader;
 			//先在这里实现分页拖动
+
+			//链接地址按钮
+			lbb = new LinkBoardBtn(48, 48);
+			lbb.visible = false;
+			linksBtnLayer.addChild(lbb);
+			lbb.x = stage.stageWidth - columnW - lbb.width - boaderl;
+			lbb.y = titleH + boaderl;
+			lbb.addEventListener(MouseEvent.CLICK, handlerLBBClick);
 
 			newsBook = new NewsBook(new Point(stage.stageWidth - columnW, pagin.getRect(paginLayer).bottom - boader - titleH));
 			newsBook.y = titleH;
@@ -292,6 +314,10 @@
 			return n;
 		}
 
+		private function handlerLBBClick(e:Event):void {
+			linksLayer.visible = !linksLayer.visible;
+		}
+
 		private function handlerloadItemsCmp(e:Event):void {
 			newsState.detailViewType = newsBookCtrler.infoViewType;
 			newsState.listViewType = newsBookCtrler.itemViewType;
@@ -361,7 +387,7 @@
 						fbox.clear();
 					}
 					else {
-						fbox = new NewsClassBox(stage.stageWidth - columnW, filtersH, ds.attr.name, ds.attr.id, true);
+						fbox = new NewsClassBox(stage.stageWidth - columnW - lbbW, filtersH, ds.attr.name, ds.attr.id, true);
 						fbox.selectedSkin = "NewsFilterBtn_selectedSkin";
 						fbox.unSelectedSkin = "NewsFilterBtn_unSelectedSkin";
 						fbox.backSkin = "NewsFilterBox_backSkin";
@@ -396,6 +422,64 @@
 
 		}
 
+		private function loadLinks():void {
+			lbb.visible = false;
+			lbbW = 0;
+			linksLayer.visible = false;
+
+			newsState.filter = null;
+			newsState.searchText = null;
+			newsState.pageNum = 1;
+			newsState.infoId = null;
+
+			newsState.type = NewsState.TYPE_FACTOR;
+			clearSearchText();
+
+			newsState.cClassId = null;
+
+			var url:String = Common.instance().dataUrl;
+			var code:String = Common.instance().dataCode;
+
+			if (url == null) {
+				url = cfg.linksDataUrl;
+			}
+
+			var dl:DataLoader = new DataLoader();
+			dl.addEventListener(Event.COMPLETE, handlerLoadLinksCmp);
+			dl.addEventListener(IOErrorEvent.IO_ERROR, handlerLoadLinksError);
+			dl.addEventListener(DataLoaderEvent.TIME_OUT, handlerDataLoaderTimeOut);
+			dl.loadData(url, code, Common.OPERATION_LINKS, newsState.toParams());
+		}
+
+		private function handlerLoadLinksCmp(e:Event):void {
+			var dl:DataLoader = e.currentTarget as DataLoader;
+			var rsv:Vector.<DataSet> = dl.data;
+
+			var dtov:Vector.<DataDTO> = new Vector.<DataDTO>();
+			for (var i:int = 0; i < rsv.length; i++) {
+				var ds:DataSet = rsv[i];
+				var v:Vector.<DataDTO> = ds.dtoList;
+				for (var j:int = 0; j < v.length; j++) {
+					var dto:DataDTO = v[j];
+					dtov.push(dto);
+				}
+			}
+
+			if (dtov.length > 0) {
+				lbb.visible = true;
+				lbbW = boaderl + lbb.width + boaderl;
+				SpriteUtil.deleteAllChild(linksLayer);
+				var lb:LinkBoard = new LinkBoard(dtov, 5, 80, 80);
+				linksLayer.addChild(lb);
+			}
+
+			loadClass(true);
+		}
+
+		private function handlerLoadLinksError(e:Event):void {
+
+		}
+
 		private function loadClass(isClear:Boolean):void {
 			newsState.filter = null;
 			newsState.searchText = null;
@@ -408,6 +492,7 @@
 			if (isClear) {
 				newsState.cClassId = null;
 				classBox.clear();
+				classBox.resize(stage.stageWidth - columnW - lbbW);
 				classBox.visible = false;
 			}
 
@@ -525,7 +610,7 @@
 				}
 			}
 
-			loadClass(true);
+			loadLinks();
 		}
 
 		private function handlerLoadColumnError(e:Event):void {

@@ -6,6 +6,8 @@ package com.snsoft.tsp3.plugin.news {
 
 		private var _classDataUrl:String;
 
+		private var _linksDataUrl:String;
+
 		private var _filterDataUrl:String;
 
 		private var _searchDataUrl:String;
@@ -74,6 +76,17 @@ package com.snsoft.tsp3.plugin.news {
 		public function set pageSize(value:String):void {
 			_pageSize = value;
 		}
+
+		public function get linksDataUrl():String
+		{
+			return _linksDataUrl;
+		}
+
+		public function set linksDataUrl(value:String):void
+		{
+			_linksDataUrl = value;
+		}
+
 
 	}
 }
