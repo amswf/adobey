@@ -13,6 +13,8 @@ package com.snsoft.tsp3 {
 
 		public static const OPERATION_CLASS:String = "class";
 
+		public static const OPERATION_LINKS:String = "links";
+
 		public static const OPERATION_FILTER:String = "filter";
 
 		public static const OPERATION_SEARCH:String = "search";

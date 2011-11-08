@@ -69,8 +69,6 @@
 
 		private var btnH:int;
 
-		private var btnsY:int;
-
 		private var maskW:int;
 
 		private var _title:String;
@@ -99,6 +97,20 @@
 
 		private var td:TouchDrag;
 
+		private var backBtn:MovieClip;
+
+		private var back:Sprite;
+
+		private var tfdw:int = 0;
+
+		private var bw:int = 0;
+
+		private var btnsX:int;
+
+		private var btnsY:int;
+
+		private var msk:Sprite;
+
 		public function NewsClassBox(boxWidth:int, boxHeight:int, title:String, classType:String = null, hiddenBack:Boolean = false, align:String = "left") {
 			this.boxWidth = boxWidth;
 			this.boxHeight = boxHeight;
@@ -124,12 +136,10 @@
 			handLayer.mouseChildren = false;
 			handLayer.mouseEnabled = false;
 
-			var back:Sprite = SkinsUtil.createSkinByName(backSkin);
+			back = SkinsUtil.createSkinByName(backSkin);
 			backLayer.addChild(back);
-			back.width = boxWidth;
-			back.height = boxHeight;
 
-			var tfdw:int = 0;
+			back.height = boxHeight;
 
 			if (title != null) {
 				var tfd:TextField = new TextField();
@@ -146,12 +156,11 @@
 				tfd.y = (boxHeight - tfd.height) / 2;
 				tfdw = tfd.width;
 			}
-			var bw:int = 0;
+
 			if (!hiddenBack) {
-				var backBtn:MovieClip = SkinsUtil.createSkinByName(backBtnSkin);
+				backBtn = SkinsUtil.createSkinByName(backBtnSkin);
 				backBtn.buttonMode = true;
 				backBtnLayer.addChild(backBtn);
-				backBtn.x = int(boxWidth - boader - backBtn.width);
 				backBtn.y = int(boxHeight - backBtn.height) / 2;
 				backBtn.addEventListener(MouseEvent.CLICK, handlerBackBtnMouseClick);
 				bw = backBtn.width + boader;
@@ -165,16 +174,15 @@
 			btnH = btn.height;
 			btnsY = int((boxHeight - btnH) / 2);
 
-			var btnsX:int = boader2 + tfdw;
+			btnsX = boader2 + tfdw;
 
 			maskW = boxWidth - btnsX - bw - boader2;
+			msk = ViewUtil.creatRect(maskW, btnH);
+			msk.x = btnsX;
+			msk.y = btnsY;
+			maskLayer.addChild(msk);
 
-			var mask:Sprite = ViewUtil.creatRect(maskW, btnH);
-			mask.x = btnsX;
-			mask.y = btnsY;
-			maskLayer.addChild(mask);
-
-			btnLayer.mask = mask;
+			btnLayer.mask = msk;
 			btnLayer.x = btnsX;
 
 			handg = new HandGroup(btnH, btnH);
@@ -182,11 +190,22 @@
 			handLayer.addChild(handg.right);
 			handg.right.x = boader2 + btnsX;
 			handg.right.y = boxHeight - btnH;
-
 			handg.left.visible = false;
 			handLayer.addChild(handg.left);
-			handg.left.x = maskW - handg.left.width + boader2 + btnsX;
+
 			handg.left.y = boxHeight - btnH;
+
+			resize(boxWidth);
+		}
+
+		public function resize(boxWidth:int):void {
+			back.width = boxWidth;
+			maskW = boxWidth - btnsX - bw - boader2;
+			msk.width = maskW;
+			handg.left.x = maskW - handg.left.width + boader2 + btnsX;
+			if (!hiddenBack) {
+				backBtn.x = int(boxWidth - boader - backBtn.width);
+			}
 		}
 
 		public function clear():void {
