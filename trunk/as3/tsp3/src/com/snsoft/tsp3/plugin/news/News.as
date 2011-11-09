@@ -63,7 +63,7 @@
 
 		private var bookLayer:Sprite = new Sprite();
 
-		private var linksLayer:Sprite = new Sprite();
+		private var linkBoardLayer:Sprite = new Sprite();
 
 		private var linksBtnLayer:Sprite = new Sprite();
 
@@ -107,8 +107,6 @@
 
 		private var lbb:LinkBoardBtn;
 
-		private var lbbW:int = 0;
-
 		public function News() {
 			NewsItemI;
 			NewsItemII;
@@ -134,7 +132,7 @@
 			this.addChild(bookHeadLayer);
 			this.addChild(paginLayer);
 			this.addChild(linksBtnLayer);
-			this.addChild(linksLayer);
+			this.addChild(linkBoardLayer);
 			this.addChild(infoLayer);
 
 			pluginCfg = cfg;
@@ -204,10 +202,11 @@
 
 			//链接地址按钮
 			lbb = new LinkBoardBtn(48, 48);
+			lbb.buttonMode = true;
 			lbb.visible = false;
 			linksBtnLayer.addChild(lbb);
 			lbb.x = stage.stageWidth - columnW - lbb.width - boaderl;
-			lbb.y = titleH + boaderl;
+			lbb.y = titleH - lbb.height;
 			lbb.addEventListener(MouseEvent.CLICK, handlerLBBClick);
 
 			newsBook = new NewsBook(new Point(stage.stageWidth - columnW, pagin.getRect(paginLayer).bottom - boader - titleH));
@@ -315,7 +314,9 @@
 		}
 
 		private function handlerLBBClick(e:Event):void {
-			linksLayer.visible = !linksLayer.visible;
+			linkBoardLayer.visible = !linkBoardLayer.visible;
+			linkBoardLayer.y = lbb.getRect(this).bottom;
+			linkBoardLayer.x = lbb.x + lbb.width - linkBoardLayer.width;
 		}
 
 		private function handlerloadItemsCmp(e:Event):void {
@@ -387,7 +388,7 @@
 						fbox.clear();
 					}
 					else {
-						fbox = new NewsClassBox(stage.stageWidth - columnW - lbbW, filtersH, ds.attr.name, ds.attr.id, true);
+						fbox = new NewsClassBox(stage.stageWidth - columnW, filtersH, ds.attr.name, ds.attr.id, true);
 						fbox.selectedSkin = "NewsFilterBtn_selectedSkin";
 						fbox.unSelectedSkin = "NewsFilterBtn_unSelectedSkin";
 						fbox.backSkin = "NewsFilterBox_backSkin";
@@ -424,8 +425,7 @@
 
 		private function loadLinks():void {
 			lbb.visible = false;
-			lbbW = 0;
-			linksLayer.visible = false;
+			linkBoardLayer.visible = false;
 
 			newsState.filter = null;
 			newsState.searchText = null;
@@ -467,13 +467,22 @@
 
 			if (dtov.length > 0) {
 				lbb.visible = true;
-				lbbW = boaderl + lbb.width + boaderl;
-				SpriteUtil.deleteAllChild(linksLayer);
+				SpriteUtil.deleteAllChild(linkBoardLayer);
 				var lb:LinkBoard = new LinkBoard(dtov, 5, 80, 80);
-				linksLayer.addChild(lb);
+				linkBoardLayer.addChild(lb);
+				lb.addEventListener(LinkBoard.EVENT_BTN_CLICK, handlerLinkBtnClick);
 			}
 
 			loadClass(true);
+		}
+
+		private function handlerLinkBtnClick(e:Event):void {
+			linkBoardLayer.visible = false;
+			var lbd:LinkBoard = e.currentTarget as LinkBoard;
+			var lb:LinkBtn = lbd.clickObj;
+			var dto:DataDTO = lb.data as DataDTO;
+			dto.url;
+			trace(dto.url);
 		}
 
 		private function handlerLoadLinksError(e:Event):void {
@@ -492,7 +501,6 @@
 			if (isClear) {
 				newsState.cClassId = null;
 				classBox.clear();
-				classBox.resize(stage.stageWidth - columnW - lbbW);
 				classBox.visible = false;
 			}
 

@@ -3,6 +3,8 @@ package com.snsoft.tsp3.net {
 
 	public class DataDTO {
 
+		private var _url:String;
+
 		private var _img:BitmapData;
 
 		private var _imgUrl:String;
@@ -199,14 +201,22 @@ package com.snsoft.tsp3.net {
 			_detailViewType = value;
 		}
 
-		public function get columnNumber():String
-		{
+		public function get columnNumber():String {
 			return _columnNumber;
 		}
 
-		public function set columnNumber(value:String):void
-		{
+		public function set columnNumber(value:String):void {
 			_columnNumber = value;
+		}
+
+		public function get url():String
+		{
+			return _url;
+		}
+
+		public function set url(value:String):void
+		{
+			_url = value;
 		}
 
 
